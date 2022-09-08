@@ -113,6 +113,7 @@
 <script>
 // import desktopMixin from '@/libs/desktopMixin.js'
 export default {
+    layout: 'blog',
     // mixins: [desktopMixin]
 }
 </script>
