@@ -44,10 +44,10 @@ const state = reactive({
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
     $emitter.on("hideUserModal", hideModal)
-    state.bsModal = new Modal(document.getElementById("userModal"), {
-        keyboard: false,
-        backdrop: "static"
-    })
+    // state.bsModal = new Modal(document.getElementById("userModal"), {
+    //     keyboard: false,
+    //     backdrop: "static"
+    // })
     // // 初始化FirebaseUI使系統可以自動跳轉
     // if (!this.$route.path.includes("admin")) {
     //     this.renderFirebaseUI()

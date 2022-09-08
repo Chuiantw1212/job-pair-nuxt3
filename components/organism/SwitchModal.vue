@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <div class="modal fade" id="switchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" ref="switchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -47,13 +47,15 @@ const route = useRoute()
 const state = reactive({
     bsModal: null,
 })
+console.log($refs);
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
     $emitter.on("hideUserModal", hideModal)
-    state.bsModal = new Modal(document.getElementById("switchModal"), {
-        keyboard: false,
-        backdrop: "static",
-    })
+    const switchModal = 
+    // state.bsModal = new Modal(document.getElementById("switchModal"), {
+    //     keyboard: false,
+    //     backdrop: "static",
+    // })
 })
 // methods
 function hideModal() {
