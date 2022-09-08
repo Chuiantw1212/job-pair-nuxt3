@@ -26,8 +26,8 @@
                     </router-link>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <UserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></UserMenu>
-                    <CompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()"></CompanyMenu>
+                    <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
+                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()"></OrganismCompanyMenu>
                 </div>
             </div>
         </nav>
