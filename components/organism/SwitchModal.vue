@@ -41,6 +41,43 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { Modal } from "bootstrap"
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+const state = reactive({
+    bsModal: null,
+})
+onMounted(() => {
+    $emitter.on("showUserModal", showModal)
+    $emitter.on("hideUserModal", hideModal)
+    state.bsModal = new Modal(document.getElementById("switchModal"), {
+        keyboard: false,
+        backdrop: "static",
+    })
+})
+// methods
+function hideModal() {
+    state.isSent = false
+    state.bsModal.hide()
+}
+function showModal() {
+    state.bsModal.show()
+    // this.renderFirebaseUI()
+}
+function showEmployeeModal() {
+    state.bsModal.hide()
+    router.replace({
+        name: 'home'
+    })
+    $emitter.emit("showUserModal")
+}
+function showAdminModal() {
+    state.bsModal.hide()
+    router.replace({
+        name: 'admin'
+    })
+    $emitter.emit("showCompanyModal")
+}
 // export default {
 //     data: function () {
 //         return {
@@ -52,10 +89,7 @@ import { Modal } from "bootstrap"
 //         this.$emitter.on("hideSwitchModal", this.hideModal)
 //     },
 //     async mounted() {
-//         this.bsModal = new Modal(document.getElementById("switchModal"), {
-//             keyboard: false,
-//             backdrop: "static",
-//         })
+
 //     },
 //     beforeUnmount() {
 //         if (this.ui) {
@@ -69,20 +103,6 @@ import { Modal } from "bootstrap"
 //         showModal() {
 //             this.bsModal.show()
 //         },
-//         showEmployeeModal() {
-//             this.bsModal.hide()
-//             this.$router.replace({
-//                 name: 'home'
-//             })
-//             this.$emitter.emit("showUserModal")
-//         },
-//         showAdminModal() {
-//             this.bsModal.hide()
-//             this.$router.replace({
-//                 name: 'admin'
-//             })
-//             this.$emitter.emit("showCompanyModal")
-//         }
 //     },
 // }
 </script>
