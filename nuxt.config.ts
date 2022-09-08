@@ -25,5 +25,10 @@ export default defineNuxtConfig({
                 { rel: "preload", href: "https://unpkg.com/aos@next/dist/aos.css", as: "style", onload: "this.onload=null;this.rel='stylesheet'", type: "text/css", media: "screen" }
             ]
         }
-    }
+    },
+    // ... other options
+    modules: [
+        // ...
+        '@pinia/nuxt',
+    ],
 })
