@@ -7,6 +7,7 @@ export default defineNuxtConfig({
         // ...
         '@pinia/nuxt',
     ],
+    plugins: ['~/plugins/mitt.js'],
     app: {
         head: {
             meta: [

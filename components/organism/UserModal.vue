@@ -37,9 +37,63 @@ const state = reactive({
     bsModal: null
 })
 onMounted(() => {
-    this.$emitter.on("showUserModal", this.showModal)
-    this.$emitter.on("hideUserModal", this.hideModal)
+    $emitter.on("showUserModal", showModal)
+    $emitter.on("hideUserModal", hideModal)
 })
+// methods
+function hideModal() {
+    this.isSent = false
+    this.bsModal.hide()
+}
+function showModal() {
+    // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
+    this.bsModal.show()
+    this.renderFirebaseUI()
+}
+async function renderFirebaseUI() {
+    let ui = auth.AuthUI.getInstance("manualLogin")
+    const firebaseAuth = firebase.auth()
+    if (!ui) {
+        ui = new auth.AuthUI(firebaseAuth, "manualLogin")
+    }
+    const isPendingRedirect = ui.isPendingRedirect()
+    if (isPendingRedirect) {
+        this.$toggleLoader(true)
+    }
+    await firebaseAuth.getRedirectResult() // 不知道為什麼有這一行就不出錯
+    // 不同裝置給予不同登入方式
+    const signInOptions = [
+        {
+            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            requireDisplayName: true
+        }
+    ]
+    if (!this.$checkInApp()) {
+        signInOptions.push({
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        })
+        signInOptions.push({
+            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+            scopes: ["public_profile", "email"]
+        })
+    }
+    const element = document.querySelector("#user-auth-container")
+    this.ui = ui.start(element, {
+        callbacks: {
+            signInSuccessUrl: `${window.location.href}`,
+            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+                this.handleAuthResult(authResult, "employee")
+                return false
+            }
+        },
+        signInOptions,
+        tosUrl:
+            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
+        privacyPolicyUrl:
+            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
+    })
+}
+    }
 // import authMixin from "./authMixin.js"
 // export default {
 //     mixins: [authMixin],
@@ -68,59 +122,7 @@ onMounted(() => {
 //         }
 //     },
 //     methods: {
-//         hideModal() {
-//             this.isSent = false
-//             this.bsModal.hide()
-//         },
-//         showModal() {
-//             // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
-//             this.bsModal.show()
-//             this.renderFirebaseUI()
-//         },
-//         async renderFirebaseUI() {
-//             let ui = auth.AuthUI.getInstance("manualLogin")
-//             const firebaseAuth = firebase.auth()
-//             if (!ui) {
-//                 ui = new auth.AuthUI(firebaseAuth, "manualLogin")
-//             }
-//             const isPendingRedirect = ui.isPendingRedirect()
-//             if (isPendingRedirect) {
-//                 this.$toggleLoader(true)
-//             }
-//             await firebaseAuth.getRedirectResult() // 不知道為什麼有這一行就不出錯
-//             // 不同裝置給予不同登入方式
-//             const signInOptions = [
-//                 {
-//                     provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-//                     requireDisplayName: true
-//                 }
-//             ]
-//             if (!this.$checkInApp()) {
-//                 signInOptions.push({
-//                     provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-//                 })
-//                 signInOptions.push({
-//                     provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-//                     scopes: ["public_profile", "email"]
-//                 })
-//             }
-//             const element = document.querySelector("#user-auth-container")
-//             this.ui = ui.start(element, {
-//                 callbacks: {
-//                     signInSuccessUrl: `${window.location.href}`,
-//                     signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-//                         this.handleAuthResult(authResult, "employee")
-//                         return false
-//                     }
-//                 },
-//                 signInOptions,
-//                 tosUrl:
-//                     "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-//                 privacyPolicyUrl:
-//                     "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-//             })
-//         }
-//     }
+
 // }
 </script>
 <style lang="scss" scoped>
