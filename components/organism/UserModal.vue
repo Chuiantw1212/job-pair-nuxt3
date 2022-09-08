@@ -31,7 +31,7 @@
 <script setup>
 import firebase from "firebase/app"
 import { auth } from "firebaseui"
-import { Modal } from "bootstrap"
+// import { Modal } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 const loginModal = useLoginModal()
 console.log({

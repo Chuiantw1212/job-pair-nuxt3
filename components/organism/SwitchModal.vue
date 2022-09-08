@@ -40,7 +40,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-import { Modal } from "bootstrap"
+// import { Modal } from "bootstrap"
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()

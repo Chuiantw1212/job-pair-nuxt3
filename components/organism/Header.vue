@@ -38,7 +38,7 @@
     </div>
 </template>
 <script setup>
-import { Collapse } from "bootstrap"
+// import { Collapse } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 const state = reactive({
     bsCollapse: null,
