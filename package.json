@@ -9,5 +9,26 @@
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.9"
+  },
+  "dependencies": {
+    "@glidejs/glide": "^3.5.2",
+    "@popperjs/core": "^2.11.6",
+    "aos": "^2.3.4",
+    "axois": "^0.0.1-security",
+    "bootstrap": "^5.2.1",
+    "buffer": "^6.0.3",
+    "firebase": "^9.9.4",
+    "firebaseui": "^6.0.1",
+    "flatpickr": "^4.6.13",
+    "fuse.js": "^6.6.2",
+    "jquery": "^3.6.1",
+    "minidenticons": "^1.0.3",
+    "mitt": "^3.0.0",
+    "nodejieba": "^2.6.0",
+    "nouislider": "^15.6.1",
+    "popper.js": "^1.16.1",
+    "sass": "^1.54.9",
+    "socket.io-client": "^4.5.2",
+    "sweetalert2": "^11.4.32"
   }
 }
