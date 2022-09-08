@@ -27,9 +27,11 @@
     "mitt": "^3.0.0",
     "nodejieba": "^2.6.0",
     "nouislider": "^15.6.1",
+    "pinia": "^2.0.22",
     "popper.js": "^1.16.1",
     "sass": "^1.54.9",
     "socket.io-client": "^4.5.2",
-    "sweetalert2": "^11.4.32"
+    "sweetalert2": "^11.4.32",
+    "vue": "^3.2.39"
   }
 }

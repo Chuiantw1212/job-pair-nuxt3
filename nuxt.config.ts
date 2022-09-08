@@ -2,6 +2,11 @@ import { defineNuxtConfig } from 'nuxt'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+    // ... other options
+    modules: [
+        // ...
+        '@pinia/nuxt',
+    ],
     app: {
         head: {
             meta: [
@@ -26,9 +31,4 @@ export default defineNuxtConfig({
             ]
         }
     },
-    // ... other options
-    modules: [
-        // ...
-        '@pinia/nuxt',
-    ],
 })
