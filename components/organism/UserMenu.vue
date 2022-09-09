@@ -3,14 +3,14 @@
         <template v-if="user && user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="$emit('collapse')">
-                    <router-link id="navItem__button" class="navItem__button" :to="{ name: 'jobs' }">
+                    <!-- <router-link id="navItem__button" class="navItem__button" :to="{ name: 'jobs' }">
                         職缺探索
-                    </router-link>
+                    </router-link> -->
                 </li>
                 <li class="nav-item" @click="$emit('collapse')">
-                    <router-link class="navItem__button" :to="{ name: 'userDashboard' }">
+                    <!-- <router-link class="navItem__button" :to="{ name: 'userDashboard' }">
                         會員中心
-                    </router-link>
+                    </router-link> -->
                 </li>
             </template>
             <template v-else>
@@ -31,9 +31,9 @@
         </template>
         <template v-else>
             <li class="nav-item" @click="$emit('collapse')">
-                <router-link class="navItem__button" @click="signOut()" :to="{
+                <!-- <router-link class="navItem__button" @click="signOut()" :to="{
                     name: 'admin'
-                }">企業專區</router-link>
+                }">企業專區</router-link> -->
             </li>
             <li class="nav-item" @click="$emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
@@ -50,7 +50,7 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 function logout() {
-    this.userSignout()
+    userSignout()
     router.push({
         name: "home",
     })

@@ -18,12 +18,12 @@
                 </div>
                 <!-- 手機縮圖列表 -->
                 <div v-if="user && state.menuType === 'user'" class="d-lg-none container__icons" @click="collapseNavbar()">
-                    <router-link class="icons__Group" :to="{ name: 'jobs' }">
+                    <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
                     </router-link>
                     <router-link class="icons__Group" :to="{ name: 'userDashboard' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_member.svg" />
-                    </router-link>
+                    </router-link> -->
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
@@ -34,7 +34,7 @@
         <!-- 如果條件渲染有異布渲染問題 -->
         <!-- <UserModal></UserModal>
         <CompanyModal></CompanyModal> -->
-        <SwitchModal></SwitchModal>
+        <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>

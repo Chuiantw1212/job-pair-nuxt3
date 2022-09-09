@@ -40,22 +40,23 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-// import { Modal } from "bootstrap"
 import { useRouter, useRoute } from 'vue-router'
+import { Modal } from "bootstrap"
+const { $checkInApp, $emitter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
     bsModal: null,
 })
-console.log($refs);
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
     $emitter.on("hideUserModal", hideModal)
-    const switchModal = 
-    // state.bsModal = new Modal(document.getElementById("switchModal"), {
-    //     keyboard: false,
-    //     backdrop: "static",
-    // })
+    if (process.client) {
+        state.bsModal = new Modal(document.getElementById("switchModal"), {
+            keyboard: false,
+            backdrop: "static",
+        })
+    }
 })
 // methods
 function hideModal() {

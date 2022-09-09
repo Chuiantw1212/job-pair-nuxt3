@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
         <div class="footer__meta">
-            <router-link class="meta__button" :to="{ name: 'about' }">關於Job Pair</router-link>
+            <!-- <router-link class="meta__button" :to="{ name: 'about' }">關於Job Pair</router-link> -->
             <a
                 class="meta__button"
                 target="_blank"

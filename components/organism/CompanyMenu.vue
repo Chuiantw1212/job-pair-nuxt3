@@ -3,16 +3,16 @@
         <template v-if="user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="$emit('collapse')">
-                    <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link>
+                    <!-- <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link> -->
                 </li>
                 <li class="nav-item" @click="$emit('collapse')">
-                    <router-link class="navItem__button" :to="{ name: 'companyInfo' }">管理中心</router-link>
+                    <!-- <router-link class="navItem__button" :to="{ name: 'companyInfo' }">管理中心</router-link> -->
                 </li>
             </template>
             <template v-else>
                 <li class="nav-item">
-                    <router-link class="navItem__button" :to="{ name: 'companyRegister' }"> 企業註冊
-                    </router-link>
+                    <!-- <router-link class="navItem__button" :to="{ name: 'companyRegister' }"> 企業註冊
+                    </router-link> -->
                 </li>
                 <li class="nav-item" @click="$emit('collapse')">
                     <button class="navItem__button" @click="logout()">登出</button>
