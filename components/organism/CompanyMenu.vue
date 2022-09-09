@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <template v-if="user">
+        <template v-if="userStore.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="$emit('collapse')">
                     <!-- <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link> -->
@@ -29,7 +29,8 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import useUserStore from '@/stores/user'
-// const userStore = useUserStore()
+const { isDesktop } = isDesktop()
+const userStore = useUserStore()
 // onMounted(() => {
 
 // })
