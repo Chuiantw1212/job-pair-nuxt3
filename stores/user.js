@@ -13,18 +13,18 @@ export default defineStore('user', {
     },
     actions: {
         async deleteUser() {
-            const auth = firebase.auth()
-            if (!auth.currentUser) {
-                return
-            }
-            const idToken = await auth.currentUser.getIdToken()
-            const response = await apiDefault.request(types.deleteUser, {
-                url: `/user`,
-                data: {
-                    idToken
-                },
-            })
-            return response
+            // const auth = firebase.auth()
+            // if (!auth.currentUser) {
+            //     return
+            // }
+            // const idToken = await auth.currentUser.getIdToken()
+            // const response = await apiDefault.request(types.deleteUser, {
+            //     url: `/user`,
+            //     data: {
+            //         idToken
+            //     },
+            // })
+            // return response
         }
     }
 })
