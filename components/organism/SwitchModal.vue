@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <div class="modal fade" ref="switchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="switchModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -41,8 +41,9 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Modal } from "bootstrap"
-const { $checkInApp, $emitter } = useNuxtApp()
+import useUserStore from '@/stores/user'
+const { $checkInApp, $emitter, $bootstrap } = useNuxtApp()
+const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
@@ -52,7 +53,7 @@ onMounted(() => {
     $emitter.on("showUserModal", showModal)
     $emitter.on("hideUserModal", hideModal)
     if (process.client) {
-        state.bsModal = new Modal(document.getElementById("switchModal"), {
+        state.bsModal = new $bootstrap.Modal(document.getElementById("switchModal"), {
             keyboard: false,
             backdrop: "static",
         })

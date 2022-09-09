@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <template v-if="user && user.type === 'employee'">
+        <template v-if="userStore.user && userStore.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="$emit('collapse')">
                     <!-- <router-link id="navItem__button" class="navItem__button" :to="{ name: 'jobs' }">
@@ -47,6 +47,8 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import useUserStore from '@/stores/user'
+const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 function logout() {
