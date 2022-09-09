@@ -2,10 +2,6 @@ export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             checkInApp: () => {
-                if (!process.client) {
-                    return
-                    // your JS code here like >> jsPlumb.ready(function () {})
-                }
                 const u = navigator.userAgent
                 const ua = navigator.userAgent.toLowerCase()
                 const result = { //偵測移動端瀏覽器版本信息
