@@ -17,7 +17,8 @@
                     </button>
                 </div>
                 <!-- 手機縮圖列表 -->
-                <div v-if="user && state.menuType === 'user'" class="d-lg-none container__icons" @click="collapseNavbar()">
+                <div v-if="userStore.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                    @click="collapseNavbar()">
                     <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
                     </router-link>
@@ -26,8 +27,9 @@
                     </router-link> -->
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
-                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()"></OrganismCompanyMenu>
+                    <!-- <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
+                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    </OrganismCompanyMenu> -->
                 </div>
             </div>
         </nav>
@@ -40,6 +42,8 @@
 <script setup>
 // import { Collapse } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
+import useUserStore from '@/stores/user'
+const userStore = useUserStore()
 const state = reactive({
     bsCollapse: null,
     menuType: "user",

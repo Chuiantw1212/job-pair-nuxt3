@@ -8,7 +8,7 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">歡迎來到Job Pair！</h3>
-                        <div v-if="$checkInApp()" class="body__subheader">
+                        <div v-if="true" class="body__subheader">
                             <div>
                                 ※系統偵測到內嵌瀏覽器※<br>
                                 可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="card__title">我是求職者</div>
                                 <div class="card__desc">個人身份註冊/登入</div>
-                                <BtnSimple class="card__btn">開始找工作</BtnSimple>
+                                <AtomBtnSimple class="card__btn">開始找工作</AtomBtnSimple>
                             </div>
                             <div class="body__card" @click="showAdminModal()">
                                 <div class="body__card__imageWrap">
@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="card__title">我是企業端</div>
                                 <div class="card__desc">人資、企業主註冊/登入</div>
-                                <BtnSimple class="card__btn">開始找人才</BtnSimple>
+                                <AtomBtnSimple class="card__btn">開始找人才</AtomBtnSimple>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,8 @@
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useUserStore from '@/stores/user'
-const { $checkInApp, $emitter, $bootstrap } = useNuxtApp()
+const test = useNuxtApp()
+console.log(test.$bootstrap)
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
@@ -73,14 +74,14 @@ function showEmployeeModal() {
     router.replace({
         name: 'home'
     })
-    $emitter.emit("showUserModal")
+    // $emitter.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
     router.replace({
         name: 'admin'
     })
-    $emitter.emit("showCompanyModal")
+    // $emitter.emit("showCompanyModal")
 }
 // export default {
 //     data: function () {

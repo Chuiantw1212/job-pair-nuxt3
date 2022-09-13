@@ -4,13 +4,13 @@ export default defineStore('user', {
     state: () => ({
         user: null,
     }),
-    getters: {
-        user(state) {
-            if (state.user) {
-                return JSON.parse(JSON.stringify(state.user))
-            }
-        },
-    },
+    // getters: {
+    //     user(state) {
+    //         if (state.user) {
+    //             return JSON.parse(JSON.stringify(state.user))
+    //         }
+    //     },
+    // },
     actions: {
         async deleteUser() {
             // const auth = firebase.auth()

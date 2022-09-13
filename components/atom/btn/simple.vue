@@ -3,22 +3,36 @@
         <slot></slot>
     </button>
 </template>
-<script>
-export default {
-    props: {
-        id: {
-            type: String
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        type: {
-            type: String,
-            default: 'success',
-        }
+<script setup>
+import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
+const props = defineProps({
+    id: {
+        type: String
+    },
+    disabled: {
+        type: Boolean,
+        default: false
+    },
+    type: {
+        type: String,
+        default: 'success',
     }
-}
+})
+// export default {
+//     props: {
+//         id: {
+//             type: String
+//         },
+//         disabled: {
+//             type: Boolean,
+//             default: false
+//         },
+//         type: {
+//             type: String,
+//             default: 'success',
+//         }
+//     }
+// }
 </script>
 <style lang="scss" scoped>
 .btnSimple {
