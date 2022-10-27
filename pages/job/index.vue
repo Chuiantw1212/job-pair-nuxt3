@@ -5,10 +5,6 @@
     </div>
 </template>
 <script setup lang="ts">
-// definePageMeta({
-//     title: 'Some Page'
-// })
-// let title = ref('My amazing site.')
 const { data, pending, refresh } = await useAsyncData(async (ctx) => {
     const title = new Promise(resolve => {
         setTimeout(() => {
