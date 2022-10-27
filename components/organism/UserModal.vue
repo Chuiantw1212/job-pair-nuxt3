@@ -30,13 +30,20 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { auth } from "firebaseui"
-import firebase from "firebase/app"
+const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAuth, $firebaseApp } = useNuxtApp()
+// const { auth } = $firebaseui
+// import { auth } from "firebaseui"
+// import firebase from "firebase/compat/app"
 const router = useRouter()
 const route = useRoute()
-const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb } = useNuxtApp()
+// const loginComposable = useLogin()
+// console.log({
+//     loginComposable
+// })
 const state = reactive({
     bsModal: null,
+    ui: null,
+    isSent: false
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -48,13 +55,22 @@ onMounted(() => {
         })
     }
     // 初始化FirebaseUI使系統可以自動跳轉
-    if (!route.path.includes("admin")) {
+    if (!route.path.includes("admin") && process.client) {
         renderFirebaseUI()
     }
 })
+function hideModal() {
+    state.isSent = false
+    state.bsModal.hide()
+}
+function showModal() {
+    // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
+    state.bsModal.show()
+    renderFirebaseUI()
+}
 async function renderFirebaseUI() {
-    let ui = auth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = firebase.auth()
+    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
+    const firebaseAuth = $firebaseApp.auth()
     if (!ui) {
         ui = new auth.AuthUI(firebaseAuth, "manualLogin")
     }
@@ -63,127 +79,39 @@ async function renderFirebaseUI() {
         $toggleLoader(true)
     }
     await firebaseAuth.getRedirectResult() // 不知道為什麼有這一行就不出錯
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
-        }
-    ]
-    if ($isNativeWeb) {
-        signInOptions.push({
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        })
-        signInOptions.push({
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        })
-    }
-    const element = document.querySelector("#user-auth-container")
-    this.ui = ui.start(element, {
-        callbacks: {
-            signInSuccessUrl: `${window.location.href}`,
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                this.handleAuthResult(authResult, "employee")
-                return false
-            }
-        },
-        signInFlow: 'popup',
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
+    // // 不同裝置給予不同登入方式
+    // const signInOptions = [
+    //     {
+    //         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    //         requireDisplayName: true
+    //     }
+    // ]
+    // if ($isNativeWeb) {
+    //     signInOptions.push({
+    //         provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    //     })
+    //     signInOptions.push({
+    //         provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    //         scopes: ["public_profile", "email"]
+    //     })
+    // }
+    // const element = document.querySelector("#user-auth-container")
+    // state.ui = ui.start(element, {
+    //     callbacks: {
+    //         signInSuccessUrl: `${window.location.href}`,
+    //         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+    //             this.handleAuthResult(authResult, "employee")
+    //             return false
+    //         }
+    //     },
+    //     signInFlow: 'popup',
+    //     signInOptions,
+    //     tosUrl:
+    //         "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
+    //     privacyPolicyUrl:
+    //         "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
+    // })
 }
-// import firebase from "firebase/app"
-// import { auth } from "firebaseui"
-// import { Modal } from "bootstrap"
-// import authMixin from "./authMixin.js"
-// export default {
-//     mixins: [authMixin],
-//     data: function () {
-//         return {
-//             bsModal: null
-//         }
-//     },
-//     created() {
-//         this.$emitter.on("showUserModal", this.showModal)
-//         this.$emitter.on("hideUserModal", this.hideModal)
-//     },
-//     async mounted() {
-//         this.bsModal = new Modal(document.getElementById("userModal"), {
-//             keyboard: false,
-//             backdrop: "static"
-//         })
-//         // 初始化FirebaseUI使系統可以自動跳轉
-//         if (!this.$route.path.includes("admin")) {
-//             this.renderFirebaseUI()
-//         }
-//     },
-//     beforeUnmount() {
-//         if (this.ui) {
-//             this.ui.delete()
-//         }
-//     },
-//     methods: {
-//         hideModal() {
-//             this.isSent = false
-//             this.bsModal.hide()
-//         },
-//         showModal() {
-//             // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
-//             this.bsModal.show()
-//             this.renderFirebaseUI()
-//         },
-//         async renderFirebaseUI() {
-//             let ui = auth.AuthUI.getInstance("manualLogin")
-//             const firebaseAuth = firebase.auth()
-//             if (!ui) {
-//                 ui = new auth.AuthUI(firebaseAuth, "manualLogin")
-//             }
-//             const isPendingRedirect = ui.isPendingRedirect()
-//             if (isPendingRedirect) {
-//                 this.$toggleLoader(true)
-//             }
-//             await firebaseAuth.getRedirectResult() // 不知道為什麼有這一行就不出錯
-//             // 不同裝置給予不同登入方式
-//             const signInOptions = [
-//                 {
-//                     provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-//                     requireDisplayName: true
-//                 }
-//             ]
-//             const userAgent = this.$getUserAgent()
-//             const isInApp = userAgent.fbapp || userAgent.line
-//             if (!isInApp) {
-//                 signInOptions.push({
-//                     provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-//                 })
-//                 signInOptions.push({
-//                     provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-//                     scopes: ["public_profile", "email"]
-//                 })
-//             }
-//             const element = document.querySelector("#user-auth-container")
-//             this.ui = ui.start(element, {
-//                 callbacks: {
-//                     signInSuccessUrl: `${window.location.href}`,
-//                     signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-//                         this.handleAuthResult(authResult, "employee")
-//                         return false
-//                     }
-//                 },
-//                 signInFlow: 'popup',
-//                 signInOptions,
-//                 tosUrl:
-//                     "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-//                 privacyPolicyUrl:
-//                     "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-//             })
-//         }
-//     }
-// }
 </script>
 <style lang="scss" scoped>
 .modal-content {
