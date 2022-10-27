@@ -1,4 +1,4 @@
-import firebase from "firebase/app"
+// import firebase from "firebase/app"
 import { defineStore } from 'pinia'
 export default defineStore('user', {
     state: () => ({
@@ -12,6 +12,9 @@ export default defineStore('user', {
     //     },
     // },
     actions: {
+        async userSignout() {
+
+        },
         async deleteUser() {
             // const auth = firebase.auth()
             // if (!auth.currentUser) {

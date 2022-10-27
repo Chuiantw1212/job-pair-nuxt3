@@ -42,8 +42,7 @@
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useUserStore from '@/stores/user'
-const test = useNuxtApp()
-console.log(test.$bootstrap)
+const { $emitter, $bootstrap } = useNuxtApp()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
@@ -83,33 +82,6 @@ function showAdminModal() {
     })
     // $emitter.emit("showCompanyModal")
 }
-// export default {
-//     data: function () {
-//         return {
-//             bsModal: null,
-//         }
-//     },
-//     created() {
-//         this.$emitter.on("showSwitchModal", this.showModal)
-//         this.$emitter.on("hideSwitchModal", this.hideModal)
-//     },
-//     async mounted() {
-
-//     },
-//     beforeUnmount() {
-//         if (this.ui) {
-//             this.ui.delete()
-//         }
-//     },
-//     methods: {
-//         hideModal() {
-//             this.bsModal.hide()
-//         },
-//         showModal() {
-//             this.bsModal.show()
-//         },
-//     },
-// }
 </script>
 <style lang="scss" scoped>
 .modal-content {
