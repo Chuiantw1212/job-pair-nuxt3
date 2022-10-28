@@ -12,7 +12,9 @@ export default function () {
         }
     })
     function calculateWidth() {
-        state.isDesktop = window.innerWidth >= 992
+        if (process.client) {
+            state.isDesktop = window.innerWidth >= 992
+        }
     }
     return {
         isDesktop: state.isDesktop,

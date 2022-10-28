@@ -34,8 +34,8 @@
             </div>
         </nav>
         <!-- 如果條件渲染有異布渲染問題 -->
-        <!-- <UserModal></UserModal>
-        <CompanyModal></CompanyModal> -->
+        <OrganismUserModal></OrganismUserModal>
+        <!-- <CompanyModal></CompanyModal> -->
         <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>

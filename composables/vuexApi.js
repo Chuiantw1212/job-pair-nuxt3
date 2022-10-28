@@ -11,20 +11,22 @@ export default class VuexApi {
     }
     downloadErrorJSON(errorJSON, fileName) {
         /**
-        * 用Blob創造與下載文件
-        * https://codertw.com/ios/19926/
-        */
-        const blob = new Blob([JSON.stringify(errorJSON)], {
-            type: "application/json"
-        })
-        const objectURL = window.URL.createObjectURL(blob)
-        // Do things
-        const link = document.createElement('a')
-        link.href = objectURL
-        link.download = `${fileName}.json`
-        link.click()
-        // Clear memory
-        window.URL.revokeObjectURL(objectURL)
+         * 用Blob創造與下載文件
+         * https://codertw.com/ios/19926/
+         */
+        if (process.client) {
+            const blob = new Blob([JSON.stringify(errorJSON)], {
+                type: "application/json"
+            })
+            const objectURL = window.URL.createObjectURL(blob)
+            // Do things
+            const link = document.createElement('a')
+            link.href = objectURL
+            link.download = `${fileName}.json`
+            link.click()
+            // Clear memory
+            window.URL.revokeObjectURL(objectURL)
+        }
     }
     async request(type, options) {
         /**
