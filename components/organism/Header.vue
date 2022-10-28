@@ -58,23 +58,6 @@ export default {
         bsCollapse: null,
         menuType: "user",
     }),
-    components: {
-        UserModal: defineAsyncComponent(() =>
-            import('./UserModal.vue')
-        ),
-        CompanyModal: defineAsyncComponent(() =>
-            import('./CompanyModal.vue')
-        ),
-        UserMenu: defineAsyncComponent(() =>
-            import('./UserMenu.vue')
-        ),
-        CompanyMenu: defineAsyncComponent(() =>
-            import('./CompanyMenu.vue')
-        ),
-        SwitchModal: defineAsyncComponent(() =>
-            import('./SwitchModal.vue')
-        ),
-    },
     props: {
         routes: {
             type: Array,

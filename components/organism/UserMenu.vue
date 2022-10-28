@@ -2,10 +2,10 @@
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- <template v-if="user">
             <template v-if="isRegistered">
-                <li class="nav-item" @click="$emit('collapse')">
+                <li class="nav-item" @click="emit('collapse')">
                     <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link>
                 </li>
-                <li class="nav-item" @click="$emit('collapse')">
+                <li class="nav-item" @click="emit('collapse')">
                     <router-link class="navItem__button" :to="{ name: 'companyInfo' }">管理中心</router-link>
                 </li>
             </template>
@@ -14,22 +14,22 @@
                     <router-link class="navItem__button" :to="{ name: 'companyRegister' }"> 企業註冊
                     </router-link>
                 </li>
-                <li class="nav-item" @click="$emit('collapse')">
+                <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button" @click="logout()">登出</button>
                 </li>
             </template>
         </template> -->
-        <li class="nav-item" @click="$emit('collapse')">
+        <li class="nav-item" @click="emit('collapse')">
             <button class="navItem__button" type="button" @click.stop="showModal()">註冊/登入</button>
         </li>
     </ul>
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
-
 function logout() {
     router.push({
         name: "admin",

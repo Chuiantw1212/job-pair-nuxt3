@@ -50,8 +50,9 @@ const state = reactive({
     bsModal: null,
 })
 onMounted(() => {
-    $emitter.on("showUserModal", showModal)
-    $emitter.on("hideUserModal", hideModal)
+    console.log('switch modal registered'); 
+    $emitter.on("showSwitchModal", showModal)
+    $emitter.on("hideSwitchModal", hideModal)
     if (process.client) {
         state.bsModal = new $bootstrap.Modal(document.getElementById("switchModal"), {
             keyboard: false,
@@ -65,6 +66,7 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
+    console.log('showModal')
     state.bsModal.show()
     // this.renderFirebaseUI()
 }

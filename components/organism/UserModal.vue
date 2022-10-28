@@ -8,20 +8,20 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">求職者登入註冊</h3>
-                        <div v-show="isSent" class="body__emailSent">
+                        <div v-show="state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
                                 <div>請至E-mail收註冊信開始配對工作</div>
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <btnSimple v-if="countdownInterval" class="emailSent__resend" disabled>{{ cdVisible }}
-                                </btnSimple>
-                                <btnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">重新寄送驗證信
-                                </btnSimple>
+                                <AtomBtnSimple v-if="state.countdownInterval" class="emailSent__resend" disabled>{{ cdVisible }}
+                                </AtomBtnSimple>
+                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">重新寄送驗證信
+                                </AtomBtnSimple>
                             </div>
                         </div>
-                        <div v-show="!isSent" id="user-auth-container"></div>
+                        <div v-show="!state.isSent" id="user-auth-container"></div>
                     </div>
                 </div>
             </div>
@@ -31,10 +31,10 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, } from "firebase/auth"
+import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAuth, $firebaseApp } = useNuxtApp()
 // const { auth } = $firebaseui
 // import { auth } from "firebaseui"
-// import firebase from "firebase/compat/app"
 const router = useRouter()
 const route = useRoute()
 // const loginComposable = useLogin()
@@ -44,7 +44,8 @@ const route = useRoute()
 const state = reactive({
     bsModal: null,
     ui: null,
-    isSent: false
+    isSent: false,
+    countdownInterval: null
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -73,13 +74,12 @@ async function renderFirebaseUI() {
     let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
     const firebaseAuth = getAuth()
     if (!ui) {
-        ui = new auth.AuthUI(firebaseAuth, "manualLogin")
+        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
     }
     const isPendingRedirect = ui.isPendingRedirect()
     if (isPendingRedirect) {
         $toggleLoader(true)
     }
-    await firebaseAuth.getRedirectResult() // 不知道為什麼有這一行就不出錯
     // 不同裝置給予不同登入方式
     const signInOptions = [
         {
