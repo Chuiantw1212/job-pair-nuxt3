@@ -41,9 +41,9 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import useUserStore from '@/stores/user'
+// import useUserStore from '@/stores/user'
 const { $emitter, $bootstrap } = useNuxtApp()
-const userStore = useUserStore()
+// const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({

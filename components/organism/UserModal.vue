@@ -8,6 +8,8 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">求職者登入註冊</h3>
+                        <p>Count: {{ counter.$state.count }}</p>
+                        <button @click="counter.increment()">+</button>
                         <div v-show="state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
@@ -15,9 +17,12 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <AtomBtnSimple v-if="state.countdownInterval" class="emailSent__resend" disabled>{{ cdVisible }}
+                                <AtomBtnSimple v-if="state.countdownInterval" class="emailSent__resend" disabled>{{
+                                        cdVisible
+                                }}
                                 </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">重新寄送驗證信
+                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">
+                                    重新寄送驗證信
                                 </AtomBtnSimple>
                             </div>
                         </div>
@@ -37,7 +42,8 @@ const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAu
 // import { auth } from "firebaseui"
 const router = useRouter()
 const route = useRoute()
-const loginComposable = useLogin()
+// const loginComposable = useLogin()
+const counter = useCounter()
 // console.log({
 //     loginComposable
 // })
