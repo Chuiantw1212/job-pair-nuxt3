@@ -1,24 +1,27 @@
-export const state = () => ({
-    counter: 0
+// import firebase from "firebase/app"
+import { defineStore } from 'pinia'
+import { getAuth, } from "firebase/auth"
+export default defineStore('user', {
+    state: () => ({
+        user: null,
+    }),
+    actions: {
+        async userSignout() {
+
+        },
+        async deleteUser() {
+            const firebaseAuth = getAuth()
+            if (!firebaseAuth.currentUser) {
+                return
+            }
+            const idToken = await firebaseAuth.currentUser.getIdToken()
+            const response = await apiDefault.request(types.deleteUser, {
+                url: `/user`,
+                data: {
+                    idToken
+                },
+            })
+            return response
+        }
+    }
 })
-
-export const getters = {
-    getCounter(state) {
-        return state.counter
-    }
-}
-
-export const mutations = {
-    increment(state) {
-        state.counter++
-    }
-}
-
-export const actions = {
-    async fetchCounter({ state }) {
-        // make request
-        const res = { data: 10 }
-        state.counter = res.data
-        return res.data
-    }
-}
