@@ -15,9 +15,9 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-// import { mapGetters } from "vuex"
-import useUserStore from '@/stores/user'
-const userStore = useUserStore()
+// // import { mapGetters } from "vuex"
+// import useUserStore from '@/stores/user'
+// const userStore = useUserStore()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     isSortOpen: false,
@@ -42,13 +42,13 @@ const items = computed(() => {
             value: "salaryMin",
         },
     ]
-    const { user } = userStore
-    if (user && user.id) {
-        defaultItems.push({
-            text: "依照適配度排序(最新)",
-            value: "similarity",
-        })
-    }
+    // const { user } = userStore
+    // if (user && user.id) {
+    //     defaultItems.push({
+    //         text: "依照適配度排序(最新)",
+    //         value: "similarity",
+    //     })
+    // }
     return defaultItems
 })
 const placeholder = computed(() => {
