@@ -37,7 +37,7 @@ const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAu
 // import { auth } from "firebaseui"
 const router = useRouter()
 const route = useRoute()
-// const loginComposable = useLogin()
+const loginComposable = useLogin()
 // console.log({
 //     loginComposable
 // })

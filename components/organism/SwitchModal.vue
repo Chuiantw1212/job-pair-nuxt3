@@ -50,7 +50,7 @@ const state = reactive({
     bsModal: null,
 })
 onMounted(() => {
-    console.log('switch modal registered'); 
+    console.log('switch modal registered')
     $emitter.on("showSwitchModal", showModal)
     $emitter.on("hideSwitchModal", hideModal)
     if (process.client) {
@@ -72,17 +72,17 @@ function showModal() {
 }
 function showEmployeeModal() {
     state.bsModal.hide()
-    router.replace({
-        name: 'home'
-    })
-    // $emitter.emit("showUserModal")
+    // router.replace({
+    //     name: 'home'
+    // })
+    $emitter.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
-    router.replace({
-        name: 'admin'
-    })
-    // $emitter.emit("showCompanyModal")
+    // router.replace({
+    //     name: 'admin'
+    // })
+    $emitter.emit("showCompanyModal")
 }
 </script>
 <style lang="scss" scoped>
