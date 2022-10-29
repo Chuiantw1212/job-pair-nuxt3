@@ -42,7 +42,6 @@
 <script setup>
 // import { Collapse } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-import useUserStore from '@/stores/user'
 const userStore = useUserStore()
 const state = reactive({
     bsCollapse: null,
