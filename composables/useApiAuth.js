@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 // import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
-    const axios = userAxios()
+    const axios = useAxios()
     const state = reactive({
         isLogginIn: false
     })

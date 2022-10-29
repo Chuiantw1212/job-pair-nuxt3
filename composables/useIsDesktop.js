@@ -1,7 +1,7 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-export default function () {
+export default function setup() {
     const state = reactive({
         isDesktop: false
     })
@@ -16,7 +16,5 @@ export default function () {
             state.isDesktop = window.innerWidth >= 992
         }
     }
-    return {
-        isDesktop: state.isDesktop,
-    }
+    return isDesktop
 }
