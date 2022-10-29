@@ -62,10 +62,10 @@ onMounted(() => {
             backdrop: "static"
         })
     }
-    // 初始化FirebaseUI使系統可以自動跳轉
-    if (!route.path.includes("admin") && process.client) {
-        renderFirebaseUI()
-    }
+    // // 初始化FirebaseUI使系統可以自動跳轉
+    // if (!route.path.includes("admin") && process.client) {
+    //     renderFirebaseUI()
+    // }
 })
 function hideModal() {
     state.isSent = false
