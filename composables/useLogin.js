@@ -21,6 +21,43 @@ export default function setup() {
         cdDefault: 120,
         cdVisible: 0,
     })
+    // methods
+    function listenToAuthState() {
+        const firebaseAuth = getAuth()
+        state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
+            if (!userInfo) {
+                // 造成登入機制無法連貫
+                if (repoAuth.state.user && repoAuth.state.user.uid) {
+                    // 判斷為從登入變成登出
+                    repoAuth.userSignout()
+                    if (route.path.includes('admin')) {
+                        this.$router.push({
+                            name: 'admin',
+                        })
+                    } else {
+                        router.push({
+                            name: 'index',
+                        })
+                    }
+                }
+                return
+            }
+            if (!userInfo.emailVerified) {
+                return
+            }
+            const { uid, displayName, email, photoURL, phoneNumber } = userInfo
+            const user = {
+                uid,
+                name: displayName,
+                email,
+                image: photoURL,
+                telephone: phoneNumber,
+            }
+            $toggleLoader(true)
+            await signIn(user)
+            $toggleLoader(false)
+        })
+    }
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
@@ -39,7 +76,7 @@ export default function setup() {
         if (!auth || !auth.currentUser) {
             return
         }
-        // repoUser.setUser(user) // 這行附加會造成某些程式碼被跳過
+        // repoAuth.setUser(user) // 這行附加會造成某些程式碼被跳過
         const idToken = await auth.currentUser.getIdToken()
         axiosComposable.setToken(idToken)
         const signInResult = await repoAuth.postSignin(idToken)
@@ -68,7 +105,7 @@ export default function setup() {
             await repoJobApplication.getUserJobs({
                 userId: user.id,
             })
-            repoUser.setUser(user)
+            repoAuth.setUser(user)
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
             if (route.path.includes('admin') || route.name === 'index') {
@@ -81,7 +118,7 @@ export default function setup() {
         if (admin) {
             user.type = "admin"
             Object.assign(user, admin)
-            repoUser.setUser(user)
+            repoAuth.setUser(user)
             if (company) {
                 $emitter.emit("setMenuType", 'admin')
                 // 有取得公司資料代表已完成註冊人資
@@ -134,7 +171,7 @@ export default function setup() {
                 })
             }
             user.type = "employee"
-            repoUser.setUser(user)
+            repoAuth.setUser(user)
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
             return
@@ -152,7 +189,7 @@ export default function setup() {
                 name: "questions",
             })
         }
-        repoUser.setUser(user)
+        repoAuth.setUser(user)
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')
     }
@@ -189,6 +226,7 @@ export default function setup() {
     }
     return {
         state,
+        listenToAuthState,
         signIn,
         handleAuthResult,
         sendEmailLink

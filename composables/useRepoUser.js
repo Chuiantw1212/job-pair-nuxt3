@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('user', () => {
-    const state = reactive({
-        user: null,
-    })
     async function deleteUser() {
         const auth = getAuth()
         if (!auth.currentUser) {
@@ -66,25 +63,7 @@ export default defineStore('user', () => {
         })
         return response
     }
-    async function userSignout() {
-        try {
-            localStorage.removeItem("user")
-            const auth = getAuth()
-            if (auth) {
-                await auth.signOut()
-            }
-            setUser(null)
-            return true
-        } catch (error) {
-            alert(error.message || error)
-        }
-    }
-    function setUser(user) {
-        state.user = user
-    }
     return {
-        state,
-        userSignout,
         deleteUser,
         postUser,
         patchUserProfile,
@@ -92,7 +71,6 @@ export default defineStore('user', () => {
         putUserResumes,
         putUserPhoto,
         patchUserPreference,
-        userSignout,
         setUser
     }
 })

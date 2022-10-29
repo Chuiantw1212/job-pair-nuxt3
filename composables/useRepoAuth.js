@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 export default defineStore('auth', () => {
     const axios = useAxios()
     const state = reactive({
+        user: null,
         isLogginIn: false
     })
     async function postSignin(data) {
@@ -30,6 +31,22 @@ export default defineStore('auth', () => {
             data
         })
         return response
+    }
+    async function userSignout() {
+        try {
+            localStorage.removeItem("user")
+            const auth = getAuth()
+            if (auth) {
+                await auth.signOut()
+            }
+            setUser(null)
+            return true
+        } catch (error) {
+            alert(error.message || error)
+        }
+    }
+    function setUser(user) {
+        state.user = user
     }
     return {
         state,

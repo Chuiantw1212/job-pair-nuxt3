@@ -31,6 +31,11 @@ const { $emitter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoUser = useRepoUser()
+// Lifecycles
+onMounted(() => {
+    listenToAuthState()
+})
+// methods
 function logout() {
     router.push({
         name: "admin",
