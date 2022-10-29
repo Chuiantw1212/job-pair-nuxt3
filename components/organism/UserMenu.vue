@@ -1,27 +1,44 @@
 <template>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <template v-if="repoAuth.state.user">
+        <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button">招募中心</NuxtLink>
+                    <NuxtLink id="navItem__button" class="navItem__button">
+                        職缺探索
+                    </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button">管理中心</NuxtLink>
+                    <NuxtLink class="navItem__button">
+                        會員中心
+                    </NuxtLink>
                 </li>
             </template>
             <template v-else>
-                <li class="nav-item">
-                    <NuxtLink class="navItem__button"> 企業註冊
-                    </NuxtLink>
+                <li class="nav-item" @click="emit('collapse')">
+                    <button class="navItem__button navItem__button--disabled" disabled>
+                        職缺探索
+                    </button>
+                </li>
+                <li class="nav-item" @click="emit('collapse')">
+                    <button class="navItem__button navItem__button--disabled" disabled>
+                        會員中心
+                    </button>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button" @click="logout()">登出</button>
                 </li>
             </template>
         </template>
-        <li class="nav-item" @click="emit('collapse')">
-            <button class="navItem__button" type="button" @click.stop="showModal()">註冊/登入</button>
-        </li>
+        <template v-else>
+            <li class="nav-item" @click="emit('collapse')">
+                <NuxtLink class="navItem__button" :to="{
+                    name: 'admin'
+                }">企業專區</NuxtLink>
+            </li>
+            <li class="nav-item" @click="emit('collapse')">
+                <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
+            </li>
+        </template>
     </ul>
 </template>
 <script setup>
@@ -29,16 +46,18 @@ import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed, defineEmits } from 'vue'
 const { $emitter } = useNuxtApp()
 const router = useRouter()
-const route = useRoute()
 const repoAuth = useRepoAuth()
 const loginComposable = useLogin()
+// state
+const state = reactive({
+    auth: null,
+})
 // Hooks
 const emit = defineEmits(['collapse'])
 onMounted(() => {
     loginComposable.listenToAuthState()
 })
 const isRegistered = computed({
-    // getter
     get() {
         const { user } = repoAuth.state
         if (user && user.preference) {
@@ -48,20 +67,26 @@ const isRegistered = computed({
     },
 })
 // methods
-function logout() {
+async function logout() {
     repoAuth.userSignout()
     router.push({
-        name: "admin",
+        name: "index",
     })
 }
-function showModal() {
-    $emitter.emit("showSwitchModal")
+function showUserModal() {
+    const { user } = repoAuth.state
+    if (user && user.id && user.type === 'employee') {
+        router.push({
+            name: "jobs",
+        })
+    } else {
+        $emitter.emit("showSwitchModal")
+    }
 }
 </script>
 <style lang="scss" scoped>
 .nav-item {
     font-size: 16px;
-    // padding: 0 8px;
 
     .navItem__button {
         color: black;
