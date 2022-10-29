@@ -3,7 +3,7 @@
         <div class="about__banner">
             "每個人都能因認識自己而遇見更好的職涯，企業也能因了解人選的需求而創造更長遠的合作與價值。"
         </div>
-        <div :class="{ 'container': isDesktop }">
+        <div :class="{ 'container': device.isDesktop }">
             <div class="about__card">
                 <h2 class="card__header">關於Job Pair</h2>
                 <div class="card__body text-center mt-3">
@@ -29,7 +29,7 @@
                 <h2 class="card__header">提供的價值</h2>
                 <div class="card__bodyGroups">
                     <div>
-                        <img class="card__image card__image--1" src="./assets/img4@2x.png">
+                        <img class="card__image card__image--1" src="~/assets/about/img4@2x.png">
                         <h3 class="body__header">提升招聘效能</h3>
                         <div class="card__body text-left card__body--maxWidth">
                             人們傾向相信自己意願的選擇；透過求職偏好的篩選，所選出的職缺，不是依據公司大小、品牌知名度，而是個人的需求，強化人選投遞的意願。<br><br>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div>
-                        <img class="card__image card__image--2" src="./assets/img5@2x.png">
+                        <img class="card__image card__image--2" src="~/assets/about/img5@2x.png">
                         <h3 class="body__header">精準找到合適人選</h3>
                         <div class="card__body text-left card__body--maxWidth">
                             每位主管需求與做事方法都不一樣，除了工作職掌，合作與溝通模式也是重點。然求職者為了獲取工作機會，面試時會刻意表現出高度配合，難以判斷到職後能否融入組織。<br><br>
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div>
-                        <img class="card__image card__image--3" src="./assets/img6@2x.png">
+                        <img class="card__image card__image--3" src="~/assets/about/img6@2x.png">
                         <h3 class="body__header">節省成本</h3>
                         <div class="card__body text-left card__body--maxWidth">
                             根據美國人力資源管理協會的報告指出，一位因不適應公司文化離職的員工，浪費的人事成本可以高達其年薪的50%-60%。<br><br>
@@ -61,47 +61,47 @@
                 <h2 class="card__header">團隊成員</h2>
                 <div class="card__bodyGroups">
                     <div class="card__person">
-                        <img class="card__selfie" src="./assets/img_sandy@2x.png">
+                        <img class="card__selfie" src="~/assets/about/img_sandy@2x.png">
                         <div class="card__slogan">
                             “Live like you mean it！”
                         </div>
                         <b class="person__title">Sandy @CEO</b>
                         <div class="person__links">
                             <a href="https://www.facebook.com/3dlifecheck" target="_blank">
-                                <img src="./assets/icon_fb.svg">
+                                <img src="~/assets/about/icon_fb.svg">
                             </a>
                             <a href="https://www.instagram.com/3d.chiu/" target="_blank">
-                                <img src="./assets/icon_ig.svg">
+                                <img src="~/assets/about/icon_ig.svg">
                             </a>
                         </div>
                     </div>
                     <div class="card__person">
-                        <img class="card__selfie" src="./assets/img_ian@2x.png">
+                        <img class="card__selfie" src="~/assets/about/img_ian@2x.png">
                         <div class="card__slogan">
                             "我禿了，也變強了"
                         </div>
                         <b class="person__title">朱奕安 @CTO</b>
                         <div class="person__links">
                             <a href="https://www.facebook.com/profile.php?id=100069740545113" target="_blank">
-                                <img src="./assets/icon_fb.svg">
+                                <img src="~/assets/about/icon_fb.svg">
                             </a>
                             <a href="https://www.instagram.com/econ.sense/" target="_blank">
-                                <img src="./assets/icon_ig.svg">
+                                <img src="~/assets/about/icon_ig.svg">
                             </a>
                         </div>
                     </div>
                     <div class="card__person">
-                        <img class="card__selfie" src="./assets/img_jun@2x.png">
+                        <img class="card__selfie" src="~/assets/about/img_jun@2x.png">
                         <div class="card__slogan">
                             “如果沒有夢想，<br>那跟叉燒有什麼區別”
                         </div>
                         <b class="person__title">陸盈君 @UIUX Designer</b>
                         <!-- <div class="person__links">
                             <a href="https://www.facebook.com/3dlifecheck" target="_blank">
-                                <img src="./assets/icon_fb.svg">
+                                <img src="~/assets/about/icon_fb.svg">
                             </a>
                             <a href="https://www.instagram.com/3d.chiu/" target="_blank">
-                                <img src="./assets/icon_ig.svg">
+                                <img src="~/assets/about/icon_ig.svg">
                             </a>
                         </div> -->
                     </div>
@@ -111,7 +111,7 @@
     </div>
 </template>
 <script setup>
-const isDesktop = useIsDesktop()
+const device = useDevice()
 </script>
 <style lang="scss">
 .about {

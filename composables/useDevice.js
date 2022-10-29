@@ -16,5 +16,5 @@ export default function setup() {
             state.isDesktop = window.innerWidth >= 992
         }
     }
-    return isDesktop
+    return state.isDesktop
 }
