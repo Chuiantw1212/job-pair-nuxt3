@@ -1,5 +1,5 @@
 import { auth } from "firebaseui"
-// import { initializeApp } from "firebase/app"
+import { initializeApp } from "firebase/app"
 // Create App
 let firebaseConfig = {}
 if (false) {
@@ -23,12 +23,12 @@ if (false) {
         measurementId: "G-4W7V4ZKXGR"
     }
 }
-// const firebaseApp = initializeApp(firebaseConfig)
+const firebaseApp = initializeApp(firebaseConfig)
 export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             firebaseuiAuth: auth,
-            // firebaseApp
+            firebaseApp
         }
     }
 })
