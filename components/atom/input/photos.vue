@@ -34,13 +34,13 @@
     </div>
 </template>
 <script>
-import uuid from "@/libs/uuid4.js"
 import Glide from "@glidejs/glide"
 import { Buffer } from 'buffer'
 export default {
     data: function () {
+        const id = this.uuid()
         return {
-            id: uuid(),
+            id,
             message: "",
             file: null,
             glideInstance: null,
@@ -131,6 +131,11 @@ export default {
         },
     },
     methods: {
+        uuid() {
+            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            )
+        },
         setTimeForGlide() {
             clearTimeout(this.resizeTimer)
             this.resizeTimer = setTimeout(this.initialGlide, 200)

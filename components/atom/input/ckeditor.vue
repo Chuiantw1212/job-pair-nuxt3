@@ -13,14 +13,14 @@
     </div>
 </template>
 <script>
-import uuid from "@/libs/uuid4.js"
 import Editor from 'ckeditor5-custom-build'
 import { markRaw } from 'vue'
 export default {
     data: function () {
+        const id = this.uuid()
         return {
             ckeditorInstance: null,
-            id: uuid(),
+            id,
         }
     },
     props: {
@@ -105,6 +105,11 @@ export default {
         }
     },
     methods: {
+        uuid() {
+            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            )
+        },
         async initializeCKEditor() {
             this.$requestSelector(`#editor_${this.id}`, async (element) => {
                 const editor = await Editor.create(element, {
