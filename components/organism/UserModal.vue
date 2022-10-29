@@ -8,8 +8,8 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">求職者登入註冊</h3>
-                        <p>Count: {{ counter.$state.count }}</p>
-                        <button @click="counter.increment()">+</button>
+                        <!-- <p>Count: {{ counter.$state.count }}</p>
+                        <button @click="counter.increment()">+</button> -->
                         <div v-show="state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
@@ -35,15 +35,15 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
-import firebase from "firebase/compat/app"
+// import { getAuth, } from "firebase/auth"
+// import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAuth, $firebaseApp } = useNuxtApp()
 // const { auth } = $firebaseui
 // import { auth } from "firebaseui"
 const router = useRouter()
 const route = useRoute()
 // const loginComposable = useLogin()
-const counter = useCounter()
+// const counter = useCounter()
 // console.log({
 //     loginComposable
 // })
@@ -77,47 +77,47 @@ function showModal() {
     renderFirebaseUI()
 }
 async function renderFirebaseUI() {
-    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
-    if (!ui) {
-        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
-    }
-    const isPendingRedirect = ui.isPendingRedirect()
-    if (isPendingRedirect) {
-        $toggleLoader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
-        }
-    ]
-    if ($isNativeWeb) {
-        signInOptions.push({
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        })
-        signInOptions.push({
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        })
-    }
-    const element = document.querySelector("#user-auth-container")
-    state.ui = ui.start(element, {
-        callbacks: {
-            signInSuccessUrl: `${window.location.href}`,
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                this.handleAuthResult(authResult, "employee")
-                return false
-            }
-        },
-        signInFlow: 'popup',
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
+    // let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
+    // const firebaseAuth = getAuth()
+    // if (!ui) {
+    //     ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
+    // }
+    // const isPendingRedirect = ui.isPendingRedirect()
+    // if (isPendingRedirect) {
+    //     $toggleLoader(true)
+    // }
+    // // 不同裝置給予不同登入方式
+    // const signInOptions = [
+    //     {
+    //         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    //         requireDisplayName: true
+    //     }
+    // ]
+    // if ($isNativeWeb) {
+    //     signInOptions.push({
+    //         provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    //     })
+    //     signInOptions.push({
+    //         provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    //         scopes: ["public_profile", "email"]
+    //     })
+    // }
+    // const element = document.querySelector("#user-auth-container")
+    // state.ui = ui.start(element, {
+    //     callbacks: {
+    //         signInSuccessUrl: `${window.location.href}`,
+    //         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+    //             this.handleAuthResult(authResult, "employee")
+    //             return false
+    //         }
+    //     },
+    //     signInFlow: 'popup',
+    //     signInOptions,
+    //     tosUrl:
+    //         "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
+    //     privacyPolicyUrl:
+    //         "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
+    // })
 }
 </script>
 <style lang="scss" scoped>
