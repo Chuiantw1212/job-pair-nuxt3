@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <!-- <template v-if="user">
+        <template v-if="repoUser.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
                     <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link>
@@ -18,7 +18,7 @@
                     <button class="navItem__button" @click="logout()">登出</button>
                 </li>
             </template>
-        </template> -->
+        </template>
         <li class="nav-item" @click="emit('collapse')">
             <button class="navItem__button" type="button" @click.stop="showModal()">註冊/登入</button>
         </li>
@@ -30,6 +30,7 @@ import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watch
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
+const repoUser = useRepoUser()
 function logout() {
     router.push({
         name: "admin",

@@ -1,3 +1,4 @@
+// deprecated
 export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {

@@ -17,7 +17,7 @@
                     </button>
                 </div>
                 <!-- 手機縮圖列表 -->
-                <div v-if="userStore.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                <div v-if="repoUser.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
                     <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
@@ -40,37 +40,79 @@
     </div>
 </template>
 <script setup>
-// import { Collapse } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const userStore = useRepoUser()
+const repoUser = useRepoUser()
 const state = reactive({
     bsCollapse: null,
     menuType: "user",
 })
+const router = useRouter()
+const route = useRoute()
+const { $emitter, $bootstrap } = useNuxtApp()
+// Lifecycles
+onMounted(() => {
+    $emitter.on("setMenuType", (menuType) => {
+        state.menuType = menuType
+    })
+    if (process.client) {
+        const menuToggle = document.getElementById("navbarSupportedContent")
+        state.bsCollapse = new $bootstrap.Collapse(menuToggle, {
+            toggle: false,
+        })
+        toggleClickOutside(true)
+    }
+})
+onUnmounted(() => {
+    toggleClickOutside(false)
+})
+watch(() => route.path, (path,) => {
+    collapseNavbar()
+    const chunks = path.split("/")
+    const isCompany = chunks[1] === "admin"
+    if (isCompany) {
+        state.menuType = "admin"
+    } else {
+        state.menuType = "user"
+    }
+})
+// methods
+function toggleClickOutside(isOn) {
+    if (isOn) {
+        document.addEventListener("click", handleClickoutSide)
+    } else {
+        document.removeEventListener("click", handleClickoutSide)
+    }
+}
+function handleClickoutSide(event) {
+    const clickedTarget = event.target
+    const navigation = document.getElementById("myHeader")
+    if (!navigation.contains(clickedTarget)) {
+        collapseNavbar()
+    }
+}
+function collapseNavbar() {
+    if (state.bsCollapse) {
+        state.bsCollapse.hide()
+    }
+}
+function routeByMenuType() {
+    if (state.menuType === 'admin') {
+        router.push({
+            name: 'admin'
+        })
+    } else {
+        router.push({
+            name: 'index'
+        })
+    }
+}
 </script>
 <!-- <script>
 import { Collapse } from "bootstrap"
 import { mapGetters } from "vuex"
 import { defineAsyncComponent } from 'vue'
 export default {
-    data: () => ({
-        bsCollapse: null,
-        menuType: "user",
-    }),
-    props: {
-        routes: {
-            type: Array,
-        },
-    },
     mounted() {
-        this.$emitter.on("setMenuType", (menuType) => {
-            this.menuType = menuType
-        })
-        const menuToggle = document.getElementById("navbarSupportedContent")
-        this.bsCollapse = new Collapse(menuToggle, {
-            toggle: false,
-        })
-        this.toggleClickOutside(true)
     },
     computed: {
         ...mapGetters(["userRes", "user"]),
@@ -106,20 +148,7 @@ export default {
                 })
             }
         },
-        toggleClickOutside(isOn) {
-            if (isOn) {
-                document.addEventListener("click", this.handleClickoutSide)
-            } else {
-                document.removeEventListener("click", this.handleClickoutSide)
-            }
-        },
-        handleClickoutSide(event) {
-            const clickedTarget = event.target
-            const navigation = document.getElementById("myHeader")
-            if (!navigation.contains(clickedTarget)) {
-                this.collapseNavbar()
-            }
-        },
+
         collapseNavbar() {
             if (this.bsCollapse) {
                 this.bsCollapse.hide()
