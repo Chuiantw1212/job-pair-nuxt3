@@ -11,6 +11,7 @@ export default function setup() {
     const repoJob = useRepoJob()
     const repoJobApplication = useRepoJobApplication()
     const repoUser = useRepoUser()
+    const repoCompany = userRepoCompany()
     // state
     const state = reactive({
         ui: null,
@@ -39,7 +40,7 @@ export default function setup() {
         if (!auth || !auth.currentUser) {
             return
         }
-        // this.setUser(user) // 這行附加會造成某些程式碼被跳過
+        // repoUser.setUser(user) // 這行附加會造成某些程式碼被跳過
         const idToken = await auth.currentUser.getIdToken()
         axiosComposable.setToken(idToken)
         const signInResult = await repoAuth.postSignin(idToken)
@@ -78,36 +79,35 @@ export default function setup() {
             }
             return
         }
-        return
         if (admin) {
             user.type = "admin"
             Object.assign(user, admin)
-            this.setUser(user)
+            repoUser.setUser(user)
             if (company) {
                 $emitter.emit("setMenuType", 'admin')
                 // 有取得公司資料代表已完成註冊人資
                 const organizationId = company.id
                 if (organizationId) {
-                    const jobsResponse = await this.getCompanyJobs({
+                    const jobsResponse = await repoCompany.getCompanyJobs({
                         organizationId,
                         status: ['active'],
                     })
                     const { data = [] } = jobsResponse
                     company.hasActiveJobs = !!data.length
                 }
-                this.setCompany(company)
+                repoCompany.setCompany(company)
                 const whiteList = ['admin', 'about', 'pending', 'job']
                 const isNotPermitted = whiteList.every(word => {
-                    return !this.$route.path.includes(word)
+                    return !route.path.includes(word)
                 })
                 if (isNotPermitted) {
-                    this.$router.push({
+                    router.push({
                         name: 'admin'
                     })
                 }
             } else {
                 // 未完成註冊人資導向到公司註冊畫面
-                this.$router.push({
+                router.push({
                     name: 'companyRegister'
                 })
             }
@@ -126,34 +126,34 @@ export default function setup() {
                 return answeredList.includes(question)
             })
             if (allAnswered) {
-                this.$router.push({
+                router.push({
                     name: "userRegister",
                 })
             } else {
-                this.$router.push({
+                router.push({
                     name: "questions",
                 })
             }
             user.type = "employee"
-            this.setUser(user)
+            repoUser.setUser(user)
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
             return
         }
         // 各種未完成註冊的用戶
-        if (this.$route.path.includes('admin')) {
+        if (route.path.includes('admin')) {
             // 導向到公司註冊畫面
             user.type = "admin"
-            this.$router.push({
+            router.push({
                 name: 'companyRegister'
             })
         } else {
             user.type = "employee"
-            this.$router.push({
+            router.push({
                 name: "questions",
             })
         }
-        this.setUser(user)
+        repoUser.setUser(user)
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')
     }
@@ -245,7 +245,7 @@ export default function setup() {
 //             if (!auth || !auth.currentUser) {
 //                 return
 //             }
-//             // this.setUser(user) // 這行附加會造成某些程式碼被跳過
+//             // repoUser.setUser(user) // 這行附加會造成某些程式碼被跳過
 //             const idToken = await auth.currentUser.getIdToken()
 //             this.setToken(idToken)
 //             const signInResult = await this.postSignin(idToken)
@@ -274,7 +274,7 @@ export default function setup() {
 //                 await this.getUserJobs({
 //                     userId: user.id,
 //                 })
-//                 this.setUser(user)
+//                 repoUser.setUser(user)
 //                 $emitter.emit("hideUserModal")
 //                 $emitter.emit('hideCompanyModal')
 //                 if (this.$route.path.includes('admin') || this.$route.name === 'index') {
@@ -287,7 +287,7 @@ export default function setup() {
 //             if (admin) {
 //                 user.type = "admin"
 //                 Object.assign(user, admin)
-//                 this.setUser(user)
+//                 repoUser.setUser(user)
 //                 if (company) {
 //                     $emitter.emit("setMenuType", 'admin')
 //                     // 有取得公司資料代表已完成註冊人資
@@ -340,7 +340,7 @@ export default function setup() {
 //                     })
 //                 }
 //                 user.type = "employee"
-//                 this.setUser(user)
+//                 repoUser.setUser(user)
 //                 $emitter.emit("hideUserModal")
 //                 $emitter.emit('hideCompanyModal')
 //                 return
@@ -358,7 +358,7 @@ export default function setup() {
 //                     name: "questions",
 //                 })
 //             }
-//             this.setUser(user)
+//             repoUser.setUser(user)
 //             $emitter.emit("hideUserModal")
 //             $emitter.emit('hideCompanyModal')
 //         },
