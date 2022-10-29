@@ -29,30 +29,8 @@ export default function () {
         // Clear memory
         window.URL.revokeObjectURL(objectURL)
     }
-    async function request(type, options) {
-        /**
-         * 正式取得API
-         * Extract Type
-         * before replace: type == 'post'SaveStockAlert
-         * after replace: type == ''SaveStockAlert
-         * httpMethod == post
-         */
-        let method = 'post'
-        let replacedType = ''
-        try {
-            replacedType = type.replace(/get|post|put|delete|patch/, (httpMethod) => {
-                method = httpMethod
-                return ""
-            })
-        } catch (error) {
-            // eslint-disable-next-line
-            alert('錯誤的type嗎?', type)
-        }
-        /**
-         * Build up axios config
-         * replacedType == SaveStockAlert
-         */
-        const { url, data, params = {}, headers, commit = false } = options
+    async function request(options) {
+        const { method, url, data, params = {}, headers, commit = false } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }

@@ -5,6 +5,7 @@ export default function setup() {
     const { $emitter, $bootstrap, $alert } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
+    const axiosComposable = useAxios()
     const state = reactive({
         ui: null,
         unsubscribe: null,
@@ -37,7 +38,7 @@ export default function setup() {
         console.log({
             idToken
         })
-        this.setToken(idToken)
+        axiosComposable.setToken(idToken)
         const signInResult = await this.postSignin(idToken)
         if (!signInResult) {
             // 避免人求職者與人資Mixin，重複打API
