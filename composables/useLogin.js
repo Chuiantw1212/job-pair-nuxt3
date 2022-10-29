@@ -6,7 +6,8 @@ export default function setup() {
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
-    const apiAuth = useRepoAuth()
+    const repoAuth = useRepoAuth()
+    const repoJob = userRepoJob()
     const state = reactive({
         ui: null,
         unsubscribe: null,
@@ -40,7 +41,7 @@ export default function setup() {
             idToken
         })
         axiosComposable.setToken(idToken)
-        const signInResult = await apiAuth.postSignin(idToken)
+        const signInResult = await repoAuth.postSignin(idToken)
         if (!signInResult) {
             // 避免人求職者與人資Mixin，重複打API
             return
@@ -62,7 +63,7 @@ export default function setup() {
         if (employee) {
             // 代表已經完整註冊過會員
             Object.assign(user, employee)
-            await this.getJobRecommended()
+            await repoJob.getJobRecommended()
             await this.getUserJobs({
                 userId: user.id,
             })
