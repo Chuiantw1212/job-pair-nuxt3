@@ -34,30 +34,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 const device = useDevice()
-onMounted(() => {
-    // 這邊造成重新整理錯誤
-    //     if (!this.user) {
-    //         this.$router.push("/")
-    //     }
-    // },
-    calculateWidth()
-    toggleResizeListener(true)
-})
-onUnmounted(() => {
-    toggleResizeListener(false)
-})
-function toggleResizeListener(isOn) {
-    if (!process.client) {
-        return
-    }
-    if (isOn) {
-        window.addEventListener("resize", calculateWidth)
-    } else {
-        window.removeEventListener("resize", calculateWidth)
-    }
-}
 </script>
 <style lang="scss" scoped>
 .dashboard {
