@@ -1,5 +1,5 @@
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
     const { $emitter, $alert } = useNuxtApp()
     const router = useRouter()
@@ -52,9 +52,7 @@ export default function setup() {
                 image: photoURL,
                 telephone: phoneNumber,
             }
-            $toggleLoader(true)
             await signIn(user)
-            $toggleLoader(false)
         })
     }
     async function handleAuthResult(authResult, type) {
