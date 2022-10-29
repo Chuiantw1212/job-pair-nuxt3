@@ -8,7 +8,7 @@
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button">
+                    <NuxtLink class="navItem__button" to="/user">
                         會員中心
                     </NuxtLink>
                 </li>
@@ -48,10 +48,6 @@ const { $emitter } = useNuxtApp()
 const router = useRouter()
 const repoAuth = useRepoAuth()
 const loginComposable = useLogin()
-// state
-const state = reactive({
-    auth: null,
-})
 // Hooks
 const emit = defineEmits(['collapse'])
 onMounted(() => {
