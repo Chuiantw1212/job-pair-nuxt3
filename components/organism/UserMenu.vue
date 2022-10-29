@@ -48,7 +48,7 @@ async function routeToHome() {
     //     await this.auth.signOut()
     // }
     router.push({
-        name: "home",
+        name: "index",
     })
 }
 
@@ -86,7 +86,7 @@ async function routeToHome() {
 //                 await this.auth.signOut()
 //             }
 //             this.$router.push({
-//                 name: "home",
+//                 name: "index",
 //             })
 //         },
 //         // ...mapActions(["userSignout"]),

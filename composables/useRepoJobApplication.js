@@ -45,7 +45,7 @@ export default defineStore('jobApplication', () => {
             const jobs = response.data
             jobs.forEach(item => {
                 const { jobId, } = item
-                state.userJobs[jobId] = job
+                state.userJobs[jobId] = item
             })
         }
         return response

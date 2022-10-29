@@ -102,7 +102,7 @@ export default {
                 })
             } else {
                 this.$router.push({
-                    name: 'home'
+                    name: 'index'
                 })
             }
         },

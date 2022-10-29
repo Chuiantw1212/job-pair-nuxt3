@@ -11,9 +11,6 @@ export default function setup() {
     const repoJob = useRepoJob()
     const repoJobApplication = useRepoJobApplication()
     const repoUser = useRepoUser()
-    console.log({
-        repoJob
-    })
     // state
     const state = reactive({
         ui: null,
@@ -74,7 +71,7 @@ export default function setup() {
             repoUser.setUser(user)
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
-            if (route.path.includes('admin') || route.name === 'home') {
+            if (route.path.includes('admin') || route.name === 'index') {
                 router.push({
                     name: 'jobs'
                 })
@@ -221,7 +218,7 @@ export default function setup() {
 //                             })
 //                         } else {
 //                             this.$router.push({
-//                                 name: 'home',
+//                                 name: 'index',
 //                             })
 //                         }
 //                     }
@@ -259,7 +256,7 @@ export default function setup() {
 //             if (signInResult.status !== 200) {
 //                 // 任何錯誤導回首頁
 //                 this.$router.replace({
-//                     name: 'home'
+//                     name: 'index'
 //                 })
 //                 return
 //             }
@@ -280,7 +277,7 @@ export default function setup() {
 //                 this.setUser(user)
 //                 $emitter.emit("hideUserModal")
 //                 $emitter.emit('hideCompanyModal')
-//                 if (this.$route.path.includes('admin') || this.$route.name === 'home') {
+//                 if (this.$route.path.includes('admin') || this.$route.name === 'index') {
 //                     this.$router.push({
 //                         name: 'jobs'
 //                     })

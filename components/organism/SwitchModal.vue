@@ -73,7 +73,7 @@ function showModal() {
 function showEmployeeModal() {
     state.bsModal.hide()
     // router.replace({
-    //     name: 'home'
+    //     name: 'index'
     // })
     $emitter.emit("showUserModal")
 }
