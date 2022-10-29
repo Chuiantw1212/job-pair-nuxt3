@@ -52,6 +52,8 @@ export default defineStore('auth', () => {
         state,
         postSignin,
         postVerificationEmail,
-        getReauthResult
+        getReauthResult,
+        setUser,
+        userSignout
     }
 })

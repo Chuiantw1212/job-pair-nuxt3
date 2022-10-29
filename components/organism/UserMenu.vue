@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <template v-if="repoUser.state.user">
+        <template v-if="repoAuth.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
                     <router-link class="navItem__button" :to="{ name: 'adminScout' }">招募中心</router-link>
@@ -30,7 +30,7 @@ import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watch
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
-const repoUser = useRepoUser()
+const repoAuth = useRepoAuth()
 // Lifecycles
 onMounted(() => {
     listenToAuthState()

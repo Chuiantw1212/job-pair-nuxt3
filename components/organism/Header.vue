@@ -17,7 +17,7 @@
                     </button>
                 </div>
                 <!-- 手機縮圖列表 -->
-                <div v-if="repoUser.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
                     <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
@@ -41,7 +41,8 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const repoUser = useRepoUser()
+// const repoUser = useRepoUser()
+const repoAuth = useRepoAuth()
 const state = reactive({
     bsCollapse: null,
     menuType: "user",
@@ -107,56 +108,6 @@ function routeByMenuType() {
     }
 }
 </script>
-<!-- <script>
-import { Collapse } from "bootstrap"
-import { mapGetters } from "vuex"
-import { defineAsyncComponent } from 'vue'
-export default {
-    mounted() {
-    },
-    computed: {
-        ...mapGetters(["userRes", "user"]),
-    },
-    beforeUnmount() {
-        this.toggleClickOutside(false)
-    },
-    watch: {
-        $route: {
-            handler: function (route) {
-                this.collapseNavbar()
-                const { path = "" } = route
-                const chunks = path.split("/")
-                const isCompany = chunks[1] === "admin"
-                if (isCompany) {
-                    this.menuType = "admin"
-                } else {
-                    this.menuType = "user"
-                }
-            },
-            immediate: true,
-        },
-    },
-    methods: {
-        routeByMenuType() {
-            if (this.menuType === 'admin') {
-                this.$router.push({
-                    name: 'admin'
-                })
-            } else {
-                this.$router.push({
-                    name: 'index'
-                })
-            }
-        },
-
-        collapseNavbar() {
-            if (this.bsCollapse) {
-                this.bsCollapse.hide()
-            }
-        },
-    },
-}
-</script> -->
 <style lang="scss" scoped>
 :deep(.navbar) {
     position: fixed;

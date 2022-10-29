@@ -9,7 +9,6 @@ export default function setup() {
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
     const repoJobApplication = useRepoJobApplication()
-    const repoUser = useRepoUser()
     const repoCompany = useRepoCompany()
     // state
     const state = reactive({

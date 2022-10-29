@@ -71,6 +71,5 @@ export default defineStore('user', () => {
         putUserResumes,
         putUserPhoto,
         patchUserPreference,
-        setUser
     }
 })
