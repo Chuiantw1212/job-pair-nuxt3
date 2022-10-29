@@ -12,12 +12,13 @@
                 <AtomInputPhotoSingle v-model="state.profile.image" name="大頭貼" @update:modelValue="uploadImage($event)">
                 </AtomInputPhotoSingle>
             </div>
-            <AtomInputText name="姓名" v-model="state.profile.name" :disabled="user && !!user.name"></AtomInputText>
+            <AtomInputText name="姓名" v-model="state.profile.name"
+                :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></AtomInputText>
             <AtomInputEmail name="Email" v-model="state.profile.email" class="mt-3" disabled></AtomInputEmail>
             <AtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3" required>
             </AtomInputText>
             <AtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3"
-                :disabled="user && !!user.birthDate" required>
+                :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate" required>
             </AtomInputCalendar>
             <AtomInputSelect name="性別" v-model="state.profile.gender" :items="selectByQueryRes.gender" class="mt-3"
                 required>
@@ -44,7 +45,7 @@
                 帳戶管理
                 <OrganismDeleteModal class="managemement__others"></OrganismDeleteModal>
             </div>
-            <BtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</BtnSimple>
+            <AtomBtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</AtomBtnSimple>
         </MoleculeProfileCard>
         <MoleculeProfileCard name="求職資訊" class="profile__information profile__doc mt-3 ">
             <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
@@ -210,7 +211,7 @@ async function handleSubmit() {
     }
 }
 
-@media screen and  (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .profile {
         // margin-right: 8px;
 
