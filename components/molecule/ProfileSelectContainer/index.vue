@@ -1,13 +1,17 @@
 <template>
     <div class="inputDropdownContainer" ref="input">
+        <div class="container__nameGroup"><span v-if="required" class="text-danger">* </span>{{ name }}
+            <span v-if="max">(最多{{ max }}個)</span>
+        </div>
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
-            <span class="placeholder__text">{{ placeholder }}</span>
+            <div class="inputDropdownContainer__trigger__header">
+                <slot name="header"></slot>
+            </div>
             <img src="./icon_Down.svg" class="inputDropdownContainer__icon">
-            <!-- <img > -->
         </button>
         <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
-            <slot></slot>
+            <slot name="body"></slot>
         </div>
     </div>
 </template>
@@ -27,6 +31,20 @@ export default {
             type: Boolean,
             default: false,
         },
+        required: {
+            type: Boolean,
+            default: false,
+        },
+        // 純顯示用，不做資料運用
+        name: {
+            type: String,
+            default: ''
+        },
+        // 純顯示用，不做資料運用
+        max: {
+            type: Number,
+            default: 0
+        }
     },
     mounted() {
         this.toggleClickOutside(true)
@@ -59,25 +77,33 @@ export default {
 .inputDropdownContainer {
     position: relative;
 
+    .container__nameGroup {
+        margin-bottom: 8px;
+    }
+
     .inputDropdownContainer__trigger {
-        padding: 11px 9.6px 10px 10px;
-        border-radius: 5px;
-        background-color: #eee;
+        background-color: white;
         display: flex;
         justify-items: center;
-        justify-content: space-between;
         align-items: center;
-        border: none;
+        border: solid 1px #d3d3d3;
         width: 100%;
+        padding: 8px;
+        border-radius: 10px;
 
-        .placeholder__text {
-            margin-right: 8px;
-            color: #595959;
+
+        // position: relative;
+        .inputDropdownContainer__trigger__header {
+            width: 100%;
+        }
+
+        .inputDropdownContainer__icon {
+            transition: all 0.3s;
         }
     }
 
     .inputDropdownContainer__trigger--isOn {
-        background-color: #eef6ed;
+        // background-color: #eef6ed;
 
         .inputDropdownContainer__icon {
             transform: scaleY(-1);
@@ -94,25 +120,27 @@ export default {
         max-height: 0;
         overflow: hidden;
         z-index: 10;
-        padding: 0px !important; // 不可以有Padding
+        border: none;
+        margin-top: 4px;
     }
 
     .inputDropdownContainer__layer--isOn {
         max-height: 1000vh;
+        border: solid 1px #d3d3d3;
     }
 }
 
 @media screen and (min-width: 992px) {
     .inputDropdownContainer {
         .inputDropdownContainer__trigger {
-            padding: 13px 20px;
-            border-radius: 5px;
-            background-color: #eee;
-            display: flex;
-            justify-items: center;
-            justify-content: space-between;
-            border: none;
-            width: 100%;
+            // padding: 13px 20px;
+            // border-radius: 5px;
+            // // background-color: #eee;
+            // display: flex;
+            // justify-items: center;
+            // justify-content: space-between;
+            // border: none;
+            // width: 100%;
 
             .placeholder__text {
                 font-size: 20px;

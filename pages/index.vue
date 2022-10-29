@@ -380,7 +380,7 @@ function routeToQuestions() {
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and  (min-width: 992px) {
     .home__intro {
         .home__intro__landing {
             background-color: white;

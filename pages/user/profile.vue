@@ -16,8 +16,8 @@
             <AtomInputEmail name="Email" v-model="state.profile.email" class="mt-3" disabled></AtomInputEmail>
             <AtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3" required>
             </AtomInputText>
-            <AtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3" :disabled="user && !!user.birthDate"
-                required>
+            <AtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3"
+                :disabled="user && !!user.birthDate" required>
             </AtomInputCalendar>
             <AtomInputSelect name="性別" v-model="state.profile.gender" :items="selectByQueryRes.gender" class="mt-3"
                 required>
@@ -25,20 +25,21 @@
             <AtomInputSelect name="最高學位" v-model="state.profile.educationLevel" :items="selectByQueryRes.educationLevel"
                 class="mt-3">
             </AtomInputSelect>
-            <AtomProfileSelectContainer v-model="state.filterOpen.educationCategory" name="學科分類" :max="1" class="mt-3">
+            <MoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory" name="學科分類" :max="1"
+                class="mt-3">
                 <template v-slot:header>
-                    <AtomProfileSelectLabels v-model="state.profile.educationCategory"
+                    <MoleculeProfileSelectLabels v-model="state.profile.educationCategory"
                         :jobCategoryMap="educationCategoryMap" placeholder="學科分類"
                         :items="selectByQueryRes.educationCategory">
-                    </AtomProfileSelectLabels>
+                    </MoleculeProfileSelectLabels>
                 </template>
                 <template v-slot:body>
-                    <FilterCategory v-model="state.profile.educationCategory"
+                    <MoleculeFilterCategory v-model="state.profile.educationCategory"
                         :items="selectByQueryRes.educationCategory" :categoryMap="educationCategoryMap" :max="1"
                         :isDesktop="device.state.isDesktop" name="學科分類">
-                    </FilterCategory>
+                    </MoleculeFilterCategory>
                 </template>
-            </AtomProfileSelectContainer>
+            </MoleculeProfileSelectContainer>
             <div class="profile__management">
                 帳戶管理
                 <OrganismDeleteModal class="managemement__others"></OrganismDeleteModal>
@@ -46,19 +47,20 @@
             <BtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</BtnSimple>
         </MoleculeProfileCard>
         <MoleculeProfileCard name="求職資訊" class="profile__information profile__doc mt-3 ">
-            <AtomProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3" required>
+            <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
+                required>
                 <template v-slot:header>
-                    <AtomProfileSelectLabels v-model="state.profile.occupationalCategory" :jobCategoryMap="jobCategoryMap"
-                        :items="jobCategory">
-                    </AtomProfileSelectLabels>
+                    <MoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
+                        :jobCategoryMap="jobCategoryMap" :items="jobCategory">
+                    </MoleculeProfileSelectLabels>
                 </template>
                 <template v-slot:body>
-                    <FilterCategory v-model="state.profile.occupationalCategory" :items="jobCategory"
+                    <MoleculeFilterCategory v-model="state.profile.occupationalCategory" :items="jobCategory"
                         :categoryMap="jobCategoryMap" :max="3" :isDesktop="device.state.isDesktop" required
                         name="欲申請職務類別">
-                    </FilterCategory>
+                    </MoleculeFilterCategory>
                 </template>
-            </AtomProfileSelectContainer>
+            </MoleculeProfileSelectContainer>
             <AtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive" name="目前求職狀態">
                 <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
             </AtomInputCheckSingle>
@@ -70,7 +72,7 @@
         <MoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
             <AtomInputUploader v-model="state.profile.resumes" :size="5242880" :accept="'.pdf'" :max="3" required>
             </AtomInputUploader>
-            <InputPortfolioVue v-model="state.profile.portfolio"></InputPortfolioVue>
+            <AtomInputPortfolio v-model="state.profile.portfolio"></AtomInputPortfolio>
         </MoleculeProfileCard>
         <div class="profile__footer">
             <AtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存</AtomBtnSimple>
@@ -79,7 +81,7 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed, defineEmits } from 'vue'
+import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
 const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -208,7 +210,7 @@ async function handleSubmit() {
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and  (min-width: 992px) {
     .profile {
         // margin-right: 8px;
 

@@ -136,7 +136,7 @@ export default {
     }
 }
 
-@media screen and(min-width: 992px) {
+@media screen and (min-width: 992px) {
     .checkMultiple {
         .checkMultiple__label {
 

@@ -85,7 +85,7 @@ export default {
     }
 }
 
-@media screen and(min-width: 992px) {
+@media screen and (min-width: 992px) {
     .checkSingle {
         .checkSingle__label {
             .label__checkbox {

@@ -39,7 +39,7 @@ defineProps({
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and  (min-width: 992px) {
     .profile__card {
         border-radius: 10px;
 

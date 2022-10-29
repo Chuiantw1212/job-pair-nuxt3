@@ -204,7 +204,7 @@ const device = useDevice()
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and  (min-width: 992px) {
     .about {
         .about__banner {
             font-size: 26px;

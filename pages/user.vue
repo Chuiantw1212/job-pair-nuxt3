@@ -97,7 +97,7 @@ const device = useDevice()
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and  (min-width: 992px) {
     .dashboard {
         .dashboard__menu {
             top: 61px !important;

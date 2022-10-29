@@ -43,7 +43,7 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed, defineEmits } from 'vue'
+import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const repoAuth = useRepoAuth()
