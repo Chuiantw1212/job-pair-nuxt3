@@ -6,7 +6,7 @@ export default function setup() {
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
-    const apiAuth = useApiAuth()
+    const apiAuth = useRepoAuth()
     const state = reactive({
         ui: null,
         unsubscribe: null,
@@ -45,14 +45,10 @@ export default function setup() {
             // 避免人求職者與人資Mixin，重複打API
             return
         }
-        router.replace({
-            name: 'about'
-        })
-        return
         if (signInResult.status !== 200) {
             // 任何錯誤導回首頁
             router.replace({
-                name: 'home'
+                name: 'index'
             })
             return
         }
@@ -62,7 +58,6 @@ export default function setup() {
          * 人資尚未註冊完成
          * 其他狀況
          */
-        return
         const { employee = false, admin = false, company = false } = signInResult.data
         if (employee) {
             // 代表已經完整註冊過會員
@@ -81,6 +76,7 @@ export default function setup() {
             }
             return
         }
+        return
         if (admin) {
             user.type = "admin"
             Object.assign(user, admin)
