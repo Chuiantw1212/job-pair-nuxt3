@@ -6,8 +6,15 @@ export default function setup() {
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
+    // Repositories
     const repoAuth = useRepoAuth()
-    const repoJob = userRepoJob()
+    const repoJob = useRepoJob()
+    const repoJobApplication = useRepoJobApplication()
+    const repoUser = useRepoUser()
+    console.log({
+        repoJob
+    })
+    // state
     const state = reactive({
         ui: null,
         unsubscribe: null,
@@ -37,9 +44,6 @@ export default function setup() {
         }
         // this.setUser(user) // 這行附加會造成某些程式碼被跳過
         const idToken = await auth.currentUser.getIdToken()
-        console.log({
-            idToken
-        })
         axiosComposable.setToken(idToken)
         const signInResult = await repoAuth.postSignin(idToken)
         if (!signInResult) {
@@ -64,14 +68,14 @@ export default function setup() {
             // 代表已經完整註冊過會員
             Object.assign(user, employee)
             await repoJob.getJobRecommended()
-            await this.getUserJobs({
+            await repoJobApplication.getUserJobs({
                 userId: user.id,
             })
-            this.setUser(user)
+            repoUser.setUser(user)
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
-            if (this.$route.path.includes('admin') || this.$route.name === 'home') {
-                this.$router.push({
+            if (route.path.includes('admin') || route.name === 'home') {
+                router.push({
                     name: 'jobs'
                 })
             }

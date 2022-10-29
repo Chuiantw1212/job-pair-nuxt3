@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-export default defineStore('user', () => {
+export default defineStore('jobApplication', () => {
     const axios = useAxios()
     const state = reactive({
         userJobs: {},
