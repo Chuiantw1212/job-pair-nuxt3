@@ -9,44 +9,41 @@
     </div>
 </template>
 <script>
-export default {
-    props: {
-        modelValue: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        },
-        items: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        },
-        itemValue: {
-            type: String,
-            default: "value",
-        },
-        itemText: {
-            type: String,
-            default: "text",
+import { computed } from 'vue'
+const { $filter } = useNuxtApp()
+defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: Array,
+        default: function () {
+            return []
         },
     },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue)
-            },
+    items: {
+        type: Array,
+        default: function () {
+            return []
         },
     },
-    methods: {
-        removeSelf(index) {
-            this.localValue.splice(index, 1)
-        },
+    itemValue: {
+        type: String,
+        default: "value",
     },
+    itemText: {
+        type: String,
+        default: "text",
+    },
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit("update:modelValue", newValue)
+    },
+})
+function removeSelf(index) {
+    localValue.splice(index, 1)
 }
 </script>
 <style lang="scss">
@@ -80,6 +77,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         max-width: 100%;
+
         .item__badge {
             font-size: 18px;
             font-weight: normal;
