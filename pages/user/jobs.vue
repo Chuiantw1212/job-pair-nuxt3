@@ -57,23 +57,23 @@
                         <tr>
                             <th v-if="device.state.isDesktop" scope="col"></th>
                             <th scope="col" class="card__table__th">
-                                <InputSelect v-model="state.jobCompareId1" :items="state.jobComparable" itemText="name"
-                                    itemValue="identifier" class="card__table__select"
+                                <AtomInputSelect v-model="state.jobCompareId1" :items="state.jobComparable"
+                                    itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'first')">
-                                </InputSelect>
+                                </AtomInputSelect>
                             </th>
                             <th v-if="state.jobComparable.length >= 2" scope="col" class="card__table__th">
-                                <InputSelect v-model="state.jobCompareId2" :items="state.jobComparable" itemText="name"
-                                    itemValue="identifier" class="card__table__select"
+                                <AtomInputSelect v-model="state.jobCompareId2" :items="state.jobComparable"
+                                    itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'second')">
-                                </InputSelect>
+                                </AtomInputSelect>
                             </th>
                             <th v-if="device.state.isDesktop && state.jobComparable.length >= 3" scope="col"
                                 class="card__table__th">
-                                <InputSelect v-model="state.jobCompareId3" :items="state.jobComparable" itemText="name"
-                                    itemValue="identifier" class="card__table__select"
+                                <AtomInputSelect v-model="state.jobCompareId3" :items="state.jobComparable"
+                                    itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'third')">
-                                </InputSelect>
+                                </AtomInputSelect>
                             </th>
                         </tr>
                     </thead>
@@ -301,31 +301,31 @@
                         <tr class="testRow">
                             <th v-if="device.state.isDesktop"></th>
                             <td>
-                                <router-link v-if="state.jobCompare.first.identifier" class="table__btn" :to="{
+                                <NuxtLink v-if="state.jobCompare.first.identifier" class="table__btn" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.first.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</router-link>
+                                }">前往該職缺</NuxtLink>
                             </td>
                             <td v-if="state.jobComparable.length >= 2">
-                                <router-link class="table__btn" v-if="state.jobCompare.second.identifier" :to="{
+                                <NuxtLink class="table__btn" v-if="state.jobCompare.second.identifier" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.second.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</router-link>
+                                }">前往該職缺</NuxtLink>
                             </td>
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3">
-                                <router-link class="table__btn" v-if="state.jobCompare.third.identifier" :to="{
+                                <NuxtLink class="table__btn" v-if="state.jobCompare.third.identifier" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.third.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</router-link>
+                                }">前往該職缺</NuxtLink>
                             </td>
                         </tr>
                     </tbody>
