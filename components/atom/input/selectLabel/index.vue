@@ -8,10 +8,10 @@
         </template>
     </div>
 </template>
-<script>
+<script setup>
 import { computed } from 'vue'
 const { $filter } = useNuxtApp()
-defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
     modelValue: {
         type: Array,

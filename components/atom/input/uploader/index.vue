@@ -6,7 +6,7 @@
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
                 </div>
-                <iframe v-else-if="item.url" :id="`viewer_${id}`" class="previewGroup__item__viewer"
+                <iframe v-else-if="item.url" :id="`viewer_${state.id}`" class="previewGroup__item__viewer"
                     :src="item.url"></iframe>
                 <div class="previewGroup__item__body">
                     <div v-if="item.name" class="previewGroup__item__body__item">
@@ -31,7 +31,7 @@
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
                 </div>
-                <iframe v-else-if="item.url" :id="`viewer_${id}`" class="previewGroup__item__viewer"
+                <iframe v-else-if="item.url" :id="`viewer_${state.id}`" class="previewGroup__item__viewer"
                     :src="item.url"></iframe>
                 <div class="previewGroup__item__body">
                     <div v-if="item.name" class="previewGroup__item__body__item">
@@ -63,119 +63,110 @@
         </label>
     </div>
 </template>
-<script>
+<script setup>
 import { Buffer } from 'buffer/'
-export default {
-    data: function () {
-        const id = this.uuid()
-        return {
-            id,
+import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
+const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
+const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    id: uuid()
+})
+const props = defineProps({
+    modelValue: {
+        type: Array,
+        default: function () {
+            return []
         }
     },
-    props: {
-        modelValue: {
-            type: Array,
-            default: function () {
-                return []
-            }
-        },
-        name: {
-            type: String,
-            default: '履歷'
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        accept: {
-            type: String,
-            default: '.pdf,image/*'
-        },
-        size: {
-            type: Number,
-            default: 0
-        },
-        max: {
-            type: Number,
-            default: 0
-        }
+    name: {
+        type: String,
+        default: '履歷'
     },
-    computed: {
-        isMaxLimit() {
-            return this.max && this.localValue.length >= this.max
-        },
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit('update:modelValue', newValue)
-            }
-        }
+    required: {
+        type: Boolean,
+        default: false,
     },
-    watch: {
-        modelValue(newValue) {
-
-        },
+    accept: {
+        type: String,
+        default: '.pdf,image/*'
     },
-    methods: {
-        uuid() {
-            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            )
-        },
-        checkIsImage(item) {
-            return item.type && item.type.includes('image')
-        },
-        async handleFiles(event) {
-            const { files } = event.target
-            const file = files[0]
-            if (!file) {
-                return
-            }
-            const isOverSize = this.size && file.size >= this.size
-            if (isOverSize) {
-                const sizeKB = Math.floor(this.size / 1024)
-                this.$alert(`大小請勿超過${sizeKB}KB`)
-                return
-            }
-            this.fileName = file.name
-            const arrayBuffer = await new Promise((resolve, reject) => {
-                const reader = new FileReader()
-                reader.readAsArrayBuffer(file)
-                reader.onload = () => {
-                    resolve(reader.result)
-                }
-                reader.onerror = (error) => reject(error)
-            })
-            const { lastModified, name, size, type } = file
-            const buffer = Buffer.from(arrayBuffer)
-            const newResume = {
-                url: URL.createObjectURL(file),
-                name,
-                size,
-                buffer,
-                type,
-                date: new Date().toISOString()
-            }
-            const sameResumeIndex = this.localValue.findIndex(item => {
-                return item.name === newResume.name
-            })
-            const newResumes = [...this.localValue]
-            if (sameResumeIndex !== -1) {
-                newResumes[sameResumeIndex] = newResume
-            } else {
-                newResumes.push(newResume)
-            }
-            this.$emit("update:modelValue", newResumes)
-        },
-        async openResume(item) {
-            window.open(item.url)
-        },
-        async deleteResume(index) {
-            this.localValue.splice(index, 1)
-        },
+    size: {
+        type: Number,
+        default: 0
+    },
+    max: {
+        type: Number,
+        default: 0
     }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
+const isMaxLimit = computed(() => {
+    return props.max && localValue.length >= props.max
+})
+// methods
+function uuid() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    )
+}
+function checkIsImage(item) {
+    return item.type && item.type.includes('image')
+}
+async function handleFiles(event) {
+    const { files } = event.target
+    const file = files[0]
+    if (!file) {
+        return
+    }
+    const isOverSize = props.size && file.size >= props.size
+    if (isOverSize) {
+        const sizeKB = Math.floor(props.size / 1024)
+        $alert(`大小請勿超過${sizeKB}KB`)
+        return
+    }
+    const arrayBuffer = await new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onload = () => {
+            resolve(reader.result)
+        }
+        reader.onerror = (error) => reject(error)
+    })
+    const { lastModified, name, size, type } = file
+    const buffer = Buffer.from(arrayBuffer)
+    const newResume = {
+        url: URL.createObjectURL(file),
+        name,
+        size,
+        buffer,
+        type,
+        date: new Date().toISOString()
+    }
+    const sameResumeIndex = localValue.findIndex(item => {
+        return item.name === newResume.name
+    })
+    const newResumes = [...localValue]
+    if (sameResumeIndex !== -1) {
+        newResumes[sameResumeIndex] = newResume
+    } else {
+        newResumes.push(newResume)
+    }
+    emit("update:modelValue", newResumes)
+}
+async function openResume(item) {
+    if (process.client) {
+        window.open(item.url)
+    }
+}
+async function deleteResume(index) {
+    localValue.splice(index, 1)
 }
 </script>
 <style lang="scss" scoped>
