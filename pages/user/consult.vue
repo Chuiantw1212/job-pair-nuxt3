@@ -1,9 +1,9 @@
 <template>
     <div class="consult">
-        <img class="consult__banner" src="./assets/img_banner.png" />
+        <img class="consult__banner" src="~/assets/consult/img_banner.png" />
         <MoleculeConsultCard class="consult__record mt-2">
             <template v-slot:header>
-                <img class="me-1" src="./assets/icon_record.svg">
+                <img class="me-1" src="~/assets/consult/icon_record.svg">
                 預約紀錄
             </template>
             <template v-slot:body>
@@ -74,7 +74,7 @@
                         </table>
                     </div>
                     <div v-if="!state.records.length" class="content__noRecord">
-                        <img class="noRecord__icon" src="./assets/icon5.svg" />
+                        <img class="noRecord__icon" src="~/assets/consult/icon5.svg" />
                         <div class="noRecord__textGroup">
                             <div class="noRecord__line1">還沒有預約記錄</div>
                             <div class="noRecord__line2">讓以下生涯設計師陪你找定位、解決問題吧</div>
@@ -86,7 +86,7 @@
         <div v-if="isDesktop" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <img class="header__image" src="./assets/img1.webp" onerror="this.style.display = 'none'" />
+                    <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">理想生活探索</div>
                     <div class="header__sub">解決你的生活焦慮</div>
                 </div>
@@ -110,15 +110,15 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/life`">
-                        <BtnSimple class="footer__link__button">
+                        <AtomBtnSimple class="footer__link__button">
                             立即預約
-                        </BtnSimple>
+                        </AtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <img class="header__image" src="./assets/img2.webp" onerror="this.style.display = 'none'" />
+                    <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">職業偏好探索</div>
                     <div class="header__sub">釐清你的職業方向</div>
                 </div>
@@ -140,15 +140,15 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
-                        <BtnSimple class="footer__link__button">
+                        <AtomBtnSimple class="footer__link__button">
                             立即預約
-                        </BtnSimple>
+                        </AtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <img class="header__image" src="./assets/img3.webp" onerror="this.style.display = 'none'" />
+                    <img class="header__image" src="~/assets/consult/img3.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">履歷與面試輔導</div>
                     <div class="header__sub">補足你的求職技巧</div>
                 </div>
@@ -170,16 +170,16 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/interview`">
-                        <BtnSimple class="footer__link__button">
+                        <AtomBtnSimple class="footer__link__button">
                             立即預約
-                        </BtnSimple>
+                        </AtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
         </div>
         <MoleculeConsultCard v-else class="consult__themeMobile">
             <template v-slot:header>
-                <img class="me-1" src="./assets/icon_Heart.svg">
+                <img class="me-1" src="~/assets/consult/icon_Heart.svg">
                 諮詢主題類型
             </template>
             <template v-slot:body>
@@ -196,7 +196,7 @@
                 <div class="themeMobile__main">
                     <template v-if="activeTab === 'dreamLife'">
                         <div class="main__headerGroup">
-                            <img class="headerGroup__image" src="./assets/img1.webp"
+                            <img class="headerGroup__image" src="~/assets/consult/img1.webp"
                                 onerror="this.style.display = 'none'" />
                             <h2 class="headerGroup__header">理想生活探索</h2>
                             <div class="headerGroup__desc">解決你的生活焦慮</div>
@@ -219,7 +219,7 @@
                     </template>
                     <template v-if="activeTab === 'jobPreference'">
                         <div class="main__headerGroup">
-                            <img class="headerGroup__image" src="./assets/img2.webp"
+                            <img class="headerGroup__image" src="~/assets/consult/img2.webp"
                                 onerror="this.style.display = 'none'" />
                             <h2 class="headerGroup__header">職業偏好探索</h2>
                             <div class="headerGroup__desc">釐清你的職業方向</div>
@@ -240,7 +240,7 @@
                     </template>
                     <template v-if="activeTab === 'resumeAndInterview'">
                         <div class="main__headerGroup">
-                            <img class="headerGroup__image" src="./assets/img3.webp"
+                            <img class="headerGroup__image" src="~/assets/consult/img3.webp"
                                 onerror="this.style.display = 'none'" />
                             <h2 class="headerGroup__header">履歷與面試輔導</h2>
                             <div class="headerGroup__desc">補足你的求職技巧</div>
@@ -262,16 +262,11 @@
                 </div>
                 <div class="themeMobile__footer">
                     <div class="footer__price">NT.2000 - 1小時</div>
-                    <router-link class="footer__link" :to="{
-                        name: 'appointment',
-                        params: {
-                            id: activeTab,
-                        },
-                    }">
-                        <BtnSimple class="footer__link">
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/${activeTab}`">
+                        <AtomBtnSimple class="footer__link">
                             立即預約
-                        </BtnSimple>
-                    </router-link>
+                        </AtomBtnSimple>
+                    </NuxtLink>
                 </div>
             </template>
         </MoleculeConsultCard>
@@ -293,7 +288,7 @@ const state = reactive({
 })
 const activeTab = computed(() => {
     const { id } = route.params
-    const activeTab = id ? id : 'dreamLife'
+    const activeTab = id ? id : 'life'
     return activeTab
 })
 // hooks

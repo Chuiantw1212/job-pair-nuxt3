@@ -34,14 +34,12 @@ const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
 // hooks
 onMounted(() => {
-    if (process.client) {
-        $requestSelector(`#deleteModal`, (modelElement) => {
-            state.bsModal = new $bootstrap.Modal(modelElement, {
-                keyboard: false,
-                backdrop: "static",
-            })
+    $requestSelector(`#deleteModal`, (modelElement) => {
+        state.bsModal = new $bootstrap.Modal(modelElement, {
+            keyboard: false,
+            backdrop: "static",
         })
-    }
+    })
 })
 // methods
 function openModal() {
