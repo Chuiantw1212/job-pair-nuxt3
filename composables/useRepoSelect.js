@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 export default defineStore('select', () => {
+    const axios = useAxios()
     const state = reactive({
         company: null,
         selectByQueryRes: null,
         industryCategoryRes: null,
         locationRes: null,
+        questionsRes: null
     })
     // getters
     const industryItems = computed(() => {
@@ -207,8 +209,17 @@ export default defineStore('select', () => {
         return [...expension, ...state.selectByQueryRes.jobCategory]
     })
     // actions
+    async function getQuestions(store, params) {
+        const response = await axios.request({
+            method: 'get',
+            url: `/question`,
+            params,
+        })
+        state.questionsRes = response.data
+        return response
+    }
     async function getSelectByQuery(params) {
-        const response = await apiDefault.request({
+        const response = await axios.request({
             method: 'get',
             url: `/select`,
             params,
@@ -217,7 +228,7 @@ export default defineStore('select', () => {
         return response
     }
     async function getLocation() {
-        const response = await apiDefault.request({
+        const response = await axios.request({
             method: 'get',
             url: `/select/location`,
         })
@@ -225,7 +236,7 @@ export default defineStore('select', () => {
         return response
     }
     async function getIndustryCategory() {
-        const response = await apiDefault.request({
+        const response = await axios.request({
             method: 'get',
             url: `/select/industryCategory`,
         })
@@ -241,6 +252,7 @@ export default defineStore('select', () => {
         jobCategoryMap,
         jobCategory,
         // actions
+        getQuestions,
         getSelectByQuery,
         getLocation,
         getIndustryCategory,

@@ -30,8 +30,8 @@ const state = reactive({
     bsModal: null,
 })
 const router = useRouter()
-const repoUser = userRepoUser()
-const repoAuth = userRepoAuth()
+const repoUser = useRepoUser()
+const repoAuth = useRepoAuth()
 // hooks
 onMounted(() => {
     if (process.client) {

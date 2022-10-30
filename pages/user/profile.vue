@@ -1,5 +1,6 @@
 <template>
     <div v-if="state.profile" class="state.profile">
+        {{ state.profile.gender }}
         <div class="profile__hint">
             <h1 class="hint__heaer">個人檔案</h1>
             <div class="hint__desc">
@@ -20,24 +21,25 @@
             <AtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3"
                 :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate" required>
             </AtomInputCalendar>
-            <AtomInputSelect name="性別" v-model="state.profile.gender" :items="selectByQueryRes.gender" class="mt-3"
-                required>
+            <AtomInputSelect name="性別" v-model="state.profile.gender" :items="repoSelect.state.selectByQueryRes.gender"
+                class="mt-3" required>
             </AtomInputSelect>
-            <AtomInputSelect name="最高學位" v-model="state.profile.educationLevel" :items="selectByQueryRes.educationLevel"
-                class="mt-3">
+            <AtomInputSelect name="最高學位" v-model="state.profile.educationLevel"
+                :items="repoSelect.state.selectByQueryRes.educationLevel" class="mt-3">
             </AtomInputSelect>
             <MoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory" name="學科分類" :max="1"
                 class="mt-3">
                 <template v-slot:header>
                     <MoleculeProfileSelectLabels v-model="state.profile.educationCategory"
-                        :jobCategoryMap="educationCategoryMap" placeholder="學科分類"
-                        :items="selectByQueryRes.educationCategory">
+                        :jobCategoryMap="repoSelect.educationCategoryMap" placeholder="學科分類"
+                        :items="repoSelect.state.selectByQueryRes.educationCategory">
                     </MoleculeProfileSelectLabels>
                 </template>
                 <template v-slot:body>
                     <MoleculeFilterCategory v-model="state.profile.educationCategory"
-                        :items="selectByQueryRes.educationCategory" :categoryMap="educationCategoryMap" :max="1"
-                        :isDesktop="device.state.isDesktop" name="學科分類">
+                        :items="repoSelect.state.selectByQueryRes.educationCategory"
+                        :categoryMap="repoSelect.educationCategoryMap" :max="1" :isDesktop="device.state.isDesktop"
+                        name="學科分類">
                     </MoleculeFilterCategory>
                 </template>
             </MoleculeProfileSelectContainer>
@@ -87,6 +89,7 @@ const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
+const repoSelect = useRepoSelect()
 const router = useRouter()
 const state = reactive({
     profile: null,

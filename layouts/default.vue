@@ -6,7 +6,20 @@
     </div>
 </template>
 <script setup>
-
+import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
+const { $isNativeWeb, $emitter } = useNuxtApp()
+const router = useRouter()
+const repoSelect = useRepoSelect()
+// hooks
+onMounted(async () => {
+    console.log('isMounted')
+    await Promise.all([
+        repoSelect.getSelectByQuery(),
+        repoSelect.getLocation(),
+        repoSelect.getIndustryCategory(),
+        repoSelect.getQuestions()
+    ])
+})
 </script>
 <style lang="scss">
 .app {

@@ -79,6 +79,7 @@
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
 const { $isNativeWeb, $emitter } = useNuxtApp()
 const router = useRouter()
+// methods
 function routeToQuestions() {
     if ($isNativeWeb) {
         router.push({
@@ -380,7 +381,7 @@ function routeToQuestions() {
     }
 }
 
-@media screen and  (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .home__intro {
         .home__intro__landing {
             background-color: white;
