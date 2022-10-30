@@ -10,11 +10,11 @@
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <AtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
-                        :placeholder="$.optionText(categoryKey, items)" class="list__subList"
+                        :placeholder="$optionText(categoryKey, items)" class="list__subList"
                         :arrow="isDesktop ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
-                                <input v-model="isAllSelected[categoryKey]" type="checkbox"
+                                <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                     @change="setCategory(categoryKey)" />
                                 全選
                             </label>
@@ -36,7 +36,7 @@
                     <div v-show="!state.keyword.trim() && state.openFlagsTop[categoryKey] && showSelectAll"
                         class="subList__header">
                         <label class="subList__inputGroup">
-                            <input v-model="isAllSelected[categoryKey]" type="checkbox"
+                            <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                 @change="setCategory(categoryKey)" />
                             全選
                         </label>
@@ -60,7 +60,7 @@
 import Fuse from "fuse.js"
 import { computed, nextTick } from 'vue'
 const emit = defineEmits(['update:modelValue'])
-const { $ } = useNuxtApp()
+const { $optionText } = useNuxtApp()
 const device = useDevice()
 const state = reactive({
     openFlagsTop: {},
@@ -131,8 +131,8 @@ const localValue = computed({
 })
 // methods
 function checkItemDisabled(item) {
-    const isExceedMax = props.max && localValue.length >= props.max
-    const isNotSelected = !localValue.includes(item.value)
+    const isExceedMax = props.max && localValue.value.length >= props.max
+    const isNotSelected = !localValue.value.includes(item.value)
     return isExceedMax && isNotSelected
 }
 function checkMatched(key) {

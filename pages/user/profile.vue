@@ -37,11 +37,11 @@
                         </MoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>
-                        <!-- <MoleculeFilterCategory v-model="state.profile.educationCategory"
+                        <MoleculeFilterCategory v-model="state.profile.educationCategory"
                             :items="repoSelect.state.selectByQueryRes.educationCategory"
                             :categoryMap="repoSelect.educationCategoryMap" :max="1" :isDesktop="device.state.isDesktop"
                             name="學科分類">
-                        </MoleculeFilterCategory> -->
+                        </MoleculeFilterCategory>
                     </template>
                 </MoleculeProfileSelectContainer>
                 <div class="profile__management">
@@ -59,10 +59,10 @@
                         </MoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>
-                        <!-- <MoleculeFilterCategory v-model="state.profile.occupationalCategory" :items="jobCategory"
-                            :categoryMap="jobCategoryMap" :max="3" :isDesktop="device.state.isDesktop" required
-                            name="欲申請職務類別">
-                        </MoleculeFilterCategory> -->
+                        <MoleculeFilterCategory v-model="state.profile.occupationalCategory"
+                            :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
+                            :isDesktop="device.state.isDesktop" required name="欲申請職務類別">
+                        </MoleculeFilterCategory>
                     </template>
                 </MoleculeProfileSelectContainer>
                 <AtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive" name="目前求職狀態">
