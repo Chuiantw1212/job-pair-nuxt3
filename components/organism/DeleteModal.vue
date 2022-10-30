@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAuth, $firebaseApp, $alert } = useNuxtApp()
+const { $emitter, $bootstrap, $alert, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
@@ -35,10 +35,11 @@ const repoAuth = useRepoAuth()
 // hooks
 onMounted(() => {
     if (process.client) {
-        const modelElement = document.getElementById(`deleteModal`)
-        state.bsModal = new $bootstrap.Modal(modelElement, {
-            keyboard: false,
-            backdrop: "static",
+        $requestSelector(`#deleteModal`, (modelElement) => {
+            state.bsModal = new $bootstrap.Modal(modelElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
     }
 })

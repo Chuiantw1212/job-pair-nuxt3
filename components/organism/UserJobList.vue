@@ -1,30 +1,20 @@
 <template>
     <ul v-if="modelValue.length" class="kanban__card__list">
         <li v-for="(item, index) in modelValue" class="card__list__item" :key="index">
-            <router-link v-if="item.status === 'active'" class="list__item__job" :to="{
-                name: 'jobDetails',
-                params: {
-                    id: item.identifier,
-                    userId: user.id,
-                },
-            }">
+            <NuxtLink v-if="item.status === 'active'" class="list__item__job" :to="`/job/${item.identifier}`">
                 <div class="job__header">
                     <div class="header__name">{{ item.name }}</div>
                     <button v-if="type === 'saved'" class="btn-close header__save" @click.prevent="unsafeJob(index)">
                     </button>
-                    <!-- <button v-else class="btn-close header__save" @click.prevent="hideJob(index)">
-                    </button> -->
                 </div>
                 <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
                 <div v-else class="job__badge job__badge--active">招聘中</div>
                 <div class="job__organizationName">{{ item.organizationName }}</div>
                 <div class="job__time">{{ getSavedTime(item) }}</div>
-            </router-link>
+            </NuxtLink>
             <div v-if="item.status === 'closed'" class="list__item__job">
                 <div class="job__header">
                     <div class="header__name">{{ item.name }} </div>
-                    <!-- <button class="btn-close header__save" @click.prevent="hideJob(index)">
-                    </button> -->
                 </div>
                 <div class="job__badge job__badge--closed">已結束</div>
                 <div class="job__organizationName">{{ item.organizationName }}</div>
@@ -34,7 +24,7 @@
     </ul>
     <div v-else class="kanban__card__noItem">
         <div class="noItem__imageGroup">
-            <img class="noItem__imageGroup__image" src="./assets/Frame.svg" />
+            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame.svg" />
             <div class="noItem__imageGroup__desc">目前還沒有紀錄</div>
         </div>
     </div>

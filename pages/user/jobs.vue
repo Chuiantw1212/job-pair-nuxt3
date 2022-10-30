@@ -1,10 +1,10 @@
 <template>
     <div v-if="repoSelect.state.selectByQueryRes" class="userStatus">
         <div class="userStatus__kanban">
-            <StatusCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
-                        <img class="card__header__icon" src="./assets/icon_Heart.svg" />
+                        <img class="card__header__icon" src="~/assets/user/job/icon_Heart.svg" />
                         <span class="card__header__desc">
                             儲存的職缺 <template v-if="state.jobComparable.length"> (共 {{ state.jobComparable.length }} 筆)
                             </template>
@@ -12,13 +12,13 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <UserStatusList v-model="state.jobSaved" type="saved"></UserStatusList>
+                    <OrganismUserJobList v-model="state.jobSaved" type="saved"></OrganismUserJobList>
                 </template>
-            </StatusCard>
-            <StatusCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            </MoleculeJobCard>
+            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
-                        <img class="card__header__icon" src="./assets/icon_Rocket.svg" />
+                        <img class="card__header__icon" src="~/assets/user/job/icon_Rocket.svg" />
                         <span class="card__header__desc">
                             應徵紀錄 <template v-if="state.jobApplied.length"> (共 {{ state.jobApplied.length }} 筆)
                             </template>
@@ -26,13 +26,13 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <UserStatusList v-model="state.jobApplied" type="applied"></UserStatusList>
+                    <OrganismUserJobList v-model="state.jobApplied" type="applied"></OrganismUserJobList>
                 </template>
-            </StatusCard>
-            <StatusCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            </MoleculeJobCard>
+            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
-                        <img class="card__header__icon" src="./assets/icon_Comment.svg" />
+                        <img class="card__header__icon" src="~/assets/user/job/icon_Comment.svg" />
                         <span class="card__header__desc">
                             面試紀錄 <template v-if="state.jobNotified.length"> (共 {{ state.jobNotified.length }} 筆)
                             </template>
@@ -40,14 +40,14 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <UserStatusList v-model="state.jobNotified" type="notified"></UserStatusList>
+                    <OrganismUserJobList v-model="state.jobNotified" type="notified"></OrganismUserJobList>
                 </template>
-            </StatusCard>
+            </MoleculeJobCard>
         </div>
-        <StatusCard v-if="state.jobComparable.length" class="userStatus__card mt-3">
+        <MoleculeJobCard v-if="state.jobComparable.length" class="userStatus__card mt-3">
             <template v-slot:header>
                 <div class="card__header">
-                    <img class="card__header__icon" src="./assets/icon_Compare.svg" />
+                    <img class="card__header__icon" src="~/assets/user/job/icon_Compare.svg" />
                     <span class="card__header__desc">職缺比較</span>
                 </div>
             </template>
@@ -267,7 +267,7 @@
                                     <template v-for="(value, key) in state.jobCompare.first.jobBenefitFlags"
                                         class="mt-1" :key="key">
                                         <div v-if="value">
-                                            <img src="./assets/icon_check_g.svg" />
+                                            <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
@@ -279,7 +279,7 @@
                                     <template v-for="(value, key) in state.jobCompare.second.jobBenefitFlags"
                                         class="mt-1" :key="key">
                                         <div v-if="value">
-                                            <img src="./assets/icon_check_g.svg" />
+                                            <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
@@ -291,7 +291,7 @@
                                     <template v-for="(value, key) in state.jobCompare.third.jobBenefitFlags"
                                         class="mt-1" :key="key">
                                         <div v-if="value">
-                                            <img src="./assets/icon_check_g.svg" />
+                                            <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
@@ -301,37 +301,37 @@
                         <tr class="testRow">
                             <th v-if="device.state.isDesktop"></th>
                             <td>
-                                <NuxtLink v-if="state.jobCompare.first.identifier" class="table__btn" :to="{
+                                <!-- <NuxtLink v-if="state.jobCompare.first.identifier" class="table__btn" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.first.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</NuxtLink>
+                                }">前往該職缺</NuxtLink> -->
                             </td>
                             <td v-if="state.jobComparable.length >= 2">
-                                <NuxtLink class="table__btn" v-if="state.jobCompare.second.identifier" :to="{
+                                <!-- <NuxtLink class="table__btn" v-if="state.jobCompare.second.identifier" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.second.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</NuxtLink>
+                                }">前往該職缺</NuxtLink> -->
                             </td>
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3">
-                                <NuxtLink class="table__btn" v-if="state.jobCompare.third.identifier" :to="{
+                                <!-- <NuxtLink class="table__btn" v-if="state.jobCompare.third.identifier" :to="{
                                     name: 'jobDetails',
                                     params: {
                                         id: state.jobCompare.third.identifier,
                                         userId: user.id,
                                     },
-                                }">前往該職缺</NuxtLink>
+                                }">前往該職缺</NuxtLink> -->
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </template>
-        </StatusCard>
+        </MoleculeJobCard>
     </div>
 </template>
 <script setup>
