@@ -166,7 +166,7 @@ async function openResume(item) {
     }
 }
 async function deleteResume(index) {
-    localValue.splice(index, 1)
+    localValue.value.splice(index, 1)
 }
 </script>
 <style lang="scss" scoped>

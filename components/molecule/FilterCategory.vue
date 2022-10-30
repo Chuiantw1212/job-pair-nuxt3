@@ -43,7 +43,8 @@
                     </div>
                     <div class="subList__body">
                         <template v-for="(item, index) in list" :key="index">
-                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
+                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)"
+                                class="body__item">
                                 <input v-model="localValue" type="checkbox" :value="item.value"
                                     :disabled="checkItemDisabled(item)" />
                                 <span class="body__item__name">{{ item.text }}</span>
@@ -209,7 +210,7 @@ function setCategory(categoryKey) {
         allItems.forEach((item) => {
             const isSelected = props.modelValue.includes(item.value)
             if (!isSelected) {
-                localValue.push(item.value)
+                localValue.value.push(item.value)
             }
         })
     } else {
@@ -218,7 +219,7 @@ function setCategory(categoryKey) {
             const index = props.modelValue.findIndex((value) => {
                 return value === item.value
             })
-            localValue.splice(index, 1)
+            localValue.value.splice(index, 1)
         })
     }
 }

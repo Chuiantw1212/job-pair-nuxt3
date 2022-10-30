@@ -43,7 +43,7 @@ const localValue = computed({
     },
 })
 function removeSelf(index) {
-    localValue.splice(index, 1)
+    localValue.value.splice(index, 1)
 }
 </script>
 <style lang="scss">
