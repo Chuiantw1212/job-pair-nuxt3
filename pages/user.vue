@@ -3,7 +3,7 @@
         <div :class="{ row: device.state.isDesktop }">
             <ul class="dashboard__menu">
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/profile">
                         <img class="item__link__icon" src="~/assets/user/icon_nav_profile.svg" />
                         <div class="menu__item__text">個人檔案</div>
                     </NuxtLink>
@@ -97,7 +97,7 @@ const device = useDevice()
     }
 }
 
-@media screen and  (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .dashboard {
         .dashboard__menu {
             top: 61px !important;
