@@ -165,7 +165,7 @@ function initializeData(category) {
     }
     state.fuseInstance = new Fuse(fuseItems, options)
     nextTick(() => {
-        if (device.isDesktop) {
+        if (device.state.isDesktop) {
             const [first] = Object.keys(props.categoryMap)
             state.openFlagsTop[first] = true
         }
@@ -182,7 +182,7 @@ function searchOptions() {
         for (let key in state.searchVisible) {
             state.searchVisible[key] = false
         }
-        if (device.isDesktop) {
+        if (device.state.isDesktop) {
             const [first] = Object.keys(props.categoryMap)
             state.openFlagsTop[first] = true
         }
