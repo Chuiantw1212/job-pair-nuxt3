@@ -46,12 +46,6 @@ export default {
             type: String,
             default: "120px",
         },
-        // placeholder: {
-        //     type: [String, Object],
-        //     default: function () {
-        //         return ''
-        //     }
-        // }
     },
     computed: {
         localValue: {

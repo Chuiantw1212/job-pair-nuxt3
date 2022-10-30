@@ -83,7 +83,7 @@
                 </div>
             </template>
         </MoleculeConsultCard>
-        <div v-if="isDesktop" class="consult__themeDesktop">
+        <div v-if="device.state.isDesktop" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
                     <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />
@@ -270,13 +270,14 @@
                 </div>
             </template>
         </MoleculeConsultCard>
-        <FeedbackList v-model="state.feedbacks" class="mt-2"></FeedbackList>
+        <MoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></MoleculeFeedbackList>
     </div>
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, computed } from 'vue'
 // const { $emitter } = useNuxtApp()
+const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
 const router = useRouter()

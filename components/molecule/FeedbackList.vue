@@ -1,11 +1,11 @@
 <template>
     <MoleculeConsultCard class="consult__feedback">
         <template v-slot:header>
-            <img src="./assets/icon_Comment.svg">
+            <img src="~/assets/consult/icon_Comment.svg">
             <span class="ms-2">諮詢者回饋</span>
         </template>
         <template v-slot:body>
-            <div :id="`glide_${id}`" class="feedback__list">
+            <div :id="`glide_${state.id}`" class="feedback__list">
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
                         <li class="glide__slide feedback__list__feedback" v-for="(feedback, index) in modelValue"
@@ -26,27 +26,27 @@
                 </div>
                 <div class="glide__arrows d-none d-lg-flex" data-glide-el="controls">
                     <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-                        <img src="./assets/btn_arrow_left.png" />
+                        <img src="~/assets/consult/btn_arrow_left.png" />
                     </button>
                     <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-                        <img src="./assets/btn_arrow_right.png" />
+                        <img src="~/assets/consult/btn_arrow_right.png" />
                     </button>
                 </div>
             </div>
             <div class="modal fade consult__modal" id="feedbackModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
-                    <div v-if="modalFeedback" class="modal-content">
+                    <div v-if="state.modalFeedback" class="modal-content">
                         <div class="modal-header">
                             <div class="header__group">
-                                <div>{{ modalFeedback.name }}</div>
-                                <div class="group__to">諮詢師：{{ modalFeedback.to }}</div>
+                                <div>{{ state.modalFeedback.name }}</div>
+                                <div class="group__to">諮詢師：{{ state.modalFeedback.to }}</div>
                             </div>
                             <button type="button" class="btn-close" @click="hideModal()"></button>
                         </div>
                         <div class="modal-body">
                             <div class="content__desc">
-                                {{ modalFeedback.desc }}
+                                {{ state.modalFeedback.desc }}
                             </div>
                         </div>
                     </div>
@@ -57,9 +57,9 @@
 </template>
 <script setup>
 import Glide from "@glidejs/glide"
-const { $requestSelector } = useNuxtApp()
+const { $requestSelector, $uuid4, $bootstrap } = useNuxtApp()
 const state = reactive({
-    id: uuid(),
+    id: $uuid4(),
     feedbackGlideInstance: null,
     bsModal: null,
     modalFeedback: null,
@@ -77,17 +77,19 @@ const props = defineProps({
     },
 })
 watchEffect(async () => {
-    $requestSelector('#feedbackModal', (element) => {
-        if (!state.bsModal) {
-            state.bsModal = new Modal(element, {
-                keyboard: false,
-            })
-        }
-    })
-    if (props.modelValue.length) {
-        $requestSelector(`#glide_${this.id}`, (element) => {
-            mountGlideInstance(element)
+    if (process.client) {
+        $requestSelector('#feedbackModal', (element) => {
+            if (!state.bsModal) {
+                state.bsModal = new $bootstrap.Modal(element, {
+                    keyboard: false,
+                })
+            }
         })
+        // if (props.modelValue.length) {
+        //     $requestSelector(`#glide_${state.id}`, (element) => {
+        //         mountGlideInstance(element)
+        //     })
+        // }
     }
 })
 // methods
@@ -102,7 +104,6 @@ function mountGlideInstance(element) {
     if (state.feedbackGlideInstance) {
         return
     }
-
     const feedbackGlideInstance = new Glide(element, {
         gap: 10,
         rewind: true,
@@ -112,8 +113,7 @@ function mountGlideInstance(element) {
     state.feedbackGlideInstance = feedbackGlideInstance
 
     window.addEventListener("resize", setGlideConfig)
-    state.setGlideConfig({ target: window })
-
+    setGlideConfig({ target: window })
 }
 function setGlideConfig(event) {
     if (event.target.innerWidth < 992) {
