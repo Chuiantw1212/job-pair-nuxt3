@@ -2,10 +2,12 @@
     <div class="profile__portfolio">
         <h1 class="portfolio__header">作品集</h1>
         <div class="portfolio__inputGroup" v-for="(work, index) in localValue" :key="index">
-            <InputText placeholder="專案名稱" v-model="localValue[index].name" class="portfolio__work" :disabled="disabled">
-            </InputText>
-            <InputText placeholder="作品集連結" v-model="localValue[index].url" class="portfolio__work" :disabled="disabled">
-            </InputText>
+            <AtomInputText placeholder="專案名稱" v-model="localValue[index].name" class="portfolio__work"
+                :disabled="disabled">
+            </AtomInputText>
+            <AtomInputText placeholder="作品集連結" v-model="localValue[index].url" class="portfolio__work"
+                :disabled="disabled">
+            </AtomInputText>
             <a v-if="disabled" :href="localValue[index].url" target="_blank">
                 <button class="doc__btn">
                     <img class="btn__icon" src="./icon_preview_g.svg" />

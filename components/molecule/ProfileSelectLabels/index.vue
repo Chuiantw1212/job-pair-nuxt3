@@ -2,8 +2,8 @@
     <div class="category__labelGroup">
         <template v-if="localValue && localValue.length">
             <div v-for="(item, index) in localValue" :key="index">
-                <div v-if="$filter.optionText(item, items)" class="item__badge">
-                    <span class="badge__span">{{ $filter.optionText(item, items) }}</span>
+                <div v-if="$optionText(item, items)" class="item__badge">
+                    <span class="badge__span">{{ $optionText(item, items) }}</span>
                     <img class="badge__image" src="./Icon_delete_g.svg" @click.stop="removeSelf(index)" />
                 </div>
                 <div v-else class="item__badge">
@@ -19,47 +19,46 @@
         </template>
     </div>
 </template>
-<script>
-export default {
-    props: {
-        modelValue: {
-            type: Array,
-            default: function () {
-                return []
-            }
-        },
-        jobCategoryMap: {
-            type: Object,
-            default: function () {
-                return {}
-            }
-        },
-        items: {
-            type: Array,
-            default: function () {
-                return []
-            }
-        },
-        placeholder: {
-            type: String,
-            default: '職務類別'
+<script setup>
+import { computed, } from 'vue'
+const emit = defineEmits(['update:modelValue'])
+const { $optionText } = useNuxtApp()
+const props = defineProps({
+    modelValue: {
+        type: Array,
+        default: function () {
+            return []
         }
     },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue)
-            },
-        },
+    jobCategoryMap: {
+        type: Object,
+        default: function () {
+            return {}
+        }
     },
-    methods: {
-        removeSelf(index) {
-            this.localValue.splice(index, 1)
-        },
+    items: {
+        type: Array,
+        default: function () {
+            return []
+        }
+    },
+    placeholder: {
+        type: String,
+        default: '職務類別'
     }
+})
+// hooks
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit("update:modelValue", newValue)
+    },
+})
+// methods
+function removeSelf(index) {
+    localValue.splice(index, 1)
 }
 </script>
 <style lang="scss">
@@ -70,9 +69,7 @@ export default {
 
     .item__badge {
         display: flex;
-        // margin-bottom: 4px;
         border-radius: 10px;
-        // border: solid 1px #5ea88e;
         align-items: center;
         color: white;
         font-size: 18px;
@@ -80,16 +77,10 @@ export default {
         text-align: left;
         padding: 4px 10px;
 
-        .badge__span {
-            // padding: 0px 8px;
-            // margin-left: 8px;
-        }
-
         .badge__image {
             width: 16px;
             height: 16px;
             margin-left: 8px;
-            // margin-right: 8px;
             display: block;
             cursor: pointer;
         }

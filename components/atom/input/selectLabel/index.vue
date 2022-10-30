@@ -1,8 +1,8 @@
 <template>
     <div class="inputSelectLabel">
         <template v-for="(item, index) in modelValue" :key="index">
-            <div v-if="$filter.optionText(item, items)" class="item__badge">
-                <span>{{ $filter.optionText(item, items) }}</span>
+            <div v-if="$optionText(item, items)" class="item__badge">
+                <span>{{ $optionText(item, items) }}</span>
                 <img class="badge__image" src="./Icon_delete_g.svg" @click="removeSelf(index)" />
             </div>
         </template>
@@ -10,7 +10,7 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-const { $filter } = useNuxtApp()
+const { $optionText } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
     modelValue: {

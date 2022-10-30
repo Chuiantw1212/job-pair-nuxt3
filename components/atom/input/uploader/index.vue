@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $filter.time(item.date) }}
+                        {{ $time(item.date) }}
                         <button class="doc__btn" @click="openResume(item)">
                             <img class="btn__icon" src="./icon_preview_g.svg" />
                         </button>
@@ -43,7 +43,7 @@
                         </button>
                     </div>
                     <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $filter.time(item.date) }}
+                        {{ $time(item.date) }}
                         <button class="doc__btn" @click="openResume(item)">
                             <img class="btn__icon" src="./icon_preview_g.svg" />
                         </button>
@@ -66,7 +66,7 @@
 <script setup>
 import { Buffer } from 'buffer/'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
+const { $alert, $succeed, $time, } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     id: uuid()

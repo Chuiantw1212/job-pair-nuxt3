@@ -3,16 +3,16 @@
         <input v-show="false" :value="localValue.length !== 0" :data-required="required" :data-name="name">
         <div class="filterCategory__header">
             <label class="header__inputGroup">
-                <input v-model="keyword" class="inputGroup__input" placeholder="搜尋" @input="searchOptions()" />
+                <input v-model="state.keyword" class="inputGroup__input" placeholder="搜尋" @input="searchOptions()" />
             </label>
         </div>
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
-                    <Accordion v-show="checkMatched(categoryKey)" v-model="openFlagsTop[categoryKey]"
-                        :placeholder="$filter.optionText(categoryKey, items)" class="list__subList"
+                    <AtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
+                        :placeholder="$.optionText(categoryKey, items)" class="list__subList"
                         :arrow="isDesktop ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
-                        <div v-show="!keyword.trim() && showSelectAll" class="d-lg-none subList__header">
+                        <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
                                 <input v-model="isAllSelected[categoryKey]" type="checkbox"
                                     @change="setCategory(categoryKey)" />
@@ -28,12 +28,13 @@
                                 </label>
                             </template>
                         </div>
-                    </Accordion>
+                    </AtomAccordion>
                 </template>
             </div>
             <div class="d-none d-lg-block body__sublist">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
-                    <div v-show="!keyword.trim() && openFlagsTop[categoryKey] && showSelectAll" class="subList__header">
+                    <div v-show="!state.keyword.trim() && state.openFlagsTop[categoryKey] && showSelectAll"
+                        class="subList__header">
                         <label class="subList__inputGroup">
                             <input v-model="isAllSelected[categoryKey]" type="checkbox"
                                 @change="setCategory(categoryKey)" />
@@ -42,7 +43,7 @@
                     </div>
                     <div class="subList__body">
                         <template v-for="(item, index) in list" :key="index">
-                            <label v-show="openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
+                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
                                 <input v-model="localValue" type="checkbox" :value="item.value"
                                     :disabled="checkItemDisabled(item)" />
                                 <span class="body__item__name">{{ item.text }}</span>
@@ -54,204 +55,178 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import Fuse from "fuse.js"
-import { defineAsyncComponent } from 'vue'
-export default {
-    components: {
-        Accordion: defineAsyncComponent(() =>
-            import('@/components/atoms/Accordion/Accordion.vue')
-        ),
+import { computed, nextTick } from 'vue'
+const emit = defineEmits(['update:modelValue'])
+const { $ } = useNuxtApp()
+const device = useDevice()
+const state = reactive({
+    openFlagsTop: {},
+    isAllSelected: {},
+    fuseInstance: null,
+    keyword: "",
+    searchVisible: {},
+})
+const props = defineProps({
+    modelValue: {
+        type: Array,
+        default: function () {
+            return []
+        },
     },
-    data: function () {
-        return {
-            openFlagsTop: {},
-            isAllSelected: {},
-            fuseInstance: null,
-            keyword: "",
-            searchVisible: {},
+    categoryMap: {
+        type: Object,
+        default: function () {
+            return {}
         }
     },
-    props: {
-        modelValue: {
-            type: Array,
-            default: function () {
-                return []
-            },
+    placeholder: {
+        type: String,
+        default: "",
+    },
+    items: {
+        type: Array,
+        default: function () {
+            return []
         },
-        categoryMap: {
-            type: Object,
-            default: function () {
-                return {}
-            }
-        },
-        placeholder: {
-            type: String,
-            default: "",
-        },
-        items: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        },
-        isDesktop: {
-            type: Boolean,
-            default: false,
-        },
-        max: {
-            type: Number,
-            default: 0
-        },
-        width: {
-            type: String,
-            default: ''
-        },
-        name: {
-            type: String,
-            default: '類別選單'
-        },
-        required: {
-            type: Boolean,
-            default: false
-        },
-        showSelectAll: {
-            type: Boolean,
-            default: false
-        },
-        middleLayerMap: {
-            type: Object,
-            default: null
+    },
+    isDesktop: {
+        type: Boolean,
+        default: false,
+    },
+    max: {
+        type: Number,
+        default: 0
+    },
+    width: {
+        type: String,
+        default: ''
+    },
+    name: {
+        type: String,
+        default: '類別選單'
+    },
+    required: {
+        type: Boolean,
+        default: false
+    },
+    showSelectAll: {
+        type: Boolean,
+        default: false
+    },
+    middleLayerMap: {
+        type: Object,
+        default: null
+    }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit("update:modelValue", newValue)
+    },
+})
+// methods
+function checkItemDisabled(item) {
+    const isExceedMax = props.max && localValue.length >= props.max
+    const isNotSelected = !localValue.includes(item.value)
+    return isExceedMax && isNotSelected
+}
+function checkMatched(key) {
+    if (!state.keyword.trim()) {
+        return true
+    } else {
+        return state.searchVisible[key]
+    }
+}
+function initializeData(category) {
+    let fuseItems = []
+    for (let key in category) {
+        // 初始化Flag
+        state.openFlagsTop[key] = false
+        const items = category[key]
+        // fuseItems
+        items.forEach((item) => {
+            item.parent = key
+        })
+        fuseItems = [...fuseItems, ...items]
+    }
+    // initizlize fuseInstance
+    const options = {
+        location: 4,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        threshold: 0.4,
+        distance: 100,
+        keys: ["text"],
+    }
+    state.fuseInstance = new Fuse(fuseItems, options)
+    nextTick(() => {
+        if (device.isDesktop) {
+            const [first] = Object.keys(props.categoryMap)
+            state.openFlagsTop[first] = true
         }
-    },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue)
-            },
-        },
-    },
-    watch: {
-        categoryMap: {
-            immediate: true,
-            handler: function (newValue) {
-                this.initializeData(newValue)
-            },
-        },
-        localValue() {
-            for (let key in this.categoryMap) {
-                const allItems = this.categoryMap[key]
-                const isAllSelected = allItems.every((item) => {
-                    return this.localValue.includes(item.value)
-                })
-                this.isAllSelected[key] = isAllSelected
-            }
+    })
+}
+function searchOptions() {
+    for (let key in props.categoryMap) {
+        state.openFlagsTop[key] = false
+    }
+    if (!state.keyword.trim()) {
+        for (let key in state.openFlagsTop) {
+            state.openFlagsTop[key] = false
         }
-    },
-    methods: {
-        checkItemDisabled(item) {
-            const isExceedMax = this.max && this.localValue.length >= this.max
-            const isNotSelected = !this.localValue.includes(item.value)
-            return isExceedMax && isNotSelected
-        },
-        checkMatched(key) {
-            if (!this.keyword.trim()) {
-                return true
-            } else {
-                return this.searchVisible[key]
+        for (let key in state.searchVisible) {
+            state.searchVisible[key] = false
+        }
+        if (device.isDesktop) {
+            const [first] = Object.keys(props.categoryMap)
+            state.openFlagsTop[first] = true
+        }
+        return
+    }
+    const searchedResult = state.fuseInstance.search(state.keyword.trim())
+    searchedResult.forEach((result, index) => {
+        const { item } = result
+        const { parent, value } = item
+        state.searchVisible[parent] = true
+        state.searchVisible[value] = true
+    })
+    const parentValues = searchedResult.map((result) => {
+        return result.item.parent
+    })
+    parentValues.sort((a, b) => {
+        return a - b
+    })
+    state.openFlagsTop[parentValues[0]] = true
+}
+function setCategory(categoryKey) {
+    const isChecked = state.isAllSelected[categoryKey]
+    if (isChecked) {
+        const allItems = props.categoryMap[categoryKey]
+        allItems.forEach((item) => {
+            const isSelected = props.modelValue.includes(item.value)
+            if (!isSelected) {
+                localValue.push(item.value)
             }
-        },
-        initializeData(category) {
-            let fuseItems = []
-            for (let key in category) {
-                // 初始化Flag
-                this.openFlagsTop[key] = false
-                const items = category[key]
-                // fuseItems
-                items.forEach((item) => {
-                    item.parent = key
-                })
-                fuseItems = [...fuseItems, ...items]
-            }
-            // initizlize fuseInstance
-            const options = {
-                location: 4,
-                maxPatternLength: 32,
-                minMatchCharLength: 1,
-                threshold: 0.4,
-                distance: 100,
-                keys: ["text"],
-            }
-            this.fuseInstance = new Fuse(fuseItems, options)
-            this.$nextTick(() => {
-                if (this.isDesktop) {
-                    const [first] = Object.keys(this.categoryMap)
-                    this.openFlagsTop[first] = true
-                }
+        })
+    } else {
+        const allItems = props.categoryMap[categoryKey]
+        allItems.forEach((item) => {
+            const index = props.modelValue.findIndex((value) => {
+                return value === item.value
             })
-        },
-        searchOptions() {
-            for (let key in this.categoryMap) {
-                this.openFlagsTop[key] = false
-            }
-            if (!this.keyword.trim()) {
-                for (let key in this.openFlagsTop) {
-                    this.openFlagsTop[key] = false
-                }
-                for (let key in this.searchVisible) {
-                    this.searchVisible[key] = false
-                }
-                if (this.isDesktop) {
-                    const [first] = Object.keys(this.categoryMap)
-                    this.openFlagsTop[first] = true
-                }
-                return
-            }
-            const searchedResult = this.fuseInstance.search(this.keyword.trim())
-            searchedResult.forEach((result, index) => {
-                const { item } = result
-                const { parent, value } = item
-                this.searchVisible[parent] = true
-                this.searchVisible[value] = true
-            })
-            const parentValues = searchedResult.map((result) => {
-                return result.item.parent
-            })
-            parentValues.sort((a, b) => {
-                return a - b
-            })
-            this.openFlagsTop[parentValues[0]] = true
-        },
-        setCategory(categoryKey) {
-            const isChecked = this.isAllSelected[categoryKey]
-            if (isChecked) {
-                const allItems = this.categoryMap[categoryKey]
-                allItems.forEach((item) => {
-                    const isSelected = this.modelValue.includes(item.value)
-                    if (!isSelected) {
-                        this.localValue.push(item.value)
-                    }
-                })
-            } else {
-                const allItems = this.categoryMap[categoryKey]
-                allItems.forEach((item) => {
-                    const index = this.modelValue.findIndex((value) => {
-                        return value === item.value
-                    })
-                    this.localValue.splice(index, 1)
-                })
-            }
-        },
-        closeOtherItems(categoryKey, newFlag) {
-            for (let key in this.openFlagsTop) {
-                this.openFlagsTop[key] = false
-            }
-            this.openFlagsTop[categoryKey] = newFlag
-        },
-    },
+            localValue.splice(index, 1)
+        })
+    }
+}
+function closeOtherItems(categoryKey, newFlag) {
+    for (let key in state.openFlagsTop) {
+        state.openFlagsTop[key] = false
+    }
+    state.openFlagsTop[categoryKey] = newFlag
 }
 </script>
 <style lang="scss" scoped>
