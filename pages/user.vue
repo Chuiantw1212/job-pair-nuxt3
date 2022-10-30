@@ -15,7 +15,7 @@
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/consult">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/consult/records">
                         <img class="item__link__icon" src="~/assets/user/icon_consult.svg" />
                         <div class="menu__item__text">職涯諮詢</div>
                     </NuxtLink>

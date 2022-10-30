@@ -77,6 +77,13 @@ const props = defineProps({
     },
 })
 watchEffect(async () => {
+    if (props.modelValue.length) {
+        $requestSelector(`#glide_${state.id}`, (element) => {
+            mountGlideInstance(element)
+        })
+    }
+})
+watchEffect(async () => {
     if (process.client) {
         $requestSelector('#feedbackModal', (element) => {
             if (!state.bsModal) {
@@ -85,11 +92,6 @@ watchEffect(async () => {
                 })
             }
         })
-        // if (props.modelValue.length) {
-        //     $requestSelector(`#glide_${state.id}`, (element) => {
-        //         mountGlideInstance(element)
-        //     })
-        // }
     }
 })
 // methods
