@@ -1,7 +1,7 @@
 <template>
     <div class="consult">
         <img class="consult__banner" src="./assets/img_banner.png" />
-        <ConsultCard class="consult__record mt-2">
+        <MoleculeConsultCard class="consult__record mt-2">
             <template v-slot:header>
                 <img class="me-1" src="./assets/icon_record.svg">
                 預約紀錄
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </template>
-        </ConsultCard>
+        </MoleculeConsultCard>
         <div v-if="isDesktop" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
@@ -109,16 +109,11 @@
                     <div class="footer__price">
                         NT.2000 - 1小時
                     </div>
-                    <router-link class="footer__link" :to="{
-                        name: 'appointment',
-                        params: {
-                            id: 'dreamLife',
-                        },
-                    }">
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/life`">
                         <BtnSimple class="footer__link__button">
                             立即預約
                         </BtnSimple>
-                    </router-link>
+                    </NuxtLink>
                 </div>
             </div>
             <div class="themeDesktop__card">
@@ -144,16 +139,11 @@
                     <div class="footer__price">
                         NT.2000 - 1小時
                     </div>
-                    <router-link class="footer__link" :to="{
-                        name: 'appointment',
-                        params: {
-                            id: 'jobPreference',
-                        },
-                    }">
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
                         <BtnSimple class="footer__link__button">
                             立即預約
                         </BtnSimple>
-                    </router-link>
+                    </NuxtLink>
                 </div>
             </div>
             <div class="themeDesktop__card">
@@ -179,20 +169,15 @@
                     <div class="footer__price">
                         NT.2000 - 1小時
                     </div>
-                    <router-link class="footer__link" :to="{
-                        name: 'appointment',
-                        params: {
-                            id: 'resumeAndInterview',
-                        },
-                    }">
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/interview`">
                         <BtnSimple class="footer__link__button">
                             立即預約
                         </BtnSimple>
-                    </router-link>
+                    </NuxtLink>
                 </div>
             </div>
         </div>
-        <ConsultCard v-else class="consult__themeMobile">
+        <MoleculeConsultCard v-else class="consult__themeMobile">
             <template v-slot:header>
                 <img class="me-1" src="./assets/icon_Heart.svg">
                 諮詢主題類型
@@ -289,13 +274,14 @@
                     </router-link>
                 </div>
             </template>
-        </ConsultCard>
+        </MoleculeConsultCard>
         <FeedbackList v-model="state.feedbacks" class="mt-2"></FeedbackList>
     </div>
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, computed } from 'vue'
+// const { $emitter } = useNuxtApp()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
 const router = useRouter()
