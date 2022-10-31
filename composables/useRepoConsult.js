@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { getAuth, } from "firebase/auth"
 export default defineStore('consult', () => {
     const axios = useAxios()
     async function getConsultants() {

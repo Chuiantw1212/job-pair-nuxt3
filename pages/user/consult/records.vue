@@ -188,13 +188,13 @@
                     <li v-for="(service, index) in repoSelect.state.selectByQueryRes.consultService" :key="index"
                         class="themeMobile__list__item">
                         <div class="themeMobile__list__item__content"
-                            :class="{ 'themeMobile__list__item__content--active': activeTab === service.value }"
+                            :class="{ 'themeMobile__list__item__content--active': state.activeTab === service.value }"
                             @click="setActiveTab(service)">{{ service.text }}
                         </div>
                     </li>
                 </ul>
                 <div class="themeMobile__main">
-                    <template v-if="activeTab === 'dreamLife'">
+                    <template v-if="state.activeTab === 'life'">
                         <div class="main__headerGroup">
                             <img class="headerGroup__image" src="~/assets/consult/img1.webp"
                                 onerror="this.style.display = 'none'" />
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                     </template>
-                    <template v-if="activeTab === 'jobPreference'">
+                    <template v-if="state.activeTab === 'career'">
                         <div class="main__headerGroup">
                             <img class="headerGroup__image" src="~/assets/consult/img2.webp"
                                 onerror="this.style.display = 'none'" />
@@ -238,7 +238,7 @@
                             </div>
                         </div>
                     </template>
-                    <template v-if="activeTab === 'resumeAndInterview'">
+                    <template v-if="state.activeTab === 'interview'">
                         <div class="main__headerGroup">
                             <img class="headerGroup__image" src="~/assets/consult/img3.webp"
                                 onerror="this.style.display = 'none'" />
@@ -262,7 +262,7 @@
                 </div>
                 <div class="themeMobile__footer">
                     <div class="footer__price">NT.2000 - 1小時</div>
-                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/${activeTab}`">
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/${state.activeTab}`">
                         <AtomBtnSimple class="footer__link">
                             立即預約
                         </AtomBtnSimple>

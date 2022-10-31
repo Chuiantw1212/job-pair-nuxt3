@@ -1,35 +1,38 @@
 <template>
     <div class="appointment">
-        <AppointmentCard class="appointment__theme">
+        <!-- test123
+        <NuxtPage /> -->
+        <MoleculeAppointmentCard class="appointment__theme">
             <template v-slot:header>
                 選擇諮詢主題
             </template>
             <template v-slot:body>
                 <div class="appointment__theme__body">
-                    <InputSelect v-model="appointmentForm.service" name="預約服務" :items="selectByQueryRes.consultService"
-                        @change="replaceRoute()" class="details__dropdown" required></InputSelect>
-                    <InputTextarea v-model="appointmentForm.question" name="諮詢提問" class="mt-2" placeholder="請對諮詢師提問"
-                        required>
-                    </InputTextarea>
+                    <AtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
+                        name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
+                        class="details__dropdown" required></AtomInputSelect>
+                    <AtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
+                        placeholder="請對諮詢師提問" required>
+                    </AtomInputTextarea>
                 </div>
             </template>
-        </AppointmentCard>
-        <AppointmentCard class="appointment__consultant">
+        </MoleculeAppointmentCard>
+        <MoleculeAppointmentCard class="appointment__consultant">
             <template v-slot:header>
                 選擇諮詢師
             </template>
             <template v-slot:body>
                 <ul class="appointment__tab">
-                    <li v-for="(consultant, index) in consultants" :key="index" class="appointment__tab__item"
-                        :class="{ 'appointment__tab__item--active': activeTab === consultant.id }"
+                    <li v-for="(consultant, index) in state.consultants" :key="index" class="appointment__tab__item"
+                        :class="{ 'appointment__tab__item--active': state.activeTab === consultant.id }"
                         @click="switchConsultant(consultant)">
                         {{ consultant.name }}</li>
                 </ul>
-                <template v-for="(consultant, index) in consultants" :key="index">
-                    <template v-if="activeTab === consultant.id">
+                <template v-for="(consultant, index) in state.consultants" :key="index">
+                    <template v-if="state.activeTab === consultant.id">
                         <template v-if="consultant.id === 'recommend'">
                             <div class="appointment__consultant__header">
-                                <img class="appointment__consultant__image" src="./assets/default.webp"
+                                <img class="appointment__consultant__image" src="~/assets/consult/default.webp"
                                     onerror="this.style.display = 'none'" />
                                 <div class="appointment__consultant__name">
                                     {{ consultant.name }}
@@ -41,9 +44,9 @@
                                     我們將針對您的經歷，安排最適合的諮詢師。
                                 </div>
                             </div>
-                            <FeedbackList v-model="consultantFeedbacks"></FeedbackList>
-                            <ConsultTime v-model="appointmentForm.time" :consultant="{ id: 'recommend' }"
-                                :key="consultant.key"></ConsultTime>
+                            <!-- <FeedbackList v-model="consultantFeedbacks"></FeedbackList> -->
+                            <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
+                                :key="consultant.key"></OrganismConsultTime>
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
@@ -59,27 +62,31 @@
                                     {{ consultant.descLong }}
                                 </div>
                             </div>
-                            <FeedbackList v-model="consultant.feedbacks"></FeedbackList>
-                            <ConsultTime v-model="appointmentForm.time" :consultant="consultant" :key="consultant.key">
-                            </ConsultTime>
+                            <!-- <FeedbackList v-model="consultant.feedbacks"></FeedbackList> -->
+                            <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="consultant"
+                                :key="consultant.key">
+                            </OrganismConsultTime>
                         </template>
                     </template>
                 </template>
             </template>
-        </AppointmentCard>
+        </MoleculeAppointmentCard>
         <div class="appointment__footer">
             <button class="footer__button" @click="submitAppointment()">確認預約</button>
         </div>
     </div>
 </template>
 <script setup>
-const { $toggleLoader } = useNuxtApp()
+const { $toggleLoader, $storageBucket, $validate } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
+const repoSelect = useRepoSelect()
+const repoAuth = useRepoAuth()
 const state = reactive({
     activeTab: 'recommend',
     consultants: [],
+    consultantFeedbacks: [],
     serviceOptions: [],
     timeOptions: [
         {
@@ -113,15 +120,20 @@ const state = reactive({
 onMounted(() => {
     loadConsultants()
 })
-const service = computed(() => {
-    const { id = 'life' } = route.params
-    return id
+let service = 'life'
+const test = computed(() => {
+    const test = route.params
+    console.log({
+        test
+    })
+    return route.params
 })
 watchEffect(() => {
     state.appointmentForm.service = service
 })
 // methods
 async function loadConsultants() {
+    console.log('executed')
     const response = await repoConsult.getConsultants()
     if (response.status !== 200) {
         return
@@ -142,28 +154,23 @@ async function loadConsultants() {
         })
         consultant.key = Math.random()
     })
-    this.consultants = consultants
-    this.consultantFeedbacks = this.shuffle(allFeedBacks)
+    state.consultants = consultants
+    state.consultantFeedbacks = shuffle(allFeedBacks)
 }
 function replaceRoute() {
-    this.$router.replace({
-        name: this.$route.name,
-        params: {
-            id: this.appointmentForm.service
-        }
-    })
+    router.replace(`/user/consult/appointment/${state.appointmentForm.service}`)
 }
 function switchConsultant(consultant) {
     consultant.key = Math.random()
-    this.activeTab = consultant.id
-    this.appointmentForm = Object.assign(this.appointmentForm, {
+    state.activeTab = consultant.id
+    state.appointmentForm = Object.assign(state.appointmentForm, {
         consultantId: consultant.id,
-        service: this.service,
+        service: service,
         time: {},
     })
 }
 function getEnvImage(id) {
-    return `https://storage.googleapis.com/${this.$storageBucket}/consultant/${id}/photo.webp`
+    return `https://storage.googleapis.com/${$storageBucket}/consultant/${id}/photo.webp`
 }
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -172,60 +179,30 @@ function shuffle(array) {
     }
     return array
 }
-function onConsultantChange(consultantId = "") {
-    // 請選擇時重設
-    this.appointmentForm.service = ''
-    if (!consultantId) {
-        this.$router.replace({
-            name: this.$route.name,
-        })
-        return
-    }
-    this.$router.replace({
-        name: this.$route.name,
-        params: {
-            id: consultantId,
-        },
-    })
-    // 預設時全部開放
-    if (consultantId === "recommend") {
-        this.serviceOptions = this.selectByQueryRes.consultService
-        return
-    }
-    // 設定選項
-    const selectedConsultant = this.consultants.find((item) => {
-        return item.id === consultantId
-    })
-    if (selectedConsultant) {
-        const { services = [] } = selectedConsultant
-        if (services.length === 1) {
-            this.appointmentForm.service = services[0].value
-        }
-        this.serviceOptions = services
-    }
-}
 async function submitAppointment() {
-    const result = await this.$validate()
+    const result = await $validate()
     if (!result.isValid) {
         return
     }
-    this.appointmentForm.userId = this.user.id
+    state.appointmentForm.userId = repoAuth.state.user.id
     const VITE_APP_ECPAY_AMOUNT = `${import.meta.env.VITE_APP_ECPAY_AMOUNT}`
-    this.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
-    const response = await this.postConsultAppointment(this.appointmentForm)
+    state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
+    const response = await repoConsult.postConsultAppointment(state.appointmentForm)
     if (response.status !== 200) {
-        this.consultants.forEach(item => {
+        state.consultants.forEach(item => {
             item.key = Math.random()
         })
-        this.appointmentForm = {
+        state.appointmentForm = {
             consultantId,
-            service,
+            service: service,
             question,
             time: {}, // 重新設定時段就好
         }
         return
     }
-    document.write(response.data)
+    if (process.client) {
+        document.write(response.data)
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -332,7 +309,7 @@ async function submitAppointment() {
     }
 }
 
-@media screen and(min-width: 992px) {
+@media screen and (min-width: 992px) {
     .appointment {
 
         .appointment__footer {

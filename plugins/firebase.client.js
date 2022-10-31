@@ -28,7 +28,8 @@ export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             firebaseuiAuth: auth,
-            firebaseApp
+            firebaseApp,
+            storageBucket: firebaseConfig.storageBucket
         }
     }
 })
