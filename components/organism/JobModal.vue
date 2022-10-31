@@ -14,14 +14,14 @@
                     </div>
                     <template v-if="repoAuth.state.user.resumes && repoAuth.state.user.resumes.length === 1">
                         <div class="body__resume">
-                            <InputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
-                                :disabled="true" class="resume__input" :hasPreviewButton="true"></InputResume>
+                            <AtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
+                                :disabled="true" class="resume__input" :hasPreviewButton="true"></AtomInputResume>
                         </div>
                     </template>
-                    <InputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
+                    <AtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
                         itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
                         :required="true" ref="resume" class="mt-3 mb-3">
-                    </InputSelect>
+                    </AtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
                         <div class="content__portfolio__header">作品集</div>
                         <div class="checkMultiple d-flex">
@@ -37,23 +37,23 @@
                             </label>
                         </div>
                     </template>
-                    <InputTextarea v-model="state.application.coverLetter" class="mt-3" name="自薦信"
-                        placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！" rows="6"></InputTextarea>
+                    <AtomInputTextarea v-model="state.application.coverLetter" class="mt-3" name="自薦信"
+                        placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！" rows="6"></AtomInputTextarea>
                     <div class="modal__footer mt-3">
-                        <BtnSimple @click="closeModal()">
+                        <AtomBtnSimple @click="closeModal()">
                             取消
-                        </BtnSimple>
-                        <BtnSimple @click="handleSubmit()">
+                        </AtomBtnSimple>
+                        <AtomBtnSimple @click="handleSubmit()">
                             確定投遞
-                        </BtnSimple>
+                        </AtomBtnSimple>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <BtnSimple @click="handleApply()" :disabled="disabled">
+    <AtomBtnSimple @click="handleApply()" :disabled="disabled">
         <slot>立即應徵</slot>
-    </BtnSimple>
+    </AtomBtnSimple>
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
