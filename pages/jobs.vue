@@ -79,8 +79,8 @@
                     </li>
                 </ul>
                 <div class="section__salaryRange">
-                    <InputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></InputMoney>
-                    <InputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></InputMoney>
+                    <AtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></AtomInputMoney>
+                    <AtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></AtomInputMoney>
                 </div>
                 <BtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</BtnSimple>
             </div>
@@ -88,8 +88,8 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <InputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
-                    </InputSearch>
+                    <AtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
+                    </AtomInputSearch>
                 </div>
             </div>
             <div class="body__filter">
