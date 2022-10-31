@@ -314,12 +314,12 @@ function getDefaultFilter() {
         salaryMax: null,
         industry: [],
     }
-    console.log({
-        repoAuth
-    })
-    if (repoAuth && repoAuth.state.user) {
-        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
-    }
+    // console.log({
+    //     repoAuth
+    // })
+    // if (repoAuth && repoAuth.state.user) {
+    //     defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
+    // }
     return defualtFilter
 }
 async function loadJobItemBatch(entries, observer) {
