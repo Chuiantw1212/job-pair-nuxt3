@@ -15,13 +15,14 @@
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/consult/records">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        to="/user/consult/records">
                         <img class="item__link__icon" src="~/assets/user/icon_consult.svg" />
                         <div class="menu__item__text">職涯諮詢</div>
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/preference">
                         <img class="item__link__icon" src="~/assets/user/icon_job.svg" />
                         <div class="menu__item__text">求職偏好</div>
                     </NuxtLink>

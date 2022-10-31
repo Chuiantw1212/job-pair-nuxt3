@@ -7,8 +7,6 @@
                         <button type="button" class="btn-close" @click="hideModal()"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Count: {{ counter.$state.count }}</p>
-                        <button @click="counter.increment()">+</button>
                         <h3 class="body__header">求職者登入註冊</h3>
                         <div v-show="state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
@@ -38,7 +36,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { getAuth, } from "firebase/auth"
 import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $store, $firebaseuiAuth, $firebaseApp } = useNuxtApp()
-const counter = useCounter()
 // const { auth } = $firebaseui
 // import { auth } from "firebaseui"
 const router = useRouter()
