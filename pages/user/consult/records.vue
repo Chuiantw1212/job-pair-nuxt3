@@ -29,7 +29,7 @@
                                 <tr v-for="(item, index) in state.records" :key="index" class="table__row">
                                     <td>
                                         <div v-if="item.time.start" class="row__cell row__cell--first">
-                                            {{ $filter.time(item.time.start) }}
+                                            {{ $time(item.time.start) }}
                                         </div>
                                         <div v-else class="row__cell row__cell--first">
                                             安排中
@@ -47,7 +47,7 @@
                                     </td>
                                     <td>
                                         <div class="row__cell">
-                                            {{ $filter.time(item.date) }}
+                                            {{ $time(item.date) }}
                                         </div>
                                     </td>
                                     <td>
@@ -275,21 +275,16 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { reactive, onMounted, computed } from 'vue'
+import { reactive, onMounted, } from 'vue'
+const { $toggleLoader, $time, } = useNuxtApp()
 const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
-const router = useRouter()
-const route = useRoute()
 const state = reactive({
     records: [],
     consultants: [],
     feedbacks: [],
-})
-const activeTab = computed(() => {
-    const { id } = route.params
-    const activeTab = id ? id : 'life'
-    return activeTab
+    activeTab: 'life'
 })
 // hooks
 onMounted(async () => {
@@ -307,12 +302,7 @@ onMounted(async () => {
     state.consultants = shuffle(consultants) // method有用到
 })
 function setActiveTab(service) {
-    router.replace({
-        name: 'consult',
-        params: {
-            id: service.value
-        }
-    })
+    state.activeTab = service.value
 }
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {

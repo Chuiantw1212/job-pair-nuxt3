@@ -9,12 +9,12 @@ export default function setup() {
     onMounted(() => {
         if (process.client) {
             window.addEventListener("resize", calculateWidth)
-            state.isDesktop = calculateWidth()
+            calculateWidth()
             state.isNativeWeb = checkIsNativeWeb()
         }
     })
     function calculateWidth() {
-        return window.innerWidth >= 992
+        state.isDesktop = window.innerWidth >= 992
     }
     function checkIsNativeWeb() {
         const u = navigator.userAgent
