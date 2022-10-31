@@ -16,7 +16,7 @@
                         </AtomInputSelectLabel>
                     </template>
                 </div>
-                <template v-if="locationRes">
+                <template v-if="repoSelect.state.locationRes">
                     <AtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
                         <AtomInputCheckMultiple v-model="state.filter.addressRegion"
                             :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
@@ -99,7 +99,7 @@
                     <template v-else>符合您篩選條件的共{{ state.count }}個職缺</template>
                 </div>
                 <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
-                    <img src="./icon/icon_Filter.svg" />
+                    <img src="~/assets/jobs/icon_Filter.svg" />
                     <span class="filter__desc">篩選
                         <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
                     </span>

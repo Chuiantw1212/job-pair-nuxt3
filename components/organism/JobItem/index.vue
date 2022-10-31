@@ -105,13 +105,13 @@ function getCategoryText(category = "") {
     if (!category) {
         return
     }
-    const text = $optionText(category, repoAuth.state.selectByQueryRes.jobCategory)
+    const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
     return text
 }
 function getLocationText() {
     let locationText = ""
     const { addressRegion = "", addressLocality } = props.modelValue
-    const { locationRes } = repoAuth.state
+    const { locationRes } = repoSelect.state
     if (!locationRes) {
         return
     }
