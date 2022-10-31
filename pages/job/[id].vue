@@ -100,8 +100,8 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <InputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
-                        </InputCKEditor>
+                        <AtomInputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
+                        </AtomInputCKEditor>
                     </div>
                 </section>
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">

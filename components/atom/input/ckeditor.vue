@@ -6,148 +6,129 @@
         </div>
         <input v-show="false" :value="!!modelValue" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
-            <div :id="`editor_${id}`">
+            <div :id="`editor_${state.id}`">
 
             </div>
         </div>
     </div>
 </template>
-<script>
-import Editor from 'ckeditor5-custom-build'
+<script setup>
 import { markRaw } from 'vue'
-export default {
-    data: function () {
-        const id = this.uuid()
-        return {
-            ckeditorInstance: null,
-            id,
+const { $Editor, $uuid4, $requestSelector } = useNuxtApp()
+const emit = defineEmits(['update:modelValue', 'blur'])
+const state = reactive({
+    ckeditorInstance: null,
+    id: $uuid4(),
+})
+const props = defineProps({
+    modelValue: {
+        type: String,
+        default: ''
+    },
+    toolbar: {
+        type: Array,
+        default: function () {
+            return [
+                "heading",
+                "|",
+                'fontSize',
+                "|",
+                'bold',
+                'italic',
+                'link',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'outdent',
+                'indent',
+                '|',
+                'blockQuote',
+                'insertTable',
+                'mediaEmbed',
+                'undo',
+                'redo',
+                '|',
+                'removeFormat'
+            ]
         }
     },
-    props: {
-        modelValue: {
-            type: String,
-            default: ''
-        },
-        toolbar: {
-            type: Array,
-            default: function () {
-                return [
-                    "heading",
-                    "|",
-                    'fontSize',
-                    "|",
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'outdent',
-                    'indent',
-                    '|',
-                    'blockQuote',
-                    'insertTable',
-                    'mediaEmbed',
-                    'undo',
-                    'redo',
-                    '|',
-                    'removeFormat'
-                ]
-            }
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        preview: {
-            type: Boolean,
-            default: false,
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        name: {
-            type: String,
-            default: ''
-        },
-        removePlatformLink: {
-            type: Boolean,
-            default: false
-        }
+    disabled: {
+        type: Boolean,
+        default: false
     },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue ?? '' // important
-            },
-            set(newValue) {
-                this.$emit('update:modelValue', newValue)
-            }
-        },
+    preview: {
+        type: Boolean,
+        default: false,
     },
-    watch: {
-        localValue(newValue, oldValue) {
-            const ckeditorInstance = this.ckeditorInstance
-            // 職缺新增錯誤處理
-            if (!newValue && oldValue && ckeditorInstance) {
-                ckeditorInstance.setData(newValue)
-            }
-        }
+    required: {
+        type: Boolean,
+        default: false,
     },
-    async mounted() {
-        this.initializeCKEditor()
+    name: {
+        type: String,
+        default: ''
     },
-    beforeUnmount() {
-        const ckeditorInstance = this.ckeditorInstance
-        if (ckeditorInstance) {
-            ckeditorInstance.destroy()
-        }
-    },
-    methods: {
-        uuid() {
-            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            )
-        },
-        async initializeCKEditor() {
-            this.$requestSelector(`#editor_${this.id}`, async (element) => {
-                const editor = await Editor.create(element, {
-                    toolbar: this.toolbar,
-                })
-                if (this.localValue) {
-                    editor.setData(this.localValue)
-                }
-                if (this.disabled) {
-                    editor.enableReadOnlyMode(`editor_${this.id}`)
-                }
-                // console.log(editor)
-                editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-                    this.$emit('blur', evt)
-                })
-                // editor.model.document.on('blur', (eventInfo, data) => {
-                //     console.log({
-                //         eventInfo,
-                //         data
-                //     })
-                // })
-                editor.model.document.on('change:data', () => {
-                    let newValue = editor.getData()
-                    if (this.removePlatformLink) {
-                        newValue = newValue.replaceAll(/href=".*?"/g, '')
-                    }
-                    this.localValue = newValue
-                })
-                this.ckeditorInstance = markRaw(editor)
-            })
-        },
-        async setData(newValue) {
-            this.$requestSelector(`#editor_${this.id}`, async () => {
-                const ckeditorInstance = this.ckeditorInstance
-                ckeditorInstance.setData(newValue)
-            })
-        }
+    removePlatformLink: {
+        type: Boolean,
+        default: false
     }
+})
+let localValue = computed({
+    get() {
+        return props.modelValue ?? '' // important
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
+// hooks
+onMounted(() => {
+    initializeCKEditor()
+})
+onBeforeUnmount(() => {
+    const ckeditorInstance = state.ckeditorInstance
+    if (ckeditorInstance) {
+        ckeditorInstance.destroy()
+    }
+})
+watch(() => localValue, (newValue, oldValue) => {
+    const ckeditorInstance = state.ckeditorInstance
+    // 職缺新增錯誤處理
+    if (!newValue && oldValue && ckeditorInstance) {
+        ckeditorInstance.setData(newValue)
+    }
+})
+// methods
+async function initializeCKEditor() {
+    $requestSelector(`#editor_${state.id}`, async (element) => {
+        const editor = await $Editor.create(element, {
+            toolbar: props.toolbar,
+        })
+        if (localValue.value) {
+            editor.setData(localValue.value)
+        }
+        if (props.disabled) {
+            editor.enableReadOnlyMode(`editor_${state.id}`)
+        }
+        editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+            emit('blur', evt)
+        })
+        editor.model.document.on('change:data', () => {
+            let newValue = editor.getData()
+            if (this.removePlatformLink) {
+                newValue = newValue.replaceAll(/href=".*?"/g, '')
+            }
+            localValue.value = newValue
+        })
+        state.ckeditorInstance = markRaw(editor)
+    })
+}
+// public method do not delete
+async function setData(newValue) {
+    $requestSelector(`#editor_${state.id}`, async () => {
+        const ckeditorInstance = state.ckeditorInstance
+        ckeditorInstance.setData(newValue)
+    })
 }
 </script>
 <style lang="scss" scoped>
