@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                            repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -100,8 +100,8 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <!-- <InputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
-                        </InputCKEditor> -->
+                        <InputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
+                        </InputCKEditor>
                     </div>
                 </section>
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
