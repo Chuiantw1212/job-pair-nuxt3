@@ -107,7 +107,8 @@
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <!-- <InputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills"></InputCKEditor> -->
+                        <AtomInputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills">
+                        </AtomInputCKEditor>
                     </div>
                 </section>
             </div>

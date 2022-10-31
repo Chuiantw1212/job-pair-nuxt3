@@ -1,5 +1,5 @@
 <template>
-    <div :id="id">
+    <div :id="state.id">
         <div v-if="name" class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
@@ -14,7 +14,7 @@
 </template>
 <script setup>
 import { markRaw } from 'vue'
-const { $Editor, $uuid4, $requestSelector } = useNuxtApp()
+const { $uuid4, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const state = reactive({
     ckeditorInstance: null,
@@ -83,7 +83,9 @@ let localValue = computed({
 })
 // hooks
 onMounted(() => {
-    initializeCKEditor()
+    if (process.client) {
+        initializeCKEditor()
+    }
 })
 onBeforeUnmount(() => {
     const ckeditorInstance = state.ckeditorInstance
@@ -101,7 +103,8 @@ watch(() => localValue, (newValue, oldValue) => {
 // methods
 async function initializeCKEditor() {
     $requestSelector(`#editor_${state.id}`, async (element) => {
-        const editor = await $Editor.create(element, {
+        // 使用CDN
+        const editor = await window.ClassicEditor.create(element, {
             toolbar: props.toolbar,
         })
         if (localValue.value) {
