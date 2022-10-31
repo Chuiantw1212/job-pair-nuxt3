@@ -53,7 +53,7 @@
                         <span class="item__header">
                             薪資
                         </span>
-                        <span class="item__body">{{ $salary(job) }}</span>
+                        <span class="item__body">{{ $salary(state.job) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
@@ -91,7 +91,8 @@
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
                     <iframe class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(job)" @load="setMapHeight()">
+                        referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
+                        @load="setMapHeight()">
                     </iframe>
                 </div>
             </div>
@@ -217,8 +218,7 @@ onBeforeUnmount(() => {
         window.removeEventListener('scroll', detectScroll)
     }
 })
-console.log('route.params.jobId', route.params.jobId)
-watch(() => route.params.jobId, () => {
+watch(() => route.params.id, () => {
     initialize()
 })
 watch(() => repoJobApplication.state.userJobs, () => {
@@ -306,7 +306,7 @@ function setApplyFlow() {
     if (!jobKeys.length) {
         return
     }
-    const matchedJob = repoJobApplication.state.userJobs[jobId]
+    const matchedJob = repoJobApplication.state.userJobs[jobId.value]
     if (matchedJob) {
         state.applyFlow = matchedJob.applyFlow
     }
@@ -383,7 +383,7 @@ function getCategoryText(category = "") {
     if (!category) {
         return
     }
-    const text = $optionText(category, useRepoSelect.state.selectByQueryRes.jobCategory)
+    const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
     return text
 }
 const map = ref(null)
@@ -440,12 +440,12 @@ function checkVisibility() {
 const description = ref(null)
 const skills = ref(null)
 async function initialize() {
-    if (!jobId) {
+    if (!jobId.value) {
         job = {}
         return
     }
     const config = {
-        jobId: jobId,
+        jobId: jobId.value,
     }
     const { user } = repoAuth.state
     if (user && user.id) {
@@ -459,14 +459,14 @@ async function initialize() {
         return
     }
     state.job = jobResponse.data
-    if (description) {
-        description.setData(state.job.description)
+    if (description.value) {
+        description.value.setData(state.job.description)
     }
-    if (skills) {
-        skills.setData(state.job.skills)
+    if (skills.value) {
+        skills.value.setData(state.job.skills)
     }
     // 再取得公司資料
-    const companyResponse = await useRepoCompany.getCompanyById(state.job.organizationId)
+    const companyResponse = await repoCompany.getCompanyById(state.job.organizationId)
     state.company = companyResponse.data
     document.title = `${state.job.name} - ${state.company.name} - Job Pair`
 }
