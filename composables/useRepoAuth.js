@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
     const axios = useAxios()
     const state = reactive({

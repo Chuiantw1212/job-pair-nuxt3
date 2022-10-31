@@ -1,6 +1,5 @@
 // import firebase from "firebase/app"
 import { defineStore } from 'pinia'
-// import { getAuth, } from "firebase/auth"
 export default defineStore('job', () => {
     const axios = useAxios()
     const state = reactive({

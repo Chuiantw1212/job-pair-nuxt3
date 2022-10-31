@@ -3,7 +3,7 @@
         <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink id="navItem__button" class="navItem__button">
+                    <NuxtLink id="navItem__button" class="navItem__button" to="/jobs">
                         職缺探索
                     </NuxtLink>
                 </li>
