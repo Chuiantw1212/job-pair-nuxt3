@@ -82,7 +82,7 @@
                     <AtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></AtomInputMoney>
                     <AtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></AtomInputMoney>
                 </div>
-                <BtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</BtnSimple>
+                <AtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</AtomBtnSimple>
             </div>
         </MoleculeFilter>
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
@@ -124,10 +124,11 @@
             </div>
             <div class="jobs__main">
                 <ul class="main__list">
-                    <JobItem v-for="(job, index) in state.jobRecommendList" v-model="state.jobRecommendList[index]"
-                        :key="index" class="main__list__item" :recommend="true"></JobItem>
-                    <JobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItem`" class="main__list__item jobItem"></JobItem>
+                    <OrganismJobItem v-for="(job, index) in state.jobRecommendList"
+                        v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
+                    </OrganismJobItem>
+                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                        :ref="`jobItem`" class="main__list__item jobItem"></OrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
                             <div>
@@ -137,19 +138,19 @@
                                 <br>
                                 另外還有一對一職涯諮詢的服務
                             </div>
-                            <BtnSimple class="last__reset" @click="gotoConsultRecords()">去看看</BtnSimple>
+                            <AtomBtnSimple class="last__reset" @click="gotoConsultRecords()">去看看</AtomBtnSimple>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <Bubble></Bubble>
+        <OrganismMonica></OrganismMonica>
     </div>
 </template>
 <script setup>
 import { nextTick, ref } from 'vue'
 const { $toggleLoader, $requestSelector, $alert } = useNuxtApp()
-const deive = useDevice()
+const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()

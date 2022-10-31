@@ -1,10 +1,10 @@
-import { Modal } from "bootstrap"
-import { Collapse } from "bootstrap"
+import { Modal, Collapse, Tooltip } from "bootstrap"
 export default defineNuxtPlugin(() => ({
     provide: {
         bootstrap: {
             Modal,
-            Collapse
+            Collapse,
+            Tooltip
         },
     },
 }))

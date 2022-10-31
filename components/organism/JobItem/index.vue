@@ -40,12 +40,12 @@
                 </NuxtLink>
                 <div class="main__panel d-lg-none">
                     <div class="panel__vl"></div>
-                    <JobItemPanel v-model="modelValue"></JobItemPanel>
+                    <OrganismJobItemPanel v-model="modelValue"></OrganismJobItemPanel>
                 </div>
             </div>
         </div>
-        <JobItemPanel v-model="modelValue" class="d-none d-lg-block item__footer" :showShareButton="true">
-        </JobItemPanel>
+        <OrganismJobItemPanel v-model="modelValue" class="d-none d-lg-block item__footer" :showShareButton="true">
+        </OrganismJobItemPanel>
     </li>
 </template>
 <script setup>
