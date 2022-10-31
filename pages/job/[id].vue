@@ -19,9 +19,9 @@
                         </div>
                     </div>
                 </div>
-                <JobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
+                <OrganismJobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
                     :jobDetailsException="true">
-                </JobItemPanel>
+                </OrganismJobItemPanel>
             </div>
         </section>
         <div v-if="state.job && repoSelect.state.selectByQueryRes" class="row jobView__body">
@@ -80,12 +80,12 @@
                         <span class="item__body">{{ $time(state.job.datePosted) }}</span>
                     </div>
                     <div class="mt-3">
-                        <BtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵</BtnSimple>
-                        <BtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</BtnSimple>
+                        <AtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵</AtomBtnSimple>
+                        <AtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</AtomBtnSimple>
                         <JobModal v-else-if="checkVisibility()" v-model="state.job" @applied="state.applyFlow = $event">
                             立即應徵
                         </JobModal>
-                        <BtnSimple v-else :disabled="true">已應徵</BtnSimple>
+                        <AtomBtnSimple v-else :disabled="true">已應徵</AtomBtnSimple>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
@@ -98,14 +98,14 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <InputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
-                        </InputCKEditor>
+                        <!-- <InputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
+                        </InputCKEditor> -->
                     </div>
                 </section>
                 <section v-if="job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <InputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills"></InputCKEditor>
+                        <!-- <InputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills"></InputCKEditor> -->
                     </div>
                 </section>
             </div>
@@ -129,8 +129,8 @@
         <section v-if="repoAuth.user && state.jobList.length" class="jobView__similarJobs">
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
-                <JobItem v-for="(job, index) in state.jobList" :key="index" v-model="state.jobList[index]"
-                    class="basic__footer" :showShareButton="true" :ref="`jobItem${index}`"></JobItem>
+                <OrganismJobItem v-for="(job, index) in state.jobList" :key="index" v-model="state.jobList[index]"
+                    class="basic__footer" :showShareButton="true" :ref="`jobItem${index}`"></OrganismJobItem>
             </ul>
         </section>
     </div>
@@ -190,13 +190,17 @@ const jobId = computed(() => {
 })
 let browserConfig = computed({
     get() {
-        const configString = localStorage.getItem('jobPair')
-        const config = JSON.parse(configString) || { ads: {} }
-        return config
+        if (process.client) {
+            const configString = localStorage.getItem('jobPair')
+            const config = JSON.parse(configString) || { ads: {} }
+            return config
+        }
     },
     set(newValue) {
-        const configString = JSON.stringify(newValue)
-        localStorage.setItem('jobPair', configString)
+        if (process.client) {
+            const configString = JSON.stringify(newValue)
+            localStorage.setItem('jobPair', configString)
+        }
     }
 })
 // hooks
@@ -355,6 +359,9 @@ async function loadJobItemBatch(entries, observer) {
     }
 }
 function hideAd() {
+    if (!process.client) {
+        return
+    }
     if (browserConfig.ads) {
         browserConfig.ads.jobDetails = false
     } else {
