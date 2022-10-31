@@ -187,7 +187,6 @@ const state = reactive({
         hourly: "時薪",
     },
 })
-const jobItem = ref(null)
 const jobId = computed(() => {
     const jobId = route.path.split('/').slice(-1)[0]
     return jobId
@@ -361,6 +360,8 @@ function resetFilter() {
     })
     state.filter = getDefaultFilter()
 }
+
+const jobItem = ref([])
 function observeLastJob(newJobs = []) {
     if (!newJobs.length) {
         return
@@ -372,10 +373,7 @@ function observeLastJob(newJobs = []) {
         })
     }
     $requestSelector('.jobItem', () => {
-        const wrappers = jobItem
-        console.log({
-            jobItem
-        })
+        const wrappers = jobItem.value
         const targetComponent = wrappers[wrappers.length - 1]
         const target = targetComponent.$el
         state.observer.observe(target)
@@ -386,17 +384,17 @@ function debounce(func, delay = 250) {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {
             state.debounceTimer = undefined
-            func.apply(state, args)
+            func.apply(this, args)
         }, delay)
     }
 }
 async function initializeSearch() {
     // console.log('initializeSearch')
-    // debounce(async () => {
-    state.jobList = []
-    state.pagination.pageOffset = 0
-    await concatJobsFromServer()
-    // }, 400)()
+    debounce(async () => {
+        state.jobList = []
+        state.pagination.pageOffset = 0
+        await concatJobsFromServer()
+    }, 400)()
 }
 async function concatJobsFromServer() {
     const { user } = repoAuth.state

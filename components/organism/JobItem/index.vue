@@ -2,7 +2,9 @@
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
         <img v-if="modelValue.image" class="item__logo" :src="modelValue.image" onerror="this.style.display = 'none'" />
         <div class="item__body">
-            <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`"></NuxtLink>
+            <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`">
+                {{ modelValue.name }}
+            </NuxtLink>
             <NuxtLink class="body__company" :to="`/company/${modelValue.organizationId}`">
                 <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>

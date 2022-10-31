@@ -84,14 +84,14 @@ const routeName = computed(() => {
     return route.name
 })
 // hooks
-watch(device.state.isDesktop, () => {
+watch(() => device.state.isDesktop, () => {
     nextTick(() => {
         if (!state.shareButtonToolTip) {
             initialilzeTooltip()
         }
     })
 })
-watch(props.modelValue.similarity, () => {
+watch(() => props.modelValue.similarity, () => {
     nextTick(() => {
         initialilzeTooltip()
     })
