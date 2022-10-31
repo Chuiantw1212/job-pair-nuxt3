@@ -193,16 +193,23 @@ const jobId = computed(() => {
     return jobId
 })
 // hooks
-watchEffect(() => {
+onMounted(() => {
+    initializeSearch()
+})
+watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
     const { user } = repoAuth.state
     if (noLocalJobs && user && user.id) {
+        console.log('resetFilter')
         resetFilter()
     }
-})
-watch(state.filter, () => {
+}, { immediate: true })
+// watchEffect(() => {
+// })
+watch(() => state.filter, () => {
+    console.log('initializeSearch')
     initializeSearch()
-})
+}, { deep: true })
 // methods
 function getFilterValues() {
     const values = Object.values(state.filter)
@@ -315,12 +322,10 @@ function getDefaultFilter() {
         salaryMax: null,
         industry: [],
     }
-    // console.log({
-    //     repoAuth
-    // })
-    // if (repoAuth && repoAuth.state.user) {
-    //     defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
-    // }
+    const { user } = repoAuth.state
+    if (user) {
+        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
+    }
     return defualtFilter
 }
 async function loadJobItemBatch(entries, observer) {
@@ -354,9 +359,7 @@ function resetFilter() {
         top: 0,
         behavior: 'auto'
     })
-    nextTick(() => {
-        state.filter = getDefaultFilter()
-    })
+    state.filter = getDefaultFilter()
 }
 function observeLastJob(newJobs = []) {
     if (!newJobs.length) {
@@ -383,24 +386,25 @@ function debounce(func, delay = 250) {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {
             state.debounceTimer = undefined
-            func.apply(this, args)
+            func.apply(state, args)
         }, delay)
     }
 }
 async function initializeSearch() {
-    debounce(async () => {
-        state.jobList = []
-        state.pagination.pageOffset = 0
-        await concatJobsFromServer()
-    }, 400)()
+    // console.log('initializeSearch')
+    // debounce(async () => {
+    state.jobList = []
+    state.pagination.pageOffset = 0
+    await concatJobsFromServer()
+    // }, 400)()
 }
 async function concatJobsFromServer() {
-    const { user } = repoAuth
+    const { user } = repoAuth.state
     if (!user || !user.id) {
         return
     }
     const config = Object.assign({}, state.pagination, state.filter, {
-        searchLike: this.searchLike,
+        searchLike: state.searchLike,
         id: user.id
     })
     const response = await repoJob.getJobAll(config)

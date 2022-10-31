@@ -52,13 +52,13 @@
 <script setup>
 import { nextTick, ref } from 'vue'
 const { $uuid4, $bootstrap, $emitter, $rank } = useNuxtApp()
-const deivce = useDevice()
+const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
-    id: uuid4(),
+    id: $uuid4(),
     application: {},
     navigator: window.navigator,
     shareButtonToolTip: null,
@@ -91,7 +91,7 @@ watch(device.state.isDesktop, () => {
         }
     })
 })
-watch(prop.modelValue.similarity, () => {
+watch(props.modelValue.similarity, () => {
     nextTick(() => {
         initialilzeTooltip()
     })

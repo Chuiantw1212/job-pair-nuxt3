@@ -60,7 +60,6 @@ const repoSelect = useRepoSelect()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
-    backgroundImage,
     applyFlow: null
 })
 const props = defineProps({
@@ -83,6 +82,7 @@ const props = defineProps({
 })
 // hooks
 watchEffect(() => {
+    const { user } = repoAuth.state
     if (!user) {
         return
     }
