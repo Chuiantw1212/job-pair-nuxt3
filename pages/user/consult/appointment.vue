@@ -186,7 +186,7 @@ async function submitAppointment() {
         return
     }
     state.appointmentForm.userId = repoAuth.state.user.id
-    const VITE_APP_ECPAY_AMOUNT = `${config.VITE_APP_ECPAY_AMOUNT}`
+    const VITE_APP_ECPAY_AMOUNT = `${config.public.VITE_APP_ECPAY_AMOUNT}`
     state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
     const response = await repoConsult.postConsultAppointment(state.appointmentForm)
     if (response.status !== 200) {
@@ -201,6 +201,9 @@ async function submitAppointment() {
         }
         return
     }
+    // console.log({
+    //     response
+    // })
     if (process.client) {
         document.write(response.data)
     }

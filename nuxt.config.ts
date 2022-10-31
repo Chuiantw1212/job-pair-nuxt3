@@ -30,8 +30,8 @@ export default defineNuxtConfig({
         '@glidejs/glide/dist/css/glide.theme.min.css',
     ],
     runtimeConfig: {
-        VITE_APP_ECPAY_AMOUNT: 5,
         public: {
+            VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
             VITE_APP_API_DEFAULT: 'http://localhost:8080',
         }
