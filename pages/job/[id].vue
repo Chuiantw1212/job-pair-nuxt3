@@ -137,8 +137,7 @@
 </template>
 <script setup>
 import { computed } from '@vue/reactivity'
-import { watch } from 'fs'
-import { onBeforeUnmount, onMounted, nextTick } from 'vue'
+import { onBeforeUnmount, onMounted, nextTick, watch } from 'vue'
 const { $emitter, $alert, $optionText } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
@@ -202,12 +201,16 @@ let browserConfig = computed({
 })
 // hooks
 onMounted(() => {
-    window.addEventListener("resize", setMapHeight)
-    window.addEventListener('scroll', detectScroll)
+    if (process.client) {
+        window.addEventListener("resize", setMapHeight)
+        window.addEventListener('scroll', detectScroll)
+    }
 })
 onBeforeUnmount(() => {
-    window.removeEventListener("resize", setMapHeight)
-    window.removeEventListener('scroll', detectScroll)
+    if (process.client) {
+        window.removeEventListener("resize", setMapHeight)
+        window.removeEventListener('scroll', detectScroll)
+    }
 })
 watch(() => route.params.id, () => {
     initialize()
@@ -239,7 +242,7 @@ function debounce(func, delay = 400) {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {
             console.log('timeout')
-            this.debounceTimer = undefined
+            state.debounceTimer = undefined
             func.apply(this, args)
         }, delay)
     }
@@ -303,7 +306,7 @@ async function concatJobsFromServer() {
         return
     }
     const config = Object.assign({}, state.pagination, {
-        occupationalCategory: this.job.occupationalCategory,
+        occupationalCategory: state.job.occupationalCategory,
     })
     if (user.type === 'user') {
         config.id = user.id
@@ -333,15 +336,15 @@ function observeLastJob(newJobs = []) {
         })
     }
     const lastItemIndex = state.jobList.length - 1
-    const targetComponentWrapper = this.$refs[`jobItem${lastItemIndex}`]
-    if (!targetComponentWrapper) {
-        return
-    }
-    const targetComponent = targetComponentWrapper[0]
-    if (targetComponent) {
-        const target = targetComponent.$el
-        this.observer.observe(target)
-    }
+    // const targetComponentWrapper = this.$refs[`jobItem${lastItemIndex}`]
+    // if (!targetComponentWrapper) {
+    //     return
+    // }
+    // const targetComponent = targetComponentWrapper[0]
+    // if (targetComponent) {
+    //     const target = targetComponent.$el
+    //     this.observer.observe(target)
+    // }
 }
 async function loadJobItemBatch(entries, observer) {
     const triggeredEntry = entries[0]
