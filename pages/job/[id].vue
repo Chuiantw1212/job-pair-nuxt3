@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -46,7 +46,7 @@
                         <span class="item__body">
                             {{ getJobAddress() }}
                             <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank"> <img
-                                    src="./icon/icon_Environment.svg" alt="map"></a>
+                                    src="~/assets/jobs/details/icon_Environment.svg" alt="map"></a>
                         </span>
                     </div>
                     <div class="features__item">
@@ -104,7 +104,7 @@
                         </InputCKEditor> -->
                     </div>
                 </section>
-                <section v-if="job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
+                <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
                         <!-- <InputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills"></InputCKEditor> -->
@@ -322,7 +322,7 @@ async function concatJobsFromServer() {
     if (user.type === 'user') {
         config.id = user.id
     }
-    const response = await getJobAll(config)
+    const response = await repoJob.getJobAll(config)
     if (response.status !== 200) {
         return
     }

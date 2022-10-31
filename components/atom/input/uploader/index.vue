@@ -66,10 +66,10 @@
 <script setup>
 import { Buffer } from 'buffer/'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $alert, $succeed, $time, } = useNuxtApp()
+const { $alert, $succeed, $time, $uuid4 } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
-    id: uuid()
+    id: $uuid4()
 })
 const props = defineProps({
     modelValue: {

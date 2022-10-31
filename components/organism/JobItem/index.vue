@@ -13,7 +13,7 @@
                 <NuxtLink v-if="repoSelect.state.selectByQueryRes" class="main__labelGroup"
                     :to="`/job/${modelValue.identifier}`">
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="./icon_Aim.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" />
                         <span>
                             {{ $optionText(modelValue.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
@@ -23,23 +23,23 @@
                         </span>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
-                        <img class="label__icon" src="./icon_Environment.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" />
                         {{
                                 getLocationText()
                         }}
                     </div>
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="./icon_Dollar.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" />
                         {{ $salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
-                        <img class="label__icon" src="./icon_Laptop.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" />
                         <span>{{ $optionText(modelValue.jobLocationType,
                                 repoSelect.state.selectByQueryRes.jobLocationType)
                         }}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
-                        <img class="label__icon" src="./icon_Tag.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" />
                         <span class>{{ getCategoryTextGroup() }}</span>
                     </div>
 

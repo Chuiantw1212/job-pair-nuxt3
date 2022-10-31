@@ -57,11 +57,11 @@
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
-const { $bootstrap, $uuid4, $emitter, $toggleLoader, $succeed } = useNuextApp()
+const { $bootstrap, $uuid4, $emitter, $toggleLoader, $succeed } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const state = reactive({
-    id: uuid(),
+    id: $uuid4(),
     bsModal: null,
     glideIndex: 0,
     application: {
