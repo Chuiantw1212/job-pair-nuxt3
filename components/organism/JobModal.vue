@@ -103,7 +103,7 @@ onMounted(() => {
 })
 // methods
 function setApplication() {
-    const { user } = repoAuth
+    const { user } = repoAuth.state
     // 拉取資料
     const application = JSON.parse(JSON.stringify(user))
     const { resumes } = user
@@ -131,7 +131,7 @@ function hasSelected(work) {
     return isSelected
 }
 function handleApply() {
-    const { user } = repoAuth
+    const { user } = repoAuth.state
     if (user && user.id) {
         state.bsModal.show()
     } else {

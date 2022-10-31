@@ -1,6 +1,6 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isDesktop }">
-        <Tabs class="d-lg-none jobView__tabs" :items="state.tabItems"></Tabs>
+        <AtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></AtomTabs>
         <section v-if="state.job" id="jobView__basic" class="jobView__section mt-4">
             <div v-if="state.company" class="jobView__card jobView__basic">
                 <div class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${state.company.logo})` }">
@@ -82,9 +82,10 @@
                     <div class="mt-3">
                         <AtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵</AtomBtnSimple>
                         <AtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</AtomBtnSimple>
-                        <JobModal v-else-if="checkVisibility()" v-model="state.job" @applied="state.applyFlow = $event">
+                        <OrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
+                            @applied="state.applyFlow = $event">
                             立即應徵
-                        </JobModal>
+                        </OrganismJobModal>
                         <AtomBtnSimple v-else :disabled="true">已應徵</AtomBtnSimple>
                     </div>
                 </div>
@@ -110,8 +111,7 @@
                 </section>
             </div>
         </div>
-        <section v-if="browserConfig.ads.jobDetails !== false && repoAuth.user" class="jobView__ad"
-            :key="state.adRenderKey">
+        <section v-if="getAdVisibility()" class="jobView__ad" :key="state.adRenderKey">
             <div class="ad__card">
                 <NuxtLink class="ad__card__link" to="/user/consult/records">
                     <div class="card__header">職涯發展從認識自己開始！</div>
@@ -123,7 +123,7 @@
                     </div>
                 </NuxtLink>
                 <button class="btn-close card__cancel" @click="hideAd()" aria-label="close ads"></button>
-                <img class="d-none d-lg-block ad__card__image" src="./img_consult.png" />
+                <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
         <section v-if="repoAuth.user && state.jobList.length" class="jobView__similarJobs">
@@ -209,6 +209,7 @@ onMounted(() => {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
     }
+    initialize()
 })
 onBeforeUnmount(() => {
     if (process.client) {
@@ -216,9 +217,10 @@ onBeforeUnmount(() => {
         window.removeEventListener('scroll', detectScroll)
     }
 })
-watch(() => route.params.id, () => {
+console.log('route.params.jobId', route.params.jobId)
+watch(() => route.params.jobId, () => {
     initialize()
-}, { immediate: true })
+})
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
@@ -228,6 +230,11 @@ watch(() => repoAuth.state.user, async () => {
     await concatJobsFromServer()
 })
 // methos
+function getAdVisibility() {
+    if (process.client) {
+        return process.client && browserConfig.value.ads.jobDetails !== false && repoAuth.state.user
+    }
+}
 function detectScroll() {
     const { user } = repoAuth.state
     if (user && user.id) {
@@ -306,7 +313,7 @@ function setApplyFlow() {
 }
 async function concatJobsFromServer() {
     const { user } = repoAuth.state
-    if (!user.id || !job) {
+    if (!user.id || !state.job) {
         return
     }
     const config = Object.assign({}, state.pagination, {
