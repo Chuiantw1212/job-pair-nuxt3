@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export default defineStore('job', () => {
     const axios = useAxios()
     const state = reactive({
-
+        jobRecommendedRes: null,
     })
     async function getJobCrawlResult(params) {
         const response = await axios.request({
@@ -17,8 +17,8 @@ export default defineStore('job', () => {
         const response = await axios.request({
             method: 'get',
             url: `/job/recommended`,
-            commit: true,
         })
+        state.jobRecommendedRes = response.data
         return response
     }
     async function getJobById(params) {
@@ -34,7 +34,6 @@ export default defineStore('job', () => {
             method: 'get',
             url: `/job/all`,
             params,
-            commit: true,
         })
         return response
     }
