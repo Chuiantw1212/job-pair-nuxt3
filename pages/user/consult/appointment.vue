@@ -83,6 +83,7 @@ const route = useRoute()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
+const config = useRuntimeConfig()
 const state = reactive({
     activeTab: 'recommend',
     consultants: [],
@@ -185,7 +186,7 @@ async function submitAppointment() {
         return
     }
     state.appointmentForm.userId = repoAuth.state.user.id
-    const VITE_APP_ECPAY_AMOUNT = `${import.meta.env.VITE_APP_ECPAY_AMOUNT}`
+    const VITE_APP_ECPAY_AMOUNT = `${config.VITE_APP_ECPAY_AMOUNT}`
     state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
     const response = await repoConsult.postConsultAppointment(state.appointmentForm)
     if (response.status !== 200) {

@@ -1,9 +1,5 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    // alias: {
-    //     // https://github.com/nuxt/framework/issues/6623
-    //     pinia: '/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs',
-    // },
     app: {
         head: {
             // meta: [
@@ -33,6 +29,13 @@ export default defineNuxtConfig({
         '@glidejs/glide/dist/css/glide.core.min.css',
         '@glidejs/glide/dist/css/glide.theme.min.css',
     ],
+    runtimeConfig: {
+        VITE_APP_ECPAY_AMOUNT: 5,
+        public: {
+            VITE_APP_FIREBASE_ENV: 'development',
+            VITE_APP_API_DEFAULT: 'http://localhost:8080',
+        }
+    },
     // ... other options
     modules: [
         // ...
