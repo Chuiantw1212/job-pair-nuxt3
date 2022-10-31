@@ -25,7 +25,7 @@
             </div>
             <div class="body__hint">
                 <span v-if="state.isLocked">
-                    {{ $filter.date(lockEndDate) }} 後才能再次修改。
+                    {{ $date(state.lockEndDate) }} 後才能再次修改。
                 </span>
                 <span v-else>
                     為有效計算您與企業的適配度<br class="d-lg-none">
@@ -40,7 +40,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, } = useNuxtApp()
+const { $toggleLoader, $date } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -53,12 +53,12 @@ const state = reactive({
     questionsForCompany: [],
     lockEndDate: 0
 })
-const { user } = repoAuth.state
-watch(() => user, (newValue, oldValue) => {
-    if (newValue && !oldValue) {
+watchEffect(() => {
+    const { user } = repoAuth.state
+    if (user) {
         setPreferenceInfo()
     }
-}, { immediate: true })
+})
 watchEffect(() => {
     if (!repoSelect.state.questionsRes) {
         return
@@ -96,11 +96,13 @@ async function handleConfirm() {
     $toggleLoader(false)
     // 重新設定preference
     const updatedResult = response.data
+    const { user } = repoAuth.state
     const updatedUser = Object.assign({}, user, updatedResult)
     repoAuth.setUser(updatedUser)
     setPreferenceInfo()
 }
 function setPreferenceInfo() {
+    const { user } = repoAuth.state
     const { preference, preferenceDate, isNew = false } = user
     state.preference = JSON.parse(JSON.stringify(preference))
     // Set profile disabled
