@@ -2,7 +2,7 @@
     <div class="jobs" :class="{ container: device.state.isDesktop }">
         <MoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
             class="jobs__filter" :class="{ 'col col-3': device.state.isDesktop }">
-            <div v-if="selectByQueryRes" class="filter__list">
+            <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <AtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
                     <MoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"

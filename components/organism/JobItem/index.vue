@@ -13,8 +13,11 @@
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="./icon_Aim.svg" />
                         <span>
-                            {{ $filter.optionText(modelValue.employmentType, selectByQueryRes.employmentType) }} ·
-                            {{ $filter.optionText(modelValue.responsibilities, selectByQueryRes.responsibilities) }}
+                            {{ $optionText(modelValue.employmentType, repoSelect.state.selectByQueryRes.employmentType)
+                            }} ·
+                            {{ $optionText(modelValue.responsibilities,
+                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            }}
                         </span>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
@@ -25,11 +28,12 @@
                     </div>
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="./icon_Dollar.svg" />
-                        {{ $filter.salary(modelValue) }}
+                        {{ $salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
                         <img class="label__icon" src="./icon_Laptop.svg" />
-                        <span>{{ $filter.optionText(modelValue.jobLocationType, selectByQueryRes.jobLocationType)
+                        <span>{{ $optionText(modelValue.jobLocationType,
+                                repoSelect.state.selectByQueryRes.jobLocationType)
                         }}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
@@ -49,9 +53,10 @@
     </li>
 </template>
 <script setup>
-const { $optionText, $emitter } = useNuxtApp()
+const { $optionText, $emitter, $salary } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
+const repoSelect = useRepoSelect()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
