@@ -1,72 +1,72 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isDesktop }">
-        <Filter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event" class="jobs__filter"
-            :class="{ 'col col-3': device.state.isDesktop }">
+        <MoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
+            class="jobs__filter" :class="{ 'col col-3': device.state.isDesktop }">
             <div v-if="selectByQueryRes" class="filter__list">
-                <InputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
+                <AtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <FilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                    <MoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
                         :categoryMap="repoSelect.jobCategoryMap" :isDesktop="device.state.isDesktop"
                         :showSelectAll="true">
-                    </FilterCategory>
-                </InputSelectContainer>
+                    </MoleculeFilterCategory>
+                </AtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                        <InputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
-                        </InputSelectLabel>
+                        <AtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
+                        </AtomInputSelectLabel>
                     </template>
                 </div>
                 <template v-if="locationRes">
-                    <InputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <InputCheckMultiple v-model="state.filter.addressRegion"
+                    <AtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
+                        <AtomInputCheckMultiple v-model="state.filter.addressRegion"
                             :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
-                        </InputCheckMultiple>
-                    </InputSelectContainer>
-                    <InputSelectLabel v-model="state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
-                        class="mt-2">
-                    </InputSelectLabel>
+                        </AtomInputCheckMultiple>
+                    </AtomInputSelectContainer>
+                    <AtomInputSelectLabel v-model="state.filter.addressRegion"
+                        :items="repoSelect.state.locationRes.taiwan" class="mt-2">
+                    </AtomInputSelectLabel>
                 </template>
-                <InputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <InputCheckMultiple v-model="state.filter.jobLocationType"
+                <AtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
+                    <AtomInputCheckMultiple v-model="state.filter.jobLocationType"
                         :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
-                    </InputCheckMultiple>
-                </InputSelectContainer>
-                <InputSelectLabel v-model="state.filter.jobLocationType"
+                    </AtomInputCheckMultiple>
+                </AtomInputSelectContainer>
+                <AtomInputSelectLabel v-model="state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
-                </InputSelectLabel>
-                <InputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                    <InputCheckMultiple v-model="state.filter.employmentType"
+                </AtomInputSelectLabel>
+                <AtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
+                    <AtomInputCheckMultiple v-model="state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
-                    </InputCheckMultiple>
-                </InputSelectContainer>
-                <InputSelectLabel v-model="state.filter.employmentType"
+                    </AtomInputCheckMultiple>
+                </AtomInputSelectContainer>
+                <AtomInputSelectLabel v-model="state.filter.employmentType"
                     :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
-                </InputSelectLabel>
-                <InputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <InputCheckMultiple v-model="state.filter.responsibilities"
+                </AtomInputSelectLabel>
+                <AtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
+                    <AtomInputCheckMultiple v-model="state.filter.responsibilities"
                         :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
-                    </InputCheckMultiple>
-                </InputSelectContainer>
-                <InputSelectLabel v-model="state.filter.responsibilities"
+                    </AtomInputCheckMultiple>
+                </AtomInputSelectContainer>
+                <AtomInputSelectLabel v-model="state.filter.responsibilities"
                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
-                </InputSelectLabel>
-                <InputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <InputCheckMultiple v-model="state.filter.jobBenefits"
+                </AtomInputSelectLabel>
+                <AtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
+                    <AtomInputCheckMultiple v-model="state.filter.jobBenefits"
                         :items="repoSelect.state.selectByQueryRes.jobBenefits" class="m-3">
-                    </InputCheckMultiple>
-                </InputSelectContainer>
-                <InputSelectLabel v-model="state.filter.jobBenefits"
+                    </AtomInputCheckMultiple>
+                </AtomInputSelectContainer>
+                <AtomInputSelectLabel v-model="state.filter.jobBenefits"
                     :items="repoSelect.state.selectByQueryRes.jobBenefits" class="mt-2">
-                </InputSelectLabel>
-                <InputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
-                    <FilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
+                </AtomInputSelectLabel>
+                <AtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
+                    <MoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
                         :categoryMap="repoSelect.industryCategoryMap" :isDesktop="device.state.isDesktop"
                         :showSelectAll="true">
-                    </FilterCategory>
-                </InputSelectContainer>
+                    </MoleculeFilterCategory>
+                </AtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <InputSelectLabel v-model="state.filter.industry" :items="items"> </InputSelectLabel>
+                        <AtomInputSelectLabel v-model="state.filter.industry" :items="items"> </AtomInputSelectLabel>
                     </template>
                 </div>
                 <div class="section__header">薪資類型</div>
@@ -84,7 +84,7 @@
                 </div>
                 <BtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</BtnSimple>
             </div>
-        </Filter>
+        </MoleculeFilter>
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">

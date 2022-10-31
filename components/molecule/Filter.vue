@@ -86,7 +86,7 @@ function closeFilter() {
     overflow: hidden;
 }
 
-@media screen and(min-width: 992px) {
+@media screen and (min-width: 992px) {
     .filter {
         position: inherit;
         top: unset;
