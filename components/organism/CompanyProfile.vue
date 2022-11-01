@@ -76,8 +76,8 @@
                         <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
                             class="mb-2">
                         </AtomInputText>
-                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
-                            :max="12">
+                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
+                            :accept="'image/*'" :max="12">
                         </AtomInputUploader>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
     </div>
 </template>
 <script setup>
-const { jobBenefitsConfig } = await import('~/assets/jobBenefits.json')
+const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
 const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -161,6 +161,7 @@ const state = reactive({
         subsidy: [],
         facility: [],
     },
+    benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility']
 })
 // hooks
 watch(() => repoAuth.state.user, (userValue) => {
@@ -177,21 +178,15 @@ function setWelfareFlags() {
     }
     const { jobBenefits = "" } = state.companyInfo
     let welfareCopy = JSON.parse(JSON.stringify(jobBenefits))
-    for (let welfareType in jobBenefitsConfig) {
-        if (welfareType === "blacklist") {
-            continue
-        }
+    state.benefitFlags.forEach((welfareType) => {
         const labels = jobBenefitsConfig[welfareType]
-        console.log({
-            labels
-        })
         state.jobBenefits[welfareType] = labels.filter((keyword) => {
             return welfareCopy.includes(keyword)
         })
         state.jobBenefits[welfareType].forEach((label) => {
             welfareCopy = welfareCopy.replaceAll(label, "")
         })
-    }
+    })
 }
 function getDefaultCompany(id = '') {
     const companyInfo = {
@@ -503,9 +498,8 @@ async function saveCompanyInfo(config) {
     }
 }
 async function refineAndUpdateCompanyInfo() {
-    const jobBenefitTypes = repoSelect.state.selectByQueryRes.jobBenefits.map(item => item.value)
     state.companyInfo.jobBenefitFlags = {}
-    jobBenefitTypes.forEach(welfareType => {
+    state.benefitFlags.forEach(welfareType => {
         const labels = jobBenefitsConfig[welfareType]
         if (Array.isArray(labels)) {
             const findResult = labels.find(word => {
