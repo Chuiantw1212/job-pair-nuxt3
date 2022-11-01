@@ -35,11 +35,11 @@
                     class="panel__store panel__store--applied" :disabled="true">
                     <img class="store__icon" src="./icon_Rocke_Grey.svg" /> 已婉拒
                 </AtomBtnSimple>
-                <AtomBtnSimple v-if="state.showShareButton && state.navigator.share" class="panel__share"
+                <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" />分享
                 </AtomBtnSimple>
-                <AtomBtnSimple v-if="state.showShareButton && !state.navigator.share" :id="id" class="panel__share"
+                <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="id" class="panel__share"
                     data-bs-toggle="tooltip" :title="shareButtonTitle" @click="shareLinkBootstrap()"
                     @mouseout="resetTooltipTitle()">
                     <img class="share__icon" src="./share.svg" />
