@@ -1,13 +1,13 @@
 <template>
     <div class="register">
-        <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="btn-close" @click="hideModal()"></button>
                     </div>
                     <div class="modal-body">
-                        <h3 class="body__header">求職者登入註冊</h3>
+                        <h3 class="body__header">人資與企業主登入註冊</h3>
                         <div v-show="loginComposable.state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
@@ -15,17 +15,16 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <AtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
+                                <btnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
                                     disabled>{{
                                             loginComposable.state.cdVisible
                                     }}
-                                </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">
-                                    重新寄送驗證信
-                                </AtomBtnSimple>
+                                </btnSimple>
+                                <btnSimple v-else class="emailSent__resend" @click="sendEmailLink('admin')">重新寄送驗證信
+                                </btnSimple>
                             </div>
                         </div>
-                        <div v-show="!loginComposable.state.isSent" id="user-auth-container"></div>
+                        <div v-show="!loginComposable.state.isSent" id="company-auth-container"></div>
                     </div>
                 </div>
             </div>
@@ -33,26 +32,21 @@
     </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
 import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $firebaseuiAuth, } = useNuxtApp()
-const route = useRoute()
 const loginComposable = useLogin()
+const route = useRoute()
 const state = reactive({
-    bsModal: null,
+    bsModal: null
 })
 onMounted(() => {
-    $emitter.on("showUserModal", showModal)
-    $emitter.on("hideUserModal", hideModal)
-    if (process.client) {
-        state.bsModal = new $bootstrap.Modal(document.getElementById("userModal"), {
-            keyboard: false,
-            backdrop: "static"
-        })
-    }
-    // 初始化FirebaseUI使系統可以自動跳轉
-    if (!route.path.includes("admin") && process.client) {
+    $emitter.on("showCompanyModal", showModal) // listen
+    $emitter.on("hideCompanyModal", hideModal)
+    state.bsModal = new $bootstrap.Modal(document.getElementById("companyModal"), {
+        keyboard: false,
+        backdrop: "static"
+    })
+    if (route.path.includes("admin") && process.client) {
         renderFirebaseUI()
     }
 })
@@ -61,7 +55,7 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
-    // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
+    sessionStorage.removeItem("firebaseui::pendingEmailCredential")
     state.bsModal.show()
     renderFirebaseUI()
 }
@@ -79,23 +73,19 @@ async function renderFirebaseUI() {
     const signInOptions = [
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
+            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
         }
     ]
     if ($isNativeWeb) {
         signInOptions.push({
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         })
-        signInOptions.push({
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        })
     }
-    const element = document.querySelector("#user-auth-container")
+    const element = document.querySelector("#company-auth-container")
     ui = ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                loginComposable.handleAuthResult(authResult, "employee")
+                loginComposable.handleAuthResult(authResult, "admin")
                 return false
             }
         },
