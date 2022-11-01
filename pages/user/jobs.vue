@@ -301,31 +301,22 @@
                         <tr class="testRow">
                             <th v-if="device.state.isDesktop"></th>
                             <td>
-                                <!-- <NuxtLink v-if="state.jobCompare.first.identifier" class="table__btn" :to="{
-                                    name: 'jobDetails',
-                                    params: {
-                                        id: state.jobCompare.first.identifier,
-                                        userId: user.id,
-                                    },
-                                }">前往該職缺</NuxtLink> -->
+                                <NuxtLink v-if="state.jobCompare.first.identifier" class="table__btn"
+                                    :to="`/job/${state.jobCompare.first.identifier}`">
+                                    前往該職缺
+                                </NuxtLink>
                             </td>
                             <td v-if="state.jobComparable.length >= 2">
-                                <!-- <NuxtLink class="table__btn" v-if="state.jobCompare.second.identifier" :to="{
-                                    name: 'jobDetails',
-                                    params: {
-                                        id: state.jobCompare.second.identifier,
-                                        userId: user.id,
-                                    },
-                                }">前往該職缺</NuxtLink> -->
+                                <NuxtLink v-if="state.jobCompare.second.identifier" class="table__btn"
+                                    :to="`/job/${state.jobCompare.second.identifier}`">
+                                    前往該職缺
+                                </NuxtLink>
                             </td>
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3">
-                                <!-- <NuxtLink class="table__btn" v-if="state.jobCompare.third.identifier" :to="{
-                                    name: 'jobDetails',
-                                    params: {
-                                        id: state.jobCompare.third.identifier,
-                                        userId: user.id,
-                                    },
-                                }">前往該職缺</NuxtLink> -->
+                                <NuxtLink v-if="state.jobCompare.third.identifier" class="table__btn"
+                                    :to="`/job/${state.jobCompare.third.identifier}`">
+                                    前往該職缺
+                                </NuxtLink>
                             </td>
                         </tr>
                     </tbody>
@@ -355,12 +346,17 @@ const state = reactive({
         third: {},
     },
 })
+// hooks
 onMounted(() => {
     initialize()
 })
+watch(() => repoAuth.state.user, () => {
+    initialize()
+})
+//methds
 function getSalaryText(item) {
     const { salaryMin = 0, salaryType = "", salaryMax = 0 } = item
-    const type = $optionText(salaryType, repoSelect.state.repoSelect.state.selectByQueryRes.salaryType)
+    const type = $optionText(salaryType, repoSelect.state.selectByQueryRes.salaryType)
     const lowString = Number(salaryMin).toLocaleString()
     let salaryText = `${type}${lowString}`
     if (salaryMax) {
