@@ -60,7 +60,7 @@
             <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"
                 v-show="state.companyInfo.images" class="company__env">
                 <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
-                <div class="glide" :class="`glide${id}`">
+                <div class="glide" :class="`glide${state.id}`">
                     <div class="glide__track" data-glide-el="track">
                         <ul class="glide__slides">
                             <template v-for="(image, index) in state.companyInfo.images" :key="index">
@@ -203,7 +203,7 @@ function initialGlide() {
     })
 }
 function getLocationText() {
-    if (!state.companyInfo) {
+    if (!state.companyInfo || !repoSelect.state.locationRes) {
         return
     }
     const { addressRegion, addressLocality, streetAddress } = state.companyInfo

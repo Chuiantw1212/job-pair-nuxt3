@@ -24,7 +24,7 @@ export default defineStore('select', () => {
         return [itemZ, ...state.selectByQueryRes.industry, ...industryItems]
     })
     const industryCategoryMap = computed(() => {
-        if (!state.industryCategoryRes || !state.selectByQueryRes.industry) {
+        if (!state.industryCategoryRes || !state.selectByQueryRes) {
             return {}
         }
         const industryCategoryMap = {}

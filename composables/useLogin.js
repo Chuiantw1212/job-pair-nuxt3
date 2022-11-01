@@ -129,7 +129,7 @@ export default function setup() {
                     company.hasActiveJobs = !!data.length
                 }
                 repoCompany.setCompany(company)
-                const whiteList = ['admin', 'about', 'pending', 'job']
+                const whiteList = ['admin', 'about', 'pending', 'job', 'company']
                 const isNotPermitted = whiteList.every(word => {
                     return !route.path.includes(word)
                 })
