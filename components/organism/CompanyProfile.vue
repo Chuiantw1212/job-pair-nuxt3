@@ -123,6 +123,8 @@
 const { test } = await import('~/assets/jobBenefits.json')
 const device = useDevice()
 const repoSelect = useRepoSelect()
+const repoUser = useRepoUser()
+const repoAuth = useRepoAuth()
 const state = reactive({
     crawlerUrl: "",
     isNewCompay: false,
@@ -151,459 +153,403 @@ const state = reactive({
         facility: [],
     },
 })
-// import { mapActions, mapGetters, mapMutations } from "vuex"
-// import jobBenefitsConfig from "./jobBenefits.json"
-// import isDesktopMixin from "@/libs/desktopMixin.js"
-// import { defineAsyncComponent } from 'vue'
-// export default {
-//     mixins: [isDesktopMixin],
-//     components: {
-//         InputBanner: defineAsyncComponent(() =>
-//             import('@/components/atoms/input/InputBanner/InputBanner.vue')
-//         ),
-//         InputUploader: defineAsyncComponent(() =>
-//             import('@/components/molecules/InputUploader/InputUploader.vue')
-//         ),
-//         ProfileSelectContainer: defineAsyncComponent(() =>
-//             import('@/components/molecules/ProfileSelectContainer/ProfileSelectContainer.vue')
-//         ),
-//         ProfileSelectLabels: defineAsyncComponent(() =>
-//             import('@/components/molecules/ProfileSelectContainer/ProfileSelectLabels.vue')
-//         ),
-//         FilterCategory: defineAsyncComponent(() =>
-//             import('@/components/molecules/FilterCategory.vue')
-//         ),
-//     },
-//     data: function () {
-//         return {
-//         }
-//     },
-//     computed: {
-//         ...mapGetters([
-//             "selectByQueryRes",
-//             "userProfileRes",
-//             "user",
-//             "locationRes",
-//             "questionsRes",
-//             "industryCategoryMap",
-//             "industryItems",
-//             "company",
-//         ]),
-//     },
-//     watch: {
-//         user: {
-//             handler: function (userValue) {
-//                 this.initializeCompanyInfo(userValue)
-//             },
-//             immediate: true
-//         },
-//     },
-//     methods: {
-//         getWelfareString(key) {
-//             const labels = this.jobBenefits[key]
-//             return labels.join(" ,")
-//         },
-//         setWelfareFlags() {
-//             if (!this.companyInfo) {
-//                 return
-//             }
-//             const { jobBenefits = "" } = this.companyInfo
-//             let welfareCopy = JSON.parse(JSON.stringify(jobBenefits))
-//             for (let welfareType in jobBenefitsConfig) {
-//                 if (welfareType === "blacklist") {
-//                     continue
-//                 }
-//                 const labels = jobBenefitsConfig[welfareType]
-//                 this.jobBenefits[welfareType] = labels.filter((keyword) => {
-//                     return welfareCopy.includes(keyword)
-//                 })
-//                 this.jobBenefits[welfareType].forEach((label) => {
-//                     welfareCopy = welfareCopy.replaceAll(label, "")
-//                 })
-//             }
-//         },
-//         getDefaultCompany(id = '') {
-//             const companyInfo = {
-//                 id,
-//                 jobBenefits: '',
-//                 description: "",
-//                 jobBenefitFlags: {
-//                     learning: false,
-//                     bonus: false,
-//                     time: false,
-//                     activity: false,
-//                     subsidy: false,
-//                     facility: false,
-//                     blacklist: false,
-//                 },
-//                 preference: {
-//                     culture: [],
-//                 },
-//                 url: {
-//                     default: ''
-//                 },
-//             }
-//             return companyInfo
-//         },
-//         async initializeCompanyInfo(user) {
-//             // 生成本地端company資料
-//             if (!user || !user.id || this.companyInfo.id) {
-//                 return
-//             }
-//             const companyRes = await this.getAdminCompany()
-//             if (companyRes.status !== 200) {
-//                 return
-//             }
-//             if (companyRes.data === false) {
-//                 // 尚未註冊導回註冊畫面
-//                 this.$router.replace({
-//                     name: 'companyRegister'
-//                 })
-//                 this.isNewCompay = true
-//             }
-//             let companyInfo = this.getDefaultCompany()
-//             if (companyRes.data) {
-//                 companyInfo = JSON.parse(JSON.stringify(companyRes.data))
-//             }
-//             this.companyInfo = companyInfo
-//             this.companyLogo = companyInfo.logo
-//             this.companyBanner = companyInfo.banner
-//             this.companyImages = companyInfo.images ?? []
+// hooks
+watch(() => repoAuth.state.user, (userValue) => {
+    initializeCompanyInfo(userValue)
+}, { immediate: true })
+// methods
+function getWelfareString(key) {
+    const labels = state.jobBenefits[key]
+    return labels.join(" ,")
+}
+function setWelfareFlags() {
+    if (!state.companyInfo) {
+        return
+    }
+    const { jobBenefits = "" } = state.companyInfo
+    let welfareCopy = JSON.parse(JSON.stringify(jobBenefits))
+    for (let welfareType in jobBenefitsConfig) {
+        if (welfareType === "blacklist") {
+            continue
+        }
+        const labels = jobBenefitsConfig[welfareType]
+        state.jobBenefits[welfareType] = labels.filter((keyword) => {
+            return welfareCopy.includes(keyword)
+        })
+        state.jobBenefits[welfareType].forEach((label) => {
+            welfareCopy = welfareCopy.replaceAll(label, "")
+        })
+    }
+}
+function getDefaultCompany(id = '') {
+    const companyInfo = {
+        id,
+        jobBenefits: '',
+        description: "",
+        jobBenefitFlags: {
+            learning: false,
+            bonus: false,
+            time: false,
+            activity: false,
+            subsidy: false,
+            facility: false,
+            blacklist: false,
+        },
+        preference: {
+            culture: [],
+        },
+        url: {
+            default: ''
+        },
+    }
+    return companyInfo
+}
+async function initializeCompanyInfo(user) {
+    // 生成本地端company資料
+    if (!user || !user.id || this.companyInfo.id) {
+        return
+    }
+    const companyRes = await this.getAdminCompany()
+    if (companyRes.status !== 200) {
+        return
+    }
+    if (companyRes.data === false) {
+        // 尚未註冊導回註冊畫面
+        this.$router.replace({
+            name: 'companyRegister'
+        })
+        this.isNewCompay = true
+    }
+    let companyInfo = this.getDefaultCompany()
+    if (companyRes.data) {
+        companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+    }
+    this.companyInfo = companyInfo
+    this.companyLogo = companyInfo.logo
+    this.companyBanner = companyInfo.banner
+    this.companyImages = companyInfo.images ?? []
 
-//             if (this.$refs.description) {
-//                 this.$refs.description.setData(this.companyInfo.description)
-//             }
-//             if (this.$refs.jobBenefits) {
-//                 this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
-//                 this.setWelfareFlags()
-//             }
-//         },
-//         async crawlCompanyFromPlatform() {
-//             if (!this.crawlerUrl) {
-//                 return
-//             }
-//             const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
-//             const targetPlatform = whiteList.find(url => {
-//                 return this.crawlerUrl.includes(url)
-//             })
-//             if (!targetPlatform) {
-//                 this.$alert('網址有誤')
-//                 return
-//             }
-//             // 清空原有資料
-//             this.companyInfo = this.getDefaultCompany(this.companyInfo.id)
-//             this.$toggleLoader(true)
-//             const response = await this.getCompanyByCrawler({
-//                 url: this.crawlerUrl,
-//             })
-//             if (response.status !== 200) {
-//                 return
-//             }
-//             this.$toggleLoader(false)
-//             const crawlerCompany = response.data
-//             if (targetPlatform === '.104.com.tw/company/') {
-//                 await this.set104CompanyInfo(crawlerCompany)
-//             }
-//             if (targetPlatform === '.yourator.co/companies/') {
-//                 await this.setYouratorCompanyInfo(crawlerCompany)
-//             }
-//             if (targetPlatform === '.cakeresume.com/companies/') {
-//                 await this.setCakeresumeCompanyInfo(crawlerCompany)
-//             }
-//             // 拿掉被占用的欄位
-//             if (this.companyInfo.telephone === '暫不提供') {
-//                 this.companyInfo.telephone = ''
-//             }
-//             // 設定CKEditor文字
-//             this.$refs.description.setData(this.companyInfo.description)
-//             this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
-//         },
-//         async setCakeresumeCompanyInfo(response) {
-//             const {
-//                 name = '',
-//                 // description = '',
-//                 products = '',
-//                 mission = '',
-//                 media = '',
-//                 jobBenefits = '',
-//                 addressRegion = '',
-//                 addressLocality = '',
-//                 numberOfEmployees = 0,
-//                 streetAddress = '',
-//                 capital = null,
-//                 url = {
-//                     default: '',
-//                 },
-//                 profile = '',
-//                 idea = '',
-//                 story = '',
-//                 logo,
-//             } = response
-//             let description = ""
-//             if (description) {
-//                 description += `公司介紹`
-//                 description += `${response.description}<br>`
-//             }
-//             if (products) {
-//                 description += `產品或服務`
-//                 description += `${products}<br>`
-//             }
-//             if (mission) {
-//                 description += `使命`
-//                 description += `${mission}<br>`
-//             }
-//             if (media) {
-//                 description += `媒體曝光`
-//                 description += `${media}<br>`
-//             }
-//             const companyInfo = {
-//                 name,
-//                 description,
-//                 jobBenefits,
-//                 addressRegion,
-//                 addressLocality,
-//                 numberOfEmployees,
-//                 streetAddress,
-//                 capital,
-//                 url,
-//                 profile,
-//                 idea,
-//                 story,
-//                 logo,
-//             }
-//             this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-//             delete companyInfo.logo
-//             this.companyInfo = Object.assign(this.companyInfo, companyInfo)
-//         },
-//         async setYouratorCompanyInfo(response) {
-//             const {
-//                 addressRegion = '',
-//                 addressLocality = '',
-//                 numberOfEmployees = 0,
-//                 streetAddress = '',
-//                 capital = 0,
-//                 url = {
-//                     default: '',
-//                 },
-//                 profile = '',
-//                 jobBenefits = '',
-//                 idea = '',
-//                 story = '',
-//                 name,
-//                 logo,
-//                 welfare,
-//             } = response
-//             // 合併欄位
-//             let description = ""
-//             if (profile) {
-//                 description += `公司介紹`
-//                 description += `${profile}`
-//             }
-//             if (idea) {
-//                 description += `公司理念`
-//                 description += `${idea}`
-//             }
-//             if (story) {
-//                 description += `創辦故事`
-//                 description += `${story}`
-//             }
-//             // 合成資料
-//             const companyInfo = {
-//                 streetAddress,
-//                 addressRegion, // 市
-//                 addressLocality, // 區
-//                 name,
-//                 capital,
-//                 numberOfEmployees,
-//                 telephone: '',
-//                 url,
-//                 jobBenefits,
-//                 description,
-//                 logo,
-//             }
-//             this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-//             delete companyInfo.logo
-//             this.companyInfo = Object.assign(this.companyInfo, companyInfo)
-//         },
-//         async set104CompanyInfo(response) {
-//             const {
-//                 legalTagNames = [],
-//                 tagNames = [],
-//                 custName,
-//                 // industryDesc,
-//                 // indcat,
-//                 empNo,
-//                 capital,
-//                 address,
-//                 custLink,
-//                 profile,
-//                 product,
-//                 // jobBenefits,
-//                 management,
-//                 phone,
-//                 // fax,
-//                 // hrName,
-//                 // news,
-//                 addrNoDesc,
-//                 logo,
-//             } = response
-//             // 先找到第一級行政區
-//             const addressRegionText = address.slice(0, 3)
-//             const upperTaiDivision = addressRegionText.replace('台', '臺')
-//             const targetDivision = this.locationRes.taiwan.find((item) => {
-//                 return item.text === upperTaiDivision
-//             })
-//             const addressRegion = targetDivision.value
-//             const addressLocalityItems = this.locationRes[addressRegion]
-//             const addressLocalityText = address.slice(3, 6)
-//             const targetDivisionLevel2 = addressLocalityItems.find((item) => {
-//                 return item.text === addressLocalityText
-//             })
-//             const addressLocality = targetDivisionLevel2.value
-//             // 找到第二級行政區
-//             const addressDesc = address.replace(addrNoDesc, "")
-//             // 合併四個欄位
-//             let description = ""
-//             if (profile) {
-//                 description += `企業簡介<br>`
-//                 description += `${profile}<br>`
-//             }
-//             if (product) {
-//                 description += `<br>主要商品或服務<br>`
-//                 description += `${product}<br>`
-//             }
-//             if (management) {
-//                 description += `<br>經營理念<br>`
-//                 description += `${management}<br>`
-//             }
-//             // benefit tags
-//             let jobBenefits = response.welfare
-//             if (legalTagNames.length) {
-//                 const legalItemList = legalTagNames.join(', ')
-//                 const legalItems = `法定項目<br>
-//                 ${legalItemList}<br><br>`
-//                 jobBenefits += legalItems
-//             }
-//             if (tagNames.length) {
-//                 const tagNameList = tagNames.join(', ')
-//                 const tagNameItems = `其他福利<br>
-//                 ${tagNameList}<br><br>`
-//                 jobBenefits += tagNameItems
-//             }
-//             // 合成資料
-//             const companyInfo = {
-//                 streetAddress: addressDesc,
-//                 addressRegion, // 市
-//                 addressLocality, // 區
-//                 name: custName,
-//                 capital,
-//                 numberOfEmployees: empNo,
-//                 telephone: phone,
-//                 url: {
-//                     default: custLink,
-//                 },
-//                 profile,
-//                 product,
-//                 description,
-//                 logo,
-//                 jobBenefits,
-//             }
-//             this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-//             delete companyInfo.logo
-//             this.companyInfo = Object.assign(this.companyInfo, companyInfo)
-//         },
-//         async saveCompanyInfo(config) {
-//             const { validate = false, next = '' } = config
-//             if (validate) {
-//                 const result = await this.$validate()
-//                 if (!result.isValid) {
-//                     return
-//                 }
-//             }
-//             this.$toggleLoader(true)
-//             const updatedCompany = await this.refineAndUpdateCompanyInfo()
-//             if (!updatedCompany) {
-//                 return
-//             }
-//             this.setCompany(updatedCompany)
-//             if (next) {
-//                 await this.$alert('請至E-mail 信箱內回覆身份驗證信', {
-//                     title: '身分驗證',
-//                     icon: 'info'
-//                 })
-//                 this.$router.push({
-//                     name: next,
-//                 })
-//             } else {
-//                 this.$succeed()
-//             }
-//         },
-//         async refineAndUpdateCompanyInfo() {
-//             const jobBenefitTypes = this.selectByQueryRes.jobBenefits.map(item => item.value)
-//             this.companyInfo.jobBenefitFlags = {}
-//             jobBenefitTypes.forEach(welfareType => {
-//                 const labels = jobBenefitsConfig[welfareType]
-//                 if (Array.isArray(labels)) {
-//                     const findResult = labels.find(word => {
-//                         return this.companyInfo.jobBenefits.includes(word)
-//                     })
-//                     if (findResult) {
-//                         this.companyInfo.jobBenefitFlags[welfareType] = true
-//                     }
-//                 }
-//             })
-//             // update company infomation
-//             /**
-//              * 這個時間點admin已經註冊，
-//              * 但寫入一律用user.uid操作
-//              */
-//             const adminUid = this.user.uid
-//             let companyRes = null
-//             if (this.companyInfo.id) {
-//                 companyRes = await this.patchCompany(this.companyInfo)
-//             } else {
-//                 this.companyInfo.email = this.user.email
-//                 this.companyInfo.admins = [this.user.id]
-//                 companyRes = await this.postAdminNewCompany(this.companyInfo)
-//             }
-//             if (companyRes.status !== 200) {
-//                 return false
-//             }
-//             //
-//             const updatedResult = companyRes.data
-//             const blobPromises = []
-//             if (this.companyBanner && typeof this.companyBanner !== 'string') {
-//                 const promise = this.putCompanyBannerBlob(this.companyBanner)
-//                 blobPromises.push(promise)
-//             }
-//             if (this.companyLogo && typeof this.companyLogo !== 'string') {
-//                 const promise = this.putCompanyLogoBlob(this.companyLogo)
-//                 blobPromises.push(promise)
-//             }
-//             if (this.companyImages.length) {
-//                 const promise = this.putCompanyPhotos(this.companyImages)
-//                 blobPromises.push(promise)
-//             }
-//             const results = await Promise.all(blobPromises)
-//             const hasError = results.some(result => result.status !== 200)
-//             if (hasError) {
-//                 return false
-//             }
-//             return updatedResult
-//         },
-//         ...mapActions([
-//             "getCompanyByCrawler",
-//             "patchCompany",
-//             "putCompanyPhotos",
-//             "getCompany104Logo",
-//             "postAdminNewCompany",
-//             "putCompanyLogoBlob",
-//             "getAdminCompany",
-//             "putCompanyBannerBlob",
-//         ]),
-//         ...mapMutations(['setCompany'])
-//     },
-// }
+    if (this.$refs.description) {
+        this.$refs.description.setData(this.companyInfo.description)
+    }
+    if (this.$refs.jobBenefits) {
+        this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
+        this.setWelfareFlags()
+    }
+}
+async function crawlCompanyFromPlatform() {
+    if (!this.crawlerUrl) {
+        return
+    }
+    const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
+    const targetPlatform = whiteList.find(url => {
+        return this.crawlerUrl.includes(url)
+    })
+    if (!targetPlatform) {
+        this.$alert('網址有誤')
+        return
+    }
+    // 清空原有資料
+    this.companyInfo = this.getDefaultCompany(this.companyInfo.id)
+    this.$toggleLoader(true)
+    const response = await this.getCompanyByCrawler({
+        url: this.crawlerUrl,
+    })
+    if (response.status !== 200) {
+        return
+    }
+    this.$toggleLoader(false)
+    const crawlerCompany = response.data
+    if (targetPlatform === '.104.com.tw/company/') {
+        await this.set104CompanyInfo(crawlerCompany)
+    }
+    if (targetPlatform === '.yourator.co/companies/') {
+        await this.setYouratorCompanyInfo(crawlerCompany)
+    }
+    if (targetPlatform === '.cakeresume.com/companies/') {
+        await this.setCakeresumeCompanyInfo(crawlerCompany)
+    }
+    // 拿掉被占用的欄位
+    if (this.companyInfo.telephone === '暫不提供') {
+        this.companyInfo.telephone = ''
+    }
+    // 設定CKEditor文字
+    this.$refs.description.setData(this.companyInfo.description)
+    this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
+}
+async function setCakeresumeCompanyInfo(response) {
+    const {
+        name = '',
+        // description = '',
+        products = '',
+        mission = '',
+        media = '',
+        jobBenefits = '',
+        addressRegion = '',
+        addressLocality = '',
+        numberOfEmployees = 0,
+        streetAddress = '',
+        capital = null,
+        url = {
+            default: '',
+        },
+        profile = '',
+        idea = '',
+        story = '',
+        logo,
+    } = response
+    let description = ""
+    if (description) {
+        description += `公司介紹`
+        description += `${response.description}<br>`
+    }
+    if (products) {
+        description += `產品或服務`
+        description += `${products}<br>`
+    }
+    if (mission) {
+        description += `使命`
+        description += `${mission}<br>`
+    }
+    if (media) {
+        description += `媒體曝光`
+        description += `${media}<br>`
+    }
+    const companyInfo = {
+        name,
+        description,
+        jobBenefits,
+        addressRegion,
+        addressLocality,
+        numberOfEmployees,
+        streetAddress,
+        capital,
+        url,
+        profile,
+        idea,
+        story,
+        logo,
+    }
+    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    delete companyInfo.logo
+    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+}
+async function setYouratorCompanyInfo(response) {
+    const {
+        addressRegion = '',
+        addressLocality = '',
+        numberOfEmployees = 0,
+        streetAddress = '',
+        capital = 0,
+        url = {
+            default: '',
+        },
+        profile = '',
+        jobBenefits = '',
+        idea = '',
+        story = '',
+        name,
+        logo,
+        welfare,
+    } = response
+    // 合併欄位
+    let description = ""
+    if (profile) {
+        description += `公司介紹`
+        description += `${profile}`
+    }
+    if (idea) {
+        description += `公司理念`
+        description += `${idea}`
+    }
+    if (story) {
+        description += `創辦故事`
+        description += `${story}`
+    }
+    // 合成資料
+    const companyInfo = {
+        streetAddress,
+        addressRegion, // 市
+        addressLocality, // 區
+        name,
+        capital,
+        numberOfEmployees,
+        telephone: '',
+        url,
+        jobBenefits,
+        description,
+        logo,
+    }
+    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    delete companyInfo.logo
+    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+}
+async function set104CompanyInfo(response) {
+    const {
+        legalTagNames = [],
+        tagNames = [],
+        custName,
+        // industryDesc,
+        // indcat,
+        empNo,
+        capital,
+        address,
+        custLink,
+        profile,
+        product,
+        // jobBenefits,
+        management,
+        phone,
+        // fax,
+        // hrName,
+        // news,
+        addrNoDesc,
+        logo,
+    } = response
+    // 先找到第一級行政區
+    const addressRegionText = address.slice(0, 3)
+    const upperTaiDivision = addressRegionText.replace('台', '臺')
+    const targetDivision = this.locationRes.taiwan.find((item) => {
+        return item.text === upperTaiDivision
+    })
+    const addressRegion = targetDivision.value
+    const addressLocalityItems = this.locationRes[addressRegion]
+    const addressLocalityText = address.slice(3, 6)
+    const targetDivisionLevel2 = addressLocalityItems.find((item) => {
+        return item.text === addressLocalityText
+    })
+    const addressLocality = targetDivisionLevel2.value
+    // 找到第二級行政區
+    const addressDesc = address.replace(addrNoDesc, "")
+    // 合併四個欄位
+    let description = ""
+    if (profile) {
+        description += `企業簡介<br>`
+        description += `${profile}<br>`
+    }
+    if (product) {
+        description += `<br>主要商品或服務<br>`
+        description += `${product}<br>`
+    }
+    if (management) {
+        description += `<br>經營理念<br>`
+        description += `${management}<br>`
+    }
+    // benefit tags
+    let jobBenefits = response.welfare
+    if (legalTagNames.length) {
+        const legalItemList = legalTagNames.join(', ')
+        const legalItems = `法定項目<br>
+                ${legalItemList}<br><br>`
+        jobBenefits += legalItems
+    }
+    if (tagNames.length) {
+        const tagNameList = tagNames.join(', ')
+        const tagNameItems = `其他福利<br>
+                ${tagNameList}<br><br>`
+        jobBenefits += tagNameItems
+    }
+    // 合成資料
+    const companyInfo = {
+        streetAddress: addressDesc,
+        addressRegion, // 市
+        addressLocality, // 區
+        name: custName,
+        capital,
+        numberOfEmployees: empNo,
+        telephone: phone,
+        url: {
+            default: custLink,
+        },
+        profile,
+        product,
+        description,
+        logo,
+        jobBenefits,
+    }
+    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    delete companyInfo.logo
+    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+}
+async function saveCompanyInfo(config) {
+    const { validate = false, next = '' } = config
+    if (validate) {
+        const result = await this.$validate()
+        if (!result.isValid) {
+            return
+        }
+    }
+    this.$toggleLoader(true)
+    const updatedCompany = await this.refineAndUpdateCompanyInfo()
+    if (!updatedCompany) {
+        return
+    }
+    this.setCompany(updatedCompany)
+    if (next) {
+        await this.$alert('請至E-mail 信箱內回覆身份驗證信', {
+            title: '身分驗證',
+            icon: 'info'
+        })
+        this.$router.push({
+            name: next,
+        })
+    } else {
+        this.$succeed()
+    }
+}
+async function refineAndUpdateCompanyInfo() {
+    const jobBenefitTypes = this.selectByQueryRes.jobBenefits.map(item => item.value)
+    this.companyInfo.jobBenefitFlags = {}
+    jobBenefitTypes.forEach(welfareType => {
+        const labels = jobBenefitsConfig[welfareType]
+        if (Array.isArray(labels)) {
+            const findResult = labels.find(word => {
+                return this.companyInfo.jobBenefits.includes(word)
+            })
+            if (findResult) {
+                this.companyInfo.jobBenefitFlags[welfareType] = true
+            }
+        }
+    })
+    // update company infomation
+    /**
+     * 這個時間點admin已經註冊，
+     * 但寫入一律用user.uid操作
+     */
+    const adminUid = this.user.uid
+    let companyRes = null
+    if (this.companyInfo.id) {
+        companyRes = await this.patchCompany(this.companyInfo)
+    } else {
+        this.companyInfo.email = this.user.email
+        this.companyInfo.admins = [this.user.id]
+        companyRes = await this.postAdminNewCompany(this.companyInfo)
+    }
+    if (companyRes.status !== 200) {
+        return false
+    }
+    //
+    const updatedResult = companyRes.data
+    const blobPromises = []
+    if (this.companyBanner && typeof this.companyBanner !== 'string') {
+        const promise = this.putCompanyBannerBlob(this.companyBanner)
+        blobPromises.push(promise)
+    }
+    if (this.companyLogo && typeof this.companyLogo !== 'string') {
+        const promise = this.putCompanyLogoBlob(this.companyLogo)
+        blobPromises.push(promise)
+    }
+    if (this.companyImages.length) {
+        const promise = this.putCompanyPhotos(this.companyImages)
+        blobPromises.push(promise)
+    }
+    const results = await Promise.all(blobPromises)
+    const hasError = results.some(result => result.status !== 200)
+    if (hasError) {
+        return false
+    }
+    return updatedResult
+}
 </script>
 <style lang="scss" scoped>
 .profile {
