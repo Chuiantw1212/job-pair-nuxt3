@@ -364,11 +364,13 @@ function observeLastJob(newJobs = []) {
             threshold: 0,
         })
     }
-    $requestSelector('.jobItem', () => {
+    nextTick(() => {
         const wrappers = jobItems.value
         const targetComponent = wrappers[wrappers.length - 1]
-        const target = targetComponent.$el
-        state.observer.observe(target)
+        if (targetComponent) {
+            const target = targetComponent.$el
+            state.observer.observe(target)
+        }
     })
 }
 function debounce(func, delay = 250) {
