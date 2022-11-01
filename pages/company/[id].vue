@@ -37,7 +37,7 @@
                 <div v-if="state.companyInfo" class="features__item">
                     <span class="item__header">產業類別</span>
                     <span v-for="(value, index) in state.companyInfo.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
+                    $optionText(value, repoSelect.industryItems)
                     }}</span>
                 </div>
             </div>
@@ -116,6 +116,7 @@ const route = useRoute()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
+const repoAuth = useRepoAuth()
 const state = reactive({
     id: $uuid4(),
     jsonld: null,
@@ -155,6 +156,9 @@ onBeforeUnmount(() => {
     }
     window.removeEventListener("resize", setTimeForGlide)
 })
+watch(() => repoAuth.state.user, (newValue) => {
+    jobScroller.initializeSearch()
+}, { immediate: true })
 watch(() => jobScroller.state.jobList, () => {
     jobScroller.observeLastJob(jobItems)
 })

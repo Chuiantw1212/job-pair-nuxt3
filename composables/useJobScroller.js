@@ -38,21 +38,19 @@ export default function setup() {
         searchLike: "",
         observer: null,
         count: 0,
-        isLoggedIn: false,
         debounceTimer: null
     })
     // hooks
-    watch(() => repoAuth.state.user, (newValue) => {
-        // 使用者打開時，顯示有分數的畫面
-        const noLocalJobs = !state.jobList.length
-        if (noLocalJobs && newValue && newValue.id) {
-            state.isLoggedIn = true
-            initializeSearch()
-        }
-    }, { immediate: true })
+    // watch(() => repoAuth.state.user, (newValue) => {
+    //     // 使用者打開時，顯示有分數的畫面
+    //     const noLocalJobs = !state.jobList.length
+    //     if (noLocalJobs && newValue && newValue.id) {
+    //         initializeSearch()
+    //     }
+    // }, { immediate: true })
     watch(() => state.filter, () => {
         debounce(() => {
-            this.initializeSearch()
+            initializeSearch()
         })
     }, { deep: true })
     // methods
@@ -112,6 +110,7 @@ export default function setup() {
     }
     return {
         state,
-        observeLastJob
+        observeLastJob,
+        initializeSearch
     }
 }

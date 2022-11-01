@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
         window.removeEventListener('scroll', detectScroll)
     }
 })
-watch(() => route.params.id, () => {
+watch(() => jobId.value, () => {
     initialize()
 })
 watch(() => repoJobApplication.state.userJobs, () => {
