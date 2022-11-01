@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $filter.time(item.date) }}
+                        {{ $time(item.date) }}
                         <button class="doc__btn" @click="openResume(item)">
                             <img class="btn__icon" src="./icon_preview_g.svg" />
                         </button>
@@ -43,7 +43,7 @@
                         </button>
                     </div>
                     <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $filter.time(item.date) }}
+                        {{ $time(item.date) }}
                         <button class="doc__btn" @click="openResume(item)">
                             <img class="btn__icon" src="./icon_preview_g.svg" />
                         </button>
@@ -68,7 +68,7 @@ import { Buffer } from 'buffer/'
 export default {
     data: function () {
         return {
-            id: this.uuid4(),
+            id: this.$uuid4(),
         }
     },
     props: {
@@ -113,13 +113,6 @@ export default {
         }
     },
     methods: {
-        uuid4() {
-            if (process.client) {
-                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-                )
-            }
-        },
         checkIsImage(item) {
             return item.type && item.type.includes('image')
         },
