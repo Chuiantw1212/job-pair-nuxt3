@@ -55,12 +55,9 @@
     </li>
 </template>
 <script setup>
-const { $optionText, $emitter, $salary } = useNuxtApp()
+const { $optionText, $salary } = useNuxtApp()
 const repoAuth = useRepoAuth()
-const repoJob = useRepoJob()
 const repoSelect = useRepoSelect()
-const router = useRouter()
-const route = useRoute()
 const state = reactive({
     applyFlow: null
 })

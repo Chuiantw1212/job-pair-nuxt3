@@ -128,7 +128,7 @@
                         v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
                     </OrganismJobItem>
                     <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItem`" class="main__list__item jobItem"></OrganismJobItem>
+                        :ref="`jobItems`" class="main__list__item jobItem"></OrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
                             <div>
@@ -361,7 +361,7 @@ function resetFilter() {
     state.filter = getDefaultFilter()
 }
 
-const jobItem = ref([])
+const jobItems = ref([])
 function observeLastJob(newJobs = []) {
     if (!newJobs.length) {
         return
@@ -373,7 +373,7 @@ function observeLastJob(newJobs = []) {
         })
     }
     $requestSelector('.jobItem', () => {
-        const wrappers = jobItem.value
+        const wrappers = jobItems.value
         const targetComponent = wrappers[wrappers.length - 1]
         const target = targetComponent.$el
         state.observer.observe(target)

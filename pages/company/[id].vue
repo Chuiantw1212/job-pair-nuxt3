@@ -101,14 +101,15 @@
                     <AtomInputSearch v-model="state.searchLike" @search="initializeSearch()"></AtomInputSearch>
                 </div>
                 <ul class="jobs__list">
-                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItems`"></OrganismJobItem>
+                    <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></OrganismJobItem>
                 </ul>
             </div>
         </section>
     </div>
 </template>
 <script setup>
+import { ref, nextTick } from 'vue'
 const { $uuid4, $requestSelector, $optionText } = useNuxtApp()
 const device = useDevice()
 const route = useRoute()
@@ -144,6 +145,8 @@ let organizationId = computed(() => {
     const id = route.path.split('/').slice(-1)[0]
     return id
 })
+const jobItems = ref([])
+// hooks
 onMounted(async () => {
     await initializeCompany()
     window.addEventListener("resize", setTimeForGlide)
@@ -153,6 +156,9 @@ onBeforeUnmount(() => {
         state.glideInstance.destroy()
     }
     window.removeEventListener("resize", setTimeForGlide)
+})
+watch(() => jobScroller.state.jobList, () => {
+    jobScroller.observeLastJob(jobItems)
 })
 // methods
 async function initializeCompany() {

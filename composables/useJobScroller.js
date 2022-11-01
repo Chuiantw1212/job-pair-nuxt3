@@ -1,7 +1,8 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
+import { reactive, onMounted, watch, nextTick, computed, ref, } from 'vue'
 export default function setup() {
+    const { $requestSelector } = useNuxtApp()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
     const route = useRoute()
@@ -26,12 +27,6 @@ export default function setup() {
         debounceTimer: null
     })
     // hooks
-    onMounted(() => {
-        // 分享時搜尋職缺
-        if (!state.isLoggedIn) {
-            initializeSearch()
-        }
-    })
     watch(() => repoAuth.state.user, (newValue) => {
         // 使用者打開時，顯示有分數的畫面
         const noLocalJobs = !state.jobList.length
@@ -94,37 +89,20 @@ export default function setup() {
         state.count = count
         // 避免重複出現職缺
         state.jobList = [...state.jobList, ...items]
-        if (state.pagination.pageOrderBy === "similarity") {
-            return
-        }
-        nextTick(() => {
-            observeLastJob(items)
-        })
     }
-    const jobItems = ref([])
-    function observeLastJob(newJobs = []) {
-        if (!newJobs.length) {
-            return
-        }
+    function observeLastJob(jobItemRefs) {
         if (!state.observer) {
             state.observer = new IntersectionObserver(loadJobItemBatch, {
                 rootMargin: "0px",
                 threshold: 0,
             })
         }
-        const lastItemIndex = state.jobList.length - 1
-        console.log({
-            jobItems
+        nextTick(() => {
+            const wrappers = jobItemRefs.value
+            const targetComponent = wrappers[wrappers.length - 1]
+            const target = targetComponent.$el
+            state.observer.observe(target)
         })
-        // const targetComponentWrapper = this.$refs[`jobItem${lastItemIndex}`]
-        // if (!targetComponentWrapper) {
-        //     return
-        // }
-        // const targetComponent = targetComponentWrapper[0]
-        // if (targetComponent) {
-        //     const target = targetComponent.$el
-        //     this.observer.observe(target)
-        // }
     }
     async function loadJobItemBatch(entries, observer) {
         const triggeredEntry = entries[0]
@@ -133,5 +111,9 @@ export default function setup() {
             state.pagination.pageOffset += state.pagination.pageLimit
             await concatJobsFromServer()
         }
+    }
+    return {
+        state,
+        observeLastJob
     }
 }
