@@ -100,14 +100,14 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <AtomInputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="description">
+                        <AtomInputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="descriptionRef">
                         </AtomInputCKEditor>
                     </div>
                 </section>
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <AtomInputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skills">
+                        <AtomInputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skillsRef">
                         </AtomInputCKEditor>
                     </div>
                 </section>
@@ -453,8 +453,8 @@ function getJobAddress() {
 function checkVisibility() {
     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
 }
-const description = ref(null)
-const skills = ref(null)
+const descriptionRef = ref(null)
+const skillsRef = ref(null)
 async function initialize() {
     if (!jobId.value) {
         job = {}
@@ -475,11 +475,11 @@ async function initialize() {
         return
     }
     state.job = jobResponse.data
-    if (description.value) {
-        description.value.setData(state.job.description)
+    if (descriptionRef.value) {
+        descriptionRef.value.setData(state.job.description)
     }
-    if (skills.value) {
-        skills.value.setData(state.job.skills)
+    if (skillsRef.value) {
+        skillsRef.value.setData(state.job.skills)
     }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(state.job.organizationId)
