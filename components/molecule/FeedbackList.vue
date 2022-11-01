@@ -56,8 +56,7 @@
     </MoleculeConsultCard>
 </template>
 <script setup>
-import Glide from "@glidejs/glide"
-const { $requestSelector, $uuid4, $bootstrap } = useNuxtApp()
+const { $requestSelector, $uuid4, $bootstrap, $Glide } = useNuxtApp()
 const state = reactive({
     id: $uuid4(),
     feedbackGlideInstance: null,
@@ -106,7 +105,7 @@ function mountGlideInstance(element) {
     if (state.feedbackGlideInstance) {
         return
     }
-    const feedbackGlideInstance = new Glide(element, {
+    const feedbackGlideInstance = new $Glide(element, {
         gap: 10,
         rewind: true,
         bound: true,

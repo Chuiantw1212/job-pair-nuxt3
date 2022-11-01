@@ -44,7 +44,7 @@
                                     我們將針對您的經歷，安排最適合的諮詢師。
                                 </div>
                             </div>
-                            <!-- <FeedbackList v-model="consultantFeedbacks"></FeedbackList> -->
+                            <MoleculeFeedbackList v-model="state.consultantFeedbacks"></MoleculeFeedbackList>
                             <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
                                 :key="consultant.key"></OrganismConsultTime>
                         </template>
@@ -62,7 +62,7 @@
                                     {{ consultant.descLong }}
                                 </div>
                             </div>
-                            <!-- <FeedbackList v-model="consultant.feedbacks"></FeedbackList> -->
+                            <MoleculeFeedbackList v-model="state.consultant.feedbacks"></MoleculeFeedbackList>
                             <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="consultant"
                                 :key="consultant.key">
                             </OrganismConsultTime>
