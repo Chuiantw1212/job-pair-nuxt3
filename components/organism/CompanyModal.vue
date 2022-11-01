@@ -15,13 +15,13 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <btnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
+                                <AtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
                                     disabled>{{
                                             loginComposable.state.cdVisible
                                     }}
-                                </btnSimple>
-                                <btnSimple v-else class="emailSent__resend" @click="sendEmailLink('admin')">重新寄送驗證信
-                                </btnSimple>
+                                </AtomBtnSimple>
+                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('admin')">重新寄送驗證信
+                                </AtomBtnSimple>
                             </div>
                         </div>
                         <div v-show="!loginComposable.state.isSent" id="company-auth-container"></div>
@@ -33,6 +33,7 @@
 </template>
 <script setup>
 import firebase from "firebase/compat/app"
+import { getAuth, } from "firebase/auth"
 const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $firebaseuiAuth, } = useNuxtApp()
 const loginComposable = useLogin()
 const route = useRoute()
