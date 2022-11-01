@@ -118,7 +118,7 @@ async function initializeCKEditor() {
         })
         editor.model.document.on('change:data', () => {
             let newValue = editor.getData()
-            if (this.removePlatformLink) {
+            if (props.removePlatformLink) {
                 newValue = newValue.replaceAll(/href=".*?"/g, '')
             }
             localValue.value = newValue
@@ -133,6 +133,9 @@ async function setData(newValue) {
         ckeditorInstance.setData(newValue)
     })
 }
+defineExpose({
+    setData
+})
 </script>
 <style lang="scss" scoped>
 .inputGroup__nameGroup {

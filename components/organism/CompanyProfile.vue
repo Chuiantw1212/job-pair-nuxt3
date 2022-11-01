@@ -239,11 +239,10 @@ async function initializeCompanyInfo() {
     state.companyImages = companyInfo.images ?? []
 
     if (descriptionRef.value) {
-        console.log(descriptionRef.value)
-        // descriptionRef.value.setData(state.companyInfo.description)
+        descriptionRef.value.setData(state.companyInfo.description)
     }
     if (jobBenefitsRef.value) {
-        // jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
+        jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
         setWelfareFlags()
     }
 }
