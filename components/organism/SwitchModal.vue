@@ -50,7 +50,6 @@ const state = reactive({
     bsModal: null,
 })
 onMounted(() => {
-    console.log('switch modal registered')
     $emitter.on("showSwitchModal", showModal)
     $emitter.on("hideSwitchModal", hideModal)
     if (process.client) {

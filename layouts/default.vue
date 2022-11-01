@@ -12,7 +12,6 @@ const router = useRouter()
 const repoSelect = useRepoSelect()
 // hooks
 onMounted(async () => {
-    console.log('isMounted')
     await Promise.all([
         repoSelect.getSelectByQuery(),
         repoSelect.getLocation(),
