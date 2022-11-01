@@ -1,13 +1,12 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`" :class="{ 'inputGroup--error': message }">
+    <div class="inputGroup" :ref="`inputGroup`">
         <label class="inputGroup__body">
             <div class="inputGroup__nameGroup">
                 <span class="nameGroup__text" :class="{ 'nameGroup__text--required': required }">
                     <slot> </slot>
                 </span>
-                <span class="inputGroup__message">{{ message }}</span>
             </div>
-            <span v-if="file && file.name" class="body__placeholder">{{ file.name }}</span>
+            <span v-if="state.file && state.file.name" class="body__placeholder">{{ state.file.name }}</span>
             <span v-else class="body__placeholder">{{ placeholder }}</span>
             <input v-show="false" class="body__input" :placeholder="placeholder" autocomplete="off" type="file" multiple
                 :data-required="required" :data-name="name" @change="handleFiles($event)" />
@@ -16,7 +15,7 @@
         <div class="glide" :class="`glide${id}`">
             <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
-                    <template v-for="(image, index) in imageSrc" :key="index">
+                    <template v-for="(image, index) in state.imageSrc" :key="index">
                         <li class="glide__slide">
                             <img id="inputGroup__viewer1" class="inputGroup__viewer" :style="{
                                 'background-image': `url(${image})`,
@@ -26,163 +25,136 @@
                 </ul>
             </div>
             <div class="glide__bullets" data-glide-el="controls[nav]">
-                <template v-for="(image, index) in imageSrc" :key="index">
+                <template v-for="(image, index) in state.imageSrc" :key="index">
                     <button class="glide__bullet" :data-glide-dir="`=${index}`"></button>
                 </template>
             </div>
         </div>
     </div>
 </template>
-<script>
-import Glide from "@glidejs/glide"
+<script setup>
+import { nextTick } from 'vue'
 import { Buffer } from 'buffer'
-export default {
-    data: function () {
-        const id = this.uuid()
-        return {
-            id,
-            message: "",
-            file: null,
-            glideInstance: null,
-            glideMobileConfig: {
-                perView: 1,
-            },
-            glideDesktopConfig: {
-                perView: 3,
-            },
-            imageSrc: [],
-            resizeTimer: null,
+const emit = defineEmits(['update:modelValue'])
+const { $Glide, $uuid4 } = useNuxtApp()
+const state = reactive({
+    id: $uuid4(),
+    file: null,
+    glideInstance: null,
+    glideMobileConfig: {
+        perView: 1,
+    },
+    glideDesktopConfig: {
+        perView: 3,
+    },
+    imageSrc: [],
+    resizeTimer: null,
+})
+const props = defineProps({
+    width: {
+        type: [String, Number],
+        default: "1",
+    },
+    modelValue: {
+        type: Array,
+        default: function () {
+            return []
+        },
+    },
+    required: {
+        type: Boolean,
+        default: false,
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
+    placeholder: {
+        type: String,
+        default: "",
+    },
+    name: {
+        type: String,
+        default: ''
+    }
+})
+// hooks
+onMounted(() => {
+    initialGlide()
+    window.addEventListener("resize", setTimeForGlide)
+})
+onBeforeUnmount(() => {
+    if (state.glideInstance) {
+        state.glideInstance.destroy()
+    }
+    window.removeEventListener("resize", setTimeForGlide)
+})
+watch(() => props.modelValue, (files = []) => {
+    const urls = files.map((file, index) => {
+        if (typeof file === 'string') {
+            return file
+        } else {
+            const { type, buffer } = file
+            const typedArray = new Uint8Array(buffer.data)
+            const blob = new Blob([typedArray], { type })
+            const obj_url = URL.createObjectURL(blob)
+            return obj_url
         }
-    },
-    props: {
-        width: {
-            type: [String, Number],
-            default: "1",
-        },
-        modelValue: {
-            type: Array,
-            default: function () {
-                return []
-            },
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: {
-            type: String,
-            default: "",
-        },
-        name: {
-            type: String,
-            default: ''
+    })
+    state.imageSrc = urls
+    if (state.glideInstance) {
+        state.glideInstance.destroy()
+    }
+    nextTick(() => {
+        initialGlide()
+    })
+}, { immediate: true })
+// methods
+function setTimeForGlide() {
+    clearTimeout(state.resizeTimer)
+    state.resizeTimer = setTimeout(initialGlide, 200)
+}
+function initialGlide() {
+    const width = window.innerWidth
+    let config = state.glideMobileConfig
+    if (width >= 992) {
+        config = state.glideDesktopConfig
+    }
+    const glideInstance = new $Glide(`.glide${state.id}`, config)
+    glideInstance.mount()
+    state.glideInstance = glideInstance
+}
+async function handleFiles(event) {
+    const { files } = event.target
+    const array = Array.from(files)
+    const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"]
+    const readPromises = array.map(async (file) => {
+        if (!allowedFileTypes.includes(file.type)) {
+            return false
         }
-    },
-    mounted() {
-        this.initialGlide()
-        window.addEventListener("resize", this.setTimeForGlide)
-    },
-    beforeUnmount() {
-        if (this.glideInstance) {
-            this.glideInstance.destroy()
-        }
-        window.removeEventListener("resize", this.setTimeForGlide)
-    },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue)
-            },
-        },
-    },
-    watch: {
-        modelValue: {
-            handler: function (files = []) {
-                const urls = files.map((file, index) => {
-                    if (typeof file === 'string') {
-                        return file
-                    } else {
-                        const { type, buffer } = file
-                        const typedArray = new Uint8Array(buffer.data)
-                        const blob = new Blob([typedArray], { type })
-                        const obj_url = URL.createObjectURL(blob)
-                        return obj_url
-                    }
-                })
-                this.imageSrc = urls
-                if (this.glideInstance) {
-                    this.glideInstance.destroy()
-                }
-                this.$nextTick(() => {
-                    this.initialGlide()
-                })
-            },
-            immediate: true
-        },
-        disabled() {
-            this.message = ""
-        },
-    },
-    methods: {
-        uuid() {
-            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            )
-        },
-        setTimeForGlide() {
-            clearTimeout(this.resizeTimer)
-            this.resizeTimer = setTimeout(this.initialGlide, 200)
-        },
-        initialGlide() {
-            const width = window.innerWidth
-            let config = this.glideMobileConfig
-            if (width >= 992) {
-                config = this.glideDesktopConfig
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        const readerResult = await new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.readAsArrayBuffer(file)
+            reader.onload = () => {
+                resolve(reader.result)
             }
-            const glideInstance = new Glide(`.glide${this.id}`, config)
-            glideInstance.mount()
-            this.glideInstance = glideInstance
-        },
-        async handleFiles(event) {
-            const { files } = event.target
-            const array = Array.from(files)
-            const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"]
-            const readPromises = array.map(async (file) => {
-                if (!allowedFileTypes.includes(file.type)) {
-                    return false
-                }
-                const reader = new FileReader()
-                reader.readAsDataURL(file)
-                const readerResult = await new Promise((resolve, reject) => {
-                    const reader = new FileReader()
-                    reader.readAsArrayBuffer(file)
-                    reader.onload = () => {
-                        resolve(reader.result)
-                    }
-                    reader.onerror = (error) => reject(error)
-                })
-                const buffer = Buffer.from(readerResult)
-                const typeChunks = file.type.split("/")
-                const type = typeChunks[1]
-                return {
-                    type,
-                    buffer: {
-                        type: "Buffer",
-                        data: buffer,
-                    },
-                }
-            })
-            const readResults = await Promise.all(readPromises)
-            this.$emit("update:modelValue", readResults)
-        },
-    },
+            reader.onerror = (error) => reject(error)
+        })
+        const buffer = Buffer.from(readerResult)
+        const typeChunks = file.type.split("/")
+        const type = typeChunks[1]
+        return {
+            type,
+            buffer: {
+                type: "Buffer",
+                data: buffer,
+            },
+        }
+    })
+    const readResults = await Promise.all(readPromises)
+    emit("update:modelValue", readResults)
 }
 </script>
 <style lang="scss" scoped>

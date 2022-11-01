@@ -30,10 +30,10 @@ export default defineNuxtConfig({
             ],
         },
     },
-    // css: [
-    //     '@glidejs/glide/dist/css/glide.core.min.css',
-    //     '@glidejs/glide/dist/css/glide.theme.min.css',
-    // ],
+    css: [
+        '@glidejs/glide/dist/css/glide.core.min.css',
+        '@glidejs/glide/dist/css/glide.theme.min.css',
+    ],
     runtimeConfig: {
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,

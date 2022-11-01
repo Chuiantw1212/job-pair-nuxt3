@@ -37,7 +37,7 @@
                 <div v-if="state.companyInfo" class="features__item">
                     <span class="item__header">產業類別</span>
                     <span v-for="(value, index) in state.companyInfo.industry" :key="index" class="item__body">{{
-                    $optionText(value, repoSelect.industryItems)
+                            $optionText(value, repoSelect.industryItems)
                     }}</span>
                 </div>
             </div>
@@ -110,7 +110,7 @@
 </template>
 <script setup>
 import { ref, nextTick } from 'vue'
-const { $uuid4, $requestSelector, $optionText } = useNuxtApp()
+const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
 const device = useDevice()
 const route = useRoute()
 const repoCompany = useRepoCompany()
@@ -196,7 +196,7 @@ function initialGlide() {
         if (width >= 992) {
             config = state.glideDesktopConfig
         }
-        const glideInstance = new Glide(`.glide`, config)
+        const glideInstance = new $Glide(`.glide`, config)
         glideInstance.mount()
         state.glideInstance = glideInstance
     })
