@@ -141,15 +141,13 @@ const state = reactive({
     focusedImageSrc: "",
     resizeTimer: null
 })
-let organizationId = computed(() => {
-    const id = route.path.split('/').slice(-1)[0]
-    return id
-})
 const jobItems = ref([])
 // hooks
 onMounted(async () => {
-    await initializeCompany()
+    const id = route.path.split('/').slice(-1)[0]
+    await initializeCompany(id)
     window.addEventListener("resize", setTimeForGlide)
+    jobScroller.state.filter.organizationId = id
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
@@ -161,8 +159,8 @@ watch(() => jobScroller.state.jobList, () => {
     jobScroller.observeLastJob(jobItems)
 })
 // methods
-async function initializeCompany() {
-    const res = await repoCompany.getCompanyById(organizationId.value)
+async function initializeCompany(id) {
+    const res = await repoCompany.getCompanyById(id)
     const company = res.data
     state.companyInfo = company
     const { images = [], name = "", } = company

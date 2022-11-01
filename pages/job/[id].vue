@@ -128,11 +128,12 @@
                 <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
-        <section v-if="repoAuth.user && state.jobList.length" class="jobView__similarJobs">
+        <section v-if="repoAuth.state.user && jobScroller.state.jobList.length" class="jobView__similarJobs">
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
-                <OrganismJobItem v-for="(job, index) in state.jobList" :key="index" v-model="state.jobList[index]"
-                    class="basic__footer" :showShareButton="true" :ref="`jobItem${index}`"></OrganismJobItem>
+                <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
+                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true"
+                    ref="jobItems"></OrganismJobItem>
             </ul>
         </section>
     </div>
@@ -148,6 +149,7 @@ const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoCompany = useRepoCompany()
+const jobScroller = useJobScroller()
 const device = useDevice()
 const state = reactive({
     job: null,
@@ -188,7 +190,8 @@ const state = reactive({
     debounceTimer: null,
 })
 const jobId = computed(() => {
-    return route.params.id
+    const id = route.path.split('/').slice(-1)[0]
+    return id
 })
 let browserConfig = computed({
     get() {
@@ -205,6 +208,7 @@ let browserConfig = computed({
         }
     }
 })
+const jobItems = ref([])
 // hooks
 onMounted(() => {
     if (process.client) {
@@ -225,11 +229,14 @@ watch(() => route.params.id, () => {
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
-watch(() => repoAuth.state.user, async () => {
-    state.jobList = []
-    state.pagination.pageOffset = 0
-    await concatJobsFromServer()
+watch(() => jobScroller.state.jobList, () => {
+    jobScroller.observeLastJob(jobItems)
 })
+// watch(() => repoAuth.state.user, async () => {
+//     state.jobList = []
+//     state.pagination.pageOffset = 0
+//     await concatJobsFromServer()
+// })
 // methos
 function getAdVisibility() {
     if (process.client) {
@@ -312,60 +319,56 @@ function setApplyFlow() {
         state.applyFlow = matchedJob.applyFlow
     }
 }
-async function concatJobsFromServer() {
-    const { user } = repoAuth.state
-    if (!user.id || !state.job) {
-        return
-    }
-    const config = Object.assign({}, state.pagination, {
-        occupationalCategory: state.job.occupationalCategory,
-    })
-    if (user.type === 'user') {
-        config.id = user.id
-    }
-    const response = await repoJob.getJobAll(config)
-    if (response.status !== 200) {
-        return
-    }
-    const { total = 0, items = [] } = response.data
-    const filteredItems = items.filter(item => {
-        return item.identifier !== state.job.identifier
-    })
-    state.jobList = [...state.jobList, ...filteredItems]
-    nextTick(() => {
-        observeLastJob(items)
-    })
-}
-function observeLastJob(newJobs = []) {
-    console.log('observeLastJob', newJobs)
-    if (!newJobs.length) {
-        return
-    }
-    if (!state.observer) {
-        state.observer = new IntersectionObserver(loadJobItemBatch, {
-            rootMargin: "0px",
-            threshold: 0,
-        })
-    }
-    const lastItemIndex = state.jobList.length - 1
-    // const targetComponentWrapper = this.$refs[`jobItem${lastItemIndex}`]
-    // if (!targetComponentWrapper) {
-    //     return
-    // }
-    // const targetComponent = targetComponentWrapper[0]
-    // if (targetComponent) {
-    //     const target = targetComponent.$el
-    //     this.observer.observe(target)
-    // }
-}
-async function loadJobItemBatch(entries, observer) {
-    const triggeredEntry = entries[0]
-    if (triggeredEntry.isIntersecting) {
-        observer.unobserve(triggeredEntry.target)
-        state.pagination.pageOffset += state.pagination.pageLimit
-        await concatJobsFromServer()
-    }
-}
+// async function concatJobsFromServer() {
+//     const { user } = repoAuth.state
+//     if (!user.id || !state.job) {
+//         return
+//     }
+//     const config = Object.assign({}, state.pagination, {
+//         occupationalCategory: state.job.occupationalCategory,
+//     })
+//     if (user.type === 'user') {
+//         config.id = user.id
+//     }
+//     const response = await repoJob.getJobAll(config)
+//     if (response.status !== 200) {
+//         return
+//     }
+//     const { total = 0, items = [] } = response.data
+//     const filteredItems = items.filter(item => {
+//         return item.identifier !== state.job.identifier
+//     })
+//     state.jobList = [...state.jobList, ...filteredItems]
+//     if (!items.length) {
+//         return
+//     }
+//     nextTick(() => {
+//         observeLastJob()
+//     })
+// }
+// function observeLastJob() {
+//     if (!state.observer) {
+//         state.observer = new IntersectionObserver(loadJobItemBatch, {
+//             rootMargin: "0px",
+//             threshold: 0,
+//         })
+//     }
+//     const wrappers = jobItems.value
+//     console.log({
+//         wrappers
+//     })
+//     const targetComponent = wrappers[wrappers.length - 1]
+//     const target = targetComponent.$el
+//     state.observer.observe(target)
+// }
+// async function loadJobItemBatch(entries, observer) {
+//     const triggeredEntry = entries[0]
+//     if (triggeredEntry.isIntersecting) {
+//         observer.unobserve(triggeredEntry.target)
+//         state.pagination.pageOffset += state.pagination.pageLimit
+//         await concatJobsFromServer()
+//     }
+// }
 function hideAd() {
     if (!process.client) {
         return

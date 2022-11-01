@@ -6,10 +6,11 @@ export default function setup() {
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
     const route = useRoute()
-    let organizationId = computed(() => {
-        const id = route.path.split('/').slice(-1)[0]
-        return id
-    })
+    // ??
+    // let organizationId = computed(() => {
+    //     const id = route.path.split('/').slice(-1)[0]
+    //     return id
+    // })
     const state = reactive({
         jobList: [],
         // pagination
@@ -19,7 +20,21 @@ export default function setup() {
             pageOffset: 0,
         },
         // filters
-        filter: getDefaultFilter(),
+        filter: {
+            // 篩選企業條件
+            industry: null,
+            jobBenefits: [],
+            // 篩選職缺
+            addressRegion: [],
+            responsibilities: [],
+            employmentType: [],
+            jobLocationType: [],
+            occupationalCategory: [],
+            salaryMin: null,
+            salaryMax: null,
+            industry: [],
+            organizationId: null,
+        },
         searchLike: "",
         observer: null,
         count: 0,
@@ -48,23 +63,6 @@ export default function setup() {
                 this.debounceTimer = undefined
                 func.apply(this, args)
             }, delay)
-        }
-    }
-    function getDefaultFilter() {
-        return {
-            // 篩選企業條件
-            industry: null,
-            jobBenefits: [],
-            // 篩選職缺
-            addressRegion: [],
-            responsibilities: [],
-            employmentType: [],
-            jobLocationType: [],
-            occupationalCategory: [],
-            salaryMin: null,
-            salaryMax: null,
-            industry: [],
-            organizationId: organizationId.value,
         }
     }
     async function initializeSearch(config = {}) {
