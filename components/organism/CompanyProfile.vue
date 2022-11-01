@@ -1,5 +1,5 @@
 <template>
-    <InputBanner v-model="state.companyBanner"></InputBanner>
+    <AtomInputBanner v-model="state.companyBanner"></AtomInputBanner>
     <div class="profile">
         <div v-if="state.isNewCompay" class="profile__quick">
             <h1 class="quick__header">快速建檔</h1>
@@ -25,80 +25,82 @@
                 </div>
                 <div class="row basicInfo__body">
                     <div>Logo (建議：60px*60px)</div>
-                    <InputPhotoSingle v-model="state.companyLogo" class="mb-2">
-                    </InputPhotoSingle>
-                    <InputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
+                    <AtomInputPhotoSingle v-model="state.companyLogo" class="mb-2">
+                    </AtomInputPhotoSingle>
+                    <AtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                         placeholder="請輸入企業法人名稱">
-                    </InputText>
-                    <InputText v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                        class="mb-2" :max="8" :min="8">
-                    </InputText>
-                    <ProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5" required
+                    </AtomInputText>
+                    <AtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
+                        placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
+                    </AtomInputText>
+                    <MoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5" required
                         class="mb-2">
                         <template v-slot:header>
-                            <ProfileSelectLabels v-model="state.companyInfo.industry"
+                            <MoleculeProfileSelectLabels v-model="state.companyInfo.industry"
                                 :jobCategoryMap="repoSelect.industryCategoryMap" placeholder="產業類別"
                                 :items="repoSelect.industryItems">
-                            </ProfileSelectLabels>
+                            </MoleculeProfileSelectLabels>
                         </template>
                         <template v-slot:body>
-                            <FilterCategory v-model="state.companyInfo.industry" :items="repoSelect.industryItems"
-                                :categoryMap="repoSelect.industryCategoryMap" :max="5"
+                            <MoleculeFilterCategory v-model="state.companyInfo.industry"
+                                :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
                                 :isDesktop="device.state.isDesktop" required name="產業類別">
-                            </FilterCategory>
+                            </MoleculeFilterCategory>
                         </template>
-                    </ProfileSelectContainer>
+                    </MoleculeProfileSelectContainer>
                     <div class="d-block d-md-flex gap-2">
-                        <InputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressRegion"
+                        <AtomInputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressRegion"
                             name="總公司縣市" required placeholder="請選擇縣市" :items="repoSelect.state.locationRes.taiwan"
                             @change="state.companyInfo.addressLocality = ''" class="mb-2">
-                        </InputSelect>
-                        <InputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressLocality"
+                        </AtomInputSelect>
+                        <AtomInputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressLocality"
                             name="行政區" class="mb-2" placeholder="請選擇鄉鎮市區"
                             :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
-                        </InputSelect>
-                        <InputText v-model="state.companyInfo.streetAddress" name="詳細地址" placeholder="請輸入道路或街名與巷弄號及樓層"
-                            class="mb-2 w-100" required>
-                        </InputText>
+                        </AtomInputSelect>
+                        <AtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
+                            placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
+                        </AtomInputText>
                     </div>
-                    <InputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2" required>
-                    </InputText>
-                    <InputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字" class="mt-3 mb-2">
-                    </InputText>
-                    <InputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
+                    <AtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                        required>
+                    </AtomInputText>
+                    <AtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
+                        class="mt-3 mb-2">
+                    </AtomInputText>
+                    <AtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
                         class="mb-2">
-                    </InputText>
-                    <InputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
+                    </AtomInputText>
+                    <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
                         class="mb-2">
-                    </InputText>
-                    <InputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
+                    </AtomInputText>
+                    <!-- <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
                         :max="12">
-                    </InputUploader>
+                    </AtomInputUploader> -->
                 </div>
             </div>
             <div class="body__companyInfo">
-                <InputCKEditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
-                    :ref="'description'">
-                </InputCKEditor>
-                <InputCKEditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
-                    :ref="'jobBenefits'" @update:modelValue="setWelfareFlags()">
-                </InputCKEditor>
+                <AtomInputCKEditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
+                    ref="descriptionRef">
+                </AtomInputCKEditor>
+                <AtomInputCKEditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
+                    ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                </AtomInputCKEditor>
                 <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                     <div>
                         ※ 系統自動偵測項目
                     </div>
                     <ul>
                         <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
-                            <li v-if="jobBenefits[item.value].length" class="content__item">
+                            <li v-if="state.jobBenefits[item.value].length" class="content__item">
                                 {{ item.text }}：{{ getWelfareString(item.value) }}
                             </li>
                         </template>
                     </ul>
                 </div>
-                <InputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
+                <AtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
                     v-model="state.companyInfo.preference.culture" name="企業文化風格" required
                     :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
-                </InputCheckMultiple>
+                </AtomInputCheckMultiple>
             </div>
         </div>
         <div class="profile__footerGroup">
@@ -107,7 +109,7 @@
                     暫存
                 </button> -->
                 <button class="footerGroup__submit" type="button"
-                    @click="saveCompanyInfo({ validate: true, next: 'companyJobs' })">
+                    @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
                     下一步
                 </button>
             </template>
@@ -120,11 +122,16 @@
     </div>
 </template>
 <script setup>
-const { test } = await import('~/assets/jobBenefits.json')
+const { jobBenefitsConfig } = await import('~/assets/jobBenefits.json')
+const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
 const device = useDevice()
-const repoSelect = useRepoSelect()
-const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
+const repoAdmin = useRepoAdmin()
+const repoCompany = useRepoCompany()
+const repoSelect = useRepoSelect()
+const router = useRouter()
+const descriptionRef = ref(null)
+const jobBenefitsRef = ref(null)
 const state = reactive({
     crawlerUrl: "",
     isNewCompay: false,
@@ -155,7 +162,7 @@ const state = reactive({
 })
 // hooks
 watch(() => repoAuth.state.user, (userValue) => {
-    initializeCompanyInfo(userValue)
+    initializeCompanyInfo()
 }, { immediate: true })
 // methods
 function getWelfareString(key) {
@@ -173,6 +180,9 @@ function setWelfareFlags() {
             continue
         }
         const labels = jobBenefitsConfig[welfareType]
+        console.log({
+            labels
+        })
         state.jobBenefits[welfareType] = labels.filter((keyword) => {
             return welfareCopy.includes(keyword)
         })
@@ -204,83 +214,79 @@ function getDefaultCompany(id = '') {
     }
     return companyInfo
 }
-async function initializeCompanyInfo(user) {
+async function initializeCompanyInfo() {
     // 生成本地端company資料
-    if (!user || !user.id || this.companyInfo.id) {
+    const { user } = repoAuth.state
+    if (!user || !user.id || state.companyInfo.id) {
         return
     }
-    const companyRes = await this.getAdminCompany()
+    const companyRes = await repoAdmin.getAdminCompany()
     if (companyRes.status !== 200) {
         return
     }
     if (companyRes.data === false) {
         // 尚未註冊導回註冊畫面
-        this.$router.replace({
-            name: 'companyRegister'
-        })
-        this.isNewCompay = true
+        router.replace(`/admin/register`)
+        state.isNewCompay = true
     }
-    let companyInfo = this.getDefaultCompany()
+    let companyInfo = getDefaultCompany()
     if (companyRes.data) {
         companyInfo = JSON.parse(JSON.stringify(companyRes.data))
     }
-    this.companyInfo = companyInfo
-    this.companyLogo = companyInfo.logo
-    this.companyBanner = companyInfo.banner
-    this.companyImages = companyInfo.images ?? []
+    state.companyInfo = companyInfo
+    state.companyLogo = companyInfo.logo
+    state.companyBanner = companyInfo.banner
+    state.companyImages = companyInfo.images ?? []
 
-    if (this.$refs.description) {
-        this.$refs.description.setData(this.companyInfo.description)
+    if (descriptionRef.value) {
+        console.log(descriptionRef.value)
+        // descriptionRef.value.setData(state.companyInfo.description)
     }
-    if (this.$refs.jobBenefits) {
-        this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
-        this.setWelfareFlags()
+    if (jobBenefitsRef.value) {
+        // jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
+        setWelfareFlags()
     }
 }
 async function crawlCompanyFromPlatform() {
-    if (!this.crawlerUrl) {
-        return
-    }
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
     const targetPlatform = whiteList.find(url => {
-        return this.crawlerUrl.includes(url)
+        return state.crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
         this.$alert('網址有誤')
         return
     }
     // 清空原有資料
-    this.companyInfo = this.getDefaultCompany(this.companyInfo.id)
-    this.$toggleLoader(true)
-    const response = await this.getCompanyByCrawler({
+    state.companyInfo = getDefaultCompany(state.companyInfo.id)
+    $toggleLoader(true)
+    const response = await repoCompany.getCompanyByCrawler({
         url: this.crawlerUrl,
     })
     if (response.status !== 200) {
         return
     }
-    this.$toggleLoader(false)
+    $toggleLoader(false)
     const crawlerCompany = response.data
     if (targetPlatform === '.104.com.tw/company/') {
-        await this.set104CompanyInfo(crawlerCompany)
+        await set104CompanyInfo(crawlerCompany)
     }
     if (targetPlatform === '.yourator.co/companies/') {
-        await this.setYouratorCompanyInfo(crawlerCompany)
+        await setYouratorCompanyInfo(crawlerCompany)
     }
     if (targetPlatform === '.cakeresume.com/companies/') {
-        await this.setCakeresumeCompanyInfo(crawlerCompany)
+        await setCakeresumeCompanyInfo(crawlerCompany)
     }
     // 拿掉被占用的欄位
-    if (this.companyInfo.telephone === '暫不提供') {
-        this.companyInfo.telephone = ''
+    if (state.companyInfo.telephone === '暫不提供') {
+        state.companyInfo.telephone = ''
     }
     // 設定CKEditor文字
-    this.$refs.description.setData(this.companyInfo.description)
-    this.$refs.jobBenefits.setData(this.companyInfo.jobBenefits)
+    descriptionRef.value.setData(state.companyInfo.description)
+    jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
 }
 async function setCakeresumeCompanyInfo(response) {
     const {
         name = '',
-        // description = '',
         products = '',
         mission = '',
         media = '',
@@ -330,9 +336,9 @@ async function setCakeresumeCompanyInfo(response) {
         story,
         logo,
     }
-    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
     delete companyInfo.logo
-    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+    state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function setYouratorCompanyInfo(response) {
     const {
@@ -380,9 +386,9 @@ async function setYouratorCompanyInfo(response) {
         description,
         logo,
     }
-    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
     delete companyInfo.logo
-    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+    state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function set104CompanyInfo(response) {
     const {
@@ -409,11 +415,11 @@ async function set104CompanyInfo(response) {
     // 先找到第一級行政區
     const addressRegionText = address.slice(0, 3)
     const upperTaiDivision = addressRegionText.replace('台', '臺')
-    const targetDivision = this.locationRes.taiwan.find((item) => {
+    const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
     const addressRegion = targetDivision.value
-    const addressLocalityItems = this.locationRes[addressRegion]
+    const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
     const addressLocalityText = address.slice(3, 6)
     const targetDivisionLevel2 = addressLocalityItems.find((item) => {
         return item.text === addressLocalityText
@@ -467,63 +473,60 @@ async function set104CompanyInfo(response) {
         logo,
         jobBenefits,
     }
-    this.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
     delete companyInfo.logo
-    this.companyInfo = Object.assign(this.companyInfo, companyInfo)
+    state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function saveCompanyInfo(config) {
-    const { validate = false, next = '' } = config
+    const { validate = false, to = '' } = config
     if (validate) {
-        const result = await this.$validate()
+        const result = await $validate()
         if (!result.isValid) {
             return
         }
     }
-    this.$toggleLoader(true)
-    const updatedCompany = await this.refineAndUpdateCompanyInfo()
+    $toggleLoader(true)
+    const updatedCompany = await refineAndUpdateCompanyInfo()
     if (!updatedCompany) {
         return
     }
-    this.setCompany(updatedCompany)
-    if (next) {
-        await this.$alert('請至E-mail 信箱內回覆身份驗證信', {
+    repoCompany.setCompany(updatedCompany)
+    if (to) {
+        await $alert('請至E-mail 信箱內回覆身份驗證信', {
             title: '身分驗證',
             icon: 'info'
         })
-        this.$router.push({
-            name: next,
-        })
+        router.push(to)
     } else {
-        this.$succeed()
+        $succeed()
     }
 }
 async function refineAndUpdateCompanyInfo() {
-    const jobBenefitTypes = this.selectByQueryRes.jobBenefits.map(item => item.value)
-    this.companyInfo.jobBenefitFlags = {}
+    const jobBenefitTypes = repoSelect.state.selectByQueryRes.jobBenefits.map(item => item.value)
+    state.companyInfo.jobBenefitFlags = {}
     jobBenefitTypes.forEach(welfareType => {
         const labels = jobBenefitsConfig[welfareType]
         if (Array.isArray(labels)) {
             const findResult = labels.find(word => {
-                return this.companyInfo.jobBenefits.includes(word)
+                return state.companyInfo.jobBenefits.includes(word)
             })
             if (findResult) {
-                this.companyInfo.jobBenefitFlags[welfareType] = true
+                state.companyInfo.jobBenefitFlags[welfareType] = true
             }
         }
     })
-    // update company infomation
     /**
      * 這個時間點admin已經註冊，
      * 但寫入一律用user.uid操作
      */
-    const adminUid = this.user.uid
     let companyRes = null
-    if (this.companyInfo.id) {
-        companyRes = await this.patchCompany(this.companyInfo)
+    if (state.companyInfo.id) {
+        companyRes = await repoCompany.patchCompany(state.companyInfo)
     } else {
-        this.companyInfo.email = this.user.email
-        this.companyInfo.admins = [this.user.id]
-        companyRes = await this.postAdminNewCompany(this.companyInfo)
+        const { user } = repoAuth.state
+        state.companyInfo.email = user.email
+        state.companyInfo.admins = [user.id]
+        companyRes = await state.postAdminNewCompany(state.companyInfo)
     }
     if (companyRes.status !== 200) {
         return false
@@ -531,16 +534,16 @@ async function refineAndUpdateCompanyInfo() {
     //
     const updatedResult = companyRes.data
     const blobPromises = []
-    if (this.companyBanner && typeof this.companyBanner !== 'string') {
-        const promise = this.putCompanyBannerBlob(this.companyBanner)
+    if (state.companyBanner && typeof state.companyBanner !== 'string') {
+        const promise = repoCompany.putCompanyBannerBlob(state.companyBanner)
         blobPromises.push(promise)
     }
-    if (this.companyLogo && typeof this.companyLogo !== 'string') {
-        const promise = this.putCompanyLogoBlob(this.companyLogo)
+    if (state.companyLogo && typeof state.companyLogo !== 'string') {
+        const promise = repoCompany.putCompanyLogoBlob(state.companyLogo)
         blobPromises.push(promise)
     }
-    if (this.companyImages.length) {
-        const promise = this.putCompanyPhotos(this.companyImages)
+    if (state.companyImages.length) {
+        const promise = repoCompany.putCompanyPhotos(state.companyImages)
         blobPromises.push(promise)
     }
     const results = await Promise.all(blobPromises)

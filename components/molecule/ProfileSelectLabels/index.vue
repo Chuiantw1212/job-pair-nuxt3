@@ -37,7 +37,7 @@ const props = defineProps({
         }
     },
     items: {
-        type: Array,
+        type: [Array, Object],
         default: function () {
             return []
         }

@@ -1,5 +1,5 @@
 <template>
     <div>
-        企業資料
+        <OrganismCompanyProfile></OrganismCompanyProfile>
     </div>
 </template>

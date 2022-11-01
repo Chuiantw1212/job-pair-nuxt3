@@ -65,8 +65,7 @@
 </template>
 <script setup>
 import { Buffer } from 'buffer/'
-import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $alert, $succeed, $time, $uuid4 } = useNuxtApp()
+const { $alert, $time, $uuid4 } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     id: $uuid4()
