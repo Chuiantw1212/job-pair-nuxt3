@@ -38,7 +38,8 @@ export default function setup() {
         searchLike: "",
         observer: null,
         count: 0,
-        debounceTimer: null
+        debounceTimer: null,
+        isModalShown: false
     })
     // hooks
     // watch(() => repoAuth.state.user, (newValue) => {
@@ -96,8 +97,10 @@ export default function setup() {
         nextTick(() => {
             const wrappers = jobItemRefs.value
             const targetComponent = wrappers[wrappers.length - 1]
-            const target = targetComponent.$el
-            state.observer.observe(target)
+            if (targetComponent) {
+                const target = targetComponent.$el
+                state.observer.observe(target)
+            }
         })
     }
     async function loadJobItemBatch(entries, observer) {

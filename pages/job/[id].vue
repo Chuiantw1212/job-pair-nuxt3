@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                            repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -128,7 +128,7 @@
                 <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
-        <section v-if="repoAuth.state.user && jobScroller.state.jobList.length" class="jobView__similarJobs">
+        <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
                 <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
@@ -229,14 +229,24 @@ watch(() => jobId.value, () => {
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
-watch(() => jobScroller.state.jobList, () => {
+watch(() => state.job, (newValue) => {
+    if (newValue) {
+        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory
+        jobScroller.initializeSearch()
+    }
+},)
+watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
     jobScroller.observeLastJob(jobItems)
+    const { user } = repoAuth.state
+    if (user && user.id) {
+        return
+    }
+    const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
+    if (!user && showRegisterModal) {
+        jobScroller.state.isModalShown = true
+        $emitter.emit("showUserModal")
+    }
 })
-// watch(() => repoAuth.state.user, async () => {
-//     state.jobList = []
-//     state.pagination.pageOffset = 0
-//     await concatJobsFromServer()
-// })
 // methos
 function getAdVisibility() {
     if (process.client) {
@@ -249,9 +259,11 @@ function detectScroll() {
         return
     }
     debounce(() => {
+        console.log(jobScroller.state.count)
         const offsetHeight = document.body.offsetHeight
         const { innerHeight, pageYOffset } = window
-        if (offsetHeight === innerHeight + pageYOffset) {
+        if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
+            jobScroller.state.isModalShown = true
             $emitter.emit("showUserModal")
         }
     })()
