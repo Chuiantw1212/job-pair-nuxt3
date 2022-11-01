@@ -64,8 +64,7 @@
     </div>
 </template>
 <script setup>
-import { Buffer } from 'buffer/'
-const { $alert, $time, $uuid4 } = useNuxtApp()
+const { $alert, $time, $uuid4, $Buffer } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     id: $uuid4()
@@ -110,11 +109,6 @@ const isMaxLimit = computed(() => {
     return props.max && localValue.length >= props.max
 })
 // methods
-function uuid() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    )
-}
 function checkIsImage(item) {
     return item.type && item.type.includes('image')
 }

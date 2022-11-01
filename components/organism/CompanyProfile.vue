@@ -76,8 +76,8 @@
                         <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
                             class="mb-2">
                         </AtomInputText>
-                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
-                            :accept="'image/*'" :max="12">
+                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
+                            :max="12">
                         </AtomInputUploader>
                     </div>
                 </div>
