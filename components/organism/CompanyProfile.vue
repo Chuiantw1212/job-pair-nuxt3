@@ -486,7 +486,7 @@ async function saveCompanyInfo(config) {
     if (!updatedCompany) {
         return
     }
-    repoCompany.setCompany(updatedCompany)
+    repoAuth.setCompany(updatedCompany)
     if (to) {
         await $alert('請至E-mail 信箱內回覆身份驗證信', {
             title: '身分驗證',

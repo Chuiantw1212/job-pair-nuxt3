@@ -4,6 +4,7 @@ export default defineStore('auth', () => {
     const axios = useAxios()
     const state = reactive({
         user: null,
+        company: null,
         isLogginIn: false
     })
     async function postSignin(data) {
@@ -49,12 +50,16 @@ export default defineStore('auth', () => {
     function setUser(user) {
         state.user = user
     }
+    function setCompany(company) {
+        state.company = company
+    }
     return {
         state,
         postSignin,
         postVerificationEmail,
         getReauthResult,
         setUser,
-        userSignout
+        userSignout,
+        setCompany,
     }
 })

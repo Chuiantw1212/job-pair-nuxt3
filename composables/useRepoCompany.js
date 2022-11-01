@@ -1,9 +1,6 @@
 import { defineStore } from 'pinia'
 export default defineStore('company', () => {
     const axios = useAxios()
-    const state = reactive({
-        company: null,
-    })
     async function patchCompany(data) {
         const response = await axios.request({
             method: 'patch',
@@ -72,11 +69,7 @@ export default defineStore('company', () => {
         })
         return response
     }
-    function setCompany(company) {
-        state.company = company
-    }
     return {
-        state,
         patchCompany,
         getCompanyById,
         getCompanyByCrawler,
@@ -85,6 +78,5 @@ export default defineStore('company', () => {
         getCompanyNews,
         putCompanyLogoBlob,
         putCompanyBannerBlob,
-        setCompany,
     }
 })

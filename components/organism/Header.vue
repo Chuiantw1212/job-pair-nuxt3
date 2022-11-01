@@ -28,8 +28,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
-                    <!-- <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
-                    </OrganismCompanyMenu> -->
+                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    </OrganismCompanyMenu>
                 </div>
             </div>
         </nav>
