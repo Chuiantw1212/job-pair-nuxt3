@@ -3,12 +3,12 @@
         <div :class="{ row: device.state.isDesktop }">
             <ul class="dashboard__menu">
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" :to="`/company/profile`">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" :to="`/admin/company`">
                         <div class="menu__item__text">企業檔案</div>
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" :to="`/company/account`">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" :to="`/admin/account`">
                         <div class="menu__item__text">帳戶管理</div>
                     </NuxtLink>
                 </li>
