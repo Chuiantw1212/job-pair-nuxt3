@@ -6,7 +6,7 @@
         </div>
         <input v-show="false" :value="!!modelValue" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
-            <div :id="`editor_${state.id}`">
+            <div :id="`editor_${state.id}`" ref="editorRef">
 
             </div>
         </div>
@@ -16,6 +16,7 @@
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'blur'])
+const editorRef = ref(null)
 const state = reactive({
     ckeditorInstance: null,
     id: $uuid4(),
@@ -102,36 +103,32 @@ watch(() => localValue, (newValue, oldValue) => {
 })
 // methods
 async function initializeCKEditor() {
-    $requestSelector(`#editor_${state.id}`, async (element) => {
-        // 使用CDN
-        const editor = await window.ClassicEditor.create(element, {
-            toolbar: props.toolbar,
-        })
-        if (localValue.value) {
-            editor.setData(localValue.value)
-        }
-        if (props.disabled) {
-            editor.enableReadOnlyMode(`editor_${state.id}`)
-        }
-        editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-            emit('blur', evt)
-        })
-        editor.model.document.on('change:data', () => {
-            let newValue = editor.getData()
-            if (props.removePlatformLink) {
-                newValue = newValue.replaceAll(/href=".*?"/g, '')
-            }
-            localValue.value = newValue
-        })
-        state.ckeditorInstance = markRaw(editor)
+    // 使用CDN
+    const editor = await window.ClassicEditor.create(editorRef.value, {
+        toolbar: props.toolbar,
     })
+    if (localValue.value) {
+        editor.setData(localValue.value)
+    }
+    if (props.disabled) {
+        editor.enableReadOnlyMode(`editor_${state.id}`)
+    }
+    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+        emit('blur', evt)
+    })
+    editor.model.document.on('change:data', () => {
+        let newValue = editor.getData()
+        if (props.removePlatformLink) {
+            newValue = newValue.replaceAll(/href=".*?"/g, '')
+        }
+        localValue.value = newValue
+    })
+    state.ckeditorInstance = markRaw(editor)
 }
 // public method do not delete
 async function setData(newValue) {
-    $requestSelector(`#editor_${state.id}`, async () => {
-        const ckeditorInstance = state.ckeditorInstance
-        ckeditorInstance.setData(newValue)
-    })
+    const ckeditorInstance = state.ckeditorInstance
+    ckeditorInstance.setData(newValue)
 }
 defineExpose({
     setData

@@ -1,123 +1,125 @@
 <template>
-    <AtomInputBanner v-model="state.companyBanner"></AtomInputBanner>
-    <div class="profile">
-        <div v-if="state.isNewCompay" class="profile__quick">
-            <h1 class="quick__header">快速建檔</h1>
-            <div class="quick__desc">
-                在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
-                <br>
-                範例：https://www.104.com.tw/companyInfo/*,
-                https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*
-            </div>
-            <div class="quick__inputGroup">
-                <label class="inputGroup__label">
-                    <input v-model="state.crawlerUrl" class="inputGroup__url"
-                        placeholder="https://www.104.com.tw/companyInfo/*, https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*" />
-                </label>
-                <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
-            </div>
-        </div>
-        <div class="profile__body">
-            <div class="body__basicInfo">
-                <h2 class="basicInfo__header">基本資料</h2>
-                <div class="basicInfo__desc">
-                    以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識
+    <div>
+        <AtomInputBanner v-model="state.companyBanner"></AtomInputBanner>
+        <div class="profile">
+            <div v-if="state.isNewCompay" class="profile__quick">
+                <h1 class="quick__header">快速建檔</h1>
+                <div class="quick__desc">
+                    在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
+                    <br>
+                    範例：https://www.104.com.tw/companyInfo/*,
+                    https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*
                 </div>
-                <div class="row basicInfo__body">
-                    <div>Logo (建議：60px*60px)</div>
-                    <AtomInputPhotoSingle v-model="state.companyLogo" class="mb-2">
-                    </AtomInputPhotoSingle>
-                    <AtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
-                        placeholder="請輸入企業法人名稱">
-                    </AtomInputText>
-                    <AtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
-                        placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
-                    </AtomInputText>
-                    <MoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5" required
-                        class="mb-2">
-                        <template v-slot:header>
-                            <MoleculeProfileSelectLabels v-model="state.companyInfo.industry"
-                                :jobCategoryMap="repoSelect.industryCategoryMap" placeholder="產業類別"
-                                :items="repoSelect.industryItems">
-                            </MoleculeProfileSelectLabels>
-                        </template>
-                        <template v-slot:body>
-                            <MoleculeFilterCategory v-model="state.companyInfo.industry"
-                                :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
-                                :isDesktop="device.state.isDesktop" required name="產業類別">
-                            </MoleculeFilterCategory>
-                        </template>
-                    </MoleculeProfileSelectContainer>
-                    <div class="d-block d-md-flex gap-2">
-                        <AtomInputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressRegion"
-                            name="總公司縣市" required placeholder="請選擇縣市" :items="repoSelect.state.locationRes.taiwan"
-                            @change="state.companyInfo.addressLocality = ''" class="mb-2">
-                        </AtomInputSelect>
-                        <AtomInputSelect v-if="repoSelect.state.locationRes" v-model="state.companyInfo.addressLocality"
-                            name="行政區" class="mb-2" placeholder="請選擇鄉鎮市區"
-                            :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
-                        </AtomInputSelect>
-                        <AtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
-                            placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
+                <div class="quick__inputGroup">
+                    <label class="inputGroup__label">
+                        <input v-model="state.crawlerUrl" class="inputGroup__url"
+                            placeholder="https://www.104.com.tw/companyInfo/*, https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*" />
+                    </label>
+                    <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
+                </div>
+            </div>
+            <div class="profile__body">
+                <div class="body__basicInfo">
+                    <h2 class="basicInfo__header">基本資料</h2>
+                    <div class="basicInfo__desc">
+                        以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識
+                    </div>
+                    <div class="row basicInfo__body">
+                        <div>Logo (建議：60px*60px)</div>
+                        <AtomInputPhotoSingle v-model="state.companyLogo" class="mb-2">
+                        </AtomInputPhotoSingle>
+                        <AtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
+                            placeholder="請輸入企業法人名稱">
                         </AtomInputText>
+                        <AtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
+                        </AtomInputText>
+                        <MoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
+                            required class="mb-2">
+                            <template v-slot:header>
+                                <MoleculeProfileSelectLabels v-model="state.companyInfo.industry"
+                                    :jobCategoryMap="repoSelect.industryCategoryMap" placeholder="產業類別"
+                                    :items="repoSelect.industryItems">
+                                </MoleculeProfileSelectLabels>
+                            </template>
+                            <template v-slot:body>
+                                <MoleculeFilterCategory v-model="state.companyInfo.industry"
+                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                                    :max="5" :isDesktop="device.state.isDesktop" required name="產業類別">
+                                </MoleculeFilterCategory>
+                            </template>
+                        </MoleculeProfileSelectContainer>
+                        <div class="d-block d-md-flex gap-2">
+                            <AtomInputSelect v-if="repoSelect.state.locationRes"
+                                v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
+                                :items="repoSelect.state.locationRes.taiwan"
+                                @change="state.companyInfo.addressLocality = ''" class="mb-2">
+                            </AtomInputSelect>
+                            <AtomInputSelect v-if="repoSelect.state.locationRes"
+                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2"
+                                placeholder="請選擇鄉鎮市區"
+                                :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
+                            </AtomInputSelect>
+                            <AtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
+                                placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
+                            </AtomInputText>
+                        </div>
+                        <AtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                            required>
+                        </AtomInputText>
+                        <AtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
+                            class="mt-3 mb-2">
+                        </AtomInputText>
+                        <AtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
+                            class="mb-2">
+                        </AtomInputText>
+                        <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
+                            class="mb-2">
+                        </AtomInputText>
+                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
+                            :accept="'image/*'" :max="12">
+                        </AtomInputUploader>
                     </div>
-                    <AtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                        required>
-                    </AtomInputText>
-                    <AtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
-                        class="mt-3 mb-2">
-                    </AtomInputText>
-                    <AtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
-                        class="mb-2">
-                    </AtomInputText>
-                    <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
-                        class="mb-2">
-                    </AtomInputText>
-                    <!-- <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
-                        :max="12">
-                    </AtomInputUploader> -->
+                </div>
+                <div class="body__companyInfo">
+                    <AtomInputCKEditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
+                        ref="descriptionRef">
+                    </AtomInputCKEditor>
+                    <AtomInputCKEditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
+                        ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                    </AtomInputCKEditor>
+                    <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
+                        <div>
+                            ※ 系統自動偵測項目
+                        </div>
+                        <ul>
+                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits"
+                                :key="index">
+                                <li v-if="state.jobBenefits[item.value].length" class="content__item">
+                                    {{ item.text }}：{{ getWelfareString(item.value) }}
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <AtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
+                        v-model="state.companyInfo.preference.culture" name="企業文化風格" required
+                        :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
+                    </AtomInputCheckMultiple>
                 </div>
             </div>
-            <div class="body__companyInfo">
-                <AtomInputCKEditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
-                    ref="descriptionRef">
-                </AtomInputCKEditor>
-                <AtomInputCKEditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
-                    ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
-                </AtomInputCKEditor>
-                <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
-                    <div>
-                        ※ 系統自動偵測項目
-                    </div>
-                    <ul>
-                        <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
-                            <li v-if="state.jobBenefits[item.value].length" class="content__item">
-                                {{ item.text }}：{{ getWelfareString(item.value) }}
-                            </li>
-                        </template>
-                    </ul>
-                </div>
-                <AtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
-                    v-model="state.companyInfo.preference.culture" name="企業文化風格" required
-                    :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
-                </AtomInputCheckMultiple>
+            <div class="profile__footerGroup">
+                <template v-if="state.isNewCompay">
+                    <button class="footerGroup__submit" type="button"
+                        @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
+                        下一步
+                    </button>
+                </template>
+                <template v-else>
+                    <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
+                        儲存
+                    </button>
+                </template>
             </div>
-        </div>
-        <div class="profile__footerGroup">
-            <template v-if="state.isNewCompay">
-                <!-- <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: false })">
-                    暫存
-                </button> -->
-                <button class="footerGroup__submit" type="button"
-                    @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
-                    下一步
-                </button>
-            </template>
-            <template v-else>
-                <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
-                    儲存
-                </button>
-            </template>
         </div>
     </div>
 </template>
