@@ -187,10 +187,6 @@ const state = reactive({
         hourly: "時薪",
     },
 })
-const jobId = computed(() => {
-    const jobId = route.path.split('/').slice(-1)[0]
-    return jobId
-})
 // hooks
 onMounted(() => {
     initializeSearch()
@@ -199,14 +195,10 @@ watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
     const { user } = repoAuth.state
     if (noLocalJobs && user && user.id) {
-        console.log('resetFilter')
         resetFilter()
     }
 }, { immediate: true })
-// watchEffect(() => {
-// })
 watch(() => state.filter, () => {
-    console.log('initializeSearch')
     initializeSearch()
 }, { deep: true })
 // methods

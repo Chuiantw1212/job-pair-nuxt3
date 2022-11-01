@@ -62,7 +62,7 @@
                                     {{ consultant.descLong }}
                                 </div>
                             </div>
-                            <MoleculeFeedbackList v-model="state.consultant.feedbacks"></MoleculeFeedbackList>
+                            <MoleculeFeedbackList v-model="consultant.feedbacks"></MoleculeFeedbackList>
                             <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="consultant"
                                 :key="consultant.key">
                             </OrganismConsultTime>

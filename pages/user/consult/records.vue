@@ -270,11 +270,10 @@
                 </div>
             </template>
         </MoleculeConsultCard>
-        <!-- <MoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></MoleculeFeedbackList> -->
+        <MoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></MoleculeFeedbackList>
     </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, } from 'vue'
 const { $toggleLoader, $time, } = useNuxtApp()
 const device = useDevice()
