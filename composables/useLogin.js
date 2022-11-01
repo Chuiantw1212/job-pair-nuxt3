@@ -30,7 +30,7 @@ export default function setup() {
                     // 判斷為從登入變成登出
                     repoAuth.userSignout()
                     if (route.path.includes('admin')) {
-                        this.$router.push({
+                        router.push({
                             name: 'admin',
                         })
                     } else {
