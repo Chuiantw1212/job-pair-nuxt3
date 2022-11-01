@@ -98,7 +98,8 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <AtomInputSearch v-model="state.searchLike" @search="initializeSearch()"></AtomInputSearch>
+                    <AtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
+                    </AtomInputSearch>
                 </div>
                 <ul class="jobs__list">
                     <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList"

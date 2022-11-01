@@ -1,16 +1,9 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
-import { reactive, onMounted, watch, nextTick, computed, ref, } from 'vue'
+import { reactive, watch, nextTick, } from 'vue'
 export default function setup() {
-    const { $requestSelector } = useNuxtApp()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
-    const route = useRoute()
-    // ??
-    // let organizationId = computed(() => {
-    //     const id = route.path.split('/').slice(-1)[0]
-    //     return id
-    // })
     const state = reactive({
         jobList: [],
         // pagination
@@ -42,32 +35,25 @@ export default function setup() {
         isModalShown: false
     })
     // hooks
-    // watch(() => repoAuth.state.user, (newValue) => {
-    //     // 使用者打開時，顯示有分數的畫面
-    //     const noLocalJobs = !state.jobList.length
-    //     if (noLocalJobs && newValue && newValue.id) {
-    //         initializeSearch()
-    //     }
-    // }, { immediate: true })
     watch(() => state.filter, () => {
-        debounce(() => {
-            initializeSearch()
-        })
+        initializeSearch()
     }, { deep: true })
     // methods
     function debounce(func, delay = 400) {
         return (...args) => {
-            clearTimeout(this.debounceTimer)
-            this.debounceTimer = setTimeout(() => {
-                this.debounceTimer = undefined
+            clearTimeout(state.debounceTimer)
+            state.debounceTimer = setTimeout(() => {
+                state.debounceTimer = undefined
                 func.apply(this, args)
             }, delay)
         }
     }
     async function initializeSearch(config = {}) {
-        state.jobList = []
-        state.pagination.pageOffset = 0
-        await concatJobsFromServer(config)
+        debounce(async () => {
+            state.jobList = []
+            state.pagination.pageOffset = 0
+            await concatJobsFromServer(config)
+        })()
     }
     async function concatJobsFromServer(config = {}) {
         const { user } = repoAuth.state
