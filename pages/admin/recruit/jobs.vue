@@ -269,7 +269,7 @@ async function initialize(searchLike = '') {
     state.jobList = [...closedJobs, ...activeJobs]
     state.renderKey = Math.random()
 }
-function debounce(func, delay = 250) {
+function debounce(func, delay = 800) {
     clearTimeout(state.debounceTimer)
     state.debounceTimer = setTimeout(() => {
         state.debounceTimer = undefined

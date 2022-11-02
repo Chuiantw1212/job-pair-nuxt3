@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 export default defineStore('company', () => {
     const axios = useAxios()
+    const state = {
+        companyJobsRes: null,
+    }
     async function patchCompany(data) {
         const response = await axios.request({
             method: 'patch',
@@ -33,8 +36,8 @@ export default defineStore('company', () => {
             method: 'get',
             url: `/company/jobs`,
             params,
-            commit: true,
         })
+        state.companyJobsRes = response.data
         return response
     }
     async function putCompanyPhotos(data) {
@@ -70,6 +73,7 @@ export default defineStore('company', () => {
         return response
     }
     return {
+        state,
         patchCompany,
         getCompanyById,
         getCompanyByCrawler,

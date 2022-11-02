@@ -39,7 +39,7 @@ export default {
                 }
                 this.debounce(() => {
                     this.$emit("search")
-                }, 400)()
+                })()
             }
         }
     },
@@ -48,10 +48,10 @@ export default {
             if (!String(this.localValue).trim()) {
                 this.debounce(() => {
                     this.$emit("search")
-                }, 400)()
+                })()
             }
         },
-        debounce(func, delay = 400) {
+        debounce(func, delay = 800) {
             return (...args) => {
                 clearTimeout(this.debounceTimer)
                 this.debounceTimer = setTimeout(() => {

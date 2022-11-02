@@ -39,7 +39,7 @@ export default function setup() {
         initializeSearch()
     }, { deep: true })
     // methods
-    function debounce(func, delay = 400) {
+    function debounce(func, delay = 800) {
         return (...args) => {
             clearTimeout(state.debounceTimer)
             state.debounceTimer = setTimeout(() => {

@@ -259,7 +259,6 @@ function detectScroll() {
         return
     }
     debounce(() => {
-        console.log(jobScroller.state.count)
         const offsetHeight = document.body.offsetHeight
         const { innerHeight, pageYOffset } = window
         if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
@@ -268,7 +267,7 @@ function detectScroll() {
         }
     })()
 }
-function debounce(func, delay = 400) {
+function debounce(func, delay = 800) {
     return (...args) => {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {

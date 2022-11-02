@@ -3,7 +3,7 @@
         <template v-if="repoAuth.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="$emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/admin/recruit">
+                    <NuxtLink class="navItem__button" to="/admin/recruit/jobs">
                         招募中心
                     </NuxtLink>
                 </li>

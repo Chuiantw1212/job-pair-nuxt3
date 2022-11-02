@@ -383,12 +383,11 @@ function debounce(func, delay = 800) {
     }
 }
 async function initializeSearch() {
-    // console.log('initializeSearch')
     debounce(async () => {
         state.jobList = []
         state.pagination.pageOffset = 0
         await concatJobsFromServer()
-    }, 400)()
+    })()
 }
 async function concatJobsFromServer() {
     const { user } = repoAuth.state
