@@ -7,7 +7,6 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
-const { $isNativeWeb, $emitter } = useNuxtApp()
 const router = useRouter()
 const repoSelect = useRepoSelect()
 // hooks

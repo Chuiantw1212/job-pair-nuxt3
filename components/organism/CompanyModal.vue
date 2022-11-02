@@ -34,7 +34,8 @@
 <script setup>
 import firebase from "firebase/compat/app"
 import { getAuth, } from "firebase/auth"
-const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, $toggleLoader, $firebaseuiAuth, } = useNuxtApp()
+const device = useDevice()
 const loginComposable = useLogin()
 const route = useRoute()
 const state = reactive({
@@ -77,7 +78,7 @@ async function renderFirebaseUI() {
             requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
         }
     ]
-    if ($isNativeWeb) {
+    if (device.state.isNativeWeb) {
         signInOptions.push({
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         })

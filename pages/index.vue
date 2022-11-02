@@ -76,12 +76,12 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
-const { $isNativeWeb, $emitter } = useNuxtApp()
+const { $emitter } = useNuxtApp()
 const router = useRouter()
+const device = useDevice()
 // methods
 function routeToQuestions() {
-    if ($isNativeWeb) {
+    if (device.state.isNativeWeb) {
         router.push({
             name: "questions",
         })

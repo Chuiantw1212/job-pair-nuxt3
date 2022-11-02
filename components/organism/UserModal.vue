@@ -36,7 +36,8 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, } from "firebase/auth"
 import firebase from "firebase/compat/app"
-const { $emitter, $bootstrap, $toggleLoader, $isNativeWeb, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, $toggleLoader, $firebaseuiAuth, } = useNuxtApp()
+const device = useDevice()
 const route = useRoute()
 const loginComposable = useLogin()
 const state = reactive({
@@ -82,7 +83,7 @@ async function renderFirebaseUI() {
             requireDisplayName: true
         }
     ]
-    if ($isNativeWeb) {
+    if (device.state.isNativeWeb) {
         signInOptions.push({
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         })
