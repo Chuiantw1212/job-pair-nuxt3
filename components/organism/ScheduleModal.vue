@@ -2,7 +2,7 @@
     <AtomBtnSimple class="modal__button" @click="handleApply()" :disabled="getBtnDisabled()">
         安排面試
     </AtomBtnSimple>
-    <div class="modal fade" :id="`schedule${id}`" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" :id="`schedule${state.id}`" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered ">
             <div class="modal-content">
                 <div class="modal-header">
@@ -16,10 +16,10 @@
                     <AtomInputCKEditor v-model="state.form.templateHeader" name="前言" class="mt-3"
                         :ref="'templateHeaderRef'" required>
                     </AtomInputCKEditor>
-                    <InputEvents v-model="state.form.events" required></InputEvents>
-                    <InputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
+                    <MoleculeInputEvents v-model="state.form.events" required></MoleculeInputEvents>
+                    <AtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
                         class="content__duration mt-3">
-                    </InputSelect>
+                    </AtomInputSelect>
                     <AtomInputCKEditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
                         :ref="'templateFooterRef'" required>
                     </AtomInputCKEditor>
@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" :id="`preview${id}`" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" :id="`preview${state.id}`" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered ">
             <div class="modal-content">
                 <div class="modal-header">

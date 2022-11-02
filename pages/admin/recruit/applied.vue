@@ -103,14 +103,14 @@
                                             <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
                                             <span v-for="(item, index) in item.occupationalCategory" :key="index"
                                                 class="header__info__item__badge">
-                                                {{ $filter.optionText(item, jobCategory) }}
+                                                {{ $optionText(item, repoSelect.jobCategory) }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-none d-lg-block header__similarity">
                                     <div class="similarity__score">
-                                        {{ $filter.rank(item.similarity) }}
+                                        {{ $rank(item.similarity) }}
                                     </div>
                                     <div class="similarity__text">
                                         適配度
@@ -122,15 +122,15 @@
                                     適配度
                                 </div>
                                 <div class="similarity__score">
-                                    {{ $filter.rank(item.similarity) }}
+                                    {{ $rank(item.similarity) }}
                                 </div>
                             </div>
                             <hr>
-                            <div class="profile__body" :class="{ 'profile__body--isOpen': isItemOpen[index] }">
+                            <div class="profile__body" :class="{ 'profile__body--isOpen': state.isItemOpen[index] }">
                                 <span class="body__coverLetter">
                                     {{ item.coverLetter }}
                                 </span>
-                                <span v-if="isItemOpen[index]" class="profile__toggle"
+                                <span v-if="state.isItemOpen[index]" class="profile__toggle"
                                     @click="toggleProfileBody(index)">
                                     收合
                                 </span>
@@ -175,10 +175,11 @@
     </div>
 </template>
 <script setup>
-const { $time } = useNuxtApp()
+const { $time, $optionText, $rank } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
+const repoSelect = useRepoSelect()
 const state = reactive({
     searchLike: '',
     applyFlow: '',
