@@ -373,7 +373,7 @@ function observeLastJob(newJobs = []) {
         }
     })
 }
-function debounce(func, delay = 250) {
+function debounce(func, delay = 800) {
     return (...args) => {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {
