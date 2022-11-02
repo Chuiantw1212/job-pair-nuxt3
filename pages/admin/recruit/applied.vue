@@ -155,10 +155,10 @@
                             <OrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
                             </OrganismScheduleModal>
-                            <RejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
+                            <OrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
                                 @update:modelValue="updateChart()">
                                 婉拒
-                            </RejectModal>
+                            </OrganismRejectModal>
                             <AtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
                             </AtomBtnSimple>
                             <AtomBtnSimple v-if="item.applyFlow === 'rejected'" disabled>已婉拒
