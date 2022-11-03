@@ -145,9 +145,8 @@
     </div>
 </template>
 <script setup>
-import { nextTick } from 'vue'
 const { $bootstrap, $warning, $validate, $optionText, $requestSelector } = useNuxtApp()
-const emit = defineEmits(['remove', 'save',])
+const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
@@ -211,8 +210,8 @@ async function showAlert() {
     }
 }
 function openModal(status = null) {
-    state.bsModal.show()
-    nextTick(() => {
+    $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
+        state.bsModal.show()
         if (status) {
             state.job.status = status
         }

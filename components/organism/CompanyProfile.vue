@@ -521,7 +521,7 @@ async function refineAndUpdateCompanyInfo() {
         const { user } = repoAuth.state
         state.companyInfo.email = user.email
         state.companyInfo.admins = [user.id]
-        companyRes = await state.postAdminNewCompany(state.companyInfo)
+        companyRes = await repoAdmin.postAdminNewCompany(state.companyInfo)
     }
     if (companyRes.status !== 200) {
         return false
