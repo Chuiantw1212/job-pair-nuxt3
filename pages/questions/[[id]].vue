@@ -4,7 +4,7 @@
             <div class="questions__description">
                 此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
             </div>
-            <Progress class="questions__progress"></Progress>
+            <AtomProgress class="questions__progress"></AtomProgress>
             <img class="questions__leftImage" src="~/assets/questions/left.png" />
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <template v-for="(questionGroup, key) in state.questions" :key="key">
@@ -15,8 +15,20 @@
                             @click="handleClickLast()">
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <SelectOptions v-model="tempUser.preference[questionGroup.key]" class="body__options"
-                            :config="questionGroup" @update="setAnswers($event, questionGroup.key)"></SelectOptions>
+                        <!-- <SelectOptions v-model="tempUser.preference[questionGroup.key]" class="body__options"
+                            :config="questionGroup" @update=""></SelectOptions> -->
+                        <div class="body__inputOptions">
+                            <template v-for="(item, index) in questionGroup.items" :key="index">
+                                <label class="inputOptions__label" :class="{
+                                    'inputOptions__label--selected': checkSelected(item, questionGroup),
+                                }" :for="`inputOptions__label${item.value}`">
+                                    <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
+                                        type="radio" :id="`inputOptions__label${item.value}`" :value="item.value"
+                                        @click="setAnswers($event, questionGroup.key)" />
+                                    <span class="label__description">{{ item.textUser }}</span>
+                                </label>
+                            </template>
+                        </div>
                         <button class="body__button body__button--right" type="button"
                             :disabled="checkQuestionAnswered()" @click="handleClickNext()">
                             <i class="fas fa-chevron-right"></i>
@@ -66,7 +78,6 @@ onMounted(async () => {
     state.questions = response.data
     getAnswers()
 })
-// methods
 watch(() => repoAuth.state.user, () => {
     const { user } = repoAuth.state
     // 使用者已註冊
@@ -83,9 +94,29 @@ watch(() => questionId.value, () => {
     nextTick(() => {
         initTooltip()
     })
-    // document.title = `${value + 1} - 偏好量表 - Job Pair`
 }, { immediate: true })
 // methods
+function checkSelected(item, questionGroup) {
+    const questionKey = questionGroup.key
+    const modelValue = state.tempUser.preference[questionKey]
+    if (modelValue === "" && item.value === "") {
+        const userString = localStorage.getItem("user")
+        if (userString && userString !== "false") {
+            const user = JSON.parse(userString)
+            if (user.preference) {
+                const answer = user.preference[questionKey]
+                if (![null, undefined].includes(answer)) {
+                    return true
+                }
+            }
+        }
+    } else {
+        if (modelValue === item.value) {
+            return true
+        }
+    }
+    return false
+}
 function checkQuestionAnswered() {
     const index = questionId.value
     const currentQuestion = state.questions[index]
@@ -158,10 +189,10 @@ function getPartOne() {
     return isPartOne
 }
 function handleClickLast() {
-    router.push(`/question/${questionId.value - 1}`)
+    router.push(`/questions/${questionId.value - 1}`)
 }
 function handleClickNext() {
-    router.push(`/question/${questionId.value + 1}`)
+    router.push(`/questions/${questionId.value + 1}`)
 }
 </script>
 <style lang="scss" scoped>
@@ -241,6 +272,44 @@ function handleClickNext() {
 
                 .body__button--right {
                     right: 0;
+                }
+
+                .body__inputOptions {
+                    width: 100%;
+                    margin: auto;
+
+                    .inputOptions__label {
+                        width: 100%;
+                        // height: 50px;
+                        border-radius: 100px;
+                        border: 1px solid #317292;
+                        background-color: #fdfdfd;
+                        font-size: 14px;
+                        font-weight: 500;
+                        display: flex;
+                        justify-content: center;
+                        cursor: pointer;
+                        color: #317292;
+                        padding: 8px 30px;
+
+                        &:not(:first-child) {
+                            margin-top: 20px;
+                        }
+
+                        &:hover {
+                            color: #80a7c2;
+                            border: solid 1px #80a7c2;
+                        }
+
+                        .label__description {
+                            align-self: center;
+                        }
+                    }
+
+                    .inputOptions__label--selected {
+                        background-color: #317292;
+                        color: white !important;
+                    }
                 }
             }
         }
@@ -326,6 +395,13 @@ function handleClickNext() {
                     .body__button--right {
                         right: 0;
                         transform: translateX(calc(100% + 50px));
+                    }
+
+                    .body__inputOptions {
+                        .inputOptions__label {
+                            font-size: 17px;
+                            height: 50px;
+                        }
                     }
                 }
             }
