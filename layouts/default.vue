@@ -6,9 +6,8 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect, } from 'vue'
-const router = useRouter()
 const repoSelect = useRepoSelect()
+const { $toggleLoader } = useNuxtApp()
 // hooks
 onMounted(async () => {
     await Promise.all([

@@ -1,7 +1,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
-    const { $emitter, $alert } = useNuxtApp()
+    const { $emitter, $alert, $toggleLoader } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
@@ -52,7 +52,9 @@ export default function setup() {
                 image: photoURL,
                 telephone: phoneNumber,
             }
+            $toggleLoader(true)
             await signIn(user)
+            $toggleLoader(false)
         })
     }
     async function handleAuthResult(authResult, type) {
@@ -158,7 +160,7 @@ export default function setup() {
             })
             if (allAnswered) {
                 router.push({
-                    name: "userRegister",
+                    name: "questions-category",
                 })
             } else {
                 router.push({

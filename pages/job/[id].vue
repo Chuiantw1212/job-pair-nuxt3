@@ -271,7 +271,6 @@ function debounce(func, delay = 800) {
     return (...args) => {
         clearTimeout(state.debounceTimer)
         state.debounceTimer = setTimeout(() => {
-            console.log('timeout')
             state.debounceTimer = undefined
             func.apply(this, args)
         }, delay)
