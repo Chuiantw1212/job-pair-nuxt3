@@ -30,7 +30,7 @@
                 src="~/assets/admin/index/MaskGroup.png">
             <img class="d-none d-lg-block section__decoration section__decoration--2"
                 src="~/assets/admin/index/Group459.png">
-            <div class="section__card section__card--left" data-aos="fade-right">
+            <div class="section__card section__card--left">
                 <img class="section__image section__image--1" src="~/assets/admin/index/img1@2x.png" />
                 <h3 class="card__header">
                     <span class="header__decoration">
@@ -40,14 +40,14 @@
                 </h3>
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
-            <div class="section__card section__card--right" data-aos="fade-left">
+            <div class="section__card section__card--right">
                 <img class="section__image section__image--2" src="~/assets/admin/index/img2.png" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
                 <div class="card__body">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</div>
             </div>
-            <div class="section__card section__card--left" data-aos="fade-right">
+            <div class="section__card section__card--left">
                 <img class="section__image section__image--3" src="~/assets/admin/index/img3.png" />
                 <h3 class="card__header">
                     好不容易徵到人，<span class="header__decoration">怎麼又離職了</span>？
@@ -96,14 +96,13 @@
     </div>
 </template>
 <script setup>
-const { $Glide, $emitter, $AOS } = useNuxtApp()
+const { $Glide, $emitter, } = useNuxtApp()
 const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
 onMounted(() => {
     if (process.client) {
         initialGlide()
-        $AOS.init()
     }
 })
 function initialGlide() {
