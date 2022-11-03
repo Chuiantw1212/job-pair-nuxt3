@@ -7,7 +7,7 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" :id="`${modelValue.identifier}`" tabindex="-1" aria-labelledby="jobModalLabel"
+    <div class="modal fade" :id="`modal_${modelValue.identifier}`" tabindex="-1" aria-labelledby="jobModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-xl" data-bs-backdrop="static">
             <div v-if="state.job" class="modal-content">
@@ -146,7 +146,7 @@
 </template>
 <script setup>
 import { nextTick } from 'vue'
-const { $bootstrap, $warning, $validate, $optionText } = useNuxtApp()
+const { $bootstrap, $warning, $validate, $optionText, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['remove', 'save',])
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -176,8 +176,7 @@ const props = defineProps({
     },
 })
 onMounted(() => {
-    if (process.client) {
-        const element = document.getElementById(`${props.modelValue.identifier}`)
+    $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
         const bsModal = new $bootstrap.Modal(element, {
             keyboard: false,
         })
@@ -185,7 +184,7 @@ onMounted(() => {
             setJob()
         })
         state.bsModal = bsModal
-    }
+    })
 })
 watch(() => repoSelect.jobCategoryMap, () => {
     for (let key in repoSelect.jobCategoryMap) {

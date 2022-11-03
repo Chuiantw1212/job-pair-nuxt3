@@ -29,7 +29,7 @@
                                             <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
                                             <span v-for="(item, index) in item.occupationalCategory" :key="index"
                                                 class="header__info__item__badge">
-                                                {{ $filter.optionText(item, jobCategory) }}
+                                                {{ $filter.optionText(item, repoSelect.jobCategory) }}
                                             </span>
                                         </div>
                                     </div>
@@ -74,8 +74,8 @@
                         <hr>
                         <div class="content__panel">
                             <AtomBtnSimple v-if="item.invitedTime" :disabled="true">已邀約</AtomBtnSimple>
-                            <OrganismInvitationModel v-else v-model="state.applications[index]" :job="job">
-                            </OrganismInvitationModel>
+                            <OrganismInvitationModal v-else v-model="state.applications[index]" :job="state.job">
+                            </OrganismInvitationModal>
                         </div>
                     </div>
                 </div>
@@ -88,6 +88,7 @@
     </div>
 </template>
 <script setup>
+const { $toggleLoader, $filter } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
@@ -134,9 +135,13 @@ const props = defineProps({
 })
 // hooks
 watch(() => state.searchForm, () => {
+    const { companyJobsRes } = repoCompany.state
+    if (!companyJobsRes) {
+        return
+    }
     debounce(async () => {
         // 設定職缺
-        const jobs = repoCompany.state.companyJobsRes
+        const jobs = companyJobsRes
         const targetJob = jobs.find(item => {
             return item.identifier === state.searchForm.jobIdentifier
         })
@@ -145,9 +150,19 @@ watch(() => state.searchForm, () => {
         } else {
             state.job = null
         }
+        // 撈選職缺
         await initializeSearch()
     })()
-}, { immediate: true, deep: true })
+}, { deep: true })
+watch(() => repoAuth, (companyInfo) => {
+    const items = getActiveJobs()
+    if (items && items.length) {
+        state.searchForm.jobIdentifier = items[0].identifier
+    }
+    if (companyInfo && companyInfo.addressRegion) {
+        state.searchForm.workLocation = companyInfo.addressRegion
+    }
+}, { immediate: true })
 // methods
 function getOrderedLocations() {
     const { locationRes } = repoSelect.state

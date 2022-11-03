@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 export default defineStore('company', () => {
     const axios = useAxios()
-    const state = {
+    const state = reactive({
         companyJobsRes: null,
-    }
+    })
     async function patchCompany(data) {
         const response = await axios.request({
             method: 'patch',
