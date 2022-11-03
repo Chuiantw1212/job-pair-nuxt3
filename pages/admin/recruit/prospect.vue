@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="header__info__itemGroups">
                                         <div class="header__info__item">
-                                            <img class="info__item__icon" src="./assets/icon_category.svg">
+                                            <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
                                             <span v-for="(item, index) in item.occupationalCategory" :key="index"
                                                 class="header__info__item__badge">
                                                 {{ $filter.optionText(item, jobCategory) }}
@@ -74,14 +74,15 @@
                         <hr>
                         <div class="content__panel">
                             <AtomBtnSimple v-if="item.invitedTime" :disabled="true">已邀約</AtomBtnSimple>
-                            <InvitationModel v-else v-model="state.applications[index]" :job="job"></InvitationModel>
+                            <OrganismInvitationModel v-else v-model="state.applications[index]" :job="job">
+                            </OrganismInvitationModel>
                         </div>
                     </div>
                 </div>
             </li>
         </ul>
         <div v-else class="appliedList__notFound">
-            <img src="./assets/img_empty.svg">
+            <img src="~/assets/admin/img_empty.svg">
             <p class="notFound__desc">-目前尚無資料-</p>
         </div>
     </div>

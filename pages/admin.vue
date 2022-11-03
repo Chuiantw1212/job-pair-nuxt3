@@ -79,7 +79,6 @@ const device = useDevice()
 
     .dashboard__view {
         padding-top: 20px;
-        padding-bottom: 65px;
     }
 }
 
