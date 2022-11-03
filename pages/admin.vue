@@ -108,12 +108,12 @@ onMounted(() => {
     }
 })
 function initialGlide() {
-    const instance = new $Glide('.glide', {
+    const instance = new $Glide.Default('.glide', {
         autoplay: 2000,
     })
     instance.mount({
-        Controls,
-        Autoplay,
+        Controls: $Glide.Controls,
+        Autoplay: $Glide.Autoplay,
     })
 }
 function openAdminModal() {

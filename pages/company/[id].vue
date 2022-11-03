@@ -197,7 +197,7 @@ function initialGlide() {
         if (width >= 992) {
             config = state.glideDesktopConfig
         }
-        const glideInstance = new $Glide(`.glide`, config)
+        const glideInstance = new $Glide.Default(`.glide`, config)
         glideInstance.mount()
         state.glideInstance = glideInstance
     })

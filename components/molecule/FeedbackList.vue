@@ -105,7 +105,7 @@ function mountGlideInstance(element) {
     if (state.feedbackGlideInstance) {
         return
     }
-    const feedbackGlideInstance = new $Glide(element, {
+    const feedbackGlideInstance = new $Glide.Default(element, {
         gap: 10,
         rewind: true,
         bound: true,
