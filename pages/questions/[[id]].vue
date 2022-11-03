@@ -1,6 +1,6 @@
 <template>
     <div class="questions">
-        <div v-if="getPartOne()" class="questions__card">
+        <div class="questions__card">
             <div class="questions__description">
                 此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
             </div>
@@ -15,8 +15,6 @@
                             @click="handleClickLast()">
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <!-- <SelectOptions v-model="tempUser.preference[questionGroup.key]" class="body__options"
-                            :config="questionGroup" @update=""></SelectOptions> -->
                         <div class="body__inputOptions">
                             <template v-for="(item, index) in questionGroup.items" :key="index">
                                 <label class="inputOptions__label" :class="{
@@ -36,19 +34,6 @@
                     </div>
                 </div>
             </template>
-        </div>
-        <div v-else class="questions__result">
-            <img class="result__leftImage" src="~/assets/questions/papers.png" />
-            <img class="result__rightImage" src="~/assets/questions/guy.png" />
-            <p class="result__header">Job Pair已依據您的求職偏好配對適合的職缺<br />立即查看潛在職缺有哪些吧！</p>
-            <button type="button" class="result__button" @click="showUserModal()">看結果</button>
-            <div class="result__tooltip" data-bs-toggle="tooltip" data-bs-placement="right"
-                title="您剛剛選擇的內容為您的求職偏好，Job Pair將搭配企業端用人偏好的資訊，推薦您與您個人求職偏好相契合的公司與職缺。">
-                甚麼是潛在適合職缺<i class="far fa-question-circle tooltip__icon"></i>
-            </div>
-            <div class="mt-3">
-                <button type="button" class="btn btn-light" @click="routeToStart()">修改偏好答案</button>
-            </div>
         </div>
     </div>
 </template>
@@ -176,10 +161,17 @@ function routeToStart() {
 }
 function getPartOne() {
     if (!state.questions) {
-        return true
+        return false
     }
     const isPartOne = questionId.value < Object.values(state.questions).length - 1
     return isPartOne
+}
+function getpartTwo() {
+    if (!state.questions) {
+        return false
+    }
+    const isPartTwo = questionId.value >= Object.values(state.questions).length - 1
+    return isPartTwo
 }
 function handleClickLast() {
     router.push(`/questions/${questionId.value - 1}`)
