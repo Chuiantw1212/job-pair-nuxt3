@@ -1,7 +1,5 @@
 <template>
     <div class="appointment">
-        <!-- test123
-        <NuxtPage /> -->
         <MoleculeAppointmentCard class="appointment__theme">
             <template v-slot:header>
                 選擇諮詢主題

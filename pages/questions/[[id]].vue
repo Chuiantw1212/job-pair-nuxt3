@@ -72,9 +72,7 @@ const questionId = computed(() => {
 })
 // hooks
 onMounted(async () => {
-    $toggleLoader(true)
     const response = await repoSelect.getQuestions()
-    $toggleLoader(false)
     state.questions = response.data
     getAnswers()
 })
@@ -171,12 +169,7 @@ function initTooltip() {
     }
 }
 function routeToStart() {
-    router.push({
-        name: "questions",
-        params: {
-            id: 0,
-        },
-    })
+    router.push(`/questions/0`)
     nextTick(() => {
         getAnswers()
     })
