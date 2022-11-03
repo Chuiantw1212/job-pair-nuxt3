@@ -75,7 +75,7 @@ watch(() => route.path, (path,) => {
     } else {
         state.menuType = "user"
     }
-})
+}, { immediate: true })
 // methods
 function toggleClickOutside(isOn) {
     if (isOn) {

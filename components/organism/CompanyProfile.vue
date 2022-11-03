@@ -249,14 +249,14 @@ async function crawlCompanyFromPlatform() {
         return state.crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
-        this.$alert('網址有誤')
+        $alert('網址有誤')
         return
     }
     // 清空原有資料
     state.companyInfo = getDefaultCompany(state.companyInfo.id)
     $toggleLoader(true)
     const response = await repoCompany.getCompanyByCrawler({
-        url: this.crawlerUrl,
+        url: state.crawlerUrl,
     })
     if (response.status !== 200) {
         return

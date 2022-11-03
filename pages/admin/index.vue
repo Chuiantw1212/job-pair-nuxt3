@@ -96,7 +96,7 @@
     </div>
 </template>
 <script setup>
-const { $Glide, $emitter, } = useNuxtApp()
+const { $Glide, $emitter, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
@@ -106,12 +106,14 @@ onMounted(() => {
     }
 })
 function initialGlide() {
-    const instance = new $Glide.Default('.glide', {
-        autoplay: 2000,
-    })
-    instance.mount({
-        Controls: $Glide.Controls,
-        Autoplay: $Glide.Autoplay,
+    $requestSelector(`.glide`, (element) => {
+        const instance = new $Glide.Default(element, {
+            autoplay: 2000,
+        })
+        instance.mount({
+            Controls: $Glide.Controls,
+            Autoplay: $Glide.Autoplay,
+        })
     })
 }
 function openAdminModal() {

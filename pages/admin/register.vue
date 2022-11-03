@@ -1,5 +1,39 @@
 <template>
-    <div>
-        人資註冊
+    <div class="container">
+        <OrganismCompanyProfile></OrganismCompanyProfile>
     </div>
 </template>
+<script setup>
+const repoAuth = useRepoAuth()
+const repoAdmin = useRepoAdmin()
+watch(() => repoAuth.state.user, async (newValue) => {
+    if (!newValue) {
+        return
+    }
+    // 這個畫面要判斷是否是已經註冊的admin
+    const isRegisteredUser = newValue && newValue.id
+    if (isRegisteredUser) {
+        return
+    }
+    if (!newValue) {
+        // user not firbase.currentUser yet
+        return
+    }
+    const postRes = await repoAdmin.postAdmin(newValue)
+    if (postRes.data.id) {
+        const addedUser = postRes.data
+        repoAuth.setUser(addedUser)
+    }
+}, { immediate: true })
+</script>
+<style lang="scss" scoped>
+.container {
+    padding: 56px 0;
+
+    .container__header {
+        font-weight: bold;
+        font-size: 28px;
+        margin-bottom: 32px;
+    }
+}
+</style>

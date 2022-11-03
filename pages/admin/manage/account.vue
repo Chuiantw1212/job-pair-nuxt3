@@ -126,7 +126,7 @@ async function submitProfile() {
         })
         const response = await repoAdmin.patchAdmin(state.tempUser)
         if (response.status === 200) {
-            repoAuth.setUser(this.tempUser)
+            repoAuth.setUser(state.tempUser)
             $succeed()
         }
     } catch (error) {

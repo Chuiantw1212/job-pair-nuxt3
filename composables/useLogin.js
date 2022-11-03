@@ -140,9 +140,7 @@ export default function setup() {
                 }
             } else {
                 // 未完成註冊人資導向到公司註冊畫面
-                router.push({
-                    name: 'companyRegister'
-                })
+                router.push(`/admin/register`)
             }
             $emitter.emit("hideUserModal")
             $emitter.emit('hideCompanyModal')
@@ -177,9 +175,7 @@ export default function setup() {
         if (route.path.includes('admin')) {
             // 導向到公司註冊畫面
             user.type = "admin"
-            router.push({
-                name: 'companyRegister'
-            })
+            router.push(`/admin/register`)
         } else {
             user.type = "employee"
             router.push({

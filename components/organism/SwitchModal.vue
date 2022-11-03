@@ -66,22 +66,21 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
-    console.log('showModal')
     state.bsModal.show()
     // this.renderFirebaseUI()
 }
 function showEmployeeModal() {
     state.bsModal.hide()
-    // router.replace({
-    //     name: 'index'
-    // })
+    router.replace({
+        name: 'index'
+    })
     $emitter.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
-    // router.replace({
-    //     name: 'admin'
-    // })
+    router.replace({
+        name: 'admin'
+    })
     $emitter.emit("showCompanyModal")
 }
 </script>
