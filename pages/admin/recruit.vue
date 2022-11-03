@@ -37,7 +37,7 @@
                 </li>
             </ul>
         </div>
-        <div :class="{ col: device.state.isDesktop }">
+        <div class="dashboard__view" :class="{ col: device.state.isDesktop }">
             <NuxtPage v-model="state.appliedList"></NuxtPage>
         </div>
     </div>
@@ -180,6 +180,11 @@ async function initialize() {
             }
         }
     }
+
+    .dashboard__view {
+        padding-top: 20px;
+        padding-bottom: 65px;
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -211,6 +216,11 @@ async function initialize() {
                 }
             }
         }
+
+        .dashboard__view {
+            padding-top: 80px;
+        }
     }
+
 }
 </style>

@@ -96,7 +96,6 @@
     </div>
 </template>
 <script setup>
-
 const { $Glide, $emitter, $AOS } = useNuxtApp()
 const device = useDevice()
 const router = useRouter()
