@@ -48,7 +48,7 @@
                         </td>
                         <td>
                             <a :href="getJobPreviewHref(job)" target="_blank">
-                                <img src="~/assets/admin/preview.svg">
+                                <img src="~/assets/admin/icon_preview_g.svg">
                             </a>
                         </td>
                         <td>
