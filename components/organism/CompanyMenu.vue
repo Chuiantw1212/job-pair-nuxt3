@@ -8,7 +8,7 @@
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="$emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/admin/company">
+                    <NuxtLink class="navItem__button" to="/admin/manage/company">
                         管理中心
                     </NuxtLink>
                 </li>
