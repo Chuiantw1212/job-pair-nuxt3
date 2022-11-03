@@ -1,6 +1,6 @@
 <template>
     <div class="home__intro">
-        <div class="home__intro__landing">
+        <div class="home__intro__landing" :style="{ backgroundImage: `url(${backgroundImage})` }">
             <h1 class="landing__header">在Job Pair配對「適合的工作」</h1>
             <p class="landing__desc">
                 找到一份適合的工作如大海撈針
@@ -76,6 +76,7 @@
     </div>
 </template>
 <script setup>
+import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const device = useDevice()
