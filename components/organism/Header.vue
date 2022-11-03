@@ -98,9 +98,7 @@ function collapseNavbar() {
 }
 function routeByMenuType() {
     if (state.menuType === 'admin') {
-        router.push({
-            name: 'admin'
-        })
+        router.push('/admin/recruit/jobs')
     } else {
         router.push({
             name: 'index'

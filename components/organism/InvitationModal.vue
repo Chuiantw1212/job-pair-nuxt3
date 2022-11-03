@@ -87,10 +87,10 @@ function setInvitationTemplate() {
     const template =
         `${props.modelValue.name}您好：<br/>` +
         `我是${company.name}的招募人員，在Job Pair上看到您的個人簡介。<br/><br/>` +
-        `透過適配度的演算，您與我們公司的職缺${state.job.name}適配度達${formatSimilarity}%，表示雙方在組織文化、風格與溝通模式有${formatSimilarity}%的契合度，因此主動寄送職缺資訊給您參考。<br/>` +
+        `透過適配度的演算，您與我們公司的職缺${props.job.name}適配度達${formatSimilarity}%，表示雙方在組織文化、風格與溝通模式有${formatSimilarity}%的契合度，因此主動寄送職缺資訊給您參考。<br/>` +
         `若您符合職缺所需的條件，也有進一步了解我們公司的興趣；歡迎回覆您的履歷，我們將會優先處理。<br/><br/>` +
         `招募人員${props.modelValue.name}敬上`
-    state.form.subject = `${company.name}${state.job.name}應徵邀約`
+    state.form.subject = `${company.name}${props.job.name}應徵邀約`
     state.form.template = template
     editorRef.value.setData(template)
 }
@@ -112,8 +112,8 @@ async function handleSubmit() {
     }
     $toggleLoader(true)
     const submitData = Object.assign({}, state.form, {
-        jobId: state.job.identifier,
-        prospectId: state.modelValue.id,
+        jobId: props.job.identifier,
+        prospectId: props.modelValue.id,
     })
     const invitationRes = await repoJobApplication.postJobProspectInvitation(submitData)
     if (invitationRes.status !== 200) {
@@ -123,7 +123,7 @@ async function handleSubmit() {
     const updated = Object.assign({}, props.modelValue, {
         applyFlow: responseData.applyFlow,
         invitedTime: responseData.invitedTime,
-        jobId: state.job.identifier,
+        jobId: props.job.identifier,
     })
     emit('update:modelValue', updated)
     const alertResult = await $succeed()
