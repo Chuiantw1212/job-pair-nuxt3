@@ -300,7 +300,7 @@ function filterRecommendedJobs() {
 function getDefaultFilter() {
     const defualtFilter = {
         // 篩選企業條件
-        industry: null,
+        industry: [],
         jobBenefits: [],
         // 篩選職缺
         addressRegion: [],
@@ -311,7 +311,6 @@ function getDefaultFilter() {
         salaryType: "",
         salaryMin: null,
         salaryMax: null,
-        industry: [],
     }
     const { user } = repoAuth.state
     if (user) {
