@@ -11,25 +11,24 @@
     "nuxt": "^3.0.0-rc.12"
   },
   "dependencies": {
-    "@glidejs/glide": "^3.5.2",
-    "@pinia/nuxt": "^0.4.2",
+    "@glidejs/glide": "^3.6.0",
+    "@pinia/nuxt": "^0.4.3",
     "aos": "^2.3.4",
     "axios": "^0.27.2",
-    "bootstrap": "^5.2.1",
+    "bootstrap": "^5.2.2",
     "buffer": "^6.0.3",
-    "firebase": "^9.9.4",
+    "ckeditor5-custom-build": "file:ckeditor5",
+    "firebase": "^9.13.0",
     "firebaseui": "^6.0.1",
     "flatpickr": "^4.6.13",
     "fuse.js": "^6.6.2",
     "minidenticons": "^1.0.3",
     "mitt": "^3.0.0",
-    "nodejieba": "^2.6.0",
     "nouislider": "^15.6.1",
-    "pinia": "^2.0.22",
-    "sass": "^1.54.9",
-    "socket.io-client": "^4.5.2",
-    "sweetalert2": "^11.4.32",
+    "sass": "^1.55.0",
+    "socket.io-client": "^4.5.3",
+    "sweetalert2": "^11.6.4",
     "vue": "^3.2.39",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.6"
   }
 }

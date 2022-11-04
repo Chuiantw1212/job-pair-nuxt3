@@ -17,7 +17,7 @@
                     </button>
                 </div>
                 <!-- 手機縮圖列表 -->
-                <div v-if="userStore.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
                     <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
                         <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
@@ -28,124 +28,84 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
-                    <!-- <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
-                    </OrganismCompanyMenu> -->
+                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    </OrganismCompanyMenu>
                 </div>
             </div>
         </nav>
-        <!-- 如果條件渲染有異布渲染問題 -->
+        <!-- 如果條件渲染有異步渲染問題 -->
         <OrganismUserModal></OrganismUserModal>
-        <!-- <CompanyModal></CompanyModal> -->
+        <OrganismCompanyModal></OrganismCompanyModal>
         <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>
-// import { Collapse } from "bootstrap"
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-import useUserStore from '@/stores/user'
-const userStore = useUserStore()
+// const repoUser = useRepoUser()
+const repoAuth = useRepoAuth()
 const state = reactive({
     bsCollapse: null,
     menuType: "user",
 })
-</script>
-<!-- <script>
-import { Collapse } from "bootstrap"
-import { mapGetters } from "vuex"
-import { defineAsyncComponent } from 'vue'
-export default {
-    data: () => ({
-        bsCollapse: null,
-        menuType: "user",
-    }),
-    components: {
-        UserModal: defineAsyncComponent(() =>
-            import('./UserModal.vue')
-        ),
-        CompanyModal: defineAsyncComponent(() =>
-            import('./CompanyModal.vue')
-        ),
-        UserMenu: defineAsyncComponent(() =>
-            import('./UserMenu.vue')
-        ),
-        CompanyMenu: defineAsyncComponent(() =>
-            import('./CompanyMenu.vue')
-        ),
-        SwitchModal: defineAsyncComponent(() =>
-            import('./SwitchModal.vue')
-        ),
-    },
-    props: {
-        routes: {
-            type: Array,
-        },
-    },
-    mounted() {
-        this.$emitter.on("setMenuType", (menuType) => {
-            this.menuType = menuType
-        })
+const router = useRouter()
+const route = useRoute()
+const { $emitter, $bootstrap } = useNuxtApp()
+// Lifecycles
+onMounted(() => {
+    $emitter.on("setMenuType", (menuType) => {
+        state.menuType = menuType
+    })
+    if (process.client) {
         const menuToggle = document.getElementById("navbarSupportedContent")
-        this.bsCollapse = new Collapse(menuToggle, {
+        state.bsCollapse = new $bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
-        this.toggleClickOutside(true)
-    },
-    computed: {
-        ...mapGetters(["userRes", "user"]),
-    },
-    beforeUnmount() {
-        this.toggleClickOutside(false)
-    },
-    watch: {
-        $route: {
-            handler: function (route) {
-                this.collapseNavbar()
-                const { path = "" } = route
-                const chunks = path.split("/")
-                const isCompany = chunks[1] === "admin"
-                if (isCompany) {
-                    this.menuType = "admin"
-                } else {
-                    this.menuType = "user"
-                }
-            },
-            immediate: true,
-        },
-    },
-    methods: {
-        routeByMenuType() {
-            if (this.menuType === 'admin') {
-                this.$router.push({
-                    name: 'admin'
-                })
-            } else {
-                this.$router.push({
-                    name: 'home'
-                })
-            }
-        },
-        toggleClickOutside(isOn) {
-            if (isOn) {
-                document.addEventListener("click", this.handleClickoutSide)
-            } else {
-                document.removeEventListener("click", this.handleClickoutSide)
-            }
-        },
-        handleClickoutSide(event) {
-            const clickedTarget = event.target
-            const navigation = document.getElementById("myHeader")
-            if (!navigation.contains(clickedTarget)) {
-                this.collapseNavbar()
-            }
-        },
-        collapseNavbar() {
-            if (this.bsCollapse) {
-                this.bsCollapse.hide()
-            }
-        },
-    },
+        toggleClickOutside(true)
+    }
+})
+onUnmounted(() => {
+    toggleClickOutside(false)
+})
+watch(() => route.path, (path,) => {
+    collapseNavbar()
+    const chunks = path.split("/")
+    const isCompany = chunks[1] === "admin"
+    if (isCompany) {
+        state.menuType = "admin"
+    } else {
+        state.menuType = "user"
+    }
+}, { immediate: true })
+// methods
+function toggleClickOutside(isOn) {
+    if (isOn) {
+        document.addEventListener("click", handleClickoutSide)
+    } else {
+        document.removeEventListener("click", handleClickoutSide)
+    }
 }
-</script> -->
+function handleClickoutSide(event) {
+    const clickedTarget = event.target
+    const navigation = document.getElementById("myHeader")
+    if (!navigation.contains(clickedTarget)) {
+        collapseNavbar()
+    }
+}
+function collapseNavbar() {
+    if (state.bsCollapse) {
+        state.bsCollapse.hide()
+    }
+}
+function routeByMenuType() {
+    if (state.menuType === 'admin') {
+        router.push('/admin/recruit/jobs')
+    } else {
+        router.push({
+            name: 'index'
+        })
+    }
+}
+</script>
 <style lang="scss" scoped>
 :deep(.navbar) {
     position: fixed;

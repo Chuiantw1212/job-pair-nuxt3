@@ -31,19 +31,17 @@ export default defineNuxtPlugin(nuxtApp => {
                 return Swal.fire(swalConfig)
             },
             succeed: async function (text, config) {
-                const swalConfig = Object.assign({
-                    title: '警告',
+                const alertResult = await Swal.fire({
+                    title: "完成",
                     text,
-                    icon: 'warning',
+                    icon: "success",
                     confirmButtonText: '確認',
                     confirmButtonColor: '#5ea88e',
-                    showCancelButton: true,
-                    cancelButtonText: '取消',
                     didOpen: () => {
                         Swal.hideLoading()
                     }
-                }, config)
-                return Swal.fire(swalConfig)
+                })
+                return alertResult
             },
             info: async (text, config) => {
                 const swalConfig = Object.assign({

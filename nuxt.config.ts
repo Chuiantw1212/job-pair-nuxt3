@@ -23,7 +23,23 @@ export default defineNuxtConfig({
                 { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css", rel: "stylesheet", integrity: "sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi", crossorigin: "anonymous" },
                 { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js", integrity: "sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3", crossorigin: "anonymous" },
             ],
+            script: [
+                {
+                    src: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ckeditor.js'
+                }
+            ],
         },
+    },
+    css: [
+        '@glidejs/glide/dist/css/glide.core.min.css',
+        '@glidejs/glide/dist/css/glide.theme.min.css',
+    ],
+    runtimeConfig: {
+        public: {
+            VITE_APP_ECPAY_AMOUNT: 5,
+            VITE_APP_FIREBASE_ENV: 'development',
+            VITE_APP_API_DEFAULT: 'http://localhost:8080',
+        }
     },
     // ... other options
     modules: [
@@ -34,5 +50,15 @@ export default defineNuxtConfig({
         define: {
             "process.env.DEBUG": false,
         },
+        // optimizeDeps: {
+        //     include: ['ckeditor5-custom-build']
+        // },
+        // build: {
+        //     commonjsOptions: {
+        //         include: [],
+        //         exclude: ['ckeditor5-custom-build/*'],
+        //     },
+        //     sourcemap: true,
+        // },
     },
 })

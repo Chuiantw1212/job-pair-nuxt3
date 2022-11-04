@@ -8,7 +8,7 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">歡迎來到Job Pair！</h3>
-                        <div v-if="true" class="body__subheader">
+                        <div v-if="!device.state.isNativeWeb" class="body__subheader">
                             <div>
                                 ※系統偵測到內嵌瀏覽器※<br>
                                 可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
@@ -41,17 +41,18 @@
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import useUserStore from '@/stores/user'
+const device = useDevice()
+// import useUserStore from '@/stores/user'
 const { $emitter, $bootstrap } = useNuxtApp()
-const userStore = useUserStore()
+// const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
     bsModal: null,
 })
 onMounted(() => {
-    $emitter.on("showUserModal", showModal)
-    $emitter.on("hideUserModal", hideModal)
+    $emitter.on("showSwitchModal", showModal)
+    $emitter.on("hideSwitchModal", hideModal)
     if (process.client) {
         state.bsModal = new $bootstrap.Modal(document.getElementById("switchModal"), {
             keyboard: false,
@@ -71,16 +72,16 @@ function showModal() {
 function showEmployeeModal() {
     state.bsModal.hide()
     router.replace({
-        name: 'home'
+        name: 'index'
     })
-    // $emitter.emit("showUserModal")
+    $emitter.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
     router.replace({
         name: 'admin'
     })
-    // $emitter.emit("showCompanyModal")
+    $emitter.emit("showCompanyModal")
 }
 </script>
 <style lang="scss" scoped>
