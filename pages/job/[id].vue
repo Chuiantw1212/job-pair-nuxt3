@@ -191,7 +191,7 @@ const state = reactive({
     debounceTimer: null,
 })
 const jobId = computed(() => {
-    const id = route.path.split('/').slice(-1)[0]
+    const id = route.params.id
     return id
 })
 let browserConfig = computed({
@@ -230,7 +230,6 @@ onMounted(() => {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
     }
-    // initialize()
 })
 onBeforeUnmount(() => {
     if (process.client) {
@@ -239,6 +238,7 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => jobId.value, () => {
+    console.log('jobId');
     initialize()
 })
 watch(() => repoJobApplication.state.userJobs, () => {
@@ -420,11 +420,10 @@ function checkVisibility() {
 const descriptionRef = ref(null)
 const skillsRef = ref(null)
 async function initialize() {
-    console.log('jobId.value', jobId.value)
-    // if (!jobId.value) {
-    //     state.job = {}
-    //     return
-    // }
+    if (!jobId.value) {
+        state.job = {}
+        return
+    }
     const config = {
         jobId: jobId.value,
     }
@@ -432,29 +431,25 @@ async function initialize() {
     if (user && user.id) {
         config.userId = user.id
     }
-    console.log('A')
-    // const jobResponse = await repoJob.getJobById(config)
-    // console.log('jobResponse', jobResponse.data)
-    // if (!jobResponse.data) {
-    //     router.replace({
-    //         name: 'jobs'
-    //     })
-    //     return
-    // }
-    // const job = jobResponse.data
-    // if (descriptionRef.value) {
-    //     descriptionRef.value.setData(job.description)
-    // }
-    // if (skillsRef.value) {
-    //     skillsRef.value.setData(job.skills)
-    // }
-    // // 再取得公司資料
-    // const companyResponse = await repoCompany.getCompanyById(job.organizationId)
-    // const company = companyResponse.data
-    // return {
-    //     job,
-    //     company
-    // }
+    const jobResponse = await repoJob.getJobById(config)
+    if (!jobResponse.data) {
+        router.replace({
+            name: 'jobs'
+        })
+        return
+    }
+    const job = jobResponse.data
+    if (descriptionRef.value) {
+        descriptionRef.value.setData(job.description)
+    }
+    if (skillsRef.value) {
+        skillsRef.value.setData(job.skills)
+    }
+    // 再取得公司資料
+    const companyResponse = await repoCompany.getCompanyById(job.organizationId)
+    const company = companyResponse.data
+    state.job = job
+    state.company = company
 }
 </script>
 <style lang="scss" scoped>

@@ -21,11 +21,14 @@ export default defineStore('job', () => {
         state.jobRecommendedRes = response.data
         return response
     }
-    async function getJobById(params) {
+    async function getJobById(data) {
+        let url = `/job/${params.jobId}`
+        if (data.userId) {
+            url += `/${userId}`
+        }
         const response = await axios.request({
             method: 'get',
-            url: `/job/${params.jobId}`,
-            params
+            url,
         })
         return response
     }
