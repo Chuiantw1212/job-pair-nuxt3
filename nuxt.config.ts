@@ -2,11 +2,6 @@
 export default defineNuxtConfig({
     app: {
         head: {
-            // meta: [
-            //     { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
-            //     { charset: 'utf-8', },
-            //     { name: 'description', content: "Job Pair is a platform for matching people and jobs. Through the patent of fit rate, job matching is no longer like finding a needle in a haystack." }
-            // ],
             link: [
                 // Google Fonts
                 { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -50,15 +45,5 @@ export default defineNuxtConfig({
         define: {
             "process.env.DEBUG": false,
         },
-        // optimizeDeps: {
-        //     include: ['ckeditor5-custom-build']
-        // },
-        // build: {
-        //     commonjsOptions: {
-        //         include: [],
-        //         exclude: ['ckeditor5-custom-build/*'],
-        //     },
-        //     sourcemap: true,
-        // },
     },
 })
