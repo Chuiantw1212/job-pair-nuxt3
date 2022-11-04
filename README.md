@@ -1,42 +1,21 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
+# Job Pair 開源計畫
+## 在本機開啟的步驟
+1. 切換到development分支
+2. 安裝套件
+```javascript
 npm install
-
-# pnpm
-pnpm install --shamefully-hoist
-```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
 npm run dev
 ```
+3. 完成，如有問題請line:chuian1212
 
-## Production
 
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+## 技術棧
+| 套件名稱   | 說明                        |
+| ---------- | --------------------------- |
+| Nuxt3      | 基於Vue+Nitro+Vite的SSR框架 |
+| --Pinia    | Vue的狀態管理               |
+| --Pinia    | Vue的狀態管理               |
+| UI相關套件 |                             |
+| --Glide.js | 基於原生JS的輕量套件        |
+| --AOS      | Animate on scroll           |
+| UI相關套件 |                             |
