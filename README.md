@@ -1,13 +1,19 @@
 # Job Pair 開源計畫
 ## 在本機開啟的步驟
 1. 切換到development分支
-2. 安裝套件
+2. 安裝套件同時避開已知的nuxt issue(https://github.com/nuxt/framework/issues/6623)
 ```javascript
 npm install
+npm install pinia --legacy-peer-deps
+npm uninstall pinia
 npm run dev
 ```
 3. 完成，如有問題請line: chuian1212
 
+## 程式碼規範
+1. Nuxt 資料夾規範 (https://v3.nuxtjs.org/guide/concepts/auto-imports)
+2. Atomic Design (https://bradfrost.com/blog/post/atomic-web-design/)
+3. BEM (變體) (https://getbem.com/)
 
 ## 技術棧
 | 套件名稱                   | 說明                                           |
