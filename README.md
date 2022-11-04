@@ -4,8 +4,6 @@
 2. 安裝套件同時避開已知的nuxt issue(https://github.com/nuxt/framework/issues/6623)
 ```javascript
 npm install
-npm install pinia --legacy-peer-deps
-npm uninstall pinia
 npm run dev
 ```
 3. 完成，如有問題請line: chuian1212
