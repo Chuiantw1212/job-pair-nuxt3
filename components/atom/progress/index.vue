@@ -2,7 +2,7 @@
     <div class="custom-progress">
         <hr class="progress__line" />
         <ul class="progress__list">
-            <li v-for="number in 6" :key="number" class="progress__item">
+            <li v-for="number in 6" :key="number" class="progress__item" @click="routeToQuestion(number)">
                 <div class="progress__item__content">
                     <div class="item__content__badge"
                         :class="{ 'item__content__badge--active': number <= Number(questionId) }">
@@ -22,6 +22,11 @@ export default {
             return value
         },
     },
+    methods: {
+        routeToQuestion(number) {
+            this.$router.push(`/questions/${number}`)
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -48,6 +53,7 @@ export default {
         position: relative;
 
         .progress__item {
+            cursor: pointer;
             .progress__item__content {
                 text-align: center;
                 color: #999999;

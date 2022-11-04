@@ -1,68 +1,52 @@
 <template>
     <div class="questions">
-        <div v-if="getPartOne()" class="questions__card">
-            <div class="questions__description">
-                此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
-            </div>
-            <AtomProgress class="questions__progress"></AtomProgress>
-            <img class="questions__leftImage" src="~/assets/questions/left.png" />
-            <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <template v-for="(questionGroup, key) in state.questions" :key="key">
-                <div v-if="questionId == key" class="questions__questionGroup">
-                    <h2 class="questionGroup__header">{{ questionGroup.descUser }}
-                        <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
-                    </h2>
-                    <div class="questionGroup__body">
-                        <button v-if="questionId > 0" class="body__button body__button--left" type="button"
-                            :disabled="questionId <= 0" @click="handleClickLast()">
-                            <img src="~/assets/questions/btn_arrow.svg">
-                        </button>
-                        <div class="body__inputOptions">
-                            <template v-for="(item, index) in questionGroup.items" :key="index">
-                                <template v-if="questionGroup.key !== 'culture'">
-                                    <label class="inputOptions__singleSelect" :class="{
-                                        'inputOptions__singleSelect--selected': checkSelected(item, questionGroup),
-                                    }" :for="`inputOptions__singleSelect${item.value}`">
-                                        <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
-                                            type="radio" :id="`inputOptions__singleSelect${item.value}`"
-                                            :value="item.value" @click="setAnswers(item.value, questionGroup.key)" />
-                                        <span class="label__description">{{ item.textUser }}</span>
-                                    </label>
-                                </template>
-                                <template v-else>
-                                    <label class="inputOptions__multipleSelect">
-                                        <img v-show="checkOptionSelected(item)"
-                                            src="~/assets/index/checkboxSelected.svg">
-                                        <input v-show="!checkOptionSelected(item)"
-                                            v-model="state.tempUser.preference['culture']" :value="item.value"
-                                            class="multiSelect__checkbox" type="checkbox"
-                                            :disabled="checkOptionDisabled(item)">
-                                        <span class="multipleSelect__description">{{ item.textUser }}</span>
-                                    </label>
-                                </template>
+        <div class="questions__description">
+            此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
+        </div>
+        <AtomProgress class="questions__progress"></AtomProgress>
+        <img class="questions__leftImage" src="~/assets/questions/left.png" />
+        <img class="questions__rightImage" src="~/assets/questions/right.png" />
+        <template v-for="(questionGroup, key) in state.questions" :key="key">
+            <div v-if="questionId == key" class="questions__questionGroup">
+                <h2 class="questionGroup__header">{{ questionGroup.descUser }}
+                    <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
+                </h2>
+                <div class="questionGroup__body">
+                    <button v-if="questionId > 0" class="body__button body__button--left" type="button"
+                        :disabled="questionId <= 0" @click="handleClickLast()">
+                        <img src="~/assets/questions/btn_arrow.svg">
+                    </button>
+                    <div class="body__inputOptions">
+                        <template v-for="(item, index) in questionGroup.items" :key="index">
+                            <template v-if="questionGroup.key !== 'culture'">
+                                <label class="inputOptions__singleSelect" :class="{
+                                    'inputOptions__singleSelect--selected': checkSelected(item, questionGroup),
+                                }" :for="`inputOptions__singleSelect${item.value}`">
+                                    <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
+                                        type="radio" :id="`inputOptions__singleSelect${item.value}`" :value="item.value"
+                                        @click="setAnswers(item.value, questionGroup.key)" />
+                                    <span class="label__description">{{ item.textUser }}</span>
+                                </label>
                             </template>
-                        </div>
-                        <button class="body__button body__button--right" type="button"
-                            :disabled="checkQuestionAnswered()" @click="handleClickNext()">
-                            <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
-                        </button>
+                            <template v-else>
+                                <label class="inputOptions__multipleSelect">
+                                    <img v-show="checkOptionSelected(item)" src="~/assets/index/checkboxSelected.svg">
+                                    <input v-show="!checkOptionSelected(item)"
+                                        v-model="state.tempUser.preference['culture']" :value="item.value"
+                                        class="multiSelect__checkbox" type="checkbox"
+                                        :disabled="checkOptionDisabled(item)" @change="setCulture()">
+                                    <span class="multipleSelect__description">{{ item.textUser }}</span>
+                                </label>
+                            </template>
+                        </template>
                     </div>
+                    <button class="body__button body__button--right" type="button" :disabled="checkQuestionAnswered()"
+                        @click="handleClickNext()">
+                        <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
+                    </button>
                 </div>
-            </template>
-        </div>
-        <div v-if="getPartTwo()" class="questions__result">
-            <img class="result__leftImage" src="./assets/papers.png" />
-            <img class="result__rightImage" src="./assets/guy.png" />
-            <p class="result__header">Job Pair已依據您的求職偏好配對適合的職缺<br />立即查看潛在職缺有哪些吧！</p>
-            <button type="button" class="result__button" @click="showUserModal()">看結果</button>
-            <div class="result__tooltip" data-bs-toggle="tooltip" data-bs-placement="right"
-                title="您剛剛選擇的內容為您的求職偏好，Job Pair將搭配企業端用人偏好的資訊，推薦您與您個人求職偏好相契合的公司與職缺。">
-                甚麼是潛在適合職缺<i class="far fa-question-circle tooltip__icon"></i>
             </div>
-            <div class="mt-3">
-                <button type="button" class="btn btn-light" @click="routeToStart()">修改偏好答案</button>
-            </div>
-        </div>
+        </template>
     </div>
 </template>
 <script setup>
@@ -147,6 +131,16 @@ function checkOptionDisabled(item) {
 function checkOptionSelected(item) {
     return state.tempUser.preference['culture'].includes(item.value)
 }
+function setCulture() {
+    if (process.client) {
+        // nextTick(() => {
+        // localStorage.removeItem("user")
+        console.log(state.tempUser.preference.culture)
+        localStorage.setItem("user", JSON.stringify(state.tempUser))
+        // })
+        // console.log(state.tempUser)
+    }
+}
 function setAnswers(value, key) {
     state.tempUser.preference[key] = value
     if (process.client) {
@@ -218,12 +212,22 @@ function handleClickLast() {
 }
 function handleClickNext() {
     const id = Number(route.path.split('/').slice(-1)[0])
-    router.push(`/questions/${id + 1}`)
+    if (id >= 6) {
+        router.push(`/questions/result`)
+    } else {
+        router.push(`/questions/${id + 1}`)
+    }
 }
 </script>
 <style lang="scss" scoped>
 .questions {
     position: relative;
+    background-color: white;
+    min-height: calc(100vh - 88px);
+    z-index: 10;
+    position: relative;
+    padding-bottom: 97px;
+    min-height: 100vh;
 
     .questions__description {
         padding: 12px 36px;
@@ -253,125 +257,117 @@ function handleClickNext() {
         bottom: 0;
     }
 
-    .questions__card {
-        background-color: white;
-        min-height: calc(100vh - 88px);
-        z-index: 10;
-        position: relative;
-        padding-bottom: 97px;
+    .questions__questionGroup {
+        width: 100%;
 
-        .questions__questionGroup {
-            width: 100%;
+        .questionGroup__header {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #484848;
 
-            .questionGroup__header {
+            .header__subheader {
+                font-size: 17px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 0.82;
+                letter-spacing: normal;
                 text-align: center;
-                font-size: 28px;
-                margin-bottom: 30px;
-                font-weight: bold;
                 color: #484848;
+                margin-top: 8px;
+            }
+        }
 
-                .header__subheader {
+        .questionGroup__body {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: calc(100% - 3rem);
+            margin: auto;
+
+            .body__options {
+                z-index: 10;
+            }
+
+            .body__button {
+                background-color: unset;
+                border: none;
+                font-size: 21px;
+                z-index: 10;
+                position: absolute;
+                padding: 10px;
+            }
+
+            .body__button--left {
+                left: 0;
+            }
+
+            .body__button--right {
+                right: 0;
+            }
+
+            .body__inputOptions {
+                margin: auto;
+                text-align: center;
+
+                .inputOptions__singleSelect {
+                    width: 100%;
+                    border-radius: 100px;
+                    border: 1px solid #317292;
+                    background-color: #fdfdfd;
+                    font-size: 14px;
+                    font-weight: 500;
+                    display: flex;
+                    justify-content: center;
+                    cursor: pointer;
+                    color: #317292;
+                    padding: 8px 30px;
+
+                    &:not(:first-child) {
+                        margin-top: 20px;
+                    }
+
+                    &:hover {
+                        color: #80a7c2;
+                        border: solid 1px #80a7c2;
+                    }
+
+                    .label__description {
+                        align-self: center;
+                    }
+                }
+
+                .inputOptions__singleSelect--selected {
+                    background-color: #317292;
+                    color: white !important;
+                }
+
+                .inputOptions__multipleSelect {
+                    width: 100%;
                     font-size: 17px;
                     font-weight: normal;
                     font-stretch: normal;
                     font-style: normal;
-                    line-height: 0.82;
-                    letter-spacing: normal;
-                    text-align: center;
-                    color: #484848;
-                    margin-top: 8px;
-                }
-            }
+                    line-height: 1.5;
+                    letter-spacing: 0.51px;
+                    color: #42708f;
+                    display: flex;
+                    align-items: center;
 
-            .questionGroup__body {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                max-width: calc(100% - 3rem);
-                margin: auto;
-
-                .body__options {
-                    z-index: 10;
-                }
-
-                .body__button {
-                    background-color: unset;
-                    border: none;
-                    font-size: 21px;
-                    z-index: 10;
-                    position: absolute;
-                    padding: 10px;
-                }
-
-                .body__button--left {
-                    left: 0;
-                }
-
-                .body__button--right {
-                    right: 0;
-                }
-
-                .body__inputOptions {
-                    margin: auto;
-                    text-align: center;
-
-                    .inputOptions__singleSelect {
-                        width: 100%;
-                        border-radius: 100px;
-                        border: 1px solid #317292;
-                        background-color: #fdfdfd;
-                        font-size: 14px;
-                        font-weight: 500;
-                        display: flex;
-                        justify-content: center;
-                        cursor: pointer;
-                        color: #317292;
-                        padding: 8px 30px;
-
-                        &:not(:first-child) {
-                            margin-top: 20px;
-                        }
-
-                        &:hover {
-                            color: #80a7c2;
-                            border: solid 1px #80a7c2;
-                        }
-
-                        .label__description {
-                            align-self: center;
-                        }
+                    &:not(:first-child) {
+                        margin-top: 20px;
                     }
 
-                    .inputOptions__singleSelect--selected {
-                        background-color: #317292;
-                        color: white !important;
+                    .multipleSelect__description {
+                        margin-left: 10px;
                     }
 
-                    .inputOptions__multipleSelect {
-                        width: 100%;
-                        font-size: 17px;
-                        font-weight: normal;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.5;
-                        letter-spacing: 0.51px;
-                        color: #42708f;
-                        display: flex;
-                        align-items: center;
-
-                        &:not(:first-child) {
-                            margin-top: 20px;
-                        }
-
-                        .multipleSelect__description {
-                            margin-left: 10px;
-                        }
-
-                        .multiSelect__checkbox {
-                            width: 20px;
-                            height: 20px;
-                        }
+                    .multiSelect__checkbox {
+                        width: 20px;
+                        height: 20px;
                     }
                 }
             }
@@ -440,31 +436,30 @@ function handleClickNext() {
             font-size: 16px;
         }
 
-        .questions__card {
-            .questions__questionGroup {
-                .questionGroup__body {
-                    max-width: 616px;
-                    position: relative;
 
-                    .body__button {
-                        font-size: 21px;
-                    }
+        .questions__questionGroup {
+            .questionGroup__body {
+                max-width: 616px;
+                position: relative;
 
-                    .body__button--left {
-                        left: 0;
-                        transform: translateX(calc(-100% - 50px));
-                    }
+                .body__button {
+                    font-size: 21px;
+                }
 
-                    .body__button--right {
-                        right: 0;
-                        transform: translateX(calc(100% + 50px));
-                    }
+                .body__button--left {
+                    left: 0;
+                    transform: translateX(calc(-100% - 50px));
+                }
 
-                    .body__inputOptions {
-                        .inputOptions__singleSelect {
-                            font-size: 17px;
-                            height: 50px;
-                        }
+                .body__button--right {
+                    right: 0;
+                    transform: translateX(calc(100% + 50px));
+                }
+
+                .body__inputOptions {
+                    .inputOptions__singleSelect {
+                        font-size: 17px;
+                        height: 50px;
                     }
                 }
             }

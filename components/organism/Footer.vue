@@ -35,6 +35,7 @@ export default {}
     justify-content: center;
     padding: 40px 0;
     font-size: 12px;
+    z-index: 10;
 
     .footer__meta {
         text-align: center;
