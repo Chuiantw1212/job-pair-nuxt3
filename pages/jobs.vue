@@ -188,6 +188,9 @@ const state = reactive({
     },
 })
 // hooks
+useHead({
+    title: `職缺探索 - Job Pair`,
+})
 onMounted(() => {
     initializeSearch()
 })

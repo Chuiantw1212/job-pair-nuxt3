@@ -53,6 +53,10 @@ const state = reactive({
     questionsForCompany: [],
     lockEndDate: 0
 })
+// hooks
+useHead({
+    title: `求職偏好 - 會員中心 - Job Pair`,
+})
 watchEffect(() => {
     const { user } = repoAuth.state
     if (user) {

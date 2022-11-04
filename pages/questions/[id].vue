@@ -69,6 +69,9 @@ const questionId = computed(() => {
     return Number(id) || 0
 })
 // hooks
+useHead({
+    title: `偏好量表 ${questionId.value} - Job Pair`,
+})
 onMounted(async () => {
     const response = await repoSelect.getQuestions()
     state.questions = response.data

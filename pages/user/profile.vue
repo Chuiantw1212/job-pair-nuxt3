@@ -102,6 +102,9 @@ const state = reactive({
     toggleChangePassword: false,
 })
 // hooks
+useHead({
+    title: `個人檔案 - 會員中心 - Job Pair`,
+})
 onMounted(() => {
     initialize()
 })

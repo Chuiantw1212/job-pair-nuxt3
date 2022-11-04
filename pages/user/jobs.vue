@@ -347,6 +347,9 @@ const state = reactive({
     },
 })
 // hooks
+useHead({
+    title: `求職狀態 - 會員中心 - Job Pair`,
+})
 onMounted(() => {
     initialize()
 })
