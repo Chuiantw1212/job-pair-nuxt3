@@ -5,7 +5,7 @@ export default function () {
     const config = useRuntimeConfig()
     const state = reactive({
         axiosInstance: axios.create({
-            baseURL: config.public.VITE_APP_API_DEFAULT,
+            baseURL: config.public.apiBase,
             timeout: 20 * 60 * 1000,
         }),
         token: null
