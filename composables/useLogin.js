@@ -10,6 +10,7 @@ export default function setup() {
     const repoJob = useRepoJob()
     const repoJobApplication = useRepoJobApplication()
     const repoCompany = useRepoCompany()
+    const repoSelect = useRepoSelect()
     // state
     const state = reactive({
         ui: null,
@@ -153,20 +154,33 @@ export default function setup() {
         const tempUser = JSON.parse(userString)
         if (!user.id && userString && tempUser.preference) {
             // 五題已經作答回最後一步驟，反之回去作答
-            const questionKeys = ["partner", "variety", "env", "phase", "manage"]
-            const answeredList = Object.keys(tempUser.preference)
-            const allAnswered = questionKeys.every((question) => {
-                return answeredList.includes(question)
+            console.log(repoSelect.state.questionsRes)
+            const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
+            questionKeys.forEach((key, index) => {
+                const isAnswered = tempUser.preference.hasOwnProperty(key)
+                if (!isAnswered) {
+                    router.push(`/questions/${index + 1}`)
+                }
             })
-            if (allAnswered) {
-                router.push({
-                    name: "questions-category",
-                })
-            } else {
-                router.push({
-                    name: "questions",
-                })
+            const categorySelected = user.occupationalCategory && user.occupationalCategory.length
+            if (!categorySelected) {
+                router.push(`/questions/category`)
             }
+            // const answeredList = Object.keys(tempUser.preference)
+            // const allQuestionsAnswered = questionKeys.every((question) => {
+            //     return answeredList.includes(question)
+            // })
+            // const isInQuestionFlow = route.name.includes('questions')
+            // const isAllCompleted = allQuestionsAnswered && categorySelected
+            // if (!isAllCompleted && !isInQuestionFlow) {
+            // }
+            // if (llQuestionsAnswered && categorySelected) {
+            //     router.push({
+            //         name: "questions-category",
+            //     })
+            // } else {
+            //     router.push('/questions/1')
+            // }
             user.type = "employee"
             repoAuth.setUser(user)
             $emitter.emit("hideUserModal")
@@ -180,9 +194,7 @@ export default function setup() {
             router.push(`/admin/register`)
         } else {
             user.type = "employee"
-            router.push({
-                name: "questions",
-            })
+            router.push(`/questions/1`)
         }
         repoAuth.setUser(user)
         $emitter.emit("hideUserModal")

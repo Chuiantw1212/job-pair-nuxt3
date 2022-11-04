@@ -1,6 +1,6 @@
 <template>
     <div class="questions">
-        <div class="questions__card">
+        <div v-if="getPartOne()" class="questions__card">
             <div class="questions__description">
                 此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
             </div>
@@ -9,22 +9,32 @@
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <template v-for="(questionGroup, key) in state.questions" :key="key">
                 <div v-if="questionId == key" class="questions__questionGroup">
-                    <h2 class="questionGroup__header">{{ questionGroup.descUser }}...</h2>
+                    <h2 class="questionGroup__header">{{ questionGroup.descUser }}</h2>
                     <div class="questionGroup__body">
-                        <button class="body__button body__button--left" type="button" :disabled="questionId == 0"
+                        <button class="body__button body__button--left" type="button" :disabled="questionId <= 1"
                             @click="handleClickLast()">
                             <i class="fas fa-chevron-left"></i>
                         </button>
                         <div class="body__inputOptions">
                             <template v-for="(item, index) in questionGroup.items" :key="index">
-                                <label class="inputOptions__label" :class="{
-                                    'inputOptions__label--selected': checkSelected(item, questionGroup),
-                                }" :for="`inputOptions__label${item.value}`">
-                                    <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
-                                        type="radio" :id="`inputOptions__label${item.value}`" :value="item.value"
-                                        @click="setAnswers($event, questionGroup.key)" />
-                                    <span class="label__description">{{ item.textUser }}</span>
-                                </label>
+                                <template v-if="questionGroup.key !== 'culture'">
+                                    <label class="inputOptions__singleSelect" :class="{
+                                        'inputOptions__singleSelect--selected': checkSelected(item, questionGroup),
+                                    }" :for="`inputOptions__singleSelect${item.value}`">
+                                        <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
+                                            type="radio" :id="`inputOptions__singleSelect${item.value}`"
+                                            :value="item.value" @click="setAnswers(item.value, questionGroup.key)" />
+                                        <span class="label__description">{{ item.textUser }}</span>
+                                    </label>
+                                </template>
+                                <template v-else>
+                                    <div>
+                                        <label class="inputOptions__multipleSelect">
+                                            <input v-model="state.tempUser.preference[questionGroup.key]">
+                                            <span class="multipleSelect__description">{{ item.textUser }}</span>
+                                        </label>
+                                    </div>
+                                </template>
                             </template>
                         </div>
                         <button class="body__button body__button--right" type="button"
@@ -34,6 +44,19 @@
                     </div>
                 </div>
             </template>
+        </div>
+        <div v-if="getPartTwo()" class="questions__result">
+            <img class="result__leftImage" src="./assets/papers.png" />
+            <img class="result__rightImage" src="./assets/guy.png" />
+            <p class="result__header">Job Pair已依據您的求職偏好配對適合的職缺<br />立即查看潛在職缺有哪些吧！</p>
+            <button type="button" class="result__button" @click="showUserModal()">看結果</button>
+            <div class="result__tooltip" data-bs-toggle="tooltip" data-bs-placement="right"
+                title="您剛剛選擇的內容為您的求職偏好，Job Pair將搭配企業端用人偏好的資訊，推薦您與您個人求職偏好相契合的公司與職缺。">
+                甚麼是潛在適合職缺<i class="far fa-question-circle tooltip__icon"></i>
+            </div>
+            <div class="mt-3">
+                <button type="button" class="btn btn-light" @click="routeToStart()">修改偏好答案</button>
+            </div>
         </div>
     </div>
 </template>
@@ -50,9 +73,10 @@ const state = reactive({
     tempUser: {
         preference: {},
     },
+    singleSelects: ['']
 })
 const questionId = computed(() => {
-    const id = route.path.split('/').slice(-1)[0]
+    const id = route.path.split('/').slice(-1)[0] - 1
     return Number(id) || 0
 })
 // hooks
@@ -111,8 +135,8 @@ function checkQuestionAnswered() {
         return true
     }
 }
-function setAnswers(event, key) {
-    state.tempUser.preference[key] = event
+function setAnswers(value, key) {
+    state.tempUser.preference[key] = value
     if (process.client) {
         localStorage.setItem("user", JSON.stringify(state.tempUser))
     }
@@ -154,7 +178,7 @@ function initTooltip() {
     }
 }
 function routeToStart() {
-    router.push(`/questions/0`)
+    router.push(`/questions/1`)
     nextTick(() => {
         getAnswers()
     })
@@ -163,21 +187,23 @@ function getPartOne() {
     if (!state.questions) {
         return false
     }
-    const isPartOne = questionId.value < Object.values(state.questions).length - 1
+    const isPartOne = questionId.value < Object.values(state.questions).length
     return isPartOne
 }
-function getpartTwo() {
+function getPartTwo() {
     if (!state.questions) {
         return false
     }
-    const isPartTwo = questionId.value >= Object.values(state.questions).length - 1
+    const isPartTwo = questionId.value >= Object.values(state.questions).length
     return isPartTwo
 }
 function handleClickLast() {
-    router.push(`/questions/${questionId.value - 1}`)
+    const id = Number(route.path.split('/').slice(-1)[0])
+    router.push(`/questions/${id - 1}`)
 }
 function handleClickNext() {
-    router.push(`/questions/${questionId.value + 1}`)
+    const id = Number(route.path.split('/').slice(-1)[0])
+    router.push(`/questions/${id + 1}`)
 }
 </script>
 <style lang="scss" scoped>
@@ -263,7 +289,7 @@ function handleClickNext() {
                     width: 100%;
                     margin: auto;
 
-                    .inputOptions__label {
+                    .inputOptions__singleSelect {
                         width: 100%;
                         // height: 50px;
                         border-radius: 100px;
@@ -291,7 +317,7 @@ function handleClickNext() {
                         }
                     }
 
-                    .inputOptions__label--selected {
+                    .inputOptions__singleSelect--selected {
                         background-color: #317292;
                         color: white !important;
                     }
@@ -383,7 +409,7 @@ function handleClickNext() {
                     }
 
                     .body__inputOptions {
-                        .inputOptions__label {
+                        .inputOptions__singleSelect {
                             font-size: 17px;
                             height: 50px;
                         }

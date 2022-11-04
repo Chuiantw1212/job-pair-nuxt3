@@ -2,10 +2,10 @@
     <div class="custom-progress">
         <hr class="progress__line" />
         <ul class="progress__list">
-            <li v-for="number in 5" :key="number" class="progress__item">
+            <li v-for="number in 6" :key="number" class="progress__item">
                 <div class="progress__item__content">
                     <div class="item__content__badge"
-                        :class="{ 'item__content__badge--active': number <= Number(questionId) + 1 }">
+                        :class="{ 'item__content__badge--active': number <= Number(questionId) }">
                         <img class="badge__icon" src="./icon_Check.svg" />
                     </div>
                     第{{ number }}題
@@ -18,7 +18,8 @@
 export default {
     computed: {
         questionId() {
-            return this.$route.params.id || 0
+            const value = this.$route.params.id || 0
+            return value
         },
     },
 }
