@@ -23,12 +23,7 @@
                     </template>
                 </MoleculeProfileSelectContainer>
             </div>
-            <AtomBtnSimple class="result__submit mt-5">看結果</AtomBtnSimple>
-            <!-- <button type="button" class="result__button"></button> -->
-            <!-- <div class="result__tooltip" data-bs-toggle="tooltip" data-bs-placement="right"
-                title="您剛剛選擇的內容為您的求職偏好，Job Pair將搭配企業端用人偏好的資訊，推薦您與您個人求職偏好相契合的公司與職缺。">
-                甚麼是潛在適合職缺<i class="far fa-question-circle tooltip__icon"></i>
-            </div> -->
+            <AtomBtnSimple class="result__submit mt-5" @click="handleSubmit()">看結果</AtomBtnSimple>
             <div class="mt-3">
                 <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
             </div>
@@ -36,9 +31,13 @@
     </div>
 </template>
 <script setup>
+const { $toggleLoader, $validate } = useNuxtApp()
 const device = useDevice()
 const router = useRouter()
+const repoAuth = useRepoAuth()
+const repoUser = useRepoUser()
 const repoSelect = useRepoSelect()
+const repoJob = useRepoJob()
 const state = reactive({
     filterOpen: {
         occupationalCategory: false
@@ -49,20 +48,36 @@ onMounted(async () => {
     getAnswers()
 })
 function getAnswers() {
-    if (process.client) {
-        const userString = localStorage.getItem("user")
-        if (!userString || userString === "false") {
-            return
-        }
-        const user = JSON.parse(userString)
-        if (!user.preference) {
-            user.preference = {}
-        }
-        state.profile = user
+    const userString = localStorage.getItem("user")
+    if (!userString || userString === "false") {
+        return
     }
+    const user = JSON.parse(userString)
+    state.profile = user
 }
 function routeToFisrt() {
     router.push('/questions/1')
+}
+async function handleSubmit() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    const user = Object.assign({}, repoAuth.state.user, state.profile,)
+    $toggleLoader(true)
+    const postResponse = await repoUser.postUser(user)
+    if (postResponse.status !== 200) {
+        return
+    }
+    $toggleLoader(false)
+    repoAuth.setUser(postResponse.data)
+    await repoJob.getJobRecommended()
+    // 刪除暫存資料
+    localStorage.removeItem("user")
+    window.scrollTo(0, 0)
+    router.push({
+        name: "jobs",
+    })
 }
 </script>
 <style lang="scss">

@@ -153,14 +153,11 @@ export default function setup() {
         const userString = localStorage.getItem("user")
         const tempUser = JSON.parse(userString)
         if (!user.id && userString && tempUser.preference) {
-            // 五題已經作答回最後一步驟，反之回去作答
-            console.log(repoSelect.state.questionsRes)
+            // 已經作答跳最後一步驟，反之回去作答
             const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
             const unAnsweredIndex = questionKeys.findIndex((key) => {
                 const isAnswered = tempUser.preference.hasOwnProperty(key)
                 return !isAnswered
-                // if (!isAnswered) {
-                // }
             })
             const categorySelected = user.occupationalCategory && user.occupationalCategory.length
             if (unAnsweredIndex !== -1) {
@@ -169,21 +166,7 @@ export default function setup() {
             else if (!categorySelected) {
                 router.push(`/questions/result`)
             }
-            // const answeredList = Object.keys(tempUser.preference)
-            // const allQuestionsAnswered = questionKeys.every((question) => {
-            //     return answeredList.includes(question)
-            // })
-            // const isInQuestionFlow = route.name.includes('questions')
-            // const isAllCompleted = allQuestionsAnswered && categorySelected
-            // if (!isAllCompleted && !isInQuestionFlow) {
-            // }
-            // if (llQuestionsAnswered && categorySelected) {
-            //     router.push({
-            //         name: "questions-category",
-            //     })
-            // } else {
-            //     router.push('/questions/1')
-            // }
+            // 不論是否答題完成都要跑以下程式碼
             user.type = "employee"
             repoAuth.setUser(user)
             $emitter.emit("hideUserModal")
