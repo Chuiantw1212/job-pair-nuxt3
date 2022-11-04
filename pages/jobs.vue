@@ -334,9 +334,10 @@ async function setPageOrderBy(key) {
     } else {
         state.pagination.pageLimit = 5
     }
-    $toggleLoader(true)
-    await initializeSearch()
-    $toggleLoader(false)
+    await initializeSearch({
+        immediate: true,
+        isLoading: true
+    })
 }
 function resetFilter() {
     state.jobList = []
@@ -382,23 +383,26 @@ function debounce(func, delay = 800) {
         }, delay)
     }
 }
-async function initializeSearch() {
+async function initializeSearch(config = {}) {
+    const wait = config.immediate ? 0 : 800
     debounce(async () => {
         state.jobList = []
         state.pagination.pageOffset = 0
-        await concatJobsFromServer()
-    })()
+        await concatJobsFromServer(config)
+    }, wait)()
 }
-async function concatJobsFromServer() {
+async function concatJobsFromServer(config) {
     const { user } = repoAuth.state
     if (!user || !user.id) {
         return
     }
-    const config = Object.assign({}, state.pagination, state.filter, {
+    const { isLoading = false } = config
+    const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
         id: user.id
     })
-    const response = await repoJob.getJobAll(config)
+    $toggleLoader(isLoading)
+    const response = await repoJob.getJobAll(requestConfig)
     if (response.status !== 200) {
         $alert('伺服器塞車了')
         return
@@ -407,16 +411,13 @@ async function concatJobsFromServer() {
     state.count = count
     // 避免重複出現職缺
     const recommendJobs = filterRecommendedJobs()
-    repoJob.jobRecommendList = recommendJobs
+    state.jobRecommendList = recommendJobs
     const recommendJobKeys = recommendJobs.map(item => item.identifier)
     const notDuplicatedJobs = items.filter(item => {
         return !recommendJobKeys.includes(item.identifier)
     })
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    if (state.pagination.pageOrderBy === "similarity") {
-        $toggleLoader(false)
-        return
-    }
+    $toggleLoader(false)
     observeLastJob(notDuplicatedJobs)
 }
 </script>
