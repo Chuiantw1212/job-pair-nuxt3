@@ -13,16 +13,16 @@
                     <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         required>
                     </AtomInputText>
-                    <AtomInputCKEditor v-model="state.form.templateHeader" name="前言" class="mt-3"
+                    <AtomInputCkeditor v-model="state.form.templateHeader" name="前言" class="mt-3"
                         :ref="'templateHeaderRef'" required>
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                     <MoleculeInputEvents v-model="state.form.events" required></MoleculeInputEvents>
                     <AtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
                         class="content__duration mt-3">
                     </AtomInputSelect>
-                    <AtomInputCKEditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
+                    <AtomInputCkeditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
                         :ref="'templateFooterRef'" required>
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
@@ -45,9 +45,9 @@
                     <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         :disabled="true" required>
                     </AtomInputText>
-                    <AtomInputCKEditor v-model="state.form.template" name="信件內容" :disabled="true" :preview="true"
+                    <AtomInputCkeditor v-model="state.form.template" name="信件內容" :disabled="true" :preview="true"
                         :toolbar="[]" :ref="'templateContentRef'" class="mt-3" required>
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">

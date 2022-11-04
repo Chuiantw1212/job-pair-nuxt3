@@ -100,15 +100,15 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <AtomInputCKEditor v-model="state.job.description" :toolbar="[]" disabled ref="descriptionRef">
-                        </AtomInputCKEditor>
+                        <AtomInputCkeditor v-model="state.job.description" :toolbar="[]" disabled ref="descriptionRef">
+                        </AtomInputCkeditor>
                     </div>
                 </section>
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <AtomInputCKEditor v-model="state.job.skills" :toolbar="[]" disabled ref="skillsRef">
-                        </AtomInputCKEditor>
+                        <AtomInputCkeditor v-model="state.job.skills" :toolbar="[]" disabled ref="skillsRef">
+                        </AtomInputCkeditor>
                     </div>
                 </section>
             </div>
@@ -434,7 +434,8 @@ function getGoogleMapSrc() {
     return srcString
 }
 function getJobAddress() {
-    if (!state.job || !state.company) {
+    const { locationRes } = repoSelect.state
+    if (!state.job || !state.company || !locationRes) {
         return false
     }
     const addressRegion = state.job.addressRegion ?? state.company.addressRegion

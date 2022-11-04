@@ -82,12 +82,12 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <AtomInputCKEditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
+                    <AtomInputCkeditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
                         ref="descriptionRef">
-                    </AtomInputCKEditor>
-                    <AtomInputCKEditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
+                    </AtomInputCkeditor>
+                    <AtomInputCkeditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
                         ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
                             ※ 系統自動偵測項目
