@@ -164,7 +164,7 @@ export default function setup() {
             })
             const categorySelected = user.occupationalCategory && user.occupationalCategory.length
             if (!categorySelected) {
-                router.push(`/questions/category`)
+                router.push(`/questions/result`)
             }
             // const answeredList = Object.keys(tempUser.preference)
             // const allQuestionsAnswered = questionKeys.every((question) => {
