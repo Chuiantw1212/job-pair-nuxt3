@@ -434,7 +434,8 @@ function getGoogleMapSrc() {
     return srcString
 }
 function getJobAddress() {
-    if (!state.job || !state.company) {
+    const { locationRes } = repoSelect.state
+    if (!state.job || !state.company || !locationRes) {
         return false
     }
     const addressRegion = state.job.addressRegion ?? state.company.addressRegion

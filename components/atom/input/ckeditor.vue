@@ -85,7 +85,6 @@ let localValue = computed({
 // hooks
 onMounted(() => {
     if (process.client) {
-        console.log('mounted');
         requestSelector(window.ClassicEditor, (ClassicEditor) => {
             initializeCKEditor(ClassicEditor)
         })
@@ -107,7 +106,6 @@ watch(() => localValue, (newValue, oldValue) => {
 // methods
 function requestSelector(ClassicEditor, callback) {
     function step() {
-        console.log('setp')
         if (ClassicEditor) {
             callback(ClassicEditor)
         } else {
