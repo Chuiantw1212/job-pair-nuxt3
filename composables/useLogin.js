@@ -156,14 +156,17 @@ export default function setup() {
             // 五題已經作答回最後一步驟，反之回去作答
             console.log(repoSelect.state.questionsRes)
             const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
-            questionKeys.forEach((key, index) => {
+            const unAnsweredIndex = questionKeys.findIndex((key) => {
                 const isAnswered = tempUser.preference.hasOwnProperty(key)
-                if (!isAnswered) {
-                    router.push(`/questions/${index + 1}`)
-                }
+                return !isAnswered
+                // if (!isAnswered) {
+                // }
             })
             const categorySelected = user.occupationalCategory && user.occupationalCategory.length
-            if (!categorySelected) {
+            if (unAnsweredIndex !== -1) {
+                router.push(`/questions/${unAnsweredIndex + 1}`)
+            }
+            else if (!categorySelected) {
                 router.push(`/questions/result`)
             }
             // const answeredList = Object.keys(tempUser.preference)

@@ -9,11 +9,13 @@
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <template v-for="(questionGroup, key) in state.questions" :key="key">
                 <div v-if="questionId == key" class="questions__questionGroup">
-                    <h2 class="questionGroup__header">{{ questionGroup.descUser }}</h2>
+                    <h2 class="questionGroup__header">{{ questionGroup.descUser }}
+                        <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
+                    </h2>
                     <div class="questionGroup__body">
-                        <button class="body__button body__button--left" type="button" :disabled="questionId <= 1"
-                            @click="handleClickLast()">
-                            <i class="fas fa-chevron-left"></i>
+                        <button v-if="questionId > 0" class="body__button body__button--left" type="button"
+                            :disabled="questionId <= 0" @click="handleClickLast()">
+                            <img src="~/assets/questions/btn_arrow.svg">
                         </button>
                         <div class="body__inputOptions">
                             <template v-for="(item, index) in questionGroup.items" :key="index">
@@ -29,17 +31,20 @@
                                 </template>
                                 <template v-else>
                                     <label class="inputOptions__multipleSelect">
-                                        <img src="~/assets/index/checkboxSelected.svg">
+                                        <img v-show="checkOptionSelected(item)"
+                                            src="~/assets/index/checkboxSelected.svg">
+                                        <input v-show="!checkOptionSelected(item)"
+                                            v-model="state.tempUser.preference['culture']" :value="item.value"
+                                            class="multiSelect__checkbox" type="checkbox"
+                                            :disabled="checkOptionDisabled(item)">
                                         <span class="multipleSelect__description">{{ item.textUser }}</span>
-                                        <input v-if="false" v-model="state.tempUser.preference[questionGroup.key]"
-                                            type="checkbox">
                                     </label>
                                 </template>
                             </template>
                         </div>
                         <button class="body__button body__button--right" type="button"
                             :disabled="checkQuestionAnswered()" @click="handleClickNext()">
-                            <i class="fas fa-chevron-right"></i>
+                            <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
                         </button>
                     </div>
                 </div>
@@ -135,6 +140,13 @@ function checkQuestionAnswered() {
         return true
     }
 }
+function checkOptionDisabled(item) {
+    const isSelected = checkOptionSelected(item)
+    return state.tempUser.preference['culture'].length >= 2 && !isSelected
+}
+function checkOptionSelected(item) {
+    return state.tempUser.preference['culture'].includes(item.value)
+}
 function setAnswers(value, key) {
     state.tempUser.preference[key] = value
     if (process.client) {
@@ -151,6 +163,9 @@ function getAnswers() {
         const user = JSON.parse(userString)
         if (!user.preference) {
             user.preference = {}
+        }
+        if (!user.preference.culture) {
+            user.preference.culture = []
         }
         state.tempUser = user
     }
@@ -254,6 +269,18 @@ function handleClickNext() {
                 margin-bottom: 30px;
                 font-weight: bold;
                 color: #484848;
+
+                .header__subheader {
+                    font-size: 17px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 0.82;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #484848;
+                    margin-top: 8px;
+                }
             }
 
             .questionGroup__body {
@@ -329,18 +356,21 @@ function handleClickNext() {
                         font-style: normal;
                         line-height: 1.5;
                         letter-spacing: 0.51px;
-                        // text-align: center;
                         color: #42708f;
                         display: flex;
-                        // align-self: center;
+                        align-items: center;
 
                         &:not(:first-child) {
                             margin-top: 20px;
                         }
 
                         .multipleSelect__description {
-                            align-self: center;
                             margin-left: 10px;
+                        }
+
+                        .multiSelect__checkbox {
+                            width: 20px;
+                            height: 20px;
                         }
                     }
                 }
