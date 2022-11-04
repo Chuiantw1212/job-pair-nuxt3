@@ -8,6 +8,10 @@ npm run dev
 ```
 3. 完成，如有問題請line: chuian1212
 
+## 程式碼規範
+1. Nuxt 資料夾規範 (https://v3.nuxtjs.org/guide/concepts/auto-imports)
+2. Atomic Design (https://bradfrost.com/blog/post/atomic-web-design/)
+3. BEM (變體) (https://getbem.com/)
 
 ## 技術棧
 | 套件名稱                   | 說明                                           |
