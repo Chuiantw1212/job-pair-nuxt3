@@ -85,7 +85,10 @@ let localValue = computed({
 // hooks
 onMounted(() => {
     if (process.client) {
-        initializeCKEditor()
+        console.log('mounted');
+        requestSelector(window.ClassicEditor, (ClassicEditor) => {
+            initializeCKEditor(ClassicEditor)
+        })
     }
 })
 onBeforeUnmount(() => {
@@ -102,9 +105,20 @@ watch(() => localValue, (newValue, oldValue) => {
     }
 })
 // methods
-async function initializeCKEditor() {
+function requestSelector(ClassicEditor, callback) {
+    function step() {
+        console.log('setp')
+        if (ClassicEditor) {
+            callback(ClassicEditor)
+        } else {
+            window.requestAnimationFrame(step)
+        }
+    }
+    window.requestAnimationFrame(step)
+}
+async function initializeCKEditor(ClassicEditor) {
     // 使用CDN
-    const editor = await window.ClassicEditor.create(editorRef.value, {
+    const editor = await ClassicEditor.create(editorRef.value, {
         toolbar: props.toolbar,
     })
     if (localValue.value) {

@@ -46,15 +46,15 @@
             <div class="body__textGroup">
                 <div v-if="state.companyInfo" class="company__card company__intro">
                     <div class="card__header">公司介紹</div>
-                    <AtomInputCKEditor v-model="state.companyInfo.description" :toolbar="[]" disabled
+                    <AtomInputCkeditor v-model="state.companyInfo.description" :toolbar="[]" disabled
                         class="card__body">
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                 </div>
                 <div v-if="state.companyInfo" class="company__card company__welfare">
                     <div class="card__header">公司福利</div>
-                    <AtomInputCKEditor v-model="state.companyInfo.jobBenefits" :toolbar="[]" disabled
+                    <AtomInputCkeditor v-model="state.companyInfo.jobBenefits" :toolbar="[]" disabled
                         class="card__body">
-                    </AtomInputCKEditor>
+                    </AtomInputCkeditor>
                 </div>
             </div>
             <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"

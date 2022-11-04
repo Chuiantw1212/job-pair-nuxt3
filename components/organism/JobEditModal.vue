@@ -101,12 +101,12 @@
                                 :required="checkAddressRequired()">
                             </AtomInputText>
                         </div>
-                        <AtomInputCKEditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
+                        <AtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             required class="mt-2">
-                        </AtomInputCKEditor>
-                        <AtomInputCKEditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
+                        </AtomInputCkeditor>
+                        <AtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                             :removePlatformLink="true" class="mt-2">
-                        </AtomInputCKEditor>
+                        </AtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-2">
                             <div class="preference__header">用人偏好</div>
                             <div class="preference__body">
