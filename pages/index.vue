@@ -409,7 +409,7 @@ function routeToQuestions() {
 
         .home__intro__whatis {
             background-color: white;
-            background-image: url("~/assets/index/bg_home 4.svg");
+            background-image: url("~/assets/index/bg_home4.svg");
             background-size: cover;
             display: flex;
             flex-direction: row-reverse;
