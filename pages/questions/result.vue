@@ -1,9 +1,8 @@
 <template>
     <div class="questions">
         <div class="questions__result">
-            <img class="result__leftImage" src="~/assets/questions/papers.png" />
-            <img class="result__rightImage" src="~/assets/questions/guy.png" />
-            <!-- <p class="result__header">Job Pair已依據您的求職偏好配對適合的職缺<br />立即查看潛在職缺有哪些吧！</p> -->
+            <img class="questions__leftImage" src="~/assets/questions/left.png" />
+            <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <p class="result__header">最後一個步驟，就完成會員註冊囉！</p>
             <div class="result__category">
                 <div class="category__header">
@@ -31,13 +30,14 @@
                 甚麼是潛在適合職缺<i class="far fa-question-circle tooltip__icon"></i>
             </div> -->
             <div class="mt-3">
-                <button type="button" class="btn btn-light">修改偏好答案</button>
+                <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
 const device = useDevice()
+const router = useRouter()
 const repoSelect = useRepoSelect()
 const state = reactive({
     filterOpen: {
@@ -61,6 +61,9 @@ function getAnswers() {
         state.profile = user
     }
 }
+function routeToFisrt() {
+    router.push('/questions/1')
+}
 </script>
 <style lang="scss">
 .questions__result {
@@ -71,31 +74,34 @@ function getAnswers() {
     padding: 128px 5vw 200px 5vw;
     min-height: calc(100vh - 88px);
 
-    .result__leftImage {
+    .questions__leftImage {
         position: absolute;
         left: 0;
-        width: 30vw;
+        width: 15vw;
         top: 0;
     }
 
-    .result__rightImage {
+    .questions__rightImage {
         position: absolute;
         right: 0;
-        width: 30vw;
-        bottom: 64px;
+        width: 15vw;
+        bottom: 0;
     }
 
     .result__header {
         font-size: 28px;
         font-weight: bold;
-        text-align: center;
+        text-align: left;
         line-height: 45px;
         z-index: 10;
+        width: 100%;
+        max-width: 616px;
     }
 
     .result__category {
+        background-color: white;
         width: 100%;
-        max-width: 1181px;
+        max-width: 616px;
         z-index: 10;
 
         .category__header {

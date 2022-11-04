@@ -78,17 +78,9 @@
 <script setup>
 import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()
-const router = useRouter()
-const device = useDevice()
 // methods
 function routeToQuestions() {
-    if (device.state.isNativeWeb) {
-        router.push({
-            name: "questions",
-        })
-    } else {
-        $emitter.emit("showUserModal")
-    }
+    $emitter.emit("showUserModal")
 }
 </script>
 <style lang="scss" scoped>

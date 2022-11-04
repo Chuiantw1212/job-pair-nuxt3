@@ -28,12 +28,12 @@
                                     </label>
                                 </template>
                                 <template v-else>
-                                    <div>
-                                        <label class="inputOptions__multipleSelect">
-                                            <input v-model="state.tempUser.preference[questionGroup.key]">
-                                            <span class="multipleSelect__description">{{ item.textUser }}</span>
-                                        </label>
-                                    </div>
+                                    <label class="inputOptions__multipleSelect">
+                                        <img src="~/assets/index/checkboxSelected.svg">
+                                        <span class="multipleSelect__description">{{ item.textUser }}</span>
+                                        <input v-if="false" v-model="state.tempUser.preference[questionGroup.key]"
+                                            type="checkbox">
+                                    </label>
                                 </template>
                             </template>
                         </div>
@@ -261,7 +261,7 @@ function handleClickNext() {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                max-width: 248px;
+                max-width: calc(100% - 3rem);
                 margin: auto;
 
                 .body__options {
@@ -286,12 +286,11 @@ function handleClickNext() {
                 }
 
                 .body__inputOptions {
-                    width: 100%;
                     margin: auto;
+                    text-align: center;
 
                     .inputOptions__singleSelect {
                         width: 100%;
-                        // height: 50px;
                         border-radius: 100px;
                         border: 1px solid #317292;
                         background-color: #fdfdfd;
@@ -320,6 +319,29 @@ function handleClickNext() {
                     .inputOptions__singleSelect--selected {
                         background-color: #317292;
                         color: white !important;
+                    }
+
+                    .inputOptions__multipleSelect {
+                        width: 100%;
+                        font-size: 17px;
+                        font-weight: normal;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: 1.5;
+                        letter-spacing: 0.51px;
+                        // text-align: center;
+                        color: #42708f;
+                        display: flex;
+                        // align-self: center;
+
+                        &:not(:first-child) {
+                            margin-top: 20px;
+                        }
+
+                        .multipleSelect__description {
+                            align-self: center;
+                            margin-left: 10px;
+                        }
                     }
                 }
             }
