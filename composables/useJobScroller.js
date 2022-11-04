@@ -15,7 +15,7 @@ export default function setup() {
         // filters
         filter: {
             // 篩選企業條件
-            industry: null,
+            industry: [],
             jobBenefits: [],
             // 篩選職缺
             addressRegion: [],
@@ -25,7 +25,6 @@ export default function setup() {
             occupationalCategory: [],
             salaryMin: null,
             salaryMax: null,
-            industry: [],
             organizationId: null,
         },
         searchLike: "",
