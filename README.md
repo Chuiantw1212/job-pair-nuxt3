@@ -1,7 +1,7 @@
 # Job Pair 開源計畫
 ## 在本機開啟的步驟
 1. 切換到development分支
-2. 安裝套件同時避開已知的nuxt issue(https://github.com/nuxt/framework/issues/6623)
+2. 安裝套件
 ```javascript
 npm install
 npm run dev

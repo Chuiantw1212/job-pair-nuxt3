@@ -40,7 +40,7 @@
                     <img class="share__icon" src="./share.svg" />分享
                 </AtomBtnSimple>
                 <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="`tooltip${state.id}`"
-                    class="panel__share" data-bs-toggle="tooltip" :title="shareButtonTitle"
+                    class="panel__share" data-bs-toggle="tooltip" :title="state.shareButtonTitle"
                     @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
                     <img class="share__icon" src="./share.svg" />
                     分享
