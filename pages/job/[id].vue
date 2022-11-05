@@ -155,8 +155,6 @@ const device = useDevice()
 const state = reactive({
     job: null,
     company: null,
-    companyNews: [],
-    imageSrc: [],
     applyFlow: null,
     tabItems: [
         {
@@ -176,8 +174,6 @@ const state = reactive({
             value: "#companyWelfare",
         },
     ],
-    shareButtonToolTip: [],
-    shareButtonTitle: "點擊複製連結",
     mapHeight: '',
     adRenderKey: Math.random(),
     // pagination
