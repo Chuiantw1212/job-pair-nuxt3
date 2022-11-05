@@ -41,7 +41,7 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            VITE_APP_API_DEFAULT: 'https://job-pair-taiwan-dev.de.r.appspot.com',
+            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
         }
     },
     // ... other options
