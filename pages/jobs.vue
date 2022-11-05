@@ -188,6 +188,9 @@ const state = reactive({
     },
 })
 // hooks
+useHead({
+    title: `職缺探索 - Job Pair`,
+})
 onMounted(() => {
     initializeSearch()
 })
@@ -390,7 +393,7 @@ async function initializeSearch(config = {}) {
         await concatJobsFromServer(config)
     }, wait)()
 }
-async function concatJobsFromServer(config) {
+async function concatJobsFromServer(config = {}) {
     const { user } = repoAuth.state
     if (!user || !user.id) {
         return

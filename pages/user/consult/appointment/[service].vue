@@ -116,16 +116,13 @@ const state = reactive({
         time: {},
     },
 })
+const service = 'life'
+// hooks
+useHead({
+    title: `職涯諮詢 - 會員中心 - Job Pair`,
+})
 onMounted(() => {
     loadConsultants()
-})
-let service = 'life'
-const test = computed(() => {
-    const test = route.params
-    console.log({
-        test
-    })
-    return route.params
 })
 watchEffect(() => {
     state.appointmentForm.service = service

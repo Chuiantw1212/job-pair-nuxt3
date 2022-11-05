@@ -141,6 +141,7 @@
 <script setup>
 import { computed } from '@vue/reactivity'
 import { onBeforeUnmount, onMounted, nextTick, watch } from 'vue'
+const config = useRuntimeConfig()
 const { $emitter, $alert, $optionText } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
@@ -190,7 +191,7 @@ const state = reactive({
     debounceTimer: null,
 })
 const jobId = computed(() => {
-    const id = route.path.split('/').slice(-1)[0]
+    const id = route.params.id
     return id
 })
 let browserConfig = computed({
@@ -210,12 +211,25 @@ let browserConfig = computed({
 })
 const jobItems = ref([])
 // hooks
+const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`)
+const { organizationId } = job.value
+const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`)
+if (process.client) {
+    state.job = job.value
+    state.company = company.value
+}
+useHead({
+    title: () => {
+        if (job.value && company.value) {
+            return `${job.value.name} - ${company.value.name} - Job Pair`
+        }
+    }
+})
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
     }
-    initialize()
 })
 onBeforeUnmount(() => {
     if (process.client) {
@@ -224,6 +238,7 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => jobId.value, () => {
+    console.log('jobId');
     initialize()
 })
 watch(() => repoJobApplication.state.userJobs, () => {
@@ -329,56 +344,6 @@ function setApplyFlow() {
         state.applyFlow = matchedJob.applyFlow
     }
 }
-// async function concatJobsFromServer() {
-//     const { user } = repoAuth.state
-//     if (!user.id || !state.job) {
-//         return
-//     }
-//     const config = Object.assign({}, state.pagination, {
-//         occupationalCategory: state.job.occupationalCategory,
-//     })
-//     if (user.type === 'user') {
-//         config.id = user.id
-//     }
-//     const response = await repoJob.getJobAll(config)
-//     if (response.status !== 200) {
-//         return
-//     }
-//     const { total = 0, items = [] } = response.data
-//     const filteredItems = items.filter(item => {
-//         return item.identifier !== state.job.identifier
-//     })
-//     state.jobList = [...state.jobList, ...filteredItems]
-//     if (!items.length) {
-//         return
-//     }
-//     nextTick(() => {
-//         observeLastJob()
-//     })
-// }
-// function observeLastJob() {
-//     if (!state.observer) {
-//         state.observer = new IntersectionObserver(loadJobItemBatch, {
-//             rootMargin: "0px",
-//             threshold: 0,
-//         })
-//     }
-//     const wrappers = jobItems.value
-//     console.log({
-//         wrappers
-//     })
-//     const targetComponent = wrappers[wrappers.length - 1]
-//     const target = targetComponent.$el
-//     state.observer.observe(target)
-// }
-// async function loadJobItemBatch(entries, observer) {
-//     const triggeredEntry = entries[0]
-//     if (triggeredEntry.isIntersecting) {
-//         observer.unobserve(triggeredEntry.target)
-//         state.pagination.pageOffset += state.pagination.pageLimit
-//         await concatJobsFromServer()
-//     }
-// }
 function hideAd() {
     if (!process.client) {
         return
@@ -456,7 +421,7 @@ const descriptionRef = ref(null)
 const skillsRef = ref(null)
 async function initialize() {
     if (!jobId.value) {
-        job = {}
+        state.job = {}
         return
     }
     const config = {
@@ -473,17 +438,18 @@ async function initialize() {
         })
         return
     }
-    state.job = jobResponse.data
+    const job = jobResponse.data
     if (descriptionRef.value) {
-        descriptionRef.value.setData(state.job.description)
+        descriptionRef.value.setData(job.description)
     }
     if (skillsRef.value) {
-        skillsRef.value.setData(state.job.skills)
+        skillsRef.value.setData(job.skills)
     }
     // 再取得公司資料
-    const companyResponse = await repoCompany.getCompanyById(state.job.organizationId)
-    state.company = companyResponse.data
-    document.title = `${state.job.name} - ${state.company.name} - Job Pair`
+    const companyResponse = await repoCompany.getCompanyById(job.organizationId)
+    const company = companyResponse.data
+    state.job = job
+    state.company = company
 }
 </script>
 <style lang="scss" scoped>

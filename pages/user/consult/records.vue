@@ -286,6 +286,9 @@ const state = reactive({
     activeTab: 'life'
 })
 // hooks
+useHead({
+    title: `職涯諮詢 - 會員中心 - Job Pair`,
+})
 onMounted(async () => {
     const consultantsRes = await repoConsult.getConsultants()
     const consultants = consultantsRes.data
