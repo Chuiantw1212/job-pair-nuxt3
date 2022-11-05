@@ -39,5 +39,4 @@ npm run dev
 | --  Minidenticons          | 生成隨機聊天室的頭像用 (Deprecated)            |
 | --  nouislider             | 基於原生JS的輕量套件                           |
 | --  sweetalert2            | 基於原生JS的輕量套件                           |
-| 我忘記他來幹嘛的           | 就真的忘了                                     |
-| --  SASS                   | 改天來試試看拿掉，搞不好拿掉也能跑?            |
+| --  sass                   | scss preprocessor                              |
