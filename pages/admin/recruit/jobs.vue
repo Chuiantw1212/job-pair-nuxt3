@@ -53,7 +53,7 @@
                         </td>
                         <td>
                             <OrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
-                                @save="initialize(searchLike)" ref="jobModalRefs">
+                                ref="jobModalRefs">
                             </OrganismJobEditModal>
                         </td>
                         <td v-if="state.jobFields.includes('occupationalCategory')">
@@ -180,12 +180,16 @@ watch(() => repoAuth.state.company, () => {
 })
 watch(() => state.searchLike, () => {
     debounce(() => {
-        initialize(state.searchLike)
+        initialize({
+            searchLike: state.searchLike
+        })
     })
 })
 watch(() => state.filter, () => {
     debounce(() => {
-        initialize(state.searchLike)
+        initialize({
+            searchLike: state.searchLike
+        })
     })
 }, { deep: true })
 // methods
@@ -237,7 +241,8 @@ function removeJob(index) {
     state.jobList.splice(index, 1)
     state.renderKey = Math.random()
 }
-async function initialize(searchLike = '') {
+async function initialize(payload = {}) {
+    const { searchLike = '', sort = true } = payload
     const { user, company } = repoAuth.state
     if (!company) {
         return

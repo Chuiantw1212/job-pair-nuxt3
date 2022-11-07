@@ -139,8 +139,7 @@
     </div>
 </template>
 <script setup>
-import { computed } from '@vue/reactivity'
-import { onBeforeUnmount, onMounted, nextTick, watch } from 'vue'
+import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
 const config = useRuntimeConfig()
 const { $emitter, $alert, $optionText } = useNuxtApp()
 const router = useRouter()
@@ -207,9 +206,9 @@ let browserConfig = computed({
 })
 const jobItems = ref([])
 // hooks
-const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`)
+const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`, { initialCache: false })
 const { organizationId } = job.value
-const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`)
+const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`, { initialCache: false })
 if (process.client) {
     state.job = job.value
     state.company = company.value
@@ -234,7 +233,6 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => jobId.value, () => {
-    console.log('jobId');
     initialize()
 })
 watch(() => repoJobApplication.state.userJobs, () => {

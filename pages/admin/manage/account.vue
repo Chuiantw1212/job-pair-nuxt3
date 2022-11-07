@@ -70,7 +70,6 @@ watch(() => repoAuth.state.user, (newValue) => {
     if (!state.tempUser.chatName) {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
-
     }
     setIdenticon()
 }, { immediate: true })
