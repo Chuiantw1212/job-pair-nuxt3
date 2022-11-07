@@ -238,6 +238,10 @@ const props = defineProps({
         }
     }
 })
+// hooks
+useHead({
+    title: `應徵管理 - 招募中心 - Job Pair`
+})
 watch(() => props.modelValue, (newValue) => {
     // 這邊只應該執行一次
     newValue.sort((a, b) => {

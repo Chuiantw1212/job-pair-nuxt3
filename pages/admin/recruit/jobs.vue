@@ -169,6 +169,9 @@ const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 // hooks
+useHead({
+    title: `職缺管理 - 招募中心 - Job Pair`
+})
 onMounted(() => {
     initialize()
 })

@@ -134,6 +134,9 @@ const props = defineProps({
     }
 })
 // hooks
+useHead({
+    title: `潛在人選 - 招募中心 - Job Pair`
+})
 watch(() => state.searchForm, () => {
     const { companyJobsRes } = repoCompany.state
     if (!companyJobsRes) {
