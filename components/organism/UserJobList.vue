@@ -66,7 +66,7 @@ async function unsafeJob(index) {
         jobId: job.identifier,
     })
     if (response.status === 200) {
-        localValue.splice(index, 1)
+        localValue.value.splice(index, 1)
     }
 }
 async function hideJob(index) {
