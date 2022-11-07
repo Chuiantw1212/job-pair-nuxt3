@@ -129,7 +129,6 @@ watchEffect(() => {
 })
 // methods
 async function loadConsultants() {
-    console.log('executed')
     const response = await repoConsult.getConsultants()
     if (response.status !== 200) {
         return
