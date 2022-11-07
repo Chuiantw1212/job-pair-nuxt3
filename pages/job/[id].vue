@@ -292,7 +292,7 @@ async function showIncompleteAlert() {
     })
     if (res.value) {
         router.push({
-            name: 'userProfile'
+            name: 'user-profile'
         })
     }
 }
