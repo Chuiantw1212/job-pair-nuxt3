@@ -39,9 +39,9 @@
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" />分享
                 </AtomBtnSimple>
-                <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="id" class="panel__share"
-                    data-bs-toggle="tooltip" :title="shareButtonTitle" @click="shareLinkBootstrap()"
-                    @mouseout="resetTooltipTitle()">
+                <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="`tooltip${state.id}`"
+                    class="panel__share" data-bs-toggle="tooltip" :title="state.shareButtonTitle"
+                    @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
                     <img class="share__icon" src="./share.svg" />
                     分享
                 </AtomBtnSimple>
@@ -51,7 +51,7 @@
 </template>
 <script setup>
 import { nextTick, ref } from 'vue'
-const { $uuid4, $bootstrap, $emitter, $rank } = useNuxtApp()
+const { $uuid4, $bootstrap, $emitter, $rank, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -121,10 +121,9 @@ function setApplyFlow(userJobs) {
     }
 }
 function initialilzeTooltip() {
-    const panel__button = document.getElementById(state.id)
-    if (panel__button) {
-        state.shareButtonToolTip = new $bootstrap.Tooltip(panel__button)
-    }
+    $requestSelector(`#tooltip${state.id}`, (element) => {
+        state.shareButtonToolTip = new $bootstrap.Tooltip(element)
+    })
 }
 async function handleUnsavedJob() {
     const { user } = repoAuth.state

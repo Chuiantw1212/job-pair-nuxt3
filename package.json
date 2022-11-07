@@ -8,7 +8,7 @@
     "build": "npx cross-env NITRO_PRESET=firebase nuxt build"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.12"
+    "nuxt": "^3.0.0-rc.13"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
