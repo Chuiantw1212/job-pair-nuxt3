@@ -50,9 +50,14 @@ const state = reactive({
     },
     profile: {}
 })
+// hooks
+useHead({
+    title: `偏好量表結果 - Job Pair`,
+})
 onMounted(async () => {
     getAnswers()
 })
+// methods
 function getAnswers() {
     const userString = localStorage.getItem("user")
     if (!userString || userString === "false") {
@@ -60,9 +65,6 @@ function getAnswers() {
     }
     const user = JSON.parse(userString)
     state.profile = user
-}
-function routeToFisrt() {
-    router.push('/questions/1')
 }
 function routeToProfile() {
     handleSubmit()
