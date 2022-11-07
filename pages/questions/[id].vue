@@ -47,7 +47,11 @@
                 </div>
             </div>
         </template>
-        <AtomBtnSimple v-if="questionId == 5" class="questions__next" @click="routeToCategory()">下一步</AtomBtnSimple>
+        <div v-if="questionId == 5" class="questions__footer">
+            <AtomBtnSimple @click="routeToCategory()">下一步
+            </AtomBtnSimple>
+            <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
+        </div>
     </div>
 </template>
 <script setup>
@@ -96,6 +100,9 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
+function routeToFisrt() {
+    router.push('/questions/1')
+}
 function routeToCategory() {
     router.push({
         name: 'questions-result'
@@ -432,9 +439,13 @@ function handleClickNext() {
         }
     }
 
-    .questions__next {
+    .questions__footer {
         width: 256px;
+        display: flex;
         margin: 50px auto auto auto;
+        gap: 16px;
+        flex-direction: column;
+        justify-content: center;
     }
 }
 

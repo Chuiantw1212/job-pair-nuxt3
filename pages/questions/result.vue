@@ -3,7 +3,7 @@
         <div class="questions__result">
             <img class="questions__leftImage" src="~/assets/questions/left.png" />
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <p class="result__header">最後一個步驟，就完成會員註冊囉！</p>
+            <p class="result__header"></p>
             <div class="result__category">
                 <div class="category__header">
                     選擇職務類別
@@ -23,9 +23,10 @@
                     </template>
                 </MoleculeProfileSelectContainer>
             </div>
-            <AtomBtnSimple class="result__submit mt-5" @click="handleSubmit()">看結果</AtomBtnSimple>
-            <div class="mt-3">
+            <AtomBtnSimple class="result__submit mt-5" @click="handleSubmit()">完善個人檔案</AtomBtnSimple>
+            <div class="result__footer">
                 <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
+                <!-- <button type="button" class="btn btn-light" @click="routeToFisrt()">直接看職缺</button> -->
             </div>
         </div>
     </div>
@@ -144,6 +145,12 @@ async function handleSubmit() {
         width: 234px;
         border: none;
         margin-bottom: 8px;
+    }
+
+    .result__footer {
+        margin-top: 16px;
+        display: flex;
+        gap: 16px;
     }
 
     .result__submit {
