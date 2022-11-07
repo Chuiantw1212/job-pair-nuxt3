@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                            repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -218,7 +218,11 @@ useHead({
         if (job.value && company.value) {
             return `${job.value.name} - ${company.value.name} - Job Pair`
         }
-    }
+    },
+    meta: [
+        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
+    ],
+
 })
 onMounted(() => {
     if (process.client) {
