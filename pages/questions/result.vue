@@ -66,14 +66,14 @@ function getAnswers() {
     const user = JSON.parse(userString)
     state.profile = user
 }
-function routeToProfile() {
-    handleSubmit()
+async function routeToProfile() {
+    await handleSubmit()
     router.push({
         name: 'user-profile'
     })
 }
-function routeToJobs() {
-    handleSubmit()
+async function routeToJobs() {
+    await handleSubmit()
     router.push({
         name: 'jobs'
     })
