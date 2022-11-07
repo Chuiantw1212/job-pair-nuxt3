@@ -7,8 +7,12 @@
 </template>
 <script setup>
 const repoSelect = useRepoSelect()
-const { $toggleLoader } = useNuxtApp()
 // hooks
+useHead({
+    link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ]
+})
 onMounted(async () => {
     await Promise.all([
         repoSelect.getSelectByQuery(),
