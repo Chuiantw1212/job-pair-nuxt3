@@ -24,7 +24,7 @@ export default defineStore('job', () => {
     async function getJobById(data) {
         let url = `/job/${data.jobId}`
         if (data.userId) {
-            url += `/${userId}`
+            url += `/${data.userId}`
         }
         const response = await axios.request({
             method: 'get',

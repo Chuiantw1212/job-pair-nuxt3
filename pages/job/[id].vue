@@ -224,7 +224,7 @@ onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
-        initialize()
+        // initialize()
     }
 })
 onBeforeUnmount(() => {
@@ -233,9 +233,14 @@ onBeforeUnmount(() => {
         window.removeEventListener('scroll', detectScroll)
     }
 })
-watch(() => jobId.value, () => {
+watch(() => repoAuth.state.user, () => {
+    console.log('get score')
+    // state.job = 
     initialize()
 })
+// watch(() => jobId.value, () => {
+//     initialize()
+// })
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
@@ -422,10 +427,13 @@ async function initialize() {
     const config = {
         jobId: jobId.value,
     }
-    const { user } = repoAuth.state
+    const { user = { id: '' } } = repoAuth.state
     if (user && user.id) {
         config.userId = user.id
     }
+    console.log({
+        config
+    })
     const jobResponse = await repoJob.getJobById(config)
     if (!jobResponse.data) {
         router.replace({
