@@ -33,7 +33,6 @@
 import { onMounted, computed, nextTick } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 const repoAuth = useRepoAuth()
-const { user } = repoAuth.state
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
 const props = defineProps({
@@ -57,6 +56,7 @@ const localValue = computed({
     },
 })
 async function unsafeJob(index) {
+    const { user } = repoAuth.state
     if (!user || !user.id) {
         return
     }
@@ -67,9 +67,11 @@ async function unsafeJob(index) {
     })
     if (response.status === 200) {
         localValue.value.splice(index, 1)
+        emit("update:modelValue", localValue.value)
     }
 }
 async function hideJob(index) {
+    const { user } = repoAuth.state
     if (!user || !user.id) {
         return
     }
