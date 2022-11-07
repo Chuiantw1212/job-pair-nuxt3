@@ -35,15 +35,22 @@
                     class="panel__store panel__store--applied" :disabled="true">
                     <img class="store__icon" src="./icon_Rocke_Grey.svg" /> 已婉拒
                 </AtomBtnSimple>
-                <!-- <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
+                <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" />分享
-                </AtomBtnSimple> -->
-                <AtomBtnSimple :id="`tooltip${state.id}`" class="panel__share" data-bs-toggle="tooltip"
-                    :title="state.shareButtonTitle" @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
-                    <img class="share__icon" src="./share.svg" />
-                    分享
                 </AtomBtnSimple>
+                <template v-if="showShareButton && !state.navigator.share">
+                    <AtomBtnSimple v-show="state.isCopied" :id="`copied${state.id}`" class="panel__share"
+                        data-bs-toggle="tooltip" :title="state.copiedTitle" @mouseout="resetCopiedTooltip()">
+                        <img class="share__icon" src="./share.svg" />
+                        分享
+                    </AtomBtnSimple>
+                    <AtomBtnSimple v-show="!state.isCopied" :id="`tooltip${state.id}`" class="panel__share"
+                        data-bs-toggle="tooltip" :title="state.shareButtonTitle" @click="shareLinkBootstrap()">
+                        <img class="share__icon" src="./share.svg" />
+                        分享
+                    </AtomBtnSimple>
+                </template>
             </div>
         </template>
     </div>
@@ -58,6 +65,8 @@ const route = useRoute()
 const router = useRouter()
 const state = reactive({
     id: $uuid4(),
+    isCopied: true,
+    copiedTooltip: null,
     application: {},
     navigator: window.navigator,
     shareButtonToolTip: null,
@@ -83,18 +92,14 @@ const routeName = computed(() => {
     return route.name
 })
 // hooks
-watch(() => device.state.isDesktop, () => {
-    nextTick(() => {
-        if (!state.shareButtonToolTip) {
-            initialilzeTooltip()
-        }
-    })
-})
 watch(() => props.modelValue.similarity, () => {
+    const { origin } = window.location
+    const url = `${origin}/job/${props.modelValue.identifier}`
+    state.copiedTitle = `已複製: ${url}`
     nextTick(() => {
         initialilzeTooltip()
     })
-})
+}, { immediate: true })
 watchEffect(() => {
     const { userJobs } = repoJobApplication.state
     const jobKeys = Object.keys(userJobs)
@@ -108,20 +113,15 @@ watchEffect(() => {
     }
 })
 // methods
-function setApplyFlow(userJobs) {
-    const jobKeys = Object.keys(userJobs)
-    if (!jobKeys.length) {
-        return
-    }
-    const jobId = props.modelValue.identifier
-    const matchedJob = userJobs[jobId]
-    if (matchedJob) {
-        state.application = matchedJob
-    }
+function resetCopiedTooltip() {
+    state.isCopied = false
 }
 function initialilzeTooltip() {
     $requestSelector(`#tooltip${state.id}`, (element) => {
         state.shareButtonToolTip = new $bootstrap.Tooltip(element)
+    })
+    $requestSelector(`#copied${state.id}`, (element) => {
+        state.copiedTooltip = new $bootstrap.Tooltip(element)
     })
 }
 async function handleUnsavedJob() {
@@ -163,23 +163,10 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}`
     await navigator.clipboard.writeText(url)
-    state.shareButtonTitle = `已複製: ${url}`
     state.shareButtonToolTip.hide()
-    // Re-create tooltip
-    setTimeout(() => {
-        initialilzeTooltip()
-        setTimeout(() => {
-            state.shareButtonToolTip.show()
-        }, 100)
-    }, 100)
-}
-function resetTooltipTitle() {
-    if (state.shareButtonToolTip) {
-        state.shareButtonToolTip.hide()
-    }
-    state.shareButtonTitle = "點擊複製連結"
+    state.isCopied = true
     nextTick(() => {
-        initialilzeTooltip()
+        state.copiedTooltip.show()
     })
 }
 </script>
