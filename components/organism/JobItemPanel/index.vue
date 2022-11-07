@@ -1,5 +1,6 @@
 <template>
     <div class="jobItemPanel">
+        {{modelValue.similarity}}
         <template v-if="modelValue.similarity === 0 || $rank(modelValue.similarity)">
             <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
                 <div class="panel__score">{{ $rank(modelValue.similarity) }}</div>
@@ -64,7 +65,7 @@ const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     isCopied: true,
     copiedTooltip: null,
     application: {},
@@ -92,6 +93,9 @@ const routeName = computed(() => {
     return route.name
 })
 // hooks
+onMounted(() => {
+    state.id = $uuid4()
+})
 watch(() => props.modelValue.similarity, () => {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}`

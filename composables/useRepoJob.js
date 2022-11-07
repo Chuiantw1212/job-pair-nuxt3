@@ -22,7 +22,7 @@ export default defineStore('job', () => {
         return response
     }
     async function getJobById(data) {
-        let url = `/job/${params.jobId}`
+        let url = `/job/${data.jobId}`
         if (data.userId) {
             url += `/${userId}`
         }

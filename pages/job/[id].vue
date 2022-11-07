@@ -224,6 +224,7 @@ onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
+        initialize()
     }
 })
 onBeforeUnmount(() => {
