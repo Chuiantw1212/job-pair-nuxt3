@@ -10,6 +10,8 @@ export default defineNuxtConfig({
                 { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImage.png' }
             ],
             link: [
+                // Favicon
+                { rel: "icon", href: "/favicon.ico" },
                 // Google Fonts
                 { rel: "preconnect", href: "https://fonts.googleapis.com" },
                 { rel: "preconnect", href: "https://fonts.gstatic.com", },
