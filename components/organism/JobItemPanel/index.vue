@@ -35,13 +35,12 @@
                     class="panel__store panel__store--applied" :disabled="true">
                     <img class="store__icon" src="./icon_Rocke_Grey.svg" /> 已婉拒
                 </AtomBtnSimple>
-                <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
+                <!-- <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" />分享
-                </AtomBtnSimple>
-                <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="`tooltip${state.id}`"
-                    class="panel__share" data-bs-toggle="tooltip" :title="state.shareButtonTitle"
-                    @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
+                </AtomBtnSimple> -->
+                <AtomBtnSimple :id="`tooltip${state.id}`" class="panel__share" data-bs-toggle="tooltip"
+                    :title="state.shareButtonTitle" @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
                     <img class="share__icon" src="./share.svg" />
                     分享
                 </AtomBtnSimple>
@@ -164,13 +163,15 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}`
     await navigator.clipboard.writeText(url)
-    state.shareButtonTitle = `已複製:${url}`
+    state.shareButtonTitle = `已複製: ${url}`
     state.shareButtonToolTip.hide()
     // Re-create tooltip
-    nextTick(() => {
+    setTimeout(() => {
         initialilzeTooltip()
-        state.shareButtonToolTip.show()
-    })
+        setTimeout(() => {
+            state.shareButtonToolTip.show()
+        }, 100)
+    }, 100)
 }
 function resetTooltipTitle() {
     if (state.shareButtonToolTip) {
