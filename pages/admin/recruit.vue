@@ -86,17 +86,6 @@ async function initialize() {
         applyFlow: ['applied', 'notified', 'rejected']
     })
     state.appliedList = response.data
-    if (route.name === 'adminScout') {
-        if (state.appliedList.length) {
-            router.replace({
-                name: 'companyScoutApplied'
-            })
-        } else {
-            router.replace({
-                name: 'companyJobs'
-            })
-        }
-    }
 }
 </script>
 <style lang="scss" scoped>

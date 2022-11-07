@@ -316,7 +316,7 @@ function getDefaultFilter() {
         salaryMax: null,
     }
     const { user } = repoAuth.state
-    if (user) {
+    if (user && user.occupationalCategory) {
         defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
     }
     return defualtFilter

@@ -139,8 +139,7 @@
     </div>
 </template>
 <script setup>
-import { computed } from '@vue/reactivity'
-import { onBeforeUnmount, onMounted, nextTick, watch } from 'vue'
+import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
 const config = useRuntimeConfig()
 const { $emitter, $alert, $optionText } = useNuxtApp()
 const router = useRouter()
@@ -207,9 +206,9 @@ let browserConfig = computed({
 })
 const jobItems = ref([])
 // hooks
-const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`)
+const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`, { initialCache: false })
 const { organizationId } = job.value
-const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`)
+const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`, { initialCache: false })
 if (process.client) {
     state.job = job.value
     state.company = company.value
@@ -219,12 +218,17 @@ useHead({
         if (job.value && company.value) {
             return `${job.value.name} - ${company.value.name} - Job Pair`
         }
-    }
+    },
+    meta: [
+        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
+    ],
+
 })
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
+        // initialize()
     }
 })
 onBeforeUnmount(() => {
@@ -233,10 +237,11 @@ onBeforeUnmount(() => {
         window.removeEventListener('scroll', detectScroll)
     }
 })
-watch(() => jobId.value, () => {
-    console.log('jobId');
-    initialize()
-})
+watch(() => repoAuth.state.user, () => {
+    if (state.job && !state.job.similarity) {
+        initialize()
+    }
+}, { immediate: true })
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
@@ -294,7 +299,7 @@ async function showIncompleteAlert() {
     })
     if (res.value) {
         router.push({
-            name: 'userProfile'
+            name: 'user-profile'
         })
     }
 }
@@ -423,7 +428,7 @@ async function initialize() {
     const config = {
         jobId: jobId.value,
     }
-    const { user } = repoAuth.state
+    const { user = { id: '' } } = repoAuth.state
     if (user && user.id) {
         config.userId = user.id
     }

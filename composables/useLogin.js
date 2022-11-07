@@ -154,17 +154,20 @@ export default function setup() {
         const tempUser = JSON.parse(userString)
         if (!user.id && userString && tempUser.preference) {
             // 已經作答跳最後一步驟，反之回去作答
-            const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
-            const unAnsweredIndex = questionKeys.findIndex((key) => {
-                const isAnswered = tempUser.preference.hasOwnProperty(key)
-                return !isAnswered
-            })
-            const categorySelected = user.occupationalCategory && user.occupationalCategory.length
-            if (unAnsweredIndex !== -1) {
-                router.push(`/questions/${unAnsweredIndex + 1}`)
-            }
-            else if (!categorySelected) {
-                router.push(`/questions/result`)
+            const notInQuestionFlow = !route.name.includes('questions')
+            if (notInQuestionFlow) {
+                const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
+                const unAnsweredIndex = questionKeys.findIndex((key) => {
+                    const isAnswered = tempUser.preference.hasOwnProperty(key)
+                    return !isAnswered
+                })
+                const categorySelected = user.occupationalCategory && user.occupationalCategory.length
+                if (unAnsweredIndex !== -1) {
+                    router.push(`/questions/${unAnsweredIndex + 1}`)
+                }
+                else if (!categorySelected) {
+                    router.push(`/questions/result`)
+                }
             }
             // 不論是否答題完成都要跑以下程式碼
             user.type = "employee"

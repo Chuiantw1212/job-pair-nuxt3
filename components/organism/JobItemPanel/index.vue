@@ -1,5 +1,6 @@
 <template>
     <div class="jobItemPanel">
+        {{ state.id }}
         <template v-if="modelValue.similarity === 0 || $rank(modelValue.similarity)">
             <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
                 <div class="panel__score">{{ $rank(modelValue.similarity) }}</div>
@@ -39,12 +40,18 @@
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" />分享
                 </AtomBtnSimple>
-                <AtomBtnSimple v-if="showShareButton && !state.navigator.share" :id="`tooltip${state.id}`"
-                    class="panel__share" data-bs-toggle="tooltip" :title="state.shareButtonTitle"
-                    @click="shareLinkBootstrap()" @mouseout="resetTooltipTitle()">
-                    <img class="share__icon" src="./share.svg" />
-                    分享
-                </AtomBtnSimple>
+                <template v-if="showShareButton && !state.navigator.share">
+                    <AtomBtnSimple v-show="state.isCopied" :id="`copied${state.id}`" class="panel__share"
+                        data-bs-toggle="tooltip" :title="state.copiedTitle" @mouseout="resetCopiedTooltip()">
+                        <img class="share__icon" src="./share.svg" />
+                        分享
+                    </AtomBtnSimple>
+                    <AtomBtnSimple v-show="!state.isCopied" :id="`tooltip${state.id}`" class="panel__share"
+                        data-bs-toggle="tooltip" :title="state.shareButtonTitle" @click="shareLinkBootstrap()">
+                        <img class="share__icon" src="./share.svg" />
+                        分享
+                    </AtomBtnSimple>
+                </template>
             </div>
         </template>
     </div>
@@ -58,7 +65,9 @@ const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
+    isCopied: true,
+    copiedTooltip: null,
     application: {},
     navigator: window.navigator,
     shareButtonToolTip: null,
@@ -84,18 +93,22 @@ const routeName = computed(() => {
     return route.name
 })
 // hooks
-watch(() => device.state.isDesktop, () => {
-    nextTick(() => {
-        if (!state.shareButtonToolTip) {
-            initialilzeTooltip()
-        }
-    })
-})
+// onMounted(() => {
+
+// })
 watch(() => props.modelValue.similarity, () => {
-    nextTick(() => {
-        initialilzeTooltip()
-    })
-})
+    if (process.client) {
+        const { origin } = window.location
+        const url = `${origin}/job/${props.modelValue.identifier}`
+        state.copiedTitle = `已複製: ${url}`
+        if (props.showShareButton && !state.navigator.share) {
+            state.id = $uuid4()
+            nextTick(() => {
+                initialilzeTooltip()
+            })
+        }
+    }
+}, { immediate: true })
 watchEffect(() => {
     const { userJobs } = repoJobApplication.state
     const jobKeys = Object.keys(userJobs)
@@ -109,20 +122,15 @@ watchEffect(() => {
     }
 })
 // methods
-function setApplyFlow(userJobs) {
-    const jobKeys = Object.keys(userJobs)
-    if (!jobKeys.length) {
-        return
-    }
-    const jobId = props.modelValue.identifier
-    const matchedJob = userJobs[jobId]
-    if (matchedJob) {
-        state.application = matchedJob
-    }
+function resetCopiedTooltip() {
+    state.isCopied = false
 }
 function initialilzeTooltip() {
     $requestSelector(`#tooltip${state.id}`, (element) => {
         state.shareButtonToolTip = new $bootstrap.Tooltip(element)
+    })
+    $requestSelector(`#copied${state.id}`, (element) => {
+        state.copiedTooltip = new $bootstrap.Tooltip(element)
     })
 }
 async function handleUnsavedJob() {
@@ -164,21 +172,10 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}`
     await navigator.clipboard.writeText(url)
-    state.shareButtonTitle = `已複製:${url}`
     state.shareButtonToolTip.hide()
-    // Re-create tooltip
+    state.isCopied = true
     nextTick(() => {
-        initialilzeTooltip()
-        state.shareButtonToolTip.show()
-    })
-}
-function resetTooltipTitle() {
-    if (state.shareButtonToolTip) {
-        state.shareButtonToolTip.hide()
-    }
-    state.shareButtonTitle = "點擊複製連結"
-    nextTick(() => {
-        initialilzeTooltip()
+        state.copiedTooltip.show()
     })
 }
 </script>

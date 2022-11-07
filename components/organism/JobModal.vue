@@ -57,11 +57,11 @@
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
-const { $bootstrap, $uuid4, $emitter, $toggleLoader, $succeed } = useNuxtApp()
+const { $bootstrap, $uuid4, $emitter, $toggleLoader, $succeed, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     bsModal: null,
     glideIndex: 0,
     application: {
@@ -89,15 +89,14 @@ const props = defineProps({
 // hooks
 onMounted(() => {
     if (process.client) {
-        const modelElement = document.getElementById(`jobModal${state.id}`)
-        if (!modelElement) {
-            return
-        }
-        state.bsModal = new $bootstrap.Modal(modelElement, {
-            keyboard: false,
-        })
-        modelElement.addEventListener("shown.bs.modal", async () => {
-            setApplication()
+        state.id = $uuid4()
+        $requestSelector(`#jobModal${state.id}`, (modelElement) => {
+            state.bsModal = new $bootstrap.Modal(modelElement, {
+                keyboard: false,
+            })
+            modelElement.addEventListener("shown.bs.modal", async () => {
+                setApplication()
+            })
         })
     }
 })

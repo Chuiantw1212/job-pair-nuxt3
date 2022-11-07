@@ -40,17 +40,22 @@
                             </template>
                         </template>
                     </div>
-                    <button class="body__button body__button--right" type="button" :disabled="checkQuestionAnswered()"
-                        @click="handleClickNext()">
+                    <button v-if="questionId < 5" class="body__button body__button--right" type="button"
+                        :disabled="checkQuestionAnswered()" @click="handleClickNext()">
                         <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
                     </button>
                 </div>
             </div>
         </template>
+        <div v-if="questionId == 5" class="questions__footer">
+            <AtomBtnSimple @click="routeToCategory()">下一步
+            </AtomBtnSimple>
+            <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button>
+        </div>
     </div>
 </template>
 <script setup>
-const { $bootstrap, $toggleLoader, $emitter } = useNuxtApp()
+const { $bootstrap, $emitter } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const route = useRoute()
@@ -70,7 +75,7 @@ const questionId = computed(() => {
 })
 // hooks
 useHead({
-    title: `偏好量表 ${questionId.value} - Job Pair`,
+    title: `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
     const response = await repoSelect.getQuestions()
@@ -95,6 +100,14 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
+function routeToFisrt() {
+    router.push('/questions/1')
+}
+function routeToCategory() {
+    router.push({
+        name: 'questions-result'
+    })
+}
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key
     const modelValue = state.tempUser.preference[questionKey]
@@ -136,12 +149,7 @@ function checkOptionSelected(item) {
 }
 function setCulture() {
     if (process.client) {
-        // nextTick(() => {
-        // localStorage.removeItem("user")
-        console.log(state.tempUser.preference.culture)
         localStorage.setItem("user", JSON.stringify(state.tempUser))
-        // })
-        // console.log(state.tempUser)
     }
 }
 function setAnswers(value, key) {
@@ -167,18 +175,6 @@ function getAnswers() {
         state.tempUser = user
     }
 }
-function showUserModal() {
-    const { user } = repoAuth.state
-    if (user && user.uid) {
-        // 有uid代表已透過google註冊，跳過詢問註冊畫面
-        router.push({
-            name: "userRegister",
-        })
-        return
-    } else {
-        $emitter.emit("showUserModal")
-    }
-}
 function initTooltip() {
     if (process.client) {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -188,26 +184,6 @@ function initTooltip() {
             })
         })
     }
-}
-function routeToStart() {
-    router.push(`/questions/1`)
-    nextTick(() => {
-        getAnswers()
-    })
-}
-function getPartOne() {
-    if (!state.questions) {
-        return false
-    }
-    const isPartOne = questionId.value < Object.values(state.questions).length
-    return isPartOne
-}
-function getPartTwo() {
-    if (!state.questions) {
-        return false
-    }
-    const isPartTwo = questionId.value >= Object.values(state.questions).length
-    return isPartTwo
 }
 function handleClickLast() {
     const id = Number(route.path.split('/').slice(-1)[0])
@@ -424,6 +400,16 @@ function handleClickNext() {
                 margin-left: 8px;
             }
         }
+    }
+
+    .questions__footer {
+        width: 256px;
+        // display: flex;
+        margin: 50px auto auto auto;
+        // gap: 16px;
+        // flex-direction: column;
+        // justify-content: center;
+        text-align: center;
     }
 }
 

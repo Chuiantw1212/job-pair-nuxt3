@@ -59,6 +59,9 @@ const state = reactive({
     chatIcon: null,
 })
 // hooks
+useHead({
+    title: `帳戶管理 - 招募中心 - Job Pair`
+})
 watch(() => repoAuth.state.user, (newValue) => {
     if (!newValue) {
         return
@@ -67,7 +70,6 @@ watch(() => repoAuth.state.user, (newValue) => {
     if (!state.tempUser.chatName) {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
-
     }
     setIdenticon()
 }, { immediate: true })
