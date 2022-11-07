@@ -30,13 +30,13 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $succeed } = useNuxtApp()
+const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $succeed, $requestSelector } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue'])
 const router = useRouter()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     bsModal: null,
     glideInstance: null,
     glideIndex: 0,
@@ -65,13 +65,12 @@ const props = defineProps({
 // hooks
 onMounted(() => {
     if (process.client) {
-        const modelElement = document.getElementById(`invitation${state.id}`)
-        if (!modelElement) {
-            return
-        }
-        state.bsModal = new $bootstrap.Modal(modelElement, {
-            keyboard: false,
-            backdrop: "static",
+        state.id = $uuid4()
+        $requestSelector(`#invitation${state.id}`, (modelElement) => {
+            state.bsModal = new $bootstrap.Modal(modelElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
     }
 })
