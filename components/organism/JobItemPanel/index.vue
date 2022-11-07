@@ -1,6 +1,6 @@
 <template>
     <div class="jobItemPanel">
-        {{state.id}}
+        {{ state.id }}
         <template v-if="modelValue.similarity === 0 || $rank(modelValue.similarity)">
             <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
                 <div class="panel__score">{{ $rank(modelValue.similarity) }}</div>
@@ -101,10 +101,12 @@ watch(() => props.modelValue.similarity, () => {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`
-        state.id = $uuid4()
-        nextTick(() => {
-            initialilzeTooltip()
-        })
+        if (props.showShareButton && !state.navigator.share) {
+            state.id = $uuid4()
+            nextTick(() => {
+                initialilzeTooltip()
+            })
+        }
     }
 }, { immediate: true })
 watchEffect(() => {

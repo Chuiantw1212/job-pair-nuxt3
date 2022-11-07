@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -234,13 +234,10 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => repoAuth.state.user, () => {
-    console.log('get score')
-    // state.job = 
-    initialize()
-})
-// watch(() => jobId.value, () => {
-//     initialize()
-// })
+    if (state.job && !state.job.similarity) {
+        initialize()
+    }
+}, { immediate: true })
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
@@ -431,9 +428,6 @@ async function initialize() {
     if (user && user.id) {
         config.userId = user.id
     }
-    console.log({
-        config
-    })
     const jobResponse = await repoJob.getJobById(config)
     if (!jobResponse.data) {
         router.replace({
