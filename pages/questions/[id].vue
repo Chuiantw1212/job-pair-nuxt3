@@ -40,13 +40,14 @@
                             </template>
                         </template>
                     </div>
-                    <button class="body__button body__button--right" type="button" :disabled="checkQuestionAnswered()"
-                        @click="handleClickNext()">
+                    <button v-if="questionId < 5" class="body__button body__button--right" type="button"
+                        :disabled="checkQuestionAnswered()" @click="handleClickNext()">
                         <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
                     </button>
                 </div>
             </div>
         </template>
+        <AtomBtnSimple v-if="questionId == 5" class="questions__next" @click="routeToCategory()">下一步</AtomBtnSimple>
     </div>
 </template>
 <script setup>
@@ -70,7 +71,7 @@ const questionId = computed(() => {
 })
 // hooks
 useHead({
-    title: `偏好量表 ${questionId.value} - Job Pair`,
+    title: `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
     const response = await repoSelect.getQuestions()
@@ -95,6 +96,11 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
+function routeToCategory() {
+    router.push({
+        name: 'questions-result'
+    })
+}
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key
     const modelValue = state.tempUser.preference[questionKey]
@@ -424,6 +430,11 @@ function handleClickNext() {
                 margin-left: 8px;
             }
         }
+    }
+
+    .questions__next {
+        width: 256px;
+        margin: 50px auto auto auto;
     }
 }
 
