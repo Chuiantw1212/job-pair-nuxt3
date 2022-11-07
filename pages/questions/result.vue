@@ -87,9 +87,9 @@ async function handleSubmit() {
     if (postResponse.status !== 200) {
         return
     }
-    $toggleLoader(false)
     repoAuth.setUser(postResponse.data)
     await repoJob.getJobRecommended()
+    $toggleLoader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
     window.scrollTo(0, 0)
