@@ -215,9 +215,7 @@ async function initializeSearch() {
         return
     }
     // 依照適配度排序
-    $toggleLoader(true)
     const results = await repoJob.getJobProspect(state.searchForm)
-    $toggleLoader(false)
     state.applications = []
     const items = [...results.data,]
     items.sort((a, b) => {
