@@ -4,7 +4,12 @@
             <img class="questions__leftImage" src="~/assets/questions/left.png" />
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <p class="result__header"></p>
-            <div class="result__category">
+            <div class="result__final">
+                <div class="final__header">求職偏好已完成！</div>
+                <div class="final__sub">接下來開始編輯個人檔案吧！</div>
+                <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
+            </div>
+            <!-- <div class="result__category">
                 <div class="category__header">
                     選擇職務類別
                 </div>
@@ -22,10 +27,10 @@
                         </MoleculeFilterCategory>
                     </template>
                 </MoleculeProfileSelectContainer>
-            </div>
-            <AtomBtnSimple class="result__submit mt-5" @click="handleSubmit()">完善個人檔案</AtomBtnSimple>
+            </div> -->
+            <AtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</AtomBtnSimple>
             <div class="result__footer">
-                <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
+                <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
                 <!-- <button type="button" class="btn btn-light" @click="routeToFisrt()">直接看職缺</button> -->
             </div>
         </div>
@@ -59,6 +64,18 @@ function getAnswers() {
 function routeToFisrt() {
     router.push('/questions/1')
 }
+function routeToProfile() {
+    handleSubmit()
+    router.push({
+        name: 'user-profile'
+    })
+}
+function routeToJobs() {
+    handleSubmit()
+    router.push({
+        name: 'jobs'
+    })
+}
 async function handleSubmit() {
     const result = await $validate()
     if (!result.isValid) {
@@ -76,9 +93,6 @@ async function handleSubmit() {
     // 刪除暫存資料
     localStorage.removeItem("user")
     window.scrollTo(0, 0)
-    router.push({
-        name: "jobs",
-    })
 }
 </script>
 <style lang="scss">
@@ -112,6 +126,25 @@ async function handleSubmit() {
         z-index: 10;
         width: 100%;
         max-width: 616px;
+    }
+
+    .result__final {
+        text-align: center;
+
+        .final__header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .final__sub {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .final__text {
+            margin-top: 4px;
+        }
     }
 
     .result__category {
@@ -154,7 +187,7 @@ async function handleSubmit() {
     }
 
     .result__submit {
-        max-width: 256px;
+        max-width: 310px;
     }
 
     .result__tooltip {
