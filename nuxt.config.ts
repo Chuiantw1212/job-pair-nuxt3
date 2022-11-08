@@ -11,7 +11,7 @@ export default defineNuxtConfig({
             ],
             link: [
                 // Favicon https://github.com/nuxt/framework/discussions/5204
-                { rel: "icon", href: "~/public/favicon.ico" },
+                { rel: "icon", type: 'image/x-icon', href: "~/public/favicon.ico" },
                 // Google Fonts
                 { rel: "preconnect", href: "https://fonts.googleapis.com" },
                 { rel: "preconnect", href: "https://fonts.gstatic.com", },
