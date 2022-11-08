@@ -1,4 +1,6 @@
 # Job Pair 開源計畫
+![Job Pair Logo](./assets/ogImageJob.png)
+
 ## 在本機開啟的步驟
 1. 切換到development分支
 2. 安裝套件
