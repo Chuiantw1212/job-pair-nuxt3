@@ -5,7 +5,7 @@
             <span class="ms-2">諮詢者回饋</span>
         </template>
         <template v-slot:body>
-            <div :id="`glide_${state.id}`" class="feedback__list">
+            <div :id="`glide${state.id}`" class="feedback__list" ref="glideRef">
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
                         <li class="glide__slide feedback__list__feedback" v-for="(feedback, index) in modelValue"
@@ -24,13 +24,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="glide__arrows d-none d-lg-flex" data-glide-el="controls">
-                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-                        <img src="~/assets/consult/btn_arrow_left.png" />
-                    </button>
-                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-                        <img src="~/assets/consult/btn_arrow_right.png" />
-                    </button>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
                 </div>
             </div>
             <div class="modal fade consult__modal" id="feedbackModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -58,7 +54,7 @@
 <script setup>
 const { $requestSelector, $uuid4, $bootstrap, $Glide } = useNuxtApp()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     feedbackGlideInstance: null,
     bsModal: null,
     modalFeedback: null,
@@ -75,15 +71,11 @@ const props = defineProps({
         default: 75,
     },
 })
-watchEffect(async () => {
-    if (props.modelValue.length) {
-        $requestSelector(`#glide_${state.id}`, (element) => {
-            mountGlideInstance(element)
-        })
-    }
-})
-watchEffect(async () => {
+const glideRef = ref(null)
+// hooks
+onMounted(() => {
     if (process.client) {
+        state.id = $uuid4()
         $requestSelector('#feedbackModal', (element) => {
             if (!state.bsModal) {
                 state.bsModal = new $bootstrap.Modal(element, {
@@ -91,7 +83,11 @@ watchEffect(async () => {
                 })
             }
         })
+        mountGlideInstance()  // IMPORTANT
     }
+})
+watch(() => props.modelValue, () => {
+    mountGlideInstance() // IMPORTANT
 })
 // methods
 function showFeedback(feedback) {
@@ -101,20 +97,26 @@ function showFeedback(feedback) {
 function hideModal() {
     state.bsModal.hide()
 }
-function mountGlideInstance(element) {
+function mountGlideInstance() {
     if (state.feedbackGlideInstance) {
+        state.feedbackGlideInstance.destroy()
+    }
+    if (!props.modelValue.length || !process.client || !state.id) {
         return
     }
-    const feedbackGlideInstance = new $Glide.Default(element, {
-        gap: 10,
-        rewind: true,
-        bound: true,
+    $requestSelector(`#glide${state.id}`, (element) => {
+        const feedbackGlideInstance = new $Glide.Default(element, {
+            gap: 10,
+            rewind: true,
+            bound: true,
+        })
+        feedbackGlideInstance.mount({
+            Controls: $Glide.Controls,
+        })
+        state.feedbackGlideInstance = feedbackGlideInstance
+        window.addEventListener("resize", setGlideConfig)
+        setGlideConfig({ target: window })
     })
-    feedbackGlideInstance.mount()
-    state.feedbackGlideInstance = feedbackGlideInstance
-
-    window.addEventListener("resize", setGlideConfig)
-    setGlideConfig({ target: window })
 }
 function setGlideConfig(event) {
     if (event.target.innerWidth < 992) {

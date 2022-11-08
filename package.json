@@ -5,10 +5,12 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "build": "npx cross-env NITRO_PRESET=firebase nuxt build"
+    "build": "npx cross-env NITRO_PRESET=firebase nuxt build",
+    "predeploy": "cd ./.output/server && npm install",
+    "deploy": "npx firebase deploy"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.12"
+    "nuxt": "^3.0.0-rc.13"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",

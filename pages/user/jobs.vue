@@ -12,7 +12,8 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <OrganismUserJobList v-model="state.jobSaved" type="saved"></OrganismUserJobList>
+                    <OrganismUserJobList v-model="state.jobSaved" type="saved" @update:modelValue="setJobComparable()">
+                    </OrganismUserJobList>
                 </template>
             </MoleculeJobCard>
             <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
@@ -347,6 +348,9 @@ const state = reactive({
     },
 })
 // hooks
+useHead({
+    title: `求職狀態 - 會員中心 - Job Pair`,
+})
 onMounted(() => {
     initialize()
 })
@@ -432,6 +436,9 @@ async function initialize() {
     state.jobSaved = jobs.filter((job) => ['saved', 'invited'].includes(job.applyFlow) && job.savedTime)
     state.jobApplied = jobs.filter((job) => ["applied", "rejected"].includes(job.applyFlow))
     state.jobNotified = jobs.filter((job) => job.applyFlow === "notified")
+    setJobComparable()
+}
+function setJobComparable() {
     state.jobComparable = [...state.jobSaved, ...state.jobApplied, ...state.jobNotified,]
     // 設定三個預設比較
     const firstSavedJob = state.jobComparable[0]

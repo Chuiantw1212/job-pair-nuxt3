@@ -3,8 +3,13 @@
         <div class="questions__result">
             <img class="questions__leftImage" src="~/assets/questions/left.png" />
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <p class="result__header">最後一個步驟，就完成會員註冊囉！</p>
-            <div class="result__category">
+            <p class="result__header"></p>
+            <div class="result__final">
+                <div class="final__header">求職偏好已完成！</div>
+                <div class="final__sub">接下來開始編輯個人檔案吧！</div>
+                <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
+            </div>
+            <!-- <div class="result__category">
                 <div class="category__header">
                     選擇職務類別
                 </div>
@@ -22,10 +27,11 @@
                         </MoleculeFilterCategory>
                     </template>
                 </MoleculeProfileSelectContainer>
-            </div>
-            <AtomBtnSimple class="result__submit mt-5" @click="handleSubmit()">看結果</AtomBtnSimple>
-            <div class="mt-3">
-                <button type="button" class="btn btn-light" @click="routeToFisrt()">修改偏好答案</button>
+            </div> -->
+            <AtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</AtomBtnSimple>
+            <div class="result__footer">
+                <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
+                <!-- <button type="button" class="btn btn-light" @click="routeToFisrt()">直接看職缺</button> -->
             </div>
         </div>
     </div>
@@ -44,9 +50,14 @@ const state = reactive({
     },
     profile: {}
 })
+// hooks
+useHead({
+    title: `偏好量表結果 - Job Pair`,
+})
 onMounted(async () => {
     getAnswers()
 })
+// methods
 function getAnswers() {
     const userString = localStorage.getItem("user")
     if (!userString || userString === "false") {
@@ -55,8 +66,17 @@ function getAnswers() {
     const user = JSON.parse(userString)
     state.profile = user
 }
-function routeToFisrt() {
-    router.push('/questions/1')
+async function routeToProfile() {
+    await handleSubmit()
+    router.push({
+        name: 'user-profile'
+    })
+}
+async function routeToJobs() {
+    await handleSubmit()
+    router.push({
+        name: 'jobs'
+    })
 }
 async function handleSubmit() {
     const result = await $validate()
@@ -69,15 +89,12 @@ async function handleSubmit() {
     if (postResponse.status !== 200) {
         return
     }
-    $toggleLoader(false)
     repoAuth.setUser(postResponse.data)
     await repoJob.getJobRecommended()
+    $toggleLoader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
     window.scrollTo(0, 0)
-    router.push({
-        name: "jobs",
-    })
 }
 </script>
 <style lang="scss">
@@ -113,6 +130,25 @@ async function handleSubmit() {
         max-width: 616px;
     }
 
+    .result__final {
+        text-align: center;
+
+        .final__header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .final__sub {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .final__text {
+            margin-top: 4px;
+        }
+    }
+
     .result__category {
         background-color: white;
         width: 100%;
@@ -146,8 +182,14 @@ async function handleSubmit() {
         margin-bottom: 8px;
     }
 
+    .result__footer {
+        margin-top: 16px;
+        display: flex;
+        gap: 16px;
+    }
+
     .result__submit {
-        max-width: 256px;
+        max-width: 310px;
     }
 
     .result__tooltip {

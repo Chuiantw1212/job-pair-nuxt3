@@ -134,6 +134,9 @@ const props = defineProps({
     }
 })
 // hooks
+useHead({
+    title: `潛在人選 - 招募中心 - Job Pair`
+})
 watch(() => state.searchForm, () => {
     const { companyJobsRes } = repoCompany.state
     if (!companyJobsRes) {
@@ -215,9 +218,7 @@ async function initializeSearch() {
         return
     }
     // 依照適配度排序
-    $toggleLoader(true)
     const results = await repoJob.getJobProspect(state.searchForm)
-    $toggleLoader(false)
     state.applications = []
     const items = [...results.data,]
     items.sort((a, b) => {

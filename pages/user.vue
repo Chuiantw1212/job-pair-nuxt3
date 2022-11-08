@@ -11,7 +11,7 @@
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/jobs">
                         <img class="item__link__icon" src="~/assets/user/icon_Heart.svg" />
-                        <div class="menu__item__text">職缺管理</div>
+                        <div class="menu__item__text">求職狀態</div>
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
