@@ -15,7 +15,7 @@
                         <AtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
                         </AtomInputText>
-                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" :ref="'editorRef'" class="mt-3"
+                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" ref="editorRef" class="mt-3"
                             required>
                         </AtomInputCkeditor>
                     </div>
@@ -94,7 +94,7 @@ function setInvitationTemplate() {
     if (editorRef.value) {
         editorRef.value.setData(template)
     } else {
-        console.log('Error trying to setInvitationTemplate: ', editorRef.value);
+        console.log('Error trying to setInvitationTemplate: ', editorRef);
     }
 }
 function openModal() {
