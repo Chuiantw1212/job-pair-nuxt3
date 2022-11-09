@@ -23,7 +23,7 @@
                         :required="true" ref="resume" class="mt-3 mb-3">
                     </AtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
-                        <div class="content__portfolio__header">作品集</div>
+                        <div class="content__portfolio__header">作品集(雲端檔案請開啟瀏覽權限)</div>
                         <div class="checkMultiple d-flex">
                             <label v-for="(work, key) in repoAuth.state.user.portfolio" class="checkMultiple__label"
                                 :key="key">

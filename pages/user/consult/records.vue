@@ -274,11 +274,13 @@
     </div>
 </template>
 <script setup>
+import { async } from '@firebase/util';
 import { reactive, onMounted, } from 'vue'
-const { $toggleLoader, $time, } = useNuxtApp()
+const { $time, } = useNuxtApp()
 const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
+const repoAuth = useRepoAuth()
 const state = reactive({
     records: [],
     consultants: [],
@@ -290,6 +292,7 @@ useHead({
     title: `職涯諮詢 - 會員中心 - Job Pair`,
 })
 onMounted(async () => {
+    // console.log('??');
     const consultantsRes = await repoConsult.getConsultants()
     const consultants = consultantsRes.data
     let allFeedbacks = []
@@ -303,6 +306,23 @@ onMounted(async () => {
     state.feedbacks = shuffle(allFeedbacks)
     state.consultants = shuffle(consultants) // method有用到
 })
+watch(() => repoAuth.state.user, async (user) => {
+    if (user && user.id) {
+        const dateInstance = new Date()
+        const date = dateInstance.getDate()
+        dateInstance.setDate(date - 30)
+        const isoString = dateInstance.toISOString()
+        // 取30天內的預約紀錄
+        const recordRes = await repoConsult.getConsultRecords({
+            status: ['scheduled', 'paid', 'unpaid'],
+            userId: user.id,
+            dateMin: isoString,
+        })
+        const recordsWithEcpay = recordRes.data.filter(item => !!item.RtnCode)
+        state.records = recordsWithEcpay
+    }
+}, { immediate: true })
+// methods
 function setActiveTab(service) {
     state.activeTab = service.value
 }

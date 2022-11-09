@@ -91,7 +91,11 @@ function setInvitationTemplate() {
         `招募人員${props.modelValue.name}敬上`
     state.form.subject = `${company.name}${props.job.name}應徵邀約`
     state.form.template = template
-    editorRef.value.setData(template)
+    if (editorRef.value) {
+        editorRef.value.setData(template)
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', editorRef.value);
+    }
 }
 function openModal() {
     const { user } = repoAuth.state
