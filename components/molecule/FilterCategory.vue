@@ -57,10 +57,9 @@
     </div>
 </template>
 <script setup>
-import Fuse from "fuse.js"
 import { computed, nextTick } from 'vue'
+const { $optionText, $Fuse } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
-const { $optionText } = useNuxtApp()
 const device = useDevice()
 const state = reactive({
     openFlagsTop: {},
@@ -121,6 +120,7 @@ const props = defineProps({
         default: null
     }
 })
+// hooks
 const localValue = computed({
     get() {
         return props.modelValue
@@ -128,6 +128,18 @@ const localValue = computed({
     set(newValue) {
         emit("update:modelValue", newValue)
     },
+})
+watch(() => props.categoryMap, (value) => {
+    initializeData(value)
+}, { immediate: true })
+watch(() => localValue.value, () => {
+    for (let key in props.categoryMap) {
+        const allItems = props.categoryMap[key]
+        const isAllSelected = allItems.every((item) => {
+            return localValue.value.includes(item.value)
+        })
+        state.isAllSelected[key] = isAllSelected
+    }
 })
 // methods
 function checkItemDisabled(item) {
@@ -163,7 +175,7 @@ function initializeData(category) {
         distance: 100,
         keys: ["text"],
     }
-    state.fuseInstance = new Fuse(fuseItems, options)
+    state.fuseInstance = new $Fuse(fuseItems, options)
     nextTick(() => {
         if (device.state.isDesktop) {
             const [first] = Object.keys(props.categoryMap)
