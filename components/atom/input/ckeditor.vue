@@ -108,8 +108,10 @@ watch(() => localValue, (newValue, oldValue) => {
 function requestSelector(ClassicEditor, callback) {
     function step() {
         if (ClassicEditor) {
+            console.log('ClassicEditor is loaded.');
             callback(ClassicEditor)
         } else {
+            console.log('Waiting for ClassicEditor.');
             window.requestAnimationFrame(step)
         }
     }
@@ -129,13 +131,13 @@ async function initializeCKEditor(ClassicEditor) {
     editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
         emit('blur', evt)
     })
-    editor.model.document.on('change:data', () => {
-        let newValue = editor.getData()
-        if (props.removePlatformLink) {
-            newValue = newValue.replaceAll(/href=".*?"/g, '')
-        }
-        localValue.value = newValue
-    })
+    // editor.model.document.on('change:data', () => {
+    //     let newValue = editor.getData()
+    //     if (props.removePlatformLink) {
+    //         newValue = newValue.replaceAll(/href=".*?"/g, '')
+    //     }
+    //     localValue.value = newValue
+    // })
     state.ckeditorInstance = markRaw(editor)
 }
 // public method do not delete
