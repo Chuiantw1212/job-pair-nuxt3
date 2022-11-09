@@ -42,6 +42,21 @@ export default defineNuxtPlugin(nuxtApp => {
                     })
                     return alertResult
                 },
+                warning: async (text, config) => {
+                    const swalConfig = Object.assign({
+                        title: '警告',
+                        text,
+                        icon: 'warning',
+                        confirmButtonText: '確認',
+                        confirmButtonColor: '#5ea88e',
+                        showCancelButton: true,
+                        cancelButtonText: '取消',
+                        didOpen: () => {
+                            Swal.hideLoading()
+                        }
+                    }, config)
+                    return Swal.fire(swalConfig)
+                }
             },
             toggleLoader: async function (isOn) {
                 if (isOn) {
@@ -58,21 +73,6 @@ export default defineNuxtPlugin(nuxtApp => {
                     Swal.close()
                 }
             },
-            warning: async (text, config) => {
-                const swalConfig = Object.assign({
-                    title: '警告',
-                    text,
-                    icon: 'warning',
-                    confirmButtonText: '確認',
-                    confirmButtonColor: '#5ea88e',
-                    showCancelButton: true,
-                    cancelButtonText: '取消',
-                    didOpen: () => {
-                        Swal.hideLoading()
-                    }
-                }, config)
-                return Swal.fire(swalConfig)
-            }
         }
     }
 })
