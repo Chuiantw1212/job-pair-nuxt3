@@ -45,7 +45,8 @@ npm run dev
 
 ## 發布須知
 1. 安裝 Firebase CLI (https://firebase.tools/bin/win/instant/latest)
-2. 切換到正確的分支
+2. 安裝 firebase-tools (https://www.npmjs.com/package/firebase-tools)
+3. 切換到正確的分支
 ```
 npm run build
 npm run deploy
