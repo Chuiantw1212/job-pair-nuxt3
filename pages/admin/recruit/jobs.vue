@@ -162,7 +162,7 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $toggleLoader, $info } = useNuxtApp()
+const { $toggleLoader, $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -205,7 +205,7 @@ async function checkJobStatus(newStatus, job, index) {
         if (job.completeness !== 100) {
             state.jobList[index].status = 'closed'
             state.renderKey = Math.random()
-            await $info('職缺資料未完成，確認後繼續完成職缺')
+            await $sweet.info('職缺資料未完成，確認後繼續完成職缺')
             const jobModals = jobModalRefs.value
             const targetModal = jobModals[index]
             targetModal.openModal('active')

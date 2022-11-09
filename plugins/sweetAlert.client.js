@@ -16,6 +16,19 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
+                info: async (text, config) => {
+                    const swalConfig = Object.assign({
+                        title: '系統提示',
+                        text,
+                        icon: 'info',
+                        confirmButtonText: '確認',
+                        confirmButtonColor: '#5ea88e',
+                        didOpen: () => {
+                            Swal.hideLoading()
+                        }
+                    }, config)
+                    return Swal.fire(swalConfig)
+                },
             },
             toggleLoader: async function (isOn) {
                 if (isOn) {
@@ -44,19 +57,6 @@ export default defineNuxtPlugin(nuxtApp => {
                     }
                 })
                 return alertResult
-            },
-            info: async (text, config) => {
-                const swalConfig = Object.assign({
-                    title: '系統提示',
-                    text,
-                    icon: 'info',
-                    confirmButtonText: '確認',
-                    confirmButtonColor: '#5ea88e',
-                    didOpen: () => {
-                        Swal.hideLoading()
-                    }
-                }, config)
-                return Swal.fire(swalConfig)
             },
             warning: async (text, config) => {
                 const swalConfig = Object.assign({
