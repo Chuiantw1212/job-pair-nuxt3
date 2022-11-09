@@ -42,3 +42,11 @@ npm run dev
 | --  nouislider             | 基於原生JS的輕量套件                           |
 | --  sweetalert2            | 基於原生JS的輕量套件                           |
 | --  sass                   | scss preprocessor                              |
+
+## 發布須知
+1. 安裝 Firebase CLI (https://firebase.tools/bin/win/instant/latest)
+2. 切換到正確的分支
+```
+npm run build
+npm run deploy
+```
