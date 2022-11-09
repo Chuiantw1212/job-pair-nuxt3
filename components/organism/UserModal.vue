@@ -11,7 +11,7 @@
                         <div v-show="loginComposable.state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
-                                <div>請至E-mail收註冊信開始配對工作</div>
+                                <div>請至{{ loginComposable.state.basicInfo.email }}收註冊信開始配對工作</div>
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
@@ -20,7 +20,8 @@
                                             loginComposable.state.cdVisible
                                     }}
                                 </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('employee')">
+                                <AtomBtnSimple v-else class="emailSent__resend"
+                                    @click="loginComposable.sendEmailLink('employee')">
                                     重新寄送驗證信
                                 </AtomBtnSimple>
                             </div>

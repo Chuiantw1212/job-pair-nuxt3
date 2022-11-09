@@ -20,6 +20,9 @@ export default function setup() {
         countdownInterval: null,
         cdDefault: 120,
         cdVisible: 0,
+        basicInfo: {
+            email: ''
+        },
     })
     // methods
     function listenToAuthState() {
@@ -201,6 +204,7 @@ export default function setup() {
             type,
             emailVerified,
         }
+        state.basicInfo = basicInfo
         return basicInfo
     }
     async function sendEmailLink(type) {
@@ -225,6 +229,6 @@ export default function setup() {
         listenToAuthState,
         signIn,
         handleAuthResult,
-        sendEmailLink
+        sendEmailLink,
     }
 }

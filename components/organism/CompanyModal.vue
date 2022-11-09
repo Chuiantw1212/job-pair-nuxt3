@@ -20,7 +20,8 @@
                                             loginComposable.state.cdVisible
                                     }}
                                 </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('admin')">重新寄送驗證信
+                                <AtomBtnSimple v-else class="emailSent__resend"
+                                    @click="loginComposable.sendEmailLink('admin')">重新寄送驗證信
                                 </AtomBtnSimple>
                             </div>
                         </div>
