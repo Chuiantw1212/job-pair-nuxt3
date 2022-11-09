@@ -247,8 +247,7 @@ watch(() => repoJobApplication.state.userJobs, () => {
 }, { immediate: true, deep: true, })
 watch(() => state.job, (newValue) => {
     if (newValue) {
-        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory
-        jobScroller.initializeSearch()
+        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
 watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
