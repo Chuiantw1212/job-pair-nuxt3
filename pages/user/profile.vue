@@ -87,7 +87,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $toggleLoader, $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -159,7 +159,7 @@ async function handleSubmit() {
     })
     state.profile.portfolio = validPorfolio
     // 先更新pdf
-    $toggleLoader(true)
+    $sweet.loader(true)
     const validResumes = state.profile.resumes.filter((item) => item.url)
     const reseumeResponse = await repoUser.putUserResumes(validResumes)
     state.profile.resumes = reseumeResponse.data

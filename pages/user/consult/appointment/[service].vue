@@ -75,7 +75,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, $storageBucket, $validate } = useNuxtApp()
+const { $sweet, $storageBucket, $validate } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()

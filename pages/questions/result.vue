@@ -37,7 +37,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, $validate } = useNuxtApp()
+const { $sweet, $validate } = useNuxtApp()
 const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
@@ -84,14 +84,14 @@ async function handleSubmit() {
         return
     }
     const user = Object.assign({}, repoAuth.state.user, state.profile,)
-    $toggleLoader(true)
+    $sweet.loader(true)
     const postResponse = await repoUser.postUser(user)
     if (postResponse.status !== 200) {
         return
     }
     repoAuth.setUser(postResponse.data)
     await repoJob.getJobRecommended()
-    $toggleLoader(false)
+    $sweet.loader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
     window.scrollTo(0, 0)

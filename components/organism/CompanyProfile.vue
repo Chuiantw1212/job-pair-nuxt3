@@ -125,7 +125,7 @@
 </template>
 <script setup>
 const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
-const { $toggleLoader, $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -254,14 +254,14 @@ async function crawlCompanyFromPlatform() {
     }
     // 清空原有資料
     state.companyInfo = getDefaultCompany(state.companyInfo.id)
-    $toggleLoader(true)
+    $sweet.loader(true)
     const response = await repoCompany.getCompanyByCrawler({
         url: state.crawlerUrl,
     })
     if (response.status !== 200) {
         return
     }
-    $toggleLoader(false)
+    $sweet.loader(false)
     const crawlerCompany = response.data
     if (targetPlatform === '.104.com.tw/company/') {
         await set104CompanyInfo(crawlerCompany)
@@ -481,7 +481,7 @@ async function saveCompanyInfo(config) {
             return
         }
     }
-    $toggleLoader(true)
+    $sweet.loader(true)
     const updatedCompany = await refineAndUpdateCompanyInfo()
     if (!updatedCompany) {
         return

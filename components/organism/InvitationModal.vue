@@ -30,7 +30,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $sweet, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $rank, $validate, $sweet, $requestSelector } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue'])
@@ -113,7 +113,7 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    $toggleLoader(true)
+    $sweet.loader(true)
     const submitData = Object.assign({}, state.form, {
         jobId: props.job.identifier,
         prospectId: props.modelValue.id,

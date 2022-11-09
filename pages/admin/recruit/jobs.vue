@@ -162,7 +162,7 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $toggleLoader, $sweet } = useNuxtApp()
+const { $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -296,7 +296,7 @@ async function addJobDraft() {
     }
     state.searchLike = ""
     // 插入並打開第一個品項
-    $toggleLoader(true)
+    $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
     state.jobList.unshift(res.data)
     state.renderKey = Math.random()
@@ -304,7 +304,7 @@ async function addJobDraft() {
         const jobModals = jobModalRefs.value
         const targetModal = jobModals[0]
         targetModal.openModal()
-        $toggleLoader(false)
+        $sweet.loader(false)
     })
 }
 </script>

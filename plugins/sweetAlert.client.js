@@ -56,22 +56,22 @@ export default defineNuxtPlugin(nuxtApp => {
                         }
                     }, config)
                     return Swal.fire(swalConfig)
-                }
-            },
-            toggleLoader: async function (isOn) {
-                if (isOn) {
-                    Swal.fire({
-                        title: '載入中',
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        didOpen: () => {
-                            Swal.showLoading()
-                        }
-                    })
-                } else {
-                    Swal.close()
-                }
+                },
+                loader: async function (isOn) {
+                    if (isOn) {
+                        Swal.fire({
+                            title: '載入中',
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                    } else {
+                        Swal.close()
+                    }
+                },
             },
         }
     }

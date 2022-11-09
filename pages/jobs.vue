@@ -149,7 +149,7 @@
 </template>
 <script setup>
 import { nextTick, ref } from 'vue'
-const { $toggleLoader, $requestSelector, $sweet } = useNuxtApp()
+const { $requestSelector, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -403,7 +403,7 @@ async function concatJobsFromServer(config = {}) {
         searchLike: state.searchLike,
         id: user.id
     })
-    $toggleLoader(isLoading)
+    $sweet.loader(isLoading)
     const response = await repoJob.getJobAll(requestConfig)
     if (response.status !== 200) {
         $sweet.alert('伺服器塞車了')
@@ -419,7 +419,7 @@ async function concatJobsFromServer(config = {}) {
         return !recommendJobKeys.includes(item.identifier)
     })
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    $toggleLoader(false)
+    $sweet.loader(false)
     observeLastJob(notDuplicatedJobs)
 }
 </script>

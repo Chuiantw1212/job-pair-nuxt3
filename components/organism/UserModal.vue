@@ -36,7 +36,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, } from "firebase/auth"
 import firebase from "firebase/compat/app"
-const { $emitter, $bootstrap, $toggleLoader, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
 const route = useRoute()
 const loginComposable = useLogin()
@@ -74,7 +74,7 @@ async function renderFirebaseUI() {
     }
     const isPendingRedirect = ui.isPendingRedirect()
     if (isPendingRedirect) {
-        $toggleLoader(true)
+        $sweet.loader(true)
     }
     // 不同裝置給予不同登入方式
     const signInOptions = [
