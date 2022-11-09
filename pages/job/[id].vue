@@ -141,7 +141,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
 const config = useRuntimeConfig()
-const { $emitter, $alert, $optionText } = useNuxtApp()
+const { $emitter, $sweet, $optionText } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoJob = useRepoJob()
@@ -293,7 +293,7 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $alert('前往完成個人檔案', {
+    const res = await $sweet.alert('前往完成個人檔案', {
         title: '履歷未完成',
         icon: 'info'
     })

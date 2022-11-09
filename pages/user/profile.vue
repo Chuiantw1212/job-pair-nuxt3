@@ -87,7 +87,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
+const { $toggleLoader, $validate, $sweet, $succeed } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()

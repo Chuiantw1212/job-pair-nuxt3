@@ -125,7 +125,7 @@
 </template>
 <script setup>
 const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
-const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
+const { $toggleLoader, $validate, $sweet, $succeed } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -249,7 +249,7 @@ async function crawlCompanyFromPlatform() {
         return state.crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
-        $alert('網址有誤')
+        $sweet.alert('網址有誤')
         return
     }
     // 清空原有資料
@@ -488,7 +488,7 @@ async function saveCompanyInfo(config) {
     }
     repoAuth.setCompany(updatedCompany)
     if (to) {
-        await $alert('請至E-mail 信箱內回覆身份驗證信', {
+        await $sweet.alert('請至E-mail 信箱內回覆身份驗證信', {
             title: '身分驗證',
             icon: 'info'
         })

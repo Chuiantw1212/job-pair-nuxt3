@@ -1,7 +1,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
-    const { $emitter, $alert, $toggleLoader } = useNuxtApp()
+    const { $emitter, $sweet,$toggleLoader } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
@@ -62,7 +62,7 @@ export default function setup() {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
         if (!basicInfo.email) {
-            await $alert('請使用其他方式登入')
+            await $sweet.alert('請使用其他方式登入')
             return
         }
         if (basicInfo.emailVerified) {

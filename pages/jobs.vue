@@ -149,7 +149,7 @@
 </template>
 <script setup>
 import { nextTick, ref } from 'vue'
-const { $toggleLoader, $requestSelector, $alert } = useNuxtApp()
+const { $toggleLoader, $requestSelector, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -406,7 +406,7 @@ async function concatJobsFromServer(config = {}) {
     $toggleLoader(isLoading)
     const response = await repoJob.getJobAll(requestConfig)
     if (response.status !== 200) {
-        $alert('伺服器塞車了')
+        $sweet.alert('伺服器塞車了')
         return
     }
     const { count = 0, items = [] } = response.data

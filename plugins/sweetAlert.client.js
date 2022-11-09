@@ -2,6 +2,21 @@ import Swal from 'sweetalert2'
 export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
+            sweet: {
+                alert: async function (text = '', config) {
+                    const swalConfig = Object.assign({
+                        title: '錯誤',
+                        text,
+                        icon: 'error',
+                        confirmButtonText: '確認',
+                        confirmButtonColor: '#5ea88e',
+                        didOpen: () => {
+                            Swal.hideLoading()
+                        }
+                    }, config)
+                    return Swal.fire(swalConfig)
+                },
+            },
             toggleLoader: async function (isOn) {
                 if (isOn) {
                     Swal.fire({
@@ -16,19 +31,6 @@ export default defineNuxtPlugin(nuxtApp => {
                 } else {
                     Swal.close()
                 }
-            },
-            alert: async function (text = '', config) {
-                const swalConfig = Object.assign({
-                    title: '錯誤',
-                    text,
-                    icon: 'error',
-                    confirmButtonText: '確認',
-                    confirmButtonColor: '#5ea88e',
-                    didOpen: () => {
-                        Swal.hideLoading()
-                    }
-                }, config)
-                return Swal.fire(swalConfig)
             },
             succeed: async function (text, config) {
                 const alertResult = await Swal.fire({
