@@ -428,8 +428,8 @@ async function initialize() {
     const config = {
         jobId: jobId.value,
     }
-    const { user = { id: '' } } = repoAuth.state
-    if (user && user.id) {
+    const { user = { id: '', type: '' } } = repoAuth.state
+    if (user && user.id && user.type === 'employee') {
         config.userId = user.id
     }
     const jobResponse = await repoJob.getJobById(config)
