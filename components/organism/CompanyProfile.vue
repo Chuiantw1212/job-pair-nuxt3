@@ -469,8 +469,10 @@ async function set104CompanyInfo(response) {
         logo,
         jobBenefits,
     }
-    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-    delete companyInfo.logo
+    if (typeof companyInfo.logo === 'object') {
+        state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+        delete companyInfo.logo
+    }
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function saveCompanyInfo(config) {

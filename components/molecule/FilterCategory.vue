@@ -130,7 +130,9 @@ const localValue = computed({
     },
 })
 watch(() => props.categoryMap, (value) => {
-    initializeData(value)
+    if (process.client) {
+        initializeData(value)
+    }
 }, { immediate: true })
 watch(() => localValue.value, () => {
     for (let key in props.categoryMap) {
