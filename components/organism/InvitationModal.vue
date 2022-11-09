@@ -30,7 +30,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $succeed, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $sweet, $requestSelector } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue'])
@@ -129,7 +129,7 @@ async function handleSubmit() {
         jobId: props.job.identifier,
     })
     emit('update:modelValue', updated)
-    const alertResult = await $succeed()
+    const alertResult = await $sweet.succeed()
     if (alertResult) {
         state.bsModal.hide()
     }

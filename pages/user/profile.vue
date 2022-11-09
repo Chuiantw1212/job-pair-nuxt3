@@ -87,7 +87,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
-const { $toggleLoader, $validate, $sweet, $succeed } = useNuxtApp()
+const { $toggleLoader, $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -168,7 +168,7 @@ async function handleSubmit() {
     // 收尾
     const patchedUser = Object.assign({}, repoAuth.user, state.profile)
     repoAuth.setUser(patchedUser)
-    $succeed()
+    $sweet.succeed()
 }
 </script>
 <style lang="scss" scoped>

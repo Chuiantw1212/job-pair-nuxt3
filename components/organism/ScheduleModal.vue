@@ -63,7 +63,7 @@
 <script setup>
 import { ignorableWatch } from '@vueuse/shared';
 
-const { $bootstrap, $uuid4, $optionText, $validate, $succeed } = useNuxtApp()
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -328,7 +328,7 @@ async function sendInterviewRequest() {
     // 送出申請
     const patchResult = await repoJobApplication.patchJobApplicant(application)
     if (patchResult.status === 200) {
-        await $succeed()
+        await $sweet.succeed()
         state.editModal.hide()
         state.previewModal.hide()
         const updatedResult = Object.assign({}, application, patchResult.data)

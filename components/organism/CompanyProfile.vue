@@ -125,7 +125,7 @@
 </template>
 <script setup>
 const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
-const { $toggleLoader, $validate, $sweet, $succeed } = useNuxtApp()
+const { $toggleLoader, $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -494,7 +494,7 @@ async function saveCompanyInfo(config) {
         })
         router.push(to)
     } else {
-        $succeed()
+        $sweet.succeed()
     }
 }
 async function refineAndUpdateCompanyInfo() {

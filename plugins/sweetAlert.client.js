@@ -29,6 +29,19 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
+                succeed: async function (text, config) {
+                    const alertResult = await Swal.fire({
+                        title: "完成",
+                        text,
+                        icon: "success",
+                        confirmButtonText: '確認',
+                        confirmButtonColor: '#5ea88e',
+                        didOpen: () => {
+                            Swal.hideLoading()
+                        }
+                    })
+                    return alertResult
+                },
             },
             toggleLoader: async function (isOn) {
                 if (isOn) {
@@ -44,19 +57,6 @@ export default defineNuxtPlugin(nuxtApp => {
                 } else {
                     Swal.close()
                 }
-            },
-            succeed: async function (text, config) {
-                const alertResult = await Swal.fire({
-                    title: "完成",
-                    text,
-                    icon: "success",
-                    confirmButtonText: '確認',
-                    confirmButtonColor: '#5ea88e',
-                    didOpen: () => {
-                        Swal.hideLoading()
-                    }
-                })
-                return alertResult
             },
             warning: async (text, config) => {
                 const swalConfig = Object.assign({
