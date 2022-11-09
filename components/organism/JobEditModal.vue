@@ -145,7 +145,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $warning, $validate, $optionText, $requestSelector } = useNuxtApp()
+const { $bootstrap, $sweet, $validate, $optionText, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -199,7 +199,7 @@ function getJobName() {
     }
 }
 async function showAlert() {
-    const alertResult = await $warning('一經刪除，無法還原')
+    const alertResult = await $sweet.warning('一經刪除，無法還原')
     if (alertResult.value) {
         const deleteRes = await repoJob.deleteJobItem(state.job)
         if (deleteRes.status !== 200) {

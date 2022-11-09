@@ -88,7 +88,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, $filter } = useNuxtApp()
+const { $sweet, $filter } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()

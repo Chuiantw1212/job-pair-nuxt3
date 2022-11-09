@@ -125,7 +125,7 @@
 </template>
 <script setup>
 const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
-const { $toggleLoader, $validate, $alert, $succeed } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -249,19 +249,19 @@ async function crawlCompanyFromPlatform() {
         return state.crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
-        $alert('網址有誤')
+        $sweet.alert('網址有誤')
         return
     }
     // 清空原有資料
     state.companyInfo = getDefaultCompany(state.companyInfo.id)
-    $toggleLoader(true)
+    $sweet.loader(true)
     const response = await repoCompany.getCompanyByCrawler({
         url: state.crawlerUrl,
     })
     if (response.status !== 200) {
         return
     }
-    $toggleLoader(false)
+    $sweet.loader(false)
     const crawlerCompany = response.data
     if (targetPlatform === '.104.com.tw/company/') {
         await set104CompanyInfo(crawlerCompany)
@@ -469,8 +469,10 @@ async function set104CompanyInfo(response) {
         logo,
         jobBenefits,
     }
-    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-    delete companyInfo.logo
+    if (typeof companyInfo.logo === 'object') {
+        state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+        delete companyInfo.logo
+    }
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function saveCompanyInfo(config) {
@@ -481,20 +483,21 @@ async function saveCompanyInfo(config) {
             return
         }
     }
-    $toggleLoader(true)
+    $sweet.loader(true)
     const updatedCompany = await refineAndUpdateCompanyInfo()
     if (!updatedCompany) {
         return
     }
     repoAuth.setCompany(updatedCompany)
     if (to) {
-        await $alert('請至E-mail 信箱內回覆身份驗證信', {
+        await $sweet.info('請至E-mail 信箱內回覆身份驗證信', {
             title: '身分驗證',
-            icon: 'info'
+            icon: 'info',
+            confirmButtonText: '發布職缺',
         })
         router.push(to)
     } else {
-        $succeed()
+        $sweet.succeed()
     }
 }
 async function refineAndUpdateCompanyInfo() {

@@ -57,7 +57,7 @@
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
-const { $bootstrap, $uuid4, $emitter, $toggleLoader, $succeed, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $emitter, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const state = reactive({
@@ -138,12 +138,12 @@ function handleApply() {
     }
 }
 async function handleSubmit() {
-    $toggleLoader(true)
+    $sweet.loader(true)
     const postResponse = await repoJobApplication.postJobApplication(state.application)
     if (postResponse.status !== 200) {
         return
     }
-    await $succeed()
+    await $sweet.succeed()
     const { applyFlow } = postResponse.data
     emit("applied", applyFlow)
     closeModal()

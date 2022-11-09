@@ -4,7 +4,7 @@
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
-        <input v-show="false" :value="!!modelValue" :data-required="required" :data-name="name">
+        <input v-show="false" :value="getValue()" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
             <div :id="`editor_${state.id}`" ref="editorRef">
 
@@ -36,7 +36,6 @@ const props = defineProps({
                 "|",
                 'bold',
                 'italic',
-                'link',
                 'bulletedList',
                 'numberedList',
                 '|',
@@ -105,6 +104,11 @@ watch(() => localValue, (newValue, oldValue) => {
     }
 })
 // methods
+function getValue() {
+    const case1 = !!props.modelValue
+    const case2 = props.modelValue !== '<p></p>'
+    return case1
+}
 function requestSelector(ClassicEditor, callback) {
     function step() {
         if (ClassicEditor) {
@@ -131,13 +135,17 @@ async function initializeCKEditor(ClassicEditor) {
     editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
         emit('blur', evt)
     })
-    // editor.model.document.on('change:data', () => {
-    //     let newValue = editor.getData()
-    //     if (props.removePlatformLink) {
-    //         newValue = newValue.replaceAll(/href=".*?"/g, '')
-    //     }
-    //     localValue.value = newValue
-    // })
+    if (!props.modelValue) {
+        localValue.value = '<p></p>'
+    }
+    editor.model.document.on('change:data', () => {
+        let newValue = editor.getData()
+        // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
+        if (props.removePlatformLink) {
+            newValue = newValue.replaceAll(/href=".*?"/g, '')
+        }
+        localValue.value = newValue
+    })
     state.ckeditorInstance = markRaw(editor)
 }
 // public method do not delete

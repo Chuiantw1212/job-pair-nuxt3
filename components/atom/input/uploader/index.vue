@@ -125,7 +125,7 @@ export default {
             const isOverSize = this.size && file.size >= this.size
             if (isOverSize) {
                 const sizeKB = Math.floor(this.size / 1024)
-                this.$alert(`大小請勿超過${sizeKB}KB`)
+                this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
                 return
             }
             const arrayBuffer = await new Promise((resolve, reject) => {

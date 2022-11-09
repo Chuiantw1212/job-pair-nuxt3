@@ -113,7 +113,7 @@ export default {
             }
             const isOverSize = this.sizeLimit && file.size >= this.sizeLimit
             if (isOverSize) {
-                this.$alert("PDF大小請勿超過5MB")
+                this.$sweet.alert("PDF大小請勿超過5MB")
                 return
             }
             this.fileName = file.name

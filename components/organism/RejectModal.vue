@@ -29,7 +29,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $validate, $succeed } = useNuxtApp()
+const { $bootstrap, $uuid4, $validate, $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
@@ -122,7 +122,7 @@ async function sendRejectLetter() {
     // 送出申請
     const patchResult = await repoJobApplication.patchJobApplicant(application)
     if (patchResult.status === 200) {
-        await $succeed()
+        await $sweet.succeed()
         this.editModal.hide()
         const updatedResult = Object.assign({}, application, patchResult.data)
         $emit('update:modelValue', updatedResult)

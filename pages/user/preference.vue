@@ -40,7 +40,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, $date } = useNuxtApp()
+const { $sweet, $date } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -92,12 +92,12 @@ function checkSelectedRadio(questionGroup, item) {
     }
 }
 async function handleConfirm() {
-    $toggleLoader(true)
+    $sweet.loader(true)
     const response = await repoUser.patchUserPreference(state.preference)
     if (response.status !== 200) {
         return
     }
-    $toggleLoader(false)
+    $sweet.loader(false)
     // 重新設定preference
     const updatedResult = response.data
     const { user } = repoAuth.state
