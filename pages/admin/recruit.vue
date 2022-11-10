@@ -43,7 +43,8 @@
     </div>
 </template>
 <script setup>
-const { $emitter } = useNuxtApp()
+import { nextTick } from 'vue'
+const { $emitter, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -55,15 +56,14 @@ const state = reactive({
 watch(() => repoAuth.state.user, (newValue) => {
     // 沒登入時會執行一次
     if (!newValue) {
-        // $emitter.emit('showCompanyModal')
+        $requestSelector('#companyModal', () => {
+            $emitter.emit('showCompanyModal')
+        })
     }
 }, { immediate: true })
 watch(() => repoAuth.state.company, () => {
     initialize()
 })
-watch(() => route, () => {
-    initialize()
-}, { immediate: true })
 // methods
 function getUnhandledNumber() {
     const unhandledItems = state.appliedList.filter(item => {

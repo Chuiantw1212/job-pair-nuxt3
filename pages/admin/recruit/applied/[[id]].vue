@@ -67,7 +67,7 @@
                     :items="getCompanyJobItems()" :itemValue="'identifier'" :itemText="'name'">
                 </AtomInputSelect>
                 <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="state.applications"
-                    :itemText="'name'" :itemValue="'id'">
+                    :itemText="'name'" :itemValue="'id'" @change="replaceParamsId()">
                 </AtomInputSelect>
                 <AtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
                 </AtomInputSelect>
@@ -183,6 +183,8 @@ const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
+const router = useRouter()
+const route = useRoute()
 const state = reactive({
     searchLike: '',
     applyFlow: '',
@@ -261,6 +263,14 @@ watch(() => state.searchForm, () => {
     })()
 }, { immediate: true, deep: true })
 // methods
+function replaceParamsId() {
+    router.replace({
+        name: route.name,
+        params: {
+            id: state.applicantId
+        }
+    })
+}
 function getUpdatedDate(item) {
     const { applyFlow } = item
     const applyFlowTime = item[`${applyFlow}Time`]
