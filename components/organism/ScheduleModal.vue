@@ -61,9 +61,7 @@
     </div>
 </template>
 <script setup>
-import { ignorableWatch } from '@vueuse/shared';
-
-const { $bootstrap, $uuid4, $optionText, $validate, $sweet } = useNuxtApp()
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -165,22 +163,18 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         // 編輯用modal
-        const editableElement = document.getElementById(`schedule${state.id}`)
-        if (!editableElement) {
-            return
-        }
-        state.editModal = new $bootstrap.Modal(editableElement, {
-            keyboard: false,
-            backdrop: "static",
+        $requestSelector(`#schedule${state.id}`, (editableElement) => {
+            state.editModal = new $bootstrap.Modal(editableElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
         // 預覽用modal
-        const previewElement = document.getElementById(`preview${state.id}`)
-        if (!previewElement) {
-            return
-        }
-        state.previewModal = new $bootstrap.Modal(previewElement, {
-            keyboard: false,
-            backdrop: "static",
+        $requestSelector(`#preview${state.id}`, (previewElement) => {
+            state.previewModal = new $bootstrap.Modal(previewElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
     }
 })

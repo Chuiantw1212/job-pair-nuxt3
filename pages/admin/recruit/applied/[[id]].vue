@@ -66,6 +66,9 @@
                 <AtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
                     :items="getCompanyJobItems()" :itemValue="'identifier'" :itemText="'name'">
                 </AtomInputSelect>
+                <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="state.applications"
+                    :itemText="'name'" :itemValue="'id'">
+                </AtomInputSelect>
                 <AtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
                 </AtomInputSelect>
             </div>
@@ -175,7 +178,7 @@
     </div>
 </template>
 <script setup>
-const { $time, $optionText, $rank } = useNuxtApp()
+const { $time, $optionText, $rank, $uuid4 } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -271,6 +274,11 @@ function getCompanyJobItems() {
 }
 function getFilteredItems() {
     let items = state.applications
+    if (state.applicantId) {
+        items = items.filter(item => {
+            return item.id === state.applicantId
+        })
+    }
     if (state.applyFlow) {
         items = items.filter(item => {
             return item.applyFlow === state.applyFlow
@@ -398,7 +406,11 @@ async function initializeSearch() {
             return hasKeyword
         })
     }
-    // 前端排序
+    /**
+     * 前端排序
+     * 1. 按適配度
+     * 2. 未處裡在上，已處裡在下
+     */
     matchedResult.sort((a, b) => {
         return b.similarity - a.similarity
     })
