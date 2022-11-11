@@ -1,6 +1,7 @@
 export default defineNuxtPlugin(() => {
     return {
         provide: {
+            // https://developer.mozilla.org/en-US/docs/Web/API/performance_property
             uuid4: () => {
                 let
                     d = new Date().getTime(),
