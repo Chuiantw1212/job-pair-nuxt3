@@ -490,10 +490,10 @@ async function saveCompanyInfo(config) {
     }
     repoAuth.setCompany(updatedCompany)
     if (to) {
-        await $sweet.info('請至E-mail 信箱內回覆身份驗證信', {
+        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
             title: '身分驗證',
             icon: 'info',
-            confirmButtonText: '發布職缺',
+            confirmButtonText: '發佈職缺',
         })
         router.push(to)
     } else {
