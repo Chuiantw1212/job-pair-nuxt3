@@ -192,6 +192,7 @@ const state = reactive({
         jobIdentifier: '',
         occupationalCategory: [],
     },
+    applicantId: '',
     filterOpen: {
         occupationalCategory: false
     },
@@ -215,6 +216,7 @@ const state = reactive({
     ],
     applications: [],
     isItemOpen: [],
+    // 圖表名稱
     chartName: '',
     appliedThisWeek: {
         total: 0,

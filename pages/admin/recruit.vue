@@ -12,7 +12,7 @@
                 </li>
                 <li class="menu__item">
                     <template v-if="checkApplicationEnabled()">
-                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
                             to="/admin/recruit/applied">
                             <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
                             <div class="menu__item__text">應徵者
@@ -53,18 +53,13 @@ const state = reactive({
     appliedList: [],
 })
 // hooks
-watch(() => repoAuth.state.user, (newValue) => {
-    // 沒登入時會執行一次
-    if (!newValue) {
-        $requestSelector('#companyModal', () => {
-            $emitter.emit('showCompanyModal')
-        })
-    }
-}, { immediate: true })
 watch(() => repoAuth.state.company, () => {
     initialize()
 })
 // methods
+function checkActiveClass() {
+    return route.path.includes('/admin/recruit/applied')
+}
 function getUnhandledNumber() {
     const unhandledItems = state.appliedList.filter(item => {
         return ['applied'].includes(item.applyFlow)
