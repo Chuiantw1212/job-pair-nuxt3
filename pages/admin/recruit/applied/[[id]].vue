@@ -78,9 +78,6 @@
             <li v-for="(item, index) in  getFilteredItems()" :key="index">
                 <div class="list__item__content">
                     <div class="content__header">
-                        <span class="header__span">
-                            應徵
-                        </span>
                         <div>
                             {{ item.jobName }}
                         </div>
