@@ -15,7 +15,7 @@
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                    <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkConsultActive() }"
                         to="/user/consult/records">
                         <img class="item__link__icon" src="~/assets/user/icon_consult.svg" />
                         <div class="menu__item__text">職涯諮詢</div>
@@ -36,6 +36,10 @@
 </template>
 <script setup>
 const device = useDevice()
+const route = useRoute()
+function checkConsultActive() {
+    return route.path.includes('/user/consult')
+}
 </script>
 <style lang="scss" scoped>
 .dashboard {
