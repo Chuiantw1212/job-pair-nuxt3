@@ -49,6 +49,7 @@ npm run dev
 3. 切換到正確的分支
 4. 避免Windows權限問題 (https://github.com/firebase/firebase-tools/issues/1627)
 ```
+firebase use --add job-pair-taiwan-prd
 npm run build
 npm run deploy
 ```
