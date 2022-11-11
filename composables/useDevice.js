@@ -4,7 +4,7 @@ import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watch
 export default function setup() {
     const state = reactive({
         isDesktop: false,
-        isNativeWeb: false
+        isNativeWeb: false,
     })
     onMounted(() => {
         if (process.client) {
@@ -13,6 +13,7 @@ export default function setup() {
             state.isNativeWeb = checkIsNativeWeb()
         }
     })
+    // methods
     function calculateWidth() {
         state.isDesktop = window.innerWidth >= 992
     }

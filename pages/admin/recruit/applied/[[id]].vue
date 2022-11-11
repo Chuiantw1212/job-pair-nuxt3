@@ -64,10 +64,11 @@
         <div class="appliedList__form">
             <div class="form__selectGroup">
                 <AtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
-                    :items="getCompanyJobItems()" :itemValue="'identifier'" :itemText="'name'">
+                    :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'"
+                    :itemText="'name'">
                 </AtomInputSelect>
-                <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="state.applications"
-                    :itemText="'name'" :itemValue="'id'">
+                <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
+                    :itemText="'name'" :itemValue="'applicantId'" @change="replaceParamsId()">
                 </AtomInputSelect>
                 <AtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
                 </AtomInputSelect>
@@ -178,11 +179,13 @@
     </div>
 </template>
 <script setup>
-const { $time, $optionText, $rank, $uuid4 } = useNuxtApp()
+const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
+const router = useRouter()
+const route = useRoute()
 const state = reactive({
     searchLike: '',
     applyFlow: '',
@@ -190,6 +193,7 @@ const state = reactive({
         jobIdentifier: '',
         occupationalCategory: [],
     },
+    applicantId: '',
     filterOpen: {
         occupationalCategory: false
     },
@@ -213,6 +217,7 @@ const state = reactive({
     ],
     applications: [],
     isItemOpen: [],
+    // 圖表名稱
     chartName: '',
     appliedThisWeek: {
         total: 0,
@@ -245,6 +250,15 @@ const props = defineProps({
 useHead({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
+onMounted(() => {
+    const { id } = route.params
+    console.log({
+        id
+    });
+    if (id) {
+        state.applicantId = id
+    }
+})
 watch(() => props.modelValue, (newValue) => {
     // 這邊只應該執行一次
     newValue.sort((a, b) => {
@@ -254,13 +268,36 @@ watch(() => props.modelValue, (newValue) => {
     updateChart()
     state.isItemOpen = newValue.map(() => false)
 })
-watch(() => state.searchForm, () => {
+watch(() => state.searchForm, (newValue, oldValue) => {
     debounce(async () => {
         await initializeSearch()
         await updateChart()
     })()
 }, { immediate: true, deep: true })
 // methods
+function resetApplicantId() {
+    state.applicantId = ''
+}
+function getApplicantList() {
+    const applicantMap = {}
+    state.applications.forEach(application => {
+        applicantMap[application.applicantId] = application
+    })
+    const applicants = Object.values(applicantMap)
+    console.log({
+        applicants
+    });
+    return [{ name: '所有應徵者', id: '' }, ...applicants]
+}
+function replaceParamsId() {
+    const routerLocation = router.resolve({
+        name: route.name,
+        params: {
+            id: state.applicantId
+        }
+    })
+    history.replaceState({}, null, routerLocation.href)
+}
 function getUpdatedDate(item) {
     const { applyFlow } = item
     const applyFlowTime = item[`${applyFlow}Time`]
@@ -276,7 +313,7 @@ function getFilteredItems() {
     let items = state.applications
     if (state.applicantId) {
         items = items.filter(item => {
-            return item.id === state.applicantId
+            return item.applicantId === state.applicantId
         })
     }
     if (state.applyFlow) {
@@ -422,6 +459,18 @@ async function initializeSearch() {
     })
     state.applications = [...pendingApplications, ...handledApplications]
     state.isItemOpen = state.applications.map(() => false)
+    // 查無該應徵紀錄
+    const recordFound = state.applications.find(item => {
+        return item.applicantId === state.applicantId
+    })
+    let alertResult = { value: 0 }
+    if (state.applications.length && state.applicantId && !recordFound) {
+        alertResult = await $sweet.alert('查無該求職者紀錄')
+    }
+    if (alertResult.value) {
+        state.applicantId = ''
+        replaceParamsId()
+    }
 }
 function toggleProfileBody(index) {
     state.isItemOpen[index] = !state.isItemOpen[index]
