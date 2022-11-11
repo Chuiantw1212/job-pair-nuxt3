@@ -1,6 +1,5 @@
 <template>
     <div class="jobItemPanel">
-        {{ state.id }}
         <template v-if="modelValue.similarity === 0 || $rank(modelValue.similarity)">
             <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
                 <div class="panel__score">{{ $rank(modelValue.similarity) }}</div>
