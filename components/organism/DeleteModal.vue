@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const { $emitter, $bootstrap, $alert, $requestSelector } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet,$requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
@@ -49,7 +49,7 @@ function hideModal() {
     state.bsModal.hide()
 }
 async function showSecondConfirm() {
-    const isConfirmed = await $alert('此動作無法復原。您確定要這麼做嗎？', {
+    const isConfirmed = await $sweet.alert('此動作無法復原。您確定要這麼做嗎？', {
         title: '確定要刪除嗎',
         icon: 'warning',
         confirmButtonText: '是的, 確定刪除',

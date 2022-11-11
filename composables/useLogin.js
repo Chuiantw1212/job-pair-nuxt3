@@ -1,7 +1,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
-    const { $emitter, $alert, $toggleLoader } = useNuxtApp()
+    const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
     const axiosComposable = useAxios()
@@ -20,6 +20,9 @@ export default function setup() {
         countdownInterval: null,
         cdDefault: 120,
         cdVisible: 0,
+        basicInfo: {
+            email: ''
+        },
     })
     // methods
     function listenToAuthState() {
@@ -53,16 +56,16 @@ export default function setup() {
                 image: photoURL,
                 telephone: phoneNumber,
             }
-            $toggleLoader(true)
+            $sweet.loader(true)
             await signIn(user)
-            $toggleLoader(false)
+            $sweet.loader(false)
         })
     }
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
         if (!basicInfo.email) {
-            await $alert('請使用其他方式登入')
+            await $sweet.alert('請使用其他方式登入')
             return
         }
         if (basicInfo.emailVerified) {
@@ -201,6 +204,7 @@ export default function setup() {
             type,
             emailVerified,
         }
+        state.basicInfo = basicInfo
         return basicInfo
     }
     async function sendEmailLink(type) {
@@ -225,6 +229,6 @@ export default function setup() {
         listenToAuthState,
         signIn,
         handleAuthResult,
-        sendEmailLink
+        sendEmailLink,
     }
 }

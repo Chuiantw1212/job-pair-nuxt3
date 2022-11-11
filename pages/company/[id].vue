@@ -119,7 +119,7 @@ const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
 const repoAuth = useRepoAuth()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     jsonld: null,
     companyInfo: null,
     tabItems: [
@@ -146,6 +146,7 @@ const state = reactive({
 const jobItems = ref([])
 // hooks
 onMounted(async () => {
+    state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]
     await initializeCompany(id)
     window.addEventListener("resize", setTimeForGlide)

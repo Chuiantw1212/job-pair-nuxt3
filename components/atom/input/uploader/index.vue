@@ -6,8 +6,7 @@
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
                 </div>
-                <iframe v-else-if="item.url" :id="`viewer_${id}`" class="previewGroup__item__viewer"
-                    :src="item.url"></iframe>
+                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
                 <div class="previewGroup__item__body">
                     <div v-if="item.name" class="previewGroup__item__body__item">
                         <div class="item__name">
@@ -31,8 +30,7 @@
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
                 </div>
-                <iframe v-else-if="item.url" :id="`viewer_${id}`" class="previewGroup__item__viewer"
-                    :src="item.url"></iframe>
+                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
                 <div class="previewGroup__item__body">
                     <div v-if="item.name" class="previewGroup__item__body__item">
                         <div class="item__name">
@@ -66,11 +64,6 @@
 <script>
 import { Buffer } from 'buffer/'
 export default {
-    data: function () {
-        return {
-            id: this.$uuid4(),
-        }
-    },
     props: {
         modelValue: {
             type: Array,
@@ -125,7 +118,7 @@ export default {
             const isOverSize = this.size && file.size >= this.size
             if (isOverSize) {
                 const sizeKB = Math.floor(this.size / 1024)
-                this.$alert(`大小請勿超過${sizeKB}KB`)
+                this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
                 return
             }
             const arrayBuffer = await new Promise((resolve, reject) => {

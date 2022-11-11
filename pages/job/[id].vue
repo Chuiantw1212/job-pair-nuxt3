@@ -141,7 +141,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
 const config = useRuntimeConfig()
-const { $emitter, $alert, $optionText } = useNuxtApp()
+const { $emitter, $sweet, $optionText } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoJob = useRepoJob()
@@ -247,8 +247,7 @@ watch(() => repoJobApplication.state.userJobs, () => {
 }, { immediate: true, deep: true, })
 watch(() => state.job, (newValue) => {
     if (newValue) {
-        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory
-        jobScroller.initializeSearch()
+        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
 watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
@@ -293,7 +292,7 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $alert('前往完成個人檔案', {
+    const res = await $sweet.alert('前往完成個人檔案', {
         title: '履歷未完成',
         icon: 'info'
     })
@@ -428,8 +427,8 @@ async function initialize() {
     const config = {
         jobId: jobId.value,
     }
-    const { user = { id: '' } } = repoAuth.state
-    if (user && user.id) {
+    const { user = { id: '', type: '' } } = repoAuth.state
+    if (user && user.id && user.type === 'employee') {
         config.userId = user.id
     }
     const jobResponse = await repoJob.getJobById(config)

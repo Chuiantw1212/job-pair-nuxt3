@@ -15,7 +15,7 @@
                         <AtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
                         </AtomInputText>
-                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" :ref="'editorRef'" class="mt-3"
+                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" ref="editorRef" class="mt-3"
                             required>
                         </AtomInputCkeditor>
                     </div>
@@ -30,7 +30,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $toggleLoader, $succeed, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $rank, $validate, $sweet, $requestSelector } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue'])
@@ -91,7 +91,11 @@ function setInvitationTemplate() {
         `招募人員${props.modelValue.name}敬上`
     state.form.subject = `${company.name}${props.job.name}應徵邀約`
     state.form.template = template
-    editorRef.value.setData(template)
+    if (editorRef.value) {
+        editorRef.value.setData(template)
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', editorRef);
+    }
 }
 function openModal() {
     const { user } = repoAuth.state
@@ -109,7 +113,7 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    $toggleLoader(true)
+    $sweet.loader(true)
     const submitData = Object.assign({}, state.form, {
         jobId: props.job.identifier,
         prospectId: props.modelValue.id,
@@ -125,7 +129,7 @@ async function handleSubmit() {
         jobId: props.job.identifier,
     })
     emit('update:modelValue', updated)
-    const alertResult = await $succeed()
+    const alertResult = await $sweet.succeed()
     if (alertResult) {
         state.bsModal.hide()
     }

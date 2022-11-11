@@ -20,7 +20,8 @@
                                             loginComposable.state.cdVisible
                                     }}
                                 </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend" @click="sendEmailLink('admin')">重新寄送驗證信
+                                <AtomBtnSimple v-else class="emailSent__resend"
+                                    @click="loginComposable.sendEmailLink('admin')">重新寄送驗證信
                                 </AtomBtnSimple>
                             </div>
                         </div>
@@ -34,7 +35,7 @@
 <script setup>
 import firebase from "firebase/compat/app"
 import { getAuth, } from "firebase/auth"
-const { $emitter, $bootstrap, $toggleLoader, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
 const loginComposable = useLogin()
 const route = useRoute()
@@ -69,7 +70,7 @@ async function renderFirebaseUI() {
     }
     const isPendingRedirect = ui.isPendingRedirect()
     if (isPendingRedirect) {
-        $toggleLoader(true)
+        $sweet.loader(true)
     }
     // 不同裝置給予不同登入方式
     const signInOptions = [

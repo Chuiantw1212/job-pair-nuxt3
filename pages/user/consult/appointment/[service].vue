@@ -10,7 +10,7 @@
                         name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
                         class="details__dropdown" required></AtomInputSelect>
                     <AtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
-                        placeholder="請對諮詢師提問" required>
+                        placeholder="請詳述你目前的職涯困擾" required>
                     </AtomInputTextarea>
                 </div>
             </template>
@@ -75,7 +75,7 @@
     </div>
 </template>
 <script setup>
-const { $toggleLoader, $storageBucket, $validate } = useNuxtApp()
+const { $sweet, $storageBucket, $validate } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()

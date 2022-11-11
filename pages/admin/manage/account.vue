@@ -46,7 +46,7 @@
 <script setup>
 import firebase from "firebase/compat/app"
 import { identicon } from 'minidenticons'
-const { $alert } = useNuxtApp()
+const { $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
@@ -100,12 +100,12 @@ async function handleCredential() {
         }
     } catch (error) {
         // 驗證失敗
-        $alert(error.message)
+        $sweet.alert(error.message)
     }
 }
 async function submitNewPass() {
     if (state.newPass !== state.newPassAgain) {
-        $alert("密碼不一致")
+        $sweet.alert("密碼不一致")
         return
     }
     const user = firebase.auth().currentUser
@@ -114,10 +114,10 @@ async function submitNewPass() {
         state.newPass = null
         state.newPassAgain = null
         state.toggleChangePassword = false
-        $succeed('修改密碼完成')
+        $sweet.succeed('修改密碼完成')
     } catch (error) {
         // 更新失敗
-        $alert(error.message)
+        $sweet.alert(error.message)
     }
 }
 async function submitProfile() {
@@ -129,11 +129,11 @@ async function submitProfile() {
         const response = await repoAdmin.patchAdmin(state.tempUser)
         if (response.status === 200) {
             repoAuth.setUser(state.tempUser)
-            $succeed()
+            $sweet.succeed()
         }
     } catch (error) {
         // 更新失敗
-        $alert(error.message)
+        $sweet.alert(error.message)
     }
 }
 </script>

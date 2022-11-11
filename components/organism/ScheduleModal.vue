@@ -61,7 +61,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $optionText, $validate, $succeed } = useNuxtApp()
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -69,7 +69,7 @@ const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     editModal: null,
     previewModal: null,
     formTemplateParts: {
@@ -161,23 +161,20 @@ const props = defineProps({
 })
 onMounted(() => {
     if (process.client) {
+        state.id = $uuid4()
         // 編輯用modal
-        const editableElement = document.getElementById(`schedule${state.id}`)
-        if (!editableElement) {
-            return
-        }
-        state.editModal = new $bootstrap.Modal(editableElement, {
-            keyboard: false,
-            backdrop: "static",
+        $requestSelector(`#schedule${state.id}`, (editableElement) => {
+            state.editModal = new $bootstrap.Modal(editableElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
         // 預覽用modal
-        const previewElement = document.getElementById(`preview${state.id}`)
-        if (!previewElement) {
-            return
-        }
-        state.previewModal = new $bootstrap.Modal(previewElement, {
-            keyboard: false,
-            backdrop: "static",
+        $requestSelector(`#preview${state.id}`, (previewElement) => {
+            state.previewModal = new $bootstrap.Modal(previewElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
         })
     }
 })
@@ -254,7 +251,9 @@ async function handleApply() {
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
         const headerEditor = templateHeaderRef.value
-        headerEditor.setData(state.form.templateHeader)
+        if (headerEditor) {
+            headerEditor.setData(state.form.templateHeader)
+        }
         // Footer
         const defaultFooter = `
                     當天將有 部門的 主管將與您進行面試，若有相關的文件可一併於面試時攜帶。<br>
@@ -268,7 +267,9 @@ async function handleApply() {
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
         const footerEditor = templateFooterRef.value
-        footerEditor.setData(state.form.templateFooter)
+        if (footerEditor) {
+            footerEditor.setData(state.form.templateFooter)
+        }
     } else {
         router.push('/')
     }
@@ -301,7 +302,9 @@ async function generateTemplate() {
     const template = `${templateHeader}${templateBody}${templateFooter}`
     state.form.template = template
     const editorComponent = templateContentRef.value
-    editorComponent.setData(state.form.template)
+    if (editorComponent) {
+        editorComponent.setData(state.form.template)
+    }
     state.form.templateHeader = preserveTemplate(templateHeader)
     state.form.templateFooter = preserveTemplate(templateFooter)
     state.editModal.hide()
@@ -319,7 +322,7 @@ async function sendInterviewRequest() {
     // 送出申請
     const patchResult = await repoJobApplication.patchJobApplicant(application)
     if (patchResult.status === 200) {
-        await $succeed()
+        await $sweet.succeed()
         state.editModal.hide()
         state.previewModal.hide()
         const updatedResult = Object.assign({}, application, patchResult.data)
