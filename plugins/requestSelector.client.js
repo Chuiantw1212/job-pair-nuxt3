@@ -42,8 +42,12 @@ export default defineNuxtPlugin(() => {
             requestRefValue: (refValue, callback,) => {
                 function step() {
                     if (refValue) {
+                        console.log({
+                            refValue
+                        });
                         callback(refValue)
                     } else {
+                        console.log('not ready');
                         window.requestAnimationFrame(step)
                     }
                 }
