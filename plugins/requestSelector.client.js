@@ -38,6 +38,16 @@ export default defineNuxtPlugin(() => {
                     }
                 }
                 window.requestAnimationFrame(step)
+            },
+            requestRefValue: (refValue, callback,) => {
+                function step() {
+                    if (refValue) {
+                        callback(refValue)
+                    } else {
+                        window.requestAnimationFrame(step)
+                    }
+                }
+                window.requestAnimationFrame(step)
             }
         }
     }
