@@ -250,9 +250,12 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        $requestRefValue(templateHeaderRef.value, (element) => {
-            element.setData(state.form.templateHeader)
-        })
+        setInterval(() => {
+            console.log(templateHeaderRef.value);
+        }, 1000)
+        // $requestRefValue(templateHeaderRef.value, (element) => {
+        //     element.setData(state.form.templateHeader)
+        // })
         // Footer
         const defaultFooter = `
                     當天將有 部門的 主管將與您進行面試，若有相關的文件可一併於面試時攜帶。<br>
@@ -265,9 +268,12 @@ async function handleApply() {
                     若有任何問題，也歡迎透過E-mail信箱：${user.email}    聯絡我，期待您的回覆，謝謝！
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
-        $requestRefValue(templateFooterRef.value, (element) => {
-            element.setData(state.form.templateFooter)
-        })
+        setInterval(() => {
+            console.log(templateFooterRef.value);
+        }, 1000)
+        // $requestRefValue(templateFooterRef.value, (element) => {
+        //     element.setData(state.form.templateFooter)
+        // })
     } else {
         router.push('/')
     }
