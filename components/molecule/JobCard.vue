@@ -37,7 +37,7 @@ export default {
         overflow-y: auto;
         border: solid 1px #d3d3d3;
         background-color: white;
-        height: calc(100% - 70px);
+        // height: calc(100% - 70px);
     }
 }
 
