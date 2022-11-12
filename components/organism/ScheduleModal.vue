@@ -61,7 +61,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector, $requestRefValue } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -250,9 +250,8 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        $requestSelector(`#header${state.id}`, () => {
-            const headerEditor = templateHeaderRef.value
-            headerEditor.setData(state.form.templateHeader)
+        $requestRefValue(templateHeaderRef.value, (element) => {
+            element.setData(state.form.templateHeader)
         })
         // Footer
         const defaultFooter = `
@@ -266,9 +265,8 @@ async function handleApply() {
                     若有任何問題，也歡迎透過E-mail信箱：${user.email}    聯絡我，期待您的回覆，謝謝！
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
-        $requestSelector(`#footer${state.id}`, () => {
-            const footerEditor = templateFooterRef.value
-            footerEditor.setData(state.form.templateFooter)
+        $requestRefValue(templateFooterRef.value, (element) => {
+            element.setData(state.form.templateFooter)
         })
     } else {
         router.push('/')
