@@ -159,7 +159,20 @@ export default function setup() {
             // 已經作答跳最後一步驟，反之回去作答
             const notInQuestionFlow = !route.name.includes('questions')
             if (notInQuestionFlow) {
-                const questionKeys = repoSelect.state.questionsRes.map(item => item.key)
+                let questionsRes = repoSelect.state.questionsRes
+                if (!questionsRes) {
+                    questionsRes = new Promise(resolve => {
+                        function step() {
+                            if (repoSelect.state.questionsRes) {
+                                resolve(repoSelect.state.questionsRes)
+                            } else {
+                                window.requestAnimationFrame(step)
+                            }
+                        }
+                        window.requestAnimationFrame(step)
+                    })
+                }
+                const questionKeys = questionsRes.map(item => item.key)
                 const unAnsweredIndex = questionKeys.findIndex((key) => {
                     const isAnswered = tempUser.preference.hasOwnProperty(key)
                     return !isAnswered
