@@ -127,17 +127,9 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="profile__body" :class="{ 'profile__body--isOpen': state.isItemOpen[index] }">
-                                <span class="body__coverLetter">
-                                    {{ item.coverLetter }}
-                                </span>
-                                <span v-if="state.isItemOpen[index]" class="profile__toggle"
-                                    @click="toggleProfileBody(index)">
-                                    收合
-                                </span>
-                                <span v-else class="profile__toggle" @click="toggleProfileBody(index)">
-                                    展開
-                                </span>
+                            <div class="profile__body">
+                                <AtomInputCkeditor v-model="item.coverLetter" :toolbar="[]" :disabled="true">
+                                </AtomInputCkeditor>
                             </div>
                             <br>
                             <div class="profile__footer">
@@ -684,22 +676,6 @@ function toggleProfileBody(index) {
 
                 .profile__body {
                     margin-top: 20px;
-
-                    .body__coverLetter {
-                        display: -webkit-box;
-                        -webkit-line-clamp: 3;
-                        -webkit-box-orient: vertical;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        transition: all 0.3s;
-
-                    }
-                }
-
-                .profile__body--isOpen {
-                    .body__coverLetter {
-                        -webkit-line-clamp: unset;
-                    }
                 }
 
                 .profile__toggle {

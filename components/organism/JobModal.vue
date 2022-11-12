@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" :id="`jobModal${state.id}`" tabindex="-1" a aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title">應徵申請</h1>
@@ -37,8 +37,8 @@
                             </label>
                         </div>
                     </template>
-                    <AtomInputTextarea v-model="state.application.coverLetter" class="mt-3" name="自薦信"
-                        placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！" rows="6"></AtomInputTextarea>
+                    <AtomInputCkeditor id="coverLetter" ref="coverLetterRef" v-model="state.application.coverLetter"
+                        class="mt-3" name="自薦信" placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！"></AtomInputCkeditor>
                     <div class="modal__footer mt-3">
                         <AtomBtnSimple @click="closeModal()">
                             取消
@@ -101,6 +101,7 @@ onMounted(() => {
     }
 })
 // methods
+const coverLetterRef = ref(null)
 function setApplication() {
     const { user } = repoAuth.state
     // 拉取資料
@@ -119,6 +120,9 @@ function setApplication() {
         coverLetter: description,
         jobId
     }
+    $requestSelector(`#coverLetter`, () => {
+        coverLetterRef.value.setData(description)
+    })
 }
 function hasSelected(work) {
     if (!state.application || !state.application.portfolio) {
