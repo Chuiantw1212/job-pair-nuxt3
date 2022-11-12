@@ -78,9 +78,18 @@
 <script setup>
 import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()
+const repoAuth = useRepoAuth()
+const router = useRouter()
 // methods
 function routeToQuestions() {
-    $emitter.emit("showUserModal")
+    const { user } = repoAuth.state
+    if (user && user.type === 'employee') {
+        router.push({
+            name: 'jobs'
+        })
+    } else {
+        $emitter.emit("showUserModal")
+    }
 }
 </script>
 <style lang="scss" scoped>
