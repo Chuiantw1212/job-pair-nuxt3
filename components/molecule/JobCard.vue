@@ -37,7 +37,6 @@ export default {
         overflow-y: auto;
         border: solid 1px #d3d3d3;
         background-color: white;
-        // height: calc(100% - 70px);
     }
 }
 
@@ -51,6 +50,7 @@ export default {
         .statusCard__body {
             overflow-y: auto;
             border-radius: 0px 0px 10px 10px;
+            height: calc(100% - 70px);
         }
     }
 }

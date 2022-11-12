@@ -212,6 +212,7 @@ function getSavedTime(item) {
         list-style: none;
         padding: 0;
         width: 100%;
+        flex-direction: column;
 
         .card__list__item {
             &:not(:first-child) {
