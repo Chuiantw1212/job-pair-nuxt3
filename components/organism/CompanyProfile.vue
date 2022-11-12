@@ -82,11 +82,11 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <AtomInputCkeditor v-model="state.companyInfo.description" name="企業介紹" required class="mb-2"
-                        ref="descriptionRef">
+                    <AtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
+                        class="mb-2" ref="descriptionRef">
                     </AtomInputCkeditor>
-                    <AtomInputCkeditor v-model="state.companyInfo.jobBenefits" name="福利制度" required class="mb-1"
-                        ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                    <AtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
+                        class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
                     </AtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -125,7 +125,7 @@
 </template>
 <script setup>
 const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
-const { $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -235,13 +235,13 @@ async function initializeCompanyInfo() {
     state.companyBanner = companyInfo.banner
     state.companyImages = companyInfo.images ?? []
 
-    if (descriptionRef.value) {
+    $requestSelector(`#descriptionRef`, () => {
         descriptionRef.value.setData(state.companyInfo.description)
-    }
-    if (jobBenefitsRef.value) {
+    })
+    $requestSelector(`#jobBenefitsRef`, () => {
         jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
         setWelfareFlags()
-    }
+    })
 }
 async function crawlCompanyFromPlatform() {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']

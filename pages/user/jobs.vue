@@ -532,10 +532,6 @@ function setJobComparable() {
         gap: 20px;
         width: 100%;
 
-        .userStatus__card {
-            height: 631px;
-        }
-
         .kanban__card__list {
             list-style: none;
             padding: 0;
@@ -572,7 +568,7 @@ function setJobComparable() {
     .userStatus {
         .userStatus__card {
             width: 100%;
-            height: 100%;
+            height: 631px;
 
             .card__header {
                 font-size: 22px;

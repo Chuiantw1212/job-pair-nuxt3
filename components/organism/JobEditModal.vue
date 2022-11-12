@@ -9,7 +9,7 @@
     <!-- Modal -->
     <div class="modal fade" :id="`modal_${modelValue.identifier}`" tabindex="-1" aria-labelledby="jobModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" data-bs-backdrop="static">
             <div v-if="state.job" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="jobModalLabel">{{ getJobName() }}</h5>

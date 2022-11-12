@@ -13,15 +13,15 @@
                     <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         required>
                     </AtomInputText>
-                    <AtomInputCkeditor v-model="state.form.templateHeader" name="前言" class="mt-3"
-                        :ref="'templateHeaderRef'" required>
+                    <AtomInputCkeditor :id="`header${state.id}`" v-model="state.form.templateHeader" name="前言"
+                        class="mt-3" :ref="'templateHeaderRef'" required>
                     </AtomInputCkeditor>
                     <MoleculeInputEvents v-model="state.form.events" required></MoleculeInputEvents>
                     <AtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
                         class="content__duration mt-3">
                     </AtomInputSelect>
-                    <AtomInputCkeditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
-                        :ref="'templateFooterRef'" required>
+                    <AtomInputCkeditor :id="`footer${state.id}`" v-model="state.form.templateFooter" name="結尾"
+                        class="mt-3" :ref="'templateFooterRef'" required>
                     </AtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
@@ -250,10 +250,10 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        const headerEditor = templateHeaderRef.value
-        if (headerEditor) {
+        $requestSelector(`#header${state.id}`, () => {
+            const headerEditor = templateHeaderRef.value
             headerEditor.setData(state.form.templateHeader)
-        }
+        })
         // Footer
         const defaultFooter = `
                     當天將有 部門的 主管將與您進行面試，若有相關的文件可一併於面試時攜帶。<br>
@@ -266,10 +266,10 @@ async function handleApply() {
                     若有任何問題，也歡迎透過E-mail信箱：${user.email}    聯絡我，期待您的回覆，謝謝！
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
-        const footerEditor = templateFooterRef.value
-        if (footerEditor) {
+        $requestSelector(`#footer${state.id}`, () => {
+            const footerEditor = templateFooterRef.value
             footerEditor.setData(state.form.templateFooter)
-        }
+        })
     } else {
         router.push('/')
     }

@@ -3,6 +3,7 @@
         <div v-if="name" class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
+            <span v-if="hint">({{ hint }})</span>
         </div>
         <input v-show="false" :value="getValue()" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
@@ -71,6 +72,14 @@ const props = defineProps({
     removePlatformLink: {
         type: Boolean,
         default: false
+    },
+    hint: {
+        type: String,
+        default: ''
+    },
+    placeholder: {
+        type: String,
+        default: ''
     }
 })
 let localValue = computed({
@@ -123,9 +132,11 @@ function requestSelector(ClassicEditor, callback) {
 }
 async function initializeCKEditor(ClassicEditor) {
     // 使用CDN
-    const editor = await ClassicEditor.create(editorRef.value, {
+    const editorConfig = {
         toolbar: props.toolbar,
-    })
+        placeholder: props.placeholder
+    }
+    const editor = await ClassicEditor.create(editorRef.value, editorConfig)
     if (localValue.value) {
         editor.setData(localValue.value)
     }

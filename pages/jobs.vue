@@ -149,7 +149,7 @@
 </template>
 <script setup>
 import { nextTick, ref } from 'vue'
-const { $requestSelector, $sweet } = useNuxtApp()
+const { $requestSelectorAll, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -204,6 +204,23 @@ watch(() => repoAuth.state.user, () => {
 watch(() => state.filter, () => {
     initializeSearch()
 }, { deep: true })
+watch(() => state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length === oldValue.length) {
+        return
+    }
+    if (!state.observer) {
+        state.observer = new IntersectionObserver(loadJobItemBatch, {
+            rootMargin: "0px",
+            threshold: 0,
+        })
+    }
+    $requestSelectorAll(`.jobItem`, (elements) => {
+        const target = elements[elements.length - 1]
+        if (target) {
+            state.observer.observe(target)
+        }
+    })
+})
 // methods
 function getFilterValues() {
     const values = Object.values(state.filter)
@@ -355,27 +372,6 @@ function resetFilter() {
     })
     state.filter = getDefaultFilter()
 }
-
-const jobItems = ref([])
-function observeLastJob(newJobs = []) {
-    if (!newJobs.length) {
-        return
-    }
-    if (!state.observer) {
-        state.observer = new IntersectionObserver(loadJobItemBatch, {
-            rootMargin: "0px",
-            threshold: 0,
-        })
-    }
-    nextTick(() => {
-        const wrappers = jobItems.value
-        const targetComponent = wrappers[wrappers.length - 1]
-        if (targetComponent) {
-            const target = targetComponent.$el
-            state.observer.observe(target)
-        }
-    })
-}
 function debounce(func, delay = 800) {
     return (...args) => {
         clearTimeout(state.debounceTimer)
@@ -386,14 +382,16 @@ function debounce(func, delay = 800) {
     }
 }
 async function initializeSearch(config = {}) {
+    console.log('initializeSearch');
     const wait = config.immediate ? 0 : 800
     debounce(async () => {
-        state.jobList = []
+        state.jobList = [] // important
         state.pagination.pageOffset = 0
         await concatJobsFromServer(config)
     }, wait)()
 }
 async function concatJobsFromServer(config = {}) {
+    console.log('concatJobsFromServer');
     const { user } = repoAuth.state
     if (!user || !user.id) {
         return
@@ -420,7 +418,8 @@ async function concatJobsFromServer(config = {}) {
     })
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
     $sweet.loader(false)
-    observeLastJob(notDuplicatedJobs)
+    // observeLastJob(notDuplicatedJobs)
+    console.log('observeLastJob', notDuplicatedJobs);
 }
 </script>
 <style lang="scss" scoped>
