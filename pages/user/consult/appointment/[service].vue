@@ -156,9 +156,8 @@ function replaceRoute() {
 function switchConsultant(consultant) {
     consultant.key = Math.random()
     state.activeTab = consultant.id
-    state.appointmentForm = Object.assign(state.appointmentForm, {
+    state.appointmentForm = Object.assign({}, state.appointmentForm, {
         consultantId: consultant.id,
-        service: service,
         time: {},
     })
 }
