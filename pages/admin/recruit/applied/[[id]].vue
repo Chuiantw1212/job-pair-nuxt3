@@ -273,9 +273,6 @@ function getApplicantList() {
         applicantMap[application.applicantId] = application
     })
     const applicants = Object.values(applicantMap)
-    console.log({
-        applicants
-    });
     return [{ name: '所有應徵者', id: '' }, ...applicants]
 }
 function replaceParamsId() {
