@@ -6,7 +6,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "build": "npx cross-env NITRO_PRESET=firebase nuxt build",
-    "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
+    "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-prd",
     "deploy": "npx firebase deploy"
   },
   "devDependencies": {
