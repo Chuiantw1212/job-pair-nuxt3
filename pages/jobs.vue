@@ -382,7 +382,6 @@ function debounce(func, delay = 800) {
     }
 }
 async function initializeSearch(config = {}) {
-    console.log('initializeSearch');
     const wait = config.immediate ? 0 : 800
     debounce(async () => {
         state.jobList = [] // important
@@ -391,7 +390,6 @@ async function initializeSearch(config = {}) {
     }, wait)()
 }
 async function concatJobsFromServer(config = {}) {
-    console.log('concatJobsFromServer');
     const { user } = repoAuth.state
     if (!user || !user.id) {
         return
@@ -418,8 +416,6 @@ async function concatJobsFromServer(config = {}) {
     })
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
     $sweet.loader(false)
-    // observeLastJob(notDuplicatedJobs)
-    console.log('observeLastJob', notDuplicatedJobs);
 }
 </script>
 <style lang="scss" scoped>
