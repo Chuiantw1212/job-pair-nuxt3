@@ -124,11 +124,15 @@
             </div>
             <div class="jobs__main">
                 <ul class="main__list">
-                    <OrganismJobItem v-for="(job, index) in state.jobRecommendList"
-                        v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
+                    <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
+                        <OrganismJobItem v-for="(job, index) in state.jobRecommendList"
+                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item"
+                            :recommend="true">
+                        </OrganismJobItem>
+                    </template>
+                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
+                        :recommend="job.recommend" :key="index" :ref="`jobItems`" class="main__list__item jobItem">
                     </OrganismJobItem>
-                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItems`" class="main__list__item jobItem"></OrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
                             <div>
@@ -407,13 +411,22 @@ async function concatJobsFromServer(config = {}) {
     }
     const { count = 0, items = [] } = response.data
     state.count = count
-    // 避免重複出現職缺
     const recommendJobs = filterRecommendedJobs()
     state.jobRecommendList = recommendJobs
-    const recommendJobKeys = recommendJobs.map(item => item.identifier)
-    const notDuplicatedJobs = items.filter(item => {
-        return !recommendJobKeys.includes(item.identifier)
-    })
+    // 一般排序與適配讀排序時避免重複出現職缺
+    const recommendJobIds = recommendJobs.map(item => item.identifier)
+    let notDuplicatedJobs = items
+    if (state.pagination.pageOrderBy === 'salaryValue') {
+        notDuplicatedJobs.forEach(item => {
+            if (recommendJobIds.includes(item.identifier)) {
+                item.recommend = true
+            }
+        })
+    } else {
+        notDuplicatedJobs = items.filter(item => {
+            return !recommendJobIds.includes(item.identifier)
+        })
+    }
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
     $sweet.loader(false)
 }
