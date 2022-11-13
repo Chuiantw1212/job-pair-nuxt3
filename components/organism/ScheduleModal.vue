@@ -61,7 +61,8 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector, $requestRefValue } = useNuxtApp()
+import { getCurrentInstance } from 'vue'
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector, $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
@@ -161,6 +162,7 @@ const props = defineProps({
 })
 onMounted(() => {
     if (process.client) {
+
         state.id = $uuid4()
         // 編輯用modal
         $requestSelector(`#schedule${state.id}`, (editableElement) => {
@@ -223,6 +225,8 @@ function filterTime(item, duration) {
 
 const templateHeaderRef = ref(null)
 const templateFooterRef = ref(null)
+const currentInstance = getCurrentInstance()
+// console.log('getCurrentInstance', getCurrentInstance());
 async function handleApply() {
     const { user, company } = repoAuth.state
     if (user && user.id) {
@@ -250,9 +254,11 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        setInterval(() => {
-            console.log(templateHeaderRef.value);
-        }, 1000)
+        console.log(currentInstance.refs);
+        currentInstance.refs.templateHeaderRef.setData(state.form.templateHeader)
+        // setInterval(() => {
+        //     console.log(templateHeaderRef.value);
+        // }, 1000)
         // $requestRefValue(templateHeaderRef.value, (element) => {
         //     element.setData(state.form.templateHeader)
         // })
@@ -268,9 +274,11 @@ async function handleApply() {
                     若有任何問題，也歡迎透過E-mail信箱：${user.email}    聯絡我，期待您的回覆，謝謝！
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
-        setInterval(() => {
-            console.log(templateFooterRef.value);
-        }, 1000)
+        currentInstance.refs.templateFooterRef.setData(state.form.templateFooter)
+        // console.log(getCurrentInstance());
+        // setInterval(() => {
+        //     console.log(templateFooterRef.value);
+        // }, 1000)
         // $requestRefValue(templateFooterRef.value, (element) => {
         //     element.setData(state.form.templateFooter)
         // })
