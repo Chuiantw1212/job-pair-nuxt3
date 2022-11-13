@@ -756,7 +756,6 @@ async function initialize() {
         }
 
         .jobView__features {
-            font-size: 28px;
             font-weight: normal;
             line-height: 0;
         }

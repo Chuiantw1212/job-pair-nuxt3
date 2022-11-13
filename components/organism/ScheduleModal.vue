@@ -61,13 +61,19 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector } = useNuxtApp()
+import { getCurrentInstance } from 'vue'
+const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector, $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
+const currentInstance = getCurrentInstance()
+const templateHeaderRef = ref(null)
+const templateFooterRef = ref(null)
+const modalBodyRef = ref(null)
+const templateContentRef = ref(null)
 const state = reactive({
     id: null,
     editModal: null,
@@ -161,6 +167,7 @@ const props = defineProps({
 })
 onMounted(() => {
     if (process.client) {
+
         state.id = $uuid4()
         // 編輯用modal
         $requestSelector(`#schedule${state.id}`, (editableElement) => {
@@ -220,9 +227,7 @@ function filterTime(item, duration) {
     const endHHMM = hourMinute.format(endDateInstnace)
     return `${formatResult1}(${character}) ${startHHMM} ~ ${endHHMM}`
 }
-
-const templateHeaderRef = ref(null)
-const templateFooterRef = ref(null)
+// console.log('getCurrentInstance', getCurrentInstance());
 async function handleApply() {
     const { user, company } = repoAuth.state
     if (user && user.id) {
@@ -250,10 +255,7 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        const headerEditor = templateHeaderRef.value
-        if (headerEditor) {
-            headerEditor.setData(state.form.templateHeader)
-        }
+        currentInstance.refs.templateHeaderRef.setData(state.form.templateHeader)
         // Footer
         const defaultFooter = `
                     當天將有 部門的 主管將與您進行面試，若有相關的文件可一併於面試時攜帶。<br>
@@ -266,18 +268,13 @@ async function handleApply() {
                     若有任何問題，也歡迎透過E-mail信箱：${user.email}    聯絡我，期待您的回覆，謝謝！
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
-        const footerEditor = templateFooterRef.value
-        if (footerEditor) {
-            footerEditor.setData(state.form.templateFooter)
-        }
+        currentInstance.refs.templateFooterRef.setData(state.form.templateFooter)
     } else {
         router.push('/')
     }
 }
-const modalBodyRef = ref(null)
-const templateContentRef = ref(null)
 async function generateTemplate() {
-    const form = modalBodyRef.value
+    const form = currentInstance.refs.modalBodyRef
     const result = await $validate(form)
     if (!result.isValid) {
         return
@@ -301,10 +298,8 @@ async function generateTemplate() {
     const { templateHeader, templateFooter } = state.form
     const template = `${templateHeader}${templateBody}${templateFooter}`
     state.form.template = template
-    const editorComponent = templateContentRef.value
-    if (editorComponent) {
-        editorComponent.setData(state.form.template)
-    }
+    const editorComponent = currentInstance.refs.templateContentRef
+    editorComponent.setData(state.form.template)
     state.form.templateHeader = preserveTemplate(templateHeader)
     state.form.templateFooter = preserveTemplate(templateFooter)
     state.editModal.hide()

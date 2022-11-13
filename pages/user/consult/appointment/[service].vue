@@ -75,7 +75,7 @@
     </div>
 </template>
 <script setup>
-const { $sweet, $storageBucket, $validate } = useNuxtApp()
+const { $storageBucket, $validate } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
@@ -116,16 +116,14 @@ const state = reactive({
         time: {},
     },
 })
-const service = 'life'
 // hooks
 useHead({
     title: `職涯諮詢 - 會員中心 - Job Pair`,
 })
 onMounted(() => {
-    loadConsultants()
-})
-watchEffect(() => {
+    const service = route.params.service || 'life'
     state.appointmentForm.service = service
+    loadConsultants()
 })
 // methods
 async function loadConsultants() {
@@ -158,9 +156,8 @@ function replaceRoute() {
 function switchConsultant(consultant) {
     consultant.key = Math.random()
     state.activeTab = consultant.id
-    state.appointmentForm = Object.assign(state.appointmentForm, {
+    state.appointmentForm = Object.assign({}, state.appointmentForm, {
         consultantId: consultant.id,
-        service: service,
         time: {},
     })
 }
@@ -195,9 +192,6 @@ async function submitAppointment() {
         }
         return
     }
-    // console.log({
-    //     response
-    // })
     if (process.client) {
         document.write(response.data)
     }

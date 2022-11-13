@@ -11,11 +11,13 @@ export default defineStore('auth', () => {
         if (state.isLogginIn) {
             return
         }
+        state.isLogginIn = true
         const response = await axios.request({
             method: 'post',
             url: `/auth/signIn`,
             data,
         })
+        state.isLogginIn = false
         return response
     }
     async function postVerificationEmail(data) {

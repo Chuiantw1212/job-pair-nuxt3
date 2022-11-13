@@ -70,7 +70,7 @@ const state = reactive({
     singleSelects: ['']
 })
 const questionId = computed(() => {
-    const id = route.path.split('/').slice(-1)[0] - 1
+    const id = Number(route.params.id) - 1
     return Number(id) || 0
 })
 // hooks

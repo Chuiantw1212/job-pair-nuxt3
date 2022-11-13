@@ -102,11 +102,16 @@ function getSavedTime(item) {
 .kanban__card__list {
     list-style: none;
     width: 100%;
+    display: flex;
+    gap: 10px;
 
     .card__list__item {
-        &:not(:first-child) {
-            margin-top: 10px;
-        }
+        min-width: 320px;
+        min-height: 114px;
+
+        // &:not(:first-child) {
+        //     margin-top: 10px;
+        // }
     }
 
     .list__item__job {
@@ -188,7 +193,8 @@ function getSavedTime(item) {
     justify-content: center;
 
     .noItem__imageGroup {
-        margin-top: 207px;
+        // margin-top: 207px;
+        margin-top: 20px;
         font-size: 20px;
         display: flex;
         flex-direction: column;
@@ -206,6 +212,7 @@ function getSavedTime(item) {
         list-style: none;
         padding: 0;
         width: 100%;
+        flex-direction: column;
 
         .card__list__item {
             &:not(:first-child) {

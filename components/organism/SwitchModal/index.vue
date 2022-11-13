@@ -17,7 +17,7 @@
                         <div class="body__body">
                             <div class="body__card" @click="showEmployeeModal()">
                                 <div class="body__card__imageWrap">
-                                    <img classs="card__image card__image--employee" src="./assets/img_candidate.png">
+                                    <img classs="card__image card__image--employee" src="./img_candidate.png">
                                 </div>
                                 <div class="card__title">我是求職者</div>
                                 <div class="card__desc">個人身份註冊/登入</div>
@@ -25,7 +25,7 @@
                             </div>
                             <div class="body__card" @click="showAdminModal()">
                                 <div class="body__card__imageWrap">
-                                    <img classs="card__image card__image--employee" src="./assets/img_Enterprise.png">
+                                    <img classs="card__image card__image--employee" src="./img_Enterprise.png">
                                 </div>
                                 <div class="card__title">我是企業端</div>
                                 <div class="card__desc">人資、企業主註冊/登入</div>

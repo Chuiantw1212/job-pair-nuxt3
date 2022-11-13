@@ -9,8 +9,8 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button class="navbar-brand" @click="routeByMenuType()">
-                        <img class="logoGroup__logo" src="@/assets/logo.png" alt="logo" />
-                        <img class="logoGroup__name" src="@/assets/name.png" alt="name" />
+                        <img class="logoGroup__logo" src="./logo.png" alt="logo" />
+                        <img class="logoGroup__name" src="./name.png" alt="name" />
                         <template v-if="state.menuType === 'admin'">
                             企業用戶
                         </template>
@@ -19,12 +19,12 @@
                 <!-- 手機縮圖列表 -->
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
-                    <!-- <router-link class="icons__Group" :to="{ name: 'jobs' }">
-                        <img class="icons__Group__image" src="./assets/icon_nav_job.svg" />
-                    </router-link>
-                    <router-link class="icons__Group" :to="{ name: 'userDashboard' }">
-                        <img class="icons__Group__image" src="./assets/icon_nav_member.svg" />
-                    </router-link> -->
+                    <NuxtLink class="icons__Group" :to="{ name: 'jobs' }">
+                        <img class="icons__Group__image" src="./icon_nav_job.svg" />
+                    </NuxtLink>
+                    <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
+                        <img class="icons__Group__image" src="./icon_nav_member.svg" />
+                    </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
@@ -40,8 +40,6 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-// const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
 const state = reactive({
     bsCollapse: null,

@@ -229,6 +229,8 @@ function getLocationText() {
                     .label__icon {
                         display: block;
                         margin-right: 8px;
+                        height: 18px;
+                        width: 18px;
                     }
                 }
 
@@ -287,6 +289,14 @@ function getLocationText() {
                     font-weight: normal;
                     flex-direction: row;
                     flex-wrap: wrap;
+
+                    .main__labelGroup__label {
+
+                        .label__icon {
+                            height: 20px;
+                            width: 20px;
+                        }
+                    }
                 }
             }
         }

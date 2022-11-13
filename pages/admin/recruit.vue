@@ -53,9 +53,9 @@ const state = reactive({
     appliedList: [],
 })
 // hooks
-watch(() => repoAuth.state.company, () => {
+watch(() => repoAuth.state.company, (company) => {
     initialize()
-})
+}, { immediate: true })
 // methods
 function checkActiveClass() {
     return route.path.includes('/admin/recruit/applied')
