@@ -35,6 +35,9 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
+const currentInstance = getCurrentInstance()
+const modalBodyRef = ref(null)
+const templateRef = ref(null)
 const state = reactive({
     id: $uuid4(),
     job: null,
@@ -69,7 +72,6 @@ function getBtnDisabled() {
     const { user } = repoAuth.state
     return !user || !user.id
 }
-const templateRef = ref(null)
 async function handleReject() {
     const { user, company } = repoAuth.state
     if (user && user.id) {
@@ -98,15 +100,14 @@ async function handleReject() {
                     感謝您的應徵！
                 `
         state.form.template = defaultTemplate
-        const templateEditor = templateRef.value
+        const templateEditor = currentInstance.refs.templateRef
         templateEditor.setData(state.form.template)
     } else {
         router.push('/')
     }
 }
-const modalBodyRef = ref(null)
 async function sendRejectLetter() {
-    const form = modalBodyRef.value
+    const form = currentInstance.refs.modalBodyRef
     const result = await $validate(form)
     if (!result.isValid) {
         return
