@@ -13,15 +13,15 @@
                     <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         required>
                     </AtomInputText>
-                    <AtomInputCkeditor :id="`header${state.id}`" v-model="state.form.templateHeader" name="前言"
-                        class="mt-3" :ref="'templateHeaderRef'" required>
+                    <AtomInputCkeditor v-model="state.form.templateHeader" name="前言" class="mt-3"
+                        :ref="'templateHeaderRef'" required>
                     </AtomInputCkeditor>
                     <MoleculeInputEvents v-model="state.form.events" required></MoleculeInputEvents>
                     <AtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
                         class="content__duration mt-3">
                     </AtomInputSelect>
-                    <AtomInputCkeditor :id="`footer${state.id}`" v-model="state.form.templateFooter" name="結尾"
-                        class="mt-3" :ref="'templateFooterRef'" required>
+                    <AtomInputCkeditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
+                        :ref="'templateFooterRef'" required>
                     </AtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
@@ -69,6 +69,11 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
+const currentInstance = getCurrentInstance()
+const templateHeaderRef = ref(null)
+const templateFooterRef = ref(null)
+const modalBodyRef = ref(null)
+const templateContentRef = ref(null)
 const state = reactive({
     id: null,
     editModal: null,
@@ -222,10 +227,6 @@ function filterTime(item, duration) {
     const endHHMM = hourMinute.format(endDateInstnace)
     return `${formatResult1}(${character}) ${startHHMM} ~ ${endHHMM}`
 }
-
-const templateHeaderRef = ref(null)
-const templateFooterRef = ref(null)
-const currentInstance = getCurrentInstance()
 // console.log('getCurrentInstance', getCurrentInstance());
 async function handleApply() {
     const { user, company } = repoAuth.state
@@ -254,14 +255,7 @@ async function handleApply() {
                     <div>以下提供幾個面試時段供選擇：</div>
                 `
         state.form.templateHeader = templateHeader ? recoverTemplate(templateHeader) : defaultHeader
-        console.log(currentInstance.refs);
         currentInstance.refs.templateHeaderRef.setData(state.form.templateHeader)
-        // setInterval(() => {
-        //     console.log(templateHeaderRef.value);
-        // }, 1000)
-        // $requestRefValue(templateHeaderRef.value, (element) => {
-        //     element.setData(state.form.templateHeader)
-        // })
         // Footer
         const defaultFooter = `
                     當天將有 部門的 主管將與您進行面試，若有相關的文件可一併於面試時攜帶。<br>
@@ -275,21 +269,12 @@ async function handleApply() {
                 `
         state.form.templateFooter = templateFooter ? recoverTemplate(templateFooter) : defaultFooter
         currentInstance.refs.templateFooterRef.setData(state.form.templateFooter)
-        // console.log(getCurrentInstance());
-        // setInterval(() => {
-        //     console.log(templateFooterRef.value);
-        // }, 1000)
-        // $requestRefValue(templateFooterRef.value, (element) => {
-        //     element.setData(state.form.templateFooter)
-        // })
     } else {
         router.push('/')
     }
 }
-const modalBodyRef = ref(null)
-const templateContentRef = ref(null)
 async function generateTemplate() {
-    const form = modalBodyRef.value
+    const form = currentInstance.refs.modalBodyRef
     const result = await $validate(form)
     if (!result.isValid) {
         return
@@ -313,10 +298,8 @@ async function generateTemplate() {
     const { templateHeader, templateFooter } = state.form
     const template = `${templateHeader}${templateBody}${templateFooter}`
     state.form.template = template
-    const editorComponent = templateContentRef.value
-    if (editorComponent) {
-        editorComponent.setData(state.form.template)
-    }
+    const editorComponent = currentInstance.refs.templateContentRef
+    editorComponent.setData(state.form.template)
     state.form.templateHeader = preserveTemplate(templateHeader)
     state.form.templateFooter = preserveTemplate(templateFooter)
     state.editModal.hide()
