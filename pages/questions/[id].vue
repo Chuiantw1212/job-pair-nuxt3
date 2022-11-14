@@ -6,8 +6,8 @@
         <AtomProgress class="questions__progress"></AtomProgress>
         <img class="questions__leftImage" src="~/assets/questions/left.png" />
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
-        <template v-for="(questionGroup, key) in state.questions" :key="key">
-            <div v-if="questionId == key" class="questions__questionGroup">
+        <template v-for="(questionGroup, key) in state.questions">
+            <div v-if="questionId == key" class="questions__questionGroup" :key="key">
                 <h2 class="questionGroup__header">{{ questionGroup.descUser }}
                     <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
                 </h2>
