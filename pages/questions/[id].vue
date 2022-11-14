@@ -190,7 +190,7 @@ function handleClickLast() {
     router.push(`/questions/${id - 1}`)
 }
 function handleClickNext() {
-    const id = questionId.value
+    const id = questionId.value + 1
     if (id >= 6) {
         router.push(`/questions/result`)
     } else {
