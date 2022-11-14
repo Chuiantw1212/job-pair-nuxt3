@@ -186,11 +186,11 @@ function initTooltip() {
     }
 }
 function handleClickLast() {
-    const id = questionId.value // correct in developing
+    const id = questionId.value + 1
     router.push(`/questions/${id - 1}`)
 }
 function handleClickNext() {
-    const id = questionId.value // correct in developing
+    const id = questionId.value + 1
     if (id >= 6) {
         router.push(`/questions/result`)
     } else {
