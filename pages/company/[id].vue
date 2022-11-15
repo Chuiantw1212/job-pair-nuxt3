@@ -178,8 +178,10 @@ onBeforeUnmount(() => {
 watch(() => repoAuth.state.user, (newValue) => {
     jobScroller.initializeSearch()
 }, { immediate: true })
-watch(() => jobScroller.state.jobList, () => {
-    jobScroller.observeLastJob(jobItems)
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
 })
 // methods
 async function initializeCompany(id) {
