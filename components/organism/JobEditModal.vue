@@ -102,10 +102,10 @@
                             </AtomInputText>
                         </div>
                         <AtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required class="mt-2">
+                            :toolbar="state.toolbar" required class="mt-2">
                         </AtomInputCkeditor>
                         <AtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :removePlatformLink="true" class="mt-2">
+                            :toolbar="state.toolbar" :removePlatformLink="true" class="mt-2">
                         </AtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-2">
                             <div class="preference__header">用人偏好</div>
@@ -158,7 +158,29 @@ const state = reactive({
     filterOpen: {
         occupationalCategory: false,
     },
-    bsModal: null
+    bsModal: null,
+    toolbar: [
+        "heading",
+        "|",
+        'fontSize',
+        "|",
+        'bold',
+        'italic',
+         // 'link', // 正規表示式出來前，一律拿掉職缺超連結
+        'bulletedList',
+        'numberedList',
+        '|',
+        'outdent',
+        'indent',
+        '|',
+        'blockQuote',
+        'insertTable',
+        'mediaEmbed',
+        'undo',
+        'redo',
+        '|',
+        'removeFormat'
+    ]
 })
 const props = defineProps({
     modelValue: {
