@@ -110,6 +110,7 @@
     </div>
 </template>
 <script setup>
+import defaultBanner from '~/assets/company/img_banner_default.png'
 const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const device = useDevice()
@@ -153,14 +154,22 @@ if (process.client) {
     state.companyInfo = company.value
 }
 useHead(() => {
+    const headConfig = {
+        title: `Job Pair`,
+        meta: [
+            { property: 'og:image', defaultBanner }
+        ]
+    }
     if (company.value) {
-        return {
-            title: `${company.value.name} - Job Pair`,
-            meta: [
-                { property: 'og:image', content: company.value.banner }
-            ],
+        const { name: companyName, banner } = company.value
+        headConfig.title = `${companyName} - Job Pair`
+        if (banner) {
+            headConfig.meta = [
+                { property: 'og:image', content: companyBanner }
+            ]
         }
     }
+    return headConfig
 })
 onMounted(async () => {
     state.id = $uuid4()

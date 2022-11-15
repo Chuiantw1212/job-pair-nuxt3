@@ -208,7 +208,7 @@ watch(() => state.filter, () => {
     initializeSearch()
 }, { deep: true })
 watch(() => state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length === oldValue.length) {
+    if (newValue.length === oldValue.length || !process.client) {
         return
     }
     if (!state.observer) {
