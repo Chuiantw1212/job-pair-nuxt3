@@ -9,7 +9,7 @@
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
                         <li class="glide__slide feedback__list__feedback" v-for="(feedback, index) in modelValue"
-                            :key="index">
+                            :key="index" ref="feedbackItem">
                             <div class="feedback__content">
                                 <div class="content__name">{{ feedback.name }}</div>
                                 <div class="content__to">諮詢師：{{ feedback.to }}</div>
@@ -105,17 +105,19 @@ function mountGlideInstance() {
         return
     }
     $requestSelector(`#glide${state.id}`, (element) => {
-        const feedbackGlideInstance = new $Glide.Default(element, {
-            gap: 10,
-            rewind: true,
-            bound: true,
+        nextTick(() => {
+            const feedbackGlideInstance = new $Glide.Default(element, {
+                gap: 10,
+                rewind: true,
+                bound: true,
+            })
+            feedbackGlideInstance.mount({
+                Controls: $Glide.Controls,
+            })
+            state.feedbackGlideInstance = feedbackGlideInstance
+            window.addEventListener("resize", setGlideConfig)
+            setGlideConfig({ target: window })
         })
-        feedbackGlideInstance.mount({
-            Controls: $Glide.Controls,
-        })
-        state.feedbackGlideInstance = feedbackGlideInstance
-        window.addEventListener("resize", setGlideConfig)
-        setGlideConfig({ target: window })
     })
 }
 function setGlideConfig(event) {

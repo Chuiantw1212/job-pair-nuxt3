@@ -152,13 +152,12 @@
     </div>
 </template>
 <script setup>
-import { nextTick, ref } from 'vue'
 const { $requestSelectorAll, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
-const route = useRoute()
+const router = useRouter()
 const state = reactive({
     jobList: [],
     jobRecommendList: [],
