@@ -241,9 +241,6 @@ useHead({
 })
 onMounted(() => {
     const { id } = route.params
-    console.log({
-        id
-    });
     if (id) {
         state.applicantId = id
     }
@@ -291,8 +288,9 @@ function getUpdatedDate(item) {
 }
 function getCompanyJobItems() {
     const { companyJobsRes } = repoCompany.state
+    const nonDrafts = companyJobsRes.filter(item => item.name)
     if (companyJobsRes) {
-        return [{ identifier: null, name: '全部職缺' }, ...companyJobsRes]
+        return [{ identifier: null, name: '全部職缺' }, ...nonDrafts]
     }
 }
 function getFilteredItems() {
@@ -457,9 +455,6 @@ async function initializeSearch() {
         state.applicantId = ''
         replaceParamsId()
     }
-}
-function toggleProfileBody(index) {
-    state.isItemOpen[index] = !state.isItemOpen[index]
 }
 </script>
 <style lang="scss">

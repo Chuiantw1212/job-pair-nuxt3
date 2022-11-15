@@ -121,14 +121,13 @@ function getValue() {
 function requestSelector(ClassicEditor, callback) {
     function step() {
         if (ClassicEditor) {
-            console.log('ClassicEditor is loaded.');
             callback(ClassicEditor)
         } else {
             console.log('Waiting for ClassicEditor.');
             window.requestAnimationFrame(step)
         }
     }
-    window.requestAnimationFrame(step)
+    step()
 }
 async function initializeCKEditor(ClassicEditor) {
     // 使用CDN
