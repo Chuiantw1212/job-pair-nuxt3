@@ -110,8 +110,8 @@
     </div>
 </template>
 <script setup>
-import { ref, nextTick } from 'vue'
 const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
+const runTime = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
 const repoCompany = useRepoCompany()
@@ -145,6 +145,23 @@ const state = reactive({
 })
 const jobItems = ref([])
 // hooks
+const organizationId = computed(() => {
+    return route.params.id
+})
+const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
+if (process.client) {
+    state.companyInfo = company.value
+}
+useHead(() => {
+    if (company.value) {
+        return {
+            title: `${company.value.name} - Job Pair`,
+            meta: [
+                { property: 'og:image', content: company.value.banner }
+            ],
+        }
+    }
+})
 onMounted(async () => {
     state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]
@@ -169,9 +186,7 @@ async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
     state.companyInfo = company
-    const { images = [], name = "", } = company
-    // Content
-    document.title = `${name} - Job Pair`
+    const { images = [], } = company
     if (images && images.length) {
         state.focusedImageSrc = images[0].url
         initialGlide()
