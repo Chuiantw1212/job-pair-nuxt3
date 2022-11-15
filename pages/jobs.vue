@@ -130,8 +130,8 @@
                             :recommend="true">
                         </OrganismJobItem>
                     </template>
-                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
-                        :recommend="job.recommend" :key="index" :ref="`jobItems`" class="main__list__item jobItem">
+                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                        :ref="`jobItems`" class="main__list__item jobItem">
                     </OrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -415,13 +415,7 @@ async function concatJobsFromServer(config = {}) {
     // 一般排序與適配讀排序時避免重複出現職缺
     const recommendJobIds = recommendJobs.map(item => item.identifier)
     let notDuplicatedJobs = items
-    if (state.pagination.pageOrderBy === 'salaryValue') {
-        notDuplicatedJobs.forEach(item => {
-            if (recommendJobIds.includes(item.identifier)) {
-                item.recommend = true
-            }
-        })
-    } else {
+    if (state.pagination.pageOrderBy !== 'salaryValue') {
         notDuplicatedJobs = items.filter(item => {
             return !recommendJobIds.includes(item.identifier)
         })
