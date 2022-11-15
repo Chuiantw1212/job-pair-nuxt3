@@ -124,7 +124,7 @@ async function sendRejectLetter() {
     const patchResult = await repoJobApplication.patchJobApplicant(application)
     if (patchResult.status === 200) {
         await $sweet.succeed()
-        this.editModal.hide()
+        state.editModal.hide()
         const updatedResult = Object.assign({}, application, patchResult.data)
         $emit('update:modelValue', updatedResult)
     }
