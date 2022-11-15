@@ -43,10 +43,9 @@
     </div>
 </template>
 <script setup>
-import { nextTick } from 'vue'
-const { $emitter, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
+const repoCompany = useRepoCompany()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const state = reactive({
@@ -73,14 +72,19 @@ function checkApplicationEnabled() {
     return repoAuth.state.company.hasActiveJobs || state.appliedList.length
 }
 async function initialize() {
-    if (!repoAuth.state.company) {
+    const { company } = repoAuth.state
+    if (!company) {
         return
     }
     const response = await repoJobApplication.getApplicationByQuery({
-        organizationId: repoAuth.state.company.id,
+        organizationId: company.id,
         applyFlow: ['applied', 'notified', 'rejected']
     })
     state.appliedList = response.data
+    await repoCompany.getCompanyJobs({
+        organizationId: company.id,
+        orderBy: 'datePosted',
+    })
 }
 </script>
 <style lang="scss" scoped>
