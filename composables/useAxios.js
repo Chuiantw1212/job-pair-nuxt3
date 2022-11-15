@@ -42,7 +42,7 @@ export default function () {
                         window.requestAnimationFrame(step)
                     }
                 }
-                window.requestAnimationFrame(step)
+                step()
             })
         }
         const { method, url, data, params = {}, headers, commit = false } = options

@@ -127,7 +127,7 @@ function requestSelector(ClassicEditor, callback) {
             window.requestAnimationFrame(step)
         }
     }
-    window.requestAnimationFrame(step)
+    step()
 }
 async function initializeCKEditor(ClassicEditor) {
     // 使用CDN
