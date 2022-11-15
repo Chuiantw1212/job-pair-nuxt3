@@ -31,11 +31,24 @@ export default function () {
         window.URL.revokeObjectURL(objectURL)
     }
     async function request(options) {
+        let auth = null
+        if (process.client) {
+            auth = await new Promise((resolve) => {
+                const step = function () {
+                    try {
+                        let auth = getAuth()
+                        resolve(auth)
+                    } catch (error) {
+                        window.requestAnimationFrame(step)
+                    }
+                }
+                window.requestAnimationFrame(step)
+            })
+        }
         const { method, url, data, params = {}, headers, commit = false } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }
-        const auth = getAuth()
         if (auth && auth.currentUser) {
             state.token = await auth.currentUser.getIdToken()
         }
@@ -111,6 +124,7 @@ export default function () {
         }))
     }
     return {
+        state,
         setToken,
         request
     }

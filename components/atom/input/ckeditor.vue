@@ -121,7 +121,6 @@ function getValue() {
 function requestSelector(ClassicEditor, callback) {
     function step() {
         if (ClassicEditor) {
-            console.log('ClassicEditor is loaded.');
             callback(ClassicEditor)
         } else {
             console.log('Waiting for ClassicEditor.');
