@@ -53,16 +53,8 @@
                             </div>
                             <hr>
                             <div class="profile__body" :class="{ 'profile__body--isOpen': state.isItemOpen[index] }">
-                                <span class="body__coverLetter">
-                                    {{ item.description }}
-                                </span>
-                                <span v-if="state.isItemOpen[index]" class="profile__toggle"
-                                    @click="toggleProfileBody(index)">
-                                    收合
-                                </span>
-                                <span v-else class="profile__toggle" @click="toggleProfileBody(index)">
-                                    展開
-                                </span>
+                                <AtomInputCkeditor v-model="item.description" :toolbar="[]" :disabled="true">
+                                </AtomInputCkeditor>
                             </div>
                             <br>
                             <div class="profile__footer">
@@ -88,7 +80,7 @@
     </div>
 </template>
 <script setup>
-const { $sweet, $filter } = useNuxtApp()
+const { $filter } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
@@ -232,9 +224,6 @@ async function initializeSearch() {
     })
     state.applications = [...unhandledItems, ...handledItems]
 
-}
-function toggleProfileBody(index) {
-    state.isItemOpen[index] = !state.isItemOpen[index]
 }
 </script>
 <style lang="scss">
