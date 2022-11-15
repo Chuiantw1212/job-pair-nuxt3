@@ -171,7 +171,7 @@ function getOrderedLocations() {
 }
 function getInvitedTime(item) {
     const { applyFlow, invitedTime } = item
-    if (!applyFlow && !invitedTime) {
+    if (!applyFlow || !invitedTime) {
         return
     }
     const currentTime = new Date().getTime()
@@ -179,7 +179,7 @@ function getInvitedTime(item) {
     const timeDiff = currentTime - updatedTime
     const dayDiff = Math.floor(timeDiff / (1000 * 3600 * 24))
     // Line: 投遞履歷的時間，超過三天，顯示投遞日期
-    if (dayDiff === 0) {
+    if (dayDiff < 1) {
         return `最近`
     } else if (dayDiff < 4) {
         return `${dayDiff} 天前`
