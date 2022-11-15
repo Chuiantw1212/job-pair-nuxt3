@@ -241,9 +241,6 @@ useHead({
 })
 onMounted(() => {
     const { id } = route.params
-    console.log({
-        id
-    });
     if (id) {
         state.applicantId = id
     }
