@@ -140,7 +140,7 @@
 </template>
 <script setup>
 import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
-const config = useRuntimeConfig()
+const runTime = useRuntimeConfig()
 const { $emitter, $sweet, $optionText } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
@@ -206,9 +206,9 @@ let browserConfig = computed({
 })
 const jobItems = ref([])
 // hooks
-const { data: job } = await useFetch(`${config.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 const { organizationId } = job.value
-const { data: company } = await useFetch(`${config.apiBase}/company/${organizationId}`, { initialCache: false })
+const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
 if (process.client) {
     state.job = job.value
     state.company = company.value
