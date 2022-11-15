@@ -18,7 +18,7 @@ export default defineNuxtPlugin(() => {
                         window.requestAnimationFrame(step)
                     }
                 }
-                window.requestAnimationFrame(step)
+                step()
             },
             requestSelectorAll: (selectorString, callback,) => {
                 console.time(`Request element ${selectorString}`)
@@ -37,22 +37,8 @@ export default defineNuxtPlugin(() => {
                         window.requestAnimationFrame(step)
                     }
                 }
-                window.requestAnimationFrame(step)
+                step()
             },
-            requestRefValue: (refValue, callback,) => {
-                function step() {
-                    if (refValue) {
-                        console.log({
-                            refValue
-                        });
-                        callback(refValue)
-                    } else {
-                        console.log('not ready');
-                        window.requestAnimationFrame(step)
-                    }
-                }
-                window.requestAnimationFrame(step)
-            }
         }
     }
 })
