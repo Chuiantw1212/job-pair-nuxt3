@@ -13,13 +13,10 @@
                             <div class="feedback__content">
                                 <div class="content__name">{{ feedback.name }}</div>
                                 <div class="content__to">諮詢師：{{ feedback.to }}</div>
-                                <div v-if="limit && feedback.desc.length >= limit" class="content__desc">
-                                    {{ getSlicedDesc(feedback.desc) }}
-                                    <button class="content__openModal" @click="showFeedback(feedback)">...詳全文</button>
-                                </div>
-                                <div v-else>
+                                <div class="content__desc">
                                     {{ feedback.desc }}
                                 </div>
+                                <button class="content__openModal" @click="showFeedback(feedback)">詳全文</button>
                             </div>
                         </li>
                     </ul>
@@ -216,6 +213,12 @@ function getSlicedDesc(desc = "") {
             font-size: 24px;
             color: #000;
             line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.3s;
         }
 
         .content__to {
@@ -229,6 +232,12 @@ function getSlicedDesc(desc = "") {
             font-size: 15px;
             line-height: 1.3;
             color: #484848;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.3s;
         }
 
         .content__openModal {
