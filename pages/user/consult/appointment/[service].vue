@@ -75,7 +75,7 @@
     </div>
 </template>
 <script setup>
-const { $storageBucket, $validate } = useNuxtApp()
+const { $storageBucket, $validate, $sweet } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
@@ -120,10 +120,12 @@ const state = reactive({
 useHead({
     title: `職涯諮詢 - 會員中心 - Job Pair`,
 })
-onMounted(() => {
+onMounted(async () => {
     const service = route.params.service || 'life'
     state.appointmentForm.service = service
-    loadConsultants()
+    $sweet.loader(true)
+    await loadConsultants()
+    $sweet.loader(false)
 })
 // methods
 async function loadConsultants() {
