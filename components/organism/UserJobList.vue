@@ -9,7 +9,8 @@
                 </div>
                 <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
                 <div v-else class="job__badge job__badge--active">招聘中</div>
-                <div class="job__organizationName">{{ item.organizationName }}</div>
+                <NuxtLink class="job__organizationName" :to="`/company/${item.organizationId}`">{{ item.organizationName
+                }}</NuxtLink>
                 <div class="job__time">{{ getSavedTime(item) }}</div>
             </div>
             <div v-if="item.status === 'closed'" class="list__item__job">
@@ -30,11 +31,9 @@
     </div>
 </template>
 <script setup>
-import { onMounted, computed, nextTick } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
-const repoSelect = useRepoSelect()
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -190,6 +189,12 @@ function getSavedTime(item) {
             overflow: hidden;
             text-overflow: ellipsis;
             transition: all 0.3s;
+            text-decoration: none;
+            color: black;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .job__time {
