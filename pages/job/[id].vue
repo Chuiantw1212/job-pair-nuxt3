@@ -327,9 +327,9 @@ function checkJobCategory() {
     if (!user || !state.job || !user.occupationalCategory) {
         return
     }
-    const { userJobCategory = [] } = user.occupationalCategory
+    const { occupationalCategory = [] } = user
     const jobCategory = state.job.occupationalCategory
-    const isMismatched = userJobCategory.every(category => {
+    const isMismatched = occupationalCategory.every(category => {
         return !jobCategory.includes(category)
     })
     return isMismatched
