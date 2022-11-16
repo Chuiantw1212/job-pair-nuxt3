@@ -103,6 +103,7 @@ function getSavedTime(item) {
     width: 100%;
     display: flex;
     gap: 10px;
+    margin: 0;
 
     .card__list__item {
         min-width: 320px;
