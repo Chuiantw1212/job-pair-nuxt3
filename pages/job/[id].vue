@@ -324,10 +324,10 @@ function checkInfoIncomplete() {
 }
 function checkJobCategory() {
     const { user } = repoAuth.state
-    if (!user || !state.job) {
+    if (!user || !state.job || !user.occupationalCategory) {
         return
     }
-    const userJobCategory = user.occupationalCategory
+    const { userJobCategory = [] } = user.occupationalCategory
     const jobCategory = state.job.occupationalCategory
     const isMismatched = userJobCategory.every(category => {
         return !jobCategory.includes(category)
