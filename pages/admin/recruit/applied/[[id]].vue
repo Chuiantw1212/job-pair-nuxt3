@@ -457,7 +457,7 @@ async function initializeSearch() {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .appliedList {
 
     .appliedList__form {
