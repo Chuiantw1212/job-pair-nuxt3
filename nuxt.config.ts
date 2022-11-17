@@ -39,11 +39,10 @@ export default defineNuxtConfig({
         '@glidejs/glide/dist/css/glide.theme.min.css',
     ],
     runtimeConfig: {
-        apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
+            apiBase: 'http://localhost:8080',
         }
     },
     // ... other options
