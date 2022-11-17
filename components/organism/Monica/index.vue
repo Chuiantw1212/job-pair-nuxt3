@@ -15,6 +15,7 @@
 <script setup>
 const repoAuth = useRepoAuth()
 const router = useRouter()
+const device = useDevice()
 const state = reactive({
     isSet: false,
     isVisible: false
@@ -34,7 +35,10 @@ watchEffect(() => {
     }
 })
 function routeToProfile() {
-    router.push(`/user/profile`)
+    device.state.isResumeRequired = true
+    router.push({
+        name: 'user-profile'
+    })
 }
 </script>
 <style lang="scss">
