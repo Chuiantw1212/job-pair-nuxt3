@@ -72,13 +72,10 @@
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。">
                 </AtomInputCkeditor>
-                <!-- <AtomInputTextarea name="個人簡歷" v-model="state.profile.description" 
-                    class="resume__introduction mt-3" rows="8" 
-                    :required="state.profile.isActive">
-                </AtomInputTextarea> -->
             </MoleculeProfileCard>
             <MoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
-                <AtomInputUploader v-model="state.profile.resumes" :size="5242880" :accept="'.pdf'" :max="3" required>
+                <AtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+                    :required="device.state.isResumeRequired">
                 </AtomInputUploader>
                 <MoleculePortfolio v-model="state.profile.portfolio"></MoleculePortfolio>
             </MoleculeProfileCard>

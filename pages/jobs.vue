@@ -130,8 +130,8 @@
                             :recommend="true">
                         </OrganismJobItem>
                     </template>
-                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
-                        :recommend="job.recommend" :key="index" :ref="`jobItems`" class="main__list__item jobItem">
+                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                        :ref="`jobItems`" class="main__list__item jobItem">
                     </OrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -152,13 +152,12 @@
     </div>
 </template>
 <script setup>
-import { nextTick, ref } from 'vue'
 const { $requestSelectorAll, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
-const route = useRoute()
+const router = useRouter()
 const state = reactive({
     jobList: [],
     jobRecommendList: [],
@@ -209,7 +208,7 @@ watch(() => state.filter, () => {
     initializeSearch()
 }, { deep: true })
 watch(() => state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length === oldValue.length) {
+    if (newValue.length === oldValue.length || !process.client) {
         return
     }
     if (!state.observer) {
@@ -416,13 +415,7 @@ async function concatJobsFromServer(config = {}) {
     // 一般排序與適配讀排序時避免重複出現職缺
     const recommendJobIds = recommendJobs.map(item => item.identifier)
     let notDuplicatedJobs = items
-    if (state.pagination.pageOrderBy === 'salaryValue') {
-        notDuplicatedJobs.forEach(item => {
-            if (recommendJobIds.includes(item.identifier)) {
-                item.recommend = true
-            }
-        })
-    } else {
+    if (state.pagination.pageOrderBy !== 'salaryValue') {
         notDuplicatedJobs = items.filter(item => {
             return !recommendJobIds.includes(item.identifier)
         })

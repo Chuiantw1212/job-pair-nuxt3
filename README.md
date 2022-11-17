@@ -48,6 +48,12 @@ npm run dev
 2. 安裝 firebase-tools (https://www.npmjs.com/package/firebase-tools)
 3. 切換到正確的分支
 4. 避免Windows權限問題 (https://github.com/firebase/firebase-tools/issues/1627)
+### 常用Firebase指令
+```
+firebase projects:list
+firebase use
+```
+### 發布用指令
 ```
 npm run build
 npm run deploy

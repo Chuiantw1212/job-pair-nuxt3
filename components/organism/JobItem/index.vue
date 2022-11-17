@@ -46,15 +46,16 @@
                 </NuxtLink>
                 <div class="main__panel d-lg-none">
                     <div class="panel__vl"></div>
-                    <OrganismJobItemPanel v-model="modelValue"></OrganismJobItemPanel>
+                    <OrganismJobItemPanel v-model="localValue"></OrganismJobItemPanel>
                 </div>
             </div>
         </div>
-        <OrganismJobItemPanel v-model="modelValue" class="d-none d-lg-block item__footer" :showShareButton="true">
+        <OrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
         </OrganismJobItemPanel>
     </li>
 </template>
 <script setup>
+const emit = defineEmits(['update:modelValue'])
 const { $optionText, $salary } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -68,18 +69,20 @@ const props = defineProps({
             return {}
         }
     },
-    filter: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    },
     recommend: {
         type: Boolean,
         default: false
     }
 })
 // hooks
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
 watchEffect(() => {
     const { user } = repoAuth.state
     if (!user) {

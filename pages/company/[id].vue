@@ -110,8 +110,9 @@
     </div>
 </template>
 <script setup>
-import { ref, nextTick } from 'vue'
+import defaultBanner from '~/assets/company/img_banner_default.png'
 const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
+const runTime = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
 const repoCompany = useRepoCompany()
@@ -119,7 +120,7 @@ const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
 const repoAuth = useRepoAuth()
 const state = reactive({
-    id: $uuid4(),
+    id: null,
     jsonld: null,
     companyInfo: null,
     tabItems: [
@@ -145,7 +146,33 @@ const state = reactive({
 })
 const jobItems = ref([])
 // hooks
+const organizationId = computed(() => {
+    return route.params.id
+})
+const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
+if (process.client) {
+    state.companyInfo = company.value
+}
+useHead(() => {
+    const headConfig = {
+        title: `Job Pair`,
+        meta: [
+            { property: 'og:image', defaultBanner }
+        ]
+    }
+    if (company.value) {
+        const { name: companyName, banner } = company.value
+        headConfig.title = `${companyName} - Job Pair`
+        if (banner) {
+            headConfig.meta = [
+                { property: 'og:image', content: companyBanner }
+            ]
+        }
+    }
+    return headConfig
+})
 onMounted(async () => {
+    state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]
     await initializeCompany(id)
     window.addEventListener("resize", setTimeForGlide)
@@ -160,17 +187,17 @@ onBeforeUnmount(() => {
 watch(() => repoAuth.state.user, (newValue) => {
     jobScroller.initializeSearch()
 }, { immediate: true })
-watch(() => jobScroller.state.jobList, () => {
-    jobScroller.observeLastJob(jobItems)
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
 })
 // methods
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
     state.companyInfo = company
-    const { images = [], name = "", } = company
-    // Content
-    document.title = `${name} - Job Pair`
+    const { images = [], } = company
     if (images && images.length) {
         state.focusedImageSrc = images[0].url
         initialGlide()

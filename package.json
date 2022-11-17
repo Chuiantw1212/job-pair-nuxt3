@@ -6,11 +6,11 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "build": "npx cross-env NITRO_PRESET=firebase nuxt build",
-    "predeploy": "cd ./.output/server && npm install",
+    "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy"
   },
   "devDependencies": {
-    "nuxt": "^3.0.0-rc.13"
+    "nuxt": "^3.0.0-rc.14"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",

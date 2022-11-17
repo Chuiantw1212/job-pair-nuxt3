@@ -287,9 +287,9 @@ function getUpdatedDate(item) {
     return $time(applyFlowTime)
 }
 function getCompanyJobItems() {
-    const { companyJobsRes } = repoCompany.state
-    const nonDrafts = companyJobsRes.filter(item => item.name)
+    const { companyJobsRes = [] } = repoCompany.state
     if (companyJobsRes) {
+        const nonDrafts = companyJobsRes.filter(item => item.name)
         return [{ identifier: null, name: '全部職缺' }, ...nonDrafts]
     }
 }

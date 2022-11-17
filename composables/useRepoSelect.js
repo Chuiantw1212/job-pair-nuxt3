@@ -10,7 +10,7 @@ export default defineStore('select', () => {
     })
     // getters
     const industryItems = computed(() => {
-        if (!state.industryCategoryRes || !state.selectByQueryRes.industry) {
+        if (!state.industryCategoryRes || !state.selectByQueryRes || !state.selectByQueryRes.industry) {
             return {}
         }
         const industryMatrix = Object.values(state.industryCategoryRes)

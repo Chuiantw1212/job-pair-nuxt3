@@ -9,7 +9,7 @@
     <!-- Modal -->
     <div class="modal fade" :id="`modal_${modelValue.identifier}`" tabindex="-1" aria-labelledby="jobModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-lg" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" data-bs-backdrop="static">
             <div v-if="state.job" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="jobModalLabel">{{ getJobName() }}</h5>
@@ -24,19 +24,19 @@
                             class="mt-2">
                         </AtomInputText>
                         <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型"
-                            :max="3" required class="mt-2">
+                            :max="3" :disabled="true" required class="mt-2">
                             <template v-slot:header>
                                 <MoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
                                     :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
                                 </MoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
-                                <MoleculeFilterCategory v-model="state.job.occupationalCategory"
-                                    :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                                    :isDesktop="device.state.isDesktop" required name="職務類型">
-                                </MoleculeFilterCategory>
                             </template>
                         </MoleculeProfileSelectContainer>
+                        <MoleculeFilterCategory class="jobItem__category" v-model="state.job.occupationalCategory"
+                            :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
+                            :isDesktop="device.state.isDesktop" required name="職務類型">
+                        </MoleculeFilterCategory>
                         <AtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
                             class="mt-2"></AtomInputSelect>
@@ -102,10 +102,10 @@
                             </AtomInputText>
                         </div>
                         <AtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required class="mt-2">
+                            :toolbar="state.toolbar" required class="mt-2">
                         </AtomInputCkeditor>
                         <AtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :removePlatformLink="true" class="mt-2">
+                            :toolbar="state.toolbar" :removePlatformLink="true" class="mt-2">
                         </AtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-2">
                             <div class="preference__header">用人偏好</div>
@@ -158,7 +158,29 @@ const state = reactive({
     filterOpen: {
         occupationalCategory: false,
     },
-    bsModal: null
+    bsModal: null,
+    toolbar: [
+        "heading",
+        "|",
+        'fontSize',
+        "|",
+        'bold',
+        'italic',
+        // 'link', // 正規表示式出來前，一律拿掉職缺超連結
+        'bulletedList',
+        'numberedList',
+        '|',
+        'outdent',
+        'indent',
+        '|',
+        'blockQuote',
+        'insertTable',
+        'mediaEmbed',
+        'undo',
+        'redo',
+        '|',
+        'removeFormat'
+    ]
 })
 const props = defineProps({
     modelValue: {
@@ -355,15 +377,12 @@ defineExpose({
 }
 
 .jobItem {
-    .dropLayer__header {
-        .header__button {
-            background-color: #fafafa;
-            color: #0a9b68;
-            border-radius: 10px;
-            border: 1px solid #0a9b68;
-            padding: 12px;
-            margin-right: 16px;
-        }
+    .jobItem__category {
+        border: 1px solid #d9d9d9;
+        border-radius: 10px;
+        background-color: white;
+        min-width: 100%;
+        margin-top: 4px;
     }
 
     .dropLayer__form {
