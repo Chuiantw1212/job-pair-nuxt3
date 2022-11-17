@@ -21,10 +21,10 @@
                         <AtomInputSwitch v-model="state.job.status">
                         </AtomInputSwitch>
                         <AtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled"
-                            class="mt-2">
+                            class="mt-4">
                         </AtomInputText>
                         <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型"
-                            :max="3" :disabled="true" required class="mt-2">
+                            :max="3" :disabled="true" required class="mt-4">
                             <template v-slot:header>
                                 <MoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
                                     :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
@@ -39,13 +39,13 @@
                         </MoleculeFilterCategory>
                         <AtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
-                            class="mt-2"></AtomInputSelect>
+                            class="mt-4"></AtomInputSelect>
                         <AtomInputSelect v-model="state.job.employmentType" name="職務層級" required
                             :items="repoSelect.state.selectByQueryRes.employmentType" :disabled="state.disabled"
-                            class="mt-2">
+                            class="mt-4">
                         </AtomInputSelect>
                         <div class="form__salary">
-                            <div class="salary__header mt-2">
+                            <div class="salary__header mt-4">
                                 <span class="header__text">
                                     <span class="text-danger">* </span>
                                     薪資類型</span>
@@ -60,7 +60,7 @@
                                     (年薪: {{ getSalaryRange() }})
                                 </template>
                             </div>
-                            <div class="d-md-flex gap-2">
+                            <div class="d-md-flex gap-2 mt-4">
                                 <AtomInputMoney v-model="state.job.salaryMin" :name="'經常性起薪'"
                                     :placeholder="`請輸入最低${$optionText(state.job.salaryType, repoSelect.state.selectByQueryRes.salaryType)}`"
                                     :disabled="state.disabled" :min="getMinSalary()" required
@@ -79,11 +79,11 @@
                                 </template>
                             </div>
                         </div>
-                        <AtomInputSelect v-model="state.job.jobLocationType" name="遠端工作彈性" required class="mt-2"
+                        <AtomInputSelect v-model="state.job.jobLocationType" name="遠端工作彈性" required class="mt-4"
                             :items="repoSelect.state.selectByQueryRes.jobLocationType" :disabled="state.disabled"
                             @change="resetAddress()">
                         </AtomInputSelect>
-                        <div class="d-lg-flex gap-2 mt-2">
+                        <div class="d-lg-flex gap-2 mt-4">
                             <AtomInputSelect v-model="state.job.addressRegion" class="w-10" name="工作縣市"
                                 :items="repoSelect.state.locationRes.taiwan"
                                 :disabled="state.disabled || state.job.jobLocationType === 'fullyRemote'"
@@ -102,12 +102,12 @@
                             </AtomInputText>
                         </div>
                         <AtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            :toolbar="state.toolbar" required class="mt-2">
+                            :toolbar="state.toolbar" required class="mt-4">
                         </AtomInputCkeditor>
                         <AtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :toolbar="state.toolbar" :removePlatformLink="true" class="mt-2">
+                            :toolbar="state.toolbar" :removePlatformLink="true" class="mt-4">
                         </AtomInputCkeditor>
-                        <div v-if="state.job.preference" class="form__preference mt-2">
+                        <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
                             <div class="preference__body">
                                 <template v-for="(questionGroup, key1) in repoSelect.state.questionsRes" :key="key1">
