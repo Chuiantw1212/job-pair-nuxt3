@@ -170,7 +170,7 @@
                             <td class="card__table__cell">
                                 <div class="cell__header d-lg-none">工作性質</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $optionText(state.jobCompare.first.employmentType,
+                                    {{ $filter.optionText(state.jobCompare.first.employmentType,
                                             repoSelect.state.selectByQueryRes.employmentType)
                                     }}
                                 </div>
@@ -178,14 +178,14 @@
                             <td v-if="state.jobComparable.length >= 2" class="card__table__cell">
                                 <div class="cell__header d-lg-none">工作性質</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $optionText(state.jobCompare.second.employmentType,
+                                    {{ $filter.optionText(state.jobCompare.second.employmentType,
                                             repoSelect.state.selectByQueryRes.employmentType)
                                     }}
                                 </div>
                             </td>
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3">
                                 <div class="cell__body">
-                                    {{ $optionText(state.jobCompare.third.employmentType,
+                                    {{ $filter.optionText(state.jobCompare.third.employmentType,
                                             repoSelect.state.selectByQueryRes.employmentType)
                                     }}
                                 </div>
@@ -196,7 +196,7 @@
                             <td class="card__table__cell">
                                 <div class="cell__header d-lg-none">遠端型態</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $optionText(state.jobCompare.first.jobLocationType,
+                                    {{ $filter.optionText(state.jobCompare.first.jobLocationType,
                                             repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
@@ -204,7 +204,7 @@
                             <td v-if="state.jobComparable.length >= 2" class="card__table__cell">
                                 <div class="cell__header d-lg-none">遠端型態</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $optionText(state.jobCompare.second.jobLocationType,
+                                    {{ $filter.optionText(state.jobCompare.second.jobLocationType,
                                             repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
@@ -212,7 +212,7 @@
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3"
                                 class="card__table__cell">
                                 <div class="cell__body">
-                                    {{ $optionText(state.jobCompare.third.jobLocationType,
+                                    {{ $filter.optionText(state.jobCompare.third.jobLocationType,
                                             repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
@@ -269,7 +269,7 @@
                                         class="mt-1" :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
-                                            {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
+                                            {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
                                 </div>
@@ -281,7 +281,7 @@
                                         class="mt-1" :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
-                                            {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
+                                            {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
                                 </div>
@@ -293,7 +293,7 @@
                                         class="mt-1" :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
-                                            {{ $optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
+                                            {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                         </div>
                                     </template>
                                 </div>
@@ -327,8 +327,7 @@
     </div>
 </template>
 <script setup>
-import { onMounted, computed, nextTick } from 'vue'
-const { $optionText, $rank } = useNuxtApp()
+const { $filter, $rank } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
@@ -360,7 +359,7 @@ watch(() => repoAuth.state.user, () => {
 //methds
 function getSalaryText(item) {
     const { salaryMin = 0, salaryType = "", salaryMax = 0 } = item
-    const type = $optionText(salaryType, repoSelect.state.selectByQueryRes.salaryType)
+    const type = $filter.optionText(salaryType, repoSelect.state.selectByQueryRes.salaryType)
     const lowString = Number(salaryMin).toLocaleString()
     let salaryText = `${type}${lowString}`
     if (salaryMax) {

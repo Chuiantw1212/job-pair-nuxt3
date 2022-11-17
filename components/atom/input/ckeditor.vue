@@ -37,6 +37,7 @@ const props = defineProps({
                 "|",
                 'bold',
                 'italic',
+                'link',
                 'bulletedList',
                 'numberedList',
                 '|',

@@ -36,8 +36,6 @@ const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
 const currentInstance = getCurrentInstance()
-const modalBodyRef = ref(null)
-const templateRef = ref(null)
 const state = reactive({
     id: $uuid4(),
     job: null,
@@ -124,9 +122,9 @@ async function sendRejectLetter() {
     const patchResult = await repoJobApplication.patchJobApplicant(application)
     if (patchResult.status === 200) {
         await $sweet.succeed()
-        this.editModal.hide()
+        state.editModal.hide()
         const updatedResult = Object.assign({}, application, patchResult.data)
-        $emit('update:modelValue', updatedResult)
+        emit('update:modelValue', updatedResult)
     }
 }
 </script>

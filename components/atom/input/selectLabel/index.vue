@@ -1,9 +1,9 @@
 <template>
     <div class="inputSelectLabel">
         <template v-for="(item, index) in modelValue" :key="index">
-            <div v-if="$optionText(item, items)" class="item__badge">
+            <div v-if="$optionText(item, items)" class="item__badge" @click="removeSelf(index)">
                 <span>{{ $optionText(item, items) }}</span>
-                <img class="badge__image" src="./Icon_delete_g.svg" @click="removeSelf(index)" />
+                <img class="badge__image" src="./Icon_delete_g.svg" />
             </div>
         </template>
     </div>
@@ -53,6 +53,7 @@ function removeSelf(index) {
     gap: 0 10px;
 
     .item__badge {
+        cursor: pointer;
         display: inline-flex;
         margin-bottom: 10px;
         padding: 9px 15px;
@@ -67,7 +68,6 @@ function removeSelf(index) {
             height: 16px;
             margin-left: 8px;
             display: block;
-            cursor: pointer;
         }
     }
 }

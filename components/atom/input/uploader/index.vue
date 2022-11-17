@@ -73,7 +73,7 @@ export default {
         },
         name: {
             type: String,
-            default: '履歷'
+            default: ''
         },
         required: {
             type: Boolean,

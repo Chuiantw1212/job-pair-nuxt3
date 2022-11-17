@@ -228,7 +228,6 @@ onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
-        // initialize()
     }
 })
 onBeforeUnmount(() => {
@@ -292,11 +291,11 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $sweet.alert('前往完成個人檔案', {
+    const res = await $sweet.info('前往完成個人檔案', {
         title: '履歷未完成',
-        icon: 'info'
     })
     if (res.value) {
+        device.state.isResumeRequired = true
         router.push({
             name: 'user-profile'
         })
@@ -312,24 +311,26 @@ function getEncodedMapLink() {
 function checkInfoIncomplete() {
     const { user } = repoAuth.state
     if (user) {
-        const { resumes = [] } = user
+        // 一般欄位
         const requiredFieds = ['name', 'email', 'telephone', 'birthDate', 'gender']
         const incompleteFields = requiredFieds.filter(field => {
             return !user[field] || !String(user[field]).trim()
         })
         const hasIncomplete = incompleteFields.length !== 0
+        // 履歷欄位
+        const { resumes = [] } = user
         const noResumes = resumes.length === 0
         return hasIncomplete || noResumes
     }
 }
 function checkJobCategory() {
     const { user } = repoAuth.state
-    if (!user || !state.job) {
+    if (!user || !state.job || !user.occupationalCategory) {
         return
     }
-    const userJobCategory = user.occupationalCategory
+    const { occupationalCategory = [] } = user
     const jobCategory = state.job.occupationalCategory
-    const isMismatched = userJobCategory.every(category => {
+    const isMismatched = occupationalCategory.every(category => {
         return !jobCategory.includes(category)
     })
     return isMismatched

@@ -58,9 +58,6 @@ const localValue = computed({
 })
 // methods
 function removeSelf(index) {
-    console.log({
-        localValue
-    })
     localValue.value.splice(index, 1)
 }
 </script>

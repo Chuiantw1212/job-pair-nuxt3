@@ -70,10 +70,6 @@ const repoJobApplication = useRepoJobApplication()
 const router = useRouter()
 const emit = defineEmits(['update:modelValue'])
 const currentInstance = getCurrentInstance()
-const templateHeaderRef = ref(null)
-const templateFooterRef = ref(null)
-const modalBodyRef = ref(null)
-const templateContentRef = ref(null)
 const state = reactive({
     id: null,
     editModal: null,

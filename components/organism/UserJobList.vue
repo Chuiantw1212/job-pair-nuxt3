@@ -1,17 +1,18 @@
 <template>
     <ul v-if="modelValue.length" class="kanban__card__list">
         <li v-for="(item, index) in modelValue" class="card__list__item" :key="index">
-            <NuxtLink v-if="item.status === 'active'" class="list__item__job" :to="`/job/${item.identifier}`">
+            <div v-if="item.status === 'active'" class="list__item__job">
                 <div class="job__header">
-                    <div class="header__name">{{ item.name }}</div>
+                    <NuxtLink class="header__name" :to="`/job/${item.identifier}`">{{ item.name }}</NuxtLink>
                     <button v-if="type === 'saved'" class="btn-close header__save" @click.prevent="unsafeJob(index)">
                     </button>
                 </div>
                 <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
                 <div v-else class="job__badge job__badge--active">招聘中</div>
-                <div class="job__organizationName">{{ item.organizationName }}</div>
+                <NuxtLink class="job__organizationName" :to="`/company/${item.organizationId}`">{{ item.organizationName
+                }}</NuxtLink>
                 <div class="job__time">{{ getSavedTime(item) }}</div>
-            </NuxtLink>
+            </div>
             <div v-if="item.status === 'closed'" class="list__item__job">
                 <div class="job__header">
                     <div class="header__name">{{ item.name }} </div>
@@ -30,11 +31,9 @@
     </div>
 </template>
 <script setup>
-import { onMounted, computed, nextTick } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
-const repoSelect = useRepoSelect()
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -104,6 +103,7 @@ function getSavedTime(item) {
     width: 100%;
     display: flex;
     gap: 10px;
+    margin: 0;
 
     .card__list__item {
         min-width: 320px;
@@ -137,6 +137,13 @@ function getSavedTime(item) {
                 -webkit-box-orient: vertical;
                 text-overflow: ellipsis;
                 overflow: hidden;
+                min-height: 48px;
+                color: black;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
             }
 
             .header__save {
@@ -177,6 +184,18 @@ function getSavedTime(item) {
             font-size: 16px;
             margin-top: 8px;
             line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: black;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .job__time {

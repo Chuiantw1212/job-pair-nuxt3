@@ -8,7 +8,7 @@
             <div class="inputDropdownContainer__trigger__header">
                 <slot name="header"></slot>
             </div>
-            <img src="./icon_Down.svg" class="inputDropdownContainer__icon">
+            <img v-if="!disabled" src="./icon_Down.svg" class="inputDropdownContainer__icon">
         </button>
         <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
             <slot name="body"></slot>
@@ -44,7 +44,7 @@ export default {
         max: {
             type: Number,
             default: 0
-        }
+        },
     },
     mounted() {
         this.toggleClickOutside(true)

@@ -29,7 +29,7 @@ export default defineNuxtPlugin(() => {
                         return
                     }
                     const queryResult = document.querySelectorAll(selectorString)
-                    if (queryResult) {
+                    if (queryResult && queryResult.length !== 0) {
                         callback(queryResult)
                         console.timeEnd(`Request element ${selectorString}`)
                     } else {
