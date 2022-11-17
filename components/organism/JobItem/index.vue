@@ -61,7 +61,7 @@
     </li>
 </template>
 <script setup>
-import defaultLogo from './icon_default company.webp'
+import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
 const { $optionText, $salary } = useNuxtApp()
 const repoAuth = useRepoAuth()
