@@ -291,9 +291,8 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $sweet.alert('前往完成個人檔案', {
+    const res = await $sweet.info('前往完成個人檔案', {
         title: '履歷未完成',
-        icon: 'info'
     })
     if (res.value) {
         device.state.isResumeRequired = true
@@ -312,12 +311,14 @@ function getEncodedMapLink() {
 function checkInfoIncomplete() {
     const { user } = repoAuth.state
     if (user) {
-        const { resumes = [] } = user
+        // 一般欄位
         const requiredFieds = ['name', 'email', 'telephone', 'birthDate', 'gender']
         const incompleteFields = requiredFieds.filter(field => {
             return !user[field] || !String(user[field]).trim()
         })
         const hasIncomplete = incompleteFields.length !== 0
+        // 履歷欄位
+        const { resumes = [] } = user
         const noResumes = resumes.length === 0
         return hasIncomplete || noResumes
     }
