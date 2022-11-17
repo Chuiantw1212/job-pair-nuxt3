@@ -74,7 +74,8 @@
                 </AtomInputCkeditor>
             </MoleculeProfileCard>
             <MoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
-                <AtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3">
+                <AtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+                    :required="device.state.isResumeRequired">
                 </AtomInputUploader>
                 <MoleculePortfolio v-model="state.profile.portfolio"></MoleculePortfolio>
             </MoleculeProfileCard>

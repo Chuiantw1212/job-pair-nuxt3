@@ -228,7 +228,6 @@ onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
-        // initialize()
     }
 })
 onBeforeUnmount(() => {
@@ -297,6 +296,7 @@ async function showIncompleteAlert() {
         icon: 'info'
     })
     if (res.value) {
+        device.state.isResumeRequired = true
         router.push({
             name: 'user-profile'
         })
