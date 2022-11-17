@@ -1,6 +1,9 @@
 <template>
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
-        <img v-if="modelValue.image" class="item__logo" :src="modelValue.image" onerror="this.style.display = 'none'" />
+        <div>
+            <div v-if="modelValue.image" class="item__logo" :style="{ 'background-image': `url(${modelValue.image})` }">
+            </div>
+        </div>
         <div class="item__body">
             <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`">
                 {{ modelValue.name }}
@@ -266,8 +269,10 @@ function getLocationText() {
         .item__logo {
             display: block;
             width: 60px;
-            height: fit-content;
-            max-height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 60px;
         }
 
         .item__body {
