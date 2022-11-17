@@ -107,6 +107,7 @@ export default {
         width: 100%;
         padding: 8px 0;
         margin-top: 10px;
+        cursor: pointer;
 
         .footer__btn {
             width: 100%;
