@@ -457,7 +457,7 @@ async function initializeSearch() {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .appliedList {
 
     .appliedList__form {
@@ -466,12 +466,12 @@ async function initializeSearch() {
         margin-top: 20px;
 
         .form__selectGroup {
-            display: flex;
-            gap: 13px;
+            // display: flex;
+            // gap: 13px;
 
-            >* {
-                width: 50%;
-            }
+            // >* {
+            //     width: 50%;
+            // }
         }
     }
 
@@ -742,6 +742,8 @@ async function initializeSearch() {
         .appliedList__form {
 
             .form__selectGroup {
+                display: flex;
+                gap: 13px;
 
                 >* {
                     min-width: 264px;

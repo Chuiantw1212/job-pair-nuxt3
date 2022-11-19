@@ -12,6 +12,8 @@
                     <div v-if="state.companyInfo.logo" class="basic__logo"
                         :style="{ 'background-image': `url(${state.companyInfo.logo})` }">
                     </div>
+                    <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                    </div>
                     <div class="basic__header">{{ state.companyInfo.name }}</div>
                 </div>
                 <div class="d-none d-lg-flex basic__basicGroup2">
@@ -111,6 +113,7 @@
 </template>
 <script setup>
 import defaultBanner from '~/assets/company/img_banner_default.png'
+import defaultLogo from '~/assets/company/company.webp'
 const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const device = useDevice()

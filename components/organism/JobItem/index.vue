@@ -1,6 +1,12 @@
 <template>
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
-        <img v-if="modelValue.image" class="item__logo" :src="modelValue.image" onerror="this.style.display = 'none'" />
+        <div>
+            <div v-if="modelValue.image" class="item__logo" :style="{ 'background-image': `url(${modelValue.image})` }">
+            </div>
+            <div v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+
+            </div>
+        </div>
         <div class="item__body">
             <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`">
                 {{ modelValue.name }}
@@ -55,6 +61,7 @@
     </li>
 </template>
 <script setup>
+import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
 const { $optionText, $salary } = useNuxtApp()
 const repoAuth = useRepoAuth()
@@ -266,8 +273,10 @@ function getLocationText() {
         .item__logo {
             display: block;
             width: 60px;
-            height: fit-content;
-            max-height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 60px;
         }
 
         .item__body {
