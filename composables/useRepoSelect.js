@@ -19,7 +19,7 @@ export default defineStore('select', () => {
         }, [])
         const itemZ = {
             text: '電子零組件、電腦、電子產品及光學製品製造業',
-            value: '0'
+            value: '0' // 純前端分類顯示用
         }
         return [itemZ, ...state.selectByQueryRes.industry, ...industryItems]
     })
@@ -38,6 +38,11 @@ export default defineStore('select', () => {
                     const subcategory = item.value.slice(0, 2)
                     const notC2627 = !['26', '27'].includes(subcategory)
                     return item.value.length === 2 && notC2627
+                })
+            } if (level1Value === 'N') {
+                // 支援服務業一律取到小類
+                level2items = items.filter(item => {
+                    return item.value.length === 4
                 })
             } else {
                 level2items = items.filter(item => {
