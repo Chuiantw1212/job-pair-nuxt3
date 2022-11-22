@@ -160,17 +160,15 @@ useHead(() => {
     const headConfig = {
         title: `Job Pair`,
         meta: [
-            { property: 'og:image', defaultBanner }
+            { property: 'og:image', content: defaultBanner }
         ]
     }
     if (company.value) {
-        const { name: companyName, banner } = company.value
+        const { name: companyName, banner = null } = company.value
         headConfig.title = `${companyName} - Job Pair`
-        if (banner) {
-            headConfig.meta = [
-                { property: 'og:image', content: companyBanner }
-            ]
-        }
+        headConfig.meta = [
+            { property: 'og:image', content: banner ? banner : defaultBanner }
+        ]
     }
     return headConfig
 })
