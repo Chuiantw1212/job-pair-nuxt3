@@ -80,6 +80,11 @@ import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
+useHead({
+    meta: [
+        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImage.png' }
+    ],
+})
 // methods
 function routeToQuestions() {
     const { user } = repoAuth.state
