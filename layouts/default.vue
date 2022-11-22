@@ -13,7 +13,6 @@ useHead({
     meta: [
         { name: 'description', content: descriptionContent },
         { property: 'og:description', content: descriptionContent },
-        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImage.png' }
     ],
     link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
