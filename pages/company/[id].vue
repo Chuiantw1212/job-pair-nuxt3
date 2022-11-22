@@ -168,7 +168,7 @@ useHead(() => {
         headConfig.title = `${companyName} - Job Pair`
         if (banner) {
             headConfig.meta = [
-                { property: 'og:image', content: companyBanner }
+                { property: 'og:image', content: banner }
             ]
         }
     }
