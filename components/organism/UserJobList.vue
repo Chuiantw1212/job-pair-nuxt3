@@ -108,10 +108,6 @@ function getSavedTime(item) {
     .card__list__item {
         min-width: 320px;
         min-height: 114px;
-
-        // &:not(:first-child) {
-        //     margin-top: 10px;
-        // }
     }
 
     .list__item__job {
@@ -234,6 +230,7 @@ function getSavedTime(item) {
         flex-direction: column;
 
         .card__list__item {
+            min-width: unset;
             &:not(:first-child) {
                 margin-top: 10px;
             }

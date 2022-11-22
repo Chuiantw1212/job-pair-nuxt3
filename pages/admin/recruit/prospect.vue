@@ -27,10 +27,12 @@
                                     <div class="header__info__itemGroups">
                                         <div class="header__info__item">
                                             <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
-                                            <span v-for="(item, index) in item.occupationalCategory" :key="index"
-                                                class="header__info__item__badge">
-                                                {{ $filter.optionText(item, repoSelect.jobCategory) }}
-                                            </span>
+                                            <div class="info__item__badgeGroups">
+                                                <span v-for="(item, index) in item.occupationalCategory" :key="index"
+                                                    class="header__info__item__badge">
+                                                    {{ $filter.optionText(item, repoSelect.jobCategory) }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -226,7 +228,7 @@ async function initializeSearch() {
 
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .appliedList {
 
     .appliedList__form {
@@ -234,12 +236,7 @@ async function initializeSearch() {
         padding: 20px;
 
         .form__selectGroup {
-            display: flex;
             gap: 13px;
-
-            >* {
-                width: 50%;
-            }
         }
     }
 
@@ -309,9 +306,17 @@ async function initializeSearch() {
                         }
 
                         .header__info__item {
+                            display: flex;
 
                             .info__item__icon {
                                 margin-right: 5px;
+                                display: block;
+                            }
+
+                            .info__item__badgeGroups {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 4px;
                             }
 
                             .header__info__item__badge {
@@ -320,10 +325,7 @@ async function initializeSearch() {
                                 border: solid 1px #d3d3d3;
                                 font-size: 13px;
                                 color: #333;
-
-                                &:not(:first-child) {
-                                    margin-left: 5px;
-                                }
+                                white-space: nowrap;
                             }
                         }
 
@@ -466,6 +468,7 @@ async function initializeSearch() {
         .appliedList__form {
 
             .form__selectGroup {
+                display: flex;
 
                 >* {
                     min-width: 264px;

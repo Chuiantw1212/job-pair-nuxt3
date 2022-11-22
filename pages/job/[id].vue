@@ -292,7 +292,7 @@ function debounce(func, delay = 800) {
 }
 async function showIncompleteAlert() {
     const res = await $sweet.info('前往完成個人檔案', {
-        title: '履歷未完成',
+        title: '未上傳履歷',
     })
     if (res.value) {
         device.state.isResumeRequired = true

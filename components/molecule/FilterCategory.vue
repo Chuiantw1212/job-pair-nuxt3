@@ -329,6 +329,7 @@ function closeOtherItems(categoryKey, newFlag) {
             .body__sublist {
                 width: 50%;
                 overflow-y: auto;
+                padding-top: 15px;
             }
         }
     }

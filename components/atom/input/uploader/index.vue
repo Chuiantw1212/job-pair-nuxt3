@@ -230,6 +230,7 @@ export default {
         width: 100%;
         padding: 8px 0;
         display: block;
+        cursor: pointer;
 
         .footer__btn {
             width: 100%;
