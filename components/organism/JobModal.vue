@@ -73,6 +73,7 @@ const state = reactive({
     resume: null,
     renderKey: Math.random(),
 })
+const currentInstance = getCurrentInstance()
 const props = defineProps({
     modelValue: {
         // job
@@ -120,9 +121,8 @@ function setApplication() {
         coverLetter: description,
         jobId
     }
-    $requestSelector(`#coverLetter`, () => {
-        coverLetterRef.value.setData(description)
-    })
+    const coverLetterRef = currentInstance.refs.coverLetterRef
+    coverLetterRef.setData(description)
 }
 function hasSelected(work) {
     if (!state.application || !state.application.portfolio) {

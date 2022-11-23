@@ -48,6 +48,7 @@ const state = reactive({
         template: "",
     }
 })
+const currentInstance = getCurrentInstance()
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -88,14 +89,11 @@ function setInvitationTemplate() {
         `我是${company.name}的招募人員，在Job Pair上看到您的個人簡介。<br/><br/>` +
         `透過適配度的演算，您與我們公司的職缺${props.job.name}適配度達${formatSimilarity}%，表示雙方在組織文化、風格與溝通模式有${formatSimilarity}%的契合度，因此主動寄送職缺資訊給您參考。<br/>` +
         `若您符合職缺所需的條件，也有進一步了解我們公司的興趣；歡迎回覆您的履歷，我們將會優先處理。<br/><br/>` +
-        `招募人員${props.modelValue.name}敬上`
+        `招募人員${repoAuth.state.user.name}敬上`
     state.form.subject = `${company.name}${props.job.name}應徵邀約`
     state.form.template = template
-    if (editorRef.value) {
-        editorRef.value.setData(template)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', editorRef);
-    }
+    const editorRef = currentInstance.refs.editorRef
+    editorRef.setData(template)
 }
 function openModal() {
     const { user } = repoAuth.state

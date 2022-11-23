@@ -73,6 +73,9 @@ export default function setup() {
         state.jobList = [...state.jobList, ...items]
     }
     function observeLastJob(jobItemRefs) {
+        if (!process.client) {
+            return
+        }
         if (!state.observer) {
             state.observer = new IntersectionObserver(loadJobItemBatch, {
                 rootMargin: "0px",

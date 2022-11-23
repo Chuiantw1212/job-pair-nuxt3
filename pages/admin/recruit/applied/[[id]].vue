@@ -648,6 +648,7 @@ async function initializeSearch() {
                     }
 
                     .header__similarity {
+                        margin-left: auto;
 
                         .similarity__score {
                             font-size: 36px;
