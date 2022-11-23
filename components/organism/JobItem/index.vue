@@ -269,6 +269,7 @@ function getLocationText() {
         // flex-direction: column;
         padding: 30px;
         position: relative;
+        gap: 30px;
 
         .item__logo {
             display: block;
