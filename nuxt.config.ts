@@ -6,13 +6,12 @@ export default defineNuxtConfig({
             link: [
                 // Google Fonts
                 { rel: "preconnect", href: "https://fonts.googleapis.com" },
-                { rel: "preconnect", href: "https://fonts.gstatic.com", },
-                { rel: "preload", href: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap", as: "style", onload: "this.onload=null;this.rel='stylesheet'", media: "screen", crossorigin: "anonymous" },
-                { rel: "preload", href: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap", as: "style", onload: "this.onload=null;this.rel='stylesheet'", media: "screen", crossorigin: "anonymous" },
+                { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" },
+                { rel: "preload", as: "font", onload: "this.onload=null;this.rel='stylesheet'", href: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap", },
                 // Firebase
-                { rel: "preload", href: "https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css", as: "style", onload: "this.onload=null;this.rel='stylesheet'", type: "text/css" },
+                { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css", type: "text/css" },
                 // Flatpickr
-                { rel: "preload", href: "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css", as: "style", onload: "this.onload=null;this.rel='stylesheet'", type: "text/css", media: "screen" },
+                { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css", type: "text/css", media: "screen" },
                 // // AOS
                 // { rel: "preload", href: "https://unpkg.com/aos@next/dist/aos.css", as: "style", onload: "this.onload=null;this.rel='stylesheet'", type: "text/css", media: "screen" },
                 // Bootstrap
