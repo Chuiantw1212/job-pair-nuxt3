@@ -17,6 +17,7 @@ useHead({
         { name: 'description', content: descriptionContent },
         { property: 'og:description', content: descriptionContent },
     ],
+    // Favicon https://github.com/nuxt/framework/discussions/5204
     link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
