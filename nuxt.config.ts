@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     },
     // ... other options
     modules: [
-        // ...
+        '@nuxtjs/partytown',
         '@pinia/nuxt',
     ],
     vite: {

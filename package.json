@@ -12,6 +12,7 @@
     "host": "firebase deploy --only hosting"
   },
   "devDependencies": {
+    "@nuxtjs/partytown": "^1.2.2",
     "nuxt": "^3.0.0"
   },
   "dependencies": {
