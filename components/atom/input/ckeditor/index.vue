@@ -121,10 +121,16 @@ function getValue() {
     return case1
 }
 function requestSelector(ClassicEditor, callback) {
+    let localCount = 0
     function step() {
+        if (localCount >= 100) {
+            console.error(`Cannot find ClassicEditor`)
+            return
+        }
         if (ClassicEditor) {
             callback(ClassicEditor)
         } else {
+            localCount++
             window.requestAnimationFrame(step)
         }
     }
