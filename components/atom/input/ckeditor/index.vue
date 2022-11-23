@@ -92,8 +92,9 @@ let localValue = computed({
     }
 })
 // hooks
-onMounted(() => {
+onMounted(async () => {
     if (process.client) {
+        await import("~/assets/ckeditor5/build/ckeditor.js")
         state.id = $uuid4()
         requestSelector(window.ClassicEditor, (ClassicEditor) => {
             initializeCKEditor(ClassicEditor)
