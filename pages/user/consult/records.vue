@@ -274,7 +274,6 @@
     </div>
 </template>
 <script setup>
-import { async } from '@firebase/util';
 import { reactive, onMounted, } from 'vue'
 const { $time, } = useNuxtApp()
 const device = useDevice()

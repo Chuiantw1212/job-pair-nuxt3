@@ -102,10 +102,12 @@
                                         </div>
                                         <div class="header__info__item">
                                             <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
-                                            <span v-for="(item, index) in item.occupationalCategory" :key="index"
-                                                class="header__info__item__badge">
-                                                {{ $optionText(item, repoSelect.jobCategory) }}
-                                            </span>
+                                            <div class="info__item__badgeGroup">
+                                                <span v-for="(item, index) in item.occupationalCategory" :key="index"
+                                                    class="header__info__item__badge">
+                                                    {{ $optionText(item, repoSelect.jobCategory) }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -148,8 +150,8 @@
                             <LazyOrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
                             </LazyOrganismScheduleModal>
-                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
-                                @update:modelValue="updateChart()">
+                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'"
+                                v-model="state.applications[index]" @update:modelValue="updateChart()">
                                 婉拒
                             </LazyOrganismRejectModal>
                             <LazyAtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
@@ -610,22 +612,31 @@ async function initializeSearch() {
                         }
 
                         .header__info__item {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            // flex-wrap: wrap;
+
                             .info__item__icon {
-                                margin-right: 5px;
+                                max-width: 16px;
                             }
 
+                            .info__item__badgeGroup {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 4px;
 
-                            .header__info__item__badge {
-                                padding: 5px 12px;
-                                border-radius: 10px;
-                                border: solid 1px #d3d3d3;
-                                font-size: 13px;
-                                color: #333;
-
-                                &:not(:first-child) {
-                                    margin-left: 5px;
+                                .header__info__item__badge {
+                                    padding: 5px 12px;
+                                    border-radius: 10px;
+                                    border: solid 1px #d3d3d3;
+                                    font-size: 13px;
+                                    color: #333;
+                                    white-space: nowrap;
                                 }
                             }
+
+
                         }
 
                         .header__info__item--name {
@@ -637,10 +648,6 @@ async function initializeSearch() {
                     }
 
                     .header__similarity {
-                        position: absolute;
-                        right: 0;
-                        top: 0;
-                        text-align: center;
 
                         .similarity__score {
                             font-size: 36px;
@@ -789,9 +796,13 @@ async function initializeSearch() {
                         }
 
                         .header__info {
+                            .header__info__item {
+                                flex-wrap: wrap;
+                            }
+
                             .header__info__itemGroups {
-                                display: grid;
-                                grid-template-columns: auto auto;
+                                flex-direction: row;
+                                flex-wrap: wrap;
                             }
                         }
                     }
