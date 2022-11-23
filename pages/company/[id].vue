@@ -48,15 +48,11 @@
             <div class="body__textGroup">
                 <div v-if="state.companyInfo" class="company__card company__intro">
                     <div class="card__header">公司介紹</div>
-                    <AtomInputCkeditor v-model="state.companyInfo.description" :toolbar="[]" disabled
-                        class="card__body">
-                    </AtomInputCkeditor>
+                    <div class="card__body" v-html="state.companyInfo.description"></div>
                 </div>
                 <div v-if="state.companyInfo" class="company__card company__welfare">
                     <div class="card__header">公司福利</div>
-                    <AtomInputCkeditor v-model="state.companyInfo.jobBenefits" :toolbar="[]" disabled
-                        class="card__body">
-                    </AtomInputCkeditor>
+                    <div class="card__body" v-html="state.companyInfo.jobBenefits"></div>
                 </div>
             </div>
             <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"
@@ -258,10 +254,7 @@ function getLocationText() {
         }
 
         .card__body {
-            font-size: 16px;
-            font-weight: normal;
-            line-height: 1.5;
-            color: #333;
+            margin-top: 20px;
         }
     }
 

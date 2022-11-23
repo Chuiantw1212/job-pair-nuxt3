@@ -36,7 +36,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -100,15 +100,14 @@
                 <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <AtomInputCkeditor v-model="state.job.description" :toolbar="[]" disabled ref="descriptionRef">
-                        </AtomInputCkeditor>
+                        <div class="card__body" v-html="state.job.description">
+                        </div>
                     </div>
                 </section>
                 <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <AtomInputCkeditor v-model="state.job.skills" :toolbar="[]" disabled ref="skillsRef">
-                        </AtomInputCkeditor>
+                        <div class="card__body" v-html="state.job.skills"></div>
                     </div>
                 </section>
             </div>
@@ -478,10 +477,7 @@ async function initialize() {
         }
 
         .card__body {
-            font-size: 16px;
-            font-weight: normal;
-            line-height: 1.5;
-            margin-top: 10px;
+            margin-top: 20px;
         }
     }
 
