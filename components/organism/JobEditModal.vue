@@ -24,19 +24,19 @@
                             class="mt-4">
                         </AtomInputText>
                         <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型"
-                            :max="3" :disabled="true" required class="mt-4">
+                            :max="3" :flat="true" required class="mt-4">
                             <template v-slot:header>
                                 <MoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
                                     :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
                                 </MoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
+                                <MoleculeFilterCategory v-model="state.job.occupationalCategory"
+                                    :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
+                                    :isDesktop="device.state.isDesktop" required name="職務類型">
+                                </MoleculeFilterCategory>
                             </template>
                         </MoleculeProfileSelectContainer>
-                        <MoleculeFilterCategory class="jobItem__category" v-model="state.job.occupationalCategory"
-                            :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                            :isDesktop="device.state.isDesktop" required name="職務類型">
-                        </MoleculeFilterCategory>
                         <AtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
                             class="mt-4"></AtomInputSelect>
@@ -377,13 +377,6 @@ defineExpose({
 }
 
 .jobItem {
-    .jobItem__category {
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        background-color: white;
-        min-width: 100%;
-        margin-top: 4px;
-    }
 
     .dropLayer__form {
         .form__salary {
