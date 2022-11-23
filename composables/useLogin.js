@@ -143,7 +143,7 @@ export default function setup() {
                     router.push({
                         name: 'admin'
                     })
-                } else {
+                } else if (route.name === 'admin') {
                     router.push({
                         name: 'admin-recruit-jobs'
                     })

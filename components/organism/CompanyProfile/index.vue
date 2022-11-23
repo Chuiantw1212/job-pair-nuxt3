@@ -26,7 +26,7 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <AtomInputPhotoSingle v-model="state.companyLogo" class="mb-2">
+                        <AtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
                         </AtomInputPhotoSingle>
                         <AtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
@@ -124,7 +124,8 @@
     </div>
 </template>
 <script setup>
-const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
+import placeholderImage from './company.webp'
+const jobBenefitsConfig = await import('./jobBenefits.json')
 const { $validate, $sweet, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
