@@ -6,8 +6,7 @@
                 <div v-if="state.company.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company.logo})` }">
                 </div>
-                <div v-else class="d-none d-lg-block basic__logo"
-                    :style="{ backgroundImage: `url(${placeholderImage})` }">
+                <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job.name }}</div>
@@ -422,6 +421,8 @@ function getJobAddress() {
 function checkVisibility() {
     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
 }
+const descriptionRef = ref(null)
+const skillsRef = ref(null)
 async function initialize() {
     if (!jobId.value) {
         state.job = {}
@@ -442,6 +443,12 @@ async function initialize() {
         return
     }
     const job = jobResponse.data
+    if (descriptionRef.value) {
+        descriptionRef.value.setData(job.description)
+    }
+    if (skillsRef.value) {
+        skillsRef.value.setData(job.skills)
+    }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
     const company = companyResponse.data
