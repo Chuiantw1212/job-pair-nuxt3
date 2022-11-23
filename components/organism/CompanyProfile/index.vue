@@ -26,8 +26,7 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
-                            class="mb-2">
+                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
                         </LazyAtomInputPhotoSingle>
                         <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
@@ -65,17 +64,17 @@
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
                             </LazyAtomInputText>
                         </div>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
-                            class="mb-2" required>
+                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                            required>
                         </LazyAtomInputText>
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
                             class="mt-3 mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
-                            placeholder="請輸入阿拉伯數字" class="mb-2">
+                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
+                            class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
-                            v-model="state.companyInfo.url.default" class="mb-2">
+                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
+                            class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
                             :accept="'image/*'" :max="12">
@@ -83,11 +82,11 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
-                        required class="mb-2" ref="descriptionRef">
+                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
+                        class="mb-2" ref="descriptionRef">
                     </LazyAtomInputCkeditor>
-                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
-                        required class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
+                        class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -134,7 +133,8 @@ const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
-const currentInstance = getCurrentInstance()
+const descriptionRef = ref(null)
+const jobBenefitsRef = ref(null)
 const state = reactive({
     crawlerUrl: "",
     isNewCompay: false,
@@ -236,15 +236,13 @@ async function initializeCompanyInfo() {
     state.companyBanner = companyInfo.banner
     state.companyImages = companyInfo.images ?? []
 
-    const descriptionRef = currentInstance.refs.descriptionRef
-    if (descriptionRef) {
-        descriptionRef.setData(state.companyInfo.description)
-    }
-    const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
-    if (jobBenefitsRef) {
-        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    $requestSelector(`#descriptionRef`, () => {
+        descriptionRef.value.setData(state.companyInfo.description)
+    })
+    $requestSelector(`#jobBenefitsRef`, () => {
+        jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
         setWelfareFlags()
-    }
+    })
 }
 async function crawlCompanyFromPlatform() {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
@@ -280,14 +278,8 @@ async function crawlCompanyFromPlatform() {
         state.companyInfo.telephone = ''
     }
     // 設定CKEditor文字
-    const descriptionRef = currentInstance.refs.descriptionRef
-    if (descriptionRef) {
-        descriptionRef.setData(state.companyInfo.description)
-    }
-    const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
-    if (jobBenefitsRef) {
-        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
-    }
+    descriptionRef.value.setData(state.companyInfo.description)
+    jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
 }
 async function setCakeresumeCompanyInfo(response) {
     const {
