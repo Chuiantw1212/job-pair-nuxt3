@@ -12,14 +12,15 @@
                 {{ modelValue.name }}
             </NuxtLink>
             <NuxtLink class="body__company" :to="`/company/${modelValue.organizationId}`">
-                <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'" />
+                <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'"
+                    alt="logo" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
             <div class="body__main">
                 <NuxtLink v-if="repoSelect.state.selectByQueryRes" class="main__labelGroup"
                     :to="`/job/${modelValue.identifier}`">
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" alt="employmentType" />
                         <span>
                             {{ $optionText(modelValue.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
@@ -29,23 +30,23 @@
                         </span>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="location" />
                         {{
                                 getLocationText()
                         }}
                     </div>
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
                         {{ $salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
                         <span>{{ $optionText(modelValue.jobLocationType,
                                 repoSelect.state.selectByQueryRes.jobLocationType)
                         }}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" alt="category" />
                         <span class>{{ getCategoryTextGroup() }}</span>
                     </div>
 
