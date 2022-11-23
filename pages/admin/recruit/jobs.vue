@@ -20,11 +20,16 @@
                 <thead class="jobManagement__table__head">
                     <tr>
                         <th class="jobManagement__table__sticky">職缺狀態</th>
+                        <th class="text-center jobManagement__table__sticky jobManagement__table__sticky--second">
+                            <div>
+                                職缺名稱
+                            </div>
+                            <div>
+                                (點擊可編輯)
+                            </div>
+                        </th>
                         <th>複製</th>
                         <th>預覽</th>
-                        <th>
-                            職缺名稱(點擊可編輯)
-                        </th>
                         <th v-if="state.jobFields.includes('occupationalCategory')">職務類型</th>
                         <th v-if="state.jobFields.includes('responsibilities')">資歷</th>
                         <th v-if="state.jobFields.includes('employmentType')">雇用性質</th>
@@ -41,6 +46,11 @@
                                 @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
                         </td>
+                        <td class="jobManagement__table__sticky jobManagement__table__sticky--second">
+                            <OrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
+                                ref="jobModalRefs">
+                            </OrganismJobEditModal>
+                        </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">
                                 <img src="~/assets/admin/icon_copy.svg">
@@ -50,11 +60,6 @@
                             <a :href="getJobPreviewHref(job)" target="_blank">
                                 <img src="~/assets/admin/icon_preview_g.svg">
                             </a>
-                        </td>
-                        <td>
-                            <OrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
-                                ref="jobModalRefs">
-                            </OrganismJobEditModal>
                         </td>
                         <td v-if="state.jobFields.includes('occupationalCategory')">
                             <div v-for="(category, index) in job.occupationalCategory" :key="index"
@@ -388,6 +393,10 @@ async function addJobDraft() {
             background-color: white;
             left: 0;
             position: sticky;
+        }
+
+        .jobManagement__table__sticky--second {
+            left: 76px;
         }
 
         .table__btn {

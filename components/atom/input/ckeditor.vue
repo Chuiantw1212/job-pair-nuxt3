@@ -155,6 +155,9 @@ async function initializeCKEditor(ClassicEditor) {
         if (props.removePlatformLink) {
             newValue = newValue.replaceAll(/href=".*?"/g, '')
         }
+        console.log({
+            newValue
+        })
         localValue.value = newValue
     })
     state.ckeditorInstance = markRaw(editor)
