@@ -91,6 +91,7 @@ function checkConsultActive() {
             }
 
             .menu__item__text {
+                white-space: nowrap;
                 margin-top: 4px;
             }
         }

@@ -180,6 +180,7 @@ async function shareLinkBootstrap() {
 </script>
 <style lang="scss" scoped>
 .jobItemPanel {
+    margin-left: auto;
     text-align: center;
 
     .panel__body {

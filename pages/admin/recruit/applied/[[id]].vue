@@ -240,11 +240,15 @@ const props = defineProps({
 useHead({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
-onMounted(() => {
+onMounted(async () => {
     const { id } = route.params
     if (id) {
         state.applicantId = id
     }
+    $sweet.loader(true)
+    await initializeSearch()
+    await updateChart()
+    $sweet.loader(false)
 })
 watch(() => props.modelValue, (newValue) => {
     // 這邊只應該執行一次
@@ -260,7 +264,7 @@ watch(() => state.searchForm, (newValue, oldValue) => {
         await initializeSearch()
         await updateChart()
     })()
-}, { immediate: true, deep: true })
+}, { deep: true })
 // methods
 function resetApplicantId() {
     state.applicantId = ''

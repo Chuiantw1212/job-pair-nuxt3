@@ -146,7 +146,6 @@ function getLocationText() {
 <style lang="scss" scoped>
 .jobItem {
     display: flex;
-    gap: 30px;
     border-radius: 10px;
     border: solid 1px #d3d3d3;
     background-color: #fff;
@@ -220,7 +219,8 @@ function getLocationText() {
                 .panel__vl {
                     border-right: 1px solid #d3d3d3;
                     height: 154px;
-                    margin-right: 24px;
+                    margin: 0 auto;
+                    // margin-right: 24px;
                 }
             }
 
