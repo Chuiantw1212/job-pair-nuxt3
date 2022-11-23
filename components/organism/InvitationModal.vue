@@ -48,6 +48,7 @@ const state = reactive({
         template: "",
     }
 })
+const currentInstance = getCurrentInstance()
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -91,11 +92,8 @@ function setInvitationTemplate() {
         `招募人員${props.modelValue.name}敬上`
     state.form.subject = `${company.name}${props.job.name}應徵邀約`
     state.form.template = template
-    if (editorRef.value) {
-        editorRef.value.setData(template)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', editorRef);
-    }
+    const editorRef = currentInstance.refs.editorRef
+    editorRef.setData(template)
 }
 function openModal() {
     const { user } = repoAuth.state
