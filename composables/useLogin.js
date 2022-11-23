@@ -33,6 +33,7 @@ export default function setup() {
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
                     // 判斷為從登入變成登出
                     repoAuth.userSignout()
+                    // 導回個別的首頁
                     if (route.path.includes('admin')) {
                         router.push({
                             name: 'admin',
@@ -134,13 +135,17 @@ export default function setup() {
                     company.hasActiveJobs = !!data.length
                 }
                 repoAuth.setCompany(company)
-                const whiteList = ['admin', 'about', 'pending', 'job', 'company']
+                const whiteList = ['admin', 'about', 'job', 'company']
                 const isNotPermitted = whiteList.every(word => {
                     return !route.path.includes(word)
                 })
                 if (isNotPermitted) {
                     router.push({
                         name: 'admin'
+                    })
+                } else {
+                    router.push({
+                        name: 'admin-recruit-jobs'
                     })
                 }
             } else {
