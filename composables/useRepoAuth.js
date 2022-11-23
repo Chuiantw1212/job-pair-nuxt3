@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
     const axios = useAxios()
+    const repoJobApplication = useRepoJobApplication()
     const state = reactive({
         user: null,
         company: null,
@@ -43,6 +44,7 @@ export default defineStore('auth', () => {
             if (auth) {
                 await auth.signOut()
             }
+            repoJobApplication.state.userJobs = {}
             setUser(null)
             return true
         } catch (error) {

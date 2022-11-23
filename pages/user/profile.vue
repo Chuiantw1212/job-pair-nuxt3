@@ -28,8 +28,8 @@
                 <AtomInputSelect name="最高學位" v-model="state.profile.educationLevel"
                     :items="repoSelect.state.selectByQueryRes.educationLevel" class="mt-3">
                 </AtomInputSelect>
-                <MoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory" name="學科分類" :max="1"
-                    class="mt-3">
+                <MoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory"
+                    :items="state.profile.educationCategory" name="學科分類" :max="1" class="mt-3">
                     <template v-slot:header>
                         <MoleculeProfileSelectLabels v-model="state.profile.educationCategory"
                             :jobCategoryMap="repoSelect.educationCategoryMap" placeholder="學科分類"

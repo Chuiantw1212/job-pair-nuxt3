@@ -20,10 +20,10 @@
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
                     <NuxtLink class="icons__Group" :to="{ name: 'jobs' }">
-                        <img class="icons__Group__image" src="./icon_nav_job.svg" />
+                        <img class="icons__Group__image" src="./icon_nav_job.svg" alt="jobs" />
                     </NuxtLink>
                     <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
-                        <img class="icons__Group__image" src="./icon_nav_member.svg" />
+                        <img class="icons__Group__image" src="./icon_nav_member.svg" alt="account" />
                     </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

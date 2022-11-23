@@ -10,6 +10,9 @@ const descriptionContent = '在 Job Pair 不論求職找工作或徵才找人，
 const repoSelect = useRepoSelect()
 // hooks
 useHead({
+    htmlAttrs: {
+        lang: 'zh-Hant'
+    },
     meta: [
         { name: 'description', content: descriptionContent },
         { property: 'og:description', content: descriptionContent },

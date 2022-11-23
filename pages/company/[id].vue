@@ -5,7 +5,7 @@
             <div class="company__bannerGroup">
                 <img v-if="state.companyInfo.banner" class="company__banner company__banner--fit-content"
                     :src="state.companyInfo.banner" />
-                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" />
+                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
             </div>
             <div class="company__card company__basic">
                 <div class="basic__basicGroup1">

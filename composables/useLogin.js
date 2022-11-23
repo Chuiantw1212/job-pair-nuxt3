@@ -33,6 +33,7 @@ export default function setup() {
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
                     // 判斷為從登入變成登出
                     repoAuth.userSignout()
+                    // 導回個別的首頁
                     if (route.path.includes('admin')) {
                         router.push({
                             name: 'admin',
@@ -109,8 +110,7 @@ export default function setup() {
                 userId: user.id,
             })
             repoAuth.setUser(user)
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             if (route.path.includes('admin') || route.name === 'index') {
                 router.push({
                     name: 'jobs'
@@ -135,7 +135,7 @@ export default function setup() {
                     company.hasActiveJobs = !!data.length
                 }
                 repoAuth.setCompany(company)
-                const whiteList = ['admin', 'about', 'pending', 'job', 'company']
+                const whiteList = ['admin', 'about', 'job', 'company']
                 const isNotPermitted = whiteList.every(word => {
                     return !route.path.includes(word)
                 })
@@ -143,13 +143,16 @@ export default function setup() {
                     router.push({
                         name: 'admin'
                     })
+                } else if (route.name === 'admin') {
+                    router.push({
+                        name: 'admin-recruit-jobs'
+                    })
                 }
             } else {
                 // 未完成註冊人資導向到公司註冊畫面
                 router.push(`/admin/register`)
             }
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             return
         }
         // 判斷是否為註冊到一半的求職者
@@ -188,8 +191,7 @@ export default function setup() {
             // 不論是否答題完成都要跑以下程式碼
             user.type = "employee"
             repoAuth.setUser(user)
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             return
         }
         // 各種未完成註冊的用戶
@@ -202,6 +204,10 @@ export default function setup() {
             router.push(`/questions/1`)
         }
         repoAuth.setUser(user)
+        hideModals()
+    }
+    function hideModals() {
+        $emitter.emit("hideSwitchModal")
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')
     }

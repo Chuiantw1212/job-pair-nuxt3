@@ -169,6 +169,7 @@
 </template>
 <script setup>
 const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
+const emit = defineEmits(['update:modelValue'])
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -239,11 +240,15 @@ const props = defineProps({
 useHead({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
-onMounted(() => {
+onMounted(async () => {
     const { id } = route.params
     if (id) {
         state.applicantId = id
     }
+    $sweet.loader(true)
+    await initializeSearch()
+    await updateChart()
+    $sweet.loader(false)
 })
 watch(() => props.modelValue, (newValue) => {
     // 這邊只應該執行一次
@@ -259,7 +264,7 @@ watch(() => state.searchForm, (newValue, oldValue) => {
         await initializeSearch()
         await updateChart()
     })()
-}, { immediate: true, deep: true })
+}, { deep: true })
 // methods
 function resetApplicantId() {
     state.applicantId = ''
@@ -416,8 +421,15 @@ async function initializeSearch() {
     }
     const results = await repoJobApplication.getApplicationByQuery(searchForm)
     state.applications = []
-    let matchedResult = results.data
+    // 資料交給上層更新應徵者人數
+    const isDefaultSearch = searchForm.applyFlow.every(flow => {
+        return ['applied', 'notified', 'rejected'].includes(flow)
+    })
+    if (isDefaultSearch) {
+        emit('update:modelValue', results.data)
+    }
     // 前端搜索
+    let matchedResult = results.data
     if (String(state.searchLike).trim()) {
         const searchFields = ['email', 'jobName', 'name', 'telephone']
         matchedResult = matchedResult.filter(application => {

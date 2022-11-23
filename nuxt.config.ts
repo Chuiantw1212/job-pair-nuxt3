@@ -49,4 +49,11 @@ export default defineNuxtConfig({
             "process.env.DEBUG": false,
         },
     },
+    // https://github.com/nuxt/framework/issues/7197
+    nitro: {
+        compressPublicAssets: true,
+        prerender: {
+            crawlLinks: true
+        }
+    },
 })
