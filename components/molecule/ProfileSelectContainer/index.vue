@@ -40,17 +40,32 @@ export default {
             type: String,
             default: ''
         },
-        // 純顯示用，不做資料運用
         max: {
             type: Number,
             default: 0
         },
+        items: {
+            type: Array,
+            default: function () {
+                return []
+            }
+        }
     },
     mounted() {
         this.toggleClickOutside(true)
     },
     beforeUnmount() {
         this.toggleClickOutside(false)
+    },
+    watch: {
+        items: {
+            deep: true,
+            handler: function () {
+                if (this.max && this.items.length === this.max) {
+                    this.$emit("update:modelValue", false)
+                }
+            }
+        }
     },
     methods: {
         toggleDropdown() {
