@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
+    "@nuxtjs/pwa": "^3.3.5",
     "@pinia/nuxt": "^0.4.3",
     "aos": "^2.3.4",
     "axios": "^1.1.3",
