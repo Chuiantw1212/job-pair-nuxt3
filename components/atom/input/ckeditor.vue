@@ -124,7 +124,6 @@ function requestSelector(ClassicEditor, callback) {
         if (ClassicEditor) {
             callback(ClassicEditor)
         } else {
-            console.log('Waiting for ClassicEditor.');
             window.requestAnimationFrame(step)
         }
     }
