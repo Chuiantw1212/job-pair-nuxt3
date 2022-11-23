@@ -58,3 +58,8 @@ firebase use
 npm run build
 npm run deploy
 ```
+
+### 刪除node_moduels
+```
+rmdir  .\node_modules\
+```
