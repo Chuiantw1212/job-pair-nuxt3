@@ -47,8 +47,10 @@ export default defineNuxtConfig({
             gzip: true,
             brotli: true,
         },
+        // https://nitro.unjs.io/config
         prerender: {
-            crawlLinks: true
+            crawlLinks: true,
+            routes: ['/job', '/company']
         }
     },
 })
