@@ -108,8 +108,7 @@ watch(() => props.modelValue.similarity, () => {
         }
     }
 }, { immediate: true })
-watchEffect(() => {
-    const { userJobs } = repoJobApplication.state
+watch(() => repoJobApplication.state.userJobs, (userJobs) => {
     const jobKeys = Object.keys(userJobs)
     if (!jobKeys.length) {
         return
@@ -119,7 +118,7 @@ watchEffect(() => {
     if (matchedJob) {
         state.application = matchedJob
     }
-})
+}, { immediate: true })
 // methods
 function resetCopiedTooltip() {
     state.isCopied = false

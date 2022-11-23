@@ -266,7 +266,6 @@ function getLocationText() {
 
 @media screen and (min-width: 992px) {
     .jobItem {
-        // flex-direction: column;
         padding: 30px;
         position: relative;
         gap: 30px;
