@@ -5,9 +5,9 @@
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :isDesktop="device.state.isDesktop"
-                        :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory"
+                        :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
+                        :isDesktop="device.state.isDesktop" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -66,7 +66,8 @@
                 </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items"> </LazyAtomInputSelectLabel>
+                        <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items">
+                        </LazyAtomInputSelectLabel>
                     </template>
                 </div>
                 <div class="section__header">薪資類型</div>
@@ -79,8 +80,10 @@
                     </li>
                 </ul>
                 <div class="section__salaryRange">
-                    <LazyAtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></LazyAtomInputMoney>
-                    <LazyAtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></LazyAtomInputMoney>
+                    <LazyAtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
+                    </LazyAtomInputMoney>
+                    <LazyAtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
+                    </LazyAtomInputMoney>
                 </div>
                 <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
             </div>
@@ -88,7 +91,8 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
+                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()"
+                        placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
             </div>
@@ -130,8 +134,8 @@
                             :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
-                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItems`" class="main__list__item jobItem">
+                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
+                        :key="index" :ref="`jobItems`" class="main__list__item jobItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
