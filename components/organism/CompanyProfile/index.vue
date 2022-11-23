@@ -237,10 +237,14 @@ async function initializeCompanyInfo() {
     state.companyImages = companyInfo.images ?? []
 
     const descriptionRef = currentInstance.refs.descriptionRef
-    descriptionRef.setData(state.companyInfo.description)
+    if (descriptionRef) {
+        descriptionRef.setData(state.companyInfo.description)
+    }
     const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
-    jobBenefitsRef.setData(state.companyInfo.jobBenefits)
-    setWelfareFlags()
+    if (jobBenefitsRef) {
+        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+        setWelfareFlags()
+    }
 }
 async function crawlCompanyFromPlatform() {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
@@ -277,9 +281,13 @@ async function crawlCompanyFromPlatform() {
     }
     // 設定CKEditor文字
     const descriptionRef = currentInstance.refs.descriptionRef
-    descriptionRef.setData(state.companyInfo.description)
+    if (descriptionRef) {
+        descriptionRef.setData(state.companyInfo.description)
+    }
     const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
-    jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    if (jobBenefitsRef) {
+        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    }
 }
 async function setCakeresumeCompanyInfo(response) {
     const {
