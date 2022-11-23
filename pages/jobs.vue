@@ -1,72 +1,72 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isDesktop }">
-        <MoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
+        <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
             class="jobs__filter" :class="{ 'col col-3': device.state.isDesktop }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-                <AtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <MoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
                         :categoryMap="repoSelect.jobCategoryMap" :isDesktop="device.state.isDesktop"
                         :showSelectAll="true">
-                    </MoleculeFilterCategory>
-                </AtomInputSelectContainer>
+                    </LazyMoleculeFilterCategory>
+                </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                        <AtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
-                        </AtomInputSelectLabel>
+                        <LazyAtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
+                        </LazyAtomInputSelectLabel>
                     </template>
                 </div>
                 <template v-if="repoSelect.state.locationRes">
-                    <AtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <AtomInputCheckMultiple v-model="state.filter.addressRegion"
+                    <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
+                        <LazyAtomInputCheckMultiple v-model="state.filter.addressRegion"
                             :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
-                        </AtomInputCheckMultiple>
-                    </AtomInputSelectContainer>
-                    <AtomInputSelectLabel v-model="state.filter.addressRegion"
+                        </LazyAtomInputCheckMultiple>
+                    </LazyAtomInputSelectContainer>
+                    <LazyAtomInputSelectLabel v-model="state.filter.addressRegion"
                         :items="repoSelect.state.locationRes.taiwan" class="mt-2">
-                    </AtomInputSelectLabel>
+                    </LazyAtomInputSelectLabel>
                 </template>
-                <AtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <AtomInputCheckMultiple v-model="state.filter.jobLocationType"
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
+                    <LazyAtomInputCheckMultiple v-model="state.filter.jobLocationType"
                         :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
-                    </AtomInputCheckMultiple>
-                </AtomInputSelectContainer>
-                <AtomInputSelectLabel v-model="state.filter.jobLocationType"
+                    </LazyAtomInputCheckMultiple>
+                </LazyAtomInputSelectContainer>
+                <LazyAtomInputSelectLabel v-model="state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
-                </AtomInputSelectLabel>
-                <AtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                    <AtomInputCheckMultiple v-model="state.filter.employmentType"
+                </LazyAtomInputSelectLabel>
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
+                    <LazyAtomInputCheckMultiple v-model="state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
-                    </AtomInputCheckMultiple>
-                </AtomInputSelectContainer>
-                <AtomInputSelectLabel v-model="state.filter.employmentType"
+                    </LazyAtomInputCheckMultiple>
+                </LazyAtomInputSelectContainer>
+                <LazyAtomInputSelectLabel v-model="state.filter.employmentType"
                     :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
-                </AtomInputSelectLabel>
-                <AtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <AtomInputCheckMultiple v-model="state.filter.responsibilities"
+                </LazyAtomInputSelectLabel>
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
+                    <LazyAtomInputCheckMultiple v-model="state.filter.responsibilities"
                         :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
-                    </AtomInputCheckMultiple>
-                </AtomInputSelectContainer>
-                <AtomInputSelectLabel v-model="state.filter.responsibilities"
+                    </LazyAtomInputCheckMultiple>
+                </LazyAtomInputSelectContainer>
+                <LazyAtomInputSelectLabel v-model="state.filter.responsibilities"
                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
-                </AtomInputSelectLabel>
-                <AtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <AtomInputCheckMultiple v-model="state.filter.jobBenefits"
+                </LazyAtomInputSelectLabel>
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
+                    <LazyAtomInputCheckMultiple v-model="state.filter.jobBenefits"
                         :items="repoSelect.state.selectByQueryRes.jobBenefits" class="m-3">
-                    </AtomInputCheckMultiple>
-                </AtomInputSelectContainer>
-                <AtomInputSelectLabel v-model="state.filter.jobBenefits"
+                    </LazyAtomInputCheckMultiple>
+                </LazyAtomInputSelectContainer>
+                <LazyAtomInputSelectLabel v-model="state.filter.jobBenefits"
                     :items="repoSelect.state.selectByQueryRes.jobBenefits" class="mt-2">
-                </AtomInputSelectLabel>
-                <AtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
-                    <MoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
+                </LazyAtomInputSelectLabel>
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
+                    <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
                         :categoryMap="repoSelect.industryCategoryMap" :isDesktop="device.state.isDesktop"
                         :showSelectAll="true">
-                    </MoleculeFilterCategory>
-                </AtomInputSelectContainer>
+                    </LazyMoleculeFilterCategory>
+                </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <AtomInputSelectLabel v-model="state.filter.industry" :items="items"> </AtomInputSelectLabel>
+                        <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items"> </LazyAtomInputSelectLabel>
                     </template>
                 </div>
                 <div class="section__header">薪資類型</div>
@@ -79,17 +79,17 @@
                     </li>
                 </ul>
                 <div class="section__salaryRange">
-                    <AtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></AtomInputMoney>
-                    <AtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></AtomInputMoney>
+                    <LazyAtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入"></LazyAtomInputMoney>
+                    <LazyAtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入"></LazyAtomInputMoney>
                 </div>
-                <AtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</AtomBtnSimple>
+                <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
             </div>
-        </MoleculeFilter>
+        </LazyMoleculeFilter>
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <AtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
-                    </AtomInputSearch>
+                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
+                    </LazyAtomInputSearch>
                 </div>
             </div>
             <div class="body__filter">
@@ -125,14 +125,14 @@
             <div class="jobs__main">
                 <ul class="main__list">
                     <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
-                        <OrganismJobItem v-for="(job, index) in state.jobRecommendList"
+                        <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
                             v-model="state.jobRecommendList[index]" :key="index" class="main__list__item"
                             :recommend="true">
-                        </OrganismJobItem>
+                        </LazyOrganismJobItem>
                     </template>
-                    <OrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
                         :ref="`jobItems`" class="main__list__item jobItem">
-                    </OrganismJobItem>
+                    </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
                             <div>
@@ -142,13 +142,13 @@
                                 <br>
                                 另外還有一對一職涯諮詢的服務
                             </div>
-                            <AtomBtnSimple class="last__reset" @click="gotoConsultRecords()">去看看</AtomBtnSimple>
+                            <LazyAtomBtnSimple class="last__reset" @click="gotoConsultRecords()">去看看</LazyAtomBtnSimple>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <OrganismMonica></OrganismMonica>
+        <LazyOrganismMonica></LazyOrganismMonica>
     </div>
 </template>
 <script setup>

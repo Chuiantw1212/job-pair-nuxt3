@@ -13,22 +13,22 @@
                 <div class="category__header">
                     選擇職務類別
                 </div>
-                <MoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別"
+                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別"
                     class="category__select" :max="3" required>
                     <template v-slot:header>
-                        <MoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
+                        <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
                             :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
-                        </MoleculeProfileSelectLabels>
+                        </LazyMoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>
-                        <MoleculeFilterCategory v-model="state.profile.occupationalCategory"
+                        <LazyMoleculeFilterCategory v-model="state.profile.occupationalCategory"
                             :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
                             :isDesktop="device.state.isDesktop" required name="欲申請職務類別">
-                        </MoleculeFilterCategory>
+                        </LazyMoleculeFilterCategory>
                     </template>
-                </MoleculeProfileSelectContainer>
+                </LazyMoleculeProfileSelectContainer>
             </div> -->
-            <AtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</AtomBtnSimple>
+            <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
             <div class="result__footer">
                 <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
                 <!-- <button type="button" class="btn btn-light" @click="routeToFisrt()">直接看職缺</button> -->

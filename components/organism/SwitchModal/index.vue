@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="card__title">我是求職者</div>
                                 <div class="card__desc">個人身份註冊/登入</div>
-                                <AtomBtnSimple class="card__btn">開始找工作</AtomBtnSimple>
+                                <LazyAtomBtnSimple class="card__btn">開始找工作</LazyAtomBtnSimple>
                             </div>
                             <div class="body__card" @click="showAdminModal()">
                                 <div class="body__card__imageWrap">
@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="card__title">我是企業端</div>
                                 <div class="card__desc">人資、企業主註冊/登入</div>
-                                <AtomBtnSimple class="card__btn">開始找人才</AtomBtnSimple>
+                                <LazyAtomBtnSimple class="card__btn">開始找人才</LazyAtomBtnSimple>
                             </div>
                         </div>
                     </div>

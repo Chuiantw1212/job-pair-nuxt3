@@ -15,14 +15,14 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <AtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
+                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
                                     disabled>{{
                                             loginComposable.state.cdVisible
                                     }}
-                                </AtomBtnSimple>
-                                <AtomBtnSimple v-else class="emailSent__resend"
+                                </LazyAtomBtnSimple>
+                                <LazyAtomBtnSimple v-else class="emailSent__resend"
                                     @click="loginComposable.sendEmailLink('admin')">重新寄送驗證信
-                                </AtomBtnSimple>
+                                </LazyAtomBtnSimple>
                             </div>
                         </div>
                         <div v-show="!loginComposable.state.isSent" id="company-auth-container"></div>

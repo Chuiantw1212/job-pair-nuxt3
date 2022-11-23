@@ -9,7 +9,7 @@
             繼續完成個人檔案<br>
             來獲得適合您的職缺！
         </div>
-        <AtomBtnSimple class="bubble__button" @click="routeToProfile()">馬上填寫</AtomBtnSimple>
+        <LazyAtomBtnSimple class="bubble__button" @click="routeToProfile()">馬上填寫</LazyAtomBtnSimple>
     </div>
 </template>
 <script setup>

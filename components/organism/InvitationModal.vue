@@ -1,8 +1,8 @@
 <template>
     <div>
-        <AtomBtnSimple @click="openModal()">
+        <LazyAtomBtnSimple @click="openModal()">
             應徵邀約
-        </AtomBtnSimple>
+        </LazyAtomBtnSimple>
         <div class="modal fade" :id="`invitation${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -12,16 +12,16 @@
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
                         <p class="text-center">若您點選「應徵邀約」，Job Pair 將會寄送職缺資訊給對方，邀請人選應徵。</p>
-                        <AtomInputText v-model="state.form.subject" name="信件主旨"
+                        <LazyAtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
-                        </AtomInputText>
-                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" ref="editorRef" class="mt-3"
+                        </LazyAtomInputText>
+                        <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" ref="editorRef" class="mt-3"
                             required>
-                        </AtomInputCkeditor>
+                        </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <AtomBtnSimple class="footer__button" @click="handleSubmit()">確定</AtomBtnSimple>
+                            <LazyAtomBtnSimple class="footer__button" @click="handleSubmit()">確定</LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>

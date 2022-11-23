@@ -1,7 +1,7 @@
 <template>
     <div v-if="repoSelect.state.selectByQueryRes" class="userStatus">
         <div class="userStatus__kanban">
-            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Heart.svg" />
@@ -12,11 +12,11 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <OrganismUserJobList v-model="state.jobSaved" type="saved" @update:modelValue="setJobComparable()">
-                    </OrganismUserJobList>
+                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved" @update:modelValue="setJobComparable()">
+                    </LazyOrganismUserJobList>
                 </template>
-            </MoleculeJobCard>
-            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            </LazyMoleculeJobCard>
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Rocket.svg" />
@@ -27,10 +27,10 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <OrganismUserJobList v-model="state.jobApplied" type="applied"></OrganismUserJobList>
+                    <LazyOrganismUserJobList v-model="state.jobApplied" type="applied"></LazyOrganismUserJobList>
                 </template>
-            </MoleculeJobCard>
-            <MoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            </LazyMoleculeJobCard>
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Comment.svg" />
@@ -41,11 +41,11 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <OrganismUserJobList v-model="state.jobNotified" type="notified"></OrganismUserJobList>
+                    <LazyOrganismUserJobList v-model="state.jobNotified" type="notified"></LazyOrganismUserJobList>
                 </template>
-            </MoleculeJobCard>
+            </LazyMoleculeJobCard>
         </div>
-        <MoleculeJobCard v-if="state.jobComparable.length" class="userStatus__card mt-3">
+        <LazyMoleculeJobCard v-if="state.jobComparable.length" class="userStatus__card mt-3">
             <template v-slot:header>
                 <div class="card__header">
                     <img class="card__header__icon" src="~/assets/user/job/icon_Compare.svg" />
@@ -58,23 +58,23 @@
                         <tr>
                             <th v-if="device.state.isDesktop" scope="col"></th>
                             <th scope="col" class="card__table__th">
-                                <AtomInputSelect v-model="state.jobCompareId1" :items="state.jobComparable"
+                                <LazyAtomInputSelect v-model="state.jobCompareId1" :items="state.jobComparable"
                                     itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'first')">
-                                </AtomInputSelect>
+                                </LazyAtomInputSelect>
                             </th>
                             <th v-if="state.jobComparable.length >= 2" scope="col" class="card__table__th">
-                                <AtomInputSelect v-model="state.jobCompareId2" :items="state.jobComparable"
+                                <LazyAtomInputSelect v-model="state.jobCompareId2" :items="state.jobComparable"
                                     itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'second')">
-                                </AtomInputSelect>
+                                </LazyAtomInputSelect>
                             </th>
                             <th v-if="device.state.isDesktop && state.jobComparable.length >= 3" scope="col"
                                 class="card__table__th">
-                                <AtomInputSelect v-model="state.jobCompareId3" :items="state.jobComparable"
+                                <LazyAtomInputSelect v-model="state.jobCompareId3" :items="state.jobComparable"
                                     itemText="name" itemValue="identifier" class="card__table__select"
                                     @update:modelValue="setJobDetails($event, 'third')">
-                                </AtomInputSelect>
+                                </LazyAtomInputSelect>
                             </th>
                         </tr>
                     </thead>
@@ -323,7 +323,7 @@
                     </tbody>
                 </table>
             </template>
-        </MoleculeJobCard>
+        </LazyMoleculeJobCard>
     </div>
 </template>
 <script setup>

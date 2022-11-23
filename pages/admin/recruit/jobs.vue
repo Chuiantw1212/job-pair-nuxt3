@@ -2,18 +2,18 @@
     <div class="container jobManagement my-3">
         <!-- 職缺管理 -->
         <div class="jobManagement__addItem">
-            <AtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</AtomBtnSimple>
+            <LazyAtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</LazyAtomBtnSimple>
             <label class="addItem__searchGroup">
                 <i class="fas fa-search searchGroup__icon"></i>
                 <input v-model="state.searchLike" class="searchGroup__input" placeholder="輸入職缺名稱" />
             </label>
-            <OrganismFilterModal v-model="state.filter" @reset="resetFilter()"></OrganismFilterModal>
+            <LazyOrganismFilterModal v-model="state.filter" @reset="resetFilter()"></LazyOrganismFilterModal>
         </div>
         <div class="jobManagement__fields">
             <span>欄位顯示</span>
-            <AtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
+            <LazyAtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
                 @update:modelValue="saveFieldsPreference()">
-            </AtomInputCheckMultiple>
+            </LazyAtomInputCheckMultiple>
         </div>
         <div class="fixTableHead">
             <table class="table jobManagement__table">
@@ -42,14 +42,14 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <AtomInputSwitch v-model="job.status"
+                            <LazyAtomInputSwitch v-model="job.status"
                                 @update:modelValue="checkJobStatus($event, job, index)">
-                            </AtomInputSwitch>
+                            </LazyAtomInputSwitch>
                         </td>
                         <td class="jobManagement__table__sticky jobManagement__table__sticky--second">
-                            <OrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
+                            <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
                                 ref="jobModalRefs">
-                            </OrganismJobEditModal>
+                            </LazyOrganismJobEditModal>
                         </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">

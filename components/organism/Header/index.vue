@@ -27,16 +27,16 @@
                     </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
-                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
-                    </OrganismCompanyMenu>
+                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></LazyOrganismUserMenu>
+                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    </LazyOrganismCompanyMenu>
                 </div>
             </div>
         </nav>
         <!-- 如果條件渲染有異步渲染問題 -->
-        <OrganismUserModal></OrganismUserModal>
-        <OrganismCompanyModal></OrganismCompanyModal>
-        <OrganismSwitchModal></OrganismSwitchModal>
+        <LazyOrganismUserModal></LazyOrganismUserModal>
+        <LazyOrganismCompanyModal></LazyOrganismCompanyModal>
+        <LazyOrganismSwitchModal></LazyOrganismSwitchModal>
     </div>
 </template>
 <script setup>

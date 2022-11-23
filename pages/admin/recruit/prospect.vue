@@ -2,14 +2,14 @@
     <div class="appliedList">
         <div class="appliedList__form">
             <div class="form__selectGroup">
-                <AtomInputSelect v-model="state.searchForm.jobIdentifier" name="職缺選擇" placeholder="職缺選擇"
+                <LazyAtomInputSelect v-model="state.searchForm.jobIdentifier" name="職缺選擇" placeholder="職缺選擇"
                     :items="getActiveJobs()" :itemValue="'identifier'" :itemText="'name'">
-                </AtomInputSelect>
-                <AtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.searchForm.workLocation"
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.searchForm.workLocation"
                     name="地點(預設為總公司地點)" :items="getOrderedLocations()">
-                </AtomInputSelect>
-                <AtomInputNumber v-model="state.searchForm.similairy" name="適配度門檻" :max="100" :min="0">
-                </AtomInputNumber>
+                </LazyAtomInputSelect>
+                <LazyAtomInputNumber v-model="state.searchForm.similairy" name="適配度門檻" :max="100" :min="0">
+                </LazyAtomInputNumber>
             </div>
         </div>
         <ul v-if="state.applications.length" class="appliedList__list">
@@ -55,8 +55,8 @@
                             </div>
                             <hr>
                             <div class="profile__body" :class="{ 'profile__body--isOpen': state.isItemOpen[index] }">
-                                <AtomInputCkeditor v-model="item.description" :toolbar="[]" :disabled="true">
-                                </AtomInputCkeditor>
+                                <LazyAtomInputCkeditor v-model="item.description" :toolbar="[]" :disabled="true">
+                                </LazyAtomInputCkeditor>
                             </div>
                             <br>
                             <div class="profile__footer">
@@ -67,9 +67,9 @@
                         </div>
                         <hr>
                         <div class="content__panel">
-                            <AtomBtnSimple v-if="item.invitedTime" :disabled="true">已邀約</AtomBtnSimple>
-                            <OrganismInvitationModal v-else v-model="state.applications[index]" :job="state.job">
-                            </OrganismInvitationModal>
+                            <LazyAtomBtnSimple v-if="item.invitedTime" :disabled="true">已邀約</LazyAtomBtnSimple>
+                            <LazyOrganismInvitationModal v-else v-model="state.applications[index]" :job="state.job">
+                            </LazyOrganismInvitationModal>
                         </div>
                     </div>
                 </div>
