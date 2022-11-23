@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     },
     // ... other options
     modules: [
+        '@nuxt/image-edge',
         '@nuxtjs/partytown',
         '@pinia/nuxt',
     ],

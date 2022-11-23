@@ -12,6 +12,7 @@
     "host": "firebase deploy --only hosting"
   },
   "devDependencies": {
+    "@nuxt/image-edge": "^1.0.0-27809804.194d2d6",
     "@nuxtjs/partytown": "^1.2.2",
     "nuxt": "^3.0.0"
   },

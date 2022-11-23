@@ -122,7 +122,9 @@ function setApplication() {
         jobId
     }
     const coverLetterRef = currentInstance.refs.coverLetterRef
-    coverLetterRef.setData(description)
+    if (coverLetterRef) {
+        coverLetterRef.setData(description)
+    }
 }
 function hasSelected(work) {
     if (!state.application || !state.application.portfolio) {
