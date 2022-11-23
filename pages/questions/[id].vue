@@ -55,7 +55,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $emitter } = useNuxtApp()
+const { $bootstrap, $sweet } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const route = useRoute()
@@ -78,7 +78,9 @@ useHead({
     title: `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
+    $sweet.loader(true)
     const response = await repoSelect.getQuestions()
+    $sweet.loader(false)
     state.questions = response.data
     getAnswers()
 })
