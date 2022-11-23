@@ -109,8 +109,7 @@ export default function setup() {
                 userId: user.id,
             })
             repoAuth.setUser(user)
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             if (route.path.includes('admin') || route.name === 'index') {
                 router.push({
                     name: 'jobs'
@@ -148,8 +147,7 @@ export default function setup() {
                 // 未完成註冊人資導向到公司註冊畫面
                 router.push(`/admin/register`)
             }
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             return
         }
         // 判斷是否為註冊到一半的求職者
@@ -188,8 +186,7 @@ export default function setup() {
             // 不論是否答題完成都要跑以下程式碼
             user.type = "employee"
             repoAuth.setUser(user)
-            $emitter.emit("hideUserModal")
-            $emitter.emit('hideCompanyModal')
+            hideModals()
             return
         }
         // 各種未完成註冊的用戶
@@ -202,6 +199,10 @@ export default function setup() {
             router.push(`/questions/1`)
         }
         repoAuth.setUser(user)
+        hideModals()
+    }
+    function hideModals() {
+        $emitter.emit("hideSwitchModal")
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')
     }
