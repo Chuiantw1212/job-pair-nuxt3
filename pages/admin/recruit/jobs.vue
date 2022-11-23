@@ -20,7 +20,7 @@
                 <thead class="jobManagement__table__head">
                     <tr>
                         <th class="jobManagement__table__sticky">職缺狀態</th>
-                        <th class="text-center jobManagement__table__sticky jobManagement__table__sticky--second">
+                        <th>
                             <div>
                                 職缺名稱
                             </div>
@@ -46,7 +46,7 @@
                                 @update:modelValue="checkJobStatus($event, job, index)">
                             </LazyAtomInputSwitch>
                         </td>
-                        <td class="jobManagement__table__sticky jobManagement__table__sticky--second">
+                        <td>
                             <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
                                 ref="jobModalRefs">
                             </LazyOrganismJobEditModal>
@@ -393,6 +393,7 @@ async function addJobDraft() {
             background-color: white;
             left: 0;
             position: sticky;
+            z-index: 100;
         }
 
         .jobManagement__table__sticky--second {
