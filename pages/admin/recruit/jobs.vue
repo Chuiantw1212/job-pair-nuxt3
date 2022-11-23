@@ -19,7 +19,7 @@
             <table class="table jobManagement__table">
                 <thead class="jobManagement__table__head">
                     <tr>
-                        <th>職缺狀態</th>
+                        <th class="jobManagement__table__sticky">職缺狀態</th>
                         <th>複製</th>
                         <th>預覽</th>
                         <th>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
-                        <td>
+                        <td class="jobManagement__table__sticky">
                             <AtomInputSwitch v-model="job.status"
                                 @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
@@ -57,7 +57,8 @@
                             </OrganismJobEditModal>
                         </td>
                         <td v-if="state.jobFields.includes('occupationalCategory')">
-                            <div v-for="(category, index) in job.occupationalCategory" :key="index">
+                            <div v-for="(category, index) in job.occupationalCategory" :key="index"
+                                class="table__row__lable">
                                 {{ $optionText(category, repoSelect.state.selectByQueryRes.jobCategory) }}
                             </div>
                         </td>
@@ -359,20 +360,34 @@ async function addJobDraft() {
     .jobManagement__fields {
         display: flex;
         align-items: center;
+        white-space: nowrap;
         gap: 15px;
         margin-top: 20px;
     }
 
     .fixTableHead {
         overflow-y: auto;
+        overflow-x: auto;
         max-height: 640px;
         margin-top: 20px;
     }
 
     .jobManagement__table {
 
+        th {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
         td {
             vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .jobManagement__table__sticky {
+            background-color: white;
+            left: 0;
+            position: sticky;
         }
 
         .table__btn {
@@ -390,30 +405,8 @@ async function addJobDraft() {
             z-index: 10;
         }
 
-        .table__checkbox {
-            height: 18px;
-            width: 18px;
-        }
-
-        .table__firstColumn {
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
         .table__row {
             height: 64px;
-        }
-
-        .table__badge {
-            padding: 9px 9px 9px 10px;
-            border-radius: 10px;
-            background-color: #e5e5e5;
-            color: #999;
-        }
-
-        .table__badge--active {
-            background-color: #5ea88e;
-            color: #fff;
         }
     }
 }
