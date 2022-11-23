@@ -1,6 +1,6 @@
 <template>
     <div class="company" :class="{ container: device.state.isDesktop }">
-        <AtomTabs class="d-lg-none" :items="state.tabItems"></AtomTabs>
+        <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
         <section v-if="state.companyInfo" id="company__info" class="company__section mt-4">
             <div class="company__bannerGroup">
                 <img v-if="state.companyInfo.banner" class="company__banner company__banner--fit-content"
@@ -96,12 +96,12 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <AtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
-                    </AtomInputSearch>
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
+                    </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
-                    <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></OrganismJobItem>
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
                 </ul>
             </div>
         </section>

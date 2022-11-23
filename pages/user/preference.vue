@@ -33,9 +33,9 @@
                     14天 後才能再次修改。
                 </span>
             </div>
-            <AtomBtnSimple @click="handleConfirm()" :disabled="state.isLocked">
+            <LazyAtomBtnSimple @click="handleConfirm()" :disabled="state.isLocked">
                 儲存
-            </AtomBtnSimple>
+            </LazyAtomBtnSimple>
         </div>
     </div>
 </template>

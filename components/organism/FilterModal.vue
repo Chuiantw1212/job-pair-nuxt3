@@ -19,66 +19,66 @@
                     </div>
                     <div class="modal-body">
                         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-                            <AtomInputSelectContainer v-model="state.filterOpen.status" :placeholder="'職缺狀態'">
-                                <AtomInputCheckMultiple v-model="localValue.status"
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.status" :placeholder="'職缺狀態'">
+                                <LazyAtomInputCheckMultiple v-model="localValue.status"
                                     :items="repoSelect.state.selectByQueryRes.jobStatus" class="m-3">
-                                </AtomInputCheckMultiple>
-                            </AtomInputSelectContainer>
-                            <AtomInputSelectLabel v-model="localValue.status"
+                                </LazyAtomInputCheckMultiple>
+                            </LazyAtomInputSelectContainer>
+                            <LazyAtomInputSelectLabel v-model="localValue.status"
                                 :items="repoSelect.state.selectByQueryRes.jobStatus" class="mt-2">
-                            </AtomInputSelectLabel>
-                            <AtomInputSelectContainer v-model="state.filterOpen.occupationalCategory"
+                            </LazyAtomInputSelectLabel>
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory"
                                 :placeholder="'職務類型'" class="mb-2">
-                                <MoleculeFilterCategory v-model="localValue.occupationalCategory"
+                                <LazyMoleculeFilterCategory v-model="localValue.occupationalCategory"
                                     :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
                                     :isDesktop="device.state.isDesktop" :showSelectAll="true">
-                                </MoleculeFilterCategory>
-                            </AtomInputSelectContainer>
+                                </LazyMoleculeFilterCategory>
+                            </LazyAtomInputSelectContainer>
                             <div>
                                 <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                                    <AtomInputSelectLabel v-model="localValue.occupationalCategory" :items="items">
-                                    </AtomInputSelectLabel>
+                                    <LazyAtomInputSelectLabel v-model="localValue.occupationalCategory" :items="items">
+                                    </LazyAtomInputSelectLabel>
                                 </template>
                             </div>
                             <template v-if="repoSelect.state.locationRes" class="filter__list__item">
-                                <AtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                                    <AtomInputCheckMultiple v-model="localValue.addressRegion"
+                                <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
+                                    <LazyAtomInputCheckMultiple v-model="localValue.addressRegion"
                                         :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
-                                    </AtomInputCheckMultiple>
-                                </AtomInputSelectContainer>
-                                <AtomInputSelectLabel v-model="localValue.addressRegion"
+                                    </LazyAtomInputCheckMultiple>
+                                </LazyAtomInputSelectContainer>
+                                <LazyAtomInputSelectLabel v-model="localValue.addressRegion"
                                     :items="repoSelect.state.locationRes.taiwan" class="mt-2">
-                                </AtomInputSelectLabel>
+                                </LazyAtomInputSelectLabel>
                             </template>
-                            <AtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                                <AtomInputCheckMultiple v-model="localValue.jobLocationType"
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
+                                <LazyAtomInputCheckMultiple v-model="localValue.jobLocationType"
                                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
-                                </AtomInputCheckMultiple>
-                            </AtomInputSelectContainer>
-                            <AtomInputSelectLabel v-model="localValue.jobLocationType"
+                                </LazyAtomInputCheckMultiple>
+                            </LazyAtomInputSelectContainer>
+                            <LazyAtomInputSelectLabel v-model="localValue.jobLocationType"
                                 :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
-                            </AtomInputSelectLabel>
-                            <AtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                                <AtomInputCheckMultiple v-model="localValue.employmentType"
+                            </LazyAtomInputSelectLabel>
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
+                                <LazyAtomInputCheckMultiple v-model="localValue.employmentType"
                                     :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
-                                </AtomInputCheckMultiple>
-                            </AtomInputSelectContainer>
-                            <AtomInputSelectLabel v-model="localValue.employmentType"
+                                </LazyAtomInputCheckMultiple>
+                            </LazyAtomInputSelectContainer>
+                            <LazyAtomInputSelectLabel v-model="localValue.employmentType"
                                 :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
-                            </AtomInputSelectLabel>
-                            <AtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                                <AtomInputCheckMultiple v-model="localValue.responsibilities"
+                            </LazyAtomInputSelectLabel>
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
+                                <LazyAtomInputCheckMultiple v-model="localValue.responsibilities"
                                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
-                                </AtomInputCheckMultiple>
-                            </AtomInputSelectContainer>
-                            <AtomInputSelectLabel v-model="localValue.responsibilities"
+                                </LazyAtomInputCheckMultiple>
+                            </LazyAtomInputSelectContainer>
+                            <LazyAtomInputSelectLabel v-model="localValue.responsibilities"
                                 :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
-                            </AtomInputSelectLabel>
+                            </LazyAtomInputSelectLabel>
                             <div>
                                 <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap"
                                     :key="categoryKey">
-                                    <AtomInputSelectLabel v-model="localValue.industry" :items="items">
-                                    </AtomInputSelectLabel>
+                                    <LazyAtomInputSelectLabel v-model="localValue.industry" :items="items">
+                                    </LazyAtomInputSelectLabel>
                                 </template>
                             </div>
                             <div class="section__header">薪資類型</div>
@@ -92,16 +92,16 @@
                                 </li>
                             </ul>
                             <div class="section__salaryRange">
-                                <AtomInputMoney v-model="localValue.salaryMin" name="薪資下限" placeholder="請輸入">
-                                </AtomInputMoney>
-                                <AtomInputMoney v-model="localValue.salaryMax" name="薪資上限" placeholder="請輸入">
-                                </AtomInputMoney>
+                                <LazyAtomInputMoney v-model="localValue.salaryMin" name="薪資下限" placeholder="請輸入">
+                                </LazyAtomInputMoney>
+                                <LazyAtomInputMoney v-model="localValue.salaryMax" name="薪資上限" placeholder="請輸入">
+                                </LazyAtomInputMoney>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <AtomBtnSimple type="button" @click="closeModal()">關閉彈窗</AtomBtnSimple>
-                        <AtomBtnSimple type="button" @click="$emit('reset')">重置所有搜尋條件</AtomBtnSimple>
+                        <LazyAtomBtnSimple type="button" @click="closeModal()">關閉彈窗</LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple type="button" @click="$emit('reset')">重置所有搜尋條件</LazyAtomBtnSimple>
                     </div>
                 </div>
             </div>

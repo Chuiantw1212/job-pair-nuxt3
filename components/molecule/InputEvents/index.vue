@@ -6,11 +6,11 @@
         </h1>
         <div class="portfolio__inputGroup" v-for="(work, index) in localValue" :key="index">
             <input v-show="false" :value="validTimes.length !== 0" :data-name="name" :data-required="true">
-            <AtomInputCalendar v-model="localValue[index].startDate" class="portfolio__work" :flatpickrConfig="{
+            <LazyAtomInputCalendar v-model="localValue[index].startDate" class="portfolio__work" :flatpickrConfig="{
                 enableTime: true,
                 time_24hr: true,
                 minDate: getCurrentHour(),
-            }"></AtomInputCalendar>
+            }"></LazyAtomInputCalendar>
             <button class="doc__btn" @click="deleteWork(index)" :disabled="disabled">
                 <img class="btn__icon" src="./icon_delete_g.svg" />
             </button>

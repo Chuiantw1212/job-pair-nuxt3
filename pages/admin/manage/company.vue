@@ -1,6 +1,6 @@
 <template>
     <div>
-        <OrganismCompanyProfile></OrganismCompanyProfile>
+        <LazyOrganismCompanyProfile></LazyOrganismCompanyProfile>
     </div>
 </template>
 <script setup>

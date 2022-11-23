@@ -63,15 +63,15 @@
         </div>
         <div class="appliedList__form">
             <div class="form__selectGroup">
-                <AtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
+                <LazyAtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
                     :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'"
                     :itemText="'name'">
-                </AtomInputSelect>
-                <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
                     :itemText="'name'" :itemValue="'applicantId'" @change="replaceParamsId()">
-                </AtomInputSelect>
-                <AtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
-                </AtomInputSelect>
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
+                </LazyAtomInputSelect>
             </div>
         </div>
         <ul v-if="getFilteredItems().length" class="appliedList__list">
@@ -128,8 +128,8 @@
                             </div>
                             <hr>
                             <div class="profile__body">
-                                <AtomInputCkeditor v-model="item.coverLetter" :toolbar="[]" :disabled="true">
-                                </AtomInputCkeditor>
+                                <LazyAtomInputCkeditor v-model="item.coverLetter" :toolbar="[]" :disabled="true">
+                                </LazyAtomInputCkeditor>
                             </div>
                             <br>
                             <div class="profile__footer">
@@ -145,17 +145,17 @@
                         </div>
                         <hr>
                         <div class="content__panel">
-                            <OrganismScheduleModal v-if="item.applyFlow === 'applied'"
+                            <LazyOrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
-                            </OrganismScheduleModal>
-                            <OrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
+                            </LazyOrganismScheduleModal>
+                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
                                 @update:modelValue="updateChart()">
                                 婉拒
-                            </OrganismRejectModal>
-                            <AtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
-                            </AtomBtnSimple>
-                            <AtomBtnSimple v-if="item.applyFlow === 'rejected'" disabled>已婉拒
-                            </AtomBtnSimple>
+                            </LazyOrganismRejectModal>
+                            <LazyAtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
+                            </LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple v-if="item.applyFlow === 'rejected'" disabled>已婉拒
+                            </LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>

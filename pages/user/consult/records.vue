@@ -1,7 +1,7 @@
 <template>
     <div class="consult">
         <img class="consult__banner" src="~/assets/consult/img_banner.png" />
-        <MoleculeConsultCard class="consult__record mt-2">
+        <LazyMoleculeConsultCard class="consult__record mt-2">
             <template v-slot:header>
                 <img class="me-1" src="~/assets/consult/icon_record.svg">
                 預約紀錄
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </template>
-        </MoleculeConsultCard>
+        </LazyMoleculeConsultCard>
         <div v-if="device.state.isDesktop" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
@@ -110,9 +110,9 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/life`">
-                        <AtomBtnSimple class="footer__link__button">
+                        <LazyAtomBtnSimple class="footer__link__button">
                             立即預約
-                        </AtomBtnSimple>
+                        </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
@@ -140,9 +140,9 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
-                        <AtomBtnSimple class="footer__link__button">
+                        <LazyAtomBtnSimple class="footer__link__button">
                             立即預約
-                        </AtomBtnSimple>
+                        </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
@@ -170,14 +170,14 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/interview`">
-                        <AtomBtnSimple class="footer__link__button">
+                        <LazyAtomBtnSimple class="footer__link__button">
                             立即預約
-                        </AtomBtnSimple>
+                        </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
             </div>
         </div>
-        <MoleculeConsultCard v-else class="consult__themeMobile">
+        <LazyMoleculeConsultCard v-else class="consult__themeMobile">
             <template v-slot:header>
                 <img class="me-1" src="~/assets/consult/icon_Heart.svg">
                 諮詢主題類型
@@ -263,14 +263,14 @@
                 <div class="themeMobile__footer">
                     <div class="footer__price">NT.2000 - 1小時</div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/${state.activeTab}`">
-                        <AtomBtnSimple class="footer__link">
+                        <LazyAtomBtnSimple class="footer__link">
                             立即預約
-                        </AtomBtnSimple>
+                        </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
             </template>
-        </MoleculeConsultCard>
-        <MoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></MoleculeFeedbackList>
+        </LazyMoleculeConsultCard>
+        <LazyMoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></LazyMoleculeFeedbackList>
     </div>
 </template>
 <script setup>

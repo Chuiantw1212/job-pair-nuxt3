@@ -10,46 +10,46 @@
                 <div class="panel__desc">團隊適配度</div>
             </div>
             <div class="panel__footer">
-                <AtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
+                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
                     <img class="store__icon" src="./heart.svg" alt="save" />儲存
-                </AtomBtnSimple>
-                <AtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
                     @click.stop="handleUnsavedJob()">
                     <img class="store__icon" src="./icon_Heart.svg" alt="saved" /> 已儲存
-                </AtomBtnSimple>
-                <AtomBtnSimple
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple
                     v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
                     class="panel__store" @click.stop="handleSaveJob()">
                     <img class="store__icon" src="./heart.svg" alt="save" />儲存
-                </AtomBtnSimple>
-                <AtomBtnSimple
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple
                     v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
                     class="panel__store" @click.stop="handleUnsavedJob()">
                     <img class="store__icon" src="./heart.svg" alt="saved" />已儲存
-                </AtomBtnSimple>
-                <AtomBtnSimple v-if="['applied', 'notified'].includes(state.application.applyFlow)"
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="['applied', 'notified'].includes(state.application.applyFlow)"
                     class="panel__store panel__store--applied" :disabled="true">
                     <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="applied" /> 已應徵
-                </AtomBtnSimple>
-                <AtomBtnSimple v-if="['rejected'].includes(state.application.applyFlow)"
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="['rejected'].includes(state.application.applyFlow)"
                     class="panel__store panel__store--applied" :disabled="true">
                     <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="rejected" /> 已婉拒
-                </AtomBtnSimple>
-                <AtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
                     @click="shareLinkNative()">
                     <img class="share__icon" src="./share.svg" alt="share" />分享
-                </AtomBtnSimple>
+                </LazyAtomBtnSimple>
                 <template v-if="showShareButton && !state.navigator.share">
-                    <AtomBtnSimple v-show="state.isCopied" :id="`copied${state.id}`" class="panel__share"
+                    <LazyAtomBtnSimple v-show="state.isCopied" :id="`copied${state.id}`" class="panel__share"
                         data-bs-toggle="tooltip" :title="state.copiedTitle" @mouseout="resetCopiedTooltip()">
                         <img class="share__icon" src="./share.svg" alt="share" />
                         分享
-                    </AtomBtnSimple>
-                    <AtomBtnSimple v-show="!state.isCopied" :id="`tooltip${state.id}`" class="panel__share"
+                    </LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple v-show="!state.isCopied" :id="`tooltip${state.id}`" class="panel__share"
                         data-bs-toggle="tooltip" :title="state.shareButtonTitle" @click="shareLinkBootstrap()">
                         <img class="share__icon" src="./share.svg" alt="share" />
                         分享
-                    </AtomBtnSimple>
+                    </LazyAtomBtnSimple>
                 </template>
             </div>
         </template>

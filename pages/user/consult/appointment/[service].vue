@@ -1,21 +1,21 @@
 <template>
     <div class="appointment">
-        <MoleculeAppointmentCard class="appointment__theme">
+        <LazyMoleculeAppointmentCard class="appointment__theme">
             <template v-slot:header>
                 選擇諮詢主題
             </template>
             <template v-slot:body>
                 <div class="appointment__theme__body">
-                    <AtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
+                    <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
                         name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
-                        class="details__dropdown" required></AtomInputSelect>
-                    <AtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
+                        class="details__dropdown" required></LazyAtomInputSelect>
+                    <LazyAtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
                         placeholder="請詳述你目前的職涯困擾" required>
-                    </AtomInputTextarea>
+                    </LazyAtomInputTextarea>
                 </div>
             </template>
-        </MoleculeAppointmentCard>
-        <MoleculeAppointmentCard class="appointment__consultant">
+        </LazyMoleculeAppointmentCard>
+        <LazyMoleculeAppointmentCard class="appointment__consultant">
             <template v-slot:header>
                 選擇諮詢師
             </template>
@@ -42,9 +42,9 @@
                                     我們將針對您的經歷，安排最適合的諮詢師。
                                 </div>
                             </div>
-                            <MoleculeFeedbackList v-model="state.consultantFeedbacks"></MoleculeFeedbackList>
-                            <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
-                                :key="consultant.key"></OrganismConsultTime>
+                            <LazyMoleculeFeedbackList v-model="state.consultantFeedbacks"></LazyMoleculeFeedbackList>
+                            <LazyOrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
+                                :key="consultant.key"></LazyOrganismConsultTime>
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
@@ -60,15 +60,15 @@
                                     {{ consultant.descLong }}
                                 </div>
                             </div>
-                            <MoleculeFeedbackList v-model="consultant.feedbacks"></MoleculeFeedbackList>
-                            <OrganismConsultTime v-model="state.appointmentForm.time" :consultant="consultant"
+                            <LazyMoleculeFeedbackList v-model="consultant.feedbacks"></LazyMoleculeFeedbackList>
+                            <LazyOrganismConsultTime v-model="state.appointmentForm.time" :consultant="consultant"
                                 :key="consultant.key">
-                            </OrganismConsultTime>
+                            </LazyOrganismConsultTime>
                         </template>
                     </template>
                 </template>
             </template>
-        </MoleculeAppointmentCard>
+        </LazyMoleculeAppointmentCard>
         <div class="appointment__footer">
             <button class="footer__button" @click="submitAppointment()">確認預約</button>
         </div>

@@ -53,12 +53,12 @@
                 </NuxtLink>
                 <div class="main__panel d-lg-none">
                     <div class="panel__vl"></div>
-                    <OrganismJobItemPanel v-model="localValue"></OrganismJobItemPanel>
+                    <LazyOrganismJobItemPanel v-model="localValue"></LazyOrganismJobItemPanel>
                 </div>
             </div>
         </div>
-        <OrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
-        </OrganismJobItemPanel>
+        <LazyOrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
+        </LazyOrganismJobItemPanel>
     </li>
 </template>
 <script setup>

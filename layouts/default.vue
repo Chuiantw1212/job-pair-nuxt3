@@ -1,8 +1,8 @@
 <template>
     <div id="app" class="app w-100">
-        <OrganismHeader />
+        <LazyOrganismHeader />
         <slot></slot>
-        <OrganismFooter />
+        <LazyOrganismFooter />
     </div>
 </template>
 <script setup>

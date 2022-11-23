@@ -1,9 +1,12 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isDesktop }">
-        <AtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></AtomTabs>
+        <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
         <section v-if="state.job" id="jobView__basic" class="jobView__section mt-4">
             <div v-if="state.company" class="jobView__card jobView__basic">
-                <div class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${state.company.logo})` }">
+                <div v-if="state.company.logo" class="d-none d-lg-block basic__logo"
+                    :style="{ backgroundImage: `url(${state.company.logo})` }">
+                </div>
+                <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job.name }}</div>
@@ -19,9 +22,9 @@
                         </div>
                     </div>
                 </div>
-                <OrganismJobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
+                <LazyOrganismJobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
                     :jobDetailsException="true">
-                </OrganismJobItemPanel>
+                </LazyOrganismJobItemPanel>
             </div>
         </section>
         <div v-if="state.job && repoSelect.state.selectByQueryRes" class="row jobView__body">
@@ -36,7 +39,7 @@
                             {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
                             }} ·
                             {{ $optionText(state.job.responsibilities,
-                            repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -80,13 +83,14 @@
                         <span class="item__body">{{ $time(state.job.datePosted) }}</span>
                     </div>
                     <div class="mt-3">
-                        <AtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵</AtomBtnSimple>
-                        <AtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</AtomBtnSimple>
-                        <OrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
+                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
+                        </LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
+                        <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
                             @applied="state.applyFlow = $event">
                             立即應徵
-                        </OrganismJobModal>
-                        <AtomBtnSimple v-else :disabled="true">已應徵</AtomBtnSimple>
+                        </LazyOrganismJobModal>
+                        <LazyAtomBtnSimple v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
@@ -130,15 +134,15 @@
         <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
-                <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
+                <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
                     v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true"
-                    ref="jobItems"></OrganismJobItem>
+                    ref="jobItems"></LazyOrganismJobItem>
             </ul>
         </section>
     </div>
 </template>
 <script setup>
-import { onBeforeUnmount, onMounted, watch, computed } from 'vue'
+import placeholderImage from '~/assets/company/company.webp'
 const runTime = useRuntimeConfig()
 const { $emitter, $sweet, $optionText } = useNuxtApp()
 const router = useRouter()
