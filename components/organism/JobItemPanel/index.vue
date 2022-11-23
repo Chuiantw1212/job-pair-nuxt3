@@ -1,6 +1,6 @@
 <template>
     <div class="jobItemPanel">
-        <template v-if="modelValue.similarity === 0 || $rank(modelValue.similarity)">
+        <template v-if="checkPanelDisplay()">
             <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
                 <div class="panel__score">{{ $rank(modelValue.similarity) }}</div>
                 <div class="panel__desc">團隊適配度</div>
@@ -100,7 +100,7 @@ watch(() => props.modelValue.similarity, () => {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`
-        if (props.showShareButton && !state.navigator.share) {
+        if (props.showShareButton && !state.navigator.share && checkPanelDisplay()) {
             state.id = $uuid4()
             nextTick(() => {
                 initialilzeTooltip()
@@ -120,6 +120,10 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
     }
 }, { immediate: true })
 // methods
+function checkPanelDisplay() {
+    const { modelValue } = props
+    return modelValue.similarity === 0 || $rank(modelValue.similarity)
+}
 function resetCopiedTooltip() {
     state.isCopied = false
 }
