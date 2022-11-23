@@ -94,7 +94,10 @@ let localValue = computed({
 // hooks
 onMounted(async () => {
     if (process.client) {
-        await import("~/assets/ckeditor5/build/ckeditor.js")
+        const result = await import("~/assets/ckeditor5/build/ckeditor.js")
+        console.log({
+            result
+        });
         state.id = $uuid4()
         requestSelector(window.ClassicEditor, (ClassicEditor) => {
             initializeCKEditor(ClassicEditor)
@@ -121,10 +124,16 @@ function getValue() {
     return case1
 }
 function requestSelector(ClassicEditor, callback) {
+    let localCount = 0
     function step() {
+        if (localCount >= 100) {
+            console.error(`Cannot find ClassicEditor`)
+            return
+        }
         if (ClassicEditor) {
             callback(ClassicEditor)
         } else {
+            localCount++
             window.requestAnimationFrame(step)
         }
     }
@@ -162,7 +171,11 @@ async function initializeCKEditor(ClassicEditor) {
 // public method do not delete
 async function setData(newValue) {
     const ckeditorInstance = state.ckeditorInstance
-    ckeditorInstance.setData(newValue)
+    if (ckeditorInstance) {
+        ckeditorInstance.setData(newValue)
+    } else {
+        console.error('ckeditorInstance error', ckeditorInstance)
+    }
 }
 defineExpose({
     setData
