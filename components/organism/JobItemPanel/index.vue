@@ -250,6 +250,8 @@ async function shareLinkBootstrap() {
             align-items: center;
 
             .store__icon {
+                width: 20px;
+                height: 18px;
                 margin-right: 4px;
                 color: white;
             }
@@ -279,6 +281,8 @@ async function shareLinkBootstrap() {
             .share__icon {
                 margin-right: 4px;
                 color: white;
+                width: 18px;
+                height: 18px;
             }
 
             &:hover {

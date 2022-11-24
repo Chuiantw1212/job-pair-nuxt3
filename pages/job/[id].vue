@@ -34,7 +34,6 @@
                     <div class="features__item">
                         <span class="item__header">
                             工作性質
-                            <!-- <img src="./icon/icon_Aim.svg"> -->
                         </span>
                         <span class="item__body">
                             {{ $optionText(state.job?.employmentType, repoSelect.state.selectByQueryRes?.employmentType)
@@ -49,8 +48,9 @@
                         </span>
                         <span class="item__body">
                             {{ getJobAddress() }}
-                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank"> <img
-                                    src="~/assets/jobs/details/icon_Environment.svg" alt="map"></a>
+                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank">
+                                <img class="body__map__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                            </a>
                         </span>
                     </div>
                     <div class="features__item">
@@ -581,6 +581,11 @@ async function initialize() {
                     cursor: pointer;
                     display: block;
                     margin-left: 8px;
+
+                    .body__map__icon {
+                        width: 26px;
+                        height: 26px;
+                    }
                 }
             }
 
