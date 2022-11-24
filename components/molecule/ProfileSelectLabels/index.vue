@@ -30,12 +30,6 @@ const props = defineProps({
             return []
         }
     },
-    jobCategoryMap: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    },
     items: {
         type: [Array, Object],
         default: function () {

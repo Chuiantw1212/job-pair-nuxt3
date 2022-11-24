@@ -9,29 +9,9 @@
                 <div class="final__sub">接下來開始編輯個人檔案吧！</div>
                 <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
             </div>
-            <!-- <div class="result__category">
-                <div class="category__header">
-                    選擇職務類別
-                </div>
-                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別"
-                    class="category__select" :max="3" required>
-                    <template v-slot:header>
-                        <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
-                            :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
-                        </LazyMoleculeProfileSelectLabels>
-                    </template>
-                    <template v-slot:body>
-                        <LazyMoleculeFilterCategory v-model="state.profile.occupationalCategory"
-                            :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                            :isDesktop="device.state.isDesktop" required name="欲申請職務類別">
-                        </LazyMoleculeFilterCategory>
-                    </template>
-                </LazyMoleculeProfileSelectContainer>
-            </div> -->
             <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
             <div class="result__footer">
                 <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
-                <!-- <button type="button" class="btn btn-light" @click="routeToFisrt()">直接看職缺</button> -->
             </div>
         </div>
     </div>

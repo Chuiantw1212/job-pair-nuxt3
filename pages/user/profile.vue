@@ -16,8 +16,10 @@
                 </div>
                 <LazyAtomInputText name="姓名" v-model="state.profile.name"
                     :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
-                <LazyAtomInputEmail name="Email" v-model="state.profile.email" class="mt-3" disabled></LazyAtomInputEmail>
-                <LazyAtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3" required>
+                <LazyAtomInputEmail name="Email" v-model="state.profile.email" class="mt-3" disabled>
+                </LazyAtomInputEmail>
+                <LazyAtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3"
+                    required>
                 </LazyAtomInputText>
                 <LazyAtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3"
                     :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate" required>
@@ -31,8 +33,7 @@
                 <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory"
                     :items="state.profile.educationCategory" name="學科分類" :max="1" class="mt-3">
                     <template v-slot:header>
-                        <LazyMoleculeProfileSelectLabels v-model="state.profile.educationCategory"
-                            :jobCategoryMap="repoSelect.educationCategoryMap" placeholder="學科分類"
+                        <LazyMoleculeProfileSelectLabels v-model="state.profile.educationCategory" placeholder="學科分類"
                             :items="repoSelect.state.selectByQueryRes.educationCategory">
                         </LazyMoleculeProfileSelectLabels>
                     </template>
@@ -51,11 +52,11 @@
                 <LazyAtomBtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="求職資訊" class="profile__information profile__doc mt-3 ">
-                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
-                    required>
+                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別"
+                    :max="3" required>
                     <template v-slot:header>
                         <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
-                            :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
+                            :items="repoSelect.jobCategory">
                         </LazyMoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>
@@ -65,7 +66,8 @@
                         </LazyMoleculeFilterCategory>
                     </template>
                 </LazyMoleculeProfileSelectContainer>
-                <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive" name="目前求職狀態">
+                <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive"
+                    name="目前求職狀態">
                     <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
                 </LazyAtomInputCheckSingle>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
@@ -74,13 +76,14 @@
                 </LazyAtomInputCkeditor>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
-                <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
-                    :required="device.state.isResumeRequired">
+                <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
+                    :max="3" :required="device.state.isResumeRequired">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
             <div class="profile__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存</LazyAtomBtnSimple>
+                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存
+                </LazyAtomBtnSimple>
             </div>
         </template>
     </div>

@@ -27,7 +27,7 @@
                             :max="3" :flat="true" required class="mt-4">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
-                                    :jobCategoryMap="repoSelect.jobCategoryMap" :items="repoSelect.jobCategory">
+                                    :items="repoSelect.jobCategory">
                                 </LazyMoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
@@ -40,10 +40,19 @@
                         <LazyAtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
                             class="mt-4"></LazyAtomInputSelect>
-                        <LazyAtomInputSelect v-model="state.job.employmentType" name="職務層級" required
-                            :items="repoSelect.state.selectByQueryRes.employmentType" :disabled="state.disabled"
-                            class="mt-4">
-                        </LazyAtomInputSelect>
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="職務層級"
+                            required :disabled="state.disabled" class="mt-4">
+                            <template v-slot:header>
+                                <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType"
+                                    :items="repoSelect.state.selectByQueryRes.employmentType">
+                                </LazyMoleculeProfileSelectLabels>
+                            </template>
+                            <template v-slot:body>
+                                <LazyAtomInputCheckMultiple v-model="state.job.employmentType"
+                                    :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
+                                </LazyAtomInputCheckMultiple>
+                            </template>
+                        </LazyMoleculeProfileSelectContainer>
                         <div class="form__salary">
                             <div class="salary__header mt-4">
                                 <span class="header__text">
@@ -104,8 +113,8 @@
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             :toolbar="state.toolbar" required class="mt-4">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :toolbar="state.toolbar" :removePlatformLink="true" class="mt-4">
+                        <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required
+                            :disabled="state.disabled" :toolbar="state.toolbar" :removePlatformLink="true" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -157,6 +166,7 @@ const state = reactive({
     crawlerUrl: '',
     filterOpen: {
         occupationalCategory: false,
+        employmentType: false,
     },
     bsModal: null,
     toolbar: [
@@ -265,6 +275,13 @@ function setJob() {
         const { company } = repoAuth.state
         const { industry = [] } = company
         job.industry = industry
+    }
+    if (job.employmentType) {
+        if (!Array.isArray(job.employmentType)) {
+            job.employmentType = [job.employmentType]
+        }
+    } else {
+        job.employmentType = []
     }
     state.job = job
 }

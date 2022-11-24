@@ -26,7 +26,8 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
+                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
+                            class="mb-2">
                         </LazyAtomInputPhotoSingle>
                         <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
@@ -37,8 +38,7 @@
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
                             required class="mb-2">
                             <template v-slot:header>
-                                <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry"
-                                    :jobCategoryMap="repoSelect.industryCategoryMap" placeholder="產業類別"
+                                <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
                                     :items="repoSelect.industryItems">
                                 </LazyMoleculeProfileSelectLabels>
                             </template>
@@ -64,17 +64,17 @@
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
                             </LazyAtomInputText>
                         </div>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                            required>
+                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
                         </LazyAtomInputText>
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
                             class="mt-3 mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
-                            class="mb-2">
+                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
+                            placeholder="請輸入阿拉伯數字" class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
-                            class="mb-2">
+                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
+                            v-model="state.companyInfo.url.default" class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
                             :accept="'image/*'" :max="12">
@@ -82,11 +82,11 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
-                        class="mb-2" ref="descriptionRef">
+                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
+                        required class="mb-2" ref="descriptionRef">
                     </LazyAtomInputCkeditor>
-                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
-                        class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
+                        required class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
