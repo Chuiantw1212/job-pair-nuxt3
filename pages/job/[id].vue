@@ -1,23 +1,24 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
-        <section v-if="state.job" id="jobView__basic" class="jobView__section mt-4">
-            <div v-if="state.company" class="jobView__card jobView__basic">
-                <div v-if="state.company.logo" class="d-none d-lg-block basic__logo"
-                    :style="{ backgroundImage: `url(${state.company.logo})` }">
+        <section id="jobView__basic" class="jobView__section mt-4">
+            <div class="jobView__card jobView__basic">
+                <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
+                    :style="{ backgroundImage: `url(${state.company?.logo})` }">
                 </div>
-                <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
+                <div v-else class="d-none d-lg-block basic__logo"
+                    :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
-                    <div class="basic__body__header">{{ state.job.name }}</div>
-                    <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company.id}`">
+                    <div class="basic__body__header">{{ state.job?.name }}</div>
+                    <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
                         <div class="d-lg-none subHeader__logo"
-                            :style="{ backgroundImage: `url(${state.company.logo})` }">
+                            :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
-                        {{ state.job.organizationName }}
+                        {{ state.job?.organizationName }}
                     </NuxtLink>
                     <div class="basic__body__badgeGroup">
-                        <div v-for="(item, index) in state.company.industry" :key="index" class="badgeGroup__badge">
+                        <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
                             {{ $optionText(item, repoSelect.industryItems) }}
                         </div>
                     </div>
@@ -27,19 +28,18 @@
                 </LazyOrganismJobItemPanel>
             </div>
         </section>
-        <div v-if="state.job && repoSelect.state.selectByQueryRes" class="row jobView__body">
+        <div class="row jobView__body">
             <div class="mobileGrid__right" :class="{ 'col-4': device.state.isDesktop }">
                 <div class="jobView__card jobView__features mt-3">
                     <div class="features__item">
                         <span class="item__header">
                             工作性質
-                            <!-- <img src="./icon/icon_Aim.svg"> -->
                         </span>
                         <span class="item__body">
-                            {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
+                            {{ $optionText(state.job?.employmentType, repoSelect.state.selectByQueryRes?.employmentType)
                             }} ·
-                            {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            {{ $optionText(state.job?.responsibilities,
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -48,22 +48,24 @@
                         </span>
                         <span class="item__body">
                             {{ getJobAddress() }}
-                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank"> <img
-                                    src="~/assets/jobs/details/icon_Environment.svg" alt="map"></a>
+                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank">
+                                <img class="body__map__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                            </a>
                         </span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             薪資
                         </span>
-                        <span class="item__body">{{ $salary(state.job) }}</span>
+                        <span class="item__body">{{ $filter.salary(state.job) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             遠端彈性
                         </span>
                         <span class="item__body">
-                            {{ $optionText(state.job.jobLocationType, repoSelect.state.selectByQueryRes.jobLocationType)
+                            {{
+                                    $optionText(state.job?.jobLocationType, repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </span>
                     </div>
@@ -72,7 +74,7 @@
                             職務類型
                         </span>
                         <div class="item__body item__body--badgeGroup">
-                            <span v-for="(category, index ) in state.job.occupationalCategory" :key="index"
+                            <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
                                 class="body__badge">{{ getCategoryText(category) }}</span>
                         </div>
                     </div>
@@ -80,7 +82,7 @@
                         <span class="item__header">
                             更新日期
                         </span>
-                        <span class="item__body">{{ $time(state.job.datePosted) }}</span>
+                        <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
                     </div>
                     <div class="mt-3">
                         <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
@@ -101,17 +103,20 @@
                 </div>
             </div>
             <div class="mobileGrid__left" :class="{ 'col-8': device.state.isDesktop }">
-                <section v-if="state.job" id="jobView__description" class="jobView__section jobView__description mt-3">
+                <section id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
-                        <div class="card__body" v-html="state.job.description">
+                        <div class="card__body">
+                            <div v-if="state.job" v-html="state.job.description"></div>
                         </div>
                     </div>
                 </section>
-                <section v-if="state.job" id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
+                <section id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
-                        <div class="card__body" v-html="state.job.skills"></div>
+                        <div class="card__body">
+                            <div v-if="state.job" v-html="state.job.skills"></div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -363,7 +368,7 @@ function hideAd() {
     state.adRenderKey = Math.random()
 }
 function getCategoryText(category = "") {
-    if (!category) {
+    if (!category || !repoSelect.state.selectByQueryRes) {
         return
     }
     const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
@@ -494,6 +499,7 @@ async function initialize() {
             font-size: 22px;
             font-weight: bold;
             line-height: 1.2;
+            min-height: 28px;
         }
 
         .basic__body__subHeader {
@@ -505,6 +511,7 @@ async function initialize() {
             margin-top: 10px;
             text-decoration: none;
             color: #5ea88e;
+            min-height: 40px;
 
             &:hover {
                 text-decoration: underline;
@@ -526,6 +533,7 @@ async function initialize() {
             gap: 18px;
             margin-top: 20px;
             flex-wrap: wrap;
+            min-height: 42px;
 
             .badgeGroup__badge {
                 padding: 8px;
@@ -573,6 +581,11 @@ async function initialize() {
                     cursor: pointer;
                     display: block;
                     margin-left: 8px;
+
+                    .body__map__icon {
+                        width: 26px;
+                        height: 26px;
+                    }
                 }
             }
 

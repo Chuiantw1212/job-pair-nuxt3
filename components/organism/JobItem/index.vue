@@ -192,6 +192,7 @@ function getLocationText() {
 
             .company__logo {
                 width: 27px;
+                height: fit-content;
                 display: block;
                 margin-right: 4px;
             }
