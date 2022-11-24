@@ -498,6 +498,7 @@ async function initialize() {
             font-size: 22px;
             font-weight: bold;
             line-height: 1.2;
+            min-height: 28px;
         }
 
         .basic__body__subHeader {
@@ -509,6 +510,7 @@ async function initialize() {
             margin-top: 10px;
             text-decoration: none;
             color: #5ea88e;
+            min-height: 40px;
 
             &:hover {
                 text-decoration: underline;
@@ -530,6 +532,7 @@ async function initialize() {
             gap: 18px;
             margin-top: 20px;
             flex-wrap: wrap;
+            min-height: 42px;
 
             .badgeGroup__badge {
                 padding: 8px;
