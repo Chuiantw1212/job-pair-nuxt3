@@ -135,10 +135,14 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    const result = await import("~/assets/ckeditor5/build/ckeditor.js")
-    for(let key in result) {
-        console.log(result[key])
+    const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
+    for (let key in importedEditor) {
+        console.log(importedEditor[key])
     }
+    let constructor = new importedEditor()
+    console.log({
+        constructor
+    });
     console.log({
         window
     });
@@ -147,6 +151,7 @@ async function initializeCKEditor() {
         toolbar: props.toolbar,
         placeholder: props.placeholder
     }
+    const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
     if (localValue.value) {
         editor.setData(localValue.value)
