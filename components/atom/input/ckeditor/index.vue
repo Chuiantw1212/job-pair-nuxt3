@@ -93,16 +93,8 @@ let localValue = computed({
 })
 // hooks
 onMounted(async () => {
-    if (process.client) {
-        const result = await import("~/assets/ckeditor5/build/ckeditor.js")
-        console.log({
-            result
-        });
-        state.id = $uuid4()
-        requestSelector(window.ClassicEditor, (ClassicEditor) => {
-            initializeCKEditor(ClassicEditor)
-        })
-    }
+    state.id = $uuid4()
+    initializeCKEditor()
 })
 onBeforeUnmount(() => {
     const ckeditorInstance = state.ckeditorInstance
@@ -139,12 +131,18 @@ function requestSelector(ClassicEditor, callback) {
     }
     step()
 }
-async function initializeCKEditor(ClassicEditor) {
+async function initializeCKEditor() {
+    if (!process.client) {
+        return
+    }
+    const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
     // 使用CDN
     const editorConfig = {
         toolbar: props.toolbar,
         placeholder: props.placeholder
     }
+    // prd吃到importedEditor, dev吃到ClassicEditor, 
+    const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
     if (localValue.value) {
         editor.setData(localValue.value)
