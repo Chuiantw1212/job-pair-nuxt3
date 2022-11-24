@@ -135,7 +135,10 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    await import("~/assets/ckeditor5/build/ckeditor.js")
+    const result = await import("~/assets/ckeditor5/build/ckeditor.js")
+    for(let key in result) {
+        console.log(result[key])
+    }
     console.log({
         window
     });
