@@ -136,21 +136,12 @@ async function initializeCKEditor() {
         return
     }
     const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
-    for (let key in importedEditor) {
-        console.log(importedEditor[key])
-    }
-    let constructor = new importedEditor()
-    console.log({
-        constructor
-    });
-    console.log({
-        window
-    });
     // 使用CDN
     const editorConfig = {
         toolbar: props.toolbar,
         placeholder: props.placeholder
     }
+    // prd吃到importedEditor, dev吃到ClassicEditor, 
     const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
     if (localValue.value) {
