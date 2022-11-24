@@ -36,11 +36,11 @@
                             工作性質
                             <!-- <img src="./icon/icon_Aim.svg"> -->
                         </span>
-                        <span v-if="state.job && repoSelect.state.selectByQueryRes" class="item__body">
-                            {{ $optionText(state.job.employmentType, repoSelect.state.selectByQueryRes.employmentType)
+                        <span class="item__body">
+                            {{ $optionText(state.job?.employmentType, repoSelect.state.selectByQueryRes?.employmentType)
                             }} ·
-                            {{ $optionText(state.job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                            {{ $optionText(state.job?.responsibilities,
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
@@ -57,14 +57,15 @@
                         <span class="item__header">
                             薪資
                         </span>
-                        <span v-if="state.job" class="item__body">{{ $salary(state.job) }}</span>
+                        <span class="item__body">{{ $filter.salary(state.job) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             遠端彈性
                         </span>
-                        <span v-if="state.job && repoSelect.state.selectByQueryRes" class="item__body">
-                            {{ $optionText(state.job.jobLocationType, repoSelect.state.selectByQueryRes.jobLocationType)
+                        <span class="item__body">
+                            {{
+                                    $optionText(state.job?.jobLocationType, repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </span>
                     </div>
@@ -72,8 +73,8 @@
                         <span class="item__header">
                             職務類型
                         </span>
-                        <div v-if="state.job" class="item__body item__body--badgeGroup">
-                            <span v-for="(category, index ) in state.job.occupationalCategory" :key="index"
+                        <div class="item__body item__body--badgeGroup">
+                            <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
                                 class="body__badge">{{ getCategoryText(category) }}</span>
                         </div>
                     </div>
@@ -81,7 +82,7 @@
                         <span class="item__header">
                             更新日期
                         </span>
-                        <span v-if="state.job" class="item__body">{{ $time(state.job.datePosted) }}</span>
+                        <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
                     </div>
                     <div class="mt-3">
                         <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
