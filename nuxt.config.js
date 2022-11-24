@@ -51,7 +51,6 @@ export default defineNuxtConfig({
         // https://nitro.unjs.io/config
         prerender: {
             crawlLinks: true,
-            routes: ['/job', '/company']
         }
     },
 })
