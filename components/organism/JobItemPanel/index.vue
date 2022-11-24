@@ -10,11 +10,12 @@
                 <div class="panel__desc">團隊適配度</div>
             </div>
             <div class="panel__footer">
-                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
+                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store"
+                    @click.stop="handleSaveJob()">
                     <img class="store__icon" src="./heart.svg" alt="save" />儲存
                 </LazyAtomBtnSimple>
-                <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
-                    @click.stop="handleUnsavedJob()">
+                <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'"
+                    class="panel__store panel__store--saved" @click.stop="handleUnsavedJob()">
                     <img class="store__icon" src="./icon_Heart.svg" alt="saved" /> 已儲存
                 </LazyAtomBtnSimple>
                 <LazyAtomBtnSimple
@@ -68,10 +69,13 @@ const state = reactive({
     isCopied: true,
     copiedTooltip: null,
     application: {},
-    navigator: window.navigator,
+    navigator: null,
     shareButtonToolTip: null,
     shareButtonTitle: "點擊複製連結",
 })
+if (process.client) {
+    state.navigator = window.navigator
+}
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -95,7 +99,7 @@ const routeName = computed(() => {
 // onMounted(() => {
 
 // })
-watch(() => props.modelValue.similarity, () => {
+watch(() => props.modelValue, () => {
     if (process.client) {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
@@ -122,6 +126,9 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
 // methods
 function checkPanelDisplay() {
     const { modelValue } = props
+    if (!modelValue || !modelValue.similarity) {
+        return
+    }
     return modelValue.similarity === 0 || $rank(modelValue.similarity)
 }
 function resetCopiedTooltip() {
