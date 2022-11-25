@@ -17,15 +17,17 @@
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
             <div class="body__main">
-                <NuxtLink v-if="repoSelect.state.selectByQueryRes" class="main__labelGroup"
-                    :to="`/job/${modelValue.identifier}`">
+                <NuxtLink class="main__labelGroup" :to="`/job/${modelValue.identifier}`">
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" alt="employmentType" />
                         <span>
-                            {{ $optionText(modelValue.employmentType, repoSelect.state.selectByQueryRes.employmentType)
-                            }} ·
+                            <template v-for="(item, index) in modelValue.employmentType">
+                                {{ $optionText(item,
+                                        repoSelect.state.selectByQueryRes?.employmentType)
+                                }}·
+                            </template>
                             {{ $optionText(modelValue.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
                             }}
                         </span>
                     </div>
@@ -42,7 +44,7 @@
                     <div class="d-none d-lg-flex main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
                         <span>{{ $optionText(modelValue.jobLocationType,
-                                repoSelect.state.selectByQueryRes.jobLocationType)
+                                repoSelect.state.selectByQueryRes?.jobLocationType)
                         }}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
