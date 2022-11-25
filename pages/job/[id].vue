@@ -36,8 +36,11 @@
                             工作性質
                         </span>
                         <span class="item__body">
-                            {{ $optionText(state.job?.employmentType, repoSelect.state.selectByQueryRes?.employmentType)
-                            }} ·
+                            <template v-for="(item, index) in state.job?.employmentType">
+                                {{ $optionText(item,
+                                        repoSelect.state.selectByQueryRes?.employmentType)
+                                }} ·
+                            </template>
                             {{ $optionText(state.job?.responsibilities,
                                     repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>

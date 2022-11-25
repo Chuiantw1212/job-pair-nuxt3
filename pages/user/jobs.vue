@@ -12,7 +12,8 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved" @update:modelValue="setJobComparable()">
+                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved"
+                        @update:modelValue="setJobComparable()">
                     </LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
@@ -170,24 +171,33 @@
                             <td class="card__table__cell">
                                 <div class="cell__header d-lg-none">工作性質</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $filter.optionText(state.jobCompare.first.employmentType,
-                                            repoSelect.state.selectByQueryRes.employmentType)
-                                    }}
+                                    <div v-for="(item, index) in state.jobCompare.first.employmentType"
+                                        :key="`firstEmploymentType${index}`">
+                                        {{ $filter.optionText(item,
+                                                repoSelect.state.selectByQueryRes.employmentType)
+                                        }}
+                                    </div>
                                 </div>
                             </td>
                             <td v-if="state.jobComparable.length >= 2" class="card__table__cell">
                                 <div class="cell__header d-lg-none">工作性質</div>
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    {{ $filter.optionText(state.jobCompare.second.employmentType,
-                                            repoSelect.state.selectByQueryRes.employmentType)
-                                    }}
+                                    <div v-for="(item, index) in state.jobCompare.second.employmentType"
+                                        :key="`secondEmploymentType${index}`">
+                                        {{ $filter.optionText(item,
+                                                repoSelect.state.selectByQueryRes.employmentType)
+                                        }}
+                                    </div>
                                 </div>
                             </td>
                             <td v-if="device.state.isDesktop && state.jobComparable.length >= 3">
                                 <div class="cell__body">
-                                    {{ $filter.optionText(state.jobCompare.third.employmentType,
-                                            repoSelect.state.selectByQueryRes.employmentType)
-                                    }}
+                                    <div v-for="(item, index) in state.jobCompare.third.employmentType"
+                                        :key="`thirdEmploymentType${index}`">
+                                        {{ $filter.optionText(item,
+                                                repoSelect.state.selectByQueryRes.employmentType)
+                                        }}
+                                    </div>
                                 </div>
                             </td>
                         </tr>

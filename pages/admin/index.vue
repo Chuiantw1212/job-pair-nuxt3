@@ -88,6 +88,20 @@
                 </div>
             </div>
         </div>
+        <div class="container__section container__section--affiliate">
+            <h2 class="affiliate__header">我們的合作夥伴</h2>
+            <div class="affiliate__body">
+                <div v-for="(item, index) in state.affiliateLogos" class="body__imageWrap" :key="index">
+                    <img class="body__image" :src="item" />
+                </div>
+            </div>
+            <h2 class="affiliate__header mt-5">我們的合作對象</h2>
+            <div class="affiliate__body">
+                <div v-for="(item, index) in state.jobProviderLogos" class="body__imageWrap" :key="index">
+                    <img class="body__image" :src="item" />
+                </div>
+            </div>
+        </div>
         <div class="container__footer">
             <img class="footer__image d-lg-none" src="~/assets/admin/index/bg3.png">
             趕快加入 搶人才
@@ -97,12 +111,40 @@
 </template>
 <script setup>
 const { $Glide, $emitter, $requestSelector } = useNuxtApp()
+// const repoCompany = useRepoCompany()
+const runTime = useRuntimeConfig()
+const repoJob = useRepoJob()
 const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
-onMounted(() => {
+// const repoCompany = 
+const state = reactive({
+    jobList: [],
+    affiliateLogos: [],
+    jobProviderLogos: [],
+})
+const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
+// console.log(companyList.value);
+state.affiliateLogos = companyList.value.map(item => item.logo)
+onMounted(async () => {
     if (process.client) {
         initialGlide()
+        const response = await repoJob.getJobAll({
+            pageOrderBy: "datePosted",
+            pageLimit: 15,
+            pageOffset: 0,
+        })
+        // 合作夥伴
+        // const companyRes = 
+        // 合作對象
+        const jobList = response.data.items
+        const logoMap = {}
+        jobList.forEach(item => {
+            if (item.image) {
+                logoMap[item.organizationId] = item.image
+            }
+        })
+        state.jobProviderLogos = Object.values(logoMap)
     }
 })
 function initialGlide() {
@@ -173,6 +215,43 @@ function openAdminModal() {
             line-height: 1.5;
             letter-spacing: normal;
             color: #332b00;
+        }
+
+        .affiliate__header {
+            font-size: 42px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+        }
+
+        .affiliate__body {
+            display: flex;
+            justify-content: center;
+            gap: 70px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            max-width: 66rem;
+            margin: 50px auto auto auto;
+
+            .body__imageWrap {
+                width: 116px;
+                height: 116px;
+                border-radius: 50%;
+                background-color: white;
+                overflow: hidden;
+                display: flex;
+
+                .body__image {
+                    display: block;
+                    margin: auto;
+                    width: 64px;
+                    height: fit-content;
+                }
+            }
         }
 
         .section__image {
@@ -316,12 +395,6 @@ function openAdminModal() {
 @media screen and (min-width: 992px) {
     .companyHome {
         .container__banner {
-            // background-image: url('~/assets/admin/index/img_banner_desktop.png');
-            // width: 100%;
-            // height: 41vw;
-            // background-repeat: no-repeat;
-            // background-position: center;
-            // background-size: cover;
             position: relative;
 
             .banner__button {

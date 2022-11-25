@@ -4,6 +4,14 @@ export default defineStore('company', () => {
     const state = reactive({
         companyJobsRes: null,
     })
+    async function getCompanyByQuery(params) {
+        const response = await axios.request({
+            method: 'get',
+            url: `/company/all`,
+            params
+        })
+        return response
+    }
     async function patchCompany(data) {
         const response = await axios.request({
             method: 'patch',

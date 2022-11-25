@@ -9,8 +9,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button class="navbar-brand" @click="routeByMenuType()">
-                        <img class="logoGroup__logo" src="./logo.png" alt="logo" />
-                        <img class="logoGroup__name" src="./name.png" alt="name" />
+                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
                         <template v-if="state.menuType === 'admin'">
                             企業用戶
                         </template>
@@ -27,7 +26,8 @@
                     </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></LazyOrganismUserMenu>
+                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()">
+                    </LazyOrganismUserMenu>
                     <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
                     </LazyOrganismCompanyMenu>
                 </div>
@@ -128,15 +128,9 @@ function routeByMenuType() {
             align-items: center;
             min-height: 46px;
 
-            .logoGroup__logo {
-                height: 20px;
-                width: auto;
-                margin-right: 4px;
-            }
-
-            .logoGroup__name {
-                height: 20px;
-                width: 90px;
+            .brand__logo {
+                height: 32px;
+                width: 191px;
             }
         }
 
@@ -188,12 +182,6 @@ function routeByMenuType() {
             .navbar-brand {
                 min-height: 46px;
                 font-size: 24px;
-
-                .logoGroup__logo {
-                    height: 30px;
-                    width: auto;
-                    // width: 150px;
-                }
             }
 
             .container__icons {
