@@ -151,6 +151,9 @@ async function uploadImage(photo) {
 }
 async function handleSubmit() {
     // 檢核必填寫欄位
+    if (state.profile.description === '<p></p>') {
+        state.profile.description = ''
+    }
     const result = await $validate()
     if (!result.isValid) {
         return
