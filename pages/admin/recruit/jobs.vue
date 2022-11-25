@@ -73,9 +73,11 @@
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('employmentType')">
-                            {{ $optionText(job.employmentType,
-                                    repoSelect.state.selectByQueryRes.employmentType)
-                            }}
+                            <div v-for="(item, index) in job.employmentType" :key="`employmentType${index}`">
+                                {{ $optionText(item,
+                                        repoSelect.state.selectByQueryRes.employmentType)
+                                }}
+                            </div>
                         </td>
                         <td v-if="state.jobFields.includes('salaryType')">
                             {{ $optionText(job.salaryType,

@@ -283,6 +283,9 @@ function setJob() {
     } else {
         job.employmentType = []
     }
+    if (!job.responsibilities) {
+        job.responsibilities = ''
+    }
     state.job = job
 }
 function clearAddress() {

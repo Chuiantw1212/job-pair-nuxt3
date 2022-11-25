@@ -5,7 +5,7 @@
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="placeholder"
+            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
                 :data-required="required" :data-name="name" autocomplete="off" />
             <input v-else :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
@@ -64,6 +64,15 @@ export default {
         },
     },
     computed: {
+        localPlaceholder() {
+            if (this.placeholder) {
+                return this.placeholder
+            }
+            if (this.name) {
+                return `請輸入${this.name}`
+            }
+            return this.placeholder
+        },
         localValue: {
             get() {
                 return this.modelValue
