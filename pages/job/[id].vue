@@ -200,7 +200,7 @@ const jobId = computed(() => {
     const id = route.params.id
     return id
 })
-let browserConfig = computed({
+const browserConfig = computed({
     get() {
         if (process.client) {
             const configString = localStorage.getItem('jobPair')
@@ -275,7 +275,7 @@ watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
 // methos
 function getAdVisibility() {
     if (process.client) {
-        return process.client && browserConfig.value.ads.jobDetails !== false && repoAuth.state.user
+        return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
     }
 }
 function detectScroll() {
@@ -360,14 +360,14 @@ function hideAd() {
     if (!process.client) {
         return
     }
-    if (browserConfig.ads) {
-        browserConfig.ads.jobDetails = false
+    if (browserConfig.value.ads) {
+        browserConfig.value.ads.jobDetails = false
     } else {
         browserConfig.ads = {
             jobDetails: false
         }
     }
-    browserConfig = Object.assign({}, browserConfig)
+    browserConfig.value = Object.assign({}, browserConfig.value)
     state.adRenderKey = Math.random()
 }
 function getCategoryText(category = "") {
