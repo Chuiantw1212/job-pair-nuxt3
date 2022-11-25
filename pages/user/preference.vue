@@ -107,7 +107,7 @@ async function handleConfirm() {
 }
 function setPreferenceInfo() {
     const { user } = repoAuth.state
-    const { preference, preferenceDate, isNew = false } = user
+    const { preference, preferenceDate, } = user
     state.preference = JSON.parse(JSON.stringify(preference))
     // Set profile disabled
     const currentTime = new Date().getTime()
@@ -116,7 +116,7 @@ function setPreferenceInfo() {
     const preferenceDay = lockEndDate.getDate()
     lockEndDate.setDate(preferenceDay + 14)
     const lockEndTime = lockEndDate.getTime()
-    state.isLocked = lockEndTime >= currentTime && !isNew
+    state.isLocked = lockEndTime >= currentTime
     state.lockEndDate = lockEndDate
 }
 </script>
