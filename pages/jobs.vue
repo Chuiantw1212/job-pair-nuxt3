@@ -215,7 +215,7 @@ watch(() => state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length === oldValue.length || !process.client) {
         return
     }
-    if (!state.observer) {
+    if (!state.observer && process.client) {
         state.observer = new IntersectionObserver(loadJobItemBatch, {
             rootMargin: "0px",
             threshold: 0,
