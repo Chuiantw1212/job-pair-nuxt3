@@ -56,7 +56,7 @@
                     :max="3" required>
                     <template v-slot:header>
                         <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
-                            :items="repoSelect.jobCategory">
+                            placeholder="欲申請職務類別" :items="repoSelect.jobCategory">
                         </LazyMoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>

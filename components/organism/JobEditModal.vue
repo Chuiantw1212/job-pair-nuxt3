@@ -27,7 +27,7 @@
                             :max="3" :flat="true" required class="mt-4">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
-                                    :items="repoSelect.jobCategory">
+                                    placeholder="職務類型" :items="repoSelect.jobCategory">
                                 </LazyMoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
@@ -43,7 +43,7 @@
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="職務層級"
                             required :disabled="state.disabled" class="mt-4">
                             <template v-slot:header>
-                                <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType"
+                                <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="職務層級"
                                     :items="repoSelect.state.selectByQueryRes.employmentType">
                                 </LazyMoleculeProfileSelectLabels>
                             </template>

@@ -38,7 +38,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: '職務類別'
+        default: ''
     }
 })
 // hooks
