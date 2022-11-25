@@ -76,7 +76,7 @@ export default function setup() {
         if (!process.client) {
             return
         }
-        if (!state.observer) {
+        if (!state.observer && process.client) {
             state.observer = new IntersectionObserver(loadJobItemBatch, {
                 rootMargin: "0px",
                 threshold: 0,
