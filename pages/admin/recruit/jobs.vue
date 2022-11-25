@@ -20,7 +20,7 @@
                 <thead class="jobManagement__table__head">
                     <tr>
                         <th class="jobManagement__table__sticky">職缺狀態</th>
-                        <th>
+                        <th class="text-center">
                             <div>
                                 職缺名稱
                             </div>
