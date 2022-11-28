@@ -104,7 +104,9 @@ export default function setup() {
         const { employee = false, admin = false, company = false } = signInResult.data
         if (employee) {
             // 代表已經完整註冊過會員
-            Object.assign(user, employee)
+            Object.assign(user, employee, {
+                type: 'employee'
+            })
             await repoJob.getJobRecommended()
             await repoJobApplication.getUserJobs({
                 userId: user.id,
@@ -120,7 +122,9 @@ export default function setup() {
         }
         if (admin) {
             user.type = "admin"
-            Object.assign(user, admin)
+            Object.assign(user, admin, {
+                type: 'admin'
+            })
             repoAuth.setUser(user)
             if (company) {
                 $emitter.emit("setMenuType", 'admin')

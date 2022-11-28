@@ -69,7 +69,8 @@ async function handleSubmit() {
     if (postResponse.status !== 200) {
         return
     }
-    repoAuth.setUser(postResponse.data)
+    const userData = postResponse.data
+    repoAuth.setUser(userData)
     await repoJob.getJobRecommended()
     $sweet.loader(false)
     // 刪除暫存資料
