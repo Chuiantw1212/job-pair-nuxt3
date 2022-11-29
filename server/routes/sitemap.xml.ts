@@ -4,7 +4,7 @@ import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 
-const BASE_URL = 'https://job-pair.com'
+const BASE_URL = 'https://job-pair-taiwan-dev.web.app'
 
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: BASE_URL })
