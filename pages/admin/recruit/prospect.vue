@@ -151,7 +151,7 @@ watch(() => state.searchForm, () => {
         await initializeSearch()
     })()
 }, { deep: true })
-watch(() => repoAuth, (companyInfo) => {
+watch(() => repoAuth.state.company, (companyInfo) => {
     const items = getActiveJobs()
     if (items && items.length) {
         state.searchForm.jobIdentifier = items[0].identifier
