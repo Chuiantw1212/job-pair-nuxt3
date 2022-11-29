@@ -198,14 +198,11 @@ const state = reactive({
 useHead({
     title: `職缺探索 - Job Pair`,
 })
-onMounted(() => {
-    initializeSearch()
-})
 watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
     const { user } = repoAuth.state
     if (noLocalJobs && user && user.id) {
-        resetFilter()
+        initializeSearch()
     }
 }, { immediate: true })
 watch(() => state.filter, () => {
