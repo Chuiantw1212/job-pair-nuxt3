@@ -34,7 +34,6 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/image-edge',
         '@nuxtjs/partytown',
-        '@nuxtjs/sitemap',
         '@pinia/nuxt',
     ],
     vite: {
@@ -49,9 +48,9 @@ export default defineNuxtConfig({
             gzip: true,
             brotli: true,
         },
-        // https://nitro.unjs.io/config
+        // https://content.nuxtjs.org/guide/recipes/sitemap/
         prerender: {
-            crawlLinks: true,
+            routes: ['/sitemap.xml']
         }
     },
 })
