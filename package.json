@@ -14,8 +14,8 @@
   "devDependencies": {
     "@nuxt/image-edge": "^1.0.0-27809804.194d2d6",
     "@nuxtjs/partytown": "^1.2.2",
-    "@nuxtjs/sitemap": "^2.4.0",
-    "nuxt": "^3.0.0"
+    "nuxt": "^3.0.0",
+    "sitemap": "^7.1.1"
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
