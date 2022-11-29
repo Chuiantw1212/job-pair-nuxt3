@@ -604,6 +604,7 @@ async function initializeSearch() {
 
                     .header__info {
                         font-size: 14px;
+                        margin-right: 8px;
 
                         .header__info__itemGroups {
                             display: flex;
@@ -657,6 +658,7 @@ async function initializeSearch() {
                         }
 
                         .similarity__text {
+                            white-space: nowrap;
                             font-size: 16px;
                             font-weight: normal;
                             color: #333;

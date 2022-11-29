@@ -78,10 +78,17 @@ useHead({
     title: `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
-    $sweet.loader(true)
-    const response = await repoSelect.getQuestions()
-    $sweet.loader(false)
-    state.questions = response.data
+    let questions = []
+    const {questionsRes=[]} = repoSelect.state
+    if (questionsRes&&questionsRes.length){
+        questions = repoSelect.state.questionsRes
+    } else {
+        $sweet.loader(true)
+        const response = await repoSelect.getQuestions()
+        $sweet.loader(false)
+        questions =  response.data
+    }
+    state.questions = questions
     getAnswers()
 })
 watch(() => repoAuth.state.user, () => {
@@ -344,6 +351,7 @@ function handleClickNext() {
 
                     .multipleSelect__description {
                         margin-left: 10px;
+                        text-align: left;
                     }
 
                     .multiSelect__checkbox {

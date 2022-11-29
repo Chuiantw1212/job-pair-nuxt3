@@ -93,9 +93,6 @@ const routeName = computed(() => {
     return route.name
 })
 // hooks
-// onMounted(() => {
-
-// })
 watch(() => props.modelValue, () => {
     if (process.client) {
         const { origin } = window.location
@@ -119,7 +116,7 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
     if (matchedJob) {
         state.application = matchedJob
     }
-}, { immediate: true })
+}, { immediate: true, deep: true })
 // methods
 function checkPanelDisplay() {
     const { modelValue } = props

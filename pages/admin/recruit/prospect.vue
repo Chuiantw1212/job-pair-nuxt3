@@ -151,7 +151,7 @@ watch(() => state.searchForm, () => {
         await initializeSearch()
     })()
 }, { deep: true })
-watch(() => repoAuth, (companyInfo) => {
+watch(() => repoAuth.state.company, (companyInfo) => {
     const items = getActiveJobs()
     if (items && items.length) {
         state.searchForm.jobIdentifier = items[0].identifier
@@ -298,6 +298,7 @@ async function initializeSearch() {
 
                     .header__info {
                         font-size: 14px;
+                        margin-right: 8px;
 
                         .header__info__itemGroups {
                             display: flex;
@@ -353,6 +354,7 @@ async function initializeSearch() {
                             font-size: 16px;
                             font-weight: normal;
                             color: #333;
+                            white-space: nowrap;
                         }
                     }
                 }

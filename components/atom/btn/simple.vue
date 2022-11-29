@@ -55,6 +55,7 @@ const props = defineProps({
 
 .btnSimple--disabled {
     background-color: #d3d3d3;
+    color: #969696;
     cursor: unset;
 
     &:hover {

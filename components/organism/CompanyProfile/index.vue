@@ -133,8 +133,7 @@ const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
-const descriptionRef = ref(null)
-const jobBenefitsRef = ref(null)
+const currentInstance = getCurrentInstance()
 const state = reactive({
     crawlerUrl: "",
     isNewCompay: false,
@@ -165,7 +164,7 @@ const state = reactive({
     benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility']
 })
 // hooks
-watch(() => repoAuth.state.user, (userValue) => {
+watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
 // methods
@@ -218,6 +217,7 @@ async function initializeCompanyInfo() {
     if (!user || !user.id || state.companyInfo.id) {
         return
     }
+    console.log('initializeCompanyInfo');
     const companyRes = await repoAdmin.getAdminCompany()
     if (companyRes.status !== 200) {
         return
@@ -236,13 +236,15 @@ async function initializeCompanyInfo() {
     state.companyBanner = companyInfo.banner
     state.companyImages = companyInfo.images ?? []
 
-    $requestSelector(`#descriptionRef`, () => {
-        descriptionRef.value.setData(state.companyInfo.description)
-    })
-    $requestSelector(`#jobBenefitsRef`, () => {
-        jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
-        setWelfareFlags()
-    })
+    const descriptionRef = currentInstance.refs.descriptionRef
+    const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
+    if (descriptionRef) {
+        descriptionRef.setData(state.companyInfo.description)
+    }
+    if (jobBenefitsRef) {
+        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    }
+    setWelfareFlags()
 }
 async function crawlCompanyFromPlatform() {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
@@ -278,8 +280,8 @@ async function crawlCompanyFromPlatform() {
         state.companyInfo.telephone = ''
     }
     // 設定CKEditor文字
-    descriptionRef.value.setData(state.companyInfo.description)
-    jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
+    currentInstance.refs.descriptionRef.setData(state.companyInfo.description)
+    currentInstance.refs.jobBenefitsRef.setData(state.companyInfo.jobBenefits)
 }
 async function setCakeresumeCompanyInfo(response) {
     const {

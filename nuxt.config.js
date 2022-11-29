@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/image-edge',
         '@nuxtjs/partytown',
+        '@nuxtjs/sitemap',
         '@pinia/nuxt',
     ],
     vite: {

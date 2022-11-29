@@ -198,14 +198,11 @@ const state = reactive({
 useHead({
     title: `職缺探索 - Job Pair`,
 })
-onMounted(() => {
-    initializeSearch()
-})
 watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
     const { user } = repoAuth.state
     if (noLocalJobs && user && user.id) {
-        resetFilter()
+        initializeSearch()
     }
 }, { immediate: true })
 watch(() => state.filter, () => {
@@ -404,10 +401,11 @@ async function concatJobsFromServer(config = {}) {
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        id: user.id
+        id: user.id, // deprecated
+        identifier: user.id,
     })
     $sweet.loader(isLoading)
-    const response = await repoJob.getJobAll(requestConfig)
+    const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {
         $sweet.alert('伺服器塞車了')
         return

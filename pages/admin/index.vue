@@ -129,7 +129,7 @@ state.affiliateLogos = companyList.value.map(item => item.logo)
 onMounted(async () => {
     if (process.client) {
         initialGlide()
-        const response = await repoJob.getJobAll({
+        const response = await repoJob.getJobByQuery({
             pageOrderBy: "datePosted",
             pageLimit: 15,
             pageOffset: 0,
