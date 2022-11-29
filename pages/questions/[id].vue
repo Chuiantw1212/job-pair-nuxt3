@@ -351,6 +351,7 @@ function handleClickNext() {
 
                     .multipleSelect__description {
                         margin-left: 10px;
+                        text-align: left;
                     }
 
                     .multiSelect__checkbox {
