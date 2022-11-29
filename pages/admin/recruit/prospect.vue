@@ -298,6 +298,7 @@ async function initializeSearch() {
 
                     .header__info {
                         font-size: 14px;
+                        margin-right: 8px;
 
                         .header__info__itemGroups {
                             display: flex;
@@ -353,6 +354,7 @@ async function initializeSearch() {
                             font-size: 16px;
                             font-weight: normal;
                             color: #333;
+                            white-space: nowrap;
                         }
                     }
                 }

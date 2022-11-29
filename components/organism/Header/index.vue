@@ -131,6 +131,7 @@ function routeByMenuType() {
             .brand__logo {
                 height: 32px;
                 width: 191px;
+                margin-right: 8px;
             }
         }
 
