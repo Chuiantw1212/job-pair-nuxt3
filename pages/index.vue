@@ -82,7 +82,7 @@ const repoAuth = useRepoAuth()
 const router = useRouter()
 useHead({
     meta: [
-        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImage.png' }
+        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
     ],
 })
 // methods
