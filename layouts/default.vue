@@ -14,8 +14,16 @@ useHead({
         lang: 'zh-Hant'
     },
     meta: [
+        { charset: "utf-8" },
         { name: 'description', content: descriptionContent },
         { property: 'og:description', content: descriptionContent },
+        { property: "og:type", content: "website" },
+        { property: 'og:site_name', content: 'Job Pair' },
+        { property: 'fb:app_id', content: '411339927562100' },
+        { name: 'viewport', content: 'width=device-width' },
+        // Twitter
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:site', content: '@JobPair' },
     ],
     // Favicon https://github.com/nuxt/framework/discussions/5204
     link: [
