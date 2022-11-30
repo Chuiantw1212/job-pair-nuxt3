@@ -96,7 +96,8 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike"
+                        @search="jobScroller.initializeSearch()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -168,6 +169,19 @@ useHead(() => {
     }
     return headConfig
 })
+useJsonld(() => ({
+    // https://schema.org/Organization
+    '@context': 'https://schema.org',
+    '@type': 'Corporation',
+    email: company.value.email,
+    logo: company.value.logo,
+    description: company.value.description,
+    identifier: company.value.id,
+    url: `${runTime.public.origin}/company/${company.value.id}`,
+    address: getLocationText(),
+    location: getLocationText(),
+    image: company.value.banner,
+}));
 onMounted(async () => {
     state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]

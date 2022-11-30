@@ -28,6 +28,7 @@ export default defineNuxtConfig({
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
             apiBase: 'http://localhost:8080',
+            origin: 'http://localhost:3000',
         }
     },
     // ... other options
@@ -36,6 +37,7 @@ export default defineNuxtConfig({
         '@nuxtjs/partytown',
         '@pinia/nuxt',
         '@nuxt/content',
+        'nuxt-jsonld',
     ],
     content: {
         // https://content.nuxtjs.org/api/configuration
