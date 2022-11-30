@@ -36,6 +36,7 @@ export default defineNuxtConfig({
         '@nuxtjs/partytown',
         '@pinia/nuxt',
         '@nuxt/content',
+        'nuxt-jsonld',
     ],
     content: {
         // https://content.nuxtjs.org/api/configuration
