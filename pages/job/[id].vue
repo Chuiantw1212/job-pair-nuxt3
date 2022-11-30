@@ -19,7 +19,7 @@
                     </NuxtLink>
                     <div class="basic__body__badgeGroup">
                         <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
-                            {{ $optionText(item, repoSelect.industryItems) }}
+                            {{ $filter.optionText(item, repoSelect.industryItems) }}
                         </div>
                     </div>
                 </div>
@@ -37,11 +37,11 @@
                         </span>
                         <span class="item__body">
                             <template v-for="(item, index) in state.job?.employmentType">
-                                {{ $optionText(item,
+                                {{ $filter.optionText(item,
                                         repoSelect.state.selectByQueryRes?.employmentType)
                                 }} ·
                             </template>
-                            {{ $optionText(state.job?.responsibilities,
+                            {{ $filter.optionText(state.job?.responsibilities,
                                     repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>
                     </div>
@@ -68,7 +68,8 @@
                         </span>
                         <span class="item__body">
                             {{
-                                    $optionText(state.job?.jobLocationType, repoSelect.state.selectByQueryRes?.jobLocationType)
+                                    $filter.optionText(state.job?.jobLocationType,
+                                        repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </span>
                     </div>
@@ -152,7 +153,7 @@
 <script setup>
 import placeholderImage from '~/assets/company/company.webp'
 const runTime = useRuntimeConfig()
-const { $emitter, $sweet, $optionText } = useNuxtApp()
+const { $emitter, $sweet, $filter } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoJob = useRepoJob()
@@ -235,6 +236,48 @@ useHead({
     ],
 
 })
+useJsonld(() => ({
+    // https://schema.org/JobPosting
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.value.name,
+    description: job.value.description,
+    url: `${runTime.public.origin}/job/${job.value.identifier}`,
+    image: job.value.image,
+    identifier: job.value.identifier,
+    applicantLocationRequirements: {
+        "@type": "Country",
+        "name": "Anywhere"
+    },
+    datePosted: job.value.datePosted,
+    employmentType: job.value.employmentType,
+    hiringOrganization: {
+        "@type": "Organization",
+        name: job.value.organizationName,
+    },
+    jobLocation: {
+        "@type": "Place",
+        address: {
+            "@type": "PostalAddress",
+            "streetAddress": job.value.streetAddress,
+            "addressLocality": $filter.optionText(job.value.addressLocality, repoSelect.state.locationRes[job.value.addressRegion]),
+            "addressRegion": $filter.optionText(job.value.addressRegion, repoSelect.state.locationRes.taiwan),
+            "addressCountry": "台灣"
+        }
+    },
+    "baseSalary": {
+        "@type": "MonetaryAmount",
+        "currency": "TWD",
+        "value": {
+            "@type": "QuantitativeValue",
+            "minValue": job.value.salaryMin,
+            "maxValue": job.value.salaryMax,
+            "value": Math.floor((job.value.salaryMin + job.value.salaryMax) / 2),
+            "unitText": job.value.salaryType
+        }
+    },
+    jobLocationType: job.value.jobLocationType
+}))
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
@@ -374,7 +417,7 @@ function getCategoryText(category = "") {
     if (!category || !repoSelect.state.selectByQueryRes) {
         return
     }
-    const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
+    const text = $filter.optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
     return text
 }
 const map = ref(null)
@@ -421,8 +464,8 @@ function getJobAddress() {
     if (!addressRegion || !addressLocality || !streetAddress) {
         return false
     }
-    const text1 = $optionText(addressRegion, repoSelect.state.locationRes.taiwan)
-    const text2 = $optionText(addressLocality, repoSelect.state.locationRes[addressRegion])
+    const text1 = $filter.optionText(addressRegion, repoSelect.state.locationRes.taiwan)
+    const text2 = $filter.optionText(addressLocality, repoSelect.state.locationRes[addressRegion])
     const text3 = streetAddress
     return `${text1}${text2}${text3}`
 }
