@@ -32,8 +32,13 @@
                         <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
+                        <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
+                            v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
+                            class="mb-2" :max="8" :min="8">
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-else
+                            :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
+                            class="mb-2" :max="8" :min="8" :disabled="true">
                         </LazyAtomInputText>
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
                             required class="mb-2">
