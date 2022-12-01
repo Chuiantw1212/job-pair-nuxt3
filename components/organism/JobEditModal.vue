@@ -40,7 +40,7 @@
                         <LazyAtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
                             class="mt-4"></LazyAtomInputSelect>
-                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質" 
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質"
                             required :disabled="state.disabled" class="mt-4">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="雇用性質"
@@ -111,10 +111,10 @@
                             </LazyAtomInputText>
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            :toolbar="state.toolbar" required class="mt-4">
+                            required class="mt-4">
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required
-                            :disabled="state.disabled" :toolbar="state.toolbar" :removePlatformLink="true" class="mt-4">
+                            :disabled="state.disabled" :removePlatformLink="true" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
