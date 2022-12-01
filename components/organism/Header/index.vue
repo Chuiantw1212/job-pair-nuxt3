@@ -41,7 +41,7 @@
 </template>
 <script>
 export default {
-    name: 'header',
+    name: 'customHeader',
 }
 </script>
 <script setup>

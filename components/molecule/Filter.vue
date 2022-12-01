@@ -8,7 +8,7 @@
 </template>
 <script>
 export default {
-    name: 'filter',
+    name: 'customFilter',
 }
 </script>
 <script setup>

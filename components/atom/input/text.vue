@@ -18,7 +18,7 @@
  * read these codes thoroughly makes it easy to read other inputs.
  */
 export default {
-    name: 'text',
+    name: 'customText',
     data: function () {
         return {
             message: "",

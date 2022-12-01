@@ -20,7 +20,7 @@ export default {
 </script>
 <script setup>
 import { markRaw } from 'vue'
-const { $uuid4, } = useNuxtApp()
+const { $uuid4, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const editorRef = ref(null)
 const state = reactive({
@@ -180,11 +180,9 @@ async function initializeCKEditor() {
 // public method do not delete
 async function setData(newValue) {
     const ckeditorInstance = state.ckeditorInstance
-    if (ckeditorInstance) {
+    $requestSelector(`#editor_${state.id}`, () => {
         ckeditorInstance.setData(newValue)
-    } else {
-        console.error('ckeditorInstance error', ckeditorInstance)
-    }
+    })
 }
 defineExpose({
     setData

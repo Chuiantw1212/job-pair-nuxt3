@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-    name: 'select',
+    name: 'customSelect',
     props: {
         name: {
             type: String,
