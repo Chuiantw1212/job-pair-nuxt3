@@ -560,6 +560,7 @@ async function refineAndUpdateCompanyInfo() {
     padding: 48px 32px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
+    border-radius: 10px;
 
     .profile__quick {
         background-color: #fee997;

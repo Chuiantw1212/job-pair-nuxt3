@@ -207,8 +207,8 @@ async function initialize() {
 
         .dashboard__view {
             padding-top: 80px;
+            padding-bottom: 20px;
         }
     }
-
 }
 </style>

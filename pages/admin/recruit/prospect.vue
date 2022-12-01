@@ -234,6 +234,7 @@ async function initializeSearch() {
     .appliedList__form {
         background-color: white;
         padding: 20px;
+        border-radius: 10px;
 
         .form__selectGroup {
             gap: 13px;

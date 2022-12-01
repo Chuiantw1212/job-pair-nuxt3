@@ -478,6 +478,7 @@ async function initializeSearch() {
         background-color: white;
         padding: 20px;
         margin-top: 20px;
+        border-radius: 10px;
 
         .form__selectGroup {
             // display: flex;
