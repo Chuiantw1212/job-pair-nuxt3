@@ -217,7 +217,6 @@ async function initializeCompanyInfo() {
     if (!user || !user.id || state.companyInfo.id) {
         return
     }
-    console.log('initializeCompanyInfo');
     const companyRes = await repoAdmin.getAdminCompany()
     if (companyRes.status !== 200) {
         return
