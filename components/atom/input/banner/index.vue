@@ -20,6 +20,7 @@
 <script>
 import { Buffer } from 'buffer/'
 export default {
+    name: 'banner',
     data: function () {
         return {
             message: "",

@@ -75,6 +75,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'home',
+}
+</script>
 <script setup>
 import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()

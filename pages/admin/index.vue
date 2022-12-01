@@ -109,6 +109,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'admin',
+}
+</script>
 <script setup>
 const { $Glide, $emitter, $requestSelector } = useNuxtApp()
 // const repoCompany = useRepoCompany()

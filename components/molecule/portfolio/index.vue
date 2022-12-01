@@ -29,6 +29,7 @@
 </template>
 <script>
 export default {
+    name: 'portfolio',
     props: {
         modelValue: {
             type: Array,

@@ -19,6 +19,11 @@
         </template>
     </div>
 </template>
+<script>
+export default {
+    name: 'profileSelectLabels',
+}
+</script>
 <script setup>
 import { computed, } from 'vue'
 const emit = defineEmits(['update:modelValue'])

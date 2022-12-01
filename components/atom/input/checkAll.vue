@@ -6,6 +6,7 @@
 </template>
 <script>
 export default {
+    name: 'checkAll',
     data: function () {
         return {
             isSelect: false,

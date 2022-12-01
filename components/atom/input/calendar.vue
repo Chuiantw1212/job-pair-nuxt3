@@ -16,6 +16,7 @@
 import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate'
 import flatpickr from "flatpickr"
 export default {
+    name: 'calendar',
     data: function () {
         return {
             message: "",

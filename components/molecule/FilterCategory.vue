@@ -56,6 +56,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'filterCategory',
+}
+</script>
 <script setup>
 import { computed, nextTick } from 'vue'
 const { $optionText, $Fuse } = useNuxtApp()

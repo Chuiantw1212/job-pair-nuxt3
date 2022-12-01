@@ -22,6 +22,11 @@
         </label>
     </div>
 </template>
+<script>
+export default {
+    name: 'inputEvents',
+}
+</script>
 <script setup>
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({

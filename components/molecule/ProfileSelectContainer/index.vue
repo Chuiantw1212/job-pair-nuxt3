@@ -18,6 +18,7 @@
 </template>
 <script>
 export default {
+    name: 'profileSelectContainer',
     props: {
         modelValue: {
             type: Boolean,

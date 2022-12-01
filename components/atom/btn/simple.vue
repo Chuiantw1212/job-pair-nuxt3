@@ -3,6 +3,11 @@
         <slot></slot>
     </button>
 </template>
+<script>
+export default {
+    name: 'simple'
+}
+</script>
 <script setup>
 const props = defineProps({
     id: {

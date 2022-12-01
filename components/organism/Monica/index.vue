@@ -12,6 +12,11 @@
         <LazyAtomBtnSimple class="bubble__button" @click="routeToProfile()">馬上填寫</LazyAtomBtnSimple>
     </div>
 </template>
+<script>
+export default {
+    name: 'monica',
+}
+</script>
 <script setup>
 const repoAuth = useRepoAuth()
 const router = useRouter()

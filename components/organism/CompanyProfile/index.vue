@@ -128,6 +128,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'companyProfile',
+}
+</script>
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')

@@ -21,6 +21,7 @@
 <script>
 import { Buffer } from 'buffer/'
 export default {
+    name: 'resume',
     data: function () {
         return {
             message: "",

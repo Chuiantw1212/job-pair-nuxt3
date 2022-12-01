@@ -13,6 +13,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'ckeditor',
+}
+</script>
 <script setup>
 import { markRaw } from 'vue'
 const { $uuid4, } = useNuxtApp()
@@ -150,26 +155,28 @@ async function initializeCKEditor() {
     if (props.disabled) {
         editor.enableReadOnlyMode(`editor_${state.id}`)
     }
-    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-        emit('blur', evt)
-    })
+    // editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+    //     console.log('???');
+    //     emit('blur', evt)
+    // })
     if (!props.modelValue) {
         localValue.value = '<p></p>'
     }
-    editor.model.document.on('change:data', () => {
-        let newValue = editor.getData()
-        // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
-        if (props.removePlatformLink) {
-            const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
-                return newValue.includes(link)
-            })
-            if (hasPlatformLink) {
-                newValue = newValue.replaceAll(/href=".*?"/g, '')
-                newValue = newValue.replaceAll('<a', '<div')
-            }
-        }
-        localValue.value = newValue
-    })
+    // editor.model.document.on('change:data', () => {
+    //     console.log('change:data????');
+    //     let newValue = editor.getData()
+    //     // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
+    //     if (props.removePlatformLink) {
+    //         const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
+    //             return newValue.includes(link)
+    //         })
+    //         if (hasPlatformLink) {
+    //             newValue = newValue.replaceAll(/href=".*?"/g, '')
+    //             newValue = newValue.replaceAll('<a', '<div')
+    //         }
+    //     }
+    //     localValue.value = newValue
+    // })
     state.ckeditorInstance = markRaw(editor)
 }
 // public method do not delete
