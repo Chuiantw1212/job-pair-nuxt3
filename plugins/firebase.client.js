@@ -1,5 +1,6 @@
 import { auth } from "firebaseui"
 import { initializeApp } from "firebase/app"
+import { getAnalytics } from "firebase/analytics"
 export default defineNuxtPlugin(() => {
     // Create App
     const runtimeConfig = useRuntimeConfig()
@@ -26,6 +27,10 @@ export default defineNuxtPlugin(() => {
         }
     }
     const firebaseApp = initializeApp(firebaseConfig)
+    // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
+    if (runtimeConfig.public.VITE_APP_FIREBASE_ENV === 'production') {
+        getAnalytics(firebaseApp)
+    }
     return {
         provide: {
             firebaseuiAuth: auth,

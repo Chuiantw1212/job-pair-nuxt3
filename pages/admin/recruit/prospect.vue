@@ -234,6 +234,7 @@ async function initializeSearch() {
     .appliedList__form {
         background-color: white;
         padding: 20px;
+        border-radius: 10px;
 
         .form__selectGroup {
             gap: 13px;
@@ -348,6 +349,7 @@ async function initializeSearch() {
                             font-size: 36px;
                             font-weight: bold;
                             color: #333;
+                            text-align: center;
                         }
 
                         .similarity__text {

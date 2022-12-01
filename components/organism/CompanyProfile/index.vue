@@ -32,8 +32,12 @@
                         <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
+                        <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
+                            v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
+                            class="mb-2" :max="8" :min="8">
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8" :disabled="true">
                         </LazyAtomInputText>
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
                             required class="mb-2">
@@ -86,7 +90,8 @@
                         required class="mb-2" ref="descriptionRef">
                     </LazyAtomInputCkeditor>
                     <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
-                        required class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
+                        @update:modelValue="setWelfareFlags()">
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -217,7 +222,6 @@ async function initializeCompanyInfo() {
     if (!user || !user.id || state.companyInfo.id) {
         return
     }
-    console.log('initializeCompanyInfo');
     const companyRes = await repoAdmin.getAdminCompany()
     if (companyRes.status !== 200) {
         return
@@ -561,6 +565,7 @@ async function refineAndUpdateCompanyInfo() {
     padding: 48px 32px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
+    border-radius: 10px;
 
     .profile__quick {
         background-color: #fee997;

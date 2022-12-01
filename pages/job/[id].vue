@@ -111,7 +111,9 @@
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
-                            <div v-if="state.job" v-html="state.job.description"></div>
+                            <AtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
+                                ref="descriptionRef">
+                            </AtomInputCkeditor>
                         </div>
                     </div>
                 </section>
@@ -119,7 +121,9 @@
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
-                            <div v-if="state.job" v-html="state.job.skills"></div>
+                            <AtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
+                                ref="skillsRef">
+                            </AtomInputCkeditor>
                         </div>
                     </div>
                 </section>
@@ -160,6 +164,7 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
+const { locationRes = {} } = repoSelect.state
 const repoCompany = useRepoCompany()
 const jobScroller = useJobScroller()
 const device = useDevice()
@@ -216,6 +221,7 @@ const browserConfig = computed({
         }
     }
 })
+const currentInstance = getCurrentInstance()
 const jobItems = ref([])
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
@@ -260,8 +266,8 @@ useJsonld(() => ({
         address: {
             "@type": "PostalAddress",
             "streetAddress": job.value.streetAddress,
-            "addressLocality": $filter.optionText(job.value.addressLocality, repoSelect.state.locationRes[job.value.addressRegion]),
-            "addressRegion": $filter.optionText(job.value.addressRegion, repoSelect.state.locationRes.taiwan),
+            "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
+            "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
             "addressCountry": "台灣"
         }
     },
@@ -472,8 +478,8 @@ function getJobAddress() {
 function checkVisibility() {
     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
 }
-const descriptionRef = ref(null)
-const skillsRef = ref(null)
+// const descriptionRef = ref(null)
+// const skillsRef = ref(null)
 async function initialize() {
     if (!jobId.value) {
         state.job = {}
@@ -494,11 +500,15 @@ async function initialize() {
         return
     }
     const job = jobResponse.data
-    if (descriptionRef.value) {
-        descriptionRef.value.setData(job.description)
+    console.log({
+        job
+    });
+    const { descriptionRef, skillsRef } = currentInstance.refs
+    if (descriptionRef) {
+        descriptionRef.setData(job.description)
     }
-    if (skillsRef.value) {
-        skillsRef.value.setData(job.skills)
+    if (skillsRef) {
+        skillsRef.setData(job.skills)
     }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
@@ -529,10 +539,6 @@ async function initialize() {
         .card__header {
             font-size: 18px;
             font-weight: bold;
-        }
-
-        .card__body {
-            margin-top: 20px;
         }
     }
 
@@ -579,7 +585,6 @@ async function initialize() {
             gap: 18px;
             margin-top: 20px;
             flex-wrap: wrap;
-            min-height: 42px;
 
             .badgeGroup__badge {
                 padding: 8px;

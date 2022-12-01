@@ -1,7 +1,7 @@
 <template>
     <div class="inputResumes">
         <h1 class="resume__header"><span v-if="required" class="text-danger">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
-        <div class="resumes__previewGroup">
+        <div v-if="modelValue.slice(0, 3).length" class="resumes__previewGroup">
             <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(0, 3)">
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="resumes__previewGroup">
+        <div v-if="modelValue.slice(3, 6).length" class="resumes__previewGroup">
             <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(3, 6)">
                 <div v-if="checkIsImage(item)">
                     <img :src="item.url" class="previewGroup__item__viewer">
@@ -177,9 +177,6 @@ export default {
             border: solid 1px #d3d3d3;
             overflow: hidden;
             width: 100%;
-            // display: flex;
-            // flex-direction: column;
-            // justify-content: center;
 
             .previewGroup__item__viewer {
                 height: 300px;

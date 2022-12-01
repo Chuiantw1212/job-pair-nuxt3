@@ -110,6 +110,7 @@ const device = useDevice()
 
         .dashboard__view {
             padding-top: 80px;
+            padding-bottom: 20px;
         }
     }
 }

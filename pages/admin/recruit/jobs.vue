@@ -64,24 +64,24 @@
                         <td v-if="state.jobFields.includes('occupationalCategory')">
                             <div v-for="(category, index) in job.occupationalCategory" :key="index"
                                 class="table__row__lable">
-                                {{ $optionText(category, repoSelect.state.selectByQueryRes.jobCategory) }}
+                                {{ $optionText(category, repoSelect.state.selectByQueryRes?.jobCategory) }}
                             </div>
                         </td>
                         <td v-if="state.jobFields.includes('responsibilities')">
                             {{ $optionText(job.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('employmentType')">
                             <div v-for="(item, index) in job.employmentType" :key="`employmentType${index}`">
                                 {{ $optionText(item,
-                                        repoSelect.state.selectByQueryRes.employmentType)
+                                        repoSelect.state.selectByQueryRes?.employmentType)
                                 }}
                             </div>
                         </td>
                         <td v-if="state.jobFields.includes('salaryType')">
                             {{ $optionText(job.salaryType,
-                                    repoSelect.state.selectByQueryRes.salaryType)
+                                    repoSelect.state.selectByQueryRes?.salaryType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('salaryMin')">
@@ -91,7 +91,7 @@
                         </td>
                         <td v-if="state.jobFields.includes('jobLocationType')">
                             {{ $optionText(job.jobLocationType,
-                                    repoSelect.state.selectByQueryRes.jobLocationType)
+                                    repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('addressRegion')">
@@ -99,7 +99,7 @@
                                 完全遠端
                             </template>
                             <template v-else>
-                                {{ $optionText(job.addressRegion, repoSelect.state.locationRes.taiwan) }}
+                                {{ $optionText(job.addressRegion, repoSelect.state.locationRes?.taiwan) }}
                             </template>
                         </td>
                     </tr>

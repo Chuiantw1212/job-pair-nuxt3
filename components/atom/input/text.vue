@@ -56,12 +56,6 @@ export default {
             type: Number,
             default: 0,
         },
-        types: {
-            type: Array,
-            default: () => {
-                return [] // 需要限制時使用'english', 'number', 'symbol'
-            },
-        },
     },
     computed: {
         localPlaceholder() {

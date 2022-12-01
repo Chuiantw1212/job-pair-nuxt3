@@ -160,7 +160,13 @@ async function initializeCKEditor() {
         let newValue = editor.getData()
         // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
         if (props.removePlatformLink) {
-            newValue = newValue.replaceAll(/href=".*?"/g, '')
+            const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
+                return newValue.includes(link)
+            })
+            if (hasPlatformLink) {
+                newValue = newValue.replaceAll(/href=".*?"/g, '')
+                newValue = newValue.replaceAll('<a', '<div')
+            }
         }
         localValue.value = newValue
     })

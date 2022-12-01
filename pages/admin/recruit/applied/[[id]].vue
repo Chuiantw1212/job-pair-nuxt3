@@ -478,6 +478,7 @@ async function initializeSearch() {
         background-color: white;
         padding: 20px;
         margin-top: 20px;
+        border-radius: 10px;
 
         .form__selectGroup {
             // display: flex;
@@ -655,6 +656,7 @@ async function initializeSearch() {
                             font-size: 36px;
                             font-weight: bold;
                             color: #333;
+                            text-align: center;
                         }
 
                         .similarity__text {
