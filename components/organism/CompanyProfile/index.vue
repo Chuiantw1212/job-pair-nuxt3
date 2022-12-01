@@ -36,9 +36,8 @@
                             v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
                             class="mb-2" :max="8" :min="8">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-else
-                            :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                            class="mb-2" :max="8" :min="8" :disabled="true">
+                        <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8" :disabled="true">
                         </LazyAtomInputText>
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
                             required class="mb-2">
@@ -91,7 +90,8 @@
                         required class="mb-2" ref="descriptionRef">
                     </LazyAtomInputCkeditor>
                     <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
-                        required class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
+                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
+                        @update:modelValue="setWelfareFlags()">
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
