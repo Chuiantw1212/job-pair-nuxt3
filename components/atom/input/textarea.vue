@@ -92,7 +92,7 @@ export default {
             padding: 12px 16px;
             width: 100%;
             border: 1px solid #d9d9d9;
-            border-radius: 10px;
+            border-radius: 4px;
         }
     }
 }

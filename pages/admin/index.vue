@@ -277,7 +277,7 @@ function openAdminModal() {
         }
 
         .section__card {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #806b00;
             background-color: #fff;
             padding: 30px 20px;

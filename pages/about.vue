@@ -185,7 +185,7 @@ const device = useDevice()
         .card__selfie {
             width: 150px;
             height: 150px;
-            border-radius: 10px;
+            border-radius: 4px;
             margin-top: 20px;
         }
 
@@ -219,7 +219,7 @@ const device = useDevice()
         }
 
         .about__card {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1.4px #d3d3d3;
             background-color: #fff;
             padding: 40px 135px;

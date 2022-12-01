@@ -115,7 +115,7 @@ function getSavedTime(item) {
         padding: 16px;
         background-color: #ffffff;
         border: solid 1px #d3d3d3;
-        border-radius: 10px;
+        border-radius: 4px;
         color: black;
         text-decoration: none;
         line-height: 1.3;
@@ -241,7 +241,7 @@ function getSavedTime(item) {
             padding: 20px;
             background-color: #ffffff;
             border: solid 1px #d3d3d3;
-            border-radius: 10px;
+            border-radius: 4px;
             color: black;
             text-decoration: none;
             line-height: 1.3;

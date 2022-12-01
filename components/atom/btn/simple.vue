@@ -22,7 +22,7 @@ const props = defineProps({
 .btnSimple {
     width: 100%;
     line-height: 1.3;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: #5ea88e;
     font-size: 18px;
     padding: 12px;

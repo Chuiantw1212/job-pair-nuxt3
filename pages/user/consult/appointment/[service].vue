@@ -289,7 +289,7 @@ async function submitAppointment() {
             width: 218px;
             height: 46px;
             border: none;
-            border-radius: 10px;
+            border-radius: 4px;
             background-color: #5ea88e;
             color: #fff;
             font-size: 20px;

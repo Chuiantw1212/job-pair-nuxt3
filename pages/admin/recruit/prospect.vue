@@ -234,7 +234,7 @@ async function initializeSearch() {
     .appliedList__form {
         background-color: white;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 4px;
 
         .form__selectGroup {
             gap: 13px;
@@ -250,7 +250,7 @@ async function initializeSearch() {
         margin-top: 20px;
 
         .list__item__content {
-            border-radius: 10px;
+            border-radius: 4px;
             background-color: #fff;
             padding: 20px;
 
@@ -282,7 +282,7 @@ async function initializeSearch() {
             }
 
             .content__profile {
-                border-radius: 10px;
+                border-radius: 4px;
                 width: 100%;
 
 
@@ -323,7 +323,7 @@ async function initializeSearch() {
 
                             .header__info__item__badge {
                                 padding: 5px 12px;
-                                border-radius: 10px;
+                                border-radius: 4px;
                                 border: solid 1px #d3d3d3;
                                 font-size: 13px;
                                 color: #333;
@@ -363,7 +363,7 @@ async function initializeSearch() {
 
                 .profile__similarity {
                     padding: 20px 0;
-                    border-radius: 5px;
+                    border-radius: 4px;
                     background-color: #eef6ed;
                     margin-top: 20px;
                     display: flex;
@@ -425,7 +425,7 @@ async function initializeSearch() {
                         border: none;
                         background-color: #5ea88e;
                         color: white;
-                        border-radius: 5px;
+                        border-radius: 4px;
                         background-color: #5ea88e;
                         padding: 8px 16px;
                         text-decoration: none;
@@ -440,7 +440,7 @@ async function initializeSearch() {
 
                 .panel__btn {
                     padding: 8px 12px;
-                    border-radius: 5px;
+                    border-radius: 4px;
                     border: solid 1px #5ea88e;
                     background-color: inherit;
                     line-height: 1;
@@ -454,7 +454,7 @@ async function initializeSearch() {
 
     .appliedList__notFound {
         padding: 40px 0;
-        border-radius: 10px;
+        border-radius: 4px;
         background-color: #fff;
         margin-top: 20px;
         text-align: center;

@@ -137,7 +137,7 @@ async function handleSubmit() {
 </script>
 <style lang="scss" scoped>
 .modal-content {
-    border-radius: 10px;
+    border-radius: 4px;
 
     .modal-header {
         border: none;
@@ -160,7 +160,7 @@ async function handleSubmit() {
         padding: 0 50px 30px 50px;
 
         .body__ckeditor {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #d9d9d9;
             overflow: hidden;
         }
@@ -227,7 +227,7 @@ async function handleSubmit() {
                         .timePickerGroup__timePicker {
                             padding: 16px 24px;
                             border: 1px solid #d9d9d9;
-                            border-radius: 10px;
+                            border-radius: 4px;
                             font-size: 16px;
                             font-weight: normal;
                             font-stretch: normal;

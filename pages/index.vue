@@ -152,7 +152,7 @@ function routeToQuestions() {
                 height: 50px;
                 flex-grow: 0;
                 margin: 0 3px 5px 0;
-                border-radius: 10px;
+                border-radius: 4px;
                 background-color: #5ea88e;
                 margin-bottom: 8px;
                 box-shadow: 2px 2px 2px 1px #008053;
@@ -375,7 +375,7 @@ function routeToQuestions() {
                 height: 50px;
                 flex-grow: 0;
                 margin: 0 3px 5px 0;
-                border-radius: 10px;
+                border-radius: 4px;
                 background-color: #5ea88e;
                 margin-bottom: 8px;
                 box-shadow: 2px 2px 2px 1px #008053;

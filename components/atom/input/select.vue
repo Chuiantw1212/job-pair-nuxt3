@@ -98,7 +98,7 @@ export default {
         flex-direction: column;
         padding: 6px 12px;
         border: 1px solid #d9d9d9;
-        border-radius: 10px;
+        border-radius: 4px;
         background-color: white;
         font-size: 18px;
 

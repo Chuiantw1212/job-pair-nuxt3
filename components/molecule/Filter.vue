@@ -105,7 +105,7 @@ function closeFilter() {
             transform: translateX(0);
             width: 100%;
             border-top: 9px solid #5ea88e;
-            border-radius: 10px;
+            border-radius: 4px;
             overflow: unset;
             transition: unset;
             height: auto;

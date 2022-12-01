@@ -161,7 +161,7 @@ function closeModal() {
     width: 182px;
     height: 48px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 4px;
     margin-bottom: 12px;
     border: 1px solid #1f1f1f;
     display: flex;
@@ -183,7 +183,7 @@ function closeModal() {
 }
 
 .modal-content {
-    border-radius: 10px;
+    border-radius: 4px;
     line-height: 1;
 
     .modal-header {
@@ -236,7 +236,7 @@ function closeModal() {
     .content__desc {
         text-align: center;
         background-color: #d8e4eb;
-        border-radius: 10px;
+        border-radius: 4px;
         font-weight: bold;
         text-align: center;
         padding: 20px 48px;
@@ -255,7 +255,7 @@ function closeModal() {
         .footer__button {
             padding: 12px 16px;
             color: #29b0ab;
-            border-radius: 10px;
+            border-radius: 4px;
             white-space: nowrap;
             border: none;
             width: 100%;

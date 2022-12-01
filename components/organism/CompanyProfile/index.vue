@@ -560,12 +560,12 @@ async function refineAndUpdateCompanyInfo() {
     padding: 48px 32px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
-    border-radius: 10px;
+    border-radius: 4px;
 
     .profile__quick {
         background-color: #fee997;
         padding: 24px 32px;
-        border-radius: 5px;
+        border-radius: 4px;
         margin-bottom: 45px;
 
         .quick__header {
@@ -586,7 +586,7 @@ async function refineAndUpdateCompanyInfo() {
                 padding: 12px 16px;
                 width: 100%;
                 background-color: white;
-                border-radius: 10px;
+                border-radius: 4px;
 
                 .inputGroup__url {
                     width: 100%;
@@ -602,7 +602,7 @@ async function refineAndUpdateCompanyInfo() {
                 padding: 12px 16px;
                 background-color: #29b0ab;
                 color: white;
-                border-radius: 10px;
+                border-radius: 4px;
                 white-space: nowrap;
                 border: none;
             }
@@ -643,7 +643,7 @@ async function refineAndUpdateCompanyInfo() {
             border: none;
             color: white;
             background-color: #29b0ab;
-            border-radius: 10px;
+            border-radius: 4px;
             padding: 12px 16px;
         }
     }

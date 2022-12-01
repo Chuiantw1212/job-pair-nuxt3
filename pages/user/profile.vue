@@ -232,7 +232,7 @@ async function handleSubmit() {
 
         .profile__hint {
             padding: 30px 50px;
-            border-radius: 10px;
+            border-radius: 4px;
         }
     }
 }

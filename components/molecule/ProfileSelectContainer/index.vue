@@ -109,7 +109,7 @@ export default {
         border: solid 1px #d3d3d3;
         width: 100%;
         padding: 8px;
-        border-radius: 10px;
+        border-radius: 4px;
 
         .inputDropdownContainer__trigger__header {
             width: 100%;
@@ -127,7 +127,7 @@ export default {
     }
 
     .inputDropdownContainer__layer {
-        border-radius: 10px;
+        border-radius: 4px;
         box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: white;
         position: absolute;
@@ -154,7 +154,7 @@ export default {
     .inputDropdownContainer {
         .inputDropdownContainer__trigger {
             // padding: 13px 20px;
-            // border-radius: 5px;
+            // border-radius: 4px;
             // // background-color: #eee;
             // display: flex;
             // justify-items: center;

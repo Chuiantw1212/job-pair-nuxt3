@@ -160,7 +160,7 @@ function getSlicedDesc(desc = "") {
         margin-top: 20px;
 
         .feedback__list__feedback {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #cecece;
             padding: 15px;
             background-color: white;
@@ -180,7 +180,7 @@ function getSlicedDesc(desc = "") {
 
         .modal-content {
             padding: 20px 0px 0px 0px;
-            border-radius: 10px;
+            border-radius: 4px;
         }
 
         .modal-header {

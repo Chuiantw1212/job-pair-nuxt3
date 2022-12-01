@@ -43,7 +43,7 @@ export default {
 @media screen and (min-width: 992px) {
     .statusCard {
         .statusCard__header {
-            border-radius: 10px 10px 0px 0px;
+            border-radius: 4px 10px 0px 0px;
             padding: 16px;
         }
 

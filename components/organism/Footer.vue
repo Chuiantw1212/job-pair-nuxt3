@@ -45,7 +45,7 @@ export default {}
         flex-wrap: wrap;
 
         .meta__button {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #fff;
             background-color: inherit;
             color: white;

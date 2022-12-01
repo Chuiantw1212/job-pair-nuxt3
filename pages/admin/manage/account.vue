@@ -142,7 +142,7 @@ async function submitProfile() {
     .accountManagement__card {
         background-color: #fafafa;
         padding: 45px 64px;
-        border-radius: 10px;
+        border-radius: 4px;
     }
 
     .accountManagement__form {
@@ -179,7 +179,7 @@ async function submitProfile() {
         background: #29b0ab;
         border: none;
         color: white;
-        border-radius: 10px;
+        border-radius: 4px;
         margin-top: 32px;
     }
 }

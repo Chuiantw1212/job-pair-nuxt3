@@ -57,7 +57,7 @@ function removeSelf(index) {
         display: inline-flex;
         margin-bottom: 10px;
         padding: 9px 15px;
-        border-radius: 5px;
+        border-radius: 4px;
         border: solid 1px #5ea88e;
         align-items: center;
         color: #5ea88e;

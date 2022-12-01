@@ -173,7 +173,7 @@ export default {
         margin-bottom: 10px;
 
         .previewGroup__item {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #d3d3d3;
             overflow: hidden;
             width: 100%;
@@ -225,7 +225,7 @@ export default {
     }
 
     .resume__footer {
-        border-radius: 10px;
+        border-radius: 4px;
         border: dashed 1px #5ea88e;
         width: 100%;
         padding: 8px 0;

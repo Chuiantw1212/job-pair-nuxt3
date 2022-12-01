@@ -198,7 +198,7 @@ export default {
     .inputGroup__label {
         padding: 7px 12px;
         border: 1px solid #d9d9d9;
-        border-radius: 10px;
+        border-radius: 4px;
         width: 100%;
         background-color: white;
 

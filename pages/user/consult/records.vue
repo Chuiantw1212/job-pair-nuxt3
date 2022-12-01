@@ -360,7 +360,7 @@ function getConsultantName(id) {
     .consult__banner {
         width: 100%;
         height: auto;
-        border-radius: 5px;
+        border-radius: 4px;
     }
 
     .consult__themeMobile {
@@ -538,7 +538,7 @@ function getConsultantName(id) {
 
             .themeDesktop__card {
                 background-color: white;
-                border-radius: 5px;
+                border-radius: 4px;
                 border: solid 1px #d3d3d3;
                 padding: 20px 20px 40px 20px;
                 flex-grow: 1;

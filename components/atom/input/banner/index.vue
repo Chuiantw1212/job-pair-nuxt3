@@ -159,6 +159,6 @@ export default {
 
 .inputGroup__label--dahsed {
     border: 1px dashed #5ea88e;
-    border-radius: 10px;
+    border-radius: 4px;
 }
 </style>

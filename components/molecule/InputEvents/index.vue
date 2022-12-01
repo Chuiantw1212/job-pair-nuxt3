@@ -93,7 +93,7 @@ function newWork() {
 }
 
 .doc__buttonWrapper {
-    border-radius: 10px;
+    border-radius: 4px;
     border: dashed 1px #ababab;
     width: 100%;
     padding: 8px 0;

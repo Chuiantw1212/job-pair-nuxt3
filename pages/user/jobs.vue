@@ -549,7 +549,7 @@ function setJobComparable() {
     }
 
     .table__btn {
-        border-radius: 10px;
+        border-radius: 4px;
         border: solid 1px #5ea88e;
         color: #5ea88e;
         background-color: white;
@@ -622,7 +622,7 @@ function setJobComparable() {
         }
 
         .table__btn {
-            border-radius: 10px;
+            border-radius: 4px;
             border: solid 1px #5ea88e;
             color: #5ea88e;
             background-color: white;
