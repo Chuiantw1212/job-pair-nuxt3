@@ -131,13 +131,13 @@ export default {
         box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: white;
         position: absolute;
-        min-width: 100%;
         left: 0;
         max-height: 0;
         overflow: hidden;
         z-index: 10;
         border: none;
         margin-top: 4px;
+        min-width: 100%;
     }
 
     .inputDropdownContainer__layer--flat {

@@ -165,6 +165,8 @@ async function initialize() {
                 line-height: 20px;
                 font-size: 16px;
                 margin-left: 8px;
+                line-height: 1;
+                text-align: center;
             }
         }
     }

@@ -89,12 +89,12 @@ export default {
         box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: white;
         position: absolute;
-        min-width: 100%;
         left: 0;
         max-height: 0;
         overflow: hidden;
         z-index: 10;
         padding: 0px !important; // 不可以有Padding
+        min-width: 100%;
     }
 
     .inputDropdownContainer__layer--isOn {
