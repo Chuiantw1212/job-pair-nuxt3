@@ -35,7 +35,7 @@ export default {
 .accordion {
     .accordion__header {
         padding: 11px 9.6px 10px 10px;
-        border-radius: 4px;
+        border-radius: 5px;
         background-color: #eee;
         display: flex;
         justify-items: center;
@@ -64,7 +64,7 @@ export default {
     }
 
     .accordion__layer {
-        border-radius: 4px;
+        border-radius: 5px;
         box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: #fff;
         overflow: hidden;

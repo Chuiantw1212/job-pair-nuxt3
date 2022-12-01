@@ -207,7 +207,7 @@ async function shareLinkBootstrap() {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
-        border-radius: 4px;
+        border-radius: 5px;
         background-color: #eef6ed;
         padding: 10px;
         justify-content: center;
@@ -239,7 +239,7 @@ async function shareLinkBootstrap() {
 
         .panel__store {
             line-height: 1;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 16px;
             padding: 12px;
             border: none;
@@ -269,7 +269,7 @@ async function shareLinkBootstrap() {
         .panel__share {
             // line-height: 1;
             padding: 4px 8px;
-            border-radius: 4px;
+            border-radius: 5px;
             border: solid 1px #5ea88e;
             color: #5ea88e;
             font-size: 19px;

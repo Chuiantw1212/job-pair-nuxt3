@@ -112,7 +112,7 @@ function sortBy(item) {
 
         .dropdown__menu {
             width: 216px;
-            border-radius: 4px;
+            border-radius: 10px;
             overflow: hidden;
             border: 1px solid #d9d9d9;
 

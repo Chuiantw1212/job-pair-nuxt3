@@ -583,7 +583,7 @@ async function initialize() {
 
             .badgeGroup__badge {
                 padding: 8px;
-                border-radius: 4px;
+                border-radius: 5px;
                 border: solid 1px #d3d3d3;
 
             }
@@ -611,7 +611,7 @@ async function initialize() {
 
                 .body__badge {
                     padding: 8px;
-                    border-radius: 4px;
+                    border-radius: 5px;
                     border: solid 1px #d3d3d3;
                     font-size: 14px;
                     font-weight: normal;
@@ -659,7 +659,7 @@ async function initialize() {
 
         .ad__card {
             padding: 20px;
-            border-radius: 4px;
+            border-radius: 10px;
             background-color: #dde9f0;
             display: block;
 
@@ -721,7 +721,7 @@ async function initialize() {
         padding-bottom: 20px;
 
         .jobView__card {
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #d3d3d3;
             background-color: #fff;
             padding: 20px;
@@ -786,7 +786,7 @@ async function initialize() {
 
                 .badgeGroup__badge {
                     padding: 8px;
-                    border-radius: 4px;
+                    border-radius: 5px;
                     border: solid 1px #d3d3d3;
                     font-size: 14px;
 
@@ -811,7 +811,7 @@ async function initialize() {
         .jobView__map {
             .map__iframe {
                 width: 100%;
-                border-radius: 4px;
+                border-radius: 10px;
             }
         }
 

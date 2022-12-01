@@ -102,7 +102,7 @@ export default {
     }
 
     .resume__footer {
-        border-radius: 4px;
+        border-radius: 10px;
         border: dashed 1px #5ea88e;
         width: 100%;
         padding: 8px 0;

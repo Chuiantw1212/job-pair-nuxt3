@@ -277,7 +277,7 @@ function getLocationText() {
         width: 100%;
         display: flex;
         justify-content: center;
-        border-radius: 4px 10px 0px 0px;
+        border-radius: 10px 10px 0px 0px;
     }
 
     .company__banner {
@@ -345,7 +345,7 @@ function getLocationText() {
             background-repeat: no-repeat;
             cursor: pointer;
             background-color: white;
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #d3d3d3;
         }
 
@@ -393,7 +393,7 @@ function getLocationText() {
         .company__card {
             padding: 17px 15px 20px 20px;
             background-color: #fff;
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #d3d3d3;
 
             .card__header {
@@ -511,7 +511,7 @@ function getLocationText() {
 
             .jobs__searchWrapper {
                 padding: 30px;
-                border-radius: 4px;
+                border-radius: 10px;
                 border: solid 1px #d3d3d3;
                 background-color: #fff;
             }

@@ -552,7 +552,7 @@ async function concatJobsFromServer(config = {}) {
                     flex-direction: column;
                     align-items: center;
                     gap: 10px;
-                    border-radius: 4px;
+                    border-radius: 10px;
                     border: solid 1px #d3d3d3;
                     background-color: #fff;
                     padding: 30px;
@@ -605,7 +605,7 @@ async function concatJobsFromServer(config = {}) {
 
         .jobs__panel {
             position: inherit;
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #d3d3d3;
             padding: 30px 25px;
         }

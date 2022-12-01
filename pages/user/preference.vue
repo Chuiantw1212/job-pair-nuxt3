@@ -158,7 +158,7 @@ function setPreferenceInfo() {
 
         .body__item {
             padding: 20px;
-            border-radius: 4px;
+            border-radius: 10px;
             background-color: #fff;
             display: flex;
             flex-direction: column;
@@ -203,7 +203,7 @@ function setPreferenceInfo() {
         background: #29b0ab;
         border: none;
         color: white;
-        border-radius: 4px;
+        border-radius: 10px;
         margin-top: 32px;
     }
 }
@@ -211,7 +211,7 @@ function setPreferenceInfo() {
 @media screen and (min-width: 992px) {
     .preference {
         .preference__headerGroup {
-            border-radius: 4px;
+            border-radius: 10px;
         }
 
         .preference__body {

@@ -41,10 +41,10 @@ defineProps({
 
 @media screen and  (min-width: 992px) {
     .profile__card {
-        border-radius: 4px;
+        border-radius: 10px;
 
         .card__header {
-            border-radius: 4px 10px 0 0;
+            border-radius: 10px 10px 0 0;
         }
     }
 }

@@ -209,7 +209,7 @@ function handleTimeChange(startTimeString) {
         margin-top: 14px;
 
         .consultTime__grid__item {
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #4bc49a;
             padding: 11px 15px 10px;
             font-size: 16px;

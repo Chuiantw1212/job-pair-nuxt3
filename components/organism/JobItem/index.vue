@@ -149,7 +149,7 @@ function getLocationText() {
 <style lang="scss" scoped>
 .jobItem {
     display: flex;
-    border-radius: 4px;
+    border-radius: 10px;
     border: solid 1px #d3d3d3;
     background-color: #fff;
     padding: 14px 20px;

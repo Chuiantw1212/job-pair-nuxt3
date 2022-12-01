@@ -118,7 +118,7 @@ function showAdminModal() {
             flex-direction: column;
 
             .body__card {
-                border-radius: 4px;
+                border-radius: 10px;
                 border: solid 1px #d3d3d3;
                 width: 100%;
                 text-align: center;

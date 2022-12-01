@@ -63,7 +63,7 @@ function removeSelf(index) {
 
     .item__badge {
         display: flex;
-        border-radius: 4px;
+        border-radius: 10px;
         align-items: center;
         color: white;
         font-size: 18px;

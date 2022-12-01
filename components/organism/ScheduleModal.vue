@@ -398,7 +398,7 @@ function showEditModal() {
 }
 
 .modal-content {
-    border-radius: 4px;
+    border-radius: 10px;
 
     .modal-header {
         border: none;
@@ -421,7 +421,7 @@ function showEditModal() {
         padding: 0 50px 30px 50px;
 
         .body__ckeditor {
-            border-radius: 4px;
+            border-radius: 10px;
             border: solid 1px #d9d9d9;
             overflow: hidden;
         }
@@ -488,7 +488,7 @@ function showEditModal() {
                         .timePickerGroup__timePicker {
                             padding: 16px 24px;
                             border: 1px solid #d9d9d9;
-                            border-radius: 4px;
+                            border-radius: 10px;
                             font-size: 16px;
                             font-weight: normal;
                             font-stretch: normal;

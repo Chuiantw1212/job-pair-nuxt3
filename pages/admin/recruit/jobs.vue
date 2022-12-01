@@ -321,7 +321,7 @@ async function addJobDraft() {
     background: #fff;
     padding: 32px 32px;
     min-height: unset;
-    border-radius: 4px;
+    border-radius: 10px;
 
     .jobManagement__addItem {
         display: flex;
@@ -344,7 +344,7 @@ async function addJobDraft() {
             border: 1px solid #d9d9d9;
             padding: 11px 20px;
             background-color: white;
-            border-radius: 4px 0 0 5px;
+            border-radius: 5px 0 0 5px;
             display: flex;
             align-items: center;
             width: 100%;

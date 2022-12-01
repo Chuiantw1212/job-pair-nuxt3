@@ -246,7 +246,7 @@ function closeOtherItems(categoryKey, newFlag) {
 </script>
 <style lang="scss" scoped>
 .filterCategory {
-    border-radius: 4px;
+    border-radius: 5px;
     max-height: 453px;
     overflow-y: auto;
     // border: solid 1px #d3d3d3;
@@ -258,7 +258,7 @@ function closeOtherItems(categoryKey, newFlag) {
         .header__inputGroup {
             line-height: 1.2;
             padding: 6px 10px;
-            border-radius: 4px;
+            border-radius: 5px;
             border: solid 1px #d3d3d3;
             width: 100%;
 

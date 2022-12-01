@@ -189,7 +189,7 @@ defineExpose({
 <style lang="scss">
 .ckeditor--edit {
     border: 1px solid #d9d9d9;
-    border-radius: 4px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
