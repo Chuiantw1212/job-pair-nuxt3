@@ -261,7 +261,7 @@ useJsonld(() => ({
             "@type": "PostalAddress",
             "streetAddress": job.value.streetAddress,
             "addressLocality": $filter.optionText(job.value.addressLocality, repoSelect.state.locationRes[job.value.addressRegion]),
-            "addressRegion": $filter.optionText(job.value.addressRegion, repoSelect.state.locationRes.taiwan),
+            "addressRegion": $filter.optionText(job.value.addressRegion, repoSelect.state.locationRes?.taiwan),
             "addressCountry": "台灣"
         }
     },

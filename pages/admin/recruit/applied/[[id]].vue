@@ -655,6 +655,7 @@ async function initializeSearch() {
                             font-size: 36px;
                             font-weight: bold;
                             color: #333;
+                            text-align: center;
                         }
 
                         .similarity__text {
