@@ -112,9 +112,9 @@
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <AtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
                                 ref="descriptionRef">
-                            </AtomInputCkeditor>
+                            </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>
@@ -123,9 +123,9 @@
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <AtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
                                 ref="skillsRef">
-                            </AtomInputCkeditor>
+                            </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>

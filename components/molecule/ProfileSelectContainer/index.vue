@@ -67,7 +67,7 @@ export default {
         items: {
             deep: true,
             handler: function () {
-                if (this.max && this.items.length === this.max) {
+                if (this.max && this.items.length === this.max && this.modelValue) {
                     this.$emit("update:modelValue", false)
                 }
             }
@@ -87,7 +87,7 @@ export default {
         },
         handleClickoutSide(event) {
             const area = this.$refs.input
-            if (!area.contains(event.target)) {
+            if (!area.contains(event.target) && this.modelValue) {
                 this.$emit("update:modelValue", false)
             }
         },
