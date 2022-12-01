@@ -160,6 +160,7 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
+const { locationRes = {} } = repoSelect.state
 const repoCompany = useRepoCompany()
 const jobScroller = useJobScroller()
 const device = useDevice()
@@ -260,8 +261,8 @@ useJsonld(() => ({
         address: {
             "@type": "PostalAddress",
             "streetAddress": job.value.streetAddress,
-            "addressLocality": $filter.optionText(job.value.addressLocality, repoSelect.state.locationRes[job.value.addressRegion]),
-            "addressRegion": $filter.optionText(job.value.addressRegion, repoSelect.state.locationRes?.taiwan),
+            "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
+            "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
             "addressCountry": "台灣"
         }
     },
@@ -579,7 +580,6 @@ async function initialize() {
             gap: 18px;
             margin-top: 20px;
             flex-wrap: wrap;
-            min-height: 42px;
 
             .badgeGroup__badge {
                 padding: 8px;
