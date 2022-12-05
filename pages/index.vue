@@ -73,6 +73,20 @@
                 </div>
             </div>
         </div>
+        <div class="container__section container__section--affiliate">
+            <h2 class="affiliate__header">我們的合作夥伴</h2>
+            <div class="affiliate__body">
+                <div v-for="(item, index) in state.affiliateLogos" class="body__imageWrap" :key="index">
+                    <img class="body__image" :src="item" />
+                </div>
+            </div>
+            <h2 class="affiliate__header mt-5">我們的合作對象</h2>
+            <div class="affiliate__body">
+                <div v-for="(item, index) in state.jobProviderLogos" class="body__imageWrap" :key="index">
+                    <img class="body__image" :src="item" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -83,12 +97,38 @@ export default {
 <script setup>
 import backgroundImage from "~/assets/index/landing.png"
 const { $emitter } = useNuxtApp()
+const runTime = useRuntimeConfig()
+const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const router = useRouter()
+const state = reactive({
+    affiliateLogos: [],
+    jobProviderLogos: [],
+})
+const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
+state.affiliateLogos = companyList.value.map(item => item.logo)
 useHead({
     meta: [
         { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
     ],
+})
+onMounted(async () => {
+    if (process.client) {
+        const response = await repoJob.getJobByQuery({
+            pageOrderBy: "datePosted",
+            pageLimit: 15,
+            pageOffset: 0,
+        })
+        // 合作對象
+        const jobList = response.data.items
+        const logoMap = {}
+        jobList.forEach(item => {
+            if (item.image) {
+                logoMap[item.organizationId] = item.image
+            }
+        })
+        state.jobProviderLogos = Object.values(logoMap)
+    }
 })
 // methods
 function routeToQuestions() {
@@ -388,6 +428,145 @@ function routeToQuestions() {
                 &:hover {
                     background-color: #21cc90;
                 }
+            }
+        }
+    }
+
+    .container__section {
+        text-align: center;
+        padding: 39px 26px;
+        background-color: rgba(14, 174, 117, 0.9);
+
+        .section__header {
+            font-size: 28px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            color: #332b00;
+        }
+
+        .affiliate__header {
+            font-size: 42px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+        }
+
+        .affiliate__body {
+            display: flex;
+            justify-content: center;
+            gap: 70px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            max-width: 66rem;
+            margin: 50px auto auto auto;
+
+            .body__imageWrap {
+                width: 116px;
+                height: 116px;
+                border-radius: 50%;
+                background-color: white;
+                overflow: hidden;
+                display: flex;
+
+                .body__image {
+                    display: block;
+                    margin: auto;
+                    width: 64px;
+                    height: fit-content;
+                }
+            }
+        }
+
+        .section__image {
+            left: 50%;
+            transform: translate(-50%, 20px);
+            position: absolute;
+            bottom: 100%;
+        }
+
+        .section__image--1 {
+            width: 195px;
+            height: 225px;
+        }
+
+        .section__image--2 {
+            width: 320px;
+            height: 213px;
+        }
+
+        .section__image--3 {
+            width: 247px;
+            height: 227px;
+        }
+
+        .section__card {
+            border-radius: 10px;
+            border: solid 1px #806b00;
+            background-color: #fff;
+            padding: 30px 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .section__card--left {
+            margin-top: 250px;
+        }
+
+        .section__card--right {
+            margin-top: 250px;
+        }
+
+        .card__header {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.5;
+            color: #332b00;
+
+            .header__decoration {
+                text-decoration-line: underline;
+                text-decoration-thickness: 8px;
+                text-decoration-color: #ffd600;
+            }
+        }
+
+        .card__body {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: #707070;
+        }
+
+        .card__headerGroup {
+            font-size: 20px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #333;
+
+            .header__text {
+                margin-top: 20px;
+                font-size: 20px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                color: #333;
             }
         }
     }
