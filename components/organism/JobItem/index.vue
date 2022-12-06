@@ -20,16 +20,18 @@
                 <NuxtLink class="main__labelGroup" :to="`/job/${modelValue.identifier}`">
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" alt="employmentType" />
-                        <span>
-                            <template v-for="(item, index) in modelValue.employmentType">
+                        <div class="label__textGroup">
+                            <span v-for="(item, index) in modelValue.employmentType" class="label__text">
                                 {{ $optionText(item,
                                         repoSelect.state.selectByQueryRes?.employmentType)
                                 }}·
-                            </template>
-                            {{ $optionText(modelValue.responsibilities,
-                                    repoSelect.state.selectByQueryRes?.responsibilities)
-                            }}
-                        </span>
+                            </span>
+                            <span class="label__text">
+                                {{ $optionText(modelValue.responsibilities,
+                                        repoSelect.state.selectByQueryRes?.responsibilities)
+                                }}
+                            </span>
+                        </div>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="location" />
@@ -163,13 +165,6 @@ function getLocationText() {
         display: none;
     }
 
-    .item__logoSlot {
-        width: 64px;
-        height: 64px;
-        display: flex;
-        align-items: center;
-    }
-
     .item__body {
         width: 100%;
 
@@ -202,6 +197,7 @@ function getLocationText() {
                 height: fit-content;
                 display: block;
                 margin-right: 4px;
+                max-height: 27px;
             }
 
             .company__name {
@@ -244,6 +240,15 @@ function getLocationText() {
                     display: flex;
                     align-items: center;
                     white-space: nowrap;
+
+                    .label__textGroup {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+
+                    .label__text {
+                        white-space: nowrap;
+                    }
 
                     .label__icon {
                         display: block;
