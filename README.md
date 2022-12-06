@@ -59,3 +59,11 @@ firebase use --add job-pair-taiwan-prd
 npm run build
 npm run deploy
 ```
+
+### 刪除node_moduels
+```
+rmdir  .\node_modules\
+```
+
+### Firebase相關
+配置標頭 (https://firebase.google.com/docs/hosting/full-config#headers)

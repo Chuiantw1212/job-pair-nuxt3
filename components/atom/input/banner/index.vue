@@ -20,6 +20,7 @@
 <script>
 import { Buffer } from 'buffer/'
 export default {
+    name: 'banner',
     data: function () {
         return {
             message: "",
@@ -159,5 +160,6 @@ export default {
 
 .inputGroup__label--dahsed {
     border: 1px dashed #5ea88e;
+    border-radius: 10px;
 }
 </style>

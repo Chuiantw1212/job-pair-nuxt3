@@ -1,5 +1,5 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`" :class="{ 'inputGroup--error': message }">
+    <div class="inputGroup" :ref="`inputGroup`">
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
@@ -18,16 +18,11 @@
                 </option>
             </select>
         </label>
-        <div v-if="message" class="inputGroup__message">{{ message }}</div>
     </div>
 </template>
 <script>
 export default {
-    data: function () {
-        return {
-            message: ''
-        }
-    },
+    name: 'customSelect',
     props: {
         name: {
             type: String,
@@ -76,10 +71,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        // hasDefault: { // 預設選項改為從外面直接塞進去
-        //     type: Boolean,
-        //     default: false
-        // }
     },
     computed: {
         localValue: {
@@ -91,21 +82,6 @@ export default {
             },
         },
     },
-    watch: {
-        modelValue() {
-            this.message = ''
-        }
-    },
-    methods: {
-        hasError() {
-            let message = ''
-            if (this.required && !this.localValue) {
-                message = `${this.name}為必填`
-            }
-            this.message = message
-            return message
-        }
-    }
 }
 </script>
 <style lang="scss" scoped>

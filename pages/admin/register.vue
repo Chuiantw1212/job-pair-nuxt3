@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <OrganismCompanyProfile></OrganismCompanyProfile>
+        <LazyOrganismCompanyProfile></LazyOrganismCompanyProfile>
     </div>
 </template>
 <script setup>
@@ -22,6 +22,7 @@ watch(() => repoAuth.state.user, async (newValue) => {
     const postRes = await repoAdmin.postAdmin(newValue)
     if (postRes.data.id) {
         const addedUser = postRes.data
+        addedUser.type = 'admin'
         repoAuth.setUser(addedUser)
     }
 }, { immediate: true })

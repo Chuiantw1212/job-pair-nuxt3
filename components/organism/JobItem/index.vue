@@ -12,54 +12,64 @@
                 {{ modelValue.name }}
             </NuxtLink>
             <NuxtLink class="body__company" :to="`/company/${modelValue.organizationId}`">
-                <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'" />
+                <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'"
+                    alt="logo" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
             <div class="body__main">
-                <NuxtLink v-if="repoSelect.state.selectByQueryRes" class="main__labelGroup"
-                    :to="`/job/${modelValue.identifier}`">
+                <NuxtLink class="main__labelGroup" :to="`/job/${modelValue.identifier}`">
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" />
-                        <span>
-                            {{ $optionText(modelValue.employmentType, repoSelect.state.selectByQueryRes.employmentType)
-                            }} ·
-                            {{ $optionText(modelValue.responsibilities,
-                                    repoSelect.state.selectByQueryRes.responsibilities)
-                            }}
-                        </span>
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" alt="employmentType" />
+                        <div class="label__textGroup">
+                            <span v-for="(item, index) in modelValue.employmentType" class="label__text">
+                                {{ $optionText(item,
+                                        repoSelect.state.selectByQueryRes?.employmentType)
+                                }}·
+                            </span>
+                            <span class="label__text">
+                                {{ $optionText(modelValue.responsibilities,
+                                        repoSelect.state.selectByQueryRes?.responsibilities)
+                                }}
+                            </span>
+                        </div>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="location" />
                         {{
                                 getLocationText()
                         }}
                     </div>
                     <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
                         {{ $salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
                         <span>{{ $optionText(modelValue.jobLocationType,
-                                repoSelect.state.selectByQueryRes.jobLocationType)
+                                repoSelect.state.selectByQueryRes?.jobLocationType)
                         }}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" />
+                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" alt="category" />
                         <span class>{{ getCategoryTextGroup() }}</span>
                     </div>
 
                 </NuxtLink>
                 <div class="main__panel d-lg-none">
                     <div class="panel__vl"></div>
-                    <OrganismJobItemPanel v-model="localValue"></OrganismJobItemPanel>
+                    <LazyOrganismJobItemPanel v-model="localValue"></LazyOrganismJobItemPanel>
                 </div>
             </div>
         </div>
-        <OrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
-        </OrganismJobItemPanel>
+        <LazyOrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
+        </LazyOrganismJobItemPanel>
     </li>
 </template>
+<script>
+export default {
+    name: 'jobItem',
+}
+</script>
 <script setup>
 import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
@@ -146,7 +156,6 @@ function getLocationText() {
 <style lang="scss" scoped>
 .jobItem {
     display: flex;
-    gap: 30px;
     border-radius: 10px;
     border: solid 1px #d3d3d3;
     background-color: #fff;
@@ -154,13 +163,6 @@ function getLocationText() {
 
     .item__logo {
         display: none;
-    }
-
-    .item__logoSlot {
-        width: 64px;
-        height: 64px;
-        display: flex;
-        align-items: center;
     }
 
     .item__body {
@@ -192,8 +194,10 @@ function getLocationText() {
 
             .company__logo {
                 width: 27px;
+                height: fit-content;
                 display: block;
                 margin-right: 4px;
+                max-height: 27px;
             }
 
             .company__name {
@@ -220,7 +224,8 @@ function getLocationText() {
                 .panel__vl {
                     border-right: 1px solid #d3d3d3;
                     height: 154px;
-                    margin-right: 24px;
+                    margin: 0 auto;
+                    // margin-right: 24px;
                 }
             }
 
@@ -235,6 +240,15 @@ function getLocationText() {
                     display: flex;
                     align-items: center;
                     white-space: nowrap;
+
+                    .label__textGroup {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+
+                    .label__text {
+                        white-space: nowrap;
+                    }
 
                     .label__icon {
                         display: block;
@@ -266,9 +280,9 @@ function getLocationText() {
 
 @media screen and (min-width: 992px) {
     .jobItem {
-        // flex-direction: column;
         padding: 30px;
         position: relative;
+        gap: 30px;
 
         .item__logo {
             display: block;

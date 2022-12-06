@@ -3,6 +3,11 @@
         <slot></slot>
     </button>
 </template>
+<script>
+export default {
+    name: 'simple'
+}
+</script>
 <script setup>
 const props = defineProps({
     id: {
@@ -55,6 +60,7 @@ const props = defineProps({
 
 .btnSimple--disabled {
     background-color: #d3d3d3;
+    color: #969696;
     cursor: unset;
 
     &:hover {

@@ -1,7 +1,7 @@
 <template>
-    <AtomBtnSimple class="modal__button" @click="handleApply()" :disabled="getBtnDisabled()">
+    <LazyAtomBtnSimple class="modal__button" @click="handleApply()" :disabled="getBtnDisabled()">
         安排面試
-    </AtomBtnSimple>
+    </LazyAtomBtnSimple>
     <div class="modal fade" :id="`schedule${state.id}`" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered ">
             <div class="modal-content">
@@ -10,25 +10,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" ref="modalBodyRef">
-                    <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
+                    <LazyAtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         required>
-                    </AtomInputText>
-                    <AtomInputCkeditor v-model="state.form.templateHeader" name="前言" class="mt-3"
+                    </LazyAtomInputText>
+                    <LazyAtomInputCkeditor v-model="state.form.templateHeader" name="前言" class="mt-3"
                         :ref="'templateHeaderRef'" required>
-                    </AtomInputCkeditor>
-                    <MoleculeInputEvents v-model="state.form.events" required></MoleculeInputEvents>
-                    <AtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
+                    </LazyAtomInputCkeditor>
+                    <LazyMoleculeInputEvents v-model="state.form.events" required></LazyMoleculeInputEvents>
+                    <LazyAtomInputSelect v-model="state.form.duration" name="面試時長" :items="state.durationItems" required
                         class="content__duration mt-3">
-                    </AtomInputSelect>
-                    <AtomInputCkeditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
+                    </LazyAtomInputSelect>
+                    <LazyAtomInputCkeditor v-model="state.form.templateFooter" name="結尾" class="mt-3"
                         :ref="'templateFooterRef'" required>
-                    </AtomInputCkeditor>
+                    </LazyAtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <AtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="closeEditModal()">取消
-                        </AtomBtnSimple>
-                        <AtomBtnSimple class="footer__button" @click="generateTemplate()">預覽</AtomBtnSimple>
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="closeEditModal()">取消
+                        </LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple class="footer__button" @click="generateTemplate()">預覽</LazyAtomBtnSimple>
                     </div>
                 </div>
             </div>
@@ -42,18 +42,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <AtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
+                    <LazyAtomInputText v-model="state.form.subject" name="信件主旨" :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'"
                         :disabled="true" required>
-                    </AtomInputText>
-                    <AtomInputCkeditor v-model="state.form.template" name="信件內容" :disabled="true" :preview="true"
+                    </LazyAtomInputText>
+                    <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" :disabled="true" :preview="true"
                         :toolbar="[]" :ref="'templateContentRef'" class="mt-3" required>
-                    </AtomInputCkeditor>
+                    </LazyAtomInputCkeditor>
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <AtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="showEditModal()">回上一步
-                        </AtomBtnSimple>
-                        <AtomBtnSimple class="footer__button" @click="sendInterviewRequest()">送出</AtomBtnSimple>
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="showEditModal()">回上一步
+                        </LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple class="footer__button" @click="sendInterviewRequest()">送出</LazyAtomBtnSimple>
                     </div>
                 </div>
             </div>

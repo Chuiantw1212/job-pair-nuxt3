@@ -13,6 +13,7 @@
 </template>
 <script>
 export default {
+    name: 'accordion',
     props: {
         modelValue: {
             type: Boolean,

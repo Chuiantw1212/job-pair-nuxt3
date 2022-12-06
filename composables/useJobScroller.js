@@ -63,7 +63,7 @@ export default function setup() {
         if (user && user.id && user.type !== 'admin') {
             fianalConfig.id = user.id
         }
-        const response = await repoJob.getJobAll(fianalConfig)
+        const response = await repoJob.getJobByQuery(fianalConfig)
         if (response.status !== 200) {
             return
         }
@@ -73,7 +73,10 @@ export default function setup() {
         state.jobList = [...state.jobList, ...items]
     }
     function observeLastJob(jobItemRefs) {
-        if (!state.observer) {
+        if (!process.client) {
+            return
+        }
+        if (!state.observer && process.client) {
             state.observer = new IntersectionObserver(loadJobItemBatch, {
                 rootMargin: "0px",
                 threshold: 0,

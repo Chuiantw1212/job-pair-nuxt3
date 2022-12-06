@@ -9,8 +9,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button class="navbar-brand" @click="routeByMenuType()">
-                        <img class="logoGroup__logo" src="./logo.png" alt="logo" />
-                        <img class="logoGroup__name" src="./name.png" alt="name" />
+                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
                         <template v-if="state.menuType === 'admin'">
                             企業用戶
                         </template>
@@ -20,25 +19,31 @@
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
                     <NuxtLink class="icons__Group" :to="{ name: 'jobs' }">
-                        <img class="icons__Group__image" src="./icon_nav_job.svg" />
+                        <img class="icons__Group__image" src="./icon_nav_job.svg" alt="jobs" />
                     </NuxtLink>
                     <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
-                        <img class="icons__Group__image" src="./icon_nav_member.svg" />
+                        <img class="icons__Group__image" src="./icon_nav_member.svg" alt="account" />
                     </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <OrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()"></OrganismUserMenu>
-                    <OrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
-                    </OrganismCompanyMenu>
+                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()">
+                    </LazyOrganismUserMenu>
+                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    </LazyOrganismCompanyMenu>
                 </div>
             </div>
         </nav>
         <!-- 如果條件渲染有異步渲染問題 -->
-        <OrganismUserModal></OrganismUserModal>
-        <OrganismCompanyModal></OrganismCompanyModal>
-        <OrganismSwitchModal></OrganismSwitchModal>
+        <LazyOrganismUserModal></LazyOrganismUserModal>
+        <LazyOrganismCompanyModal></LazyOrganismCompanyModal>
+        <LazyOrganismSwitchModal></LazyOrganismSwitchModal>
     </div>
 </template>
+<script>
+export default {
+    name: 'customHeader',
+}
+</script>
 <script setup>
 const repoAuth = useRepoAuth()
 const state = reactive({
@@ -128,15 +133,10 @@ function routeByMenuType() {
             align-items: center;
             min-height: 46px;
 
-            .logoGroup__logo {
-                height: 20px;
-                width: auto;
-                margin-right: 4px;
-            }
-
-            .logoGroup__name {
-                height: 20px;
-                width: 90px;
+            .brand__logo {
+                height: 22px;
+                width: 140px;
+                margin-right: 8px;
             }
         }
 
@@ -188,12 +188,6 @@ function routeByMenuType() {
             .navbar-brand {
                 min-height: 46px;
                 font-size: 24px;
-
-                .logoGroup__logo {
-                    height: 30px;
-                    width: auto;
-                    // width: 150px;
-                }
             }
 
             .container__icons {

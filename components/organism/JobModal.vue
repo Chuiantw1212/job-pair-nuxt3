@@ -14,16 +14,16 @@
                     </div>
                     <template v-if="repoAuth.state.user.resumes && repoAuth.state.user.resumes.length === 1">
                         <div class="body__resume">
-                            <AtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
-                                :disabled="true" class="resume__input" :hasPreviewButton="true"></AtomInputResume>
+                            <LazyAtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
+                                :disabled="true" class="resume__input" :hasPreviewButton="true"></LazyAtomInputResume>
                         </div>
                     </template>
-                    <AtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
+                    <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
                         itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
                         :required="true" ref="resume" class="mt-3 mb-3">
-                    </AtomInputSelect>
+                    </LazyAtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
-                        <div class="content__portfolio__header">作品集(雲端檔案請開啟瀏覽權限)</div>
+                        <div class="content__portfolio__header mt-3">作品集(雲端檔案請開啟瀏覽權限)</div>
                         <div class="checkMultiple d-flex">
                             <label v-for="(work, key) in repoAuth.state.user.portfolio" class="checkMultiple__label"
                                 :key="key">
@@ -37,23 +37,23 @@
                             </label>
                         </div>
                     </template>
-                    <AtomInputCkeditor id="coverLetter" ref="coverLetterRef" v-model="state.application.coverLetter"
-                        class="mt-3" name="自薦信" placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！"></AtomInputCkeditor>
+                    <LazyAtomInputCkeditor id="coverLetter" ref="coverLetterRef" v-model="state.application.coverLetter"
+                        class="mt-3" name="自薦信" placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！"></LazyAtomInputCkeditor>
                     <div class="modal__footer mt-3">
-                        <AtomBtnSimple @click="closeModal()">
+                        <LazyAtomBtnSimple @click="closeModal()">
                             取消
-                        </AtomBtnSimple>
-                        <AtomBtnSimple @click="handleSubmit()">
+                        </LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple @click="handleSubmit()">
                             確定投遞
-                        </AtomBtnSimple>
+                        </LazyAtomBtnSimple>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <AtomBtnSimple @click="handleApply()" :disabled="disabled">
+    <LazyAtomBtnSimple @click="handleApply()" :disabled="disabled">
         <slot>立即應徵</slot>
-    </AtomBtnSimple>
+    </LazyAtomBtnSimple>
 </template>
 <script setup>
 const emit = defineEmits(['applied'])

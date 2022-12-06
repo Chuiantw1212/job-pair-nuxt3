@@ -3,7 +3,7 @@
         <div class="questions__description">
             此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
         </div>
-        <AtomProgress class="questions__progress"></AtomProgress>
+        <LazyAtomProgress class="questions__progress"></LazyAtomProgress>
         <img class="questions__leftImage" src="~/assets/questions/left.png" />
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
         <template v-for="(questionGroup, key) in state.questions">
@@ -48,14 +48,14 @@
             </div>
         </template>
         <div v-if="questionId == 5" class="questions__footer">
-            <AtomBtnSimple @click="routeToCategory()">下一步
-            </AtomBtnSimple>
+            <LazyAtomBtnSimple @click="routeToCategory()">下一步
+            </LazyAtomBtnSimple>
             <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button>
         </div>
     </div>
 </template>
 <script setup>
-const { $bootstrap, $emitter } = useNuxtApp()
+const { $bootstrap, $sweet } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const route = useRoute()
@@ -78,8 +78,17 @@ useHead({
     title: `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
-    const response = await repoSelect.getQuestions()
-    state.questions = response.data
+    let questions = []
+    const {questionsRes=[]} = repoSelect.state
+    if (questionsRes&&questionsRes.length){
+        questions = repoSelect.state.questionsRes
+    } else {
+        $sweet.loader(true)
+        const response = await repoSelect.getQuestions()
+        $sweet.loader(false)
+        questions =  response.data
+    }
+    state.questions = questions
     getAnswers()
 })
 watch(() => repoAuth.state.user, () => {
@@ -342,6 +351,7 @@ function handleClickNext() {
 
                     .multipleSelect__description {
                         margin-left: 10px;
+                        text-align: left;
                     }
 
                     .multiSelect__checkbox {

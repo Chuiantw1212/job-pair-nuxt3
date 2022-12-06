@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <OrganismCompanyProfile></OrganismCompanyProfile>
-    </div>
+    <LazyOrganismCompanyProfile></LazyOrganismCompanyProfile>
 </template>
 <script setup>
 useHead({

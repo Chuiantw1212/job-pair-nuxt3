@@ -16,6 +16,7 @@
 </template>
 <script>
 export default {
+    name: 'progress',
     computed: {
         questionId() {
             const value = this.$route.params.id || 0

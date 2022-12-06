@@ -63,15 +63,15 @@
         </div>
         <div class="appliedList__form">
             <div class="form__selectGroup">
-                <AtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
+                <LazyAtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
                     :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'"
                     :itemText="'name'">
-                </AtomInputSelect>
-                <AtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
                     :itemText="'name'" :itemValue="'applicantId'" @change="replaceParamsId()">
-                </AtomInputSelect>
-                <AtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
-                </AtomInputSelect>
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect v-model="state.applyFlow" placeholder="履歷狀態" :items="state.statusItems">
+                </LazyAtomInputSelect>
             </div>
         </div>
         <ul v-if="getFilteredItems().length" class="appliedList__list">
@@ -102,10 +102,12 @@
                                         </div>
                                         <div class="header__info__item">
                                             <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
-                                            <span v-for="(item, index) in item.occupationalCategory" :key="index"
-                                                class="header__info__item__badge">
-                                                {{ $optionText(item, repoSelect.jobCategory) }}
-                                            </span>
+                                            <div class="info__item__badgeGroup">
+                                                <span v-for="(item, index) in item.occupationalCategory" :key="index"
+                                                    class="header__info__item__badge">
+                                                    {{ $optionText(item, repoSelect.jobCategory) }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -128,8 +130,8 @@
                             </div>
                             <hr>
                             <div class="profile__body">
-                                <AtomInputCkeditor v-model="item.coverLetter" :toolbar="[]" :disabled="true">
-                                </AtomInputCkeditor>
+                                <LazyAtomInputCkeditor v-model="item.coverLetter" :toolbar="[]" :disabled="true">
+                                </LazyAtomInputCkeditor>
                             </div>
                             <br>
                             <div class="profile__footer">
@@ -145,17 +147,17 @@
                         </div>
                         <hr>
                         <div class="content__panel">
-                            <OrganismScheduleModal v-if="item.applyFlow === 'applied'"
+                            <LazyOrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
-                            </OrganismScheduleModal>
-                            <OrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
-                                @update:modelValue="updateChart()">
+                            </LazyOrganismScheduleModal>
+                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'"
+                                v-model="state.applications[index]" @update:modelValue="updateChart()">
                                 婉拒
-                            </OrganismRejectModal>
-                            <AtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
-                            </AtomBtnSimple>
-                            <AtomBtnSimple v-if="item.applyFlow === 'rejected'" disabled>已婉拒
-                            </AtomBtnSimple>
+                            </LazyOrganismRejectModal>
+                            <LazyAtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
+                            </LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple v-if="item.applyFlow === 'rejected'" disabled>已婉拒
+                            </LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>
@@ -169,6 +171,7 @@
 </template>
 <script setup>
 const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
+const emit = defineEmits(['update:modelValue'])
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -239,11 +242,15 @@ const props = defineProps({
 useHead({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
-onMounted(() => {
+onMounted(async () => {
     const { id } = route.params
     if (id) {
         state.applicantId = id
     }
+    $sweet.loader(true)
+    await initializeSearch()
+    await updateChart()
+    $sweet.loader(false)
 })
 watch(() => props.modelValue, (newValue) => {
     // 這邊只應該執行一次
@@ -259,7 +266,7 @@ watch(() => state.searchForm, (newValue, oldValue) => {
         await initializeSearch()
         await updateChart()
     })()
-}, { immediate: true, deep: true })
+}, { deep: true })
 // methods
 function resetApplicantId() {
     state.applicantId = ''
@@ -416,8 +423,15 @@ async function initializeSearch() {
     }
     const results = await repoJobApplication.getApplicationByQuery(searchForm)
     state.applications = []
-    let matchedResult = results.data
+    // 資料交給上層更新應徵者人數
+    const isDefaultSearch = searchForm.applyFlow.every(flow => {
+        return ['applied', 'notified', 'rejected'].includes(flow)
+    })
+    if (isDefaultSearch) {
+        emit('update:modelValue', results.data)
+    }
     // 前端搜索
+    let matchedResult = results.data
     if (String(state.searchLike).trim()) {
         const searchFields = ['email', 'jobName', 'name', 'telephone']
         matchedResult = matchedResult.filter(application => {
@@ -464,6 +478,7 @@ async function initializeSearch() {
         background-color: white;
         padding: 20px;
         margin-top: 20px;
+        border-radius: 10px;
 
         .form__selectGroup {
             // display: flex;
@@ -590,6 +605,7 @@ async function initializeSearch() {
 
                     .header__info {
                         font-size: 14px;
+                        margin-right: 8px;
 
                         .header__info__itemGroups {
                             display: flex;
@@ -598,22 +614,31 @@ async function initializeSearch() {
                         }
 
                         .header__info__item {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            // flex-wrap: wrap;
+
                             .info__item__icon {
-                                margin-right: 5px;
+                                max-width: 16px;
                             }
 
+                            .info__item__badgeGroup {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 4px;
 
-                            .header__info__item__badge {
-                                padding: 5px 12px;
-                                border-radius: 10px;
-                                border: solid 1px #d3d3d3;
-                                font-size: 13px;
-                                color: #333;
-
-                                &:not(:first-child) {
-                                    margin-left: 5px;
+                                .header__info__item__badge {
+                                    padding: 5px 12px;
+                                    border-radius: 10px;
+                                    border: solid 1px #d3d3d3;
+                                    font-size: 13px;
+                                    color: #333;
+                                    white-space: nowrap;
                                 }
                             }
+
+
                         }
 
                         .header__info__item--name {
@@ -625,18 +650,17 @@ async function initializeSearch() {
                     }
 
                     .header__similarity {
-                        position: absolute;
-                        right: 0;
-                        top: 0;
-                        text-align: center;
+                        margin-left: auto;
 
                         .similarity__score {
                             font-size: 36px;
                             font-weight: bold;
                             color: #333;
+                            text-align: center;
                         }
 
                         .similarity__text {
+                            white-space: nowrap;
                             font-size: 16px;
                             font-weight: normal;
                             color: #333;
@@ -777,9 +801,13 @@ async function initializeSearch() {
                         }
 
                         .header__info {
+                            .header__info__item {
+                                flex-wrap: wrap;
+                            }
+
                             .header__info__itemGroups {
-                                display: grid;
-                                grid-template-columns: auto auto;
+                                flex-direction: row;
+                                flex-wrap: wrap;
                             }
                         }
                     }

@@ -24,6 +24,7 @@
 </template>
 <script>
 export default {
+    name: 'checkMultiple',
     props: {
         modelValue: {
             type: Array,

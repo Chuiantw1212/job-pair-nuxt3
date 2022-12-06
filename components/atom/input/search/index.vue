@@ -1,7 +1,7 @@
 <template>
     <label class="inputSearch">
         <div class="inputSearch__div">
-            <img class="label__image" src="./icon_Search.svg" />
+            <img class="label__image" src="./icon_Search.svg" alt="search" />
             <input v-model="localValue" :placeholder="placeholder" class="inputSearch__label__input"
                 @keyup.delete="resetSearch($event)" />
         </div>
@@ -10,6 +10,7 @@
 </template>
 <script>
 export default {
+    name: 'search',
     props: {
         modelValue: {
             type: String,
@@ -108,7 +109,7 @@ export default {
     }
 }
 
-@media screen and  (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .inputSearch {
         font-size: 20px;
         font-weight: normal;

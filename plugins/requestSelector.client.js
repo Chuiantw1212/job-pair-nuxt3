@@ -2,7 +2,6 @@ export default defineNuxtPlugin(() => {
     return {
         provide: {
             requestSelector: (selectorString, callback,) => {
-                console.time(`Request element ${selectorString}`)
                 let localCount = 0
                 function step() {
                     if (localCount >= 100) {
@@ -12,7 +11,6 @@ export default defineNuxtPlugin(() => {
                     const queryResult = document.querySelector(selectorString)
                     if (queryResult) {
                         callback(queryResult)
-                        console.timeEnd(`Request element ${selectorString}`)
                     } else {
                         localCount++
                         window.requestAnimationFrame(step)
@@ -21,7 +19,6 @@ export default defineNuxtPlugin(() => {
                 step()
             },
             requestSelectorAll: (selectorString, callback,) => {
-                console.time(`Request element ${selectorString}`)
                 let localCount = 0
                 function step() {
                     if (localCount >= 100) {
@@ -31,7 +28,6 @@ export default defineNuxtPlugin(() => {
                     const queryResult = document.querySelectorAll(selectorString)
                     if (queryResult && queryResult.length !== 0) {
                         callback(queryResult)
-                        console.timeEnd(`Request element ${selectorString}`)
                     } else {
                         localCount++
                         window.requestAnimationFrame(step)

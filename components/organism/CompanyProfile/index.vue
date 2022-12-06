@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AtomInputBanner v-model="state.companyBanner"></AtomInputBanner>
+        <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
             <div v-if="state.isNewCompay" class="profile__quick">
                 <h1 class="quick__header">快速建檔</h1>
@@ -26,68 +26,73 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <AtomInputPhotoSingle v-model="state.companyLogo" class="mb-2">
-                        </AtomInputPhotoSingle>
-                        <AtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
+                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
+                            class="mb-2">
+                        </LazyAtomInputPhotoSingle>
+                        <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
-                        </AtomInputText>
-                        <AtomInputText v-model="state.companyInfo.taxID" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8">
-                        </AtomInputText>
-                        <MoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
+                            v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
+                            class="mb-2" :max="8" :min="8">
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8" :disabled="true">
+                        </LazyAtomInputText>
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
                             required class="mb-2">
                             <template v-slot:header>
-                                <MoleculeProfileSelectLabels v-model="state.companyInfo.industry"
-                                    :jobCategoryMap="repoSelect.industryCategoryMap" placeholder="產業類別"
+                                <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
                                     :items="repoSelect.industryItems">
-                                </MoleculeProfileSelectLabels>
+                                </LazyMoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
-                                <MoleculeFilterCategory v-model="state.companyInfo.industry"
+                                <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
                                     :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
                                     :max="5" :isDesktop="device.state.isDesktop" required name="產業類別">
-                                </MoleculeFilterCategory>
+                                </LazyMoleculeFilterCategory>
                             </template>
-                        </MoleculeProfileSelectContainer>
+                        </LazyMoleculeProfileSelectContainer>
                         <div class="d-block d-md-flex gap-2">
-                            <AtomInputSelect v-if="repoSelect.state.locationRes"
+                            <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
                                 :items="repoSelect.state.locationRes.taiwan"
                                 @change="state.companyInfo.addressLocality = ''" class="mb-2">
-                            </AtomInputSelect>
-                            <AtomInputSelect v-if="repoSelect.state.locationRes"
+                            </LazyAtomInputSelect>
+                            <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2"
                                 placeholder="請選擇鄉鎮市區"
                                 :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
-                            </AtomInputSelect>
-                            <AtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
+                            </LazyAtomInputSelect>
+                            <LazyAtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
-                            </AtomInputText>
+                            </LazyAtomInputText>
                         </div>
-                        <AtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                            required>
-                        </AtomInputText>
-                        <AtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
+                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
                             class="mt-3 mb-2">
-                        </AtomInputText>
-                        <AtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
-                            class="mb-2">
-                        </AtomInputText>
-                        <AtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
-                            class="mb-2">
-                        </AtomInputText>
-                        <AtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
+                            placeholder="請輸入阿拉伯數字" class="mb-2">
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
+                            v-model="state.companyInfo.url.default" class="mb-2">
+                        </LazyAtomInputText>
+                        <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
                             :accept="'image/*'" :max="12">
-                        </AtomInputUploader>
+                        </LazyAtomInputUploader>
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <AtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
-                        class="mb-2" ref="descriptionRef">
-                    </AtomInputCkeditor>
-                    <AtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
-                        class="mb-1" ref="jobBenefitsRef" @update:modelValue="setWelfareFlags()">
-                    </AtomInputCkeditor>
+                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
+                        required class="mb-2" ref="descriptionRef">
+                    </LazyAtomInputCkeditor>
+                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
+                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
+                        @update:modelValue="setWelfareFlags()">
+                    </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
                             ※ 系統自動偵測項目
@@ -101,10 +106,10 @@
                             </template>
                         </ul>
                     </div>
-                    <AtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
+                    <LazyAtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
                         v-model="state.companyInfo.preference.culture" name="企業文化風格" required
                         :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
-                    </AtomInputCheckMultiple>
+                    </LazyAtomInputCheckMultiple>
                 </div>
             </div>
             <div class="profile__footerGroup">
@@ -115,6 +120,9 @@
                     </button>
                 </template>
                 <template v-else>
+                    <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                        檢視公司頁面
+                    </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
                         儲存
                     </button>
@@ -123,8 +131,14 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'companyProfile',
+}
+</script>
 <script setup>
-const jobBenefitsConfig = await import('~/assets/jobBenefits.json')
+import placeholderImage from './company.webp'
+const jobBenefitsConfig = await import('./jobBenefits.json')
 const { $validate, $sweet, $requestSelector } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -132,8 +146,7 @@ const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
-const descriptionRef = ref(null)
-const jobBenefitsRef = ref(null)
+const currentInstance = getCurrentInstance()
 const state = reactive({
     crawlerUrl: "",
     isNewCompay: false,
@@ -164,7 +177,7 @@ const state = reactive({
     benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility']
 })
 // hooks
-watch(() => repoAuth.state.user, (userValue) => {
+watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
 // methods
@@ -235,13 +248,15 @@ async function initializeCompanyInfo() {
     state.companyBanner = companyInfo.banner
     state.companyImages = companyInfo.images ?? []
 
-    $requestSelector(`#descriptionRef`, () => {
-        descriptionRef.value.setData(state.companyInfo.description)
-    })
-    $requestSelector(`#jobBenefitsRef`, () => {
-        jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
-        setWelfareFlags()
-    })
+    const descriptionRef = currentInstance.refs.descriptionRef
+    const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
+    if (descriptionRef) {
+        descriptionRef.setData(state.companyInfo.description)
+    }
+    if (jobBenefitsRef) {
+        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    }
+    setWelfareFlags()
 }
 async function crawlCompanyFromPlatform() {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
@@ -277,8 +292,8 @@ async function crawlCompanyFromPlatform() {
         state.companyInfo.telephone = ''
     }
     // 設定CKEditor文字
-    descriptionRef.value.setData(state.companyInfo.description)
-    jobBenefitsRef.value.setData(state.companyInfo.jobBenefits)
+    currentInstance.refs.descriptionRef.setData(state.companyInfo.description)
+    currentInstance.refs.jobBenefitsRef.setData(state.companyInfo.jobBenefits)
 }
 async function setCakeresumeCompanyInfo(response) {
     const {
@@ -558,6 +573,7 @@ async function refineAndUpdateCompanyInfo() {
     padding: 48px 32px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
+    border-radius: 10px;
 
     .profile__quick {
         background-color: #fee997;
@@ -626,11 +642,8 @@ async function refineAndUpdateCompanyInfo() {
                 margin-bottom: 16px;
             }
         }
-
-        .body__companyInfo {}
     }
 
-    // }
     .profile__footerGroup {
         display: flex;
         justify-content: flex-end;
@@ -642,16 +655,7 @@ async function refineAndUpdateCompanyInfo() {
             background-color: #29b0ab;
             border-radius: 10px;
             padding: 12px 16px;
-        }
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .profile {
-        // margin-right: 8px;
-
-        .profile__body {
-            // flex-direction: row;
+            text-decoration: none;
         }
     }
 }

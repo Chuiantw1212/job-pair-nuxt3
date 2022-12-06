@@ -2,12 +2,12 @@
     <div class="profile__portfolio">
         <h1 class="portfolio__header">作品集</h1>
         <div class="portfolio__inputGroup" v-for="(work, index) in localValue" :key="index">
-            <AtomInputText placeholder="專案名稱" v-model="localValue[index].name" class="portfolio__work"
+            <LazyAtomInputText placeholder="專案名稱" v-model="localValue[index].name" class="portfolio__work"
                 :disabled="disabled">
-            </AtomInputText>
-            <AtomInputText placeholder="作品集連結" v-model="localValue[index].url" class="portfolio__work"
+            </LazyAtomInputText>
+            <LazyAtomInputText placeholder="作品集連結" v-model="localValue[index].url" class="portfolio__work"
                 :disabled="disabled">
-            </AtomInputText>
+            </LazyAtomInputText>
             <a v-if="disabled" :href="localValue[index].url" target="_blank">
                 <button class="doc__btn">
                     <img class="btn__icon" src="./icon_preview_g.svg" />
@@ -29,6 +29,7 @@
 </template>
 <script>
 export default {
+    name: 'portfolio',
     props: {
         modelValue: {
             type: Array,

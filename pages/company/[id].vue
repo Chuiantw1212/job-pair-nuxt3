@@ -1,11 +1,11 @@
 <template>
     <div class="company" :class="{ container: device.state.isDesktop }">
-        <AtomTabs class="d-lg-none" :items="state.tabItems"></AtomTabs>
+        <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
         <section v-if="state.companyInfo" id="company__info" class="company__section mt-4">
             <div class="company__bannerGroup">
                 <img v-if="state.companyInfo.banner" class="company__banner company__banner--fit-content"
                     :src="state.companyInfo.banner" />
-                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" />
+                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
             </div>
             <div class="company__card company__basic">
                 <div class="basic__basicGroup1">
@@ -48,15 +48,11 @@
             <div class="body__textGroup">
                 <div v-if="state.companyInfo" class="company__card company__intro">
                     <div class="card__header">公司介紹</div>
-                    <AtomInputCkeditor v-model="state.companyInfo.description" :toolbar="[]" disabled
-                        class="card__body">
-                    </AtomInputCkeditor>
+                    <div class="card__body" v-html="state.companyInfo.description"></div>
                 </div>
                 <div v-if="state.companyInfo" class="company__card company__welfare">
                     <div class="card__header">公司福利</div>
-                    <AtomInputCkeditor v-model="state.companyInfo.jobBenefits" :toolbar="[]" disabled
-                        class="card__body">
-                    </AtomInputCkeditor>
+                    <div class="card__body" v-html="state.companyInfo.jobBenefits"></div>
                 </div>
             </div>
             <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"
@@ -100,12 +96,13 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <AtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
-                    </AtomInputSearch>
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike"
+                        @search="jobScroller.initializeSearch()">
+                    </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
-                    <OrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></OrganismJobItem>
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
                 </ul>
             </div>
         </section>
@@ -172,6 +169,19 @@ useHead(() => {
     }
     return headConfig
 })
+useJsonld(() => ({
+    // https://schema.org/Organization
+    '@context': 'https://schema.org',
+    '@type': 'Corporation',
+    email: company.value.email,
+    logo: company.value.logo,
+    description: company.value.description,
+    identifier: company.value.id,
+    url: `${runTime.public.origin}/company/${company.value.id}`,
+    address: getLocationText(),
+    location: getLocationText(),
+    image: company.value.banner,
+}));
 onMounted(async () => {
     state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]
@@ -258,10 +268,7 @@ function getLocationText() {
         }
 
         .card__body {
-            font-size: 16px;
-            font-weight: normal;
-            line-height: 1.5;
-            color: #333;
+            margin-top: 20px;
         }
     }
 

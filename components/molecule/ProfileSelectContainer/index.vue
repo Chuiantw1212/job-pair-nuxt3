@@ -10,13 +10,15 @@
             </div>
             <img v-if="!disabled" src="./icon_Down.svg" class="inputDropdownContainer__icon">
         </button>
-        <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
+        <div class="inputDropdownContainer__layer"
+            :class="{ 'inputDropdownContainer__layer--flat': flat, 'inputDropdownContainer__layer--isOn': modelValue }">
             <slot name="body"></slot>
         </div>
     </div>
 </template>
 <script>
 export default {
+    name: 'profileSelectContainer',
     props: {
         modelValue: {
             type: Boolean,
@@ -40,17 +42,36 @@ export default {
             type: String,
             default: ''
         },
-        // 純顯示用，不做資料運用
         max: {
             type: Number,
             default: 0
         },
+        items: {
+            type: Array,
+            default: function () {
+                return []
+            }
+        },
+        flat: {
+            type: Boolean,
+            default: false
+        }
     },
     mounted() {
         this.toggleClickOutside(true)
     },
     beforeUnmount() {
         this.toggleClickOutside(false)
+    },
+    watch: {
+        items: {
+            deep: true,
+            handler: function () {
+                if (this.max && this.items.length === this.max && this.modelValue) {
+                    this.$emit("update:modelValue", false)
+                }
+            }
+        }
     },
     methods: {
         toggleDropdown() {
@@ -66,7 +87,7 @@ export default {
         },
         handleClickoutSide(event) {
             const area = this.$refs.input
-            if (!area.contains(event.target)) {
+            if (!area.contains(event.target) && this.modelValue) {
                 this.$emit("update:modelValue", false)
             }
         },
@@ -91,8 +112,6 @@ export default {
         padding: 8px;
         border-radius: 10px;
 
-
-        // position: relative;
         .inputDropdownContainer__trigger__header {
             width: 100%;
         }
@@ -103,8 +122,6 @@ export default {
     }
 
     .inputDropdownContainer__trigger--isOn {
-        // background-color: #eef6ed;
-
         .inputDropdownContainer__icon {
             transform: scaleY(-1);
         }
@@ -115,13 +132,17 @@ export default {
         box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: white;
         position: absolute;
-        min-width: 100%;
         left: 0;
         max-height: 0;
         overflow: hidden;
-        z-index: 10;
+        z-index: 110;
         border: none;
         margin-top: 4px;
+        min-width: 100%;
+    }
+
+    .inputDropdownContainer__layer--flat {
+        position: inherit;
     }
 
     .inputDropdownContainer__layer--isOn {

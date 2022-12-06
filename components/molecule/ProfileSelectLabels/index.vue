@@ -19,6 +19,11 @@
         </template>
     </div>
 </template>
+<script>
+export default {
+    name: 'profileSelectLabels',
+}
+</script>
 <script setup>
 import { computed, } from 'vue'
 const emit = defineEmits(['update:modelValue'])
@@ -30,12 +35,6 @@ const props = defineProps({
             return []
         }
     },
-    jobCategoryMap: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    },
     items: {
         type: [Array, Object],
         default: function () {
@@ -44,7 +43,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: '職務類別'
+        default: ''
     }
 })
 // hooks

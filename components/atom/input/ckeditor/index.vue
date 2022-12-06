@@ -13,9 +13,14 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'ckeditor',
+}
+</script>
 <script setup>
 import { markRaw } from 'vue'
-const { $uuid4, } = useNuxtApp()
+const { $uuid4, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const editorRef = ref(null)
 const state = reactive({
@@ -92,13 +97,9 @@ let localValue = computed({
     }
 })
 // hooks
-onMounted(() => {
-    if (process.client) {
-        state.id = $uuid4()
-        requestSelector(window.ClassicEditor, (ClassicEditor) => {
-            initializeCKEditor(ClassicEditor)
-        })
-    }
+onMounted(async () => {
+    state.id = $uuid4()
+    initializeCKEditor()
 })
 onBeforeUnmount(() => {
     const ckeditorInstance = state.ckeditorInstance
@@ -120,22 +121,33 @@ function getValue() {
     return case1
 }
 function requestSelector(ClassicEditor, callback) {
+    let localCount = 0
     function step() {
+        if (localCount >= 100) {
+            console.error(`Cannot find ClassicEditor`)
+            return
+        }
         if (ClassicEditor) {
             callback(ClassicEditor)
         } else {
-            console.log('Waiting for ClassicEditor.');
+            localCount++
             window.requestAnimationFrame(step)
         }
     }
     step()
 }
-async function initializeCKEditor(ClassicEditor) {
+async function initializeCKEditor() {
+    if (!process.client) {
+        return
+    }
+    const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
     // 使用CDN
     const editorConfig = {
         toolbar: props.toolbar,
         placeholder: props.placeholder
     }
+    // prd吃到importedEditor, dev吃到ClassicEditor, 
+    const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
     if (localValue.value) {
         editor.setData(localValue.value)
@@ -153,7 +165,13 @@ async function initializeCKEditor(ClassicEditor) {
         let newValue = editor.getData()
         // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
         if (props.removePlatformLink) {
+            // const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
+            //     return newValue.includes(link)
+            // })
+            // if (hasPlatformLink) {
             newValue = newValue.replaceAll(/href=".*?"/g, '')
+            newValue = newValue.replaceAll('<a', '<div')
+            // }
         }
         localValue.value = newValue
     })
@@ -162,7 +180,9 @@ async function initializeCKEditor(ClassicEditor) {
 // public method do not delete
 async function setData(newValue) {
     const ckeditorInstance = state.ckeditorInstance
-    ckeditorInstance.setData(newValue)
+    $requestSelector(`#editor_${state.id}`, () => {
+        ckeditorInstance.setData(newValue)
+    })
 }
 defineExpose({
     setData

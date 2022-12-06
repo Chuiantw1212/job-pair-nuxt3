@@ -8,6 +8,11 @@
         </template>
     </div>
 </template>
+<script>
+export default {
+    name: 'selectLabel',
+}
+</script>
 <script setup>
 import { computed } from 'vue'
 const { $optionText } = useNuxtApp()

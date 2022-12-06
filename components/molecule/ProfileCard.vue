@@ -9,6 +9,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'profileCard',
+}
+</script>
 <script setup>
 defineProps({
     name: {
@@ -39,7 +44,7 @@ defineProps({
     }
 }
 
-@media screen and  (min-width: 992px) {
+@media screen and (min-width: 992px) {
     .profile__card {
         border-radius: 10px;
 

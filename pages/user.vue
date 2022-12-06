@@ -91,6 +91,7 @@ function checkConsultActive() {
             }
 
             .menu__item__text {
+                white-space: nowrap;
                 margin-top: 4px;
             }
         }
@@ -128,6 +129,7 @@ function checkConsultActive() {
 
         .dashboard__view {
             padding-top: 80px;
+            padding-bottom: 20px;
         }
     }
 }

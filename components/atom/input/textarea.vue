@@ -16,6 +16,7 @@
 </template>
 <script>
 export default {
+    name: 'textarea',
     data: function () {
         return this.newData()
     },

@@ -1,8 +1,8 @@
 <template>
     <div id="app" class="app w-100">
-        <OrganismHeader />
+        <LazyOrganismHeader />
         <slot></slot>
-        <OrganismFooter />
+        <LazyOrganismFooter />
     </div>
 </template>
 <script setup>
@@ -10,10 +10,22 @@ const descriptionContent = '在 Job Pair 不論求職找工作或徵才找人，
 const repoSelect = useRepoSelect()
 // hooks
 useHead({
+    htmlAttrs: {
+        lang: 'zh-Hant'
+    },
     meta: [
+        { charset: "utf-8" },
         { name: 'description', content: descriptionContent },
         { property: 'og:description', content: descriptionContent },
+        { property: "og:type", content: "website" },
+        { property: 'og:site_name', content: 'Job Pair' },
+        { property: 'fb:app_id', content: '411339927562100' },
+        { name: 'viewport', content: 'width=device-width' },
+        // Twitter
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:site', content: '@JobPair' },
     ],
+    // Favicon https://github.com/nuxt/framework/discussions/5204
     link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
@@ -29,10 +41,19 @@ onMounted(async () => {
 </script>
 <style lang="scss">
 .app {
+    // https://web.dev/font-display/
+    font-display: swap;
     font-family: 'Noto Sans TC', sans-serif, 'charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif';
     padding-top: 58px;
     background-color: #ecf3f6;
     overflow-x: hidden;
+}
+
+body {
+    // https://codepen.io/ckeditor/pen/VqXYQq
+    /* We need to assaign this CSS Custom property to the body instead of :root, because of CSS Specificity and codepen stylesheet placement before loaded CKE5 content. */
+    --ck-z-default: 100;
+    --ck-z-modal: calc(var(--ck-z-default) + 999);
 }
 
 .container {

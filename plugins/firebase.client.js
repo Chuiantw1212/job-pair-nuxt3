@@ -1,5 +1,6 @@
 import { auth } from "firebaseui"
 import { initializeApp } from "firebase/app"
+import { getAnalytics } from "firebase/analytics"
 export default defineNuxtPlugin(() => {
     // Create App
     let firebaseConfig = {
@@ -12,6 +13,8 @@ export default defineNuxtPlugin(() => {
         measurementId: "G-80H8KDK7FK"
     }
     const firebaseApp = initializeApp(firebaseConfig)
+    // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
+    getAnalytics(firebaseApp)
     return {
         provide: {
             firebaseuiAuth: auth,

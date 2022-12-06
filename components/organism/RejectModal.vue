@@ -1,8 +1,8 @@
 <template>
     <div>
-        <AtomBtnSimple class="modal__button" @click="handleReject()" :disabled="getBtnDisabled()">
+        <LazyAtomBtnSimple class="modal__button" @click="handleReject()" :disabled="getBtnDisabled()">
             婉拒
-        </AtomBtnSimple>
+        </LazyAtomBtnSimple>
         <div class="modal fade" :id="`reject${state.id}`" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered ">
                 <div class="modal-content">
@@ -11,16 +11,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <AtomInputText v-model="state.form.subject" name="信件主旨"
+                        <LazyAtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
-                        </AtomInputText>
-                        <AtomInputCkeditor v-model="state.form.template" name="信件內容" :toolbar="[]" :ref="'templateRef'"
+                        </LazyAtomInputText>
+                        <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" :toolbar="[]" :ref="'templateRef'"
                             class="mt-3" required>
-                        </AtomInputCkeditor>
+                        </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <AtomBtnSimple class="footer__button" @click="sendRejectLetter()">送出</AtomBtnSimple>
+                            <LazyAtomBtnSimple class="footer__button" @click="sendRejectLetter()">送出</LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>

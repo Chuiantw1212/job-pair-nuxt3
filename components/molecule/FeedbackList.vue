@@ -1,5 +1,5 @@
 <template>
-    <MoleculeConsultCard class="consult__feedback">
+    <LazyMoleculeConsultCard class="consult__feedback">
         <template v-slot:header>
             <img src="~/assets/consult/icon_Comment.svg">
             <span class="ms-2">諮詢者回饋</span>
@@ -46,8 +46,13 @@
                 </div>
             </div>
         </template>
-    </MoleculeConsultCard>
+    </LazyMoleculeConsultCard>
 </template>
+<script>
+export default {
+    name: 'feedbackList',
+}
+</script>
 <script setup>
 const { $requestSelector, $uuid4, $bootstrap, $Glide } = useNuxtApp()
 const state = reactive({

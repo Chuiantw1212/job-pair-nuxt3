@@ -32,7 +32,7 @@ export default defineStore('job', () => {
         })
         return response
     }
-    async function getJobAll(params) {
+    async function getJobByQuery(params) {
         const response = await axios.request({
             method: 'get',
             url: `/job/all`,
@@ -94,7 +94,7 @@ export default defineStore('job', () => {
         getJobCrawlResult,
         getJobRecommended,
         getJobById,
-        getJobAll,
+        getJobByQuery,
         postJobItem,
         putJobItem,
         deleteJobItem,

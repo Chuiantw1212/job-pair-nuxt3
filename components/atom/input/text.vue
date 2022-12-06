@@ -1,103 +1,87 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`">
+    <div class="inputGroup" :ref="`inputGroup`" :key="state.key">
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="placeholder"
+            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
                 :data-required="required" :data-name="name" autocomplete="off" />
             <input v-else :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
     </div>
 </template>
-<script>
-/**
- * The prototype of all the other inputs,
- * read these codes thoroughly makes it easy to read other inputs.
- */
+<script >
 export default {
-    data: function () {
-        return {
-            message: "",
-        }
-    },
-    props: {
-        name: {
-            type: String,
-            default: "",
-        },
-        width: {
-            type: [String, Number],
-            default: "1",
-        },
-        modelValue: {
-            type: [String, Number],
-            default: "",
-        },
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: {
-            type: String,
-            default: "",
-        },
-        min: {
-            type: Number,
-            default: 0,
-        },
-        max: {
-            type: Number,
-            default: 0,
-        },
-        types: {
-            type: Array,
-            default: () => {
-                return [] // 需要限制時使用'english', 'number', 'symbol'
-            },
-        },
-    },
-    computed: {
-        localValue: {
-            get() {
-                return this.modelValue
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue)
-            },
-        },
-    },
-    watch: {
-        localValue() {
-            if (this.max && this.localValue && this.localValue.length > this.max) {
-                this.localValue = this.localValue.slice(0, this.max)
-            }
-        },
-        disabled() {
-            this.message = ""
-        },
-    },
-    methods: {
-        checkIsEnglish(character) {
-            const regex = /^[a-zA-Z \-',]+$/
-            return regex.test(character)
-        },
-        checkIsNumeric(character) {
-            const regex = /^[0-9]+$/
-            return regex.test(character)
-        },
-        checkIsSymbol(character) {
-            const regex = /[-!$%^&*()_+|~=`{}[\]:";'<>?,./]/
-            return regex.test(character)
-        },
-    },
+    name: 'customText',
 }
+</script>
+<script setup>
+const { $uuid4, } = useNuxtApp()
+const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    key: null,
+})
+const props = defineProps({
+    name: {
+        type: String,
+        default: "",
+    },
+    width: {
+        type: [String, Number],
+        default: "1",
+    },
+    modelValue: {
+        type: [String, Number],
+        default: "",
+    },
+    required: {
+        type: Boolean,
+        default: false,
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
+    },
+    placeholder: {
+        type: String,
+        default: "",
+    },
+    min: {
+        type: Number,
+        default: 0,
+    },
+    max: {
+        type: Number,
+        default: 0,
+    },
+})
+onMounted(() => {
+    state.key = $uuid4()
+})
+const localPlaceholder = computed(() => {
+    if (props.placeholder) {
+        return props.placeholder
+    }
+    if (props.name) {
+        return `請輸入${props.name}`
+    }
+    return props.placeholder
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit("update:modelValue", newValue)
+    },
+})
+watch(() => localValue.value, () => {
+    if (props.max && localValue.value && localValue.value.length > this.max) {
+        localValue.value = localValue.value.slice(0, this.max)
+    }
+})
 </script>
 <style lang="scss" scoped>
 .inputGroup {

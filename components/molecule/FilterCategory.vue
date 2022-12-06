@@ -9,7 +9,7 @@
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
-                    <AtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
+                    <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :placeholder="$optionText(categoryKey, items)" class="list__subList"
                         :arrow="isDesktop ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
@@ -28,7 +28,7 @@
                                 </label>
                             </template>
                         </div>
-                    </AtomAccordion>
+                    </LazyAtomAccordion>
                 </template>
             </div>
             <div class="d-none d-lg-block body__sublist">
@@ -56,6 +56,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'filterCategory',
+}
+</script>
 <script setup>
 import { computed, nextTick } from 'vue'
 const { $optionText, $Fuse } = useNuxtApp()

@@ -54,9 +54,12 @@ const rank = function (score) {
     return normalized
 }
 const salary = function (item) {
-    let expression = ""
+    if (!item) {
+        return
+    }
     const { salaryType = "", salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = item
     const formattedMax = Math.max(Number(salaryMin), Number(salaryMax))
+    let expression = ""
     switch (salaryType) {
         case "monthly": {
             const lowerBoundInK = Math.floor(salaryMin / 1000)

@@ -4,9 +4,9 @@
             <div class="accountManagement__card">
                 <h4>帳號資訊</h4>
                 <div class="accountManagement__form">
-                    <AtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3"></AtomInputText>
+                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3"></LazyAtomInputText>
                     <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
-                    <AtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></AtomInputText>
+                    <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
                     <!-- <template v-if="!toggleChangePassword">
                     <form>
                         <div class="mb-1">密碼變更</div>
@@ -33,7 +33,7 @@
             <!-- <div class="accountManagement__card mt-3">
             <h4>人資聊天室</h4>
             <section class="accountManagement__chat">
-                <AtomInputText v-model="tempUser.chatName" name="聊天室暱稱" class="mb-3" required></AtomInputText>
+                <LazyAtomInputText v-model="tempUser.chatName" name="聊天室暱稱" class="mb-3" required></LazyAtomInputText>
                 <div class="chat__image" ref="svgContainer" v-html="chatIcon"></div>
             </section>
         </div> -->

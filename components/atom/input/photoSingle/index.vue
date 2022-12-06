@@ -7,7 +7,7 @@
         <label class="inputGroup__label">
             <div v-if="localValue" class="label__image"
                 :style="{ width: size, height: size, 'background-image': getImageSrc() }"></div>
-            <img v-else class="label__image" :src="placeholderImage">
+            <img v-else class="label__image" :src="placeholder">
             <img class="label__icon" src="./icon_upload_circle.svg" />
             <input v-show="false" class="body__input" autocomplete="off" type="file" accept="image/*"
                 :data-required="required" :data-name="name" @change="handleFiles($event)" />
@@ -18,10 +18,10 @@
 import { Buffer } from 'buffer/'
 import placeholderImage from './placeholder.png'
 export default {
+    name: 'photoSingle',
     data: function () {
         return {
             message: "",
-            placeholderImage
         }
     },
     props: {
@@ -46,6 +46,9 @@ export default {
             type: String,
             default: "120px",
         },
+        placeholder: {
+            default: placeholderImage
+        }
     },
     computed: {
         localValue: {

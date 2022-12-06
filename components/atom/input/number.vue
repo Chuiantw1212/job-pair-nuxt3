@@ -16,6 +16,7 @@
 </template>
 <script>
 export default {
+    name: 'number',
     data: function () {
         return this.newData()
     },
