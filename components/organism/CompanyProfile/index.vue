@@ -120,12 +120,12 @@
                     </button>
                 </template>
                 <template v-else>
+                    <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                        檢視公司頁面
+                    </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
                         儲存
                     </button>
-                    <NuxtLink class="footerGroup__submit" :to="`/company/${state.companyInfo.id}`">
-                        檢視公司頁面
-                    </NuxtLink>
                 </template>
             </div>
         </div>

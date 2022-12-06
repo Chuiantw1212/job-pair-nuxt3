@@ -455,7 +455,7 @@ function routeToQuestions() {
             line-height: 1.5;
             letter-spacing: normal;
             text-align: center;
-            color: #332b00;
+            color: white;
         }
 
         .affiliate__body {
