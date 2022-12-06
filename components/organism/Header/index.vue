@@ -134,8 +134,8 @@ function routeByMenuType() {
             min-height: 46px;
 
             .brand__logo {
-                height: 32px;
-                width: 191px;
+                height: 22px;
+                width: 140px;
                 margin-right: 8px;
             }
         }
