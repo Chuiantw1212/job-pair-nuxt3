@@ -135,7 +135,7 @@ export default {
         left: 0;
         max-height: 0;
         overflow: hidden;
-        z-index: 10;
+        z-index: 110;
         border: none;
         margin-top: 4px;
         min-width: 100%;
