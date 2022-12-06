@@ -18,6 +18,7 @@
 </template>
 <script>
 export default {
+    name: 'checkSingle',
     props: {
         modelValue: {
             type: Boolean,

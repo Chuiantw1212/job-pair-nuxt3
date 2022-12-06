@@ -9,6 +9,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'appointmentCard',
+}
+</script>
 <style lang="scss" scoped>
 .card {
     overflow: hidden;

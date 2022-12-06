@@ -6,6 +6,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'customFilter',
+}
+</script>
 <script setup>
 const emit = defineEmits(['update:modelValue'])
 const device = useDevice()

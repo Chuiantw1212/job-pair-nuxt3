@@ -111,9 +111,10 @@
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
-                            <AtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
-                                ref="descriptionRef">
-                            </AtomInputCkeditor>
+                            <!-- 呈現影片不可拿掉 -->
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]"
+                                disabled ref="descriptionRef">
+                            </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>
@@ -121,9 +122,10 @@
                     <div class="jobView__card jobView__card--minHeight">
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
-                            <AtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
+                            <!-- 呈現影片不可拿掉 -->
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
                                 ref="skillsRef">
-                            </AtomInputCkeditor>
+                            </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>
@@ -478,8 +480,6 @@ function getJobAddress() {
 function checkVisibility() {
     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
 }
-// const descriptionRef = ref(null)
-// const skillsRef = ref(null)
 async function initialize() {
     if (!jobId.value) {
         state.job = {}
@@ -500,9 +500,6 @@ async function initialize() {
         return
     }
     const job = jobResponse.data
-    console.log({
-        job
-    });
     const { descriptionRef, skillsRef } = currentInstance.refs
     if (descriptionRef) {
         descriptionRef.setData(job.description)

@@ -18,6 +18,7 @@
 import { Buffer } from 'buffer/'
 import placeholderImage from './placeholder.png'
 export default {
+    name: 'photoSingle',
     data: function () {
         return {
             message: "",

@@ -11,11 +11,8 @@
     </div>
 </template>
 <script>
-/**
- * The prototype of all the other inputs,
- * read these codes thoroughly makes it easy to read other inputs.
- */
 export default {
+    name: 'email',
     data: function () {
         return {
             message: "",

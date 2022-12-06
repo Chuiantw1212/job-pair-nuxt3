@@ -109,22 +109,24 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'admin',
+}
+</script>
 <script setup>
 const { $Glide, $emitter, $requestSelector } = useNuxtApp()
-// const repoCompany = useRepoCompany()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
-// const repoCompany = 
 const state = reactive({
     jobList: [],
     affiliateLogos: [],
     jobProviderLogos: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
-// console.log(companyList.value);
 state.affiliateLogos = companyList.value.map(item => item.logo)
 onMounted(async () => {
     if (process.client) {
@@ -134,8 +136,6 @@ onMounted(async () => {
             pageLimit: 15,
             pageOffset: 0,
         })
-        // 合作夥伴
-        // const companyRes = 
         // 合作對象
         const jobList = response.data.items
         const logoMap = {}

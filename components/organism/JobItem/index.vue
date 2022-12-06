@@ -63,6 +63,11 @@
         </LazyOrganismJobItemPanel>
     </li>
 </template>
+<script>
+export default {
+    name: 'jobItem',
+}
+</script>
 <script setup>
 import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])

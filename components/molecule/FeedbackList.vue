@@ -48,6 +48,11 @@
         </template>
     </LazyMoleculeConsultCard>
 </template>
+<script>
+export default {
+    name: 'feedbackList',
+}
+</script>
 <script setup>
 const { $requestSelector, $uuid4, $bootstrap, $Glide } = useNuxtApp()
 const state = reactive({

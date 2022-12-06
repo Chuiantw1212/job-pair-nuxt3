@@ -13,9 +13,14 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'ckeditor',
+}
+</script>
 <script setup>
 import { markRaw } from 'vue'
-const { $uuid4, } = useNuxtApp()
+const { $uuid4, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const editorRef = ref(null)
 const state = reactive({
@@ -160,13 +165,13 @@ async function initializeCKEditor() {
         let newValue = editor.getData()
         // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
         if (props.removePlatformLink) {
-            const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
-                return newValue.includes(link)
-            })
-            if (hasPlatformLink) {
-                newValue = newValue.replaceAll(/href=".*?"/g, '')
-                newValue = newValue.replaceAll('<a', '<div')
-            }
+            // const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
+            //     return newValue.includes(link)
+            // })
+            // if (hasPlatformLink) {
+            newValue = newValue.replaceAll(/href=".*?"/g, '')
+            newValue = newValue.replaceAll('<a', '<div')
+            // }
         }
         localValue.value = newValue
     })
@@ -175,11 +180,9 @@ async function initializeCKEditor() {
 // public method do not delete
 async function setData(newValue) {
     const ckeditorInstance = state.ckeditorInstance
-    if (ckeditorInstance) {
+    $requestSelector(`#editor_${state.id}`, () => {
         ckeditorInstance.setData(newValue)
-    } else {
-        console.error('ckeditorInstance error', ckeditorInstance)
-    }
+    })
 }
 defineExpose({
     setData

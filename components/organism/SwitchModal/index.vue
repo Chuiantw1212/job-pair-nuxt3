@@ -38,6 +38,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'switchModal',
+}
+</script>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'

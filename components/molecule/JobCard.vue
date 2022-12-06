@@ -10,6 +10,7 @@
 </template>
 <script>
 export default {
+    name: 'jobCard',
     props: {
         bodyStyle: {
             type: Object,

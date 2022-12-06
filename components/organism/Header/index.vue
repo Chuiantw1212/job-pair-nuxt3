@@ -39,6 +39,11 @@
         <LazyOrganismSwitchModal></LazyOrganismSwitchModal>
     </div>
 </template>
+<script>
+export default {
+    name: 'customHeader',
+}
+</script>
 <script setup>
 const repoAuth = useRepoAuth()
 const state = reactive({

@@ -53,6 +53,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'jobItemPanel',
+}
+</script>
 <script setup>
 import { nextTick, ref } from 'vue'
 const { $uuid4, $bootstrap, $emitter, $rank, $requestSelector } = useNuxtApp()

@@ -48,7 +48,7 @@ export default {
         },
         handleClickoutSide(event) {
             const area = this.$refs.input
-            if (!area.contains(event.target)) {
+            if (!area.contains(event.target) && this.modelValue) {
                 this.$emit("update:modelValue", false)
             }
         },

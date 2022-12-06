@@ -123,11 +123,19 @@
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
                         儲存
                     </button>
+                    <NuxtLink class="footerGroup__submit" :to="`/company/${state.companyInfo.id}`">
+                        檢視公司頁面
+                    </NuxtLink>
                 </template>
             </div>
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'companyProfile',
+}
+</script>
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')
@@ -634,11 +642,8 @@ async function refineAndUpdateCompanyInfo() {
                 margin-bottom: 16px;
             }
         }
-
-        .body__companyInfo {}
     }
 
-    // }
     .profile__footerGroup {
         display: flex;
         justify-content: flex-end;
@@ -650,16 +655,7 @@ async function refineAndUpdateCompanyInfo() {
             background-color: #29b0ab;
             border-radius: 10px;
             padding: 12px 16px;
-        }
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .profile {
-        // margin-right: 8px;
-
-        .profile__body {
-            // flex-direction: row;
+            text-decoration: none;
         }
     }
 }

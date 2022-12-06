@@ -64,6 +64,7 @@
 <script>
 import { Buffer } from 'buffer/'
 export default {
+    name: 'uploader',
     props: {
         modelValue: {
             type: Array,

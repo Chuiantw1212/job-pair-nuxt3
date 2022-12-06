@@ -28,9 +28,7 @@ export default defineNuxtPlugin(() => {
     }
     const firebaseApp = initializeApp(firebaseConfig)
     // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
-    if (runtimeConfig.public.VITE_APP_FIREBASE_ENV === 'production') {
-        getAnalytics(firebaseApp)
-    }
+    getAnalytics(firebaseApp)
     return {
         provide: {
             firebaseuiAuth: auth,

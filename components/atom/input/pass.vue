@@ -19,6 +19,7 @@
  * read these codes thoroughly makes it easy to read other inputs.
  */
 export default {
+    name: 'pass',
     data: function () {
         return {
             message: "",
