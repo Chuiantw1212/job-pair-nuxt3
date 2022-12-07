@@ -78,8 +78,8 @@ const localValue = computed({
     },
 })
 watch(() => localValue.value, () => {
-    if (props.max && localValue.value && localValue.value.length > this.max) {
-        localValue.value = localValue.value.slice(0, this.max)
+    if (props.max && localValue.value && localValue.value.length > props.max) {
+        localValue.value = localValue.value.slice(0, props.max)
     }
 })
 </script>
