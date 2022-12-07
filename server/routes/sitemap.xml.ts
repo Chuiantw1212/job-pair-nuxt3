@@ -22,17 +22,28 @@ export default defineEventHandler(async (event) => {
     baseURL: config.public.apiBase,
     timeout: 20 * 60 * 1000,
   })
-  const jobIdsResponse = await axiosInstance({
-    method: 'get',
-    url: '/job/ids',
-  })
+  const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+    axiosInstance({
+      method: 'get',
+      url: '/job/ids',
+    }),
+    axiosInstance({
+      method: 'get',
+      url: '/company/ids',
+    }),
+  ])
   jobIdsResponse.data.forEach((id: String) => {
     sitemap.write({
       url: `/job/${id}`,
       changefreq: 'monthly'
     })
   })
-
+  companyIdsResponse.data.forEach((id: String) => {
+    sitemap.write({
+      url: `/company/${id}`,
+      changefreq: 'monthly'
+    })
+  })
   sitemap.end()
   return streamToPromise(sitemap)
 })
