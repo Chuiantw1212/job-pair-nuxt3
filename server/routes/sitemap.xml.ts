@@ -3,21 +3,35 @@ import { SitemapStream, streamToPromise } from 'sitemap'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
-
-const BASE_URL = 'https://job-pair.com'
-
+import axios from 'axios'
+const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
-  const sitemap = new SitemapStream({ hostname: BASE_URL })
-
+  const sitemap = new SitemapStream({ hostname: config.public.origin })
+  // works only on nuxt generate?
   const docs = await serverQueryContent(event).find()
   for (const doc of docs) {
     sitemap.write({ url: doc._path, changefreq: 'monthly' })
   }
-
+  // works on nuxt build
   const staticEndpoints = getStaticEndpoints()
   for (const staticEndpoint of staticEndpoints) {
     sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
   }
+  // add dynamic routing
+  const axiosInstance = axios.create({
+    baseURL: config.public.apiBase,
+    timeout: 20 * 60 * 1000,
+  })
+  const jobIdsResponse = await axiosInstance({
+    method: 'get',
+    url: '/job/ids',
+  })
+  jobIdsResponse.data.forEach((id: String) => {
+    sitemap.write({
+      url: `/job/${id}`,
+      changefreq: 'monthly'
+    })
+  })
 
   sitemap.end()
   return streamToPromise(sitemap)
