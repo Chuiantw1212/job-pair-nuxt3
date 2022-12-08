@@ -6,7 +6,6 @@ export default defineStore('device', () => {
     const state = reactive({
         isDesktop: false,
         isNativeWeb: false,
-        isResumeRequired: false,
     })
     onMounted(() => {
         if (process.client) {

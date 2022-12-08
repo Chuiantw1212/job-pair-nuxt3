@@ -77,7 +77,7 @@
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
-                    :max="3" :required="device.state.isResumeRequired">
+                    :max="3" :required="device.state.isDesktop">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
