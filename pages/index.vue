@@ -480,6 +480,7 @@ function routeToQuestions() {
                     margin: auto;
                     width: 64px;
                     height: fit-content;
+                    max-height: 64px;
                 }
             }
         }
