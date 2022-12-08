@@ -357,7 +357,6 @@ async function showIncompleteAlert() {
         title: '未上傳履歷',
     })
     if (res.value) {
-        device.state.isResumeRequired = true
         router.push({
             name: 'user-profile'
         })
