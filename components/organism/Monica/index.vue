@@ -40,7 +40,6 @@ watchEffect(() => {
     }
 })
 function routeToProfile() {
-    device.state.isResumeRequired = true
     router.push({
         name: 'user-profile'
     })
