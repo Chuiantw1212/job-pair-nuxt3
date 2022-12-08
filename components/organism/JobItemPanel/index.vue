@@ -1,5 +1,5 @@
 <template>
-    <div class="jobItemPanel">
+    <div v-if="checkPanelDisplay()" class="jobItemPanel">
         <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
             <div class="panel__score">{{ modelValue ? $rank(modelValue.similarity) : 0 }}</div>
             <div class="panel__desc">團隊適配度</div>
