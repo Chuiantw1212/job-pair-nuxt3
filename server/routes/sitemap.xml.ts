@@ -11,22 +11,20 @@ interface companySitemapItem {
   id: string;
   updatedDate: string;
 }
+const formatter = new Intl.DateTimeFormat("zh", {
+  timeZone: 'Asia/Taipei',
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+})
 const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
-  // works on nuxt build
-  const staticEndpoints = getStaticEndpoints()
-  const disabledRoutes = ['index', 'admin', '[', ']', 'questions/', 'user', 'jobs']
-  for (const staticEndpoint of staticEndpoints) {
-    const isPublicRoute = disabledRoutes.every(keyword => {
-      return !staticEndpoint.includes(keyword)
-    })
-    if (isPublicRoute) {
-      sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
-    }
-  }
   sitemap.write({ url: config.public.origin, changefreq: 'monthly' })
   sitemap.write({ url: `${config.public.origin}/admin`, changefreq: 'monthly' })
+  sitemap.write({ url: `${config.public.origin}/about`, changefreq: 'monthly' })
   // add dynamic routing
   const axiosInstance = axios.create({
     baseURL: config.public.apiBase,
@@ -43,15 +41,17 @@ export default defineEventHandler(async (event) => {
     }),
   ])
   jobIdsResponse.data.forEach((item: jobSitemapItem) => {
+    const datePosted = new Date(item.datePosted)
     sitemap.write({
       url: `/job/${item.identifier}`,
-      lastmod: item.datePosted,
+      lastmod: formatter.format(datePosted),
     })
   })
   companyIdsResponse.data.forEach((item: companySitemapItem) => {
+    const updatedDate = new Date(item.updatedDate)
     sitemap.write({
       url: `/company/${item.id}`,
-      lastmod: item.updatedDate,
+      lastmod: formatter.format(updatedDate),
     })
   })
   sitemap.end()
