@@ -1,21 +1,29 @@
-import { serverQueryContent } from '#content/server'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 import axios from 'axios'
+interface jobSitemapItem {
+  identifier: string;
+  datePosted: string;
+}
+interface companySitemapItem {
+  id: string;
+  updatedDate: string;
+}
 const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
-  // works only on nuxt generate?
-  const docs = await serverQueryContent(event).find()
-  for (const doc of docs) {
-    sitemap.write({ url: doc._path, changefreq: 'monthly' })
-  }
   // works on nuxt build
   const staticEndpoints = getStaticEndpoints()
+  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user', 'jobs']
   for (const staticEndpoint of staticEndpoints) {
-    sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
+    const isPublicRoute = disabledRoutes.every(keyword => {
+      return !staticEndpoint.includes(keyword)
+    })
+    if (isPublicRoute) {
+      sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
+    }
   }
   // add dynamic routing
   const axiosInstance = axios.create({
@@ -25,23 +33,23 @@ export default defineEventHandler(async (event) => {
   const [jobIdsResponse, companyIdsResponse] = await Promise.all([
     axiosInstance({
       method: 'get',
-      url: '/job/ids',
+      url: '/job/sitemap',
     }),
     axiosInstance({
       method: 'get',
-      url: '/company/ids',
+      url: '/company/sitemap',
     }),
   ])
-  jobIdsResponse.data.forEach((id: String) => {
+  jobIdsResponse.data.forEach((item: jobSitemapItem) => {
     sitemap.write({
-      url: `/job/${id}`,
-      changefreq: 'monthly'
+      url: `/job/${item.identifier}`,
+      lastmod: item.datePosted,
     })
   })
-  companyIdsResponse.data.forEach((id: String) => {
+  companyIdsResponse.data.forEach((item: companySitemapItem) => {
     sitemap.write({
-      url: `/company/${id}`,
-      changefreq: 'monthly'
+      url: `/company/${item.id}`,
+      lastmod: item.updatedDate,
     })
   })
   sitemap.end()

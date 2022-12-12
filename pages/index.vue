@@ -82,9 +82,10 @@
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
-                <div v-for="(item, index) in state.jobProviderLogos" class="body__imageWrap" :key="index">
-                    <img class="body__image" :src="item" />
-                </div>
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
+                    :to="`/company/${item.organizationId}`">
+                    <img class="body__image" :src="item.image" />
+                </NuxtLink>
             </div>
         </div>
     </div>
@@ -103,7 +104,7 @@ const repoAuth = useRepoAuth()
 const router = useRouter()
 const state = reactive({
     affiliateLogos: [],
-    jobProviderLogos: [],
+    jobProvider: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliateLogos = companyList.value.map(item => item.logo)
@@ -124,10 +125,10 @@ onMounted(async () => {
         const logoMap = {}
         jobList.forEach(item => {
             if (item.image) {
-                logoMap[item.organizationId] = item.image
+                logoMap[item.organizationId] = item
             }
         })
-        state.jobProviderLogos = Object.values(logoMap)
+        state.jobProvider = Object.values(logoMap)
     }
 })
 // methods
@@ -473,7 +474,7 @@ function routeToQuestions() {
                 border-radius: 50%;
                 background-color: white;
                 overflow: hidden;
-                display: flex;
+                position: relative;
 
                 .body__image {
                     display: block;
@@ -481,93 +482,11 @@ function routeToQuestions() {
                     width: 64px;
                     height: fit-content;
                     max-height: 64px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
                 }
-            }
-        }
-
-        .section__image {
-            left: 50%;
-            transform: translate(-50%, 20px);
-            position: absolute;
-            bottom: 100%;
-        }
-
-        .section__image--1 {
-            width: 195px;
-            height: 225px;
-        }
-
-        .section__image--2 {
-            width: 320px;
-            height: 213px;
-        }
-
-        .section__image--3 {
-            width: 247px;
-            height: 227px;
-        }
-
-        .section__card {
-            border-radius: 10px;
-            border: solid 1px #806b00;
-            background-color: #fff;
-            padding: 30px 20px;
-            text-align: left;
-            position: relative;
-        }
-
-        .section__card--left {
-            margin-top: 250px;
-        }
-
-        .section__card--right {
-            margin-top: 250px;
-        }
-
-        .card__header {
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 1.5;
-            color: #332b00;
-
-            .header__decoration {
-                text-decoration-line: underline;
-                text-decoration-thickness: 8px;
-                text-decoration-color: #ffd600;
-            }
-        }
-
-        .card__body {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: left;
-            color: #707070;
-        }
-
-        .card__headerGroup {
-            font-size: 20px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: center;
-            color: #333;
-
-            .header__text {
-                margin-top: 20px;
-                font-size: 20px;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                color: #333;
             }
         }
     }
