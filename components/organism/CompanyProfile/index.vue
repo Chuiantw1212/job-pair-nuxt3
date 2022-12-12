@@ -2,18 +2,18 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <div v-if="state.isNewCompay" class="profile__quick">
+            <div v-if="true" class="profile__quick">
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
                     在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                     <br>
-                    範例：https://www.104.com.tw/companyInfo/*,
-                    https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*
+                    範例：www.104.com.tw/companyInfo/*,
+                    www.yourator.co/companies/*
                 </div>
                 <div class="quick__inputGroup">
                     <label class="inputGroup__label">
                         <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="https://www.104.com.tw/companyInfo/*, https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*" />
+                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
                     </label>
                     <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
                 </div>
