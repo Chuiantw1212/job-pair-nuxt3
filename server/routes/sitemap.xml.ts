@@ -11,14 +11,6 @@ interface companySitemapItem {
   id: string;
   updatedDate: string;
 }
-const formatter = new Intl.DateTimeFormat("zh", {
-  timeZone: 'Asia/Taipei',
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-})
 const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
@@ -41,17 +33,15 @@ export default defineEventHandler(async (event) => {
     }),
   ])
   jobIdsResponse.data.forEach((item: jobSitemapItem) => {
-    const datePosted = new Date(item.datePosted)
     sitemap.write({
       url: `/job/${item.identifier}`,
-      lastmod: formatter.format(datePosted),
+      lastmod: item.datePosted,
     })
   })
   companyIdsResponse.data.forEach((item: companySitemapItem) => {
-    const updatedDate = new Date(item.updatedDate)
     sitemap.write({
       url: `/company/${item.id}`,
-      lastmod: formatter.format(updatedDate),
+      lastmod: item.updatedDate,
     })
   })
   sitemap.end()
