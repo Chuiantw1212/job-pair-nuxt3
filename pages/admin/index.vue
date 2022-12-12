@@ -243,7 +243,7 @@ function openAdminModal() {
                 border-radius: 50%;
                 background-color: white;
                 overflow: hidden;
-                display: flex;
+                position: relative;
 
                 .body__image {
                     display: block;
@@ -251,6 +251,10 @@ function openAdminModal() {
                     width: 64px;
                     height: fit-content;
                     max-height: 64px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
                 }
             }
         }
