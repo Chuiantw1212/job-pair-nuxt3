@@ -25,11 +25,11 @@ export default defineEventHandler(async (event) => {
   const [jobIdsResponse, companyIdsResponse] = await Promise.all([
     axiosInstance({
       method: 'get',
-      url: '/job/ids',
+      url: '/job/sitemap',
     }),
     axiosInstance({
       method: 'get',
-      url: '/company/ids',
+      url: '/company/sitemap',
     }),
   ])
   jobIdsResponse.data.forEach((id: String) => {
