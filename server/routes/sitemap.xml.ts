@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
   // works on nuxt build
   const staticEndpoints = getStaticEndpoints()
-  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user']
+  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user', 'jobs']
   for (const staticEndpoint of staticEndpoints) {
     const isPublicRoute = disabledRoutes.every(keyword => {
       return !staticEndpoint.includes(keyword)
@@ -25,11 +25,11 @@ export default defineEventHandler(async (event) => {
   const [jobIdsResponse, companyIdsResponse] = await Promise.all([
     axiosInstance({
       method: 'get',
-      url: '/job/ids',
+      url: '/job/sitemap',
     }),
     axiosInstance({
       method: 'get',
-      url: '/company/ids',
+      url: '/company/sitemap',
     }),
   ])
   jobIdsResponse.data.forEach((id: String) => {
