@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /jobs
 Disallow: /admin/
 Disallow: /questions/
 Disallow: /user/

@@ -97,9 +97,10 @@
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
-                <div v-for="(item, index) in state.jobProviderLogos" class="body__imageWrap" :key="index">
-                    <img class="body__image" :src="item" />
-                </div>
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
+                    :to="`/company/${item.organizationId}`">
+                    <img class="body__image" :src="item.image" />
+                </NuxtLink>
             </div>
         </div>
         <div class="container__footer">
@@ -124,7 +125,7 @@ const repoAuth = useRepoAuth()
 const state = reactive({
     jobList: [],
     affiliateLogos: [],
-    jobProviderLogos: [],
+    jobProvider: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliateLogos = companyList.value.map(item => item.logo)
@@ -141,10 +142,10 @@ onMounted(async () => {
         const logoMap = {}
         jobList.forEach(item => {
             if (item.image) {
-                logoMap[item.organizationId] = item.image
+                logoMap[item.organizationId] = item
             }
         })
-        state.jobProviderLogos = Object.values(logoMap)
+        state.jobProvider = Object.values(logoMap)
     }
 })
 function initialGlide() {
@@ -243,7 +244,7 @@ function openAdminModal() {
                 border-radius: 50%;
                 background-color: white;
                 overflow: hidden;
-                display: flex;
+                position: relative;
 
                 .body__image {
                     display: block;
@@ -251,6 +252,10 @@ function openAdminModal() {
                     width: 64px;
                     height: fit-content;
                     max-height: 64px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
                 }
             }
         }

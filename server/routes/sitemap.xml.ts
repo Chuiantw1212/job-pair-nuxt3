@@ -1,22 +1,30 @@
-import { serverQueryContent } from '#content/server'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 import axios from 'axios'
+interface jobSitemapItem {
+  identifier: string;
+  datePosted: string;
+}
+interface companySitemapItem {
+  id: string;
+  updatedDate: string;
+}
+const formatter = new Intl.DateTimeFormat("zh", {
+  timeZone: 'Asia/Taipei',
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+})
 const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
-  // works only on nuxt generate?
-  const docs = await serverQueryContent(event).find()
-  for (const doc of docs) {
-    sitemap.write({ url: doc._path, changefreq: 'monthly' })
-  }
-  // works on nuxt build
-  const staticEndpoints = getStaticEndpoints()
-  for (const staticEndpoint of staticEndpoints) {
-    sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
-  }
+  sitemap.write({ url: config.public.origin, changefreq: 'monthly' })
+  sitemap.write({ url: `${config.public.origin}/admin`, changefreq: 'monthly' })
+  sitemap.write({ url: `${config.public.origin}/about`, changefreq: 'monthly' })
   // add dynamic routing
   const axiosInstance = axios.create({
     baseURL: config.public.apiBase,
@@ -25,23 +33,25 @@ export default defineEventHandler(async (event) => {
   const [jobIdsResponse, companyIdsResponse] = await Promise.all([
     axiosInstance({
       method: 'get',
-      url: '/job/ids',
+      url: '/job/sitemap',
     }),
     axiosInstance({
       method: 'get',
-      url: '/company/ids',
+      url: '/company/sitemap',
     }),
   ])
-  jobIdsResponse.data.forEach((id: String) => {
+  jobIdsResponse.data.forEach((item: jobSitemapItem) => {
+    const datePosted = new Date(item.datePosted)
     sitemap.write({
-      url: `/job/${id}`,
-      changefreq: 'monthly'
+      url: `/job/${item.identifier}`,
+      lastmod: formatter.format(datePosted),
     })
   })
-  companyIdsResponse.data.forEach((id: String) => {
+  companyIdsResponse.data.forEach((item: companySitemapItem) => {
+    const updatedDate = new Date(item.updatedDate)
     sitemap.write({
-      url: `/company/${id}`,
-      changefreq: 'monthly'
+      url: `/company/${item.id}`,
+      lastmod: formatter.format(updatedDate),
     })
   })
   sitemap.end()
