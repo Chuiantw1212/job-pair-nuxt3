@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
   // works on nuxt build
   const staticEndpoints = getStaticEndpoints()
-  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user']
+  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user', 'jobs']
   for (const staticEndpoint of staticEndpoints) {
     const isPublicRoute = disabledRoutes.every(keyword => {
       return !staticEndpoint.includes(keyword)
