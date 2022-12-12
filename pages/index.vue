@@ -82,9 +82,10 @@
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
-                <div v-for="(item, index) in state.jobProviderLogos" class="body__imageWrap" :key="index">
-                    <img class="body__image" :src="item" />
-                </div>
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
+                    :to="`/company/${item.organizationId}`">
+                    <img class="body__image" :src="item.image" />
+                </NuxtLink>
             </div>
         </div>
     </div>
@@ -103,7 +104,7 @@ const repoAuth = useRepoAuth()
 const router = useRouter()
 const state = reactive({
     affiliateLogos: [],
-    jobProviderLogos: [],
+    jobProvider: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliateLogos = companyList.value.map(item => item.logo)
@@ -124,10 +125,10 @@ onMounted(async () => {
         const logoMap = {}
         jobList.forEach(item => {
             if (item.image) {
-                logoMap[item.organizationId] = item.image
+                logoMap[item.organizationId] = item
             }
         })
-        state.jobProviderLogos = Object.values(logoMap)
+        state.jobProvider = Object.values(logoMap)
     }
 })
 // methods
