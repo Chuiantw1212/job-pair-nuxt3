@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
   // works on nuxt build
   const staticEndpoints = getStaticEndpoints()
-  const disabledRoutes = ['admin/', '[', ']', 'questions/', 'user', 'jobs']
+  const disabledRoutes = ['index', 'admin', '[', ']', 'questions/', 'user', 'jobs']
   for (const staticEndpoint of staticEndpoints) {
     const isPublicRoute = disabledRoutes.every(keyword => {
       return !staticEndpoint.includes(keyword)
@@ -25,6 +25,8 @@ export default defineEventHandler(async (event) => {
       sitemap.write({ url: staticEndpoint, changefreq: 'monthly' })
     }
   }
+  sitemap.write({ url: config.public.origin, changefreq: 'monthly' })
+  sitemap.write({ url: `${config.public.origin}/admin`, changefreq: 'monthly' })
   // add dynamic routing
   const axiosInstance = axios.create({
     baseURL: config.public.apiBase,
