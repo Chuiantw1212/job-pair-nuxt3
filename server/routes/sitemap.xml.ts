@@ -3,6 +3,14 @@ import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
 import axios from 'axios'
+interface jobSitemapItem {
+  identifier: string;
+  datePosted: string;
+}
+interface companySitemapItem {
+  id: string;
+  updatedDate: string;
+}
 const config = useRuntimeConfig()
 export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
@@ -32,16 +40,16 @@ export default defineEventHandler(async (event) => {
       url: '/company/sitemap',
     }),
   ])
-  jobIdsResponse.data.forEach((id: String) => {
+  jobIdsResponse.data.forEach((item: jobSitemapItem) => {
     sitemap.write({
-      url: `/job/${id}`,
-      changefreq: 'monthly'
+      url: `/job/${item.identifier}`,
+      lastmod: item.datePosted,
     })
   })
-  companyIdsResponse.data.forEach((id: String) => {
+  companyIdsResponse.data.forEach((item: companySitemapItem) => {
     sitemap.write({
-      url: `/company/${id}`,
-      changefreq: 'monthly'
+      url: `/company/${item.id}`,
+      lastmod: item.updatedDate,
     })
   })
   sitemap.end()
