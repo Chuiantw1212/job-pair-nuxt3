@@ -91,9 +91,10 @@
         <div class="container__section container__section--affiliate">
             <h2 class="affiliate__header">我們的合作夥伴</h2>
             <div class="affiliate__body">
-                <div v-for="(item, index) in state.affiliateLogos" class="body__imageWrap" :key="index">
-                    <img class="body__image" :src="item" />
-                </div>
+                <NuxtLink v-for="(item, index) in state.affiliate" class="body__imageWrap" :key="index"
+                    :to="`/company/${item.organizationId}`">
+                    <img class="body__image" :src="item.logo" />
+                </NuxtLink>
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
@@ -124,11 +125,11 @@ const router = useRouter()
 const repoAuth = useRepoAuth()
 const state = reactive({
     jobList: [],
-    affiliateLogos: [],
+    affiliate: [],
     jobProvider: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
-state.affiliateLogos = companyList.value.map(item => item.logo)
+state.affiliate = companyList.value
 onMounted(async () => {
     if (process.client) {
         initialGlide()
