@@ -251,7 +251,6 @@ function openAdminModal() {
                     display: block;
                     margin: auto;
                     width: 64px;
-                    height: fit-content;
                     max-height: 64px;
                     position: absolute;
                     top: 50%;
