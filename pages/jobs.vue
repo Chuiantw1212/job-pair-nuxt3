@@ -11,7 +11,7 @@
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
-                    <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
+                    <template v-for="(items) in repoSelect.jobCategoryMap" :key="categoryKey">
                         <LazyAtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
@@ -65,7 +65,7 @@
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
-                    <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
+                    <template v-for="(items) in repoSelect.industryCategoryMap" :key="categoryKey">
                         <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
@@ -316,6 +316,14 @@ function filterRecommendedJobs() {
     if (salaryMin) {
         filteredResult = filteredResult.filter(item => {
             return Number(item.salaryMin) > Number(salaryMin)
+        })
+    }
+    if (state.searchLike) {
+        filteredResult = filteredResult.filter(item => {
+            const searchableFields = ['description', 'skills', 'name', 'organizationName']
+            return searchableFields.some(field => {
+                return String(item[field]).includes(state.searchLike)
+            })
         })
     }
     const topTwo = filteredResult.slice(0, 2)
