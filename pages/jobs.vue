@@ -11,7 +11,7 @@
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
-                    <template v-for="(items) in repoSelect.jobCategoryMap" :key="categoryKey">
+                    <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
                         <LazyAtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
@@ -65,7 +65,7 @@
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
-                    <template v-for="(items) in repoSelect.industryCategoryMap" :key="categoryKey">
+                    <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
                         <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
