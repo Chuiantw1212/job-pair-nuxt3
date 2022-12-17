@@ -113,10 +113,17 @@ export default function setup() {
             })
             repoAuth.setUser(user)
             hideModals()
+            // autoSignUp
+            const isAutoSignUp = sessionStorage.getItem('autoSignUp')
+            if (isAutoSignUp && route.name !== 'activity') {
+                router.replace(`/activity/result`)
+                return
+            }
             if (route.path.includes('admin') || route.name === 'index') {
                 router.push({
                     name: 'jobs'
                 })
+                return
             }
             return
         }
