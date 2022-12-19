@@ -142,11 +142,13 @@ onMounted(async () => {
         const jobList = response.data.items
         const logoMap = {}
         jobList.forEach(item => {
-            if (item.image) {
+            if (item.organizationName !== '工作配股份有限公司' && item.image) {
                 logoMap[item.organizationId] = item
             }
         })
-        state.jobProvider = Object.values(logoMap)
+        const jobProvider = Object.values(logoMap)
+        jobProvider.sort(() => .5 - Math.random());
+        state.jobProvider = jobProvider
     }
 })
 function initialGlide() {
