@@ -115,8 +115,8 @@ export default function setup() {
             hideModals()
             // autoSignUp
             const isAutoSignUp = sessionStorage.getItem('autoSignUp')
-            if (isAutoSignUp && route.name !== 'activity') {
-                router.replace(`/activity/result`)
+            if (isAutoSignUp && route.name !== 'event') {
+                router.replace(`/event`)
                 return
             }
             if (route.path.includes('admin') || route.name === 'index') {
@@ -218,6 +218,7 @@ export default function setup() {
         hideModals()
     }
     function hideModals() {
+        console.log('hideModals');
         $emitter.emit("hideSwitchModal")
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')

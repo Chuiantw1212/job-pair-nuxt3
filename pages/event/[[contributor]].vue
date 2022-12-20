@@ -1,12 +1,12 @@
 <template>
-    <div class="activity">
+    <div class="event">
         <template v-if="!state.isFailed">
-            <div class="activity__frame">
-                <img class="frame__image" alt="成功" src="@/assets/activity/img_報名成功.svg">
+            <div class="event__frame">
+                <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
                 <h1 class="frame__title">活動報名完成</h1>
                 <div class="frame__textarea">
                     <div>
-                        時間：2023/1/5 (四) 19 : 30 - 21 : 00
+                        時間：2023/01/16 (一) 19 : 30 - 21 : 30
                     </div>
                     <div>
                         地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
@@ -16,58 +16,90 @@
                     </div>
                 </div>
             </div>
-            <LazyAtomBtnSimple class="activity__button" @click="printPage()">
+            <LazyAtomBtnSimple class="event__button" @click="printPage()">
                 列印頁面
             </LazyAtomBtnSimple>
         </template>
         <template v-else>
-            <div class="activity__frame">
-                <img class="frame__image" alt="失敗" src="@/assets/activity/img_報名失敗.svg">
+            <div class="event__frame">
+                <img class="frame__image" alt="失敗" src="@/assets/event/img_報名失敗.svg">
                 <h1 class="frame__title">活動報名失敗</h1>
                 <div class="frame__textarea">
                     請確認網路連線狀況
                 </div>
             </div>
-            <LazyAtomBtnSimple class="activity__button" @click="signUp()">
+            <LazyAtomBtnSimple class="event__button" @click="signUp()">
                 再報名一次
             </LazyAtomBtnSimple>
         </template>
     </div>
 </template>
 <script setup>
-const { $filter, $emitter, $sweet } = useNuxtApp()
-const repoActivity = useRepoActivity()
+const { $filter, $emitter, $sweet, $requestSelector } = useNuxtApp()
+const repoEvent = useRepoEvent()
 const repoAuth = useRepoAuth()
 const route = useRoute()
 const state = reactive({
     record: null,
-    isFailed: true
+    isFailed: false,
+    timeoutId: null,
 })
 watch(() => repoAuth.state.user, async (newValue) => {
-    if (process.client && !newValue) {
-        $emitter.emit("showUserModal")
-    }
-    if (process.client && route.params.signUp === 'auto') {
+    if (process.client) {
+        // 未登入前紀錄Flag，登入後自動報名活動
         sessionStorage.setItem('autoSignUp', true)
+        sessionStorage.setItem('contributor', route.params?.contributor)
+        const isAutoSignUp = sessionStorage.getItem('autoSignUp')
+        if (newValue && isAutoSignUp) {
+            signUp()
+        }
     }
-    if (process.client && newValue) {
-        signUp()
+    if (process.client && !newValue) {
+        requestSelector('#userModal', () => {
+            $emitter.emit("showUserModal")
+        })
     }
 }, { immediate: true })
+function requestSelector(selectorString, callback,) {
+    let localCount = 0
+    function step() {
+        if (localCount >= 100) {
+            console.error(`Cannot find element ${selectorString}`)
+            return
+        }
+        const queryResult = document.querySelector(selectorString)
+        const hasEvent = $emitter.all.has('showUserModal')
+        if (queryResult && hasEvent) {
+            callback(queryResult)
+        } else {
+            localCount++
+            window.requestAnimationFrame(step)
+        }
+    }
+    step()
+}
 async function signUp() {
+    if (state.timeoutId) {
+        return
+    }
     $sweet.loader(true)
-    const timeoutId = setTimeout(() => {
+    state.timeoutId = setTimeout(() => {
         state.isFailed = true
         $sweet.loader(false)
     }, 10 * 1000)
-    const response = await repoActivity.postSignUp()
+    const contributor = sessionStorage.getItem('contributor')
+    const response = await repoEvent.postSignUp({
+        contributor: contributor ?? ''
+    })
     if (response.status !== 200) {
         return
     }
-    clearTimeout(timeoutId)
+    clearTimeout(state.timeoutId)
+    sessionStorage.removeItem('autoSignUp')
+    sessionStorage.removeItem('contributor')
+    state.timeoutId = null
     state.record = response.data
     state.isFailed = false
-    sessionStorage.removeItem('autoSignUp')
     $sweet.loader(false)
 }
 function printPage() {
@@ -75,10 +107,10 @@ function printPage() {
 }
 </script>
 <style lang="scss">
-.activity {
+.event {
     padding-top: 250px;
 
-    .activity__frame {
+    .event__frame {
         padding: 40px 20px 20px;
         border-radius: 10px;
         border: solid 1px #5b2714;
@@ -121,7 +153,7 @@ function printPage() {
         }
     }
 
-    .activity__button {
+    .event__button {
         max-width: 232px;
         padding: 9px 80px 8px;
         border-radius: 5px;
