@@ -1,32 +1,47 @@
 <template>
     <div class="activity">
-        <div class="activity__frame">
-            <img class="frame__image" alt="成功" src="@/assets/activity/img_報名成功.svg">
-            <h1 class="frame__title">活動報名完成</h1>
-            <div class="frame__textarea">
-                <div>
-                    時間：2023/1/5 (四) 19 : 30 - 21 : 00
-                </div>
-                <div>
-                    地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
-                </div>
-                <div>
-                    報名日期：{{ $filter.time(state.record?.signUpDate) }}
+        <template v-if="!state.isFailed">
+            <div class="activity__frame">
+                <img class="frame__image" alt="成功" src="@/assets/activity/img_報名成功.svg">
+                <h1 class="frame__title">活動報名完成</h1>
+                <div class="frame__textarea">
+                    <div>
+                        時間：2023/1/5 (四) 19 : 30 - 21 : 00
+                    </div>
+                    <div>
+                        地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
+                    </div>
+                    <div>
+                        報名日期：{{ $filter.time(state.record?.signUpDate) }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <LazyAtomBtnSimple class="activity__button" @click="printPage()">
-            列印頁面
-        </LazyAtomBtnSimple>
+            <LazyAtomBtnSimple class="activity__button" @click="printPage()">
+                列印頁面
+            </LazyAtomBtnSimple>
+        </template>
+        <template v-else>
+            <div class="activity__frame">
+                <img class="frame__image" alt="失敗" src="@/assets/activity/img_報名失敗.svg">
+                <h1 class="frame__title">活動報名失敗</h1>
+                <div class="frame__textarea">
+                    請確認網路連線狀況
+                </div>
+            </div>
+            <LazyAtomBtnSimple class="activity__button" @click="signUp()">
+                再報名一次
+            </LazyAtomBtnSimple>
+        </template>
     </div>
 </template>
 <script setup>
-const { $filter, $emitter } = useNuxtApp()
+const { $filter, $emitter, $sweet } = useNuxtApp()
 const repoActivity = useRepoActivity()
 const repoAuth = useRepoAuth()
 const route = useRoute()
 const state = reactive({
-    record: null
+    record: null,
+    isFailed: true
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (process.client && !newValue) {
@@ -40,9 +55,20 @@ watch(() => repoAuth.state.user, async (newValue) => {
     }
 }, { immediate: true })
 async function signUp() {
+    $sweet.loader(true)
+    const timeoutId = setTimeout(() => {
+        state.isFailed = true
+        $sweet.loader(false)
+    }, 10 * 1000)
     const response = await repoActivity.postSignUp()
+    if (response.status !== 200) {
+        return
+    }
+    clearTimeout(timeoutId)
     state.record = response.data
+    state.isFailed = false
     sessionStorage.removeItem('autoSignUp')
+    $sweet.loader(false)
 }
 function printPage() {
     print()
