@@ -1,5 +1,5 @@
 <template>
-    <div class="event">
+    <div :key="state.renderKey" class="event">
         <template v-if="!state.isFailed">
             <div class="event__frame">
                 <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
@@ -12,7 +12,7 @@
                         地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
                     </div>
                     <div>
-                        報名日期：{{ $filter.time(state.record?.signUpDate) }}
+                        報名日期：{{ $filter.time(state.signUpDate) }}
                     </div>
                 </div>
             </div>
@@ -40,17 +40,20 @@ const repoEvent = useRepoEvent()
 const repoAuth = useRepoAuth()
 const route = useRoute()
 const state = reactive({
-    record: null,
+    record: {
+        signUpDate: null
+    },
+    signUpDate: null,
     isFailed: false,
     timeoutId: null,
+    renderKey: Math.random()
 })
-watch(() => repoAuth.state.user, async (newValue) => {
+watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
         // 未登入前紀錄Flag，登入後自動報名活動
         sessionStorage.setItem('autoSignUp', true)
         sessionStorage.setItem('contributor', route.params?.contributor)
-        const isAutoSignUp = sessionStorage.getItem('autoSignUp')
-        if (newValue && isAutoSignUp) {
+        if (newValue && oldValue === null) {
             signUp()
         }
     }
@@ -79,9 +82,6 @@ function requestSelector(selectorString, callback,) {
     step()
 }
 async function signUp() {
-    if (state.timeoutId) {
-        return
-    }
     $sweet.loader(true)
     state.timeoutId = setTimeout(() => {
         state.isFailed = true
@@ -94,12 +94,23 @@ async function signUp() {
     if (response.status !== 200) {
         return
     }
+    console.log({
+        response
+    });
     clearTimeout(state.timeoutId)
-    sessionStorage.removeItem('autoSignUp')
     sessionStorage.removeItem('contributor')
+    sessionStorage.removeItem('autoSignUp')
     state.timeoutId = null
-    state.record = response.data
+    console.log(response.data)
     state.isFailed = false
+    state.signUpDate = response.data.signUpDate
+    // nextTick(() => {
+    //     state.record = response.data
+    //     console.log('state.record', state.record)
+    // })
+    // if (!state.record) {
+    //     location.reload()
+    // }
     $sweet.loader(false)
 }
 function printPage() {
@@ -109,6 +120,7 @@ function printPage() {
 <style lang="scss">
 .event {
     padding-top: 250px;
+    padding-bottom: 80px;
 
     .event__frame {
         padding: 40px 20px 20px;
