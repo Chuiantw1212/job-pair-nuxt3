@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <LazyAtomBtnSimple class="activity__button">
+        <LazyAtomBtnSimple class="activity__button" @click="printPage()">
             列印頁面
         </LazyAtomBtnSimple>
     </div>
@@ -43,6 +43,9 @@ async function signUp() {
     const response = await repoActivity.postSignUp()
     state.record = response.data
     sessionStorage.removeItem('autoSignUp')
+}
+function printPage() {
+    print()
 }
 </script>
 <style lang="scss">
