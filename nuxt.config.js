@@ -33,15 +33,9 @@ export default defineNuxtConfig({
     },
     // ... other options
     modules: [
-        '@nuxt/image-edge',
-        '@nuxtjs/partytown',
         '@pinia/nuxt',
-        '@nuxt/content',
         'nuxt-jsonld',
     ],
-    content: {
-        // https://content.nuxtjs.org/api/configuration
-    },
     vite: {
         define: {
             "process.env.DEBUG": false,

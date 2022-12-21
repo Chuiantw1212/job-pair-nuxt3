@@ -15,8 +15,8 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
-                                    disabled>{{
+                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval"
+                                    class="emailSent__resend" disabled>{{
                                             loginComposable.state.cdVisible
                                     }}
                                 </LazyAtomBtnSimple>

@@ -318,6 +318,14 @@ function filterRecommendedJobs() {
             return Number(item.salaryMin) > Number(salaryMin)
         })
     }
+    if (state.searchLike) {
+        filteredResult = filteredResult.filter(item => {
+            const searchableFields = ['description', 'skills', 'name', 'organizationName']
+            return searchableFields.some(field => {
+                return String(item[field]).includes(state.searchLike)
+            })
+        })
+    }
     const topTwo = filteredResult.slice(0, 2)
     return topTwo
 }
