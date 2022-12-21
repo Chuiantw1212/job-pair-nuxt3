@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <div v-if="true" class="profile__quick">
+            <div v-if="state.isNewCompay" class="profile__quick"> 
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
                     在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
