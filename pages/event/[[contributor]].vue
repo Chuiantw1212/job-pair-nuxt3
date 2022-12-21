@@ -94,23 +94,12 @@ async function signUp() {
     if (response.status !== 200) {
         return
     }
-    console.log({
-        response
-    });
     clearTimeout(state.timeoutId)
     sessionStorage.removeItem('contributor')
     sessionStorage.removeItem('autoSignUp')
     state.timeoutId = null
-    console.log(response.data)
     state.isFailed = false
     state.signUpDate = response.data.signUpDate
-    // nextTick(() => {
-    //     state.record = response.data
-    //     console.log('state.record', state.record)
-    // })
-    // if (!state.record) {
-    //     location.reload()
-    // }
     $sweet.loader(false)
 }
 function printPage() {
