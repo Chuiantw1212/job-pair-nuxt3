@@ -101,6 +101,7 @@ async function signUp() {
     state.isFailed = false
     state.signUpDate = response.data.signUpDate
     $sweet.loader(false)
+    state.renderKey = Math.random()
 }
 function printPage() {
     print()
