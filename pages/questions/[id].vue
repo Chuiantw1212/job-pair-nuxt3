@@ -120,7 +120,9 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    const user = Object.assign({}, repoAuth.state.user, state.tempUser,)
+    const user = Object.assign({}, repoAuth.state.user, state.tempUser, {
+        memberOf: repoAuth.state.memberOf ?? ''
+    })
     $sweet.loader(true)
     const postResponse = await repoUser.postUser(user)
     if (postResponse.status !== 200) {
