@@ -35,7 +35,7 @@
     </div>
 </template>
 <script setup>
-const { $filter, $emitter, $sweet, $requestSelector } = useNuxtApp()
+const { $filter, $emitter, $sweet, } = useNuxtApp()
 const repoEvent = useRepoEvent()
 const repoAuth = useRepoAuth()
 const route = useRoute()
@@ -51,7 +51,9 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
         // 未登入前紀錄Flag，登入後自動報名活動
         sessionStorage.setItem('autoSignUp', true)
-        sessionStorage.setItem('contributor', route.params?.contributor)
+        if (route.params?.contributor) {
+            localStorage.setItem('contributor', route.params.contributor)
+        }
         if (newValue && oldValue === null) {
             signUp()
         }
@@ -86,7 +88,7 @@ async function signUp() {
         state.isFailed = true
         $sweet.loader(false)
     }, 10 * 1000)
-    const contributor = sessionStorage.getItem('contributor')
+    const contributor = localStorage.getItem('contributor')
     const response = await repoEvent.postSignUp({
         contributor: contributor ?? ''
     })
@@ -94,7 +96,7 @@ async function signUp() {
         return
     }
     clearTimeout(state.timeoutId)
-    sessionStorage.removeItem('contributor')
+    localStorage.removeItem('contributor')
     sessionStorage.removeItem('autoSignUp')
     state.timeoutId = null
     state.isFailed = false
