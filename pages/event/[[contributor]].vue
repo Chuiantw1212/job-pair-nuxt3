@@ -141,6 +141,7 @@ function printPage() {
             border-bottom: 4px solid #ffd600;
             width: 144px;
             margin: auto;
+            white-space: nowrap;
         }
 
         .frame__textarea {
