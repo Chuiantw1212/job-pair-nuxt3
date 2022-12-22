@@ -1,5 +1,5 @@
 <template>
-    <div :key="state.renderKey" class="event">
+    <div class="event">
         <template v-if="!state.isFailed">
             <div class="event__frame">
                 <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
@@ -12,7 +12,7 @@
                         地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
                     </div>
                     <div>
-                        報名日期：{{ $filter.time(state.signUpDate) }}
+                        報名日期：<span id="signUpDate">{{ $filter.time(state.signUpDate) }}</span>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,6 @@ const state = reactive({
     signUpDate: null,
     isFailed: false,
     timeoutId: null,
-    renderKey: Math.random()
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
@@ -99,9 +98,11 @@ async function signUp() {
     sessionStorage.removeItem('autoSignUp')
     state.timeoutId = null
     state.isFailed = false
-    state.signUpDate = response.data.signUpDate
+    const { signUpDate } = response.data
+    state.signUpDate = signUpDate
+    const element = document.querySelector('#signUpDate')
+    element.innerHTML = $filter.time(signUpDate)
     $sweet.loader(false)
-    state.renderKey = Math.random()
 }
 function printPage() {
     print()

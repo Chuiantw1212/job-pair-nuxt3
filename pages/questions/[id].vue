@@ -39,6 +39,8 @@
                                 </label>
                             </template>
                         </template>
+                        <input v-show="false" :value="state.tempUser.preference['culture'].length !== 0"
+                            :data-required="true" :data-name="questionGroup.descUser">
                     </div>
                     <button v-if="questionId < 5" class="body__button body__button--right" type="button"
                         :disabled="checkQuestionAnswered()" @click="handleClickNext()">
@@ -55,9 +57,11 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $sweet } = useNuxtApp()
+const { $bootstrap, $sweet, $validate } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
+const repoJob = useRepoJob()
+const repoUser = useRepoUser()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
@@ -65,7 +69,9 @@ const state = reactive({
     currentIndex: 0,
     questions: [],
     tempUser: {
-        preference: {},
+        preference: {
+            culture: []
+        },
     },
     singleSelects: ['']
 })
@@ -79,14 +85,14 @@ useHead({
 })
 onMounted(async () => {
     let questions = []
-    const {questionsRes=[]} = repoSelect.state
-    if (questionsRes&&questionsRes.length){
+    const { questionsRes = [] } = repoSelect.state
+    if (questionsRes && questionsRes.length) {
         questions = repoSelect.state.questionsRes
     } else {
         $sweet.loader(true)
         const response = await repoSelect.getQuestions()
         $sweet.loader(false)
-        questions =  response.data
+        questions = response.data
     }
     state.questions = questions
     getAnswers()
@@ -109,13 +115,36 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
+async function handleSubmit() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    const user = Object.assign({}, repoAuth.state.user, state.tempUser,)
+    $sweet.loader(true)
+    const postResponse = await repoUser.postUser(user)
+    if (postResponse.status !== 200) {
+        return
+    }
+    const userData = postResponse.data
+    repoAuth.setUser(userData)
+    await repoJob.getJobRecommended()
+    $sweet.loader(false)
+    // 刪除暫存資料
+    localStorage.removeItem("user")
+    window.scrollTo(0, 0)
+    return userData
+}
 function routeToFisrt() {
     router.push('/questions/1')
 }
-function routeToCategory() {
-    router.push({
-        name: 'questions-result'
-    })
+async function routeToCategory() {
+    const submitted = await handleSubmit()
+    if (submitted) {
+        router.push({
+            name: 'questions-result'
+        })
+    }
 }
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key
