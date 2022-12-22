@@ -6,7 +6,8 @@ export default defineStore('auth', () => {
     const state = reactive({
         user: null,
         company: null,
-        isLogginIn: false
+        isLogginIn: false,
+        memberOf: null,
     })
     async function postSignin(data) {
         if (state.isLogginIn) {
@@ -52,6 +53,7 @@ export default defineStore('auth', () => {
         }
     }
     function setUser(user) {
+        // 在多數程式碼，一旦user非null就視為登入，故這邊不可更動
         state.user = user
     }
     function setCompany(company) {

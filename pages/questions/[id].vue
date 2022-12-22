@@ -120,9 +120,8 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    const contributor = sessionStorage.getItem('contributor')
     const user = Object.assign({}, repoAuth.state.user, state.tempUser, {
-        memberOf: contributor ?? ''
+        memberOf: repoAuth.state.memberOf ?? ''
     })
     $sweet.loader(true)
     const postResponse = await repoUser.postUser(user)
@@ -135,7 +134,6 @@ async function handleSubmit() {
     $sweet.loader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
-    sessionStorage.removeItem("contributor")
     window.scrollTo(0, 0)
     return userData
 }

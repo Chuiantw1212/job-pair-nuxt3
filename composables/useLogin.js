@@ -113,12 +113,6 @@ export default function setup() {
             })
             repoAuth.setUser(user)
             hideModals()
-            // autoSignUp
-            const isAutoSignUp = sessionStorage.getItem('autoSignUp')
-            if (isAutoSignUp && route.name !== 'event') {
-                router.replace(`/event`)
-                return
-            }
             if (route.path.includes('admin') || route.name === 'index') {
                 router.push({
                     name: 'jobs'
