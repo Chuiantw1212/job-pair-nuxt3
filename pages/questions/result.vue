@@ -18,28 +18,11 @@
 </template>
 <script setup>
 const router = useRouter()
-const state = reactive({
-    filterOpen: {
-        occupationalCategory: false
-    },
-    profile: {}
-})
 // hooks
 useHead({
     title: `偏好量表結果 - Job Pair`,
 })
-onMounted(async () => {
-    getAnswers()
-})
 // methods
-function getAnswers() {
-    const userString = localStorage.getItem("user")
-    if (!userString || userString === "false") {
-        return
-    }
-    const user = JSON.parse(userString)
-    state.profile = user
-}
 async function routeToProfile() {
     router.push({
         name: 'user-profile'

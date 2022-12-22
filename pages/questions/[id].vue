@@ -39,6 +39,8 @@
                                 </label>
                             </template>
                         </template>
+                        <input v-show="false" :value="state.tempUser.preference['culture'].length !== 0"
+                            :data-required="true" :data-name="questionGroup.descUser">
                     </div>
                     <button v-if="questionId < 5" class="body__button body__button--right" type="button"
                         :disabled="checkQuestionAnswered()" @click="handleClickNext()">
@@ -67,7 +69,9 @@ const state = reactive({
     currentIndex: 0,
     questions: [],
     tempUser: {
-        preference: {},
+        preference: {
+            culture: []
+        },
     },
     singleSelects: ['']
 })
@@ -116,7 +120,7 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    const user = Object.assign({}, repoAuth.state.user, state.profile,)
+    const user = Object.assign({}, repoAuth.state.user, state.tempUser,)
     $sweet.loader(true)
     const postResponse = await repoUser.postUser(user)
     if (postResponse.status !== 200) {
@@ -129,15 +133,18 @@ async function handleSubmit() {
     // 刪除暫存資料
     localStorage.removeItem("user")
     window.scrollTo(0, 0)
+    return userData
 }
 function routeToFisrt() {
     router.push('/questions/1')
 }
 async function routeToCategory() {
-    await handleSubmit()
-    router.push({
-        name: 'questions-result'
-    })
+    const submitted = await handleSubmit()
+    if (submitted) {
+        router.push({
+            name: 'questions-result'
+        })
+    }
 }
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key
