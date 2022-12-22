@@ -55,9 +55,11 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $sweet } = useNuxtApp()
+const { $bootstrap, $sweet, $validate } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
+const repoJob = useRepoJob()
+const repoUser = useRepoUser()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
@@ -79,14 +81,14 @@ useHead({
 })
 onMounted(async () => {
     let questions = []
-    const {questionsRes=[]} = repoSelect.state
-    if (questionsRes&&questionsRes.length){
+    const { questionsRes = [] } = repoSelect.state
+    if (questionsRes && questionsRes.length) {
         questions = repoSelect.state.questionsRes
     } else {
         $sweet.loader(true)
         const response = await repoSelect.getQuestions()
         $sweet.loader(false)
-        questions =  response.data
+        questions = response.data
     }
     state.questions = questions
     getAnswers()
@@ -109,10 +111,30 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
+async function handleSubmit() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    const user = Object.assign({}, repoAuth.state.user, state.profile,)
+    $sweet.loader(true)
+    const postResponse = await repoUser.postUser(user)
+    if (postResponse.status !== 200) {
+        return
+    }
+    const userData = postResponse.data
+    repoAuth.setUser(userData)
+    await repoJob.getJobRecommended()
+    $sweet.loader(false)
+    // 刪除暫存資料
+    localStorage.removeItem("user")
+    window.scrollTo(0, 0)
+}
 function routeToFisrt() {
     router.push('/questions/1')
 }
-function routeToCategory() {
+async function routeToCategory() {
+    await handleSubmit()
     router.push({
         name: 'questions-result'
     })

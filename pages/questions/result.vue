@@ -17,13 +17,7 @@
     </div>
 </template>
 <script setup>
-const { $sweet, $validate } = useNuxtApp()
-const device = useDevice()
 const router = useRouter()
-const repoAuth = useRepoAuth()
-const repoUser = useRepoUser()
-const repoSelect = useRepoSelect()
-const repoJob = useRepoJob()
 const state = reactive({
     filterOpen: {
         occupationalCategory: false
@@ -47,35 +41,14 @@ function getAnswers() {
     state.profile = user
 }
 async function routeToProfile() {
-    await handleSubmit()
     router.push({
         name: 'user-profile'
     })
 }
 async function routeToJobs() {
-    await handleSubmit()
     router.push({
         name: 'jobs'
     })
-}
-async function handleSubmit() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const user = Object.assign({}, repoAuth.state.user, state.profile,)
-    $sweet.loader(true)
-    const postResponse = await repoUser.postUser(user)
-    if (postResponse.status !== 200) {
-        return
-    }
-    const userData = postResponse.data
-    repoAuth.setUser(userData)
-    await repoJob.getJobRecommended()
-    $sweet.loader(false)
-    // 刪除暫存資料
-    localStorage.removeItem("user")
-    window.scrollTo(0, 0)
 }
 </script>
 <style lang="scss">
