@@ -52,7 +52,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
         // 未登入前紀錄Flag，登入後自動報名活動
         sessionStorage.setItem('autoSignUp', true)
         if (route.params?.contributor) {
-            localStorage.setItem('contributor', route.params.contributor)
+            sessionStorage.setItem('contributor', route.params.contributor)
         }
         if (newValue && oldValue === null) {
             signUp()
@@ -88,7 +88,7 @@ async function signUp() {
         state.isFailed = true
         $sweet.loader(false)
     }, 10 * 1000)
-    const contributor = localStorage.getItem('contributor')
+    const contributor = sessionStorage.getItem('contributor')
     const response = await repoEvent.postSignUp({
         contributor: contributor ?? ''
     })
@@ -96,7 +96,7 @@ async function signUp() {
         return
     }
     clearTimeout(state.timeoutId)
-    localStorage.removeItem('contributor')
+    sessionStorage.removeItem('contributor')
     sessionStorage.removeItem('autoSignUp')
     state.timeoutId = null
     state.isFailed = false
