@@ -62,6 +62,7 @@ const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoUser = useRepoUser()
+const repoEvent = useRepoEvent()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
@@ -143,6 +144,9 @@ function routeToFisrt() {
 async function routeToCategory() {
     const submitted = await handleSubmit()
     if (submitted) {
+        await repoEvent.postSignUp({
+            contributor: submitted.memberOf ?? ''
+        })
         router.push({
             name: 'questions-result'
         })

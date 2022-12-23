@@ -212,7 +212,6 @@ export default function setup() {
         hideModals()
     }
     function hideModals() {
-        console.log('hideModals');
         $emitter.emit("hideSwitchModal")
         $emitter.emit("hideUserModal")
         $emitter.emit('hideCompanyModal')

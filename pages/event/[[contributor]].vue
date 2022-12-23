@@ -52,7 +52,6 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
         // 未登入前紀錄Flag，登入後自動報名活動
         if (route.params?.contributor) {
             repoAuth.state.memberOf = route.params.contributor
-            sessionStorage.setItem('contributor', route.params.contributor)
         }
         if (newValue?.id && oldValue === null) {
             signUp()
