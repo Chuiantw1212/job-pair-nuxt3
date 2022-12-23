@@ -143,14 +143,17 @@ function routeToFisrt() {
 }
 async function routeToCategory() {
     const submitted = await handleSubmit()
-    if (submitted) {
+    if (!submitted) {
+        return
+    }
+    if (submitted.memberOf) {
         await repoEvent.postSignUp({
-            contributor: submitted.memberOf ?? ''
-        })
-        router.push({
-            name: 'questions-result'
+            contributor: submitted.memberOf
         })
     }
+    router.push({
+        name: 'questions-result'
+    })
 }
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key
