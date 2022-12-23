@@ -1,7 +1,10 @@
 <template>
     <div id="app" class="app w-100">
         <LazyOrganismHeader />
-        <slot></slot>
+        <div class="main">
+            <slot>
+            </slot>
+        </div>
         <LazyOrganismFooter />
     </div>
 </template>
@@ -47,6 +50,10 @@ onMounted(async () => {
     padding-top: 58px;
     background-color: #ecf3f6;
     overflow-x: hidden;
+}
+
+.main{
+    min-height: calc(100vh - 243px);
 }
 
 body {

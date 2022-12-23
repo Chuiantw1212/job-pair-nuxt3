@@ -31,7 +31,6 @@ npm run dev
 | --  firebaseui             | 現成的登入模組，支援第三方登入                 |
 | --  Fuze.js                | 模糊搜索                                       |
 | --  Mitt                   | 基於原生JS的Event Bus，避免甚麼鬼都記錄在pinia |
-| --  socket.io-client       | 原本要做聊天室用的(deprecated)                 |
 | UI相關套件                 |                                                |
 | --  @glidejs/glide         | 基於原生JS的輕量套件                           |
 | --  aos                    | Animate on scroll                              |

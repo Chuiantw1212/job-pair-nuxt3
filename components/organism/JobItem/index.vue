@@ -41,7 +41,7 @@
                     </div>
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
-                        {{ $salary(modelValue) }}
+                        {{ $filter.salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
@@ -73,7 +73,7 @@ export default {
 <script setup>
 import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
-const { $optionText, $salary } = useNuxtApp()
+const { $optionText, $filter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({

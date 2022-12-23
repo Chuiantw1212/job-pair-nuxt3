@@ -108,12 +108,10 @@ export default defineNuxtPlugin(nuxtApp => {
                 salary
             },
             // deprecated
-            money,
             optionText,
             date,
             time,
             rank,
-            salary
         }
     }
 })
