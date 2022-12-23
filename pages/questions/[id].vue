@@ -129,6 +129,7 @@ async function handleSubmit() {
     if (postResponse.status !== 200) {
         return
     }
+    repoAuth.state.memberOf = null
     const userData = postResponse.data
     repoAuth.setUser(userData)
     await repoJob.getJobRecommended()
