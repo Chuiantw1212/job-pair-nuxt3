@@ -62,6 +62,7 @@ const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoUser = useRepoUser()
+const repoEvent = useRepoEvent()
 const route = useRoute()
 const router = useRouter()
 const state = reactive({
@@ -128,6 +129,7 @@ async function handleSubmit() {
     if (postResponse.status !== 200) {
         return
     }
+    repoAuth.state.memberOf = null
     const userData = postResponse.data
     repoAuth.setUser(userData)
     await repoJob.getJobRecommended()
@@ -142,11 +144,17 @@ function routeToFisrt() {
 }
 async function routeToCategory() {
     const submitted = await handleSubmit()
-    if (submitted) {
-        router.push({
-            name: 'questions-result'
+    if (!submitted) {
+        return
+    }
+    if (submitted.memberOf) {
+        await repoEvent.postSignUp({
+            contributor: submitted.memberOf
         })
     }
+    router.push({
+        name: 'questions-result'
+    })
 }
 function checkSelected(item, questionGroup) {
     const questionKey = questionGroup.key

@@ -8,6 +8,7 @@
                 <div class="final__header">求職偏好已完成！</div>
                 <div class="final__sub">接下來開始編輯個人檔案吧！</div>
                 <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
+                <div v-if="state.isSigned" class="final__text">已成功報名1/16講座活動-年前卡位理想工作</div>
             </div>
             <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
             <div class="result__footer">
@@ -17,10 +18,18 @@
     </div>
 </template>
 <script setup>
+const repoEvent = useRepoEvent()
 const router = useRouter()
+const state = reactive({
+    isSigned: false,
+})
 // hooks
 useHead({
     title: `偏好量表結果 - Job Pair`,
+})
+onMounted(async () => {
+    const response = await repoEvent.getEventSigned()
+    state.isSigned = response.data
 })
 // methods
 async function routeToProfile() {
