@@ -1,54 +1,36 @@
 <template>
     <div class="inputResumes">
         <h1 class="resume__header"><span v-if="required" class="text-danger">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
-        <div v-if="modelValue.slice(0, 3).length" class="resumes__previewGroup">
-            <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(0, 3)">
-                <div v-if="checkIsImage(item)">
-                    <img :src="item.url" class="previewGroup__item__viewer">
-                </div>
-                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
-                <div class="previewGroup__item__body">
-                    <div v-if="item.name" class="previewGroup__item__body__item">
-                        <div class="item__name">
-                            {{ item.name }}
-                        </div>
-                        <button class="doc__btn" @click="deleteResume(index)">
-                            <img class="btn__icon" src="./icon_delete_g.svg" />
-                        </button>
+        <template v-for="number in Math.ceil(modelValue.length / 3)">
+            <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
+                class="resumes__previewGroup">
+                <div class="previewGroup__item"
+                    v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
+                    :key="`row${number}col${index}`">
+                    <div v-if="checkIsImage(item)">
+                        <img :src="item.url" class="previewGroup__item__viewer">
                     </div>
-                    <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $time(item.date) }}
-                        <button class="doc__btn" @click="openResume(item)">
-                            <img class="btn__icon" src="./icon_preview_g.svg" />
-                        </button>
+                    <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
+                    <div class="previewGroup__item__body">
+                        <div v-if="item.name" class="previewGroup__item__body__item">
+                            <div class="item__name">
+                                {{ item.name }}
+                            </div>
+                            <button class="doc__btn" @click="deleteResume(number, index)">
+                                <img class="btn__icon" src="./icon_delete_g.svg" />
+                            </button>
+                        </div>
+                        <div v-if="item.date"
+                            class="previewGroup__item__body__item previewGroup__item__body__item--date">
+                            {{ $filter.time(item.date) }}
+                            <button class="doc__btn" @click="openResume(item)">
+                                <img class="btn__icon" src="./icon_preview_g.svg" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="modelValue.slice(3, 6).length" class="resumes__previewGroup">
-            <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(3, 6)">
-                <div v-if="checkIsImage(item)">
-                    <img :src="item.url" class="previewGroup__item__viewer">
-                </div>
-                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
-                <div class="previewGroup__item__body">
-                    <div v-if="item.name" class="previewGroup__item__body__item">
-                        <div class="item__name">
-                            {{ item.name }}
-                        </div>
-                        <button class="doc__btn" @click="deleteResume(index)">
-                            <img class="btn__icon" src="./icon_delete_g.svg" />
-                        </button>
-                    </div>
-                    <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $time(item.date) }}
-                        <button class="doc__btn" @click="openResume(item)">
-                            <img class="btn__icon" src="./icon_preview_g.svg" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </template>
         <label class="resume__footer" :class="{ 'resume__footer--disabled': isMaxLimit }">
             <div class="footer__btn">
                 <img v-if="isMaxLimit" class="btn__icon" src="./addDisabled.svg" />
@@ -154,7 +136,8 @@ export default {
         async openResume(item) {
             window.open(item.url)
         },
-        async deleteResume(index) {
+        async deleteResume(row = 0, col = 0) {
+            const index = (row - 1) * 3 + col
             this.localValue.splice(index, 1)
         },
     }
