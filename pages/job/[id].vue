@@ -38,12 +38,12 @@
                         <span class="item__body">
                             <template v-for="(item, index) in state.job?.employmentType">
                                 {{ $filter.optionText(item,
-                                        repoSelect.state.selectByQueryRes?.employmentType)
-                                }} ·
+        repoSelect.state.selectByQueryRes?.employmentType)
+}} ·
                             </template>
                             {{ $filter.optionText(state.job?.responsibilities,
-                                    repoSelect.state.selectByQueryRes?.responsibilities)
-                            }}</span>
+        repoSelect.state.selectByQueryRes?.responsibilities)
+}}</span>
                     </div>
                     <div v-if="getJobAddress()" class="features__item">
                         <span class="item__header">
@@ -68,9 +68,9 @@
                         </span>
                         <span class="item__body">
                             {{
-                                    $filter.optionText(state.job?.jobLocationType,
-                                        repoSelect.state.selectByQueryRes?.jobLocationType)
-                            }}
+        $filter.optionText(state.job?.jobLocationType,
+            repoSelect.state.selectByQueryRes?.jobLocationType)
+}}
                         </span>
                     </div>
                     <div class="features__item">

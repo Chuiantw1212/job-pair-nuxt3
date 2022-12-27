@@ -142,7 +142,21 @@ function routeToQuestions() {
             name: 'jobs'
         })
     } else {
-        $emitter.emit("showUserModal")
+        let localCount = 0
+        function step() {
+            if (localCount >= 100) {
+                console.error(`Cannot find element ${selectorString}`)
+                return
+            }
+            const hasEvent = $emitter.all.has('showUserModal')
+            if (hasEvent) {
+                $emitter.emit("showUserModal")
+            } else {
+                localCount++
+                window.requestAnimationFrame(step)
+            }
+        }
+        step()
     }
 }
 </script>
