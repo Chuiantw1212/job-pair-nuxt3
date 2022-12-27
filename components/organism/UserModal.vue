@@ -17,8 +17,8 @@
                             <div class="emailSent__footer">
                                 <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval"
                                     class="emailSent__resend" disabled>{{
-                                            loginComposable.state.cdVisible
-                                    }}
+        loginComposable.state.cdVisible
+}}
                                 </LazyAtomBtnSimple>
                                 <LazyAtomBtnSimple v-else class="emailSent__resend"
                                     @click="loginComposable.sendEmailLink('employee')">
@@ -82,12 +82,12 @@ async function renderFirebaseUI() {
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
             requireDisplayName: true
+        },
+        {
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         }
     ]
     if (device.state.isNativeWeb) {
-        signInOptions.push({
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        })
         signInOptions.push({
             provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
             scopes: ["public_profile", "email"]
