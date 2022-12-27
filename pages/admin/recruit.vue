@@ -11,7 +11,7 @@
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <template v-if="checkApplicationEnabled()">
+                    <template v-if="false">
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
                             to="/admin/recruit/applied">
                             <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
@@ -23,9 +23,10 @@
                         </NuxtLink>
                     </template>
                     <template v-else>
-                        <button class="menu__item__link--disabled" :disabled="true">
-                            應徵者
-                        </button>
+                        <div class="menu__item__link menu__item__link--noHover">
+                            <img class="item__link__icon" src="~/assets/admin/icon_job_disabled.svg">
+                            <div class="menu__item__text">應徵者</div>
+                        </div>
                     </template>
                 </li>
                 <li class="menu__item">
@@ -128,6 +129,21 @@ async function initialize() {
                 }
             }
 
+            .menu__item__link--noHover {
+                &:hover {
+                    color: #6c6c6c;
+                    border: 3px solid rgba(0, 0, 0, 0);
+
+                    .item__link__icon {
+                        filter: grayscale(1);
+                    }
+                }
+
+                .menu__item__text {
+                    color: lightgrey;
+                }
+            }
+
             .menu__item__link--active {
                 color: #5ea88e;
                 border-bottom: 3px solid #5ea88e;
@@ -193,6 +209,12 @@ async function initialize() {
                     align-items: center;
                     padding: 18px 0;
                 }
+
+                // .menu__item__link--noHover {
+                //     display: flex;
+                //     align-items: center;
+                //     padding: 18px 0;
+                // }
 
                 .menu__item__link--disabled {
                     display: flex;
