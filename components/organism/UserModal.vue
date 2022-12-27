@@ -8,6 +8,12 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">求職者登入註冊</h3>
+                        <div v-if="!device.state.isNativeWeb" class="body__subheader">
+                            <div>
+                                ※系統偵測到內嵌瀏覽器※<br>
+                                可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
+                            </div>
+                        </div>
                         <div v-show="loginComposable.state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
@@ -125,6 +131,11 @@ async function renderFirebaseUI() {
             text-align: center;
             font-size: 28px;
             font-weight: bold;
+        }
+
+        .body__subheader {
+            color: red;
+            text-align: center;
         }
 
         .body__desc {
