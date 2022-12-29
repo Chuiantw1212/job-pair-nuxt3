@@ -28,10 +28,6 @@ useHead({
         { name: 'twitter:card', content: 'summary' },
         { name: 'twitter:site', content: '@JobPair' },
     ],
-    // Favicon https://github.com/nuxt/framework/discussions/5204
-    link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ]
 })
 onMounted(async () => {
     await Promise.all([
@@ -52,7 +48,7 @@ onMounted(async () => {
     overflow-x: hidden;
 }
 
-.main{
+.main {
     min-height: calc(100vh - 243px);
 }
 

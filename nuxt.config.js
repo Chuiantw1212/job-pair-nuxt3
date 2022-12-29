@@ -1,9 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const random = Math.random()
 export default defineNuxtConfig({
     app: {
         head: {
             title: 'Job Pair',
             link: [
+                // Favicon https://github.com/nuxt/framework/discussions/5204
+                { rel: 'icon', type: 'image/x-icon', href: `/favicon.ico?${random}` },
                 // Google Fonts
                 { rel: "preconnect", href: "https://fonts.googleapis.com" },
                 { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" },
