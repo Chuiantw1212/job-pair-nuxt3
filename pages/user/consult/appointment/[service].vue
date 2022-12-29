@@ -6,8 +6,9 @@
             </template>
             <template v-slot:body>
                 <div class="appointment__theme__body">
-                    <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
-                        name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
+                    <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes"
+                        v-model="state.appointmentForm.service" name="預約服務"
+                        :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
                         class="details__dropdown" required></LazyAtomInputSelect>
                     <LazyAtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
                         placeholder="請詳述你目前的職涯困擾" required>
@@ -37,14 +38,13 @@
                                 </div>
                             </div>
                             <div class="appointment__consultant__body">
-                                <div class="body__header">關於我</div>
                                 <div class="body__text">
                                     我們將針對您的經歷，安排最適合的諮詢師。
                                 </div>
                             </div>
                             <LazyMoleculeFeedbackList v-model="state.consultantFeedbacks"></LazyMoleculeFeedbackList>
-                            <LazyOrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
-                                :key="consultant.key"></LazyOrganismConsultTime>
+                            <LazyOrganismConsultTime v-model="state.appointmentForm.time"
+                                :consultant="{ id: 'recommend' }" :key="consultant.key"></LazyOrganismConsultTime>
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
@@ -56,8 +56,7 @@
                             </div>
                             <div class="appointment__consultant__body">
                                 <div class="body__header">關於我</div>
-                                <div class="body__text">
-                                    {{ consultant.descLong }}
+                                <div class="body__text" v-html="consultant.descLong">
                                 </div>
                             </div>
                             <LazyMoleculeFeedbackList v-model="consultant.feedbacks"></LazyMoleculeFeedbackList>
@@ -266,6 +265,7 @@ async function submitAppointment() {
                 letter-spacing: normal;
                 text-align: left;
                 color: #333;
+                margin-top: 10px;
             }
         }
 

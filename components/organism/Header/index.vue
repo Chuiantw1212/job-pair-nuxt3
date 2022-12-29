@@ -9,7 +9,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button class="navbar-brand" @click="routeByMenuType()">
-                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
+                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo"> 
                         <template v-if="state.menuType === 'admin'">
                             企業用戶
                         </template>
