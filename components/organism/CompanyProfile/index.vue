@@ -534,7 +534,6 @@ async function saveCompanyInfo(config) {
         blobPromises.push(promise)
     }
     if (state.companyLogo && typeof state.companyLogo !== 'string') {
-        console.log(state.companyLogo);
         const promise = repoCompany.putCompanyLogoBlob(state.companyLogo)
         blobPromises.push(promise)
     }
