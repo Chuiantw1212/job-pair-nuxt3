@@ -10,7 +10,7 @@
                             <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png">
                         </li>
                     </ul>
-                </div>
+                </div> 
                 <div class="glide__arrows" data-glide-el="controls">
                     <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
                     <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
