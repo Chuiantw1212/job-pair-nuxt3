@@ -133,11 +133,12 @@ async function loadConsultants() {
         return
     }
     // 建構預設諮詢師
+    const validItems = response.data.filter(item => !!item.email)
     const recommendConsultant = {
         name: "為您安排",
         id: "recommend",
     }
-    const shuffled = shuffle(response.data)
+    const shuffled = shuffle(validItems)
     const consultants = [recommendConsultant, ...shuffled]
     const allFeedBacks = []
     consultants.forEach(consultant => {
