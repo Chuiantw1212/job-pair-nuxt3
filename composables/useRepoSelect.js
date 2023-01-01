@@ -217,7 +217,7 @@ export default defineStore('select', () => {
     async function getQuestions(store, params) {
         const response = await axios.request({
             method: 'get',
-            url: `/question`,
+            url: `/select/question`,
             params,
         })
         state.questionsRes = response.data
