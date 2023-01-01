@@ -3,7 +3,7 @@
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
         <section v-if="state.companyInfo" id="company__info" class="company__section mt-4">
             <div class="company__bannerGroup">
-                <img v-if="state.companyInfo.banner" class="company__banner company__banner--fit-content"
+                <img v-if="state.companyInfo.banner" alt="banner" class="company__banner company__banner--fit-content"
                     :src="state.companyInfo.banner" />
                 <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
             </div>
@@ -39,8 +39,8 @@
                 <div v-if="state.companyInfo" class="features__item">
                     <span class="item__header">產業類別</span>
                     <span v-for="(value, index) in state.companyInfo.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
-                    }}</span>
+        $optionText(value, repoSelect.industryItems)
+}}</span>
                 </div>
             </div>
         </section>
@@ -63,16 +63,17 @@
                         <ul class="glide__slides">
                             <template v-for="(image, index) in state.companyInfo.images" :key="index">
                                 <li class="glide__slide">
-                                    <button class="env__glideButton" @click="state.focusedImageSrc = image.url">
+                                    <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
+                                        aria-label="換圖片">
                                         <img class="env__glideImage" :style="{
-                                            'background-image': `url(${image.url})`,
-                                        }" />
+    'background-image': `url(${image.url})`,
+}" />
                                     </button>
                                 </li>
                             </template>
                         </ul>
                     </div>
-                    <div data-glide-el="controls">
+                    <!-- <div data-glide-el="controls">
                         <button class="slider__arrow slider__arrow--prev glide__arrow glide__arrow--prev"
                             data-glide-dir="<">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
@@ -88,7 +89,7 @@
                                     d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z" />
                             </svg>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
