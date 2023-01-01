@@ -10,7 +10,7 @@
                             <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png">
                         </li>
                     </ul>
-                </div> 
+                </div>
                 <div class="glide__arrows" data-glide-el="controls">
                     <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
                     <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
@@ -92,15 +92,15 @@
             <h2 class="affiliate__header">我們的合作夥伴</h2>
             <div class="affiliate__body">
                 <NuxtLink v-for="(item, index) in state.affiliate" class="body__imageWrap" :key="index"
-                    :to="`/company/${item.organizationId}`">
-                    <img class="body__image" :src="item.logo" />
+                    :to="`/company/${item.organizationId}`" aria-label="檢視公司">
+                    <img class="body__image" alt="logo" :src="item.logo" />
                 </NuxtLink>
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
                 <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
-                    :to="`/company/${item.organizationId}`">
-                    <img class="body__image" :src="item.image" />
+                    :to="`/company/${item.organizationId}`" aria-label="檢視公司">
+                    <img class="body__image" alt="logo" :src="item.image" />
                 </NuxtLink>
             </div>
         </div>
