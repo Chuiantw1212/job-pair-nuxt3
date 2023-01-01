@@ -47,10 +47,7 @@ export default defineNuxtConfig({
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
         // https://nitro.unjs.io/config#compresspublicassets
-        compressPublicAssets: {
-            gzip: true,
-            brotli: true,
-        },
+        compressPublicAssets: true,
         // https://content.nuxtjs.org/guide/recipes/sitemap/
         prerender: {
             routes: ['/sitemap.xml']

@@ -1,44 +1,44 @@
 <template>
     <div class="company" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-        <section v-if="state.companyInfo" id="company__info" class="company__section mt-4">
+        <section id="company__info" class="company__section mt-4">
             <div class="company__bannerGroup">
-                <img v-if="state.companyInfo.banner" alt="banner" class="company__banner company__banner--fit-content"
-                    :src="state.companyInfo.banner" />
+                <img v-if="state.companyInfo?.banner" alt="banner" class="company__banner company__banner--fit-content"
+                    :src="state.companyInfo?.banner" />
                 <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
             </div>
             <div class="company__card company__basic">
                 <div class="basic__basicGroup1">
-                    <div v-if="state.companyInfo.logo" class="basic__logo"
-                        :style="{ 'background-image': `url(${state.companyInfo.logo})` }">
+                    <div v-if="state.companyInfo?.logo" class="basic__logo"
+                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
                     </div>
                     <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
                     </div>
-                    <div class="basic__header">{{ state.companyInfo.name }}</div>
+                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
                 </div>
                 <div class="d-none d-lg-flex basic__basicGroup2">
-                    <div v-if="state.companyInfo.numberOfEmployees" class="basicGroup__item">
+                    <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
                         <img src="~/assets/company/icon_User.svg" />
-                        {{ state.companyInfo.numberOfEmployees }}
+                        {{ state.companyInfo?.numberOfEmployees }}
                     </div>
                     <div class="basicGroup__item">
                         <img src="~/assets/company/icon_Environment.svg" />
                         {{ getLocationText() }}
                     </div>
-                    <div v-if="state.companyInfo.capital" class="basicGroup__item">
+                    <div v-if="state.companyInfo?.capital" class="basicGroup__item">
                         <img src="~/assets/company/icon_Wallet.svg" />
-                        資本額 {{ getCapical(state.companyInfo.capital) }}
+                        資本額 {{ getCapical(state.companyInfo?.capital) }}
                     </div>
                 </div>
             </div>
-            <div v-if="state.companyInfo" class="d-lg-none company__card company__features">
+            <div class="d-lg-none company__card company__features">
                 <div class="features__item">
                     <span class="item__header">地點</span>
                     <span class="item__body">{{ getLocationText() }}</span>
                 </div>
-                <div v-if="state.companyInfo" class="features__item">
+                <div class="features__item">
                     <span class="item__header">產業類別</span>
-                    <span v-for="(value, index) in state.companyInfo.industry" :key="index" class="item__body">{{
+                    <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
         $optionText(value, repoSelect.industryItems)
 }}</span>
                 </div>
@@ -46,22 +46,25 @@
         </section>
         <div class="company__body">
             <div class="body__textGroup">
-                <div v-if="state.companyInfo" class="company__card company__intro">
+                <div class="company__card company__intro">
                     <div class="card__header">公司介紹</div>
-                    <div class="card__body" v-html="state.companyInfo.description"></div>
+                    <div class="card__body">
+                        <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
+                    </div>
                 </div>
-                <div v-if="state.companyInfo" class="company__card company__welfare">
+                <div class="company__card company__welfare">
                     <div class="card__header">公司福利</div>
-                    <div class="card__body" v-html="state.companyInfo.jobBenefits"></div>
+                    <div class="card__body">
+                        <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
+                    </div>
                 </div>
             </div>
-            <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"
-                v-show="state.companyInfo.images" class="company__env">
+            <div v-show="state.companyInfo?.images" class="company__env">
                 <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                 <div class="glide" :class="`glide${state.id}`">
                     <div class="glide__track" data-glide-el="track">
                         <ul class="glide__slides">
-                            <template v-for="(image, index) in state.companyInfo.images" :key="index">
+                            <template v-for="(image, index) in state.companyInfo?.images" :key="index">
                                 <li class="glide__slide">
                                     <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                         aria-label="換圖片">
