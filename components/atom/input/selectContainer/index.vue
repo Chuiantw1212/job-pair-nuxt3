@@ -3,7 +3,7 @@
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
             <span class="placeholder__text">{{ placeholder }}</span>
-            <img src="./icon_Down.svg" class="inputDropdownContainer__icon">
+            <img src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
             <!-- <img > -->
         </button>
         <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
