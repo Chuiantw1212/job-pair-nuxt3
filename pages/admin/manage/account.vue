@@ -45,7 +45,7 @@
 </template>
 <script setup>
 import firebase from "firebase/compat/app"
-import { identicon } from 'minidenticons'
+// import { identicon } from 'minidenticons'
 const { $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
@@ -75,8 +75,8 @@ watch(() => repoAuth.state.user, (newValue) => {
 }, { immediate: true })
 // methods
 function setIdenticon() {
-    const messageIcon = identicon(state.tempUser.chatName)
-    state.chatIcon = messageIcon
+    // const messageIcon = identicon(state.tempUser.chatName)
+    // state.chatIcon = messageIcon
 }
 async function logout() {
     localStorage.removeItem("user")
