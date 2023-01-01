@@ -1,7 +1,7 @@
 <template>
     <div v-if="state.isVisible" class="bubble">
         <img class="bubble__monica" src="./img_bubble_girl.svg">
-        <button class="bubble__cancel" @click="state.isVisible = false">
+        <button class="bubble__cancel" aria-label="cancel" @click="state.isVisible = false">
             <img src="./Icon.svg">
         </button>
         <img src="./Group.svg">
