@@ -811,6 +811,7 @@ async function initialize() {
 
         .jobView__map {
             .map__iframe {
+                min-height: 360px;
                 width: 100%;
                 border-radius: 10px;
             }
