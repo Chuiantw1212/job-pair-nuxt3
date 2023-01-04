@@ -3,8 +3,9 @@
         <div class="accordion__header" :class="{ 'accordion__header--isOpened': modelValue }"
             @click="$emit('update:modelValue', !modelValue)">
             <span>{{ placeholder }}</span>
-            <img v-if="arrow === 'up'" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
-            <img v-if="arrow === 'right'" class="accordion__image accordion__image__right" src="./icon_Down.svg" />
+            <img v-if="arrow === 'up'" alt="up" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
+            <img v-if="arrow === 'right'" alt="right" class="accordion__image accordion__image__right"
+                src="./icon_Down.svg" />
         </div>
         <div class="accordion__layer" :class="{ 'accordion__layer--isOpened': modelValue }">
             <slot></slot>

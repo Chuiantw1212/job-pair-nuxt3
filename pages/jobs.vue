@@ -103,7 +103,7 @@
                     <template v-else>符合您篩選條件的共{{ state.count }}個職缺</template>
                 </div>
                 <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
-                    <img src="~/assets/jobs/icon_Filter.svg" />
+                    <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
                     <span class="filter__desc">篩選
                         <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
                     </span>

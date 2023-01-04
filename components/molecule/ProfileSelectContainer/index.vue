@@ -8,7 +8,7 @@
             <div class="inputDropdownContainer__trigger__header">
                 <slot name="header"></slot>
             </div>
-            <img v-if="!disabled" src="./icon_Down.svg" class="inputDropdownContainer__icon">
+            <img v-if="!disabled" src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
         </button>
         <div class="inputDropdownContainer__layer"
             :class="{ 'inputDropdownContainer__layer--flat': flat, 'inputDropdownContainer__layer--isOn': modelValue }">

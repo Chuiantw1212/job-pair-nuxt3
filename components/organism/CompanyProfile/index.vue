@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <div v-if="state.isNewCompay" class="profile__quick"> 
+            <div v-if="state.isNewCompay" class="profile__quick">
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
                     在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
@@ -498,24 +498,6 @@ async function saveCompanyInfo(config) {
             return
         }
     }
-    $sweet.loader(true)
-    const updatedCompany = await refineAndUpdateCompanyInfo()
-    if (!updatedCompany) {
-        return
-    }
-    repoAuth.setCompany(updatedCompany)
-    if (to) {
-        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
-            title: '身分驗證',
-            icon: 'info',
-            confirmButtonText: '發佈職缺',
-        })
-        router.push(to)
-    } else {
-        $sweet.succeed()
-    }
-}
-async function refineAndUpdateCompanyInfo() {
     state.companyInfo.jobBenefitFlags = {}
     state.benefitFlags.forEach(welfareType => {
         const labels = jobBenefitsConfig[welfareType]
@@ -532,6 +514,7 @@ async function refineAndUpdateCompanyInfo() {
      * 這個時間點admin已經註冊，
      * 但寫入一律用user.uid操作
      */
+    $sweet.loader(true)
     let companyRes = null
     if (state.companyInfo.id) {
         companyRes = await repoCompany.patchCompany(state.companyInfo)
@@ -544,7 +527,6 @@ async function refineAndUpdateCompanyInfo() {
     if (companyRes.status !== 200) {
         return false
     }
-    //
     const updatedResult = companyRes.data
     const blobPromises = []
     if (state.companyBanner && typeof state.companyBanner !== 'string') {
@@ -564,7 +546,17 @@ async function refineAndUpdateCompanyInfo() {
     if (hasError) {
         return false
     }
-    return updatedResult
+    repoAuth.setCompany(updatedResult)
+    if (to) {
+        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
+            title: '身分驗證',
+            icon: 'info',
+            confirmButtonText: '發佈職缺',
+        })
+        router.push(to)
+    } else {
+        $sweet.succeed()
+    }
 }
 </script>
 <style lang="scss" scoped>
