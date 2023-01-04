@@ -6,7 +6,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "build": "npx cross-env NITRO_PRESET=firebase nuxt build",
-    "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
+    "predeploy": "firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy",
     "prehost": "firebase use job-pair-taiwan-dev",
     "host": "firebase deploy --only hosting"
@@ -24,7 +24,7 @@
     "buffer": "^6.0.3",
     "firebase": "^9.13.0",
     "firebase-admin": "^11.2.0",
-    "firebase-functions": "^4.1.0",
+    "firebase-functions": "^4.1.1",
     "firebaseui": "^6.0.1",
     "flatpickr": "^4.6.13",
     "fuse.js": "^6.6.2",
