@@ -212,8 +212,8 @@ async function initializeSearch() {
         return
     }
     // 依照適配度排序
-    const results = await repoJob.getJobProspect(state.searchForm)
     state.applications = []
+    const results = await repoJob.getJobProspect(state.searchForm)
     const items = [...results.data,]
     items.sort((a, b) => {
         return b.similarity - a.similarity
