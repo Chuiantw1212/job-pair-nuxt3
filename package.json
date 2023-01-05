@@ -5,7 +5,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "build": "npx cross-env NITRO_PRESET=azure nuxt build",
+    "build": "nuxt build",
     "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy"
   },

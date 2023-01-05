@@ -46,6 +46,7 @@ export default defineNuxtConfig({
     },
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
+        preset: 'azure-functions',
         // https://nitro.unjs.io/config#compresspublicassets
         compressPublicAssets: {
             gzip: true,
