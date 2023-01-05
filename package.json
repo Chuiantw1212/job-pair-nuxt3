@@ -5,8 +5,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "build": "npx cross-env NITRO_PRESET=firebase nuxt build",
-    "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
+    "build": "nuxt build",
+    "predeploy": "cd .output/server && rimraf node_modules && npm install && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy"
   },
   "devDependencies": {
@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
-    "@nuxtjs/pwa": "^3.3.5",
     "@pinia/nuxt": "^0.4.6",
     "aos": "^2.3.4",
     "axios": "^1.2.1",
