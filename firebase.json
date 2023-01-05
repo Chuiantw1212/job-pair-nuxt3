@@ -11,17 +11,6 @@
         "source": "**",
         "function": "server"
       }
-    ],
-    "headers": [
-      {
-        "source": "/**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=31536000"
-          }
-        ]
-      }
     ]
   }
 }
