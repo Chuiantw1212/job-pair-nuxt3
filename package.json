@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "cd .output && func start",
     "postinstall": "nuxt prepare",
     "build": "nuxt build",
     "predeploy": "cd ./.output/server && npm install && firebase use job-pair-taiwan-dev",
