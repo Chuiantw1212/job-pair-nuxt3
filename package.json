@@ -9,6 +9,9 @@
     "predeploy": "cd .output/server && rimraf node_modules && npm install && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy"
   },
+  "engines": {
+    "node": "16"
+  },
   "devDependencies": {
     "firebase-admin": "^11.4.1",
     "firebase-functions": "^4.1.1",
