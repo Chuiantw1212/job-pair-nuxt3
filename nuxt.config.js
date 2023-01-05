@@ -1,6 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
 export default defineNuxtConfig({
+    ssr: false,
+    router: {
+        mode: 'hash'
+    },
     app: {
         head: {
             title: 'Job Pair',
