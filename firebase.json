@@ -3,7 +3,6 @@
     "source": ".output/server"
   },
   "hosting": {
-    "site": "job-pair-taiwan-dev",
     "public": ".output/public",
     "cleanUrls": true,
     "rewrites": [
