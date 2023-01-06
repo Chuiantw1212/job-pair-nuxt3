@@ -68,20 +68,23 @@
                             </div>
                         </td>
                         <td v-if="state.jobFields.includes('responsibilities')">
-                            {{ $optionText(job.responsibilities,
-                                    repoSelect.state.selectByQueryRes?.responsibilities)
+                            {{
+                                $optionText(job.responsibilities,
+                                repoSelect.state.selectByQueryRes?.responsibilities)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('employmentType')">
                             <div v-for="(item, index) in job.employmentType" :key="`employmentType${index}`">
-                                {{ $optionText(item,
+                                {{
+                                    $optionText(item,
                                         repoSelect.state.selectByQueryRes?.employmentType)
                                 }}
                             </div>
                         </td>
                         <td v-if="state.jobFields.includes('salaryType')">
-                            {{ $optionText(job.salaryType,
-                                    repoSelect.state.selectByQueryRes?.salaryType)
+                            {{
+                                $optionText(job.salaryType,
+                                repoSelect.state.selectByQueryRes?.salaryType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('salaryMin')">
@@ -90,8 +93,9 @@
                             </template>
                         </td>
                         <td v-if="state.jobFields.includes('jobLocationType')">
-                            {{ $optionText(job.jobLocationType,
-                                    repoSelect.state.selectByQueryRes?.jobLocationType)
+                            {{
+                                $optionText(job.jobLocationType,
+                                repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('addressRegion')">
@@ -293,7 +297,7 @@ function debounce(func, delay = 800) {
 }
 async function addJobDraft() {
     const { company } = repoAuth.state
-    const { id, addressRegion, addressLocality, streetAddress } = company
+    const { id, addressRegion, addressLocality, streetAddress, remark = '' } = company
     const job = {
         status: "closed",
         organizationId: id,
@@ -301,6 +305,7 @@ async function addJobDraft() {
         addressRegion,
         addressLocality,
         streetAddress,
+        remark,
     }
     state.searchLike = ""
     // 插入並打開第一個品項

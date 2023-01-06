@@ -53,6 +53,9 @@
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
+                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
+                        </LazyAtomInputText>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
@@ -68,11 +71,11 @@
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
                             </LazyAtomInputText>
                         </div>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
-                            class="mb-2" required>
+                        <LazyAtomInputText v-model="state.companyInfo.remark" name="地址備註"
+                            placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
-                            class="mt-3 mb-2">
+                            class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
                             placeholder="請輸入阿拉伯數字" class="mb-2">
@@ -221,6 +224,7 @@ function getDefaultCompany(id = '') {
         url: {
             default: ''
         },
+        remark: ''
     }
     return companyInfo
 }
