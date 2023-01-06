@@ -37,24 +37,15 @@
                         </span>
                         <span class="item__body">
                             <template v-for="(item, index) in state.job?.employmentType">
-                                {{ $filter.optionText(item,
-        repoSelect.state.selectByQueryRes?.employmentType)
-}} ·
+                                {{
+                                    $filter.optionText(item,
+                                        repoSelect.state.selectByQueryRes?.employmentType)
+                                }} ·
                             </template>
-                            {{ $filter.optionText(state.job?.responsibilities,
-        repoSelect.state.selectByQueryRes?.responsibilities)
-}}</span>
-                    </div>
-                    <div v-if="getJobAddress()" class="features__item">
-                        <span class="item__header">
-                            地點
-                        </span>
-                        <span class="item__body">
-                            {{ getJobAddress() }}
-                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank">
-                                <img class="body__map__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
-                            </a>
-                        </span>
+                            {{
+                                $filter.optionText(state.job?.responsibilities,
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
+                            }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
@@ -68,9 +59,30 @@
                         </span>
                         <span class="item__body">
                             {{
-        $filter.optionText(state.job?.jobLocationType,
-            repoSelect.state.selectByQueryRes?.jobLocationType)
-}}
+                                $filter.optionText(state.job?.jobLocationType,
+                                    repoSelect.state.selectByQueryRes?.jobLocationType)
+                            }}
+                        </span>
+                    </div>
+                    <div v-if="getJobAddress()" class="features__item">
+                        <span class="item__header">
+                            地址
+                        </span>
+                        <span class="item__body">
+                            {{ getJobAddress() }}
+                            <a class="item__body__map d-lg-none" :href="getEncodedMapLink()" target="_blank">
+                                <img class="body__map__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                            </a>
+                        </span>
+                    </div>
+                    <div v-if="state.job?.remark" class="features__item">
+                        <span class="item__header">
+                            備註
+                        </span>
+                        <span class="item__body">
+                            {{
+                                state.job?.remark
+                            }}
                         </span>
                     </div>
                     <div class="features__item">
