@@ -11,6 +11,9 @@
     "prehost": "firebase use job-pair-taiwan-dev",
     "host": "firebase deploy --only hosting"
   },
+  "engines": {
+    "node": "16"
+  },
   "devDependencies": {
     "nuxt": "^3.0.0",
     "nuxt-jsonld": "^2.0.7",
