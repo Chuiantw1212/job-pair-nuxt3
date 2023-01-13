@@ -82,9 +82,13 @@ export default function setup() {
         }
         const idToken = await auth.currentUser.getIdToken()
         axiosComposable.setToken(idToken)
+        return idToken
     }
     async function signIn(user) {
-        await setIdToken()
+        const idToken = await setIdToken()
+        if (!idToken) {
+            return
+        }
         const signInResult = await repoAuth.postSignin(idToken)
         if (!signInResult) {
             // 避免人求職者與人資Mixin，重複打API
