@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const { $emitter, $bootstrap, $sweet,$requestSelector } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
@@ -67,6 +67,12 @@ async function showSecondConfirm() {
         repoAuth.userSignout()
         router.push({
             name: 'index',
+        })
+        // 刪除帳號後重新整理避免Firebase資料快取
+        setTimeout(() => {
+            if (process.client) {
+                location.reload()
+            }
         })
     }
 }
