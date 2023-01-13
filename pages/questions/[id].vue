@@ -65,6 +65,7 @@ const repoUser = useRepoUser()
 const repoEvent = useRepoEvent()
 const route = useRoute()
 const router = useRouter()
+const loginComposable = useLogin()
 const state = reactive({
     // 注意資料結構共用
     currentIndex: 0,
@@ -132,6 +133,7 @@ async function handleSubmit() {
     repoAuth.state.memberOf = null
     const userData = postResponse.data
     repoAuth.setUser(userData)
+    await loginComposable.setIdToken()
     await repoJob.getJobRecommended()
     $sweet.loader(false)
     // 刪除暫存資料
