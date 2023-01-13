@@ -68,9 +68,12 @@ async function showSecondConfirm() {
         router.push({
             name: 'index',
         })
-        if (process.client) {
-            location.reload()
-        }
+        // 刪除帳號後重新整理避免Firebase資料快取
+        setTimeout(() => {
+            if (process.client) {
+                location.reload()
+            }
+        })
     }
 }
 </script>
