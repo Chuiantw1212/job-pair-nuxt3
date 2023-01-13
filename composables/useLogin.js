@@ -75,14 +75,20 @@ export default function setup() {
             sendEmailLink(type)
         }
     }
-    async function signIn(user) {
+    async function setIdToken() {
         const auth = getAuth()
         if (!auth || !auth.currentUser) {
             return
         }
-        // repoAuth.setUser(user) // 這行附加會造成某些程式碼被跳過
         const idToken = await auth.currentUser.getIdToken()
         axiosComposable.setToken(idToken)
+        return idToken
+    }
+    async function signIn(user) {
+        const idToken = await setIdToken()
+        if (!idToken) {
+            return
+        }
         const signInResult = await repoAuth.postSignin(idToken)
         if (!signInResult) {
             // 避免人求職者與人資Mixin，重複打API
@@ -254,5 +260,6 @@ export default function setup() {
         signIn,
         handleAuthResult,
         sendEmailLink,
+        setIdToken,
     }
 }
