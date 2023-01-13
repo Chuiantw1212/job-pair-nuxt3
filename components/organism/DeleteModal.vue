@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-const { $emitter, $bootstrap, $sweet,$requestSelector } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
@@ -68,6 +68,9 @@ async function showSecondConfirm() {
         router.push({
             name: 'index',
         })
+        if (process.client) {
+            location.reload()
+        }
     }
 }
 </script>
