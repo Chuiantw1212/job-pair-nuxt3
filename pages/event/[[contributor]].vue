@@ -17,7 +17,7 @@
                 </div>
             </div>
             <LazyAtomBtnSimple class="event__button" @click="printPage()">
-                列印頁面
+                儲存頁面
             </LazyAtomBtnSimple>
         </template>
         <template v-else>
