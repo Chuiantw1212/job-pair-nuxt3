@@ -35,7 +35,7 @@
     </div>
 </template>
 <script setup>
-const { $filter, $emitter, $sweet, } = useNuxtApp()
+const { $filter, $emitter, $sweet, $html2canvas, $Canvas2Image } = useNuxtApp()
 const repoEvent = useRepoEvent()
 const repoAuth = useRepoAuth()
 const route = useRoute()
@@ -102,8 +102,9 @@ async function signUp() {
     element.innerHTML = $filter.time(signUpDate)
     $sweet.loader(false)
 }
-function printPage() {
-    print()
+async function printPage() {
+    const canvas = await $html2canvas(document.getElementById('app'))
+    $Canvas2Image.saveAsPNG(canvas, undefined, undefined, '報名結果')
 }
 </script>
 <style lang="scss">
