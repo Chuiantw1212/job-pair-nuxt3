@@ -2,10 +2,8 @@
     <div class="company" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
         <section id="company__info" class="company__section mt-4">
-            <div class="company__bannerGroup">
-                <img v-if="state.companyInfo?.banner" alt="banner" class="company__banner company__banner--fit-content"
-                    :src="state.companyInfo?.banner" />
-                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
+            <div :key="state.renderKey" class="company__bannerGroup">
+                <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
             </div>
             <div class="company__card company__basic">
                 <div class="basic__basicGroup1">
@@ -39,8 +37,8 @@
                 <div class="features__item">
                     <span class="item__header">產業類別</span>
                     <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-        $optionText(value, repoSelect.industryItems)
-}}</span>
+                        $optionText(value, repoSelect.industryItems)
+                    }}</span>
                 </div>
             </div>
         </section>
@@ -69,8 +67,8 @@
                                     <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                         aria-label="換圖片">
                                         <img class="env__glideImage" :style="{
-    'background-image': `url(${image.url})`,
-}" />
+                                            'background-image': `url(${image.url})`,
+                                        }" />
                                     </button>
                                 </li>
                             </template>
@@ -146,7 +144,8 @@ const state = reactive({
     },
     isDesktop: false,
     focusedImageSrc: "",
-    resizeTimer: null
+    resizeTimer: null,
+    renderKey: Math.random()
 })
 const jobItems = ref([])
 // hooks
@@ -208,10 +207,18 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function getCompanyBanner() {
+    if (state.companyInfo?.banner) {
+        return state.companyInfo?.banner
+    } else {
+        return defaultBanner
+    }
+}
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
     state.companyInfo = company
+    state.renderKey = Math.random()
     const { images = [], } = company
     if (images && images.length) {
         state.focusedImageSrc = images[0].url
@@ -285,8 +292,10 @@ function getLocationText() {
     }
 
     .company__banner {
-        width: 100%;
+        width: fit-content;
         display: block;
+        min-height: 96px;
+        max-width: 100%;
     }
 
     .company__basic {
@@ -424,10 +433,6 @@ function getLocationText() {
 
         .company__banner {
             max-height: 432px;
-        }
-
-        .company__banner--fit-content {
-            width: fit-content;
         }
 
         .company__basic {
