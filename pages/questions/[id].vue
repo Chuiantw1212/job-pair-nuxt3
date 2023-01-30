@@ -134,7 +134,7 @@ async function handleSubmit() {
     const userData = postResponse.data
     repoAuth.setUser(userData)
     await loginComposable.setIdToken()
-    await repoJob.getJobRecommended()
+    // await repoJob.getJobRecommended()
     $sweet.loader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
