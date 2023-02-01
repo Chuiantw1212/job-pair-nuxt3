@@ -105,7 +105,7 @@
                         </LazyAtomInputText>
                         <div class="d-flex mt-4">
                             <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language"
-                                v-model="state.job.language" name="語言能力"
+                                v-model="state.job.language" name="外文"
                                 :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
                             </LazyAtomInputSelect>
                             <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度"
@@ -132,10 +132,19 @@
                                         <template v-for="(question, key2) in questionGroup.items"
                                             :key="`questionGroup_${key1}_${key2}`">
                                             <label v-if="question.textCompany" class="questionGroup__question">
-                                                <input v-model="state.job.preference[questionGroup.key]"
+                                                <input v-show="false" v-model="state.job.preference[questionGroup.key]"
                                                     :value="question.value" type="radio"
                                                     :disabled="questionGroup.key === 'culture' || state.disabled"
                                                     class="question__input" />
+                                                <div class="label__circle">
+                                                    <div class="circle__ring">
+
+                                                    </div>
+                                                    <div v-if="state.job.preference[questionGroup.key] === question.value"
+                                                        class="circle__content">
+
+                                                    </div>
+                                                </div>
                                                 {{ question.textCompany }}
                                             </label>
                                         </template>
@@ -471,6 +480,40 @@ defineExpose({
     .jobModal__footer__btn {
         background-color: inherit;
         border: none;
+    }
+}
+
+.label__circle {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+
+    .circle__background {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .circle__ring {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #999999;
+        border-radius: 50%;
+    }
+
+    .circle__content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 14px;
+        height: 14px;
+        background-color: #5ea88e;
+        border-radius: 50%;
     }
 }
 </style>
