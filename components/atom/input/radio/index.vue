@@ -1,7 +1,7 @@
 <template>
     <div class="inputGroup" :ref="`inputGroup`" :key="state.key">
         <div class="inputGroup__nameGroup">
-            <span class="text-danger"></span>
+            <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
         <div class="inputGroup__labelGroup" :class="{ 'inputGroup__label--disabled': disabled }">
@@ -10,7 +10,7 @@
                     <div class="circle__ring">
 
                     </div>
-                    <div v-if="localValue===item.value" class="circle__content">
+                    <div v-if="localValue === item.value" class="circle__content">
 
                     </div>
                 </div>
@@ -59,6 +59,10 @@ const props = defineProps({
     disabled: {
         type: Boolean,
         default: false
+    },
+    required: {
+        type: Boolean,
+        default: false
     }
 })
 // hooks
@@ -79,14 +83,11 @@ const localValue = computed({
     .inputGroup__nameGroup {
         font-size: 16px;
         color: #1f1f1f;
-        margin-bottom: 4px;
-        min-height: 25px;
     }
 
     .inputGroup__labelGroup {
         display: flex;
         gap: 18px;
-        margin-left: 18px;
         min-height: 40px;
         align-items: center;
 

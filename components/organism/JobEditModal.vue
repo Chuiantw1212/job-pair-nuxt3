@@ -53,21 +53,11 @@
                                 </LazyAtomInputCheckMultiple>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <div class="form__salary">
-                            <div class="salary__header mt-4">
-                                <span class="header__text">
-                                    <span class="text-danger">* </span>
-                                    薪資類型</span>
-                                <label v-for="(item, index) in repoSelect.state.selectByQueryRes.salaryType"
-                                    class="header__inputGroup" :key="index">
-                                    <input v-model="state.job.salaryType" type="radio" :value="item.value"
-                                        :disabled="state.disabled" :data-required="true" :data-name="'薪資類型'"
-                                        @change="clearSalary()" />
-                                    {{ item.text }}
-                                </label>
-                                <template v-if="state.job.salaryType === 'monthly'">
-                                    (年薪: {{ getSalaryRange() }})
-                                </template>
+                        <div class="form__salary mt-4">
+                            <div class="salary__type">
+                                <LazyAtomInputRadio v-model="state.job.salaryType" name="薪資類型" required
+                                    :items="repoSelect.state.selectByQueryRes.salaryType">
+                                </LazyAtomInputRadio>
                             </div>
                             <div class="d-md-flex gap-2 mt-4">
                                 <LazyAtomInputMoney v-model="state.job.salaryMin" :name="'經常性起薪'"
@@ -115,11 +105,11 @@
                         </LazyAtomInputText>
                         <div class="d-flex mt-4">
                             <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language"
-                                v-model="state.job.languageType" name="語言能力"
+                                v-model="state.job.language" name="語言能力"
                                 :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
                             </LazyAtomInputSelect>
-                            <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency"
-                                v-model="state.job.languageProficiency"
+                            <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度"
+                                class="ms-3" v-model="state.job.proficiency"
                                 :items="repoSelect.state.selectByQueryRes.proficiency">
                             </LazyAtomInputRadio>
                         </div>
@@ -414,6 +404,7 @@ defineExpose({
     .dropLayer__form {
         .form__salary {
             .salary__header {
+                display: flex;
                 margin-bottom: 4px;
 
                 .header__text {
@@ -423,6 +414,17 @@ defineExpose({
 
                 .header__inputGroup {
                     margin-right: 16px;
+                }
+            }
+
+            .salary__type {
+                display: flex;
+                align-items: center;
+
+                .type__year {
+                    margin-top: 24px;
+                    font-size: 18px;
+                    margin-left: 18px;
                 }
             }
         }
