@@ -113,11 +113,21 @@
                         <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註"
                             placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" :disabled="state.job.jobLocationType === 'fullyRemote'">
                         </LazyAtomInputText>
+                        <div class="d-flex mt-4">
+                            <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language"
+                                v-model="state.job.languageType" name="語言能力"
+                                :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
+                            </LazyAtomInputSelect>
+                            <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency"
+                                v-model="state.job.languageProficiency"
+                                :items="repoSelect.state.selectByQueryRes.proficiency">
+                            </LazyAtomInputRadio>
+                        </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required :toolbar="toolbar" class="mt-4">
+                            required :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required
-                            :disabled="state.disabled" :removePlatformLink="true" :toolbar="toolbar" class="mt-4">
+                            :disabled="state.disabled" :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
