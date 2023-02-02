@@ -19,7 +19,7 @@
  * https://github.com/euvl/vue-js-toggle-button
  */
 export default {
-    name: 'switch',
+    name: 'toggle',
     data() {
         return {
             toggled: false,
