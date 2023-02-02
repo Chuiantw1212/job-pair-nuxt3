@@ -83,6 +83,7 @@ const localValue = computed({
     .inputGroup__nameGroup {
         font-size: 16px;
         color: #1f1f1f;
+        margin-bottom: 4px;
     }
 
     .inputGroup__labelGroup {
