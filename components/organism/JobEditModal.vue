@@ -53,21 +53,11 @@
                                 </LazyAtomInputCheckMultiple>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <div class="form__salary">
-                            <div class="salary__header mt-4">
-                                <span class="header__text">
-                                    <span class="text-danger">* </span>
-                                    薪資類型</span>
-                                <label v-for="(item, index) in repoSelect.state.selectByQueryRes.salaryType"
-                                    class="header__inputGroup" :key="index">
-                                    <input v-model="state.job.salaryType" type="radio" :value="item.value"
-                                        :disabled="state.disabled" :data-required="true" :data-name="'薪資類型'"
-                                        @change="clearSalary()" />
-                                    {{ item.text }}
-                                </label>
-                                <template v-if="state.job.salaryType === 'monthly'">
-                                    (年薪: {{ getSalaryRange() }})
-                                </template>
+                        <div class="form__salary mt-4">
+                            <div class="salary__type">
+                                <LazyAtomInputRadio v-model="state.job.salaryType" name="薪資類型" required
+                                    :items="repoSelect.state.selectByQueryRes.salaryType">
+                                </LazyAtomInputRadio>
                             </div>
                             <div class="d-md-flex gap-2 mt-4">
                                 <LazyAtomInputMoney v-model="state.job.salaryMin" :name="'經常性起薪'"
@@ -113,11 +103,21 @@
                         <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註"
                             placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" :disabled="state.job.jobLocationType === 'fullyRemote'">
                         </LazyAtomInputText>
+                        <div class="d-flex mt-4">
+                            <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language"
+                                v-model="state.job.language" name="外文"
+                                :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
+                            </LazyAtomInputSelect>
+                            <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度"
+                                class="ms-3" v-model="state.job.proficiency"
+                                :items="repoSelect.state.selectByQueryRes.proficiency">
+                            </LazyAtomInputRadio>
+                        </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required :toolbar="toolbar" class="mt-4">
+                            required :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required
-                            :disabled="state.disabled" :removePlatformLink="true" :toolbar="toolbar" class="mt-4">
+                            :disabled="state.disabled" :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -132,10 +132,19 @@
                                         <template v-for="(question, key2) in questionGroup.items"
                                             :key="`questionGroup_${key1}_${key2}`">
                                             <label v-if="question.textCompany" class="questionGroup__question">
-                                                <input v-model="state.job.preference[questionGroup.key]"
+                                                <input v-show="false" v-model="state.job.preference[questionGroup.key]"
                                                     :value="question.value" type="radio"
                                                     :disabled="questionGroup.key === 'culture' || state.disabled"
                                                     class="question__input" />
+                                                <div class="label__circle">
+                                                    <div class="circle__ring">
+
+                                                    </div>
+                                                    <div v-if="state.job.preference[questionGroup.key] === question.value"
+                                                        class="circle__content">
+
+                                                    </div>
+                                                </div>
                                                 {{ question.textCompany }}
                                             </label>
                                         </template>
@@ -404,6 +413,7 @@ defineExpose({
     .dropLayer__form {
         .form__salary {
             .salary__header {
+                display: flex;
                 margin-bottom: 4px;
 
                 .header__text {
@@ -413,6 +423,17 @@ defineExpose({
 
                 .header__inputGroup {
                     margin-right: 16px;
+                }
+            }
+
+            .salary__type {
+                display: flex;
+                align-items: center;
+
+                .type__year {
+                    margin-top: 24px;
+                    font-size: 18px;
+                    margin-left: 18px;
                 }
             }
         }
@@ -459,6 +480,40 @@ defineExpose({
     .jobModal__footer__btn {
         background-color: inherit;
         border: none;
+    }
+}
+
+.label__circle {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+
+    .circle__background {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .circle__ring {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #999999;
+        border-radius: 50%;
+    }
+
+    .circle__content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 14px;
+        height: 14px;
+        background-color: #5ea88e;
+        border-radius: 50%;
     }
 }
 </style>
