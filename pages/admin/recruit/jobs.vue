@@ -114,7 +114,7 @@
 </template>
 <script setup>
 import { nextTick } from 'vue'
-const jobModalRefs = ref([])
+const currentInstance = getCurrentInstance()
 const emit = defineEmits(['update:modelValue'])
 function getDefaultFilter() {
     const defualtFilter = {
@@ -174,7 +174,7 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet } = useNuxtApp()
+const { $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -218,7 +218,7 @@ async function checkJobStatus(newStatus, job, index) {
             state.jobList[index].status = 'closed'
             state.renderKey = Math.random()
             await $sweet.info('職缺資料未完成，確認後繼續完成職缺')
-            const jobModals = jobModalRefs.value
+            const jobModals = currentInstance.refs.jobModalRefs
             const targetModal = jobModals[index]
             targetModal.openModal('active')
             return
@@ -314,10 +314,12 @@ async function addJobDraft() {
     state.jobList.unshift(res.data)
     state.renderKey = Math.random()
     nextTick(() => {
-        const jobModals = jobModalRefs.value
+        const jobModals = currentInstance.refs.jobModalRefs
         const targetModal = jobModals[0]
-        targetModal.openModal()
-        $sweet.loader(false)
+        $requestSelector(`#modal_${res.data.identifier}`, () => {
+            targetModal.openModal()
+            $sweet.loader(false)
+        })
     })
 }
 </script>
