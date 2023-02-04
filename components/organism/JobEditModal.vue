@@ -254,12 +254,10 @@ async function showAlert() {
     }
 }
 function openModal(status = null) {
-    $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
-        state.bsModal.show()
-        if (status) {
-            state.job.status = status
-        }
-    })
+    state.bsModal.show()
+    if (status) {
+        state.job.status = status
+    }
 }
 function closeModal() {
     state.bsModal.hide()

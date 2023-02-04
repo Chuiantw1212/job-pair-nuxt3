@@ -174,7 +174,7 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet } = useNuxtApp()
+const { $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -316,8 +316,10 @@ async function addJobDraft() {
     nextTick(() => {
         const jobModals = jobModalRefs.value
         const targetModal = jobModals[0]
-        targetModal.openModal()
-        $sweet.loader(false)
+        $requestSelector(`#modal_${res.data.identifier}`, () => {
+            targetModal.openModal()
+            $sweet.loader(false)
+        })
     })
 }
 </script>
