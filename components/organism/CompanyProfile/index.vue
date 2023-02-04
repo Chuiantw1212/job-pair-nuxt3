@@ -531,25 +531,30 @@ async function saveCompanyInfo(config) {
     if (companyRes.status !== 200) {
         return false
     }
-    const updatedResult = companyRes.data
-    const blobPromises = []
+    // set blobs
     if (state.companyBanner && typeof state.companyBanner !== 'string') {
-        const promise = repoCompany.putCompanyBannerBlob(state.companyBanner)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyBannerBlob(state.companyBanner)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
     if (state.companyLogo && typeof state.companyLogo !== 'string') {
-        const promise = repoCompany.putCompanyLogoBlob(state.companyLogo)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyLogoBlob(state.companyLogo)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
     if (state.companyImages.length) {
-        const promise = repoCompany.putCompanyPhotos(state.companyImages)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyPhotos(state.companyImages)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
-    const results = await Promise.all(blobPromises)
-    const hasError = results.some(result => result.status !== 200)
-    if (hasError) {
-        return false
-    }
+    // set company
+    const updatedResult = companyRes.data
     repoAuth.setCompany(updatedResult)
     if (to) {
         await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
