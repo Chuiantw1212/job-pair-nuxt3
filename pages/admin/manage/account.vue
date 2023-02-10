@@ -4,7 +4,8 @@
             <div class="accountManagement__card">
                 <h4>帳號資訊</h4>
                 <div class="accountManagement__form">
-                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3"></LazyAtomInputText>
+                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
+                    </LazyAtomInputText>
                     <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
                     <!-- <template v-if="!toggleChangePassword">
@@ -81,11 +82,15 @@ function setIdenticon() {
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
-    const user = firebase.auth().currentUser
-    if (!user) {
-        router.push({
-            name: "admin",
-        })
+    let user = null
+    try {
+        user = firebase.auth().currentUser
+    } finally {
+        if (!user) {
+            router.push({
+                name: "admin",
+            })
+        }
     }
 }
 async function handleCredential() {
