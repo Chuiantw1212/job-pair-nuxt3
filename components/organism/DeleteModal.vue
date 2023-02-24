@@ -24,7 +24,7 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
+import { reactive, onMounted, } from 'vue'
 const { $emitter, $bootstrap, $sweet, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
@@ -32,6 +32,7 @@ const state = reactive({
 const router = useRouter()
 const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
+const repoAdmin = useRepoAdmin()
 // hooks
 onMounted(() => {
     $requestSelector(`#deleteModal`, (modelElement) => {
@@ -62,18 +63,42 @@ async function showSecondConfirm() {
     }
     hideModal()
     // 執行刪除流程
-    const res = await repoUser.deleteUser()
-    if (res.status === 200) {
-        repoAuth.userSignout()
-        router.push({
-            name: 'index',
-        })
-        // 刪除帳號後重新整理避免Firebase資料快取
-        setTimeout(() => {
-            if (process.client) {
-                location.reload()
+    switch (repoAuth.state.user.type) {
+        case 'employee': {
+            const res = await repoUser.deleteUser()
+            if (res.status === 200) {
+                repoAuth.userSignout()
+                router.push({
+                    name: 'index',
+                })
+                // 刪除帳號後重新整理避免Firebase資料快取
+                setTimeout(() => {
+                    if (process.client) {
+                        location.reload()
+                    }
+                })
             }
-        })
+            break;
+        }
+        case 'admin': {
+            const res = await repoAdmin.deleteAdminCompany()
+            if (res.status === 200) {
+                repoAuth.userSignout()
+                router.push({
+                    name: 'admin',
+                })
+                // 刪除帳號後重新整理避免Firebase資料快取
+                setTimeout(() => {
+                    if (process.client) {
+                        location.reload()
+                    }
+                }, 1000)
+            }
+            break;
+        }
+        default:
+            console.log('delete user type exception')
+            break;
     }
 }
 </script>

@@ -32,10 +32,18 @@ export default defineStore('admin', () => {
         })
         return response
     }
+    async function deleteAdminCompany() {
+        const response = await axios.request({
+            method: 'delete',
+            url: `/admin/company`,
+        })
+        return response
+    }
     return {
         getAdminCompany,
         patchAdmin,
         postAdmin,
-        postAdminNewCompany
+        postAdminNewCompany,
+        deleteAdminCompany
     }
 })

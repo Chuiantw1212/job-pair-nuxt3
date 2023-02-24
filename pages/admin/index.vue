@@ -4,8 +4,15 @@
             <img class="admin__title" src="@/assets/admin/index/title.png">
             <button class="admin__button">開始配對</button>
         </div>
-        <div>
-            <div>Job Pair 與 一般求職平台比較</div>
+        <div class="admin__cardGroup">
+            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
+            <div class="cardGroup__body">
+                <img class="body__card" src="@/assets/admin/Group_881.png">
+                <img class="body__card" src="@/assets/admin/Group_882.png">
+                <img class="body__card" src="@/assets/admin/Group_883.png">
+                <img class="body__card" src="@/assets/admin/Group_884.png">
+                <img class="body__card" src="@/assets/admin/Group_885.png">
+            </div>
         </div>
         <div class="admin__definition">
             <div class="definition__title">
@@ -19,8 +26,8 @@
         <div class="admin__partner">
             <h1 class="partner__header">與我們合作的夥伴</h1>
             <div class="partner__bodyGroup">
-                <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
-                    :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index" :href="item?.url?.default"
+                    target="_blank" aria-label="more about this company">
                     <img class="anchor__image" alt="logo" :src="item.logo" />
                     <span class="anchor__name">{{ item.name }}</span>
                 </a>
@@ -135,6 +142,32 @@ function openAdminModal() {
         }
     }
 
+    .admin__cardGroup {
+        padding: 40px 37px;
+
+        .cardGroup__header {
+            text-align: center;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 130%;
+            color: #EEB540;
+        }
+
+        .cardGroup__body {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+
+            .body__card {
+                width: 277px;
+                margin: auto;
+                display: block;
+            }
+        }
+    }
+
     .admin__definition {
         background-image: url('@/assets/admin/index/bg_home.png');
         padding: 80px 30px;
@@ -202,6 +235,14 @@ function openAdminModal() {
                 max-width: 170px;
                 white-space: pre-wrap;
             }
+        }
+    }
+}
+
+@media screen and (min-width:992px) {
+    .admin {
+        .admin__bannerGroup {
+            background-image: url('@/assets/admin/index/img1.png');
         }
     }
 }
