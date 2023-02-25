@@ -2,9 +2,12 @@
     <div class="admin">
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/admin/index/title.png">
+            <img class="admin__title admin__title--desktop" src="@/assets/admin/index/title_desktop.svg">
             <button class="admin__button">開始配對</button>
         </div>
         <div class="admin__cardGroup">
+            <img class="cardGroup__decoration cardGroup__decoration--1" src="@/assets/admin/index/bg2.svg">
+            <img class="cardGroup__decoration cardGroup__decoration--2" src="@/assets/admin/index/bg3.svg">
             <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
             <div class="cardGroup__body">
                 <img class="body__card" src="@/assets/admin/Group_881.png">
@@ -24,14 +27,16 @@
             </div>
         </div>
         <div class="admin__partner">
-            <h1 class="partner__header">與我們合作的夥伴</h1>
-            <div class="partner__bodyGroup">
-                <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index" :href="item?.url?.default"
-                    target="_blank" aria-label="more about this company">
-                    <img class="anchor__image" alt="logo" :src="item.logo" />
-                    <span class="anchor__name">{{ item.name }}</span>
-                </a>
-            </div>
+            <template v-if="state.affiliate.length !== 0">
+                <h1 class="partner__header">與我們合作的夥伴</h1>
+                <div class="partner__bodyGroup">
+                    <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
+                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                        <img class="anchor__image" alt="logo" :src="item.logo" />
+                        <span class="anchor__name">{{ item.name }}</span>
+                    </a>
+                </div>
+            </template>
             <h1 class="partner__header mt-5">與我們合作的企業</h1>
             <div class="partner__bodyGroup">
                 <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
@@ -129,6 +134,10 @@ function openAdminModal() {
             display: block;
         }
 
+        .admin__title--desktop {
+            display: none;
+        }
+
         .admin__button {
             position: absolute;
             top: calc(50% + 72px);
@@ -159,6 +168,7 @@ function openAdminModal() {
             flex-direction: column;
             gap: 20px;
             margin-top: 20px;
+            position: inherit;
 
             .body__card {
                 width: 277px;
@@ -241,8 +251,59 @@ function openAdminModal() {
 
 @media screen and (min-width:992px) {
     .admin {
+
         .admin__bannerGroup {
             background-image: url('@/assets/admin/index/img1.png');
+            background-size: contain;
+            min-height: 50vw;
+
+            .admin__title {
+                display: none;
+            }
+
+            .admin__title--desktop {
+                display: block;
+                transform: unset;
+                top: 16vw;
+                left: 12vw;
+                width: 44vw;
+            }
+
+            .admin__button {
+                position: absolute;
+                top: 29vw;
+                left: 12vw;
+                transform: unset;
+                border: 1px solid #FFFFFF;
+                border-radius: 50px;
+                background-color: rgba(0, 0, 0, 0);
+                color: white;
+                padding: 10px 33px;
+                width: 224px;
+                height: 70px;
+                font-weight: 900;
+                font-size: 30px;
+                line-height: 130%;
+            }
+        }
+
+        .admin__cardGroup {
+            position: relative;
+            padding: 40px 0px;
+
+            .cardGroup__decoration {
+                position: absolute;
+            }
+
+            .cardGroup__decoration--1 {
+                top: 321px;
+                left: 0;
+            }
+
+            .cardGroup__decoration--2 {
+                bottom: 100px;
+                right: 0;
+            }
         }
     }
 }
