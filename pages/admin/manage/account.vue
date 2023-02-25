@@ -2,31 +2,35 @@
     <div class="container accountManagement">
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
-                <h4>帳號資訊</h4>
+                <div class="card__headerGroup">
+                    <h4>帳號資訊</h4>
+                    <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
+                </div>
                 <div class="accountManagement__form">
-                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3"></LazyAtomInputText>
+                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
+                    </LazyAtomInputText>
                     <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
                     <!-- <template v-if="!toggleChangePassword">
-                    <form>
-                        <div class="mb-1">密碼變更</div>
-                        <div class="form__password__inputGroup mb-3">
-                            <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
+                        <form>
+                            <div class="mb-1">密碼變更</div>
+                            <div class="form__password__inputGroup mb-3">
+                                <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
+                                </InputPass>
+                                <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
+                            </div>
+                        </form>
+                    </template>
+                    <template v-if="toggleChangePassword">
+                        <form>
+                            <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
+                            <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
                             </InputPass>
-                            <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
-                        </div>
-                    </form>
-                </template>
-                <template v-if="toggleChangePassword">
-                    <form>
-                        <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
-                        <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                        </InputPass>
-                        <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                        </InputPass>
-                        <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
-                    </form>
-                </template> -->
+                            <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
+                            </InputPass>
+                            <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
+                        </form>
+                    </template> -->
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
@@ -81,11 +85,15 @@ function setIdenticon() {
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
-    const user = firebase.auth().currentUser
-    if (!user) {
-        router.push({
-            name: "admin",
-        })
+    let user = null
+    try {
+        user = firebase.auth().currentUser
+    } finally {
+        if (!user) {
+            router.push({
+                name: "admin",
+            })
+        }
     }
 }
 async function handleCredential() {
@@ -143,6 +151,10 @@ async function submitProfile() {
         background-color: #fafafa;
         padding: 45px 64px;
         border-radius: 10px;
+        .card__headerGroup{
+            display: flex;
+            gap: 8px;
+        }
     }
 
     .accountManagement__form {
