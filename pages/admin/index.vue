@@ -6,24 +6,34 @@
             <button class="admin__button">開始配對</button>
         </div>
         <div class="admin__cardGroup">
-            <img class="cardGroup__decoration cardGroup__decoration--1" src="@/assets/admin/index/bg2.svg">
-            <img class="cardGroup__decoration cardGroup__decoration--2" src="@/assets/admin/index/bg3.svg">
-            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-            <div class="cardGroup__body">
-                <img class="body__card" src="@/assets/admin/Group_881.png">
-                <img class="body__card" src="@/assets/admin/Group_882.png">
-                <img class="body__card" src="@/assets/admin/Group_883.png">
-                <img class="body__card" src="@/assets/admin/Group_884.png">
-                <img class="body__card" src="@/assets/admin/Group_885.png">
-            </div>
+            <template v-if="device.state.isDesktop">
+                <img class="cardGroup__decoration cardGroup__decoration--1" src="@/assets/admin/index/bg2.svg">
+                <img class="cardGroup__decoration cardGroup__decoration--2" src="@/assets/admin/index/bg3.svg">
+                <div class="cardGroup__body">
+                    <img src="@/assets/admin/index/Group_867.png">
+                </div>
+            </template>
+            <template v-else>
+                <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
+                <div class="cardGroup__body">
+                    <img class="body__card" src="@/assets/admin/Group_881.png">
+                    <img class="body__card" src="@/assets/admin/Group_882.png">
+                    <img class="body__card" src="@/assets/admin/Group_883.png">
+                    <img class="body__card" src="@/assets/admin/Group_884.png">
+                    <img class="body__card" src="@/assets/admin/Group_885.png">
+                </div>
+            </template>
         </div>
         <div class="admin__definition">
-            <div class="definition__title">
-                什麼是適配度？
-            </div>
-            <hr class="definition__hr">
-            <div class="definition__desc">
-                求職偏好歸納了求職者在判斷一份工作是否適合自己的關鍵因素，搭配企業端用人偏好的資訊，能夠協助您精準配對適合的公司與職缺。
+            <img v-if="device.state.isDesktop" class="definition__round" src="@/assets/admin/index/round.png">
+            <div class="definition__textGroup">
+                <div class="definition__title">
+                    什麼是適配度？
+                </div>
+                <hr class="definition__hr">
+                <div class="definition__desc">
+                    求職偏好歸納了求職者在判斷一份工作是否適合自己的關鍵因素，搭配企業端用人偏好的資訊，能夠協助您精準配對適合的公司與職缺。
+                </div>
             </div>
         </div>
         <div class="admin__partner">
@@ -152,7 +162,7 @@ function openAdminModal() {
     }
 
     .admin__cardGroup {
-        padding: 40px 37px;
+        padding: 40px 0;
 
         .cardGroup__header {
             text-align: center;
@@ -169,6 +179,7 @@ function openAdminModal() {
             gap: 20px;
             margin-top: 20px;
             position: inherit;
+            margin: auto;
 
             .body__card {
                 width: 277px;
@@ -290,6 +301,11 @@ function openAdminModal() {
         .admin__cardGroup {
             position: relative;
             padding: 40px 0px;
+            margin: auto;
+
+            .cardGroup__body {
+                width: 868px;
+            }
 
             .cardGroup__decoration {
                 position: absolute;
@@ -303,6 +319,88 @@ function openAdminModal() {
             .cardGroup__decoration--2 {
                 bottom: 100px;
                 right: 0;
+            }
+        }
+
+        .admin__definition {
+            background-image: url('@/assets/admin/index/img2.png');
+            height: 634px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+
+            .definition__round {
+                position: absolute;
+                top: 0;
+                right: 10vw;
+            }
+
+            .definition__textGroup {
+                position: absolute;
+                top: 154px;
+                right: calc(10vw + 81px);
+                width: 565px;
+
+                .definition__title {
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 36px;
+                    line-height: 158%;
+                }
+
+                .definition__desc {
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 30px;
+                    line-height: 200%;
+                    color: #FFFFFF;
+                }
+            }
+
+        }
+
+        .admin__partner {
+            padding: 60px 307px;
+            background-color: white;
+
+            .partner__header {
+                font-style: normal;
+                font-weight: 700;
+                font-size: 50px;
+                line-height: 158%;
+                color: #EEB540;
+            }
+
+            .partner__bodyGroup {
+                display: flex;
+                flex-direction: row;
+                gap: 60px;
+                flex-wrap: wrap;
+                max-width: 1304px;
+                margin: auto;
+            }
+
+            .partner__anchor {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 42px;
+                justify-content: center;
+
+                .anchor__image {
+                    width: 54px;
+                    height: 54px;
+                }
+
+                .anchor__name {
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 130%;
+                    color: #707070;
+                    max-width: 170px;
+                    white-space: pre-wrap;
+                }
             }
         }
     }
