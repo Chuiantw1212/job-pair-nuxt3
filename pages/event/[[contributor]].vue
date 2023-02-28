@@ -96,11 +96,16 @@ async function signUp() {
     clearTimeout(state.timeoutId)
     state.timeoutId = null
     state.isFailed = false
-    const { signUpDate } = response.data
+    const { signUpDate = '' } = response.data
     state.signUpDate = signUpDate
     const element = document.querySelector('#signUpDate')
     element.innerHTML = $filter.time(signUpDate)
     $sweet.loader(false)
+    if (signUpDate) {
+        requestSelector('#userModal', () => {
+            $emitter.emit("hideUserModal")
+        })
+    }
 }
 async function printPage() {
     window.print()

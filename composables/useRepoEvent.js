@@ -7,14 +7,14 @@ export default defineStore('event', () => {
     async function getEventSigned() {
         const response = await axios.request({
             method: 'get',
-            url: `/event`,
+            url: `/event/registration`,
         })
         return response
     }
     async function postSignUp(data) {
         const response = await axios.request({
             method: 'post',
-            url: `/event/signUp`,
+            url: `/event/registration`,
             data,
         })
         return response
