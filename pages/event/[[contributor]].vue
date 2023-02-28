@@ -101,6 +101,11 @@ async function signUp() {
     const element = document.querySelector('#signUpDate')
     element.innerHTML = $filter.time(signUpDate)
     $sweet.loader(false)
+    if (signUpDate) {
+        requestSelector('#userModal', () => {
+            $emitter.emit("hideUserModal")
+        })
+    }
 }
 async function printPage() {
     window.print()
