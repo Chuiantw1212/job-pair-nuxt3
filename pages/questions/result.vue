@@ -8,7 +8,7 @@
                 <div class="final__header">求職偏好已完成！</div>
                 <div class="final__sub">接下來開始編輯個人檔案吧！</div>
                 <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
-                <div v-if="state.isSigned" class="final__text">已成功報名1/16講座活動-年前卡位理想工作</div>
+                <div v-if="state.isSigned" class="final__text">已成功報名03/27講座活動-「職」感升級！用色彩心理學打造你的職場形象優勢</div>
             </div>
             <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
             <div class="result__footer">

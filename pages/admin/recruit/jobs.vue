@@ -70,7 +70,7 @@
                         <td v-if="state.jobFields.includes('responsibilities')">
                             {{
                                 $optionText(job.responsibilities,
-                                repoSelect.state.selectByQueryRes?.responsibilities)
+                                    repoSelect.state.selectByQueryRes?.responsibilities)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('employmentType')">
@@ -84,7 +84,7 @@
                         <td v-if="state.jobFields.includes('salaryType')">
                             {{
                                 $optionText(job.salaryType,
-                                repoSelect.state.selectByQueryRes?.salaryType)
+                                    repoSelect.state.selectByQueryRes?.salaryType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('salaryMin')">
@@ -95,7 +95,7 @@
                         <td v-if="state.jobFields.includes('jobLocationType')">
                             {{
                                 $optionText(job.jobLocationType,
-                                repoSelect.state.selectByQueryRes?.jobLocationType)
+                                    repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </td>
                         <td v-if="state.jobFields.includes('addressRegion')">
@@ -313,13 +313,11 @@ async function addJobDraft() {
     const res = await repoJob.postJobItem(job)
     state.jobList.unshift(res.data)
     state.renderKey = Math.random()
-    nextTick(() => {
+    $requestSelector(`#modal_${res.data.identifier}`, () => {
         const jobModals = currentInstance.refs.jobModalRefs
         const targetModal = jobModals[0]
-        $requestSelector(`#modal_${res.data.identifier}`, () => {
-            targetModal.openModal()
-            $sweet.loader(false)
-        })
+        targetModal.openModal()
+        $sweet.loader(false)
     })
 }
 </script>

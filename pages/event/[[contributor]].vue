@@ -6,7 +6,7 @@
                 <h1 class="frame__title">活動報名完成</h1>
                 <div class="frame__textarea">
                     <div>
-                        時間：2023/01/16 (一) 19 : 30 - 21 : 30
+                        時間：2023/03/27 (一) 12 : 00 - 13 : 00
                     </div>
                     <div>
                         地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
@@ -101,6 +101,11 @@ async function signUp() {
     const element = document.querySelector('#signUpDate')
     element.innerHTML = $filter.time(signUpDate)
     $sweet.loader(false)
+    if (signUpDate) {
+        requestSelector('#userModal', () => {
+            $emitter.emit("hideUserModal")
+        })
+    }
 }
 async function printPage() {
     window.print()
