@@ -6,14 +6,12 @@
                 <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company?.logo})` }">
                 </div>
-                <div v-else class="d-none d-lg-block basic__logo"
-                    :style="{ backgroundImage: `url(${placeholderImage})` }">
+                <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
                     <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
-                        <div class="d-lg-none subHeader__logo"
-                            :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                        <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}
                     </NuxtLink>
@@ -100,6 +98,16 @@
                         </span>
                         <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
                     </div>
+                    <div class="features__item">
+                        <span class="item__header">
+                            語言要求
+                        </span>
+                        <span class="item__body">{{ $optionText(state.job?.language,
+                            repoSelect.state.selectByQueryRes?.language)
+                        }} {{ $optionText(state.job?.proficiency,
+                            repoSelect.state.selectByQueryRes?.proficiency)
+                        }}</span>
+                    </div>
                     <div class="mt-3">
                         <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
                         </LazyAtomBtnSimple>
@@ -124,8 +132,8 @@
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]"
-                                disabled ref="descriptionRef">
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
+                                ref="descriptionRef">
                             </LazyAtomInputCkeditor>
                         </div>
                     </div>
@@ -162,8 +170,8 @@
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
                 <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
-                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true"
-                    ref="jobItems"></LazyOrganismJobItem>
+                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true" ref="jobItems">
+                </LazyOrganismJobItem>
             </ul>
         </section>
     </div>
