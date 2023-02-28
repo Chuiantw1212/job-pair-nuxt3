@@ -26,8 +26,8 @@
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型"
                             :max="3" :flat="true" required class="mt-4">
                             <template v-slot:header>
-                                <LazyMoleculeProfileSelectLabels v-model="state.job.occupationalCategory"
-                                    placeholder="職務類型" :items="repoSelect.jobCategory">
+                                <LazyMoleculeProfileSelectLabels v-model="state.job.occupationalCategory" placeholder="職務類型"
+                                    :items="repoSelect.jobCategory">
                                 </LazyMoleculeProfileSelectLabels>
                             </template>
                             <template v-slot:body>
@@ -40,8 +40,8 @@
                         <LazyAtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                             :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled"
                             class="mt-4"></LazyAtomInputSelect>
-                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質"
-                            required :disabled="state.disabled" class="mt-4">
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質" required
+                            :disabled="state.disabled" class="mt-4">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="雇用性質"
                                     :items="repoSelect.state.selectByQueryRes.employmentType">
@@ -72,8 +72,7 @@
                                 </LazyAtomInputMoney>
                                 <template v-if="state.job.salaryType === 'monthly'">
                                     <LazyAtomInputMoney v-model="state.job.incentiveCompensation" :name="'全年非經常性薪資'"
-                                        placeholder="請輸入全年非經常性薪資" class="inputGroup__irregular"
-                                        :disabled="state.disabled">
+                                        placeholder="請輸入全年非經常性薪資" class="inputGroup__irregular" :disabled="state.disabled">
                                     </LazyAtomInputMoney>
                                 </template>
                             </div>
@@ -86,8 +85,7 @@
                             <LazyAtomInputSelect v-model="state.job.addressRegion" class="w-10" name="工作縣市"
                                 :items="repoSelect.state.locationRes.taiwan"
                                 :disabled="state.disabled || state.job.jobLocationType === 'fullyRemote'"
-                                :required="checkAddressRequired()" @change="clearAddress()"
-                                :placeholderDisabled="false">
+                                :required="checkAddressRequired()" @change="clearAddress()" :placeholderDisabled="false">
                             </LazyAtomInputSelect>
                             <LazyAtomInputSelect
                                 v-if="repoSelect.state.locationRes && state.job.addressRegion !== 'oversea'"
@@ -105,8 +103,8 @@
                         </LazyAtomInputText>
                         <div class="d-flex mt-4">
                             <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language"
-                                v-model="state.job.language" name="外文"
-                                :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
+                                v-model="state.job.language" name="外文" :items="repoSelect.state.selectByQueryRes.language"
+                                :disabled="state.disabled">
                             </LazyAtomInputSelect>
                             <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度"
                                 class="ms-3" v-model="state.job.proficiency"
@@ -116,8 +114,8 @@
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             required :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required
-                            :disabled="state.disabled" :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
+                        <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
+                            :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -360,6 +358,7 @@ async function handleSave() {
         }
     }
     // 依據id判斷是否為新增
+    await $sweet.loader(true) // IMPORTANT
     let response = null
     if (job.identifier) {
         response = await repoJob.putJobItem(job)
@@ -369,6 +368,7 @@ async function handleSave() {
     if (response.status !== 200) {
         return
     }
+    await $sweet.loader(false) // IMPORTANT
     const updatedJob = response.data
     emit("update:modelValue", updatedJob)
     emit("save", updatedJob)
