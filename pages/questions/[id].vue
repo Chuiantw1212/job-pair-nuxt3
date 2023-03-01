@@ -30,11 +30,11 @@
                             </template>
                             <template v-else>
                                 <label class="inputOptions__multipleSelect">
-                                    <img v-show="checkOptionSelected(item)" src="~/assets/index/checkboxSelected.svg">
+                                    <img v-show="checkOptionSelected(item)" src="~/assets/questions/checkboxSelected.svg">
                                     <input v-show="!checkOptionSelected(item)"
                                         v-model="state.tempUser.preference['culture']" :value="item.value"
-                                        class="multiSelect__checkbox" type="checkbox"
-                                        :disabled="checkOptionDisabled(item)" @change="setCulture()">
+                                        class="multiSelect__checkbox" type="checkbox" :disabled="checkOptionDisabled(item)"
+                                        @change="setCulture()">
                                     <span class="multipleSelect__description">{{ item.textUser }}</span>
                                 </label>
                             </template>
