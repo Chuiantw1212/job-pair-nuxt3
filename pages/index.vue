@@ -95,9 +95,6 @@ onMounted(async () => {
         })
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
-        console.log({
-            jobProvider
-        });
         state.jobProvider = jobProvider
     }
 })
