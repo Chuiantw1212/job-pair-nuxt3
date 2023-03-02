@@ -130,6 +130,11 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
+useHead({
+    meta: [
+        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
+    ],
+})
 onMounted(async () => {
     if (process.client) {
         initialGlide()
