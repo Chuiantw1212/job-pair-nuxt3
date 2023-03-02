@@ -6,23 +6,27 @@
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
-            <template v-if="device.state.isDesktop">
-                <img class="cardGroup__decoration cardGroup__decoration--1" src="@/assets/index/bg2.svg">
-                <img class="cardGroup__decoration cardGroup__decoration--2" src="@/assets/index/bg3.svg">
-                <div class="cardGroup__body">
-                    <img src="@/assets/index/Group_867.png">
+            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
+            <img v-if="device.state.isDesktop" class="cardGroup__decoration cardGroup__decoration--1"
+                src="@/assets/admin/index/bg2.svg">
+            <img v-if="device.state.isDesktop" class="cardGroup__decoration cardGroup__decoration--2"
+                src="@/assets/admin/index/bg3.svg">
+            <div class="cardGroup__body">
+                <div v-if="device.state.isDesktop" class="body__title">
+                    <div class="title__others">
+                        一般求職平台
+                    </div>
+                    <div class="title__jobPair">
+                        Job Pair
+                    </div>
                 </div>
-            </template>
-            <template v-else>
-                <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-                <div class="cardGroup__body">
-                    <img class="body__card" src="@/assets/index/Group_881.png">
-                    <img class="body__card" src="@/assets/index/Group_882.png">
-                    <img class="body__card" src="@/assets/index/Group_883.png">
-                    <img class="body__card" src="@/assets/index/Group_884.png">
-                    <img class="body__card" src="@/assets/index/Group_885.png">
-                </div>
-            </template>
+                <MoleculeHomeCard title="保護您的聯絡方式、年齡、婚姻狀態等個資"></MoleculeHomeCard>
+                <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
+                <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
+                <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
+                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="無" othersDesc="有">
+                </MoleculeHomeCard>
+            </div>
         </div>
         <div class="admin__definition">
             <img v-if="device.state.isDesktop" class="definition__round" src="@/assets/index/round.png">
@@ -169,6 +173,7 @@ function routeToQuestions() {
 
     .admin__cardGroup {
         padding: 40px 0;
+        background-color: white;
 
         .cardGroup__header {
             text-align: center;
@@ -185,13 +190,7 @@ function routeToQuestions() {
             gap: 20px;
             margin-top: 20px;
             position: inherit;
-            margin: auto;
-
-            .body__card {
-                width: 277px;
-                margin: auto;
-                display: block;
-            }
+            align-items: center;
         }
     }
 
@@ -307,12 +306,8 @@ function routeToQuestions() {
 
         .admin__cardGroup {
             position: relative;
-            padding: 40px 0px;
+            padding: 92px 0px;
             margin: auto;
-
-            .cardGroup__body {
-                width: 868px;
-            }
 
             .cardGroup__decoration {
                 position: absolute;
@@ -326,6 +321,50 @@ function routeToQuestions() {
             .cardGroup__decoration--2 {
                 bottom: 100px;
                 right: 0;
+            }
+
+            .cardGroup__header {
+                font-size: 50px;
+                font-weight: 900;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: center;
+                color: #eeb540;
+            }
+
+            .cardGroup__body {
+                margin: auto;
+                margin-top: 70px;
+                width: 868px;
+
+                .body__title {
+                    display: flex;
+                    gap: 501px;
+
+                    .title__others {
+                        font-size: 28px;
+                        font-weight: 900;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: #317292;
+                    }
+
+                    .title__jobPair {
+                        font-size: 28px;
+                        font-weight: bold;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: #317292;
+                    }
+                }
             }
         }
 

@@ -105,8 +105,8 @@
                         <span class="item__body">{{ $optionText(state.job?.language,
                             repoSelect.state.selectByQueryRes?.language)
                         }} {{ $optionText(state.job?.proficiency,
-                            repoSelect.state.selectByQueryRes?.proficiency)
-                        }}</span>
+    repoSelect.state.selectByQueryRes?.proficiency)
+}}</span>
                     </div>
                     <div class="mt-3">
                         <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
@@ -128,7 +128,7 @@
             </div>
             <div class="mobileGrid__left" :class="{ 'col-8': device.state.isDesktop }">
                 <section id="jobView__description" class="jobView__section jobView__description mt-3">
-                    <div class="jobView__card jobView__card--minHeight">
+                    <div class="jobView__card">
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
@@ -139,7 +139,7 @@
                     </div>
                 </section>
                 <section id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
-                    <div class="jobView__card jobView__card--minHeight">
+                    <div class="jobView__card">
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
@@ -556,10 +556,6 @@ async function initialize() {
             font-size: 18px;
             font-weight: bold;
         }
-    }
-
-    .jobView__card--minHeight {
-        min-height: 27rem;
     }
 
     .jobView__basic {
