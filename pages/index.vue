@@ -16,11 +16,11 @@
             <template v-else>
                 <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
                 <div class="cardGroup__body">
-                    <img class="body__card" src="@/assets/index/Group_881.png">
-                    <img class="body__card" src="@/assets/index/Group_882.png">
-                    <img class="body__card" src="@/assets/index/Group_883.png">
-                    <img class="body__card" src="@/assets/index/Group_884.png">
-                    <img class="body__card" src="@/assets/index/Group_885.png">
+                    <MoleculeHomeCard title="保護您的聯絡方式、年齡、婚姻狀態等個資"></MoleculeHomeCard>
+                    <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
+                    <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
+                    <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
+                    <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="無" othersDesc="有"></MoleculeHomeCard>
                 </div>
             </template>
         </div>
@@ -169,6 +169,7 @@ function routeToQuestions() {
 
     .admin__cardGroup {
         padding: 40px 0;
+        background-color: white;
 
         .cardGroup__header {
             text-align: center;
@@ -185,13 +186,7 @@ function routeToQuestions() {
             gap: 20px;
             margin-top: 20px;
             position: inherit;
-            margin: auto;
-
-            .body__card {
-                width: 277px;
-                margin: auto;
-                display: block;
-            }
+            align-items: center;
         }
     }
 
