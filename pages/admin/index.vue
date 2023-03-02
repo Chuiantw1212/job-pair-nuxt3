@@ -126,7 +126,7 @@ const repoAuth = useRepoAuth()
 const state = reactive({
     jobList: [],
     affiliate: [],
-    jobProvider: [],
+    jobProvider: [], 
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
