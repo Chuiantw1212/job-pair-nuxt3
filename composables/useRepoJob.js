@@ -33,6 +33,7 @@ export default defineStore('job', () => {
         return response
     }
     async function getJobByQuery(params) {
+        console.trace();
         const response = await axios.request({
             method: 'get',
             url: `/job/all`,
