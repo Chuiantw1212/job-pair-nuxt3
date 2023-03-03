@@ -19,7 +19,7 @@ useHead({
     meta: [
         { charset: "utf-8" },
         { name: 'description', content: descriptionContent },
-        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
+        { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
         { property: 'og:description', content: descriptionContent },
         { property: "og:type", content: "website" },
         { property: "og:url", content: "https://job-pair.com/" },
