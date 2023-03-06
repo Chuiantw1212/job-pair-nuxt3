@@ -5,7 +5,7 @@
 // import NPM version LIFF JS SDK
 import liff from '@line/liff';
 
-export default () => {
+export default (nuxtApp) => {
   const runtimeConfig = useRuntimeConfig()
   const { LIFF_ID = '' } = runtimeConfig.public
 
