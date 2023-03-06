@@ -5,7 +5,7 @@
 // import NPM version LIFF JS SDK
 import liff from '@line/liff';
 
-export default (nuxtApp) => {
+export default defineNuxtPlugin(nuxtApp => {
   const runtimeConfig = useRuntimeConfig()
   const { LIFF_ID = '' } = runtimeConfig.public
 
@@ -28,4 +28,4 @@ export default (nuxtApp) => {
   // You can access liff.init()'s return value (Promise object)
   // as this.$liffInit() by inject()x
   nuxtApp.provide('liffInit', initResult)
-}
+})
