@@ -1,5 +1,8 @@
 <template>
     <div class="admin">
+        <div v-if="runTime.VITE_APP_FIREBASE_ENV === 'development'">
+            {{ state.profile }}
+        </div>
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png">
             <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
@@ -68,7 +71,7 @@ export default {
 }
 </script>
 <script setup>
-const { $Glide, $emitter, $requestSelector } = useNuxtApp()
+const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -78,6 +81,7 @@ const state = reactive({
     jobList: [],
     affiliate: [],
     jobProvider: [],
+    profile: null,
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
@@ -100,6 +104,10 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
+        // Fetch user profile
+        $liff.getProfile().then((profile) => {
+            state.profile = profile
+        })
     }
 })
 // methods
