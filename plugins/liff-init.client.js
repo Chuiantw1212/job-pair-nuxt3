@@ -9,19 +9,13 @@ export default () => {
   const runtimeConfig = useRuntimeConfig()
   const { LIFF_ID = '' } = runtimeConfig.public
 
-  inject('liff', liff);
+  nuxtApp.provide('liff', liff)
+  // inject('liff', liff);
 
   // execute liff.init()
   const initResult = liff.init({ liffId: LIFF_ID })
     .then((test) => {
       console.log('liff.init() done', test);
-      liff
-        .getProfile()
-        .then((profile) => {
-          console.log({
-            profile
-          })
-        })
     })
     .catch(error => {
       console.log(`liff.init() failed: ${error}`);
@@ -32,6 +26,6 @@ export default () => {
     });
 
   // You can access liff.init()'s return value (Promise object)
-  // as this.$liffInit() by inject()
-  inject('liffInit', initResult);
+  // as this.$liffInit() by inject()x
+  nuxtApp.provide('liffInit', initResult)
 }
