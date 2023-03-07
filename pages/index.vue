@@ -105,9 +105,9 @@ onMounted(async () => {
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
         // Fetch user profile
-        $liff.getProfile().then((profile) => {
-            state.profile = profile
-        })
+        // $liff.getProfile().then((profile) => {
+        //     state.profile = profile
+        // })
     }
 })
 // methods
