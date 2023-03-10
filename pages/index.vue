@@ -101,7 +101,7 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
-        // // Fetch user profile
+        // Fetch user profile
         // $liff.getProfile().then((profile) => {
         //     state.profile = profile
         // })
