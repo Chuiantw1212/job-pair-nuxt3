@@ -1,8 +1,5 @@
 <template>
     <div class="admin">
-        <div v-if="runTime.VITE_APP_FIREBASE_ENV === 'development'">
-            {{ state.profile }}
-        </div>
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png">
             <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
@@ -105,9 +102,9 @@ onMounted(async () => {
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
         // Fetch user profile
-        $liff.getProfile().then((profile) => {
-            state.profile = profile
-        })
+        // $liff.getProfile().then((profile) => {
+        //     state.profile = profile
+        // })
     }
 })
 // methods
