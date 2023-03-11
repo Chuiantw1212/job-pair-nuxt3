@@ -249,16 +249,19 @@ const jobItems = ref([])
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 if (job.value) {
     const { organizationId } = job.value
-    const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
+    const { data } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
+    let company = data
     if (process.client) {
         state.job = job.value
-        state.company = company.value
+        if (company) {
+            state.company = company.value
+        }
     }
 }
 useHead({
     title: () => {
-        if (job.value && company.value) {
-            return `${job.value.name} - ${company.value.name} - Job Pair`
+        if (job.value && state.company) {
+            return `${job.value.name} - ${state.company.name} - Job Pair`
         }
     },
     meta: [
