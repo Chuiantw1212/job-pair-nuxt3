@@ -18,8 +18,7 @@
                     :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
                 <LazyAtomInputEmail name="Email" v-model="state.profile.email" class="mt-3" disabled>
                 </LazyAtomInputEmail>
-                <LazyAtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3"
-                    required>
+                <LazyAtomInputText name="手機號碼" v-model="state.profile.telephone" placeholder="請輸入手機" class="mt-3" required>
                 </LazyAtomInputText>
                 <LazyAtomInputCalendar name="生日" v-model="state.profile.birthDate" class="mt-3"
                     :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate" required>
@@ -52,11 +51,11 @@
                 <LazyAtomBtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="求職資訊" class="profile__information profile__doc mt-3 ">
-                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別"
-                    :max="3" required>
+                <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
+                    required>
                     <template v-slot:header>
-                        <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory"
-                            placeholder="欲申請職務類別" :items="repoSelect.jobCategory">
+                        <LazyMoleculeProfileSelectLabels v-model="state.profile.occupationalCategory" placeholder="欲申請職務類別"
+                            :items="repoSelect.jobCategory">
                         </LazyMoleculeProfileSelectLabels>
                     </template>
                     <template v-slot:body>
@@ -66,18 +65,20 @@
                         </LazyMoleculeFilterCategory>
                     </template>
                 </LazyMoleculeProfileSelectContainer>
-                <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive"
-                    name="目前求職狀態">
+                <!-- <button></button> -->
+                <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive" name="目前求職狀態">
                     <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
                 </LazyAtomInputCheckSingle>
+                <!-- ChatGPT -->
+                <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。">
                 </LazyAtomInputCkeditor>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
-                <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
-                    :max="3" :required="device.state.isDesktop">
+                <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+                    :required="device.state.isDesktop">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
