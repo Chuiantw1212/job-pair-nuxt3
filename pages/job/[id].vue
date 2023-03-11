@@ -246,10 +246,10 @@ const browserConfig = computed({
 const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
-const { organizationId } = job.value
+const { organizationId } = job?.value
 const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
-state.job = job.value
-state.company = company.value
+state.job = job?.value
+state.company = company?.value
 useHead({
     title: () => {
         if (job?.value && company?.value) {
