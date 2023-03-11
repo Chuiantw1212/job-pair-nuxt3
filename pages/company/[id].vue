@@ -156,7 +156,7 @@ if (process.client) {
     state.companyInfo = company.value
 }
 useHead(() => {
-    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png`
+    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     const headConfig = {
         title: `Job Pair`,
         meta: [
