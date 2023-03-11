@@ -246,14 +246,13 @@ const browserConfig = computed({
 const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
-const { organizationId } = job?.value
-const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
-state.job = job?.value
-state.company = company?.value
+state.job = job
+const { value: jobValue = {} } = job
 useHead({
     title: () => {
-        if (job?.value && company?.value) {
-            return `${job?.value?.name} - ${company?.value?.name} - Job Pair`
+        const { name: jobName, organizationName } = jobValue
+        if (jobName && organizationName) {
+            return `${jobName} - ${organizationName} - Job Pair`
         }
     },
     meta: [
@@ -520,11 +519,13 @@ async function initialize() {
     }
     const job = jobResponse.data
     const { descriptionRef, skillsRef } = currentInstance.refs
-    if (descriptionRef) {
-        descriptionRef.setData(job.description)
-    }
-    if (skillsRef) {
-        skillsRef.setData(job.skills)
+    if (process.client) {
+        if (descriptionRef) {
+            descriptionRef.setData(job.description)
+        }
+        if (skillsRef) {
+            skillsRef.setData(job.skills)
+        }
     }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
