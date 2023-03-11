@@ -19,8 +19,8 @@
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
-                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
-                        :required="true" ref="resume" class="mt-3 mb-3">
+                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'" :required="true"
+                        ref="resume" class="mt-3 mb-3">
                     </LazyAtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
                         <div class="content__portfolio__header mt-3">作品集(雲端檔案請開啟瀏覽權限)</div>
@@ -76,7 +76,7 @@ const state = reactive({
 const props = defineProps({
     modelValue: {
         // job
-        type: Object,
+        type: [Object, Boolean],
         default: function () {
             return {}
         },

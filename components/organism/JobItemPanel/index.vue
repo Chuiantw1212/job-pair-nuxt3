@@ -80,7 +80,7 @@ if (process.client) {
 }
 const props = defineProps({
     modelValue: {
-        type: Object,
+        type: [Object, Boolean],
         default: function () {
             return {}
         },
@@ -99,7 +99,7 @@ const routeName = computed(() => {
 })
 // hooks
 watch(() => props.modelValue, () => {
-    if (process.client) {
+    if (process.client && props.modelValue) {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`

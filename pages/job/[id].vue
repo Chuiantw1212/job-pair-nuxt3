@@ -244,30 +244,25 @@ const browserConfig = computed({
     }
 })
 const currentInstance = getCurrentInstance()
-const jobItems = ref([])
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
-if (job.value) {
-    const { organizationId } = job.value
-    const { data } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
-    let company = data
-    if (process.client) {
-        state.job = job.value
-        if (company) {
-            state.company = company.value
-        }
+state.job = job
+const { value: jobValue = {} } = job
+useHead(() => {
+    const headConfig = {
+        title: 'Job Pair',
+        meta: [
+            { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
+        ]
     }
-}
-useHead({
-    title: () => {
-        if (job.value && state.company) {
-            return `${job.value.name} - ${state.company.name} - Job Pair`
-        }
-    },
-    meta: [
-        { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
-    ],
-
+    if (jobValue) {
+        const { name: jobName, organizationName, description } = jobValue
+        headConfig.title = `${jobName} - ${organizationName} - Job Pair`
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = description.replace(regex, "")
+        headConfig.meta.push({ property: 'og:description', content: descriptionContent })
+    }
+    return headConfig
 })
 useJsonld(() => ({
     // https://schema.org/JobPosting
@@ -336,8 +331,11 @@ watch(() => state.job, (newValue) => {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
-watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
-    jobScroller.observeLastJob(jobItems)
+const jobItems = ref([])
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
     const { user } = repoAuth.state
     if (user && user.id) {
         return
@@ -525,11 +523,13 @@ async function initialize() {
     }
     const job = jobResponse.data
     const { descriptionRef, skillsRef } = currentInstance.refs
-    if (descriptionRef) {
-        descriptionRef.setData(job.description)
-    }
-    if (skillsRef) {
-        skillsRef.setData(job.skills)
+    if (process.client) {
+        if (descriptionRef) {
+            descriptionRef.setData(job.description)
+        }
+        if (skillsRef) {
+            skillsRef.setData(job.skills)
+        }
     }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)

@@ -98,8 +98,7 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike"
-                        @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -157,17 +156,23 @@ if (process.client) {
     state.companyInfo = company.value
 }
 useHead(() => {
+    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     const headConfig = {
         title: `Job Pair`,
         meta: [
-            { name: 'image', property: 'og:image', content: defaultBanner }
+            { property: 'og:image', content: defaultBannerLink }
         ]
     }
     if (company.value) {
-        const { name: companyName, banner = defaultBanner } = company.value
+        const { name: companyName, banner = '', description } = company.value
         headConfig.title = `${companyName} - Job Pair`
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = description.replace(regex, "")
+        const decodedBannerUri = decodeURIComponent(banner)
         headConfig.meta = [
-            { name: 'image', property: 'og:image', content: banner }
+            { name: "description", content: descriptionContent },
+            { property: 'og:description', content: descriptionContent },
+            { property: 'og:image', content: banner ? decodedBannerUri : defaultBannerLink },
         ]
     }
     return headConfig

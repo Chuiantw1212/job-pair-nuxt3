@@ -4,6 +4,11 @@
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
             <span v-if="hint">({{ hint }})</span>
+            <span>
+                <slot>
+
+                </slot>
+            </span>
         </div>
         <input v-show="false" :value="getValue()" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
@@ -86,7 +91,7 @@ const props = defineProps({
     placeholder: {
         type: String,
         default: ''
-    }
+    },
 })
 let localValue = computed({
     get() {
@@ -119,22 +124,6 @@ function getValue() {
     const case1 = !!props.modelValue
     const case2 = props.modelValue !== '<p></p>'
     return case1
-}
-function requestSelector(ClassicEditor, callback) {
-    let localCount = 0
-    function step() {
-        if (localCount >= 100) {
-            console.error(`Cannot find ClassicEditor`)
-            return
-        }
-        if (ClassicEditor) {
-            callback(ClassicEditor)
-        } else {
-            localCount++
-            window.requestAnimationFrame(step)
-        }
-    }
-    step()
 }
 async function initializeCKEditor() {
     if (!process.client) {
@@ -193,6 +182,8 @@ defineExpose({
     font-size: 16px;
     color: #1f1f1f;
     margin-bottom: 4px;
+    display: flex;
+    align-items: center;
 }
 </style>
 <style lang="scss">
