@@ -80,7 +80,7 @@ if (process.client) {
 }
 const props = defineProps({
     modelValue: {
-        type: Object,
+        type: [Object, Boolean],
         default: function () {
             return {}
         },
