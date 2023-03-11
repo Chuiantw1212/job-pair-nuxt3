@@ -70,7 +70,7 @@
                     <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
                 </LazyAtomInputCheckSingle>
                 <!-- ChatGPT -->
-                <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
+                <!-- <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal> -->
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。">

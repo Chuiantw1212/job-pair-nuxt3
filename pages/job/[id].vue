@@ -247,12 +247,16 @@ const currentInstance = getCurrentInstance()
 const jobItems = ref([])
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
+let company = null
 if (job.value) {
     const { organizationId } = job.value
-    const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
+    const { data } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
+    company = data
     if (process.client) {
         state.job = job.value
-        state.company = company.value
+        if (company) {
+            state.company = company.value
+        }
     }
 }
 useHead({
