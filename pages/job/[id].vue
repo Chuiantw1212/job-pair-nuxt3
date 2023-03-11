@@ -244,32 +244,27 @@ const browserConfig = computed({
     }
 })
 const currentInstance = getCurrentInstance()
-const jobItems = ref([])
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
-let company = null
 if (job.value) {
     const { organizationId } = job.value
-    const { data } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
-    company = data
-    if (process.client) {
-        state.job = job.value
-        if (company) {
-            state.company = company.value
-        }
+    const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
+    state.job = job.value
+    if (company.value) {
+        state.company = company.value
+        useHead({
+            title: () => {
+                if (job.value && company.value) {
+                    return `${job.value.name} - ${company.value.name} - Job Pair`
+                }
+            },
+            meta: [
+                { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
+            ],
+
+        })
     }
 }
-useHead({
-    title: () => {
-        if (job.value && company.value) {
-            return `${job.value.name} - ${company.value.name} - Job Pair`
-        }
-    },
-    meta: [
-        { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
-    ],
-
-})
 useJsonld(() => ({
     // https://schema.org/JobPosting
     '@context': 'https://schema.org',
@@ -337,8 +332,11 @@ watch(() => state.job, (newValue) => {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
-watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
-    jobScroller.observeLastJob(jobItems)
+const jobItems = ref([])
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
     const { user } = repoAuth.state
     if (user && user.id) {
         return
