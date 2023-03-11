@@ -21,7 +21,6 @@ useHead({
         { name: 'description', content: descriptionContent },
         { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
         { property: "og:type", content: "website" },
-        { property: 'og:description', content: descriptionContent },
         { property: "og:url", content: "https://job-pair.com/" },
         { property: 'og:site_name', content: 'Job Pair' },
         { property: 'fb:app_id', content: '411339927562100' },
