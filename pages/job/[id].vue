@@ -255,7 +255,7 @@ useHead(() => {
             { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
         ]
     }
-    if (description) {
+    if (jobValue) {
         const { name: jobName, organizationName, description } = jobValue
         headConfig.title = `${jobName} - ${organizationName} - Job Pair`
         const regex = /(<([^>]+)>)/ig
