@@ -126,10 +126,16 @@ const repoAuth = useRepoAuth()
 const state = reactive({
     jobList: [],
     affiliate: [],
-    jobProvider: [], 
+    jobProvider: [],
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
+useHead({
+    title: `Job Pair`,
+    meta: [
+        { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
+    ],
+})
 onMounted(async () => {
     if (process.client) {
         initialGlide()
