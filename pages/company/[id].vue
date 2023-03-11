@@ -164,7 +164,7 @@ useHead(() => {
         ]
     }
     if (company.value) {
-        const { name: companyName, banner, description } = company.value
+        const { name: companyName, banner = '', description } = company.value
         headConfig.title = `${companyName} - Job Pair`
         const regex = /(<([^>]+)>)/ig
         const descriptionContent = description.replace(regex, "")
@@ -172,7 +172,7 @@ useHead(() => {
         headConfig.meta = [
             { name: "description", content: descriptionContent },
             { property: 'og:description', content: descriptionContent },
-            { property: 'og:image', content: decodedBannerUri || defaultBannerLink },
+            { property: 'og:image', content: banner ? decodedBannerUri : defaultBannerLink },
         ]
     }
     return headConfig
