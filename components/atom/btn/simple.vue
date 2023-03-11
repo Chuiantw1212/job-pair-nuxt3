@@ -1,5 +1,6 @@
 <template>
-    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled }" :disabled="disabled">
+    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled, 'btnSimple--sm': size === 'sm' }"
+        :disabled="disabled">
         <slot></slot>
     </button>
 </template>
@@ -20,6 +21,10 @@ const props = defineProps({
     type: {
         type: String,
         default: 'success',
+    },
+    size: {
+        type: String,
+        default: 'medium'
     }
 })
 </script>
@@ -66,5 +71,12 @@ const props = defineProps({
     &:hover {
         background-color: #d3d3d3;
     }
+}
+
+.btnSimple--sm {
+    width: fit-content;
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 16px;
 }
 </style>

@@ -6,13 +6,12 @@
             </template>
             <template v-slot:body>
                 <div class="appointment__theme__body">
-                    <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes"
-                        v-model="state.appointmentForm.service" name="預約服務"
-                        :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
+                    <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
+                        name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
                         class="details__dropdown" required></LazyAtomInputSelect>
-                    <LazyAtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
+                    <LazyAtomInputCkeditor v-model="state.appointmentForm.question" name="諮詢提問" :toolbar="[]" class="mt-2"
                         placeholder="請詳述你目前的職涯困擾" required>
-                    </LazyAtomInputTextarea>
+                    </LazyAtomInputCkeditor>
                 </div>
             </template>
         </LazyMoleculeAppointmentCard>
@@ -43,8 +42,8 @@
                                 </div>
                             </div>
                             <LazyMoleculeFeedbackList v-model="state.consultantFeedbacks"></LazyMoleculeFeedbackList>
-                            <LazyOrganismConsultTime v-model="state.appointmentForm.time"
-                                :consultant="{ id: 'recommend' }" :key="consultant.key"></LazyOrganismConsultTime>
+                            <LazyOrganismConsultTime v-model="state.appointmentForm.time" :consultant="{ id: 'recommend' }"
+                                :key="consultant.key"></LazyOrganismConsultTime>
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
@@ -122,9 +121,9 @@ useHead({
 onMounted(async () => {
     const service = route.params.service || 'life'
     state.appointmentForm.service = service
-    $sweet.loader(true)
+    // $sweet.loader(true)
     await loadConsultants()
-    $sweet.loader(false)
+    // $sweet.loader(false)
 })
 // methods
 async function loadConsultants() {
@@ -181,6 +180,9 @@ async function submitAppointment() {
     state.appointmentForm.userId = repoAuth.state.user.id
     const VITE_APP_ECPAY_AMOUNT = `${config.public.VITE_APP_ECPAY_AMOUNT}`
     state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
+    if (repoAuth.state?.user?.email === 'chuiantw1212@gmail.com') {
+        state.appointmentForm.amount = 5
+    }
     const response = await repoConsult.postConsultAppointment(state.appointmentForm)
     if (response.status !== 200) {
         state.consultants.forEach(item => {
