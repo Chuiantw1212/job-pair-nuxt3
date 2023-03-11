@@ -156,10 +156,11 @@ if (process.client) {
     state.companyInfo = company.value
 }
 useHead(() => {
+    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png`
     const headConfig = {
         title: `Job Pair`,
         meta: [
-            { property: 'og:image', content: defaultBanner }
+            { property: 'og:image', content: defaultBannerLink }
         ]
     }
     if (company.value) {
@@ -171,7 +172,7 @@ useHead(() => {
         headConfig.meta = [
             { name: "description", content: descriptionContent },
             { property: 'og:description', content: descriptionContent },
-            { property: 'og:image', content: decodedBannerUri || defaultBanner },
+            { property: 'og:image', content: decodedBannerUri || defaultBannerLink },
         ]
     }
     return headConfig
