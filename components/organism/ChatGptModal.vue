@@ -32,7 +32,7 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $sweet, $requestSelector } = useNuxtApp()
+const { $bootstrap, $uuid4, $rank, $validate, $sweet, $requestSelector, } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoChat = useRepoChat()
@@ -81,11 +81,21 @@ onMounted(() => {
     }
 })
 // methods
-const editorRef = ref(null)
+// const editorRef = ref(null)
+const currentInstance = getCurrentInstance()
 async function sendOptimizeRequest() {
+    $sweet.loader(true)
     const res = await repoChat.postChatEssay(props.modelValue)
-    if (res.status === 200) {
-        state.afterChatGpt = res.data
+    if (res.status !== 200) {
+        return
+    }
+    $sweet.loader(false)
+    state.afterChatGpt = res.data
+    const ckEditor = currentInstance.refs.editorRef
+    if (ckEditor) {
+        ckEditor.setData(res.data)
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', ckEditor);
     }
 }
 function setInvitationTemplate() {
@@ -147,8 +157,8 @@ async function handleSubmit() {
     // emit('update:modelValue', updated)
     // const alertResult = await $sweet.succeed()
     // if (alertResult) {
-    //     state.bsModal.hide()
     // }
+    state.bsModal.hide()
 }
 </script>
 <style lang="scss" scoped>
