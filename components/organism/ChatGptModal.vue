@@ -15,8 +15,10 @@
                         <!-- <LazyAtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
                         </LazyAtomInputText> -->
-                        <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" ref="editorRef" class="mt-3"
-                            required>
+                        <LazyAtomInputCkeditor :modelValue="modelValue" name="修改前" class="mt-3" required>
+                        </LazyAtomInputCkeditor>
+                        <button @click="sendOptimizeRequest()">確定優化</button>
+                        <LazyAtomInputCkeditor v-model="localValue" name="修改後" ref="editorRef" class="mt-3" required>
                         </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">
@@ -47,22 +49,25 @@ const state = reactive({
     form: {
         subject: "",
         template: "",
-    }
+    },
+    afterChatGpt: '',
 })
 const props = defineProps({
     modelValue: {
-        type: Object,
+        type: String,
         default: function () {
             return ''
         }
     },
-    job: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    }
 })
+// const localValue = computed({
+//     get() {
+//         return props.modelValue
+//     },
+//     set(newValue) {
+//         emit('update:modelValue', newValue)
+//     }
+// })
 // hooks
 onMounted(() => {
     if (process.client) {
@@ -77,6 +82,12 @@ onMounted(() => {
 })
 // methods
 const editorRef = ref(null)
+async function sendOptimizeRequest() {
+    const res = await repoChat.postChatEssay(props.modelValue)
+    if (res.status === 200) {
+        state.afterChatGpt = res.data
+    }
+}
 function setInvitationTemplate() {
     // const { company } = repoAuth.state
     // if (!props.modelValue || !company) {
@@ -98,11 +109,18 @@ function setInvitationTemplate() {
     //     console.log('Error trying to setInvitationTemplate: ', editorRef);
     // }
 }
+async function setBeforeEssay() {
+
+}
 async function openModal() {
-    const res = await repoChat.setInvitationTemplate(props.modelValue)
-    if (res.status === 200) {
-        state.bsModal.show()
-    }
+    state.afterChatGpt = props.modelValue
+    state.bsModal.show()
+    // if (!props.modelValue || props.modelValue === '<p></p>') {
+    //     return
+    // }
+    // const res = await repoChat.postChatEssay(props.modelValue)
+    // if (res.status === 200) {
+    // }
 }
 const modalBodyRef = ref(null)
 async function handleSubmit() {
