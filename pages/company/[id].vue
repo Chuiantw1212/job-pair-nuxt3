@@ -163,9 +163,12 @@ useHead(() => {
         ]
     }
     if (company.value) {
-        const { name: companyName, banner = defaultBanner } = company.value
+        const { name: companyName, banner = defaultBanner, description } = company.value
         headConfig.title = `${companyName} - Job Pair`
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = description.replace(regex, "")
         headConfig.meta = [
+            { name: "description", content: descriptionContent },
             { name: 'image', property: 'og:image', content: banner }
         ]
     }
