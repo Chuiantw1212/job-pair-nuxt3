@@ -248,17 +248,21 @@ const currentInstance = getCurrentInstance()
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 const { value: jobValue = {} } = job
-useHead({
-    title: () => {
-        const { name: jobName, organizationName } = jobValue
-        if (jobName && organizationName) {
-            return `${jobName} - ${organizationName} - Job Pair`
-        }
-    },
-    meta: [
-        { name: 'image', property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
-    ],
-
+useHead(() => {
+    const headConfig = {
+        title: 'Job Pair',
+        meta: [
+            { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
+        ]
+    }
+    if (description) {
+        const { name: jobName, organizationName, description } = jobValue
+        headConfig.title = `${jobName} - ${organizationName} - Job Pair`
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = description.replace(regex, "")
+        headConfig.meta.push({ property: 'og:description', content: descriptionContent })
+    }
+    return headConfig
 })
 useJsonld(() => ({
     // https://schema.org/JobPosting
