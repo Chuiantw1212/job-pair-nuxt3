@@ -70,7 +70,9 @@ export default function setup() {
             return
         }
         if (basicInfo.emailVerified) {
+            $sweet.loader(true)
             signIn(basicInfo)
+            $sweet.loader(false)
         } else {
             sendEmailLink(type)
         }
