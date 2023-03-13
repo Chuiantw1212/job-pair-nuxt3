@@ -1,38 +1,58 @@
 <template>
-    <div>
+    <div class="chatGptModal">
         <LazyAtomBtnSimple @click="openModal()">
             一鍵優化
         </LazyAtomBtnSimple>
-        <div class="modal fade" :id="`invitation${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal fade" :id="`beforeModal${state.id}`" tabindex="-1" a aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <p class="text-center">Job Pair 的ChatGPT機器人的回應結果如下</p>
-                        <!-- <LazyAtomInputText v-model="state.form.subject" name="信件主旨"
-                            :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
-                        </LazyAtomInputText> -->
-                        <LazyAtomInputCkeditor :modelValue="modelValue" name="修改前" class="mt-3" required>
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="修改前" class="mt-3" :toolbar="[]">
                         </LazyAtomInputCkeditor>
-                        <button @click="sendOptimizeRequest()">確定優化</button>
-                        <LazyAtomInputCkeditor v-model="localValue" name="修改後" ref="editorRef" class="mt-3" required>
+                        <LazyAtomInputCkeditor v-model="state.afterChatGpt" name="修改後" ref="editorRef" class="mt-3">
                         </LazyAtomInputCkeditor>
+                        <!-- </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="footer__button" @click="handleSubmit()">確定</LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple class="footer__button" @click="handleOptimization()">優化</LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- <div class="modal fade" :id="`afterModal${state.id}`" tabindex="-1" a aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">ChatGPT回應</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" ref="modalBodyRef">
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="footer__buttonGroup">
+                            <LazyAtomBtnSimple class="footer__button" @click="handleConfirm()">確定</LazyAtomBtnSimple>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $rank, $validate, $sweet, $requestSelector, } = useNuxtApp()
+/**
+ * 
+您好！我叫朱奕安，很高興有這個機會面試貴公司的業務職位。我二○一二年畢業於中興大學行銷系。台中人。
+畢業之後，我就一直在普鴻公司從事業務工作。在將近四年的時間裡，我一步步走到了業務主管的職位。在這過程中，我開發了將近十個大客戶，年平均銷售額三百萬元，在公司排名第二。面試這個職位，我覺得我的優勢有以下三點：第一點，溝通能力強，能夠順利地和客戶打交道；第二點，抗壓能力強，能夠承受高業績帶來的壓力，並且調節好自己的情緒；第三點，有過成功的大客戶開發經驗，擅長專案管理。
+我非常欣賞貴公司的企業文化，而且這個職位也是我非常喜歡的，希望能夠有機會進入公司，謝謝。
+*/
+const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoChat = useRepoChat()
@@ -40,7 +60,8 @@ const emit = defineEmits(['applied', 'update:modelValue'])
 const router = useRouter()
 const state = reactive({
     id: null,
-    bsModal: null,
+    beforeModal: null,
+    afterModal: null,
     glideInstance: null,
     glideIndex: 0,
     resume: null,
@@ -50,6 +71,7 @@ const state = reactive({
         subject: "",
         template: "",
     },
+    beforeChatGpt: '',
     afterChatGpt: '',
 })
 const props = defineProps({
@@ -60,24 +82,26 @@ const props = defineProps({
         }
     },
 })
-// const localValue = computed({
-//     get() {
-//         return props.modelValue
-//     },
-//     set(newValue) {
-//         emit('update:modelValue', newValue)
-//     }
-// })
 // hooks
+watch(() => props.modelValue, () => {
+    state.afterChatGpt = ''
+}, { immediate: true, deep: true })
 onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
-        $requestSelector(`#invitation${state.id}`, (modelElement) => {
-            state.bsModal = new $bootstrap.Modal(modelElement, {
+        state.beforeChatGpt = props.modelValue
+        $requestSelector(`#beforeModal${state.id}`, (modelElement) => {
+            state.beforeModal = new $bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })
         })
+        // $requestSelector(`#afterModal${state.id}`, (modelElement) => {
+        //     state.afterModal = new $bootstrap.Modal(modelElement, {
+        //         keyboard: false,
+        //         backdrop: "static",
+        //     })
+        // })
     }
 })
 // methods
@@ -85,7 +109,7 @@ onMounted(() => {
 const currentInstance = getCurrentInstance()
 async function sendOptimizeRequest() {
     $sweet.loader(true)
-    const res = await repoChat.postChatEssay(props.modelValue)
+    const res = await repoChat.postChatEssay(state.beforeChatGpt)
     if (res.status !== 200) {
         return
     }
@@ -122,9 +146,14 @@ function setInvitationTemplate() {
 async function setBeforeEssay() {
 
 }
+async function handleConfirm() {
+    state.beforeModal.hide()
+}
 async function openModal() {
-    state.afterChatGpt = props.modelValue
-    state.bsModal.show()
+    // state.afterChatGpt = props.modelValue
+    state.beforeModal.show()
+
+    // sendOptimizeRequest()
     // if (!props.modelValue || props.modelValue === '<p></p>') {
     //     return
     // }
@@ -133,7 +162,10 @@ async function openModal() {
     // }
 }
 const modalBodyRef = ref(null)
-async function handleSubmit() {
+async function handleOptimization() {
+    await sendOptimizeRequest()
+    // state.beforeModal.hide()
+    // state.afterModal.show()
     // const form = modalBodyRef.value
     // const result = await $validate(form)
     // if (!result.isValid) {
@@ -158,7 +190,7 @@ async function handleSubmit() {
     // const alertResult = await $sweet.succeed()
     // if (alertResult) {
     // }
-    state.bsModal.hide()
+    // state.beforeModal.hide()
 }
 </script>
 <style lang="scss" scoped>
@@ -184,100 +216,12 @@ async function handleSubmit() {
 
     .modal-body {
         padding: 0 50px 30px 50px;
+        display: flex;
+        flex-wrap: nowrap;
 
-        .body__ckeditor {
-            border-radius: 10px;
-            border: solid 1px #d9d9d9;
-            overflow: hidden;
-        }
-
-        .body__fieldName {
-            font-size: 16px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.4;
-            letter-spacing: normal;
-            text-align: left;
-            color: #1f1f1f;
-            white-space: nowrap;
-        }
-
-        .body__hint {
-            text-align: center;
-            font-size: 16px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.25;
-            letter-spacing: 0.48px;
-            text-align: center;
-            color: #595959;
-            width: 100%;
-            margin-top: 17px;
-        }
-
-        .body__list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-
-            .body__list__item {
-                .body__list__item__content {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    .content__header {
-                        font-size: 16px;
-                        font-weight: bold;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: 1.4;
-                        letter-spacing: normal;
-                        text-align: left;
-                        color: #1f1f1f;
-                        white-space: nowrap;
-                    }
-
-                    .content__timePickerGroup {
-                        display: flex;
-                        flex-direction: column;
-                        height: 54px;
-                        margin-left: 32px;
-                        width: 100%;
-
-                        .timePickerGroup__timePicker {
-                            padding: 16px 24px;
-                            border: 1px solid #d9d9d9;
-                            border-radius: 10px;
-                            font-size: 16px;
-                            font-weight: normal;
-                            font-stretch: normal;
-                            font-style: normal;
-                            line-height: 1.25;
-                            letter-spacing: 0.48px;
-                            text-align: left;
-                            color: #1f1f1f;
-
-                            .picker__input {
-                                border: none;
-
-                                &:focus {
-                                    outline: none;
-                                }
-                            }
-                        }
-                    }
-
-                    .content__duration {
-                        margin-left: 8px;
-                    }
-                }
-            }
+        .chatGptModal__before {
+            border: 1px solid black;
+            border-radius: 8px;
         }
     }
 
