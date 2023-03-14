@@ -70,13 +70,10 @@
                 </LazyAtomInputCheckSingle>
                 <!-- ChatGPT -->
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
-                class="resume__introduction mt-3" :required="state.profile.isActive"
-                placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
-                <!-- <slot>
-                    <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple>
-                </slot> -->
-            </LazyAtomInputCkeditor>
-            <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
+                    class="resume__introduction mt-3" :required="state.profile.isActive"
+                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。">
+                </LazyAtomInputCkeditor>
+                <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
@@ -122,16 +119,6 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     }
 })
 // methods
-async function openEditResult() {
-    // console.log('test')
-    const res = await repoChat.postOptimizedEssey(`健身教練的筆記本，記錄運動上的心得與筆記，歡迎大家追蹤與分享！
-FB 粉絲頁/https://www.facebook.com/SC.SportConsultant
-部落格/https://my-trainer-online.com/
-Line@官方/https://reurl.cc/060dK9`)
-    console.log({
-        res
-    });
-}
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
