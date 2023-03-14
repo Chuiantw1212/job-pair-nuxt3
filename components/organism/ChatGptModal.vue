@@ -11,9 +11,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="修改前" class="mt-3" :toolbar="[]">
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="修改前" class="mt-3" :toolbar="[]"
+                            ref="beforeChatGpt">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor v-model="state.afterChatGpt" name="修改後" ref="editorRef" class="mt-3">
+                        <LazyAtomInputCkeditor v-model="state.afterChatGpt" name="修改後" ref="afterChatGpt" class="mt-3">
                         </LazyAtomInputCkeditor>
                         <!-- </div> -->
                     </div>
@@ -82,9 +83,15 @@ const props = defineProps({
         }
     },
 })
+const currentInstance = getCurrentInstance()
 // hooks
-watch(() => props.modelValue, () => {
+watch(() => props.modelValue, (newValue) => {
     state.afterChatGpt = ''
+    state.beforeChatGpt = newValue
+    const beforeChatGpt = currentInstance.refs.beforeChatGpt
+    if (beforeChatGpt) {
+        beforeChatGpt.setData(newValue)
+    }
 }, { immediate: true, deep: true })
 onMounted(() => {
     if (process.client) {
@@ -105,8 +112,6 @@ onMounted(() => {
     }
 })
 // methods
-// const editorRef = ref(null)
-const currentInstance = getCurrentInstance()
 async function sendOptimizeRequest() {
     $sweet.loader(true)
     const res = await repoChat.postChatEssay(state.beforeChatGpt)
@@ -115,7 +120,7 @@ async function sendOptimizeRequest() {
     }
     $sweet.loader(false)
     state.afterChatGpt = res.data
-    const ckEditor = currentInstance.refs.editorRef
+    const ckEditor = currentInstance.refs.afterChatGpt
     if (ckEditor) {
         ckEditor.setData(res.data)
     } else {
@@ -137,10 +142,10 @@ function setInvitationTemplate() {
     //     `招募人員${repoAuth.state.user.name}敬上`
     // // state.form.subject = `${company.name}${props.job.name}應徵邀約`
     // state.form.template = template
-    // if (editorRef.value) {
-    //     editorRef.value.setData(template)
+    // if (afterChatGpt.value) {
+    //     afterChatGpt.value.setData(template)
     // } else {
-    //     console.log('Error trying to setInvitationTemplate: ', editorRef);
+    //     console.log('Error trying to setInvitationTemplate: ', afterChatGpt);
     // }
 }
 async function setBeforeEssay() {
