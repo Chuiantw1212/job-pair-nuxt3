@@ -12,7 +12,7 @@
     "host": "firebase deploy --only hosting"
   },
   "engines": {
-    "node": "16"
+    "node": ">=16"
   },
   "devDependencies": {
     "firebase-admin": "^11.4.1",
@@ -41,7 +41,7 @@
     "nouislider": "^15.6.1",
     "pinia": "^2.0.28",
     "sass": "^1.57.1",
-    "sweetalert2": "^11.6.16",
+    "sweetalert2": "^11.4.8",
     "vue": "^3.2.39",
     "vue-router": "^4.1.6"
   }
