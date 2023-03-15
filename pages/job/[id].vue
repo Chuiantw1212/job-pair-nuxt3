@@ -247,9 +247,6 @@ const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
-// useHead({
-//     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
-// })
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     description: () => {

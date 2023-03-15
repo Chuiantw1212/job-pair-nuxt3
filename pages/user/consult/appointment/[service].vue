@@ -115,7 +115,7 @@ const state = reactive({
     },
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `職涯諮詢 - 會員中心 - Job Pair`,
 })
 onMounted(async () => {
