@@ -82,7 +82,7 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useServerSeoMeta({
+useSeoMeta({
     title: `Job Pair`,
 })
 onMounted(async () => {

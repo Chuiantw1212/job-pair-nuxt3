@@ -152,34 +152,19 @@ const organizationId = computed(() => {
     return route.params.id
 })
 const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
-if (process.client) {
-    state.companyInfo = company.value
-}
-useServerSeoMeta()
-/**
- * () => {
-    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
-    const headConfig = {
-        title: `Job Pair`,
-        meta: [
-            { property: 'og:image', content: defaultBannerLink }
-        ]
-    }
-    if (company.value) {
-        const { name: companyName, banner = '', description } = company.value
-        headConfig.title = `${companyName} - Job Pair`
+state.companyInfo = company
+useSeoMeta({
+    title: () => `${state.companyInfo.name} - Job Pair`,
+    description: () => {
         const regex = /(<([^>]+)>)/ig
         const descriptionContent = description.replace(regex, "")
-        const decodedBannerUri = decodeURIComponent(banner)
-        headConfig.meta = [
-            { name: "description", content: descriptionContent },
-            { property: 'og:description', content: descriptionContent },
-            { property: 'og:image', content: banner ? decodedBannerUri : defaultBannerLink },
-        ]
+        return descriptionContent
+    },
+    ogImage: () => {
+        const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     }
-    return headConfig
-}
- */
+})
 useJsonld(() => ({
     // https://schema.org/Organization
     '@context': 'https://schema.org',
