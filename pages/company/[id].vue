@@ -152,13 +152,23 @@ const organizationId = computed(() => {
     return route.params.id
 })
 const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
-if (process.client) {
-    state.companyInfo = company.value
-}
-useServerSeoMeta()
+state.companyInfo = company
+useHead({
+    title: `Job Pair`
+})
+useSeoMeta({
+    title: () => `${state.companyInfo.name} - Job Pair`,
+    description: () => state.companyInfo.description,
+    ogImage: () => {
+        const regex = /(<([^>]+)>)/ig
+        // const descriptionContent = description.replace(regex, "")
+        const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+    }
+})
 /**
  * () => {
-    const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+    const defaultBannerLink = 
     const headConfig = {
         title: `Job Pair`,
         meta: [
@@ -167,7 +177,7 @@ useServerSeoMeta()
     }
     if (company.value) {
         const { name: companyName, banner = '', description } = company.value
-        headConfig.title = `${companyName} - Job Pair`
+        headConfig.title = 
         const regex = /(<([^>]+)>)/ig
         const descriptionContent = description.replace(regex, "")
         const decodedBannerUri = decodeURIComponent(banner)

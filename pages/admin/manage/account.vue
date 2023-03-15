@@ -63,7 +63,7 @@ const state = reactive({
     chatIcon: null,
 })
 // hooks
-useServerSeoMeta({
+useHead({
     title: `帳戶管理 - 招募中心 - Job Pair`
 })
 watch(() => repoAuth.state.user, (newValue) => {

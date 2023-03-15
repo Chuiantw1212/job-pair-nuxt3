@@ -110,7 +110,7 @@ const state = reactive({
     toggleChangePassword: false,
 })
 // hooks
-useServerSeoMeta({
+useHead({
     title: `個人檔案 - 會員中心 - Job Pair`,
 })
 onMounted(() => {

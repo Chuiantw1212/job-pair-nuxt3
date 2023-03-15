@@ -168,8 +168,8 @@ async function initializeCKEditor() {
 }
 // public method do not delete
 async function setData(newValue) {
-    const ckeditorInstance = state.ckeditorInstance
     $requestSelector(`#editor_${state.id}`, () => {
+        const ckeditorInstance = state.ckeditorInstance
         ckeditorInstance.setData(newValue)
     })
 }
