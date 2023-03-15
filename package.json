@@ -10,7 +10,7 @@
     "deploy": "npx firebase deploy"
   },
   "engines": {
-    "node": ">=16"
+    "node": "16"
   },
   "devDependencies": {
     "@unhead/addons": "^1.1.23",
