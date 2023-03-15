@@ -3,7 +3,10 @@ const random = Math.random()
 export default defineNuxtConfig({
     app: {
         head: {
-            title: 'Job Pair',
+            // SEO 相關放在 layout.vue
+            htmlAttrs: {
+                lang: 'zh-Hant'
+            },
             link: [
                 // Favicon https://github.com/nuxt/framework/discussions/5204
                 { rel: 'icon', type: 'image/x-icon', href: `/favicon.ico?${random}` },

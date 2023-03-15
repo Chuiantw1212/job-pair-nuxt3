@@ -54,7 +54,7 @@ const state = reactive({
     lockEndDate: 0
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `求職偏好 - 會員中心 - Job Pair`,
 })
 watchEffect(() => {

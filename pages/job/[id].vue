@@ -247,22 +247,18 @@ const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
-const { value: jobValue = {} } = job
-useHead(() => {
-    const headConfig = {
-        title: 'Job Pair',
-        meta: [
-            { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' },
-        ]
-    }
-    if (jobValue) {
-        const { name: jobName, organizationName, description } = jobValue
-        headConfig.title = `${jobName} - ${organizationName} - Job Pair`
+useSeoMeta({
+    title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
+    description: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = description.replace(regex, "")
-        headConfig.meta.push({ property: 'og:description', content: descriptionContent })
+        const descriptionContent = state.job.description.replace(regex, "")
+        return descriptionContent
+    },
+    ogDescription: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.job.description.replace(regex, "")
+        return descriptionContent
     }
-    return headConfig
 })
 useJsonld(() => ({
     // https://schema.org/JobPosting
