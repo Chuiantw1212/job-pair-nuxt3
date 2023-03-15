@@ -248,7 +248,11 @@ const currentInstance = getCurrentInstance()
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 const { value: jobValue = {} } = job
-useHead(() => {
+useServerSeoMeta({
+    title: 'Job Pair'
+})
+/**
+ * () => {
     const headConfig = {
         title: 'Job Pair',
         meta: [
@@ -263,7 +267,8 @@ useHead(() => {
         headConfig.meta.push({ property: 'og:description', content: descriptionContent })
     }
     return headConfig
-})
+}
+ */
 useJsonld(() => ({
     // https://schema.org/JobPosting
     '@context': 'https://schema.org',

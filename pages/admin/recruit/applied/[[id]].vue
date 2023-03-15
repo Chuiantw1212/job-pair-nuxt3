@@ -239,7 +239,7 @@ const props = defineProps({
     }
 })
 // hooks
-useHead({
+useServerSeoMeta({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
 onMounted(async () => {

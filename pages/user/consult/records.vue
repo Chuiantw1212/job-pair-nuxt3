@@ -287,7 +287,7 @@ const state = reactive({
     activeTab: 'life'
 })
 // hooks
-useHead({
+useServerSeoMeta({
     title: `職涯諮詢 - 會員中心 - Job Pair`,
 })
 onMounted(async () => {
