@@ -82,8 +82,8 @@ const questionId = computed(() => {
     return Number(id) || 0
 })
 // hooks
-useHead({
-    title: `偏好量表 ${questionId.value + 1} - Job Pair`,
+useSeoMeta({
+    title: () => `偏好量表 ${questionId.value + 1} - Job Pair`,
 })
 onMounted(async () => {
     let questions = []

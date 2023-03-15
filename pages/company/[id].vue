@@ -155,7 +155,9 @@ const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizat
 if (process.client) {
     state.companyInfo = company.value
 }
-useHead(() => {
+useServerSeoMeta()
+/**
+ * () => {
     const defaultBannerLink = `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     const headConfig = {
         title: `Job Pair`,
@@ -176,7 +178,8 @@ useHead(() => {
         ]
     }
     return headConfig
-})
+}
+ */
 useJsonld(() => ({
     // https://schema.org/Organization
     '@context': 'https://schema.org',

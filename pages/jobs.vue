@@ -193,7 +193,7 @@ const state = reactive({
     },
 })
 // hooks
-useHead({
+useServerSeoMeta({
     title: `職缺探索 - Job Pair`,
 })
 onMounted(() => {
