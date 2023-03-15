@@ -24,7 +24,7 @@ const state = reactive({
     isSigned: false,
 })
 // hooks
-useServerSeoMeta({
+useSeoMeta({
     title: `偏好量表結果 - Job Pair`,
 })
 onMounted(async () => {

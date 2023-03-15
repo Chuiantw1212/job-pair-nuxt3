@@ -181,7 +181,7 @@ const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 // hooks
-useServerSeoMeta({
+useSeoMeta({
     title: `職缺管理 - 招募中心 - Job Pair`
 })
 onMounted(() => {
