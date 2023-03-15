@@ -157,7 +157,7 @@ useSeoMeta({
     title: () => `${state.companyInfo.name} - Job Pair`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = description.replace(regex, "")
+        const descriptionContent = state.companyInfo.description.replace(regex, "")
         return descriptionContent
     },
     ogImage: () => {
