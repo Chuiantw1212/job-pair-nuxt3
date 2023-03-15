@@ -68,7 +68,6 @@
                 <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.isActive" name="目前求職狀態">
                     <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
                 </LazyAtomInputCheckSingle>
-                <!-- ChatGPT -->
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
@@ -76,7 +75,8 @@
                         <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple>
                     </slot>
                 </LazyAtomInputCkeditor>
-                <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
+                <!-- ChatGPT -->
+                <!-- <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal> -->
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
