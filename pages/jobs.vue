@@ -196,10 +196,6 @@ const state = reactive({
 useHead({
     title: `職缺探索 - Job Pair`,
 })
-onMounted(() => {
-    // 因為這頁要Load比較久，所以要loader
-    $sweet.loader(true)
-})
 watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
     const { user } = repoAuth.state
