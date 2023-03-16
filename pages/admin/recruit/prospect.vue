@@ -128,7 +128,7 @@ const props = defineProps({
     }
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `潛在人選 - 招募中心 - Job Pair`
 })
 watch(() => state.searchForm, () => {

@@ -168,9 +168,11 @@ async function initializeCKEditor() {
 }
 // public method do not delete
 async function setData(newValue) {
-    const ckeditorInstance = state.ckeditorInstance
     $requestSelector(`#editor_${state.id}`, () => {
-        ckeditorInstance.setData(newValue)
+        const ckeditorInstance = state.ckeditorInstance
+        if (ckeditorInstance) {
+            ckeditorInstance.setData(newValue)
+        }
     })
 }
 defineExpose({
@@ -203,5 +205,9 @@ defineExpose({
 
 .ck-editor__editable {
     border: none !important;
+}
+
+.ck-read-only {
+    border: 1px solid #d9d9d9;
 }
 </style>

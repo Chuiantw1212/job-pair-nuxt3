@@ -13,6 +13,7 @@
     "node": "16"
   },
   "devDependencies": {
+    "@unhead/addons": "^1.1.23",
     "firebase-admin": "^11.4.1",
     "firebase-functions": "^4.2.1",
     "firebase-functions-test": "^3.0.0",
@@ -24,12 +25,10 @@
     "@glidejs/glide": "^3.6.0",
     "@line/liff": "^2.21.4",
     "@pinia/nuxt": "^0.4.6",
-    "aos": "^2.3.4",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",
     "firebase": "^9.15.0",
-    "firebase-admin": "^11.4.0",
     "firebaseui": "^6.0.2",
     "flatpickr": "^4.6.13",
     "fuse.js": "^6.6.2",
@@ -39,7 +38,7 @@
     "nouislider": "^15.6.1",
     "pinia": "^2.0.28",
     "sass": "^1.57.1",
-    "sweetalert2": "^11.6.16",
+    "sweetalert2": "^11.4.8",
     "vue": "^3.2.39",
     "vue-router": "^4.1.6"
   }
