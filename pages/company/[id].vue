@@ -155,6 +155,7 @@ const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizat
 state.companyInfo = company
 useSeoMeta({
     title: () => `${state.companyInfo.name} - Job Pair`,
+    ogTitle: () => `${state.companyInfo.name} - Job Pair`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
         const descriptionContent = state.companyInfo.description.replace(regex, "")
