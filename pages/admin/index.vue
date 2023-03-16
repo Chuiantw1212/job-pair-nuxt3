@@ -160,6 +160,7 @@ onMounted(async () => {
 function initialGlide() {
     $requestSelector(`.glide`, (element) => {
         const instance = new $Glide.Default(element, {
+            type: 'carousel',
             autoplay: 2000,
         })
         instance.mount({

@@ -246,7 +246,9 @@ function initialGlide() {
             config = state.glideDesktopConfig
         }
         const glideInstance = new $Glide.Default(`.glide`, config)
-        glideInstance.mount()
+        glideInstance.mount({
+            type: 'carousel',
+        })
         state.glideInstance = glideInstance
     })
 }
