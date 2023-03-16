@@ -30,7 +30,6 @@
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",
     "firebase": "^9.15.0",
-    "firebase-admin": "^11.4.0",
     "firebaseui": "^6.0.2",
     "flatpickr": "^4.6.13",
     "fuse.js": "^6.6.2",
