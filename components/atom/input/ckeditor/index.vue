@@ -170,7 +170,9 @@ async function initializeCKEditor() {
 async function setData(newValue) {
     $requestSelector(`#editor_${state.id}`, () => {
         const ckeditorInstance = state.ckeditorInstance
-        ckeditorInstance.setData(newValue)
+        if (ckeditorInstance) {
+            ckeditorInstance.setData(newValue)
+        }
     })
 }
 defineExpose({

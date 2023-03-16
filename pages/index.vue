@@ -82,12 +82,12 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useSeoMeta({
-    title: runTime.title,
-    ogTitle: runTime.title,
-    description: runTime.description,
-    ogDescription: runTime.description,
-})
+// useSeoMeta({
+//     title: runTime.title,
+//     ogTitle: runTime.title,
+//     description: runTime.description,
+//     ogDescription: runTime.description,
+// })
 onMounted(async () => {
     if (process.client) {
         // initialGlide()
