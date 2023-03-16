@@ -73,6 +73,7 @@ const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const repoAuth = useRepoAuth()
+const repoLine = useRepoLine()
 const router = useRouter()
 const state = reactive({
     jobList: [],
@@ -105,6 +106,24 @@ onMounted(async () => {
         if ($liff) {
             const profile = await $liff.getProfile()
             state.profile = profile
+            // const getProfileExample = {
+            //     "userId": "U4af4980629...",
+            //     "displayName": "Brown",
+            //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+            //     "statusMessage": "Hello, LINE!"
+            // }
+            if (profile) {
+                const { userId = '' } = profile
+                const response = await repoLine.issueLinkToken({
+                    userId: userId
+                })
+                // const issueLinkTokenExample = {
+                //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
+                // }
+                console.log({
+                    response
+                });
+            }
         }
     }
 })
