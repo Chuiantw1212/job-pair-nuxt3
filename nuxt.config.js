@@ -5,17 +5,16 @@ export default defineNuxtConfig({
     app: {
         head: {
             // 初始共用的設定，這裡不放title與description
-            // title: 'Job Pair',
             meta: [
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol
                 { property: 'og:url', content: 'https://job-pair.com' },
-                { property: 'og:title', content: 'Job Pair' },
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
                 { property: 'og:image', content: imageUrl },
                 { property: 'og:image:secure_url', content: imageUrl },
+                { property: 'og:image:alt', content: 'banner' },
                 // Social Media
                 { property: 'fb:app_id', content: '411339927562100' },
             ],
