@@ -73,6 +73,7 @@ const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const repoAuth = useRepoAuth()
+const repoLine = useRepoLine()
 const router = useRouter()
 const state = reactive({
     jobList: [],
@@ -82,12 +83,6 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-// useSeoMeta({
-//     title: runTime.title,
-//     ogTitle: runTime.title,
-//     description: runTime.description,
-//     ogDescription: runTime.description,
-// })
 onMounted(async () => {
     if (process.client) {
         // initialGlide()
@@ -108,9 +103,28 @@ onMounted(async () => {
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
         // Fetch user profile
-        // $liff.getProfile().then((profile) => {
-        //     state.profile = profile
-        // })
+        if ($liff) {
+            const profile = await $liff.getProfile()
+            state.profile = profile
+            // const getProfileExample = {
+            //     "userId": "U4af4980629...",
+            //     "displayName": "Brown",
+            //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+            //     "statusMessage": "Hello, LINE!"
+            // }
+            if (profile) {
+                const { userId = '' } = profile
+                const response = await repoLine.issueLinkToken({
+                    userId: userId
+                })
+                // const issueLinkTokenExample = {
+                //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
+                // }
+                console.log({
+                    response
+                });
+            }
+        }
     }
 })
 // methods

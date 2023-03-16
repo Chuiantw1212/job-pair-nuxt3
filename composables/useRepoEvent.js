@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
 export default defineStore('event', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const state = reactive({
 
     })
     async function getEventSigned() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/event`,
         })
         return response
     }
     async function postSignUp(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/event/signUp`,
             data,
