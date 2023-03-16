@@ -1,5 +1,9 @@
 <template>
     <div class="admin">
+        <template v-if="repoAuth.state.user?.email === 'chuiantw1212@gmail.com'">
+            <div>profile: {{ state.profile }}</div>
+            <div>linkToken: {{ state.linkToken }}</div>
+        </template>
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png">
             <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
@@ -80,6 +84,7 @@ const state = reactive({
     affiliate: [],
     jobProvider: [],
     profile: null,
+    linkToken: null,
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
@@ -114,12 +119,13 @@ onMounted(async () => {
             // }
             if (profile) {
                 const { userId = '' } = profile
-                const response = await repoLine.issueLinkToken({
+                const LinkTokenRes = await repoLine.issueLinkToken({
                     userId: userId
                 })
                 // const issueLinkTokenExample = {
                 //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
                 // }
+                state.linkToken = LinkTokenRes
                 console.log({
                     response
                 });
