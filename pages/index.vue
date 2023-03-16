@@ -84,6 +84,7 @@ const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affilia
 state.affiliate = companyList.value
 useSeoMeta({
     title: runTime.title,
+    ogTitle: runTime.title,
     description: runTime.description,
     ogDescription: runTime.description,
 })

@@ -160,6 +160,11 @@ useSeoMeta({
         const descriptionContent = state.companyInfo.description.replace(regex, "")
         return descriptionContent
     },
+    ogDescription: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.companyInfo.description.replace(regex, "")
+        return descriptionContent
+    },
     ogImage: () => {
         const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
