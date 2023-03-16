@@ -82,12 +82,6 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-// useSeoMeta({
-//     title: runTime.title,
-//     ogTitle: runTime.title,
-//     description: runTime.description,
-//     ogDescription: runTime.description,
-// })
 onMounted(async () => {
     if (process.client) {
         // initialGlide()
@@ -108,8 +102,10 @@ onMounted(async () => {
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
         // Fetch user profile
-        const profile = await $liff.getProfile()
-        state.profile = profile
+        if ($liff) {
+            const profile = await $liff.getProfile()
+            state.profile = profile
+        }
     }
 })
 // methods

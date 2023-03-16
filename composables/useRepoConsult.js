@@ -1,22 +1,22 @@
 import { defineStore } from 'pinia'
 export default defineStore('consult', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     async function getConsultants() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/consult/consultant`,
         })
         return response
     }
     async function getConsultantById(id) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/consult/consultant/${id}`,
         })
         return response
     }
     async function postConsultAppointment(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/consult/appointment`,
             data
@@ -24,7 +24,7 @@ export default defineStore('consult', () => {
         return response
     }
     async function getConsultRecords(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/consult/records`,
             params,

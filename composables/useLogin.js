@@ -4,7 +4,7 @@ export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
-    const axiosComposable = useAxios()
+    const jobPairApi = useJobPairApi()
     // Repositories
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
@@ -83,7 +83,7 @@ export default function setup() {
             return
         }
         const idToken = await auth.currentUser.getIdToken()
-        axiosComposable.setToken(idToken)
+        jobPairApi.setToken(idToken)
         return idToken
     }
     async function signIn(user) {

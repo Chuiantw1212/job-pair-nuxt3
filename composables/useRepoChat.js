@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 export default defineStore('chat', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     async function postChatEssay(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/chat/essay`,
             data,

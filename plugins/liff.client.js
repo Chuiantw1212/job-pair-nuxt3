@@ -11,7 +11,10 @@ import liff from '@line/liff'
 export default defineNuxtPlugin(async nuxtApp => {
     const config = useRuntimeConfig()
     try {
-        const initResult = await liff.init({ liffId: config.liffId })
+        const initResult = await liff.init({ liffId: config.public.liffId })
+        console.log({
+            initResult
+        })
         console.log('liff.init() done');
         nuxtApp.provide('liff', initResult)
     } catch (error) {

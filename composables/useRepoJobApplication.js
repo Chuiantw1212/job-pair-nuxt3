@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 export default defineStore('jobApplication', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const state = reactive({
         userJobs: {},
     })
     async function getApplicationByQuery(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/jobApplication`,
             params,
@@ -13,7 +13,7 @@ export default defineStore('jobApplication', () => {
         return response
     }
     async function patchJobApplicant(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/jobApplication/${data.jobId}/${data.applicantId}`,
             data,
@@ -21,7 +21,7 @@ export default defineStore('jobApplication', () => {
         return response
     }
     async function patchJobVisibility(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/jobApplication`,
             data
@@ -37,7 +37,7 @@ export default defineStore('jobApplication', () => {
     }
     async function getUserJobs(payload) {
         const { userId } = payload
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/jobApplication/${userId}/jobs`,
         })
@@ -52,7 +52,7 @@ export default defineStore('jobApplication', () => {
     }
     async function postJobSaved(payload) {
         const { userId, jobId } = payload
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/jobApplication/${userId}/jobSaved/${jobId}`,
         })
@@ -65,7 +65,7 @@ export default defineStore('jobApplication', () => {
     }
     async function deleteJobSaved(data) {
         const { userId, jobId } = data
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'delete',
             url: `/jobApplication/${userId}/jobSaved/${jobId}`,
         })
@@ -75,7 +75,7 @@ export default defineStore('jobApplication', () => {
         return response
     }
     async function postJobApplication(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/jobApplication/${data.jobId}/application`,
             data,
@@ -88,7 +88,7 @@ export default defineStore('jobApplication', () => {
         return response
     }
     async function postJobProspectInvitation(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/jobApplication/${data.jobId}/prospect/${data.prospectId}/invitation`,
             data,
