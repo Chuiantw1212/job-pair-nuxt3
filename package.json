@@ -25,7 +25,6 @@
     "@glidejs/glide": "^3.6.0",
     "@line/liff": "^2.21.4",
     "@pinia/nuxt": "^0.4.6",
-    "aos": "^2.3.4",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",
