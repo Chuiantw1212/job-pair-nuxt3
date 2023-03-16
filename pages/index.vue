@@ -1,9 +1,7 @@
 <template>
     <div class="admin">
-        <template v-if="repoAuth.state.user?.email === 'chuiantw1212@gmail.com'">
-            <div>profile: {{ state.profile }}</div>
-            <div>linkToken: {{ state.linkToken }}</div>
-        </template>
+        <div v-if="state.profile">profile: {{ state.profile }}</div>
+        <div v-if="state.linkToken">linkToken: {{ state.linkToken }}</div>
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png">
             <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
