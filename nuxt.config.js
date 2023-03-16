@@ -7,13 +7,11 @@ export default defineNuxtConfig({
             // 初始共用的設定，這裡不放title與description
             // title: 'Job Pair',
             meta: [
-                { name: 'description', content: descriptionContent },
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol
                 { property: 'og:url', content: 'https://job-pair.com' },
                 { property: 'og:title', content: 'Job Pair' },
-                { property: 'og:description', content: descriptionContent },
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
                 { property: 'og:image', content: imageUrl },
