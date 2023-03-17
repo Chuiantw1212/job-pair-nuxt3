@@ -545,7 +545,7 @@ async function concatJobsFromServer(config = {}) {
             list-style: none;
             padding: 0;
             margin-top: 138px;
-            height: calc(100vh - 246px);
+            height: calc(100vh - 200px);
             overflow-y: auto;
 
             .main__list__item {
