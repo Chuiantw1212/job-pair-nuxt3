@@ -16,7 +16,7 @@ export default defineNuxtConfig({
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol
-                { property: 'og:url', content: 'https://job-pair.com' },
+                // { property: 'og:url', content: 'https://job-pair.com' }, // redirect???
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
                 { property: 'og:image', content: imageUrl },
