@@ -70,13 +70,11 @@ export default {
 }
 </script>
 <script setup>
-import VConsole from 'vconsole';
 const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const repoAuth = useRepoAuth()
-const repoLine = useRepoLine()
 const router = useRouter()
 const state = reactive({
     jobList: [],
@@ -106,50 +104,9 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
-        // return
-        // Fetch user profile
-        startLiff()
     }
 })
 // methods
-async function startLiff() {
-    // 或者使用配置参数进行初始化
-    const vConsole = new VConsole({ theme: 'dark' });
-    console.log({
-        vConsole
-    });
-    // 调用 console 方法输出日志
-    console.log('Hello world');
-    if ($liff) {
-        const profile = await $liff.getProfile()
-        console.log({
-            profile
-        });
-        state.profile = profile
-        // const getProfileExample = {
-        //     "userId": "U4af4980629...",
-        //     "displayName": "Brown",
-        //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
-        //     "statusMessage": "Hello, LINE!"
-        // }
-        if (profile) {
-            const { userId = '' } = profile
-            console.log({
-                userId
-            });
-            const LinkTokenRes = await repoLine.issueLinkToken({
-                userId: userId
-            })
-            // const issueLinkTokenExample = {
-            //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
-            // }
-            state.linkToken = LinkTokenRes
-            console.log({
-                response
-            });
-        }
-    }
-}
 function routeToQuestions() {
     const { user } = repoAuth.state
     if (user && user.type === 'employee') {

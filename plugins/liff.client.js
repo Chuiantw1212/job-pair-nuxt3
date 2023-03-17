@@ -2,12 +2,15 @@
 // only in client-side.
 // document: https://nuxtjs.org/docs/2.x/directory-structure/plugins 
 import liff from '@line/liff'
-console.log({
-    liff
-});
 export default defineNuxtPlugin(async nuxtApp => {
     const config = useRuntimeConfig()
     try {
+        console.log({
+            liff
+        });
+        console.log({
+            config
+        })
         const initResult = await liff.init({ liffId: config.public.LIFF_ID })
         console.log({
             initResult
