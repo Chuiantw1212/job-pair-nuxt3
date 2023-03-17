@@ -24,7 +24,6 @@ onMounted(async () => {
     // https://web.dev/font-display/
     font-display: swap;
     font-family: 'Noto Sans TC', sans-serif, 'charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif';
-    padding-top: 58px;
     background-color: #ecf3f6;
     overflow-x: hidden;
 }

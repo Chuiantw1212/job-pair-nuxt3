@@ -579,9 +579,8 @@ async function concatJobsFromServer(config = {}) {
     .jobs {
         display: flex;
         flex-direction: row;
-        margin-top: 42px;
-        margin-bottom: 50px;
         gap: 16px;
+        padding-top: 20px;
 
         .jobs__filter {
             .filter__list {
