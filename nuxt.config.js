@@ -29,7 +29,7 @@ export default defineNuxtConfig({
             htmlAttrs: {
                 lang: 'zh-Hant'
             },
-            link: [
+            link: [ 
                 // Favicon https://github.com/nuxt/framework/discussions/5204
                 { rel: 'icon', type: 'image/x-icon', href: `/favicon.ico?${random}` },
                 // Google Fonts
