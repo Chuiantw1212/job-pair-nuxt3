@@ -1,5 +1,5 @@
 <template>
-    <div class="container jobManagement my-3">
+    <div class="container jobManagement">
         <!-- 職缺管理 -->
         <div class="jobManagement__addItem">
             <LazyAtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</LazyAtomBtnSimple>

@@ -21,12 +21,12 @@ export default defineNuxtPlugin(nuxtApp => {
                     const formValue = input.dataset.value || input.value
                     return nullable.includes(formValue) || !String(formValue).trim()
                 })
-                const emptyFieldNames = emptyFields.map(item => {
-                    return item.dataset.name
-                })
                 // 顯示彈跳視窗
                 let alertResult = { value: 1 } // 永遠預設為通過
-                if (emptyFieldNames.length && config.icon) {
+                if (emptyFields.length && config.icon) {
+                    const emptyFieldNames = emptyFields.map(item => {
+                        return item.dataset.name
+                    })
                     const fieldString = emptyFieldNames.join(', ')
                     const text = `${fieldString}未填寫`
                     const swalConfig = Object.assign({
@@ -35,13 +35,16 @@ export default defineNuxtPlugin(nuxtApp => {
                         confirmButtonColor: '#5ea88e',
                     }, config)
                     alertResult = await Swal.fire(swalConfig)
+                    setTimeout(() => {
+                        emptyFields[0].scrollIntoView({ block: "center", });
+                    }, 500)
                 }
                 // 回傳驗證結果
                 const numer = allRequiredInputs.length - emptyFields.length
                 const deno = allRequiredInputs.length
                 const completeness = Math.floor(numer / deno * 100)
                 const result = {
-                    isValid: !emptyFieldNames.length,
+                    isValid: !emptyFields.length,
                     completeness,
                     value: alertResult.value
                 }

@@ -1,7 +1,7 @@
 <template>
     <div class="company" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-        <section id="company__info" class="company__section mt-4">
+        <section id="company__info" class="company__section mt-3">
             <div :key="state.renderKey" class="company__bannerGroup">
                 <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
             </div>
