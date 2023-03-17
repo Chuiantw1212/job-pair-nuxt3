@@ -493,7 +493,6 @@ async function initializeSearch() {
     .appliedList__chart {
         border-radius: 10px;
         background-color: #fff;
-        margin-top: 20px;
         padding: 20px;
 
         .chart__header {

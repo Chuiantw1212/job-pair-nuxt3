@@ -1,6 +1,6 @@
 <template>
     <div class="inputGroup">
-        <div class="inputGroup__nameGroup">
+        <div v-if="name" class="inputGroup__nameGroup">
             {{ name }}
         </div>
         <label class="inputGroup__label inputGroup__label--dahsed">

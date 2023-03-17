@@ -1,7 +1,7 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
-        <section id="jobView__basic" class="jobView__section mt-4">
+        <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__basic">
                 <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company?.logo})` }">
