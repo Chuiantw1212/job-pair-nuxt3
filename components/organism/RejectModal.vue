@@ -230,7 +230,7 @@ async function sendRejectLetter() {
 
                         .timePickerGroup__timePicker {
                             padding: 16px 24px;
-                            border: 1px solid #d9d9d9;
+                            border: 1px solid #d3d3d3;
                             border-radius: 10px;
                             font-size: 16px;
                             font-weight: normal;

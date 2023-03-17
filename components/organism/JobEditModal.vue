@@ -460,7 +460,7 @@ defineExpose({
                         .question__input {
                             width: 24px;
                             height: 24px;
-                            border: 1px solid #d9d9d9;
+                            border: 1px solid #d3d3d3;
                             margin-right: 8px;
                         }
                     }

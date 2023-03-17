@@ -1,7 +1,5 @@
 <template>
     <div class="admin">
-        <div v-if="state.profile">profile: {{ state.profile }}</div>
-        <div v-if="state.linkToken">linkToken: {{ state.linkToken }}</div>
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png">
             <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
@@ -70,12 +68,11 @@ export default {
 }
 </script>
 <script setup>
-const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const repoAuth = useRepoAuth()
-const repoLine = useRepoLine()
 const router = useRouter()
 const state = reactive({
     jobList: [],
@@ -105,30 +102,6 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
-        // Fetch user profile
-        if ($liff) {
-            const profile = await $liff.getProfile()
-            state.profile = profile
-            // const getProfileExample = {
-            //     "userId": "U4af4980629...",
-            //     "displayName": "Brown",
-            //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
-            //     "statusMessage": "Hello, LINE!"
-            // }
-            if (profile) {
-                const { userId = '' } = profile
-                const LinkTokenRes = await repoLine.issueLinkToken({
-                    userId: userId
-                })
-                // const issueLinkTokenExample = {
-                //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
-                // }
-                state.linkToken = LinkTokenRes
-                console.log({
-                    response
-                });
-            }
-        }
     }
 })
 // methods
