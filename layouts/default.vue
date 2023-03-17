@@ -29,7 +29,7 @@ onMounted(async () => {
 }
 
 .main {
-    min-height: calc(100vh - 243px);
+    min-height: calc(100vh - 200px);
 }
 
 body {
