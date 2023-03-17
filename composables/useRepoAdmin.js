@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 export default defineStore('admin', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     async function getAdminCompany() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/admin/company`,
         })
         return response
     }
     async function patchAdmin(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/admin`,
             data
@@ -17,7 +17,7 @@ export default defineStore('admin', () => {
         return response
     }
     async function postAdmin(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/admin`,
             data
@@ -25,7 +25,7 @@ export default defineStore('admin', () => {
         return response
     }
     async function postAdminNewCompany(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/admin/company`,
             data
@@ -33,7 +33,7 @@ export default defineStore('admin', () => {
         return response
     }
     async function deleteAdminCompany() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'delete',
             url: `/admin/company`,
         })

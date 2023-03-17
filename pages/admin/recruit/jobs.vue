@@ -346,7 +346,7 @@ async function addJobDraft() {
         }
 
         .addItem__searchGroup {
-            border: 1px solid #d9d9d9;
+            border: 1px solid #d3d3d3;
             padding: 11px 20px;
             background-color: white;
             border-radius: 5px 0 0 5px;

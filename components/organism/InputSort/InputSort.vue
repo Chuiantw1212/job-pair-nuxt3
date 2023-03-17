@@ -114,7 +114,7 @@ function sortBy(item) {
             width: 216px;
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #d9d9d9;
+            border: 1px solid #d3d3d3;
 
             .menu__item {
                 padding: 12px;

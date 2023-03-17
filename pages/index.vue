@@ -68,7 +68,7 @@ export default {
 }
 </script>
 <script setup>
-const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -79,15 +79,10 @@ const state = reactive({
     affiliate: [],
     jobProvider: [],
     profile: null,
+    linkToken: null,
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-// useSeoMeta({
-//     title: runTime.title,
-//     ogTitle: runTime.title,
-//     description: runTime.description,
-//     ogDescription: runTime.description,
-// })
 onMounted(async () => {
     if (process.client) {
         // initialGlide()
@@ -107,10 +102,6 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
-        // Fetch user profile
-        // $liff.getProfile().then((profile) => {
-        //     state.profile = profile
-        // })
     }
 })
 // methods

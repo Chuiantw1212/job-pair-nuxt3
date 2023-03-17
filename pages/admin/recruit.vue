@@ -11,7 +11,7 @@
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
-                    <template v-if="false">
+                    <template v-if="checkApplicationEnabled()">
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
                             to="/admin/recruit/applied">
                             <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
@@ -30,8 +30,7 @@
                     </template>
                 </li>
                 <li class="menu__item">
-                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                        to="/admin/recruit/prospect">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/admin/recruit/prospect">
                         <img class="item__link__icon" src="~/assets/admin/icon_consult.svg">
                         <div class="menu__item__text">潛在合適人選</div>
                     </NuxtLink>

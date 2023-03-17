@@ -1,20 +1,20 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('user', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     async function deleteUser() {
         const auth = getAuth()
         if (!auth.currentUser) {
             return
         }
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'delete',
             url: `/user`,
         })
         return response
     }
     async function postUser(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/user`,
             data,
@@ -23,7 +23,7 @@ export default defineStore('user', () => {
         return response
     }
     async function patchUserProfile(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/user`,
             data
@@ -31,7 +31,7 @@ export default defineStore('user', () => {
         return response
     }
     async function putUserResume(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/user/${data.uid}/resume`,
             data: data.file,
@@ -40,7 +40,7 @@ export default defineStore('user', () => {
         return response
     }
     async function putUserResumes(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/user/resumes`,
             data,
@@ -49,7 +49,7 @@ export default defineStore('user', () => {
         return response
     }
     async function putUserPhoto(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/user/photo`,
             data,
@@ -57,7 +57,7 @@ export default defineStore('user', () => {
         return response
     }
     async function patchUserPreference(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/user/preference`,
             data

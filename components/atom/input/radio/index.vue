@@ -91,6 +91,7 @@ const localValue = computed({
         gap: 18px;
         min-height: 40px;
         align-items: center;
+        flex-wrap: wrap;
 
         .labelGroup__label {
             display: flex;
@@ -132,6 +133,7 @@ const localValue = computed({
             .label__text {
                 margin-left: 8px;
                 font-size: 18px;
+                white-space: nowrap;
             }
         }
     }

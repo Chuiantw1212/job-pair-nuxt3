@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 export default defineStore('select', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const state = reactive({
         company: null,
         selectByQueryRes: null,
@@ -215,7 +215,7 @@ export default defineStore('select', () => {
     })
     // actions
     async function getQuestions(store, params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/select/question`,
             params,
@@ -224,7 +224,7 @@ export default defineStore('select', () => {
         return response
     }
     async function getSelectByQuery(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/select`,
             params,
@@ -233,7 +233,7 @@ export default defineStore('select', () => {
         return response
     }
     async function getLocation() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/select/location`,
         })
@@ -241,7 +241,7 @@ export default defineStore('select', () => {
         return response
     }
     async function getIndustryCategory() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/select/industryCategory`,
         })
