@@ -79,12 +79,15 @@
                         :items="repoSelect.state.selectByQueryRes.proficiency">
                     </LazyAtomInputRadio>
                 </div>
+                <LazyAtomInputUploader class="mt-3" v-model="state.profile.certificates" name="證照與證明">
+                </LazyAtomInputUploader>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
-                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
+                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
                     <slot>
                         <!-- <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple> -->
-                        <!-- <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal> -->
+                        <LazyOrganismChatGptModal :modelValue="state.profile.description"
+                            @update:modelValue="setDescription($event)"></LazyOrganismChatGptModal>
                     </slot>
                 </LazyAtomInputCkeditor>
                 <!-- ChatGPT -->
@@ -110,7 +113,6 @@ const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
-const repoChat = useRepoChat()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const state = reactive({
@@ -134,6 +136,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     }
 })
 // methods
+const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
@@ -147,6 +150,10 @@ function initialize() {
     profile.isActive = isActive ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
+}
+function setDescription(value) {
+    state.profile.description = value
+    instance.refs.description.setData(value)
 }
 async function logout() {
     repoAuth.userSignout()
@@ -181,12 +188,16 @@ async function handleSubmit() {
         return hasName && hasUrl
     })
     state.profile.portfolio = validPorfolio
-    // 先更新pdf
+    // 更新履歷pdf
     $sweet.loader(true)
     const validResumes = state.profile.resumes.filter((item) => item.url)
     const reseumeResponse = await repoUser.putUserResumes(validResumes)
     state.profile.resumes = reseumeResponse.data
-    // 再更新履歷資料
+    // 更新語言證明
+    const validCertificates = state.profile.certificates.filter((item) => item.url)
+    const certificatesRes = await repoUser.putUserCertificates(validCertificates)
+    state.profile.certificates = certificatesRes.data
+    // 再更新個人資料
     await repoUser.patchUserProfile(state.profile)
     // 收尾
     const patchedUser = Object.assign({}, repoAuth.user, state.profile)

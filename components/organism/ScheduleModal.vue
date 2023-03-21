@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="closeEditModal()">取消
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--success" @click="closeEditModal()">取消
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple class="footer__button" @click="generateTemplate()">預覽</LazyAtomBtnSimple>
                     </div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="showEditModal()">回上一步
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--success" @click="showEditModal()">回上一步
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple class="footer__button" @click="sendInterviewRequest()">送出</LazyAtomBtnSimple>
                     </div>

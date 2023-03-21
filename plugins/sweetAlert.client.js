@@ -58,10 +58,11 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
-                loader: async function (isOn) {
+                loader: async function (isOn, config = {}) {
                     if (isOn) {
+                        const { title = '載入中' } = config
                         Swal.fire({
-                            title: '載入中',
+                            title,
                             allowEscapeKey: false,
                             allowOutsideClick: false,
                             showConfirmButton: false,
