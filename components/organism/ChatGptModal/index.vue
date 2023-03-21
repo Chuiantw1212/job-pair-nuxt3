@@ -22,31 +22,14 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple outline>取消</LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple @click="handleOptimization()">優化</LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple class="buttonGroup__btn" outline>取消</LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleOptimization()">修改後套用內文
+                            </LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="modal fade" :id="`afterModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">ChatGPT回應</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" ref="modalBodyRef">
-
-                    </div>
-                    <div class="modal-footer">
-                        <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="footer__button" @click="handleConfirm()">確定</LazyAtomBtnSimple>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 <script setup>
@@ -116,7 +99,9 @@ onMounted(() => {
 })
 // methods
 async function sendOptimizeRequest() {
-    $sweet.loader(true)
+    $sweet.loader(true, {
+        title: '生成中請稍待......'
+    })
     const res = await repoChat.postChatEssay(state.beforeChatGpt)
     if (res.status !== 200) {
         return
@@ -240,13 +225,19 @@ async function handleOptimization() {
 
     .modal-footer {
         border: none;
+        padding-bottom: 37px;
 
         .footer__buttonGroup {
             display: flex;
             gap: 16px;
+            margin: auto;
 
             .footer__button {
                 width: 120px;
+            }
+
+            .buttonGroup__btn {
+                width: 226px;
             }
         }
     }
