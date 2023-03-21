@@ -79,6 +79,8 @@
                         :items="repoSelect.state.selectByQueryRes.proficiency">
                     </LazyAtomInputRadio>
                 </div>
+                <LazyAtomInputUploader class="mt-3" v-model="state.profile.certificates" name="證照與證明">
+                </LazyAtomInputUploader>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
@@ -181,12 +183,16 @@ async function handleSubmit() {
         return hasName && hasUrl
     })
     state.profile.portfolio = validPorfolio
-    // 先更新pdf
+    // 更新履歷pdf
     $sweet.loader(true)
     const validResumes = state.profile.resumes.filter((item) => item.url)
     const reseumeResponse = await repoUser.putUserResumes(validResumes)
     state.profile.resumes = reseumeResponse.data
-    // 再更新履歷資料
+    // 更新語言證明
+    const validCertificates = state.profile.certificates.filter((item) => item.url)
+    const certificatesRes = await repoUser.putUserCertificates(validCertificates)
+    state.profile.certificates = certificatesRes.data
+    // 再更新個人資料
     await repoUser.patchUserProfile(state.profile)
     // 收尾
     const patchedUser = Object.assign({}, repoAuth.user, state.profile)

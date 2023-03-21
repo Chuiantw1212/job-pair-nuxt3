@@ -48,6 +48,15 @@ export default defineStore('user', () => {
         })
         return response
     }
+    async function putUserCertificates(data) {
+        const response = await jobPairApi.request({
+            method: 'put',
+            url: `/user/certificates`,
+            data,
+            commit: true,
+        })
+        return response
+    }
     async function putUserPhoto(data) {
         const response = await jobPairApi.request({
             method: 'put',
@@ -70,6 +79,7 @@ export default defineStore('user', () => {
         patchUserProfile,
         putUserResume,
         putUserResumes,
+        putUserCertificates,
         putUserPhoto,
         patchUserPreference,
     }
