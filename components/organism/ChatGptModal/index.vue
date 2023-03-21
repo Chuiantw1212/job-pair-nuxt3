@@ -4,23 +4,26 @@
             一鍵優化
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`beforeModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="修改前" class="mt-3" :toolbar="[]"
-                            ref="beforeChatGpt">
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="職責介紹修改前" class="mt-3" :toolbar="[]"
+                            ref="beforeChatGpt" :style="{ 'height': '324px' }" required>
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor v-model="state.afterChatGpt" name="修改後" ref="afterChatGpt" class="mt-3">
+                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">交給ChatGPT優化</LazyAtomBtnSimple>
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="職責介紹修改後" ref="afterChatGpt"
+                            :style="{ 'height': '324px' }" required>
                         </LazyAtomInputCkeditor>
                         <!-- </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="footer__button" @click="handleOptimization()">優化</LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple outline>取消</LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple @click="handleOptimization()">優化</LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>
@@ -221,8 +224,13 @@ async function handleOptimization() {
 
     .modal-body {
         padding: 0 50px 30px 50px;
-        display: flex;
-        flex-wrap: nowrap;
+
+        // display: flex;
+        // flex-wrap: nowrap;
+        .modal__btn {
+            margin: 29px auto auto auto;
+            width: 226px;
+        }
 
         .chatGptModal__before {
             border: 1px solid black;

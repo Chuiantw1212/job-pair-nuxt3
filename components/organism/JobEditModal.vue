@@ -154,7 +154,7 @@
                 </div>
                 <div class="modal-footer jobModal__footer">
                     <LazyAtomBtnSimple class="header__button" @click="handleSave()">儲存</LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="btnSimple--outline--primary" @click="closeModal()">取消</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="btnSimple--outline--success" @click="closeModal()">取消</LazyAtomBtnSimple>
                     <button class="jobModal__footer__btn" @click="showAlert()">
                         <img src="~/assets/admin/icon_delete_g.svg" label="刪除職缺">
                     </button>

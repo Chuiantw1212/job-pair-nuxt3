@@ -92,6 +92,12 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    style: {
+        type: Object,
+        default: function () {
+            return {}
+        }
+    }
 })
 let localValue = computed({
     get() {
@@ -138,6 +144,21 @@ async function initializeCKEditor() {
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
+    // console.log(editor.ui.view.editable);
+    // console.log(props.style);
+    editor.ui.view.editable.element.style.maxHeight = props.style.height
+    // Set Height
+    editor.editing.view.change(writer => {
+        for (let attr in props.style) {
+            const value = props.style[attr]
+            // editor.ui.view.editable.element.style[attr] = value
+            writer.setStyle(attr, value, editor.editing.view.document.getRoot());
+        }
+
+    })
+    // console.log({
+    //     editor
+    // });
     if (localValue.value) {
         editor.setData(localValue.value)
     }

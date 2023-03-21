@@ -86,7 +86,7 @@
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
                     <slot>
                         <!-- <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple> -->
-                        <!-- <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal> -->
+                        <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
                     </slot>
                 </LazyAtomInputCkeditor>
                 <!-- ChatGPT -->
