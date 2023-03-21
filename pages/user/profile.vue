@@ -83,10 +83,11 @@
                 </LazyAtomInputUploader>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
-                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
+                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
                     <slot>
                         <!-- <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple> -->
-                        <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal>
+                        <LazyOrganismChatGptModal :modelValue="state.profile.description"
+                            @update:modelValue="setDescription($event)"></LazyOrganismChatGptModal>
                     </slot>
                 </LazyAtomInputCkeditor>
                 <!-- ChatGPT -->
@@ -112,7 +113,6 @@ const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
-const repoChat = useRepoChat()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const state = reactive({
@@ -136,6 +136,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     }
 })
 // methods
+const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
@@ -149,6 +150,10 @@ function initialize() {
     profile.isActive = isActive ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
+}
+function setDescription(value) {
+    state.profile.description = value
+    instance.refs.description.setData(value)
 }
 async function logout() {
     repoAuth.userSignout()

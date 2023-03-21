@@ -1,9 +1,9 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple @click="openModal()">
+        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
             一鍵優化
         </LazyAtomBtnSimple>
-        <div class="modal fade" :id="`beforeModal${state.id}`" tabindex="-1" a aria-hidden="true">
+        <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -12,18 +12,19 @@
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
                         <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="職責介紹修改前" class="mt-3" :toolbar="[]"
-                            ref="beforeChatGpt" :style="{ 'height': '324px' }" required>
+                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">交給ChatGPT優化</LazyAtomBtnSimple>
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="職責介紹修改後" ref="afterChatGpt"
-                            :style="{ 'height': '324px' }" required>
+                            :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <!-- </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="buttonGroup__btn" outline>取消</LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleOptimization()">修改後套用內文
+                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
+                            </LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
                             </LazyAtomBtnSimple>
                         </div>
                     </div>
@@ -47,8 +48,7 @@ const emit = defineEmits(['applied', 'update:modelValue'])
 const router = useRouter()
 const state = reactive({
     id: null,
-    beforeModal: null,
-    afterModal: null,
+    chatModal: null,
     glideInstance: null,
     glideIndex: 0,
     resume: null,
@@ -83,22 +83,27 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         state.beforeChatGpt = props.modelValue
-        $requestSelector(`#beforeModal${state.id}`, (modelElement) => {
-            state.beforeModal = new $bootstrap.Modal(modelElement, {
+        $requestSelector(`#chatModal${state.id}`, (modelElement) => {
+            state.chatModal = new $bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })
         })
-        // $requestSelector(`#afterModal${state.id}`, (modelElement) => {
-        //     state.afterModal = new $bootstrap.Modal(modelElement, {
-        //         keyboard: false,
-        //         backdrop: "static",
-        //     })
-        // })
     }
 })
 // methods
-async function sendOptimizeRequest() {
+function handleConfirm() {
+    emit('update:modelValue', state.afterChatGpt)
+    state.chatModal.hide()
+}
+async function openModal() {
+    state.chatModal.show()
+}
+function handleClose() {
+    state.chatModal.hide()
+}
+const modalBodyRef = ref(null)
+async function handleOptimization() {
     $sweet.loader(true, {
         title: '生成中請稍待......'
     })
@@ -115,78 +120,14 @@ async function sendOptimizeRequest() {
         console.log('Error trying to setInvitationTemplate: ', ckEditor);
     }
 }
-function setInvitationTemplate() {
-    // const { company } = repoAuth.state
-    // if (!props.modelValue || !company) {
-    //     return
-    // }
-    // const { similarity } = props.modelValue
-    // const formatSimilarity = $rank(similarity)
-    // const template =
-    //     `${props.modelValue.name}您好：<br/>` +
-    //     `我是${company.name}的招募人員，在Job Pair上看到您的個人簡介。<br/><br/>` +
-    //     `透過適配度的演算，您與我們公司的職缺${props.job.name}適配度達${formatSimilarity}%，表示雙方在組織文化、風格與溝通模式有${formatSimilarity}%的契合度，因此主動寄送職缺資訊給您參考。<br/>` +
-    //     `若您符合職缺所需的條件，也有進一步了解我們公司的興趣；歡迎回覆您的履歷，我們將會優先處理。<br/><br/>` +
-    //     `招募人員${repoAuth.state.user.name}敬上`
-    // // state.form.subject = `${company.name}${props.job.name}應徵邀約`
-    // state.form.template = template
-    // if (afterChatGpt.value) {
-    //     afterChatGpt.value.setData(template)
-    // } else {
-    //     console.log('Error trying to setInvitationTemplate: ', afterChatGpt);
-    // }
-}
-async function setBeforeEssay() {
-
-}
-async function handleConfirm() {
-    state.beforeModal.hide()
-}
-async function openModal() {
-    // state.afterChatGpt = props.modelValue
-    state.beforeModal.show()
-
-    // sendOptimizeRequest()
-    // if (!props.modelValue || props.modelValue === '<p></p>') {
-    //     return
-    // }
-    // const res = await repoChat.postChatEssay(props.modelValue)
-    // if (res.status === 200) {
-    // }
-}
-const modalBodyRef = ref(null)
-async function handleOptimization() {
-    await sendOptimizeRequest()
-    // state.beforeModal.hide()
-    // state.afterModal.show()
-    // const form = modalBodyRef.value
-    // const result = await $validate(form)
-    // if (!result.isValid) {
-    //     return
-    // }
-    // $sweet.loader(true)
-    // const submitData = Object.assign({}, state.form, {
-    //     jobId: props.job.identifier,
-    //     prospectId: props.modelValue.id,
-    // })
-    // const invitationRes = await repoJobApplication.postJobProspectInvitation(submitData)
-    // if (invitationRes.status !== 200) {
-    //     return
-    // }
-    // const responseData = invitationRes.data
-    // const updated = Object.assign({}, props.modelValue, {
-    //     applyFlow: responseData.applyFlow,
-    //     invitedTime: responseData.invitedTime,
-    //     jobId: props.job.identifier,
-    // })
-    // emit('update:modelValue', updated)
-    // const alertResult = await $sweet.succeed()
-    // if (alertResult) {
-    // }
-    // state.beforeModal.hide()
-}
 </script>
 <style lang="scss" scoped>
+.chatGptModal__btn {
+    width: 115px;
+    height: 40px;
+    margin-left: 8px;
+}
+
 .modal-content {
     border-radius: 10px;
 
@@ -231,6 +172,7 @@ async function handleOptimization() {
             display: flex;
             gap: 16px;
             margin: auto;
+            flex-direction: column-reverse;
 
             .footer__button {
                 width: 120px;
@@ -238,6 +180,19 @@ async function handleOptimization() {
 
             .buttonGroup__btn {
                 width: 226px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width:992px) {
+
+    .modal-content {
+        .modal-footer {
+
+
+            .footer__buttonGroup {
+                flex-direction: row;
             }
         }
     }
