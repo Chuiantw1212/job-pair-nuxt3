@@ -3,7 +3,9 @@
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
-            <slot></slot>
+            <div>
+                <slot></slot>
+            </div>
         </div>
         <label class="inputdropdown" :class="{ 'inputdropdown--disabled': disabled }">
             <select v-model="localValue" class="inputdropdown__select" :data-required="required" :data-name="name"
@@ -92,6 +94,9 @@ export default {
         font-size: 16px;
         color: #1f1f1f;
         margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .inputdropdown {

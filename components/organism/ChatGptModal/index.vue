@@ -11,11 +11,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="職責介紹修改前" class="mt-3" :toolbar="[]"
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="個人簡歷修改前" class="mt-3" :toolbar="[]"
                             ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">交給ChatGPT優化</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="職責介紹修改後" ref="afterChatGpt"
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="個人簡歷修改後" ref="afterChatGpt"
                             :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <!-- </div> -->

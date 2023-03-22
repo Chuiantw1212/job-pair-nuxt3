@@ -72,7 +72,7 @@
                     <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                         v-model="state.profile.language" name="語言能力" placeholder="選擇語言"
                         :items="repoSelect.state.selectByQueryRes.language">
-                        <!-- <a class="languageGroup__link" href="">程度說明</a> -->
+                        <LazyOrganismLanguageModal v-if="state.profile.language === 'english'"></LazyOrganismLanguageModal>
                     </LazyAtomInputSelect>
                     <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency"
                         class="languageGroup__proficiency" v-model="state.profile.proficiency"
