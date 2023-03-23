@@ -1,6 +1,7 @@
 <template>
     <div class="chatGptModal">
         <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
+            <img class="me-1" src="./Frame.svg" alt="icon">
             一鍵優化
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
@@ -14,7 +15,7 @@
                         <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="個人簡歷修改前" class="mt-3" :toolbar="[]"
                             ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">交給ChatGPT優化</LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="個人簡歷修改後" ref="afterChatGpt"
                             :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
