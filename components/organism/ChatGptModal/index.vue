@@ -9,15 +9,16 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" name="個人簡歷修改前" class="mt-3" :toolbar="[]"
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
                             ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" name="個人簡歷修改後" ref="afterChatGpt"
-                            :style="{ 'height': '324px' }">
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
+                            ref="afterChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <!-- </div> -->
                     </div>
@@ -44,8 +45,7 @@
 const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
-const repoChat = useRepoChat()
-const emit = defineEmits(['applied', 'update:modelValue'])
+const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const router = useRouter()
 const state = reactive({
     id: null,
@@ -69,16 +69,26 @@ const props = defineProps({
             return ''
         }
     },
+    name: {
+        type: String,
+        default: ''
+    },
+    chatRequest: {
+        type: Function,
+        default: function () {
+            return false
+        }
+    }
 })
 const currentInstance = getCurrentInstance()
 // hooks
 watch(() => props.modelValue, (newValue) => {
-    state.afterChatGpt = ''
     state.beforeChatGpt = newValue
     const beforeChatGpt = currentInstance.refs.beforeChatGpt
     if (beforeChatGpt) {
         beforeChatGpt.setData(newValue)
     }
+    state.afterChatGpt = ''
 }, { immediate: true, deep: true })
 onMounted(() => {
     if (process.client) {
@@ -95,12 +105,15 @@ onMounted(() => {
 // methods
 function handleConfirm() {
     emit('update:modelValue', state.afterChatGpt)
+    state.afterChatGpt = ''
     state.chatModal.hide()
 }
 async function openModal() {
     state.chatModal.show()
 }
 function handleClose() {
+    const ckEditor = currentInstance.refs.beforeChatGpt
+    ckEditor.setData(props.modelValue)
     state.chatModal.hide()
 }
 const modalBodyRef = ref(null)
@@ -108,7 +121,7 @@ async function handleOptimization() {
     $sweet.loader(true, {
         title: '生成中請稍待......'
     })
-    const res = await repoChat.postChatEssay(state.beforeChatGpt)
+    const res = await props.chatRequest(state.beforeChatGpt)
     if (res.status !== 200) {
         return
     }

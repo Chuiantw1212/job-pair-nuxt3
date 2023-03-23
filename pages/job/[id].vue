@@ -132,7 +132,7 @@
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description"  :toolbar="[]" disabled
                                 ref="descriptionRef">
                             </LazyAtomInputCkeditor>
                         </div>

@@ -84,14 +84,10 @@
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
-                    <slot>
-                        <!-- <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple> -->
-                        <LazyOrganismChatGptModal :modelValue="state.profile.description"
-                            @update:modelValue="setDescription($event)"></LazyOrganismChatGptModal>
-                    </slot>
+                    <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
+                        :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
+                    </LazyOrganismChatGptModal>
                 </LazyAtomInputCkeditor>
-                <!-- ChatGPT -->
-                <!--  -->
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
@@ -114,6 +110,7 @@ const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
 const repoSelect = useRepoSelect()
+const repoChat = useRepoChat()
 const router = useRouter()
 const state = reactive({
     profile: null,
@@ -151,8 +148,11 @@ function initialize() {
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
 }
+async function handleChatRequest(value) {
+    const res = await repoChat.postChatProfile(value)
+    return res
+}
 function setDescription(value) {
-    state.profile.description = value
     instance.refs.description.setData(value)
 }
 async function logout() {
