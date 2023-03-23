@@ -101,7 +101,12 @@ const props = defineProps({
 })
 let localValue = computed({
     get() {
-        return props.modelValue ?? '' // important
+        const value = props.modelValue ?? ''
+        const ckeditorInstance = state.ckeditorInstance
+        if (value && ckeditorInstance) {
+            ckeditorInstance.setData(newValue)
+        }
+        return value  // important
     },
     set(newValue) {
         emit('update:modelValue', newValue)
@@ -118,17 +123,10 @@ onBeforeUnmount(() => {
         ckeditorInstance.destroy()
     }
 })
-watch(() => localValue, (newValue, oldValue) => {
-    const ckeditorInstance = state.ckeditorInstance
-    // 職缺新增錯誤處理
-    if (!newValue && oldValue && ckeditorInstance) {
-        ckeditorInstance.setData(newValue)
-    }
-})
 // methods
 function getValue() {
     const case1 = !!props.modelValue
-    const case2 = props.modelValue !== '<p></p>'
+    // const case2 = props.modelValue !== '<p></p>'
     return case1
 }
 async function initializeCKEditor() {
@@ -144,21 +142,15 @@ async function initializeCKEditor() {
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
-    // console.log(editor.ui.view.editable);
-    // console.log(props.style);
     editor.ui.view.editable.element.style.maxHeight = props.style.height
     // Set Height
     editor.editing.view.change(writer => {
         for (let attr in props.style) {
             const value = props.style[attr]
-            // editor.ui.view.editable.element.style[attr] = value
             writer.setStyle(attr, value, editor.editing.view.document.getRoot());
         }
 
     })
-    // console.log({
-    //     editor
-    // });
     if (localValue.value) {
         editor.setData(localValue.value)
     }

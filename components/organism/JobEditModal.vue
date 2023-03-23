@@ -112,10 +112,16 @@
                             </LazyAtomInputRadio>
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required :toolbar="state.toolbar" class="mt-4">
+                            required :toolbar="state.toolbar" ref="description" class="mt-4">
+                            <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                                :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
+                            </LazyOrganismChatGptModal>
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
+                            :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
+                            <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
+                                :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
+                            </LazyOrganismChatGptModal>
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -153,8 +159,9 @@
                     </div>
                 </div>
                 <div class="modal-footer jobModal__footer">
-                    <LazyAtomBtnSimple class="header__button" @click="handleSave()">儲存</LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="btnSimple--outline--success" @click="closeModal()">取消</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="footer__button" @click="handleSave()">儲存</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="footer__button btnSimple--outline--success" @click="closeModal()">取消
+                    </LazyAtomBtnSimple>
                     <button class="jobModal__footer__btn" @click="showAlert()">
                         <img src="~/assets/admin/icon_delete_g.svg" label="刪除職缺">
                     </button>
@@ -169,6 +176,7 @@ const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
+const repoChat = useRepoChat()
 const device = useDevice()
 const state = reactive({
     job: null,
@@ -232,6 +240,22 @@ watch(() => repoSelect.jobCategoryMap, () => {
         state.jobCategoryLevel2Dropdown[key] = false
     }
 }, { deep: true })
+// methods
+const instance = getCurrentInstance()
+function setDescription(value) {
+    instance.refs.description.setData(value)
+}
+function setSkills(value) {
+    instance.refs.skills.setData(value)
+}
+async function handleChatDescription(value) {
+    const res = await repoChat.postChatJobDescription(value)
+    return res
+}
+async function handleChatSkills(value) {
+    const res = await repoChat.postChatJobDescription(value)
+    return res
+}
 function getJobName() {
     const { name = '' } = props.modelValue
     if (name && String(name).trim()) {
