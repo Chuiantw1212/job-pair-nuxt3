@@ -129,7 +129,7 @@ function closeModal() {
 </script>
 <style lang="scss" scoped>
 .modal__link {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
