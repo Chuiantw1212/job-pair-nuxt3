@@ -17,7 +17,7 @@
                 </div>
                 <div class="modal-body jobItem" ref="jobItemRef">
                     <div v-if="repoSelect.state.selectByQueryRes" class="dropLayer__form">
-                        <div>職缺狀態</div>
+                        <div class="form__header">職缺狀態</div>
                         <LazyAtomInputSwitch v-model="state.job.status">
                         </LazyAtomInputSwitch>
                         <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled"
@@ -433,30 +433,16 @@ defineExpose({
 .jobItem {
 
     .dropLayer__form {
+        .form__header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
         .form__salary {
-            .salary__header {
-                display: flex;
-                margin-bottom: 4px;
-
-                .header__text {
-                    font-size: 16px;
-                    margin-right: 24px;
-                }
-
-                .header__inputGroup {
-                    margin-right: 16px;
-                }
-            }
 
             .salary__type {
                 display: flex;
                 align-items: center;
-
-                .type__year {
-                    margin-top: 24px;
-                    font-size: 18px;
-                    margin-left: 18px;
-                }
             }
         }
 
