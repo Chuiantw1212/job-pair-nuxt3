@@ -133,7 +133,7 @@ function closeModal() {
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.5;
+    line-height: 1;
     letter-spacing: normal;
     text-align: left;
     color: #5ea88e;

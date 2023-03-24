@@ -3,11 +3,11 @@
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
-            <div>
+            <div class="ms-1">
                 <slot></slot>
             </div>
         </div>
-        <label class="inputdropdown" :class="{ 'inputdropdown--disabled': disabled }">
+        <label class="inputGroup__inputdropdown" :class="{ 'inputGroup__inputdropdown--disabled': disabled }">
             <select v-model="localValue" class="inputdropdown__select" :data-required="required" :data-name="name"
                 :class="{ 'inputdropdown__select--placeholder': [undefined].includes(localValue) }" :disabled="disabled">
                 <!-- 配合DB不用null為初始值 -->
@@ -87,73 +87,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    font-size: 18px;
-
-    .inputGroup__nameGroup {
-        font-size: 16px;
-        color: #1f1f1f;
-        margin-bottom: 4px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .inputdropdown {
-        display: flex;
-        flex-direction: column;
-        padding: 6px 12px;
-        border: 1px solid #d3d3d3;
-        border-radius: 10px;
-        background-color: white;
-        font-size: 18px;
-
-
-
-        .inputdropdown__placeholder {
-            font-size: 16px;
-            color: #595959;
-        }
-
-        .inputdropdown__select {
-            border: none;
-            text-overflow: ellipsis;
-            background-color: inherit;
-
-
-            option:not(:first-of-type) {
-                color: black;
-            }
-
-            &:focus {
-                border: none;
-                outline: none;
-            }
-        }
-
-        .inputdropdown__select--placeholder {
-            color: #d3d3d3;
-        }
-    }
-
-    .inputdropdown--disabled {
-        background-color: rgb(239, 239, 239);
-    }
-
-    .inputGroup__message {
-        // font-size: 20px;
-        line-height: 1.3;
-        text-align: right;
-    }
-}
-
-.inputGroup--error {
-    .inputdropdown {
-        border-color: #ff7373;
-    }
-
-    .inputGroup__message {
-        color: #ff7373;
-    }
-}
+@import './inputGroup.scss';
 </style>
