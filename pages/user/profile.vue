@@ -241,6 +241,8 @@ async function handleSubmit() {
     .profile__management {
         margin-top: 20px;
         display: flex;
+        font-size: 18px;
+        font-weight: bold;
 
         .managemement__others {
             color: #5ea88e;

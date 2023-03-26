@@ -194,7 +194,8 @@ defineExpose({
 </script>
 <style lang="scss" scoped>
 .inputGroup__nameGroup {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     color: #1f1f1f;
     margin-bottom: 4px;
     display: flex;

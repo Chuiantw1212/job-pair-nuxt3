@@ -1,0 +1,117 @@
+.inputGroup {
+    .inputGroup__nameGroup {
+        font-size: 18px;
+        color: #1f1f1f;
+        margin-bottom: 4px;
+        display: flex;
+        font-weight: bold;
+    }
+
+    .inputGroup__label {
+        padding: 7px 12px;
+        border: 1px solid #d3d3d3;
+        border-radius: 10px;
+        width: 100%;
+        background-color: white;
+
+        :deep(.label__input) {
+            border: none;
+            width: 100%;
+
+            &:focus {
+                outline: none;
+            }
+
+            &::placeholder {
+                color: #d3d3d3;
+            }
+        }
+
+        .label__input {
+            border: none;
+            width: 100%;
+
+            ::-webkit-input-placeholder {
+                /* Edge */
+                font-size: 14px;
+                color: #999;
+            }
+
+            :-ms-input-placeholder {
+                /* Internet Explorer 10-11 */
+                font-size: 14px;
+                color: #999;
+            }
+
+            ::placeholder {
+                font-size: 14px;
+                color: #999;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .label__input--textarea {
+            padding: 12px 16px;
+            width: 100%;
+            border: 1px solid #d3d3d3;
+            border-radius: 10px;
+        }
+    }
+
+    .inputGroup__label--disabled {
+        background-color: rgba(239, 239, 239);
+
+        .label__input {
+            background-color: rgba(239, 239, 239);
+        }
+    }
+
+    .inputGroup__inputdropdown {
+        display: flex;
+        flex-direction: column;
+        padding: 6px 12px;
+        border: 1px solid #d3d3d3;
+        border-radius: 10px;
+        background-color: white;
+        font-size: 18px;
+
+        .inputdropdown__select {
+            border: none;
+            text-overflow: ellipsis;
+            background-color: inherit;
+
+
+            option:not(:first-of-type) {
+                color: black;
+            }
+
+            &:focus {
+                border: none;
+                outline: none;
+            }
+        }
+
+        .inputdropdown__select--placeholder {
+            color: #d3d3d3;
+        }
+    }
+
+    .inputGroup__inputdropdown--disabled {
+        background-color: rgb(239, 239, 239);
+    }
+
+    .inputGroup__message {
+        color: #ff7373;
+        text-align: right;
+        width: 100%;
+    }
+}
+
+.inputGroup--error {
+    .inputGroup__label {
+        border-color: #ff7373;
+    }
+}

@@ -81,9 +81,10 @@ const localValue = computed({
 <style lang="scss" scoped>
 .inputGroup {
     .inputGroup__nameGroup {
-        font-size: 16px;
+        font-size: 18px;
         color: #1f1f1f;
         margin-bottom: 4px;
+        font-weight: bold;
     }
 
     .inputGroup__labelGroup {
@@ -102,11 +103,6 @@ const localValue = computed({
                 width: 24px;
                 height: 24px;
 
-                .circle__background {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                }
 
                 .circle__ring {
                     position: absolute;

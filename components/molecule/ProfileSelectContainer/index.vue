@@ -100,6 +100,8 @@ export default {
 
     .container__nameGroup {
         margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .inputDropdownContainer__trigger {

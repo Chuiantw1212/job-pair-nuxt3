@@ -4,8 +4,7 @@
         <template v-for="number in Math.ceil(modelValue.length / 3)">
             <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
                 class="resumes__previewGroup">
-                <div class="previewGroup__item"
-                    v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
+                <div class="previewGroup__item" v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
                     :key="`row${number}col${index}`">
                     <div v-if="checkIsImage(item)">
                         <img :src="item.url" class="previewGroup__item__viewer">
@@ -20,8 +19,7 @@
                                 <img class="btn__icon" src="./icon_delete_g.svg" />
                             </button>
                         </div>
-                        <div v-if="item.date"
-                            class="previewGroup__item__body__item previewGroup__item__body__item--date">
+                        <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
                             {{ $filter.time(item.date) }}
                             <button class="doc__btn" @click="openResume(item)">
                                 <img class="btn__icon" src="./icon_preview_g.svg" />
@@ -146,8 +144,9 @@ export default {
 <style lang="scss" scoped>
 .inputResumes {
     .resume__header {
-        font-size: 16px;
+        font-size: 18px;
         margin-bottom: 4px;
+        font-weight: bold;
     }
 
     .resumes__previewGroup {
@@ -246,10 +245,6 @@ export default {
 
 @media screen and (min-width:992px) {
     .inputResumes {
-        .resume__header {
-            font-size: 16px;
-        }
-
         .resumes__previewGroup {
             display: flex;
             flex-direction: row;
