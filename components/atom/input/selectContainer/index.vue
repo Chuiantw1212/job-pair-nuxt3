@@ -94,7 +94,7 @@ export default {
         overflow: hidden;
         z-index: 110;
         padding: 0px !important; // 不可以有Padding
-        min-width: 100%;
+        // width: 100% !important;
     }
 
     .inputDropdownContainer__layer--isOn {
@@ -120,7 +120,7 @@ export default {
         }
 
         .inputDropdownContainer__layer {
-            // width: 420px;
+            width: unset;
         }
     }
 }
