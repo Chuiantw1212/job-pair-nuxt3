@@ -134,6 +134,7 @@ async function sendRejectLetter() {
     background-color: white;
     border: 1px solid #5ea88e;
     color: #5ea88e;
+    width: 100%;
 
     &:hover {
         border: 1px solid #21cc90;

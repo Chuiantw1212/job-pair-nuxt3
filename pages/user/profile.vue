@@ -72,23 +72,22 @@
                     <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                         v-model="state.profile.language" name="語言能力" placeholder="選擇語言"
                         :items="repoSelect.state.selectByQueryRes.language">
-                        <!-- <a class="languageGroup__link" href="">程度說明</a> -->
+                        <LazyOrganismLanguageModal v-if="state.profile.language === 'english'"></LazyOrganismLanguageModal>
                     </LazyAtomInputSelect>
                     <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency"
                         class="languageGroup__proficiency" v-model="state.profile.proficiency"
                         :items="repoSelect.state.selectByQueryRes.proficiency">
                     </LazyAtomInputRadio>
                 </div>
+                <LazyAtomInputUploader class="mt-3" v-model="state.profile.certificates" name="證照與證明">
+                </LazyAtomInputUploader>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
-                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true">
-                    <slot>
-                        <!-- <AtomBtnSimple class="ms-1" @click="openEditResult()" size="sm">一鍵優化</AtomBtnSimple> -->
-                        <!-- <LazyOrganismChatGptModal :modelValue="state.profile.description"></LazyOrganismChatGptModal> -->
-                    </slot>
+                    placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
+                    <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
+                        :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
+                    </LazyOrganismChatGptModal>
                 </LazyAtomInputCkeditor>
-                <!-- ChatGPT -->
-                <!--  -->
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
@@ -110,8 +109,8 @@ const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
-const repoChat = useRepoChat()
 const repoSelect = useRepoSelect()
+const repoChat = useRepoChat()
 const router = useRouter()
 const state = reactive({
     profile: null,
@@ -134,6 +133,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     }
 })
 // methods
+const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
@@ -147,6 +147,13 @@ function initialize() {
     profile.isActive = isActive ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
+}
+async function handleChatRequest(value) {
+    const res = await repoChat.postChatProfile(value)
+    return res
+}
+function setDescription(value) {
+    instance.refs.description.setData(value)
 }
 async function logout() {
     repoAuth.userSignout()
@@ -181,12 +188,16 @@ async function handleSubmit() {
         return hasName && hasUrl
     })
     state.profile.portfolio = validPorfolio
-    // 先更新pdf
+    // 更新履歷pdf
     $sweet.loader(true)
     const validResumes = state.profile.resumes.filter((item) => item.url)
     const reseumeResponse = await repoUser.putUserResumes(validResumes)
     state.profile.resumes = reseumeResponse.data
-    // 再更新履歷資料
+    // 更新語言證明
+    const validCertificates = state.profile.certificates.filter((item) => item.url)
+    const certificatesRes = await repoUser.putUserCertificates(validCertificates)
+    state.profile.certificates = certificatesRes.data
+    // 再更新個人資料
     await repoUser.patchUserProfile(state.profile)
     // 收尾
     const patchedUser = Object.assign({}, repoAuth.user, state.profile)
@@ -230,6 +241,8 @@ async function handleSubmit() {
     .profile__management {
         margin-top: 20px;
         display: flex;
+        font-size: 18px;
+        font-weight: bold;
 
         .managemement__others {
             color: #5ea88e;

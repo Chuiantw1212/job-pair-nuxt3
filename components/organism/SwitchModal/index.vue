@@ -151,6 +151,7 @@ function showAdminModal() {
 
                 .card__btn {
                     margin-top: 30px;
+                    width: 100%;
                 }
             }
         }
