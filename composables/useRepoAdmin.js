@@ -8,6 +8,13 @@ export default defineStore('admin', () => {
         })
         return response
     }
+    async function getJobById(data) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/admin/job/${data.jobId}`,
+        })
+        return response
+    }
     async function patchAdmin(data) {
         const response = await jobPairApi.request({
             method: 'patch',
@@ -44,6 +51,7 @@ export default defineStore('admin', () => {
         patchAdmin,
         postAdmin,
         postAdminNewCompany,
-        deleteAdminCompany
+        deleteAdminCompany,
+        getJobById
     }
 })
