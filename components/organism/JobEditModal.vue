@@ -18,7 +18,7 @@
                 <div class="modal-body jobItem" ref="jobItemRef">
                     <div v-if="repoSelect.state.selectByQueryRes" class="dropLayer__form">
                         <div class="form__header">職缺狀態</div>
-                        <LazyAtomInputSwitch v-model="state.job.status">
+                        <LazyAtomInputSwitch class="mt-1" width="91" height="32" fontSize="18" v-model="state.job.status">
                         </LazyAtomInputSwitch>
                         <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled"
                             class="mt-4">
@@ -113,15 +113,15 @@
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             required :toolbar="state.toolbar" ref="description" class="mt-4">
-                            <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                            <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
                                 :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                            </LazyOrganismChatGptModal>
+                            </LazyOrganismChatGptModal> -->
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                             :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                            <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
+                            <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
                                 :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
-                            </LazyOrganismChatGptModal>
+                            </LazyOrganismChatGptModal> -->
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -286,7 +286,6 @@ function closeModal() {
 }
 function setJob() {
     const job = JSON.parse(JSON.stringify(props.modelValue))
-    const { user } = repoAuth.state
     // 給定預設值
     if (!job.preference) {
         job.preference = {}
@@ -298,6 +297,7 @@ function setJob() {
         job.status = "closed"
     }
     if (!job.adminId) {
+        const { user } = repoAuth.state
         job.adminId = user.id
     }
     if (!job.jobLocationType) {
@@ -324,11 +324,6 @@ function clearAddress() {
     state.job.addressLocality = ''
     state.job.streetAddress = ''
 }
-function clearSalary() {
-    state.job.salaryMin = ''
-    state.job.salaryMax = ''
-    state.job.incentiveCompensation = ''
-}
 function getMinSalary(salaryMin = 0) {
     const { salaryType } = state.job
     const { selectByQueryRes } = repoSelect.state
@@ -350,14 +345,6 @@ function resetAddress() {
 function checkAddressRequired() {
     const { jobLocationType = '' } = state.job
     return jobLocationType !== 'fullyRemote'
-}
-function getSalaryRange() {
-    const { salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = state.job
-    const yearlyLow = Number(salaryMin * 12)
-    const yearlyHigh = Math.max(Number(salaryMax * 12), yearlyLow) + Number(incentiveCompensation)
-    const formatLow = yearlyLow.toLocaleString()
-    const formatHigh = yearlyHigh.toLocaleString()
-    return `${formatLow} ~ ${formatHigh}`
 }
 const jobItemRef = ref(null)
 async function handleSave() {

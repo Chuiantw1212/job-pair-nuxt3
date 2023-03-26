@@ -77,7 +77,8 @@ export default {
             default: 3
         },
         fontSize: {
-            type: Number
+            type: Number,
+            default: 10
         },
     },
     mounted() {
@@ -184,7 +185,6 @@ export default {
     position: relative;
     vertical-align: middle;
     user-select: none;
-    font-size: 10px;
     cursor: pointer;
 
     .inputSwitch__checkbox {
@@ -200,6 +200,7 @@ export default {
         font-weight: 600;
         color: white;
         z-index: 1;
+        line-height: 1;
 
         &.v-left {
             left: 10px;
