@@ -6,6 +6,7 @@ export default defineStore('chat', () => {
             method: 'post',
             url: `/chat/profile`,
             data,
+            timeout: 180000,
         })
         return response
     }
@@ -14,6 +15,7 @@ export default defineStore('chat', () => {
             method: 'post',
             url: `/chat/jobDescription`,
             data,
+            timeout: 180000,
         })
         return response
     }
