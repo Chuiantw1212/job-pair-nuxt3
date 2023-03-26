@@ -60,9 +60,10 @@ export default defineNuxtPlugin(nuxtApp => {
                 },
                 loader: async function (isOn, config = {}) {
                     if (isOn) {
-                        const { title = '載入中' } = config
+                        const { title = '載入中', text = '' } = config
                         Swal.fire({
                             title,
+                            text,
                             allowEscapeKey: false,
                             allowOutsideClick: false,
                             showConfirmButton: false,

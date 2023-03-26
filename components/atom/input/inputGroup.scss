@@ -82,6 +82,8 @@
             border: none;
             text-overflow: ellipsis;
             background-color: inherit;
+            color: black;
+            -webkit-appearance: none;
 
 
             option:not(:first-of-type) {

@@ -102,6 +102,7 @@ export default {
         margin-bottom: 8px;
         font-size: 18px;
         font-weight: bold;
+        color: black;
     }
 
     .inputDropdownContainer__trigger {
@@ -140,7 +141,7 @@ export default {
         z-index: 110;
         border: none;
         margin-top: 4px;
-        min-width: 100%;
+        width: 100%;
     }
 
     .inputDropdownContainer__layer--flat {
@@ -155,23 +156,10 @@ export default {
 
 @media screen and (min-width: 992px) {
     .inputDropdownContainer {
-        .inputDropdownContainer__trigger {
-            // padding: 13px 20px;
-            // border-radius: 5px;
-            // // background-color: #eee;
-            // display: flex;
-            // justify-items: center;
-            // justify-content: space-between;
-            // border: none;
-            // width: 100%;
-
-            .placeholder__text {
-                font-size: 20px;
-            }
-        }
 
         .inputDropdownContainer__layer {
-            // width: 420px;
+            min-width: 100%;
+            width: unset;
         }
     }
 }

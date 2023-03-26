@@ -407,8 +407,7 @@ async function concatJobsFromServer(config = {}) {
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        id: user.id, // deprecated
-        identifier: user.id,
+        userId: user.id,
     })
     $sweet.loader(isLoading)
     const response = await repoJob.getJobByQuery(requestConfig)

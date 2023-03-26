@@ -16,6 +16,7 @@
                         <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
                             ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
+                        <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
                             ref="afterChatGpt" :style="{ 'height': '324px' }">
@@ -119,7 +120,8 @@ function handleClose() {
 const modalBodyRef = ref(null)
 async function handleOptimization() {
     $sweet.loader(true, {
-        title: '生成中請稍待......'
+        title: '泡杯咖啡再回來',
+        text: '「如果還沒好，那就再來一杯」',
     })
     const res = await props.chatRequest(state.beforeChatGpt)
     if (res.status !== 200) {
@@ -168,7 +170,7 @@ async function handleOptimization() {
         // display: flex;
         // flex-wrap: nowrap;
         .modal__btn {
-            margin: 29px auto auto auto;
+            margin: auto auto auto auto;
             width: 226px;
         }
 
