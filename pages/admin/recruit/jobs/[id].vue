@@ -62,14 +62,14 @@
                 :items="repoSelect.state.selectByQueryRes.jobLocationType" :disabled="state.disabled"
                 @change="resetAddress()">
             </LazyAtomInputSelect>
-            <div class="d-lg-flex gap-2 mt-4">
-                <LazyAtomInputSelect v-model="state.job.addressRegion" class="w-10" name="工作縣市"
+            <div class="form__addressGroup">
+                <LazyAtomInputSelect class="addressGroup__addressRegion" v-model="state.job.addressRegion" name="工作縣市"
                     :items="repoSelect.state.locationRes.taiwan"
                     :disabled="state.disabled || state.job.jobLocationType === 'fullyRemote'"
                     :required="checkAddressRequired()" @change="clearAddress()" :placeholderDisabled="false">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-if="repoSelect.state.locationRes && state.job.addressRegion !== 'oversea'"
-                    v-model="state.job.addressLocality" class="w-10" name="行政區"
+                    class="addressGroup__addressRegion" v-model="state.job.addressLocality" name="行政區"
                     :items="repoSelect.state.locationRes[state.job.addressRegion]"
                     :disabled="disabled || state.job.jobLocationType === 'fullyRemote'" :placeholderDisabled="false"
                     :required="checkAddressRequired()"></LazyAtomInputSelect>
@@ -77,9 +77,9 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
-            <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
+            <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
                 :disabled="state.job.jobLocationType === 'fullyRemote'">
-            </LazyAtomInputText>
+            </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
                     name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
@@ -135,7 +135,7 @@
             </div>
         </div>
         <div class="recruitJob__footer">
-            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存並返回職缺管理</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="previewJob()" outline>預覽職缺</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
@@ -200,15 +200,6 @@ const props = defineProps({
 })
 onMounted(() => {
     setJob()
-    // $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
-    //     const bsModal = new $bootstrap.Modal(element, {
-    //         keyboard: false,
-    //     })
-    //     element.addEventListener('show.bs.modal', () => {
-    //         setJob()
-    //     })
-    //     state.bsModal = bsModal
-    // })
 })
 watch(() => repoSelect.jobCategoryMap, () => {
     for (let key in repoSelect.jobCategoryMap) {
@@ -232,21 +223,10 @@ async function handleChatSkills(value) {
     return res
 }
 function previewJob() {
-    if (process.client) {
-        const job = state.job
-        const { origin } = window.location
-        const url = `${origin}/job/${job.identifier}`
-        window.open(url)
-        // return url
-    }
-}
-function getJobName() {
-    const { name = '' } = props.modelValue
-    if (name && String(name).trim()) {
-        return name
-    } else {
-        return '職缺草稿'
-    }
+    const job = state.job
+    const { origin } = window.location
+    const url = `${origin}/job/${job.identifier}`
+    window.open(url)
 }
 async function showAlert() {
     const alertResult = await $sweet.warning('一經刪除，無法還原')
@@ -260,15 +240,6 @@ async function showAlert() {
         })
     }
 }
-// function openModal(status = null) {
-//     state.bsModal.show()
-//     if (status) {
-//         state.job.status = status
-//     }
-// }
-// function closeModal() {
-//     state.bsModal.hide()
-// }
 async function setJob() {
     const jobResponse = await repoAdmin.getJobById({
         jobId: route.params.id,
@@ -379,14 +350,10 @@ async function handleSave() {
         return
     }
     await $sweet.loader(false) // IMPORTANT
-    // const updatedJob = response.data
-    // emit("update:modelValue", updatedJob)
-    // emit("save", updatedJob)
-    // closeModal()
+    router.push({
+        name: 'admin-recruit-jobs'
+    })
 }
-// defineExpose({
-//     openModal
-// })
 </script>
 <style lang="scss" scoped>
 .recruitJob__footer {
@@ -399,6 +366,7 @@ async function handleSave() {
     padding: 20px 40px;
     background-color: white;
     border-radius: 10px;
+
 
     .form__header {
         font-size: 18px;
@@ -481,9 +449,23 @@ async function handleSave() {
 }
 
 @media screen and (min-width:992px) {
+    .dropLayer__form {
+        .form__addressGroup {
+
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+
+            .addressGroup__addressRegion {
+                width: 8rem;
+
+            }
+        }
+    }
+
     .recruitJob__footer {
         flex-direction: row;
-        margin-top: 30px;
+        margin-top: 20px;
 
         .footer__btn {
             width: 226px;

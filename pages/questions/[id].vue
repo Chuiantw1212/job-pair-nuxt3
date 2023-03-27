@@ -142,7 +142,6 @@ async function handleSubmit() {
     $sweet.loader(false)
     // 刪除暫存資料
     localStorage.removeItem("user")
-    window.scrollTo(0, 0)
     return userData
 }
 function routeToFisrt() {

@@ -42,8 +42,4 @@ body {
     --ck-z-default: 100;
     --ck-z-modal: calc(var(--ck-z-default) + 999);
 }
-
-.container {
-    min-height: 100vh;
-}
 </style>

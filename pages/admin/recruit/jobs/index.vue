@@ -47,8 +47,8 @@
                             </LazyAtomInputSwitch>
                         </td>
                         <td>
-                            <NuxtLink @remove="removeJob(index)" :to="`jobs/${job.identifier}`">
-                                {{ job.name }}
+                            <NuxtLink :to="`jobs/${job.identifier}`">
+                                {{ getJobName(job) }}
                             </NuxtLink>
                             <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
                                 ref="jobModalRefs">
@@ -176,12 +176,13 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet, $requestSelector } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
+const router = useRouter()
 // hooks
 useSeoMeta({
     title: `職缺管理 - 招募中心 - Job Pair`
@@ -207,6 +208,14 @@ watch(() => state.filter, () => {
     })
 }, { deep: true })
 // methods
+function getJobName(job) {
+    const { name = '' } = job
+    if (name && String(name).trim()) {
+        return name
+    } else {
+        return '職缺草稿'
+    }
+}
 function getJobPreviewHref(job) {
     if (process.client) {
         const { origin } = window.location
@@ -285,6 +294,7 @@ async function initialize(payload = {}) {
     const activeJobs = allJobs.filter(item => item.status === 'active')
     state.jobList = [...closedJobs, ...activeJobs]
     state.renderKey = Math.random()
+    scrollTo(0, 0)
 }
 function debounce(func, delay = 800) {
     clearTimeout(state.debounceTimer)
@@ -310,13 +320,8 @@ async function addJobDraft() {
     $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
     state.jobList.unshift(res.data)
-    state.renderKey = Math.random()
-    // $requestSelector(`#modal_${res.data.identifier}`, () => {
-    //     const jobModals = currentInstance.refs.jobModalRefs
-    //     const targetModal = jobModals[0]
-    //     targetModal.openModal()
-    //     $sweet.loader(false)
-    // })
+    const { identifier = '' } = res.data
+    router.push(`jobs/${identifier}`)
 }
 </script>
 <style lang="scss" scoped>
