@@ -33,10 +33,6 @@
                 </div>
             </div>
         </nav>
-        <!-- 如果條件渲染有異步渲染問題 -->
-        <OrganismUserModal></OrganismUserModal>
-        <LazyOrganismCompanyModal></LazyOrganismCompanyModal>
-        <LazyOrganismSwitchModal></LazyOrganismSwitchModal>
     </div>
 </template>
 <script>

@@ -109,7 +109,8 @@
 }}</span>
                     </div>
                     <div class="mt-3">
-                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
+                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                            :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
                         <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
@@ -132,7 +133,7 @@
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description"  :toolbar="[]" disabled
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
                                 ref="descriptionRef">
                             </LazyAtomInputCkeditor>
                         </div>

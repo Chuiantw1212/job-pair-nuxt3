@@ -6,6 +6,10 @@
             </slot>
         </div>
         <LazyOrganismFooter />
+        <!-- 如果條件渲染有異步渲染問題 -->
+        <OrganismUserModal></OrganismUserModal>
+        <OrganismCompanyModal></OrganismCompanyModal>
+        <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>

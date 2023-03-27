@@ -47,9 +47,12 @@
                             </LazyAtomInputSwitch>
                         </td>
                         <td>
-                            <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
+                            <NuxtLink :to="`jobs/${job.identifier}`">
+                                {{ job.name }}
+                            </NuxtLink>
+                            <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
                                 ref="jobModalRefs">
-                            </LazyOrganismJobEditModal>
+                            </LazyOrganismJobEditModal> -->
                         </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">

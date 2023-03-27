@@ -1,7 +1,5 @@
 <template>
-    <div>
-
-
+    <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">職缺狀態</div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status">
@@ -136,6 +134,11 @@
                 </div>
             </div>
         </div>
+        <div class="recruitJob__footer">
+            <AtomBtnSimple @click="handleSave()">儲存</AtomBtnSimple>
+            <AtomBtnSimple @click="previewJob()" outline>預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple @click="showAlert()">刪除職缺</AtomBtnSimple>
+        </div>
     </div>
 </template>
 <script setup>
@@ -227,6 +230,15 @@ async function handleChatSkills(value) {
     const res = await repoChat.postChatJobDescription(value)
     return res
 }
+function previewJob() {
+    if (process.client) {
+        const job = state.job
+        const { origin } = window.location
+        const url = `${origin}/job/${job.identifier}`
+        window.open(url)
+        // return url
+    }
+}
 function getJobName() {
     const { name = '' } = props.modelValue
     if (name && String(name).trim()) {
@@ -273,8 +285,8 @@ async function setJob() {
     if (job.status != 'active') {
         job.status = "closed"
     }
-    if (!job.adminId) {
-        const { user } = repoAuth.state
+    const { user } = repoAuth.state
+    if (!job.adminId && user) {
         job.adminId = user.id
     }
     if (!job.jobLocationType) {
@@ -333,38 +345,38 @@ function getSalaryRange() {
 }
 const jobItemRef = ref(null)
 async function handleSave() {
-    // const jobItem = jobItemRef.value
-    // const job = state.job
-    // if (job.status === 'active') {
-    //     const result = await $validate(jobItem)
-    //     job.completeness = result.completeness
-    //     if (!result.isValid) {
-    //         return
-    //     }
-    // } else {
-    //     const result = await $validate(jobItem, {
-    //         title: '請再次確認',
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         cancelButtonText: '取消',
-    //     })
-    //     job.completeness = result.completeness
-    //     if (!result.value) {
-    //         return
-    //     }
-    // }
-    // // 依據id判斷是否為新增
-    // await $sweet.loader(true) // IMPORTANT
-    // let response = null
-    // if (job.identifier) {
-    //     response = await repoJob.putJobItem(job)
-    // } else {
-    //     response = await repoJob.postJobItem(job)
-    // }
-    // if (response.status !== 200) {
-    //     return
-    // }
-    // await $sweet.loader(false) // IMPORTANT
+    const jobItem = jobItemRef.value
+    const job = state.job
+    if (job.status === 'active') {
+        const result = await $validate(jobItem)
+        job.completeness = result.completeness
+        if (!result.isValid) {
+            return
+        }
+    } else {
+        const result = await $validate(jobItem, {
+            title: '請再次確認',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: '取消',
+        })
+        job.completeness = result.completeness
+        if (!result.value) {
+            return
+        }
+    }
+    // 依據id判斷是否為新增
+    await $sweet.loader(true) // IMPORTANT
+    let response = null
+    if (job.identifier) {
+        response = await repoJob.putJobItem(job)
+    } else {
+        response = await repoJob.postJobItem(job)
+    }
+    if (response.status !== 200) {
+        return
+    }
+    await $sweet.loader(false) // IMPORTANT
     // const updatedJob = response.data
     // emit("update:modelValue", updatedJob)
     // emit("save", updatedJob)
@@ -375,31 +387,10 @@ async function handleSave() {
 // })
 </script>
 <style lang="scss" scoped>
-.jobModal__btn {
-    font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.38;
-    letter-spacing: normal;
-    text-align: left;
-    color: #5ea88e;
-    border: none;
-    background-color: inherit;
-
-    .btn__text {
-        max-width: 8rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-    }
-
-    &:hover {
-        text-decoration: underline;
-    }
+.recruitJob__footer {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
 }
 
 .dropLayer__form {
@@ -453,16 +444,6 @@ async function handleSave() {
     }
 }
 
-.jobModal__footer {
-    display: flex;
-    flex-wrap: nowrap;
-
-    .jobModal__footer__btn {
-        background-color: inherit;
-        border: none;
-    }
-}
-
 .label__circle {
     position: relative;
     width: 24px;
@@ -494,6 +475,12 @@ async function handleSave() {
         height: 14px;
         background-color: #5ea88e;
         border-radius: 50%;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .recruitJob__footer {
+        flex-direction: row;
     }
 }
 </style>
