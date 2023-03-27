@@ -135,9 +135,9 @@
             </div>
         </div>
         <div class="recruitJob__footer">
-            <AtomBtnSimple @click="handleSave()">儲存</AtomBtnSimple>
-            <AtomBtnSimple @click="previewJob()" outline>預覽職缺</AtomBtnSimple>
-            <AtomBtnSimple @click="showAlert()">刪除職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="previewJob()" outline>預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
     </div>
 </template>
@@ -145,6 +145,7 @@
 const { $bootstrap, $sweet, $validate, $optionText, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const route = useRoute()
+const router = useRouter()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
@@ -254,8 +255,9 @@ async function showAlert() {
         if (deleteRes.status !== 200) {
             return
         }
-        emit("remove")
-        closeModal()
+        router.push({
+            name: 'admin-recruit-jobs'
+        })
     }
 }
 // function openModal(status = null) {
@@ -481,6 +483,11 @@ async function handleSave() {
 @media screen and (min-width:992px) {
     .recruitJob__footer {
         flex-direction: row;
+        margin-top: 30px;
+
+        .footer__btn {
+            width: 226px;
+        }
     }
 }
 </style>

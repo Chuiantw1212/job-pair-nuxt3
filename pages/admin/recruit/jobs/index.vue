@@ -47,7 +47,7 @@
                             </LazyAtomInputSwitch>
                         </td>
                         <td>
-                            <NuxtLink :to="`jobs/${job.identifier}`">
+                            <NuxtLink @remove="removeJob(index)" :to="`jobs/${job.identifier}`">
                                 {{ job.name }}
                             </NuxtLink>
                             <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
@@ -116,7 +116,6 @@
     </div>
 </template>
 <script setup>
-import { nextTick } from 'vue'
 const currentInstance = getCurrentInstance()
 const emit = defineEmits(['update:modelValue'])
 function getDefaultFilter() {
@@ -252,10 +251,6 @@ async function saveFieldsPreference() {
     })
     await repoAdmin.patchAdmin(admin)
 }
-function removeJob(index) {
-    state.jobList.splice(index, 1)
-    state.renderKey = Math.random()
-}
 async function initialize(payload = {}) {
     const { searchLike = '', sort = true } = payload
     const { user, company } = repoAuth.state
@@ -316,12 +311,12 @@ async function addJobDraft() {
     const res = await repoJob.postJobItem(job)
     state.jobList.unshift(res.data)
     state.renderKey = Math.random()
-    $requestSelector(`#modal_${res.data.identifier}`, () => {
-        const jobModals = currentInstance.refs.jobModalRefs
-        const targetModal = jobModals[0]
-        targetModal.openModal()
-        $sweet.loader(false)
-    })
+    // $requestSelector(`#modal_${res.data.identifier}`, () => {
+    //     const jobModals = currentInstance.refs.jobModalRefs
+    //     const targetModal = jobModals[0]
+    //     targetModal.openModal()
+    //     $sweet.loader(false)
+    // })
 }
 </script>
 <style lang="scss" scoped>
