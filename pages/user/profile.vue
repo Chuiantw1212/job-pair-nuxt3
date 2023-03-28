@@ -141,8 +141,9 @@ function initialize() {
     }
     // 生成預設格式
     const profile = JSON.parse(JSON.stringify(user))
-    const { resumes = [], portfolio = [], isActive = true, educationCategory = [] } = user
+    const { resumes = [], portfolio = [], isActive = true, educationCategory = [], certificates = [] } = user
     profile.resumes = resumes ?? []
+    profile.certificates = certificates ?? []
     profile.portfolio = portfolio ?? []
     profile.isActive = isActive ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
