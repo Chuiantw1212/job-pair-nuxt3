@@ -1,19 +1,17 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
-        <section id="jobView__basic" class="jobView__section mt-4">
+        <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__basic">
                 <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company?.logo})` }">
                 </div>
-                <div v-else class="d-none d-lg-block basic__logo"
-                    :style="{ backgroundImage: `url(${placeholderImage})` }">
+                <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
                     <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
-                        <div class="d-lg-none subHeader__logo"
-                            :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                        <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}
                     </NuxtLink>
@@ -100,6 +98,16 @@
                         </span>
                         <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
                     </div>
+                    <div class="features__item">
+                        <span class="item__header">
+                            語言要求
+                        </span>
+                        <span class="item__body">{{ $optionText(state.job?.language,
+                            repoSelect.state.selectByQueryRes?.language)
+                        }} {{ $optionText(state.job?.proficiency,
+    repoSelect.state.selectByQueryRes?.proficiency)
+}}</span>
+                    </div>
                     <div class="mt-3">
                         <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
                         </LazyAtomBtnSimple>
@@ -120,18 +128,18 @@
             </div>
             <div class="mobileGrid__left" :class="{ 'col-8': device.state.isDesktop }">
                 <section id="jobView__description" class="jobView__section jobView__description mt-3">
-                    <div class="jobView__card jobView__card--minHeight">
+                    <div class="jobView__card">
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]"
-                                disabled ref="descriptionRef">
+                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description"  :toolbar="[]" disabled
+                                ref="descriptionRef">
                             </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>
                 <section id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
-                    <div class="jobView__card jobView__card--minHeight">
+                    <div class="jobView__card">
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
@@ -162,8 +170,8 @@
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
                 <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
-                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true"
-                    ref="jobItems"></LazyOrganismJobItem>
+                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true" ref="jobItems">
+                </LazyOrganismJobItem>
             </ul>
         </section>
     </div>
@@ -236,25 +244,22 @@ const browserConfig = computed({
     }
 })
 const currentInstance = getCurrentInstance()
-const jobItems = ref([])
 // hooks
 const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
-const { organizationId } = job.value
-const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId}`, { initialCache: false })
-if (process.client) {
-    state.job = job.value
-    state.company = company.value
-}
-useHead({
-    title: () => {
-        if (job.value && company.value) {
-            return `${job.value.name} - ${company.value.name} - Job Pair`
-        }
+state.job = job
+useSeoMeta({
+    title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
+    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
+    description: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.job.description.replace(regex, "")
+        return descriptionContent
     },
-    meta: [
-        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
-    ],
-
+    ogDescription: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.job.description.replace(regex, "")
+        return descriptionContent
+    }
 })
 useJsonld(() => ({
     // https://schema.org/JobPosting
@@ -323,8 +328,11 @@ watch(() => state.job, (newValue) => {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
-watch(() => jobScroller.state.jobList, (newValue, oldValue) => {
-    jobScroller.observeLastJob(jobItems)
+const jobItems = ref([])
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
     const { user } = repoAuth.state
     if (user && user.id) {
         return
@@ -512,11 +520,13 @@ async function initialize() {
     }
     const job = jobResponse.data
     const { descriptionRef, skillsRef } = currentInstance.refs
-    if (descriptionRef) {
-        descriptionRef.setData(job.description)
-    }
-    if (skillsRef) {
-        skillsRef.setData(job.skills)
+    if (process.client) {
+        if (descriptionRef) {
+            descriptionRef.setData(job.description)
+        }
+        if (skillsRef) {
+            skillsRef.setData(job.skills)
+        }
     }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
@@ -548,10 +558,6 @@ async function initialize() {
             font-size: 18px;
             font-weight: bold;
         }
-    }
-
-    .jobView__card--minHeight {
-        min-height: 27rem;
     }
 
     .jobView__basic {

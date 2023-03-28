@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 export default defineStore('company', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const state = reactive({
         companyJobsRes: null,
     })
     async function patchCompany(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'patch',
             url: `/company`,
             data
@@ -13,7 +13,7 @@ export default defineStore('company', () => {
         return response
     }
     async function getCompanyById(id) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/company/${id}`,
             commit: true,
@@ -21,7 +21,7 @@ export default defineStore('company', () => {
         return response
     }
     async function getCompanyByCrawler(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/company/crawler`,
             params: {
@@ -32,7 +32,7 @@ export default defineStore('company', () => {
         return response
     }
     async function getCompanyJobs(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/company/jobs`,
             params,
@@ -41,7 +41,7 @@ export default defineStore('company', () => {
         return response
     }
     async function putCompanyPhotos(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/company/photos`,
             data
@@ -49,7 +49,7 @@ export default defineStore('company', () => {
         return response
     }
     async function getCompanyNews(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/company/${params.id}/news`,
             params,
@@ -57,7 +57,7 @@ export default defineStore('company', () => {
         return response
     }
     async function putCompanyLogoBlob(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/company/logo`,
             data
@@ -65,7 +65,7 @@ export default defineStore('company', () => {
         return response
     }
     async function putCompanyBannerBlob(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/company/banner`,
             data

@@ -239,7 +239,7 @@ const props = defineProps({
     }
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `應徵管理 - 招募中心 - Job Pair`
 })
 onMounted(async () => {
@@ -493,7 +493,6 @@ async function initializeSearch() {
     .appliedList__chart {
         border-radius: 10px;
         background-color: #fff;
-        margin-top: 20px;
         padding: 20px;
 
         .chart__header {

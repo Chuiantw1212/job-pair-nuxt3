@@ -1,7 +1,7 @@
 <template>
     <div class="company" :class="{ container: device.state.isDesktop }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-        <section id="company__info" class="company__section mt-4">
+        <section id="company__info" class="company__section mt-3">
             <div :key="state.renderKey" class="company__bannerGroup">
                 <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
             </div>
@@ -98,8 +98,7 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike"
-                        @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -153,24 +152,24 @@ const organizationId = computed(() => {
     return route.params.id
 })
 const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
-if (process.client) {
-    state.companyInfo = company.value
-}
-useHead(() => {
-    const headConfig = {
-        title: `Job Pair`,
-        meta: [
-            { property: 'og:image', content: defaultBanner }
-        ]
+state.companyInfo = company
+useSeoMeta({
+    title: () => `${state.companyInfo.name} - Job Pair`,
+    ogTitle: () => `${state.companyInfo.name} - Job Pair`,
+    description: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.companyInfo.description.replace(regex, "")
+        return descriptionContent
+    },
+    ogDescription: () => {
+        const regex = /(<([^>]+)>)/ig
+        const descriptionContent = state.companyInfo.description.replace(regex, "")
+        return descriptionContent
+    },
+    ogImage: () => {
+        const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     }
-    if (company.value) {
-        const { name: companyName, banner = defaultBanner } = company.value
-        headConfig.title = `${companyName} - Job Pair`
-        headConfig.meta = [
-            { property: 'og:image', content: banner }
-        ]
-    }
-    return headConfig
 })
 useJsonld(() => ({
     // https://schema.org/Organization
@@ -247,7 +246,9 @@ function initialGlide() {
             config = state.glideDesktopConfig
         }
         const glideInstance = new $Glide.Default(`.glide`, config)
-        glideInstance.mount()
+        glideInstance.mount({
+            type: 'carousel',
+        })
         state.glideInstance = glideInstance
     })
 }

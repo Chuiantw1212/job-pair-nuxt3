@@ -9,8 +9,8 @@
                 <div class="body__item__desc">{{ questionGroup.descUser }}...</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkSelectedRadio(questionGroup, item) }">
-                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
-                        :type="'radio'" :value="item.value" :disabled="state.isLocked" />
+                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio" :type="'radio'"
+                        :value="item.value" :disabled="state.isLocked" />
                     <span class="body__item__label__desc">{{ item.textUser }}</span>
                 </label>
             </div>
@@ -18,8 +18,8 @@
                 <div class="body__item__desc">{{ questionGroup.descUser }}</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkCultureSelected(questionGroup, item) }">
-                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
-                        :type="'checkbox'" :value="item.value" :disabled="checkCultureDisabled(item)" />
+                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio" :type="'checkbox'"
+                        :value="item.value" :disabled="checkCultureDisabled(item)" />
                     <span class="body__item__label__desc">{{ item.textUser }}</span>
                 </label>
             </div>
@@ -44,6 +44,7 @@ const { $sweet, $date } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
+const repoJob = useRepoJob()
 const state = reactive({
     preference: {},
     isLocked: false,
@@ -54,7 +55,7 @@ const state = reactive({
     lockEndDate: 0
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `求職偏好 - 會員中心 - Job Pair`,
 })
 watchEffect(() => {
@@ -104,6 +105,7 @@ async function handleConfirm() {
     const updatedUser = Object.assign({}, user, updatedResult)
     repoAuth.setUser(updatedUser)
     setPreferenceInfo()
+    repoJob.getJobRecommended()
 }
 function setPreferenceInfo() {
     const { user } = repoAuth.state

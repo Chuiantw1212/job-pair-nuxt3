@@ -5,9 +5,8 @@
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory"
-                        :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
-                        :isDesktop="device.state.isDesktop" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                        :categoryMap="repoSelect.jobCategoryMap" :isDesktop="device.state.isDesktop" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -91,8 +90,7 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()"
-                        placeholder="搜尋技能、公司＆職缺">
+                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
             </div>
@@ -130,12 +128,11 @@
                 <ul class="main__list">
                     <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
                         <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
-                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item"
-                            :recommend="true">
+                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
-                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
-                        :key="index" :ref="`jobItems`" class="main__list__item jobItem">
+                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                        :ref="`jobItems`" class="main__list__item jobItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -156,6 +153,7 @@
     </div>
 </template>
 <script setup>
+import { onBeforeRouteUpdate } from 'vue-router'
 const { $requestSelectorAll, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -195,7 +193,7 @@ const state = reactive({
     },
 })
 // hooks
-useHead({
+useSeoMeta({
     title: `職缺探索 - Job Pair`,
 })
 watch(() => repoAuth.state.user, () => {
@@ -409,8 +407,7 @@ async function concatJobsFromServer(config = {}) {
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        id: user.id, // deprecated
-        identifier: user.id,
+        userId: user.id,
     })
     $sweet.loader(isLoading)
     const response = await repoJob.getJobByQuery(requestConfig)
@@ -547,7 +544,7 @@ async function concatJobsFromServer(config = {}) {
             list-style: none;
             padding: 0;
             margin-top: 138px;
-            height: calc(100vh - 246px);
+            height: calc(100vh - 200px);
             overflow-y: auto;
 
             .main__list__item {
@@ -581,9 +578,8 @@ async function concatJobsFromServer(config = {}) {
     .jobs {
         display: flex;
         flex-direction: row;
-        margin-top: 42px;
-        margin-bottom: 50px;
         gap: 16px;
+        padding-top: 20px;
 
         .jobs__filter {
             .filter__list {

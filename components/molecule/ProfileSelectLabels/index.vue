@@ -2,13 +2,13 @@
     <div class="category__labelGroup">
         <template v-if="localValue && localValue.length">
             <div v-for="(item, index) in localValue" :key="index">
-                <div v-if="$optionText(item, items)" class="item__badge">
+                <div v-if="$optionText(item, items)" class="item__badge" @click.stop="removeSelf(index)">
                     <span class="badge__span">{{ $optionText(item, items) }}</span>
-                    <img class="badge__image" src="./Icon_delete_g.svg" @click.stop="removeSelf(index)" />
+                    <img class="badge__image" src="./Icon_delete_g.svg" />
                 </div>
-                <div v-else class="item__badge">
+                <div v-else class="item__badge" @click.stop="removeSelf(index)">
                     <span class="badge__span">{{ item, items }}</span>
-                    <img class="badge__image" src="./Icon_delete_g.svg" @click.stop="removeSelf(index)" />
+                    <img class="badge__image" src="./Icon_delete_g.svg" />
                 </div>
             </div>
         </template>

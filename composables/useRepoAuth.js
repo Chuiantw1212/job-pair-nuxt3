@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const repoJobApplication = useRepoJobApplication()
     const state = reactive({
         user: null,
@@ -14,7 +14,7 @@ export default defineStore('auth', () => {
             return
         }
         state.isLogginIn = true
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/auth/signIn`,
             data,
@@ -23,7 +23,7 @@ export default defineStore('auth', () => {
         return response
     }
     async function postVerificationEmail(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/auth/verificationEmail`,
             data
@@ -31,7 +31,7 @@ export default defineStore('auth', () => {
         return response
     }
     async function getReauthResult(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/auth/password`,
             data

@@ -19,8 +19,8 @@
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
-                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
-                        :required="true" ref="resume" class="mt-3 mb-3">
+                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'" :required="true"
+                        ref="resume" class="mt-3 mb-3">
                     </LazyAtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
                         <div class="content__portfolio__header mt-3">作品集(雲端檔案請開啟瀏覽權限)</div>
@@ -76,7 +76,7 @@ const state = reactive({
 const props = defineProps({
     modelValue: {
         // job
-        type: Object,
+        type: [Object, Boolean],
         default: function () {
             return {}
         },
@@ -193,43 +193,12 @@ function closeModal() {
         }
     }
 
-    .body__subHeader {
-        font-size: 16px;
-        line-height: 1.5;
-        color: #000;
-        margin-top: 20px;
-    }
-
     .body__resume {
         display: flex;
-        // align-items: center;
         margin-top: 8px;
-
-        .resume__header {
-            font-size: 16px;
-        }
-
-        .resume__inputGroup {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
 
         .resume__input {
             width: 100%;
-        }
-
-        .resume__preview {
-            background-color: inherit;
-            border: none;
-            padding: 0;
-
-            .preview__icon {
-                margin: auto;
-                display: block;
-                width: 32px;
-                height: 32px;
-            }
         }
     }
 
@@ -245,29 +214,13 @@ function closeModal() {
 
     .content__portfolio__header {
         font-size: 18px;
+        font-weight: bold;
     }
 
     .modal__footer {
         display: flex;
         justify-content: space-between;
         gap: 12px;
-
-        .footer__button {
-            padding: 12px 16px;
-            color: #29b0ab;
-            border-radius: 10px;
-            white-space: nowrap;
-            border: none;
-            width: 100%;
-            border: 1px solid #29b0ab;
-            background-color: white;
-            transition: all 0.3s;
-
-            &:hover {
-                background-color: #29b0ab;
-                color: white;
-            }
-        }
     }
 }
 

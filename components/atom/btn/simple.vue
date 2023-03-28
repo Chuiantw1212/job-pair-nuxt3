@@ -1,5 +1,6 @@
 <template>
-    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled }" :disabled="disabled">
+    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled, 'btnSimple--sm': size === 'sm' }"
+        :disabled="disabled" ref="simple">
         <slot></slot>
     </button>
 </template>
@@ -17,15 +18,29 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    type: {
+    color: {
         type: String,
         default: 'success',
+    },
+    size: {
+        type: String,
+        default: 'medium'
+    },
+    outline: {
+        type: Boolean,
+        default: false
+    }
+})
+const instance = getCurrentInstance()
+onMounted(() => {
+    if (props.color && props.outline) {
+        instance.refs.simple.classList.add(`btnSimple--outline--${props.color}`)
     }
 })
 </script>
 <style lang="scss" scoped>
 .btnSimple {
-    width: 100%;
+    width: 100%; // important
     line-height: 1.3;
     border-radius: 5px;
     background-color: #5ea88e;
@@ -48,7 +63,8 @@ const props = defineProps({
     }
 }
 
-.btnSimple--outline--primary {
+// IMPORTANT: 直接由外部套用樣式
+.btnSimple--outline--success {
     background-color: white;
     color: #29b0ab;
     border: 1px solid #29b0ab;
@@ -66,5 +82,12 @@ const props = defineProps({
     &:hover {
         background-color: #d3d3d3;
     }
+}
+
+.btnSimple--sm {
+    width: fit-content;
+    margin: 0;
+    padding: 4px 8px;
+    font-size: 16px;
 }
 </style>

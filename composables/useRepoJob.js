@@ -1,12 +1,12 @@
 // import firebase from "firebase/app"
 import { defineStore } from 'pinia'
 export default defineStore('job', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const state = reactive({
         jobRecommendedRes: null,
     })
     async function getJobCrawlResult(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/crawler`,
             params
@@ -14,7 +14,7 @@ export default defineStore('job', () => {
         return response
     }
     async function getJobRecommended() {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/recommended`,
         })
@@ -26,14 +26,14 @@ export default defineStore('job', () => {
         if (data.userId) {
             url += `/${data.userId}`
         }
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url,
         })
         return response
     }
     async function getJobByQuery(params) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/all`,
             params,
@@ -41,7 +41,7 @@ export default defineStore('job', () => {
         return response
     }
     async function postJobItem(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/job`,
             data
@@ -49,7 +49,7 @@ export default defineStore('job', () => {
         return response
     }
     async function putJobItem(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'put',
             url: `/job`,
             data
@@ -57,7 +57,7 @@ export default defineStore('job', () => {
         return response
     }
     async function deleteJobItem(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'delete',
             url: `/job`,
             data,
@@ -65,14 +65,14 @@ export default defineStore('job', () => {
         return response
     }
     async function getJobApplicantByQuery(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/${data.jobId}/applicant/${data.prospectId}`,
         })
         return response
     }
     async function getJobProspect(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/${data.jobIdentifier}/prospect`,
             params: {
@@ -83,7 +83,7 @@ export default defineStore('job', () => {
         return response
     }
     async function getJobProspectProfile(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/job/${data.jobId}/prospect/${data.prospectId}`,
         })

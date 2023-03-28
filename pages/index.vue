@@ -1,91 +1,62 @@
 <template>
-    <div class="home__intro">
-        <div class="home__intro__landing" :style="{ backgroundImage: `url(${backgroundImage})` }">
-            <h1 class="landing__header">在Job Pair配對「適合的工作」</h1>
-            <p class="landing__desc">
-                找到一份適合的工作如大海撈針
-                <br />
-                Job Pair從企業文化、公司環境、主管風格等關鍵角度為你精準配對
-            </p>
-            <div class="landing__buttonGroup">
-                <button class="buttonGroup__button" @click="routeToQuestions()">開始配對</button>
+    <div class="admin">
+        <div class="admin__bannerGroup">
+            <img class="admin__title" src="@/assets/index/title.png">
+            <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
+            <button class="admin__button" @click="routeToQuestions()">開始配對</button>
+        </div>
+        <div class="admin__cardGroup">
+            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
+            <img v-if="device.state.isDesktop" class="cardGroup__decoration cardGroup__decoration--1"
+                src="@/assets/admin/index/bg2.svg">
+            <img v-if="device.state.isDesktop" class="cardGroup__decoration cardGroup__decoration--2"
+                src="@/assets/admin/index/bg3.svg">
+            <div class="cardGroup__body">
+                <div v-if="device.state.isDesktop" class="body__title">
+                    <div class="title__others">
+                        一般求職平台
+                    </div>
+                    <div class="title__jobPair">
+                        Job Pair
+                    </div>
+                </div>
+                <MoleculeHomeCard title="保護您的聯絡方式、年齡、婚姻狀態等個資"></MoleculeHomeCard>
+                <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
+                <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
+                <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
+                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="無" othersDesc="有">
+                </MoleculeHomeCard>
             </div>
         </div>
-        <div class="home__intro__whatis">
-            <div class="whatis__textGroup">
-                <h1 class="whatis__header">什麼是探索求職偏好？</h1>
-                <hr class="whatis__line" />
-                <div class="whatis__description">
+        <div class="admin__definition">
+            <img v-if="device.state.isDesktop" class="definition__round" src="@/assets/index/round.png">
+            <div class="definition__textGroup">
+                <div class="definition__title">
+                    什麼是適配度？
+                </div>
+                <hr class="definition__hr">
+                <div class="definition__desc">
                     求職偏好歸納了求職者在判斷一份工作是否適合自己的關鍵因素，搭配企業端用人偏好的資訊，能夠協助您精準配對適合的公司與職缺。
                 </div>
             </div>
-            <img class="whatis__image" src="~/assets/index/img_home1.svg" alt="preference" />
         </div>
-        <div class="home__intro__section1">
-            <div class="section1__headerGroup">
-                <div class="section1__badge"></div>
-                <h2 class="section1__header">為什麼瞭解求職偏好很重要？</h2>
-            </div>
-            <div class="section1__body">
-                <div class="body__textGroup">
-                    <div class="section1__number">01</div>
-                    <h3 class="section1__subtitle">適合的工作不光是看興趣與專長</h3>
-                    <hr class="section1__line" />
-                    <div class="section1__description">
-                        就算學歷、專長相似，適合的工作與環境也不盡相同；例如，一樣是工程師，有些人喜歡新創組織、有人喜歡在大企業，有些人則想多元的接案。
-                    </div>
-                    <br />
-                    <div class="section1__description">
-                        在工作選擇上，不僅培養專業能力很重要，對自己的覺察與了解其實也是一種關鍵能力。當我們越了解自己喜歡什麼、擅長什麼，不喜歡什麼、不擅長什麼，就會對於「適合」有更精準的方向。
-                    </div>
+        <div class="admin__partner">
+            <template v-if="state.affiliate.length !== 0">
+                <h1 class="partner__header">與我們合作的夥伴</h1>
+                <div class="partner__bodyGroup">
+                    <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
+                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                        <img class="anchor__image" alt="logo" :src="item.logo" />
+                        <span class="anchor__name">{{ item.name }}</span>
+                    </a>
                 </div>
-                <img class="section1__body__image" src="~/assets/index/img_home2.svg" alt="similarity" />
-            </div>
-        </div>
-        <div class="home__intro__section2">
-            <div class="section__textGroup">
-                <div class="section2__number">02</div>
-                <h3 class="section2__subtitle">更多求職思考面向</h3>
-                <hr class="section2__line" />
-                <div class="section2__description">
-                    就明明喜歡畫畫，也努力學習平面設計的技能，工作也選擇平面設計師，卻還是遇到不適合的工作，為什麼？
-                </div>
-                <br />
-                <div class="section2__description">
-                    因為一份適合自己的工作不光是工作內容本身，還包含企業文化、工作環境與主管風格等隱性需求。所以「適不適合」乍聽之下是一種主觀判斷的感受，但其實他是有跡可循的——有些「關鍵因素」會特別影響人們是否認為自己適合一份工作，只是通常在求職時沒有相關資訊可以參考，而容易忽略了這些重要的思考面向。
-                </div>
-            </div>
-        </div>
-        <div class="home__intro__section3">
-            <img class="section3__image d-lg-none" src="~/assets/index/img_home3.svg" alt="questions" />
-            <div class="section3__textGroup">
-                <div class="section3__number">03</div>
-                <h3 class="section3__subtitle">六大面向問答題</h3>
-                <hr class="section3__line" />
-                <div class="section3__description">
-                    Job
-                    Pair透過六大面向問答題，讓求職者有機會設定自己的求職偏好，並搭配企業端的用人偏好，讓雙方都能更有效率地探索理念、工作模式、氛圍價值觀契合的工作/人選，發揮「媒合」實質的意義，實現「適才適所」的願望。
-                </div>
-                <br />
-                <div class="section3__description">立即開始回答你的求職偏好，媒合適合的工作吧！</div>
-                <div class="section3__buttonGroup">
-                    <button class="buttonGroup__button" @click="routeToQuestions()">開始配對</button>
-                </div>
-            </div>
-        </div>
-        <div class="container__section container__section--affiliate">
-            <h2 class="affiliate__header">我們的合作夥伴</h2>
-            <div class="affiliate__body">
-                <a v-for="(item, index) in state.affiliate" class="body__imageWrap" :key="index"
-                    :href="item?.url?.default" target="_blank" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.logo" />
-                </a>
-            </div>
-            <h2 class="affiliate__header mt-5">我們的合作對象</h2>
-            <div class="affiliate__body">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
-                    :to="`/company/${item.id}`" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.image" />
+            </template>
+            <h1 class="partner__header mt-5">與我們合作的企業</h1>
+            <div class="partner__bodyGroup">
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
+                    :to="`/company/${item.organizationId}`" aria-label="more about this company">
+                    <img onerror="this.style.display='none'" class="anchor__image" alt="logo" :src="item.image" />
+                    <span class="anchor__name">{{ item.organizationName }}</span>
                 </NuxtLink>
             </div>
         </div>
@@ -93,29 +64,28 @@
 </template>
 <script>
 export default {
-    name: 'home',
+    name: 'admin',
 }
 </script>
 <script setup>
-import backgroundImage from "~/assets/index/landing.png"
-const { $emitter } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
+const device = useDevice()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const state = reactive({
+    jobList: [],
     affiliate: [],
     jobProvider: [],
+    profile: null,
+    linkToken: null,
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useHead({
-    meta: [
-        { property: 'og:image', content: 'https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/ogImageJob.png' }
-    ],
-})
 onMounted(async () => {
     if (process.client) {
+        // initialGlide()
         const response = await repoJob.getJobByQuery({
             pageOrderBy: "datePosted",
             pageLimit: 15,
@@ -161,524 +131,324 @@ function routeToQuestions() {
 }
 </script>
 <style lang="scss" scoped>
-.home__intro {
-    .home__intro__landing {
-        background-color: white;
+.admin {
+    .admin__bannerGroup {
+        background-image: url('@/assets/index/banner.png');
         background-size: cover;
-        padding: 160px 20px 105px 20px;
         background-position: center;
-
-        .landing__header {
-            font-size: 35px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.26;
-            letter-spacing: 1.05px;
-
-            .header__badge {
-                background-image: url("~/assets/index/首頁_黃色元素.png");
-                background-size: cover;
-                padding: 0 8px;
-                background-repeat: no-repeat;
-                background-position-x: 1px;
-                background-position-y: 1px;
-                display: inline-block;
-                width: 175px;
-                height: 55px;
-                text-align: center;
-            }
-        }
-
-        .landing__desc {
-            font-size: 18px;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.32;
-            letter-spacing: normal;
-            text-align: left;
-            color: #484848;
-        }
-
-        .landing__buttonGroup {
-            text-align: center;
-            width: 234px;
-            padding-top: 50px;
-            margin: auto;
-
-            .buttonGroup__button {
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                width: 100%;
-                border: none;
-                height: 50px;
-                flex-grow: 0;
-                margin: 0 3px 5px 0;
-                border-radius: 10px;
-                background-color: #5ea88e;
-                margin-bottom: 8px;
-                box-shadow: 2px 2px 2px 1px #008053;
-
-                &:hover {
-                    background-color: #21cc90;
-                }
-            }
-        }
-    }
-
-    .home__intro__whatis {
-        padding: 40px 30px;
-        background-color: #5ea88e;
-        color: white;
-
-        .whatis__header {
-            font-size: 30px;
-            font-weight: bold;
-            line-height: 1.3;
-            color: #fff;
-        }
-
-        .whatis__line {
-            border-bottom: 2px solid #ffd600;
-            width: 58px;
-            margin: 30px 0;
-            opacity: 1;
-        }
-
-        .whatis__description {
-            font-size: 18px;
-            line-height: 1.5;
-            color: #fff;
-            margin-bottom: 30px;
-        }
-
-        .whatis__image {
-            display: block;
-            margin: auto;
-            transition: all 0.3s;
-            width: 300px;
-            height: 192px;
-
-            &:hover {
-                transform: scale(1.1);
-            }
-        }
-    }
-
-    .home__intro__section1 {
-        padding: 40px 30px;
-        background-color: #fff;
-
-        .section1__headerGroup {
-            display: flex;
-
-            .section1__badge {
-                width: 8px;
-                height: 29px;
-                flex-grow: 0;
-                margin: 0 10px 0 0;
-                background-color: #eeb540;
-            }
-
-            .section1__header {
-                font-size: 22px;
-                font-weight: bold;
-                line-height: 1.3;
-                color: #eeb540;
-                margin-bottom: 54px;
-            }
-        }
-
-        .section1__number {
-            font-family: Montserrat;
-            font-size: 102px;
-            color: #eeb540;
-            line-height: 1;
-            margin-bottom: 15px;
-        }
-
-        .section1__subtitle {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: #5ea88e;
-            min-height: 32px;
-        }
-
-        .section1__line {
-            border-bottom: 1px solid #5ea88e;
-            opacity: 1;
-        }
-
-        .section1__description {
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: #707070;
-        }
-
-        .section1__body__image {
-            display: block;
-            margin: auto;
-            margin-top: 20px;
-            transition: all 0.3s;
-            width: 300px;
-            height: 194px;
-
-            &:hover {
-                transform: scale(1.1);
-            }
-        }
-    }
-
-    .home__intro__section2 {
-        padding: 30px 30px;
-        background-color: #fff;
-        background-image: url("~/assets/index/bg_home2.jpg");
-        background-size: cover;
-
-        .section2__header {
-            font-size: 22px;
-            font-weight: bold;
-            line-height: 1.3;
-            color: #eeb540;
-            margin-bottom: 54px;
-        }
-
-        .section2__number {
-            font-family: Montserrat;
-            font-size: 102px;
-            color: #eeb540;
-            line-height: 1;
-            margin-bottom: 15px;
-        }
-
-        .section2__subtitle {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: white;
-            min-height: 32px;
-        }
-
-        .section2__line {
-            border-bottom: 1px solid white;
-            opacity: 1;
-        }
-
-        .section2__description {
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: white;
-        }
-    }
-
-    .home__intro__section3 {
-        padding: 86px 30px 74px 30px;
-        background-color: #fff;
-        background-size: cover;
         position: relative;
+        min-height: 100vw;
 
-        .section3__image {
+        .admin__banner {
             position: absolute;
-            top: 20px;
-            right: 0;
+            display: block;
+            width: 100%;
+            top: 0;
+            left: 0;
         }
 
-        .section3__header {
-            font-size: 22px;
-            font-weight: bold;
-            line-height: 1.3;
-            color: #eeb540;
-            margin-bottom: 54px;
+        .admin__title {
+            width: 280px;
+            position: absolute;
+            top: calc(50% - 16px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: block;
         }
 
-        .section3__number {
-            font-family: Montserrat;
-            font-size: 102px;
-            color: #eeb540;
-            line-height: 1;
-            margin-bottom: 15px;
+        .admin__title--desktop {
+            display: none;
         }
 
-        .section3__subtitle {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: #5ea88e;
-            min-height: 32px;
-        }
-
-        .section3__line {
-            border-bottom: 1px solid #5ea88e;
-            opacity: 1;
-        }
-
-        .section3__description {
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 1.58;
-            color: #707070;
-        }
-
-        .section3__buttonGroup {
-            text-align: center;
-            width: 234px;
-            padding-top: 50px;
-            margin: auto;
-
-            .buttonGroup__button {
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                width: 100%;
-                border: none;
-                height: 50px;
-                flex-grow: 0;
-                margin: 0 3px 5px 0;
-                border-radius: 10px;
-                background-color: #5ea88e;
-                margin-bottom: 8px;
-                box-shadow: 2px 2px 2px 1px #008053;
-
-                &:hover {
-                    background-color: #21cc90;
-                }
-            }
+        .admin__button {
+            position: absolute;
+            top: calc(50% + 72px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #FFFFFF;
+            border-radius: 50px;
+            background-color: rgba(0, 0, 0, 0);
+            color: white;
+            padding: 10px 33px;
         }
     }
 
-    .container__section {
-        text-align: center;
-        padding: 39px 26px;
-        background-color: rgba(14, 174, 117, 0.9);
+    .admin__cardGroup {
+        padding: 40px 0;
+        background-color: white;
 
-        .section__header {
-            font-size: 28px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            color: #332b00;
-        }
-
-        .affiliate__header {
-            font-size: 42px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
+        .cardGroup__header {
             text-align: center;
-            color: white;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 130%;
+            color: #EEB540;
         }
 
-        .affiliate__body {
+        .cardGroup__body {
             display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+            position: inherit;
+            align-items: center;
+        }
+    }
+
+    .admin__definition {
+        background-image: url('@/assets/index/bg_home.png');
+        padding: 80px 30px;
+
+        .definition__title {
+            color: #EEB540;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 158%;
+        }
+
+        .definition__hr {
+            border: 1px solid #FFFFFF;
+            opacity: 1;
+        }
+
+        .definition__desc {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 150%;
+            color: #FFFFFF;
+        }
+    }
+
+    .admin__partner {
+        padding: 40px 52px;
+        background-color: white;
+
+        .partner__header {
+            font-style: normal;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 130%;
+            color: #EEB540;
+            text-align: center;
+            margin-bottom: 27px;
+        }
+
+        .partner__bodyGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 34px;
+            justify-content: space-between;
+        }
+
+        .partner__anchor {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 42px;
             justify-content: center;
-            gap: 70px;
-            margin-top: 50px;
-            flex-wrap: wrap;
-            max-width: 66rem;
-            margin: 50px auto auto auto;
 
-            .body__imageWrap {
-                width: 116px;
-                height: 116px;
-                border-radius: 50%;
-                background-color: white;
-                overflow: hidden;
-                position: relative;
+            .anchor__image {
+                width: 34px;
+                height: 34px;
+            }
 
-                .body__image {
-                    display: block;
-                    margin: auto;
-                    width: 64px;
-                    max-height: 64px;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
+            .anchor__name {
+                font-style: normal;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 130%;
+                color: #707070;
+                max-width: 170px;
+                white-space: pre-wrap;
             }
         }
     }
 }
 
-@media screen and (min-width: 992px) {
-    .home__intro {
-        .home__intro__landing {
-            background-color: white;
+@media screen and (min-width:992px) {
+    .admin {
+
+        .admin__bannerGroup {
+            background-image: url('@/assets/index/img1.png');
             background-size: contain;
-            height: 700px;
-            padding: 165px 7vw 165px 7vw;
-            background-position: right;
-            background-repeat: no-repeat;
+            min-height: 50vw;
 
-            .landing__header {
-                font-size: 52px;
-                font-weight: bold;
-                line-height: 1.3;
-                color: #084530;
+            .admin__title {
+                display: none;
             }
 
-            .landing__desc {
-                font-size: 23px;
-                color: #484848;
+            .admin__title--desktop {
+                display: block;
+                transform: unset;
+                top: 16vw;
+                left: 12vw;
+                width: 44vw;
             }
 
-            .landing__buttonGroup {
-                margin: initial;
-
-                .buttonGroup__button {
-                    width: 239px;
-                    height: 65px;
-                    font-size: 23px;
-                }
+            .admin__button {
+                position: absolute;
+                top: 29vw;
+                left: 12vw;
+                transform: unset;
+                border: 1px solid #FFFFFF;
+                border-radius: 50px;
+                background-color: rgba(0, 0, 0, 0);
+                color: white;
+                padding: 10px 33px;
+                width: 224px;
+                height: 70px;
+                font-weight: 900;
+                font-size: 30px;
+                line-height: 130%;
             }
         }
 
-        .home__intro__whatis {
-            background-color: white;
-            background-image: url("~/assets/index/bg_home4.svg");
-            background-size: cover;
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-between;
-            padding: 72px 11vw 76px 17vw;
+        .admin__cardGroup {
+            position: relative;
+            padding: 92px 0px;
+            margin: auto;
 
-            .whatis__image {
-                width: 506px;
-                height: 329px;
-                margin-right: 8vw;
+            .cardGroup__decoration {
+                position: absolute;
             }
 
-            .whatis__header {
-                margin-top: 52px;
+            .cardGroup__decoration--1 {
+                top: 321px;
+                left: 0;
+            }
+
+            .cardGroup__decoration--2 {
+                bottom: 100px;
+                right: 0;
+            }
+
+            .cardGroup__header {
                 font-size: 50px;
-                font-weight: bold;
+                font-weight: 900;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: center;
+                color: #eeb540;
             }
 
-            .whatis__line {
-                margin: 41px 0 50px 0;
-            }
+            .cardGroup__body {
+                margin: auto;
+                margin-top: 70px;
+                width: 868px;
 
-            .whatis__description {
-                font-size: 23px;
-                line-height: 1.58;
+                .body__title {
+                    display: flex;
+                    gap: 501px;
+
+                    .title__others {
+                        font-size: 28px;
+                        font-weight: 900;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: #317292;
+                    }
+
+                    .title__jobPair {
+                        font-size: 28px;
+                        font-weight: bold;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: #317292;
+                    }
+                }
             }
         }
 
-        .home__intro__section1 {
-            padding: 100px 7vw 100px 10vw;
+        .admin__definition {
+            background-image: url('@/assets/index/img2.png');
+            height: 634px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
 
-            .section1__headerGroup {
-                justify-content: center;
-                margin-bottom: 100px;
+            .definition__round {
+                position: absolute;
+                top: 0;
+                right: 10vw;
+            }
 
-                .section1__badge {
-                    width: 14px;
-                    height: 56px;
-                    margin: 0 10px 0 0;
-                    background-color: #eeb540;
-                    align-self: center;
+            .definition__textGroup {
+                position: absolute;
+                top: 154px;
+                right: calc(10vw + 81px);
+                width: 565px;
+
+                .definition__title {
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 36px;
+                    line-height: 158%;
                 }
 
-                .section1__header {
-                    font-size: 50px;
-                    font-weight: bold;
-                    align-self: center;
-                    margin: 0;
+                .definition__desc {
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 30px;
+                    line-height: 200%;
+                    color: #FFFFFF;
                 }
             }
 
-            .section1__body {
+        }
+
+        .admin__partner {
+            padding: 60px 307px;
+            background-color: white;
+
+            .partner__header {
+                font-style: normal;
+                font-weight: 700;
+                font-size: 50px;
+                line-height: 158%;
+                color: #EEB540;
+            }
+
+            .partner__bodyGroup {
                 display: flex;
-
-                .body__textGroup {
-                    margin-right: 14vw;
-
-                    .section1__subtitle {
-                        font-size: 36px;
-                        min-height: 58px;
-                    }
-
-                    .section1__line {
-                        background-color: #5ea88e;
-                    }
-
-                    .section1__description {
-                        font-size: 23px;
-                        color: #707070;
-                    }
-                }
-
-                .section1__body__image {
-                    width: 675px;
-                    height: 431px;
-                }
-            }
-        }
-
-        .home__intro__section2 {
-            padding: 0;
-            background-image: url("~/assets/index/section2__background__desktop.jpg");
-            display: flex;
-            justify-content: flex-end;
-
-            .section__textGroup {
-                height: 766px;
-                width: 748px;
-                padding: 89px 1vw 114px 5vw;
-                background-image: url("~/assets/index/section2__background.svg");
-                margin-right: 11vw;
-
-                .section2__subtitle {
-                    font-size: 36px;
-                    min-height: 58px;
-                }
-
-                .section2__line {
-                    border-bottom: 1px solid white;
-                    background-color: white;
-                }
-
-                .section2__description {
-                    font-size: 23px;
-                }
-            }
-        }
-
-        .home__intro__section3 {
-            padding: 66px 0 132px 10vw;
-            min-height: 778px;
-            background-image: url("~/assets/index/img_home3.svg");
-            background-size: 499px 718px;
-            background-repeat: no-repeat;
-            background-position: right 0px top 20px;
-
-            .section3__image {
-                height: 718px;
+                flex-direction: row;
+                gap: 60px;
+                flex-wrap: wrap;
+                max-width: 1304px;
+                margin: auto;
             }
 
-            .section3__textGroup {
-                width: 640px;
+            .partner__anchor {
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 42px;
+                justify-content: center;
 
-                .section3__subtitle {
-                    font-size: 36px;
-                    min-height: 58px;
+                .anchor__image {
+                    width: 54px;
+                    height: 54px;
                 }
 
-                .section3__description {
-                    font-size: 23px;
+                .anchor__name {
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 130%;
+                    color: #707070;
+                    max-width: 170px;
+                    white-space: pre-wrap;
                 }
-            }
-
-            .section3__buttonGroup {
-                margin: initial;
             }
         }
     }

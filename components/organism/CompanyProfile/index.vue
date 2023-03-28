@@ -71,9 +71,9 @@
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
                             </LazyAtomInputText>
                         </div>
-                        <LazyAtomInputText v-model="state.companyInfo.remark" name="地址備註"
+                        <!-- <LazyAtomInputText v-model="state.companyInfo.remark" name="地址備註"
                             placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" class="mb-2">
-                        </LazyAtomInputText>
+                        </LazyAtomInputText> -->
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
                             class="mb-2">
                         </LazyAtomInputText>
