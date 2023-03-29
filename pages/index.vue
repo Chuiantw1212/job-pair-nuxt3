@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="admin__partner">
-            <template v-if="state.affiliate.length !== 0">
+            <template v-if="state.affiliate && state.affiliate.length !== 0">
                 <h1 class="partner__header">與我們合作的夥伴</h1>
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
