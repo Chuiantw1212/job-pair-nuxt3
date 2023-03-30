@@ -14,7 +14,7 @@ export default defineStore('event', () => {
     async function postEventRegistration(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/event/registration`,
+            url: `/event/registration/${data.eventId}`,
             data,
         })
         return response

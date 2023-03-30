@@ -56,9 +56,9 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
             const eventId = chunks[0]
             const contributor = chunks[1]
             repoAuth.state.memberOf = contributor
-        }
-        if (newValue?.id && oldValue === null) {
-            signUp(eventId)
+            if (newValue?.id && oldValue === null) {
+                signUp(eventId)
+            }
         }
     }
     if (process.client && !newValue) {
@@ -92,6 +92,7 @@ async function signUp(eventId) {
         $sweet.loader(false)
     }, 10 * 1000)
     const response = await repoEvent.postEventRegistration({
+        eventId,
         contributor: repoAuth.state.memberOf ?? ''
     })
     if (response.status !== 200) {
