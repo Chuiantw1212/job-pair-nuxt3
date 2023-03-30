@@ -55,7 +55,7 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'production',
             apiBase: 'https://job-pair-taiwan-prd.de.r.appspot.com',
             origin: 'https://job-pair.com',
-            axiosTimeout: 3000,
+            axiosTimeout: 30000,
         }
     },
     // ... other options
