@@ -82,7 +82,7 @@ async function showSecondConfirm() {
                     if (process.client) {
                         location.reload()
                     }
-                })
+                }, 1000)
             }
             break;
         }
