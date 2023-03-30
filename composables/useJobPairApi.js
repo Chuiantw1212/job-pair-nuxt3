@@ -44,7 +44,7 @@ export default function () {
                 step()
             })
         }
-        const { method, url, data, params = {}, headers, commit = false, timeout = 30000 } = options
+        const { method, url, data, params = {}, headers, commit = false, timeout = config.axiosTimeout } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }

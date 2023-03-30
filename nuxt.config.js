@@ -29,7 +29,7 @@ export default defineNuxtConfig({
             htmlAttrs: {
                 lang: 'zh-Hant'
             },
-            link: [ 
+            link: [
                 // Favicon https://github.com/nuxt/framework/discussions/5204
                 { rel: 'icon', type: 'image/x-icon', href: `/favicon.ico?${random}` },
                 // Google Fonts
@@ -55,6 +55,7 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'production',
             apiBase: 'https://job-pair-taiwan-prd.de.r.appspot.com',
             origin: 'https://job-pair.com',
+            axiosTimeout: 3000,
         }
     },
     // ... other options
