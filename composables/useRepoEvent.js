@@ -4,6 +4,13 @@ export default defineStore('event', () => {
     const state = reactive({
 
     })
+    async function getEvent(data) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/event/${data.id}`,
+        })
+        return response
+    }
     async function getEventRegistered() {
         const response = await jobPairApi.request({
             method: 'get',
@@ -22,6 +29,7 @@ export default defineStore('event', () => {
     return {
         state,
         postEventRegistration,
-        getEventRegistered
+        getEventRegistered,
+        getEvent
     }
 })
