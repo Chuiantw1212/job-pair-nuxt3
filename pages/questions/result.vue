@@ -28,7 +28,7 @@ useSeoMeta({
     title: `偏好量表結果 - Job Pair`,
 })
 onMounted(async () => {
-    const response = await repoEvent.getEventSigned()
+    const response = await repoEvent.getEventRegistered()
     state.isSigned = response.data
 })
 // methods
