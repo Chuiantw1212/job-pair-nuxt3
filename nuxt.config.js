@@ -56,7 +56,7 @@ export default defineNuxtConfig({
             apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
             origin: 'https://job-pair-taiwan-dev.web.app',
             liffId: '1660751537-PvmLAvMr',
-            axiosTimeout: 3000,
+            axiosTimeout: 30000,
         }
     },
     // ... other options
