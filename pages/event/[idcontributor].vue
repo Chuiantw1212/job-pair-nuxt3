@@ -6,13 +6,19 @@
                 <h1 class="frame__title">活動報名完成</h1>
                 <div class="frame__textarea">
                     <div>
-                        時間：2023/03/28 (二) 20 : 00 - 21 : 00
+                        活動名稱：{{ state.event.name }}
                     </div>
                     <div>
-                        地點：Zoom 線上會議室（講座前一週將發送，請至信箱收信）
+                        開始時間：{{ $filter.time(state.event.startDate) }}
                     </div>
                     <div>
-                        報名日期：<span id="signUpDate">{{ $filter.time(state.signUpDate) }}</span>
+                        結束時間：{{ $filter.time(state.event.endDate) }}
+                    </div>
+                    <div>
+                        地點：{{ state.event.location }}
+                    </div>
+                    <div>
+                        報名日期：<span id="signUpDate">{{ $filter.time(state.event.signUpDate) }}</span>
                     </div>
                 </div>
             </div>
@@ -46,15 +52,21 @@ const state = reactive({
     signUpDate: null,
     isFailed: false,
     timeoutId: null,
+    event: {},
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
-        // 未登入前紀錄Flag，登入後自動報名活動
-        if (route.params?.contributor) {
-            repoAuth.state.memberOf = route.params.contributor
-        }
-        if (newValue?.id && oldValue === null) {
-            signUp()
+
+        // // 未登入前紀錄Flag，登入後自動報名活動
+        if (route.params?.idcontributor) {
+            const chunks = route.params.idcontributor.split('&&')
+            const eventId = chunks[0]
+            const contributor = chunks[1]
+            getEventInformation(eventId)
+            repoAuth.state.memberOf = contributor
+            if (newValue?.id && oldValue === null) {
+                signUp(eventId)
+            }
         }
     }
     if (process.client && !newValue) {
@@ -63,6 +75,15 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
         })
     }
 }, { immediate: true })
+async function getEventInformation(eventId) {
+    const res = await repoEvent.getEvent({
+        id: eventId
+    })
+    if (res.status !== 200) {
+        return
+    }
+    state.event = res.data
+}
 function requestSelector(selectorString, callback,) {
     let localCount = 0
     function step() {
@@ -81,13 +102,14 @@ function requestSelector(selectorString, callback,) {
     }
     step()
 }
-async function signUp() {
+async function signUp(eventId) {
     $sweet.loader(true)
     state.timeoutId = setTimeout(() => {
         state.isFailed = true
         $sweet.loader(false)
     }, 10 * 1000)
-    const response = await repoEvent.postSignUp({
+    const response = await repoEvent.postEventRegistration({
+        eventId,
         contributor: repoAuth.state.memberOf ?? ''
     })
     if (response.status !== 200) {
@@ -96,7 +118,7 @@ async function signUp() {
     clearTimeout(state.timeoutId)
     state.timeoutId = null
     state.isFailed = false
-    const { signUpDate } = response.data
+    const { signUpDate = '' } = response.data
     state.signUpDate = signUpDate
     const element = document.querySelector('#signUpDate')
     element.innerHTML = $filter.time(signUpDate)

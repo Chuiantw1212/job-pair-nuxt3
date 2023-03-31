@@ -154,7 +154,7 @@ async function routeToCategory() {
         return
     }
     if (submitted.memberOf) {
-        await repoEvent.postSignUp({
+        await repoEvent.postEventRegistration({
             contributor: submitted.memberOf
         })
     }
