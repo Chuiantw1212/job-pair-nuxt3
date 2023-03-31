@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 export default defineStore('event', () => {
     const jobPairApi = useJobPairApi()
     const state = reactive({
-
+        eventId: null,
+        contributor: null,
     })
     async function getEvent(data) {
         const response = await jobPairApi.request({

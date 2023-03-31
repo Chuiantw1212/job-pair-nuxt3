@@ -122,15 +122,12 @@ async function handleSubmit() {
     if (!result.isValid) {
         return
     }
-    const user = Object.assign({}, repoAuth.state.user, state.tempUser, {
-        memberOf: repoAuth.state.memberOf ?? ''
-    })
+    const user = Object.assign({}, repoAuth.state.user, state.tempUser)
     $sweet.loader(true)
     const postResponse = await repoUser.postUser(user)
     if (postResponse.status !== 200) {
         return
     }
-    repoAuth.state.memberOf = null
     const userData = postResponse.data
     repoAuth.setUser(userData)
     await loginComposable.setIdToken()
@@ -153,9 +150,10 @@ async function routeToCategory() {
     if (!submitted) {
         return
     }
-    if (submitted.memberOf) {
+    if (repoEvent.state.contributor) {
         await repoEvent.postEventRegistration({
-            contributor: submitted.memberOf
+            eventId: repoEvent.state.eventId,
+            contributor: repoEvent.state.contributor
         })
     }
     router.push({

@@ -18,7 +18,7 @@
                         地點：{{ state.event.location }}
                     </div>
                     <div>
-                        報名日期：<span id="signUpDate">{{ $filter.time(state.event.signUpDate) }}</span>
+                        報名日期：<span id="signUpDate">???</span>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <img class="frame__image" alt="失敗" src="@/assets/event/img_報名失敗.svg">
                 <h1 class="frame__title">活動報名失敗</h1>
                 <div class="frame__textarea">
-                    請確認網路連線狀況
+                    {{ state.statusText }}
                 </div>
             </div>
             <LazyAtomBtnSimple class="event__button" @click="signUp()">
@@ -51,19 +51,31 @@ const state = reactive({
     },
     signUpDate: null,
     isFailed: false,
-    timeoutId: null,
+    statusText: '請確認網路連線狀況',
     event: {},
+})
+onMounted(() => {
+    const eventItemString = sessionStorage.getItem('event')
+    if (eventItemString) {
+        const eventItem = JSON.parse(eventItemString)
+        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.contributor = eventItem.contributor
+    }
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
-
-        // // 未登入前紀錄Flag，登入後自動報名活動
+        // 未登入前紀錄Flag，登入後自動報名活動
         if (route.params?.idcontributor) {
             const chunks = route.params.idcontributor.split('&&')
             const eventId = chunks[0]
             const contributor = chunks[1]
+            repoEvent.state.eventId = eventId
+            repoEvent.state.contributor = contributor
+            sessionStorage.setItem('event', JSON.stringify({
+                id: eventId,
+                contributor,
+            }))
             getEventInformation(eventId)
-            repoAuth.state.memberOf = contributor
             if (newValue?.id && oldValue === null) {
                 signUp(eventId)
             }
@@ -102,31 +114,33 @@ function requestSelector(selectorString, callback,) {
     }
     step()
 }
-async function signUp(eventId) {
+async function signUp() {
     $sweet.loader(true)
-    state.timeoutId = setTimeout(() => {
-        state.isFailed = true
-        $sweet.loader(false)
-    }, 10 * 1000)
     const response = await repoEvent.postEventRegistration({
-        eventId,
-        contributor: repoAuth.state.memberOf ?? ''
+        eventId: repoEvent.state.eventId,
+        contributor: repoEvent.state.contributor
     })
+    $sweet.loader(false)
+    state.isFailed = false
     if (response.status !== 200) {
+        state.isFailed = true
         return
     }
-    clearTimeout(state.timeoutId)
-    state.timeoutId = null
-    state.isFailed = false
-    const { signUpDate = '' } = response.data
-    state.signUpDate = signUpDate
-    const element = document.querySelector('#signUpDate')
-    element.innerHTML = $filter.time(signUpDate)
-    $sweet.loader(false)
-    if (signUpDate) {
-        requestSelector('#userModal', () => {
+    // 關閉彈窗
+    if (response.data) {
+        setTimeout(() => {
             $emitter.emit("hideUserModal")
-        })
+        }, 150) // 300ms animation - server response 150ms
+    }
+    if (typeof response.data === 'string') {
+        state.isFailed = true
+        state.statusText = response.data
+    }
+    if (!state.isFailed) {
+        const { signUpDate = '' } = response.data
+        state.signUpDate = signUpDate
+        const element = document.querySelector('#signUpDate')
+        element.innerHTML = $filter.time(signUpDate)
     }
 }
 async function printPage() {
