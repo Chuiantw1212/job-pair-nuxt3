@@ -152,6 +152,7 @@ async function routeToCategory() {
     }
     if (repoEvent.state.contributor) {
         await repoEvent.postEventRegistration({
+            eventId: repoEvent.state.eventId,
             contributor: repoEvent.state.contributor
         })
     }
