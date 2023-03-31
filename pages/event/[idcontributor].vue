@@ -56,14 +56,14 @@ const state = reactive({
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
-
-        // // 未登入前紀錄Flag，登入後自動報名活動
+        // 未登入前紀錄Flag，登入後自動報名活動
         if (route.params?.idcontributor) {
             const chunks = route.params.idcontributor.split('&&')
             const eventId = chunks[0]
             const contributor = chunks[1]
+            repoEvent.state.eventId = eventId
+            repoEvent.state.contributor = contributor
             getEventInformation(eventId)
-            repoAuth.state.memberOf = contributor
             if (newValue?.id && oldValue === null) {
                 signUp(eventId)
             }
@@ -102,15 +102,15 @@ function requestSelector(selectorString, callback,) {
     }
     step()
 }
-async function signUp(eventId) {
+async function signUp() {
     $sweet.loader(true)
     state.timeoutId = setTimeout(() => {
         state.isFailed = true
         $sweet.loader(false)
     }, 10 * 1000)
     const response = await repoEvent.postEventRegistration({
-        eventId,
-        contributor: repoAuth.state.memberOf ?? ''
+        eventId: repoEvent.state.eventId,
+        contributor: repoEvent.state.contributor
     })
     if (response.status !== 200) {
         return
