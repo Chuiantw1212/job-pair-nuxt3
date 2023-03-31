@@ -29,6 +29,14 @@ const state = reactive({
 useSeoMeta({
     title: `偏好量表結果 - Job Pair`,
 })
+onMounted(() => {
+    const eventItemString = sessionStorage.getItem('event')
+    if (eventItemString) {
+        const eventItem = JSON.parse(eventItemString)
+        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.contributor = eventItem.contributor
+    }
+})
 watch(() => repoAuth.state.user, async (newValue, oldValue) => {
     if (newValue) {
         setEventInformation()
@@ -36,8 +44,17 @@ watch(() => repoAuth.state.user, async (newValue, oldValue) => {
 }, { immediate: true })
 // methods
 async function setEventInformation() {
+    // Retrieve event information
+    const res = await repoEvent.getEvent({
+        id: repoEvent.state.eventId
+    })
+    if (res.status !== 200) {
+        return
+    }
+    state.event = res.data
+    // check signup information
     const response = await repoEvent.getEventRegistered({
-        eventId: 'adNcyp1SccIqRP9cv7tf'
+        eventId: repoEvent.state.eventId
     })
     if (response.status !== 200) {
         return
@@ -46,14 +63,6 @@ async function setEventInformation() {
     if (mostRecentEvent) {
         state.isSigned = true
     }
-    // Retrieve event information
-    const res = await repoEvent.getEvent({
-        id: 'adNcyp1SccIqRP9cv7tf'
-    })
-    if (res.status !== 200) {
-        return
-    }
-    state.event = res.data
 }
 async function routeToProfile() {
     router.push({

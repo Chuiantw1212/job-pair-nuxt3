@@ -31,7 +31,7 @@
                 <img class="frame__image" alt="失敗" src="@/assets/event/img_報名失敗.svg">
                 <h1 class="frame__title">活動報名失敗</h1>
                 <div class="frame__textarea">
-                    請確認網路連線狀況
+                    {{ state.statusText }}
                 </div>
             </div>
             <LazyAtomBtnSimple class="event__button" @click="signUp()">
@@ -51,11 +51,13 @@ const state = reactive({
     },
     signUpDate: null,
     isFailed: false,
+    statusText: '請確認網路連線狀況',
     event: {},
 })
 onMounted(() => {
-    const eventItem = sessionStorage.getItem('event')
-    if (eventItem) {
+    const eventItemString = sessionStorage.getItem('event')
+    if (eventItemString) {
+        const eventItem = JSON.parse(eventItemString)
         repoEvent.state.eventId = eventItem.id
         repoEvent.state.contributor = eventItem.contributor
     }
@@ -69,10 +71,10 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
             const contributor = chunks[1]
             repoEvent.state.eventId = eventId
             repoEvent.state.contributor = contributor
-            sessionStorage.setItem('event', {
+            sessionStorage.setItem('event', JSON.stringify({
                 id: eventId,
                 contributor,
-            })
+            }))
             getEventInformation(eventId)
             if (newValue?.id && oldValue === null) {
                 signUp(eventId)
@@ -118,20 +120,27 @@ async function signUp() {
         eventId: repoEvent.state.eventId,
         contributor: repoEvent.state.contributor
     })
+    $sweet.loader(false)
+    state.isFailed = false
     if (response.status !== 200) {
         state.isFailed = true
         return
     }
-    $sweet.loader(false)
-    const { signUpDate = '' } = response.data
-    state.isFailed = false
-    state.signUpDate = signUpDate
-    const element = document.querySelector('#signUpDate')
-    element.innerHTML = $filter.time(signUpDate)
-    if (signUpDate) {
-        requestSelector('#userModal', () => {
+    // 關閉彈窗
+    if (response.data) {
+        setTimeout(() => {
             $emitter.emit("hideUserModal")
-        })
+        }, 150) // 300ms animation - server response 150ms
+    }
+    if (typeof response.data === 'string') {
+        state.isFailed = true
+        state.statusText = response.data
+    }
+    if (!state.isFailed) {
+        const { signUpDate = '' } = response.data
+        state.signUpDate = signUpDate
+        const element = document.querySelector('#signUpDate')
+        element.innerHTML = $filter.time(signUpDate)
     }
 }
 async function printPage() {
