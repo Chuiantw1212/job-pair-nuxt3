@@ -51,8 +51,14 @@ const state = reactive({
     },
     signUpDate: null,
     isFailed: false,
-    timeoutId: null,
     event: {},
+})
+onMounted(() => {
+    const eventItem = sessionStorage.getItem('event')
+    if (eventItem) {
+        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.contributor = eventItem.contributor
+    }
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (process.client) {
@@ -63,6 +69,10 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
             const contributor = chunks[1]
             repoEvent.state.eventId = eventId
             repoEvent.state.contributor = contributor
+            sessionStorage.setItem('event', {
+                id: eventId,
+                contributor,
+            })
             getEventInformation(eventId)
             if (newValue?.id && oldValue === null) {
                 signUp(eventId)
@@ -104,25 +114,20 @@ function requestSelector(selectorString, callback,) {
 }
 async function signUp() {
     $sweet.loader(true)
-    state.timeoutId = setTimeout(() => {
-        state.isFailed = true
-        $sweet.loader(false)
-    }, 10 * 1000)
     const response = await repoEvent.postEventRegistration({
         eventId: repoEvent.state.eventId,
         contributor: repoEvent.state.contributor
     })
     if (response.status !== 200) {
+        state.isFailed = true
         return
     }
-    clearTimeout(state.timeoutId)
-    state.timeoutId = null
-    state.isFailed = false
+    $sweet.loader(false)
     const { signUpDate = '' } = response.data
+    state.isFailed = false
     state.signUpDate = signUpDate
     const element = document.querySelector('#signUpDate')
     element.innerHTML = $filter.time(signUpDate)
-    $sweet.loader(false)
     if (signUpDate) {
         requestSelector('#userModal', () => {
             $emitter.emit("hideUserModal")
