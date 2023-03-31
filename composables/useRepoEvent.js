@@ -11,17 +11,17 @@ export default defineStore('event', () => {
         })
         return response
     }
-    async function getEventRegistered() {
+    async function getEventRegistered(data) {
         const response = await jobPairApi.request({
             method: 'get',
-            url: `/event/registration`,
+            url: `/event/${data.eventId}/registration`,
         })
         return response
     }
     async function postEventRegistration(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/event/registration/${data.eventId}`,
+            url: `/event/${data.eventId}/registration`,
             data,
         })
         return response
