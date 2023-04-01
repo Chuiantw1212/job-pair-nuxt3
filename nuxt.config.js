@@ -8,9 +8,12 @@ export default defineNuxtConfig({
     app: {
         head: {
             title: title,
-            description: description,
-            // 初始共用的設定，這裡不放title與description
             meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: description
+                },
                 { property: 'og:title', content: title },
                 { property: 'og:description', content: description },
                 { "charset": "utf-8" },

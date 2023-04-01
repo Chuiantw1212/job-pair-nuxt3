@@ -68,10 +68,10 @@
                         <b class="person__title">Sandy @CEO</b>
                         <div class="person__links">
                             <a href="https://www.facebook.com/3dlifecheck" target="_blank">
-                                <img alt="facebook" src="~/assets/about/icon_fb.svg">
+                                <img class="link__icon" alt="facebook" src="~/assets/about/icon_fb.svg">
                             </a>
                             <a href="https://www.instagram.com/3d.chiu/" target="_blank">
-                                <img alt="instagram" src="~/assets/about/icon_ig.svg">
+                                <img class="link__icon" alt="instagram" src="~/assets/about/icon_ig.svg">
                             </a>
                         </div>
                     </div>
@@ -83,10 +83,10 @@
                         <b class="person__title">朱奕安 @CTO</b>
                         <div class="person__links">
                             <a href="https://www.facebook.com/profile.php?id=100069740545113" target="_blank">
-                                <img alt="facebook" src="~/assets/about/icon_fb.svg">
+                                <img class="link__icon" alt="facebook" src="~/assets/about/icon_fb.svg">
                             </a>
                             <a href="https://www.instagram.com/econ.sense/" target="_blank">
-                                <img alt="instagram" src="~/assets/about/icon_ig.svg">
+                                <img class="link__icon" alt="instagram" src="~/assets/about/icon_ig.svg">
                             </a>
                         </div>
                     </div>
@@ -174,7 +174,7 @@ const device = useDevice()
         }
 
         .card__image--3 {
-            width: 128px;
+            width: 140px;
             height: 100px;
         }
 
@@ -200,6 +200,11 @@ const device = useDevice()
             display: flex;
             justify-content: center;
             gap: 8px;
+
+            .link__icon {
+                height: 26px;
+                width: 26px;
+            }
         }
     }
 }
