@@ -171,7 +171,7 @@ useSeoMeta({
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
     },
     ogUrl: () => {
-        return `${origin}/company/${state.companyInfo.id}`
+        return `${runTime.public.origin}/company/${state.companyInfo.id}`
     }
 })
 useJsonld(() => ({
