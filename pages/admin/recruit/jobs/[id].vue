@@ -135,8 +135,8 @@
             </div>
         </div>
         <div class="recruitJob__footer">
-            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存並返回職缺管理</AtomBtnSimple>
-            <AtomBtnSimple class="footer__btn" @click="previewJob()" outline>預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存並返回</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
     </div>
@@ -222,7 +222,8 @@ async function handleChatSkills(value) {
     const res = await repoChat.postChatJobDescription(value)
     return res
 }
-function previewJob() {
+async function handlePreview() {
+    await saveJob()
     const job = state.job
     const { origin } = window.location
     const url = `${origin}/job/${job.identifier}`
@@ -317,7 +318,12 @@ function getSalaryRange() {
     return `${formatLow} ~ ${formatHigh}`
 }
 const jobItemRef = ref(null)
-async function handleSave() {
+async function goback() {
+    router.push({
+        name: 'admin-recruit-jobs'
+    })
+}
+async function saveJob() {
     const jobItem = jobItemRef.value
     const job = state.job
     if (job.status === 'active') {
@@ -350,9 +356,13 @@ async function handleSave() {
         return
     }
     await $sweet.loader(false) // IMPORTANT
-    router.push({
-        name: 'admin-recruit-jobs'
-    })
+    return true
+}
+async function handleSave() {
+    const isSuccess = await saveJob()
+    if (isSuccess) {
+        goback()
+    }
 }
 </script>
 <style lang="scss" scoped>

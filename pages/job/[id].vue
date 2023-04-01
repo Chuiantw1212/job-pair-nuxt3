@@ -260,7 +260,7 @@ useSeoMeta({
     },
     ogDescription: () => {
         const regex = /(<([^>]+)>)/ig
-        if (descriptionContent) {
+        if (state.job.description) {
             const descriptionContent = state.job.description.replace(regex, "")
             return descriptionContent
         }

@@ -47,7 +47,7 @@
                             </LazyAtomInputSwitch>
                         </td>
                         <td>
-                            <NuxtLink :to="`jobs/${job.identifier}`">
+                            <NuxtLink class="table__jobName" :to="`jobs/${job.identifier}`">
                                 {{ getJobName(job) }}
                             </NuxtLink>
                             <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
@@ -397,6 +397,22 @@ async function addJobDraft() {
         td {
             vertical-align: middle;
             white-space: nowrap;
+        }
+
+        .table__jobName {
+            font-size: 14px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.38;
+            letter-spacing: normal;
+            text-align: left;
+            color: #5ea88e;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .jobManagement__table__sticky {
