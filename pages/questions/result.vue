@@ -3,11 +3,14 @@
         <div class="questions__result">
             <img class="questions__leftImage" src="~/assets/questions/left.png" />
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <p class="result__header"></p>
+            <div class="questions__frame">
+                <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
+                <h1 class="frame__title">求職偏好已完成</h1>
+                <div class="frame__textarea">
+                    接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
+                </div>
+            </div>
             <div class="result__final">
-                <div class="final__header">求職偏好已完成！</div>
-                <div class="final__sub">接下來開始編輯個人檔案吧！</div>
-                <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
                 <div v-if="state.isSigned" class="final__text">
                     已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
             </div>
@@ -81,7 +84,7 @@ async function routeToJobs() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 128px 5vw 200px 5vw;
+    padding: 250px 5vw 200px 5vw;
     min-height: calc(100vh - 88px);
 
     .questions__leftImage {
@@ -96,6 +99,50 @@ async function routeToJobs() {
         right: 0;
         width: 15vw;
         bottom: 0;
+    }
+
+    .questions__frame {
+        padding: 40px 20px 20px;
+        border-radius: 10px;
+        border: solid 1px #5b2714;
+        background-color: #fff;
+        position: relative;
+        min-width: 324px;
+        margin: auto;
+
+        .frame__image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -90%);
+        }
+
+        .frame__title {
+            font-size: 24px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+            border-bottom: 4px solid #ffd600;
+            width: 144px;
+            margin: auto;
+            white-space: nowrap;
+        }
+
+        .frame__textarea {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+        }
     }
 
     .result__header {
@@ -176,6 +223,4 @@ async function routeToJobs() {
         }
     }
 }
-
-@media screen and (min-width: 991px) {}
 </style>
