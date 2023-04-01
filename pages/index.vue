@@ -81,8 +81,13 @@ const state = reactive({
     profile: null,
     linkToken: null,
 })
-const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
+const { data: companyList } = await useFetch(`${runTime.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
+useSeoMeta({
+    ogUrl: () => {
+        return `${runTime.public.origin}`
+    }
+})
 onMounted(async () => {
     if (process.client) {
         // initialGlide()

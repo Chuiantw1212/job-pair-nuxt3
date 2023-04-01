@@ -246,7 +246,7 @@ const browserConfig = computed({
 })
 const currentInstance = getCurrentInstance()
 // hooks
-const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
@@ -264,6 +264,9 @@ useSeoMeta({
             const descriptionContent = state.job.description.replace(regex, "")
             return descriptionContent
         }
+    },
+    ogUrl: () => {
+        return `${runTime.public.origin}/job/${state.job.identifier}`
     }
 })
 useJsonld(() => ({

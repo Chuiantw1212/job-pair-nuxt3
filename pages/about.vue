@@ -112,6 +112,12 @@
 </template>
 <script setup>
 const device = useDevice()
+const runTime = useRuntimeConfig()
+useSeoMeta({
+    ogUrl: () => {
+        return `${runTime.public.origin}/about`
+    }
+})
 </script>
 <style lang="scss">
 .about {
