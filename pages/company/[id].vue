@@ -16,15 +16,15 @@
                 </div>
                 <div class="d-none d-lg-flex basic__basicGroup2">
                     <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                        <img src="~/assets/company/icon_User.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
                         {{ state.companyInfo?.numberOfEmployees }}
                     </div>
                     <div class="basicGroup__item">
-                        <img src="~/assets/company/icon_Environment.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                         {{ getLocationText() }}
                     </div>
                     <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                        <img src="~/assets/company/icon_Wallet.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
                         資本額 {{ getCapical(state.companyInfo?.capital) }}
                     </div>
                 </div>
@@ -294,9 +294,10 @@ function getLocationText() {
 
     .company__banner {
         width: fit-content;
+        max-width: 100%;
+        height: fit-content;
         display: block;
         min-height: 96px;
-        max-width: 100%;
     }
 
     .company__basic {
@@ -473,6 +474,11 @@ function getLocationText() {
 
                     &:not(:first-child) {
                         margin-top: 8px;
+                    }
+
+                    .item__icon {
+                        width: 20px;
+                        height: 33px;
                     }
                 }
             }

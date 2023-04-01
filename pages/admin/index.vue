@@ -1,25 +1,9 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <div class="glide">
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        <li class="glide__slide">
-                            <img v-if="device.state.isDesktop" class="banner__image"
-                                src="~/assets/admin/index/img_banner2.png">
-                            <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png">
-                        </li>
-                    </ul>
-                </div>
-                <div class="glide__arrows" data-glide-el="controls">
-                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
-                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
-                </div>
-                <div class="glide__bullets" data-glide-el="controls[nav]">
-                    <button class="glide__bullet" data-glide-dir="=0"></button>
-                    <button class="glide__bullet" data-glide-dir="=1"></button>
-                </div>
-            </div>
+            <img v-if="device.state.isDesktop" class="banner__image" src="~/assets/admin/index/img_banner2.png"
+                alt="banner">
+            <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png" alt="banner">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">
                 免費加入
             </button>
@@ -27,11 +11,11 @@
         <div class="container__section">
             <h2 class="section__header">大缺工時代，人難找嗎？</h2>
             <img class="d-none d-lg-block section__decoration section__decoration--1"
-                src="~/assets/admin/index/MaskGroup.png">
+                src="~/assets/admin/index/MaskGroup.png" alt="decoration">
             <img class="d-none d-lg-block section__decoration section__decoration--2"
-                src="~/assets/admin/index/Group459.png">
+                src="~/assets/admin/index/Group459.png" alt="decoration">
             <div class="section__card section__card--left">
-                <img class="section__image section__image--1" src="~/assets/admin/index/img1@2x.png" />
+                <img class="section__image section__image--1" src="~/assets/admin/index/img1@2x.png" alt="issue1" />
                 <h3 class="card__header">
                     <span class="header__decoration">
                         不花錢買廣告
@@ -41,14 +25,14 @@
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
             <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="~/assets/admin/index/img2.png" />
+                <img class="section__image section__image--2" src="~/assets/admin/index/img2.png" alt="issue2" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
                 <div class="card__body">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</div>
             </div>
             <div class="section__card section__card--left">
-                <img class="section__image section__image--3" src="~/assets/admin/index/img3.png" />
+                <img class="section__image section__image--3" src="~/assets/admin/index/img3.png" alt="issue3" />
                 <h3 class="card__header">
                     好不容易徵到人，<span class="header__decoration">怎麼又離職了</span>？
                 </h3>
@@ -60,7 +44,8 @@
             <div class="section__body">
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image" src="~/assets/admin/index/img4@2x.png" />
+                        <img class="header__image header__image--1" src="~/assets/admin/index/img4@2x.png"
+                            alt="advantage1" />
                         <div class="header__text">提升招聘效能</div>
                     </div>
                     <div class="card__body">人們傾向相信自己意願的選擇；透過求職偏好的篩選，所選出的職缺，不是依據公司大小、品牌知名度，而是個人的需求，強化人選投遞的意願。<br><br>
@@ -68,7 +53,8 @@
                 </div>
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image" src="~/assets/admin/index/img5@2x.png" />
+                        <img class="header__image header__image--2" src="~/assets/admin/index/img5@2x.png"
+                            alt="advantage2" />
                         <div class="header__text">精準找到合適人選</div>
                     </div>
                     <div class="card__body">
@@ -77,7 +63,8 @@
                 </div>
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image" src="~/assets/admin/index/img6@2x.png" />
+                        <img class="header__image header__image--3" src="~/assets/admin/index/img6@2x.png"
+                            alt="advantage3" />
                         <div class="header__text">節省成本</div>
                     </div>
                     <div class="card__body">
@@ -105,7 +92,7 @@
             </div>
         </div>
         <div class="container__footer">
-            <img class="footer__image d-lg-none" src="~/assets/admin/index/bg3.png">
+            <img class="footer__image d-lg-none" alt="hurry" src="~/assets/admin/index/bg3.png">
             趕快加入 搶人才
             <button class="companyHome__btn footer__button" @click="openAdminModal()">免費加入</button>
         </div>
@@ -117,7 +104,7 @@ export default {
 }
 </script>
 <script setup>
-const { $Glide, $emitter, $requestSelector } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -130,15 +117,8 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTime.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-// useSeoMeta({
-//     title: runTime.title,
-//     ogTitle: runTime.title,
-//     description: runTime.description,
-//     ogDescription: runTime.description,
-// })
 onMounted(async () => {
     if (process.client) {
-        initialGlide()
         const response = await repoJob.getJobByQuery({
             pageOrderBy: "datePosted",
             pageLimit: 15,
@@ -157,18 +137,6 @@ onMounted(async () => {
         state.jobProvider = jobProvider
     }
 })
-function initialGlide() {
-    $requestSelector(`.glide`, (element) => {
-        const instance = new $Glide.Default(element, {
-            type: 'carousel',
-            autoplay: 2000,
-        })
-        instance.mount({
-            Controls: $Glide.Controls,
-            Autoplay: $Glide.Autoplay,
-        })
-    })
-}
 function openAdminModal() {
     const { user } = repoAuth.state
     if (user && user.type === 'admin') {
@@ -197,7 +165,8 @@ function openAdminModal() {
 
     .container__banner {
         .banner__image {
-            width: 100%;
+            width: 100vw;
+            height: 130vw;
         }
 
         position: relative;
@@ -353,6 +322,21 @@ function openAdminModal() {
                 letter-spacing: normal;
                 color: #333;
             }
+
+            .header__image--1 {
+                width: 232px;
+                height: 200px;
+            }
+
+            .header__image--2 {
+                width: 232px;
+                height: 200px;
+            }
+
+            .header__image--3 {
+                width: 280px;
+                height: 200px;
+            }
         }
     }
 
@@ -411,6 +395,11 @@ function openAdminModal() {
     .companyHome {
         .container__banner {
             position: relative;
+
+            .banner__image {
+                width: 100vw;
+                height: 41.1vw;
+            }
 
             .banner__button {
                 position: absolute;
