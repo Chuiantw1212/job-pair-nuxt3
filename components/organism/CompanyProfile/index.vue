@@ -248,6 +248,7 @@ async function initializeCompanyInfo() {
         return
     }
     const companyRes = await repoAdmin.getAdminCompany()
+    $sweet.loader(false)
     if (companyRes.status !== 200) {
         return
     }

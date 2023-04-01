@@ -6,6 +6,10 @@
             </slot>
         </div>
         <LazyOrganismFooter />
+        <!-- 如果條件渲染有異步渲染問題 -->
+        <OrganismUserModal></OrganismUserModal>
+        <OrganismCompanyModal></OrganismCompanyModal>
+        <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>
@@ -36,10 +40,6 @@ body {
     // https://codepen.io/ckeditor/pen/VqXYQq
     /* We need to assaign this CSS Custom property to the body instead of :root, because of CSS Specificity and codepen stylesheet placement before loaded CKE5 content. */
     --ck-z-default: 100;
-    --ck-z-modal: calc(var(--ck-z-default) + 999);
-}
-
-.container {
-    min-height: 100vh;
+    --ck-z-modal: calc(var(--ck-z-default) + 900);
 }
 </style>

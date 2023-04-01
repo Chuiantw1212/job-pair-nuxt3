@@ -47,9 +47,12 @@
                             </LazyAtomInputSwitch>
                         </td>
                         <td>
-                            <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
+                            <NuxtLink class="table__jobName" :to="`jobs/${job.identifier}`">
+                                {{ getJobName(job) }}
+                            </NuxtLink>
+                            <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
                                 ref="jobModalRefs">
-                            </LazyOrganismJobEditModal>
+                            </LazyOrganismJobEditModal> -->
                         </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">
@@ -173,12 +176,13 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet, $requestSelector } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
+const router = useRouter()
 // hooks
 useSeoMeta({
     title: `職缺管理 - 招募中心 - Job Pair`
@@ -204,6 +208,14 @@ watch(() => state.filter, () => {
     })
 }, { deep: true })
 // methods
+function getJobName(job) {
+    const { name = '' } = job
+    if (name && String(name).trim()) {
+        return name
+    } else {
+        return '職缺草稿'
+    }
+}
 function getJobPreviewHref(job) {
     if (process.client) {
         const { origin } = window.location
@@ -248,10 +260,6 @@ async function saveFieldsPreference() {
     })
     await repoAdmin.patchAdmin(admin)
 }
-function removeJob(index) {
-    state.jobList.splice(index, 1)
-    state.renderKey = Math.random()
-}
 async function initialize(payload = {}) {
     const { searchLike = '', sort = true } = payload
     const { user, company } = repoAuth.state
@@ -286,6 +294,7 @@ async function initialize(payload = {}) {
     const activeJobs = allJobs.filter(item => item.status === 'active')
     state.jobList = [...closedJobs, ...activeJobs]
     state.renderKey = Math.random()
+    scrollTo(0, 0)
 }
 function debounce(func, delay = 800) {
     clearTimeout(state.debounceTimer)
@@ -311,13 +320,8 @@ async function addJobDraft() {
     $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
     state.jobList.unshift(res.data)
-    state.renderKey = Math.random()
-    $requestSelector(`#modal_${res.data.identifier}`, () => {
-        const jobModals = currentInstance.refs.jobModalRefs
-        const targetModal = jobModals[0]
-        targetModal.openModal()
-        $sweet.loader(false)
-    })
+    const { identifier = '' } = res.data
+    router.push(`jobs/${identifier}`)
 }
 </script>
 <style lang="scss" scoped>
@@ -393,6 +397,22 @@ async function addJobDraft() {
         td {
             vertical-align: middle;
             white-space: nowrap;
+        }
+
+        .table__jobName {
+            font-size: 14px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.38;
+            letter-spacing: normal;
+            text-align: left;
+            color: #5ea88e;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .jobManagement__table__sticky {
