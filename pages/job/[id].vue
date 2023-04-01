@@ -121,8 +121,8 @@
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
-                    <iframe class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
+                    <iframe title="google map" class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy"
+                        allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
                         @load="setMapHeight()">
                     </iframe>
                 </div>
@@ -164,7 +164,7 @@
                     </div>
                 </NuxtLink>
                 <button class="btn-close card__cancel" @click="hideAd()" aria-label="close ads"></button>
-                <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
+                <img class="d-none d-lg-block ad__card__image" alt="promotion" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
         <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
