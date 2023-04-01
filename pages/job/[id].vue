@@ -109,7 +109,8 @@
 }}</span>
                     </div>
                     <div class="mt-3">
-                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
+                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                            :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
                         <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
@@ -259,7 +260,7 @@ useSeoMeta({
     },
     ogDescription: () => {
         const regex = /(<([^>]+)>)/ig
-        if (descriptionContent) {
+        if (state.job.description) {
             const descriptionContent = state.job.description.replace(regex, "")
             return descriptionContent
         }

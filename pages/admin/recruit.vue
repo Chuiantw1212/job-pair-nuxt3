@@ -46,6 +46,7 @@
     </div>
 </template>
 <script setup>
+const { $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
