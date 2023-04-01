@@ -89,9 +89,15 @@
                 <div class="body__companyInfo">
                     <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
                         class="mb-2" ref="descriptionRef">
+                        <LazyOrganismChatGptModal v-model="state.companyInfo.description" name="企業介紹"
+                            :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
+                        </LazyOrganismChatGptModal>
                     </LazyAtomInputCkeditor>
                     <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
                         class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
+                        <LazyOrganismChatGptModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                            :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
+                        </LazyOrganismChatGptModal>
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -144,6 +150,7 @@ const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
+const repoChat = useRepoChat()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
 const state = reactive({
@@ -180,6 +187,16 @@ watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
 // methods
+function setJobBenefits(value) {
+    currentInstance.refs.jobBenefitsRef.setData(value)
+}
+function setDescription(value) {
+    currentInstance.refs.descriptionRef.setData(value)
+}
+async function handleChatRequest(value) {
+    const res = await repoChat.postChatJobDescription(value)
+    return res
+}
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
     return labels.join(" ,")

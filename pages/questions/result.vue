@@ -8,7 +8,8 @@
                 <div class="final__header">求職偏好已完成！</div>
                 <div class="final__sub">接下來開始編輯個人檔案吧！</div>
                 <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
-                <div v-if="state.isSigned" class="final__text">已成功報名03/28講座活動-「職」感升級！用色彩心理學打造你的職場形象優勢</div>
+                <div v-if="state.isSigned" class="final__text">
+                    已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
             </div>
             <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
             <div class="result__footer">
@@ -20,6 +21,7 @@
 <script setup>
 const repoEvent = useRepoEvent()
 const router = useRouter()
+const repoAuth = useRepoAuth()
 const state = reactive({
     isSigned: false,
 })
@@ -27,11 +29,41 @@ const state = reactive({
 useSeoMeta({
     title: `偏好量表結果 - Job Pair`,
 })
-onMounted(async () => {
-    const response = await repoEvent.getEventSigned()
-    state.isSigned = response.data
+onMounted(() => {
+    const eventItemString = sessionStorage.getItem('event')
+    if (eventItemString) {
+        const eventItem = JSON.parse(eventItemString)
+        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.contributor = eventItem.contributor
+    }
 })
+watch(() => repoAuth.state.user, async (newValue, oldValue) => {
+    if (newValue) {
+        setEventInformation()
+    }
+}, { immediate: true })
 // methods
+async function setEventInformation() {
+    // Retrieve event information
+    const res = await repoEvent.getEvent({
+        id: repoEvent.state.eventId
+    })
+    if (res.status !== 200) {
+        return
+    }
+    state.event = res.data
+    // check signup information
+    const response = await repoEvent.getEventRegistered({
+        eventId: repoEvent.state.eventId
+    })
+    if (response.status !== 200) {
+        return
+    }
+    const mostRecentEvent = response.data[0]
+    if (mostRecentEvent) {
+        state.isSigned = true
+    }
+}
 async function routeToProfile() {
     router.push({
         name: 'user-profile'

@@ -29,7 +29,7 @@ export default defineNuxtConfig({
             htmlAttrs: {
                 lang: 'zh-Hant'
             },
-            link: [ 
+            link: [
                 // Favicon https://github.com/nuxt/framework/discussions/5204
                 { rel: 'icon', type: 'image/x-icon', href: `/favicon.ico?${random}` },
                 // Google Fonts
@@ -56,6 +56,7 @@ export default defineNuxtConfig({
             apiBase: 'http://localhost:8080',
             origin: 'http://localhost:3000',
             liffId: '1660751537-PvmLAvMr',
+            axiosTimeout: 3000,
         }
     },
     // ... other options

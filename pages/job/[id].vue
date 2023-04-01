@@ -253,13 +253,17 @@ useSeoMeta({
     ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.job.description.replace(regex, "")
-        return descriptionContent
+        if (state.job.description) {
+            const descriptionContent = state.job.description.replace(regex, "")
+            return descriptionContent
+        }
     },
     ogDescription: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.job.description.replace(regex, "")
-        return descriptionContent
+        if (descriptionContent) {
+            const descriptionContent = state.job.description.replace(regex, "")
+            return descriptionContent
+        }
     }
 })
 useJsonld(() => ({
