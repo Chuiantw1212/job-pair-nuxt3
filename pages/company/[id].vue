@@ -151,7 +151,7 @@ const jobItems = ref([])
 const organizationId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
+const { data: company } = await useFetch(`${runTime.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
     title: () => `${state.companyInfo.name} - Job Pair`,
@@ -169,6 +169,9 @@ useSeoMeta({
     ogImage: () => {
         const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+    },
+    ogUrl: () => {
+        return `${origin}/company/${state.companyInfo.id}`
     }
 })
 useJsonld(() => ({
