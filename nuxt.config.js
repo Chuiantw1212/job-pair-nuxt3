@@ -8,9 +8,12 @@ export default defineNuxtConfig({
     app: {
         head: {
             title: title,
-            description: description,
-            // 初始共用的設定，這裡不放title與description
             meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: description
+                },
                 { property: 'og:title', content: title },
                 { property: 'og:description', content: description },
                 { "charset": "utf-8" },
@@ -55,6 +58,7 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'production',
             apiBase: 'https://job-pair-taiwan-prd.de.r.appspot.com',
             origin: 'https://job-pair.com',
+            liffId: '1660751537-PvmLAvMr',
             axiosTimeout: 30000,
         }
     },

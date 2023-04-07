@@ -254,33 +254,6 @@ async function initializeSearch() {
             background-color: #fff;
             padding: 20px;
 
-            .item__content__body {
-                // display: flex;
-                // gap: 40px;
-                // margin-top: 20px;
-            }
-
-            .content__header {
-                font-size: 16px;
-                font-weight: bold;
-                color: #333;
-                display: flex;
-                align-items: center;
-                border: none;
-                background-color: inherit;
-
-                .header__span {
-                    font-size: 16px;
-                    font-weight: normal;
-                    color: #a9a9a9;
-                }
-
-                .header__icon {
-                    display: block;
-                    margin-left: 8px;
-                }
-            }
-
             .content__profile {
                 border-radius: 10px;
                 width: 100%;

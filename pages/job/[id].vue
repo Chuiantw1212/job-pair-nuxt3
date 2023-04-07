@@ -109,7 +109,8 @@
 }}</span>
                     </div>
                     <div class="mt-3">
-                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
+                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                            :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
                         <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
@@ -120,8 +121,8 @@
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
-                    <iframe class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
+                    <iframe title="google map" class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy"
+                        allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
                         @load="setMapHeight()">
                     </iframe>
                 </div>
@@ -163,7 +164,7 @@
                     </div>
                 </NuxtLink>
                 <button class="btn-close card__cancel" @click="hideAd()" aria-label="close ads"></button>
-                <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
+                <img class="d-none d-lg-block ad__card__image" alt="promotion" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
         <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
@@ -245,7 +246,7 @@ const browserConfig = computed({
 })
 const currentInstance = getCurrentInstance()
 // hooks
-const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
@@ -263,6 +264,9 @@ useSeoMeta({
             const descriptionContent = state.job.description.replace(regex, "")
             return descriptionContent
         }
+    },
+    ogUrl: () => {
+        return `${runTime.public.origin}/job/${state.job.identifier}`
     }
 })
 useJsonld(() => ({

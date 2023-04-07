@@ -16,15 +16,15 @@
                 </div>
                 <div class="d-none d-lg-flex basic__basicGroup2">
                     <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                        <img src="~/assets/company/icon_User.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
                         {{ state.companyInfo?.numberOfEmployees }}
                     </div>
                     <div class="basicGroup__item">
-                        <img src="~/assets/company/icon_Environment.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                         {{ getLocationText() }}
                     </div>
                     <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                        <img src="~/assets/company/icon_Wallet.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
                         資本額 {{ getCapical(state.companyInfo?.capital) }}
                     </div>
                 </div>
@@ -151,7 +151,7 @@ const jobItems = ref([])
 const organizationId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
+const { data: company } = await useFetch(`${runTime.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
     title: () => `${state.companyInfo.name} - Job Pair`,
@@ -169,6 +169,9 @@ useSeoMeta({
     ogImage: () => {
         const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+    },
+    ogUrl: () => {
+        return `${runTime.public.origin}/company/${state.companyInfo.id}`
     }
 })
 useJsonld(() => ({
@@ -294,9 +297,10 @@ function getLocationText() {
 
     .company__banner {
         width: fit-content;
+        max-width: 100%;
+        height: fit-content;
         display: block;
         min-height: 96px;
-        max-width: 100%;
     }
 
     .company__basic {
@@ -473,6 +477,11 @@ function getLocationText() {
 
                     &:not(:first-child) {
                         margin-top: 8px;
+                    }
+
+                    .item__icon {
+                        width: 20px;
+                        height: 33px;
                     }
                 }
             }

@@ -89,15 +89,15 @@
                 <div class="body__companyInfo">
                     <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
                         class="mb-2" ref="descriptionRef">
-                        <LazyOrganismChatGptModal v-model="state.companyInfo.description" name="企業介紹"
+                        <!-- <LazyOrganismChatGptModal v-model="state.companyInfo.description" name="企業介紹"
                             :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                        </LazyOrganismChatGptModal>
+                        </LazyOrganismChatGptModal> -->
                     </LazyAtomInputCkeditor>
                     <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
                         class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
-                        <LazyOrganismChatGptModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                        <!-- <LazyOrganismChatGptModal v-model="state.companyInfo.jobBenefits" name="福利制度"
                             :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
-                        </LazyOrganismChatGptModal>
+                        </LazyOrganismChatGptModal> -->
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -248,6 +248,7 @@ async function initializeCompanyInfo() {
         return
     }
     const companyRes = await repoAdmin.getAdminCompany()
+    $sweet.loader(false)
     if (companyRes.status !== 200) {
         return
     }

@@ -1,7 +1,5 @@
 <template>
-    <div>
-
-
+    <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">職缺狀態</div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status">
@@ -64,14 +62,14 @@
                 :items="repoSelect.state.selectByQueryRes.jobLocationType" :disabled="state.disabled"
                 @change="resetAddress()">
             </LazyAtomInputSelect>
-            <div class="d-lg-flex gap-2 mt-4">
-                <LazyAtomInputSelect v-model="state.job.addressRegion" class="w-10" name="工作縣市"
+            <div class="form__addressGroup">
+                <LazyAtomInputSelect class="addressGroup__addressRegion" v-model="state.job.addressRegion" name="工作縣市"
                     :items="repoSelect.state.locationRes.taiwan"
                     :disabled="state.disabled || state.job.jobLocationType === 'fullyRemote'"
                     :required="checkAddressRequired()" @change="clearAddress()" :placeholderDisabled="false">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-if="repoSelect.state.locationRes && state.job.addressRegion !== 'oversea'"
-                    v-model="state.job.addressLocality" class="w-10" name="行政區"
+                    class="addressGroup__addressRegion" v-model="state.job.addressLocality" name="行政區"
                     :items="repoSelect.state.locationRes[state.job.addressRegion]"
                     :disabled="disabled || state.job.jobLocationType === 'fullyRemote'" :placeholderDisabled="false"
                     :required="checkAddressRequired()"></LazyAtomInputSelect>
@@ -79,9 +77,9 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
-            <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
+            <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
                 :disabled="state.job.jobLocationType === 'fullyRemote'">
-            </LazyAtomInputText>
+            </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
                     name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
@@ -92,15 +90,15 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 :toolbar="state.toolbar" ref="description" class="mt-4">
-                <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
                     :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatGptModal>
+                </LazyOrganismChatGptModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
+                <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
-                </LazyOrganismChatGptModal>
+                </LazyOrganismChatGptModal> -->
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -136,12 +134,18 @@
                 </div>
             </div>
         </div>
+        <div class="recruitJob__footer">
+            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存並返回</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
+        </div>
     </div>
 </template>
 <script setup>
 const { $bootstrap, $sweet, $validate, $optionText, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const route = useRoute()
+const router = useRouter()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
@@ -196,15 +200,6 @@ const props = defineProps({
 })
 onMounted(() => {
     setJob()
-    // $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
-    //     const bsModal = new $bootstrap.Modal(element, {
-    //         keyboard: false,
-    //     })
-    //     element.addEventListener('show.bs.modal', () => {
-    //         setJob()
-    //     })
-    //     state.bsModal = bsModal
-    // })
 })
 watch(() => repoSelect.jobCategoryMap, () => {
     for (let key in repoSelect.jobCategoryMap) {
@@ -227,13 +222,12 @@ async function handleChatSkills(value) {
     const res = await repoChat.postChatJobDescription(value)
     return res
 }
-function getJobName() {
-    const { name = '' } = props.modelValue
-    if (name && String(name).trim()) {
-        return name
-    } else {
-        return '職缺草稿'
-    }
+async function handlePreview() {
+    await saveJob()
+    const job = state.job
+    const { origin } = window.location
+    const url = `${origin}/job/${job.identifier}`
+    window.open(url)
 }
 async function showAlert() {
     const alertResult = await $sweet.warning('一經刪除，無法還原')
@@ -242,19 +236,11 @@ async function showAlert() {
         if (deleteRes.status !== 200) {
             return
         }
-        emit("remove")
-        closeModal()
+        router.push({
+            name: 'admin-recruit-jobs'
+        })
     }
 }
-// function openModal(status = null) {
-//     state.bsModal.show()
-//     if (status) {
-//         state.job.status = status
-//     }
-// }
-// function closeModal() {
-//     state.bsModal.hide()
-// }
 async function setJob() {
     const jobResponse = await repoAdmin.getJobById({
         jobId: route.params.id,
@@ -273,8 +259,8 @@ async function setJob() {
     if (job.status != 'active') {
         job.status = "closed"
     }
-    if (!job.adminId) {
-        const { user } = repoAuth.state
+    const { user } = repoAuth.state
+    if (!job.adminId && user) {
         job.adminId = user.id
     }
     if (!job.jobLocationType) {
@@ -332,80 +318,65 @@ function getSalaryRange() {
     return `${formatLow} ~ ${formatHigh}`
 }
 const jobItemRef = ref(null)
-async function handleSave() {
-    // const jobItem = jobItemRef.value
-    // const job = state.job
-    // if (job.status === 'active') {
-    //     const result = await $validate(jobItem)
-    //     job.completeness = result.completeness
-    //     if (!result.isValid) {
-    //         return
-    //     }
-    // } else {
-    //     const result = await $validate(jobItem, {
-    //         title: '請再次確認',
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         cancelButtonText: '取消',
-    //     })
-    //     job.completeness = result.completeness
-    //     if (!result.value) {
-    //         return
-    //     }
-    // }
-    // // 依據id判斷是否為新增
-    // await $sweet.loader(true) // IMPORTANT
-    // let response = null
-    // if (job.identifier) {
-    //     response = await repoJob.putJobItem(job)
-    // } else {
-    //     response = await repoJob.postJobItem(job)
-    // }
-    // if (response.status !== 200) {
-    //     return
-    // }
-    // await $sweet.loader(false) // IMPORTANT
-    // const updatedJob = response.data
-    // emit("update:modelValue", updatedJob)
-    // emit("save", updatedJob)
-    // closeModal()
+async function goback() {
+    router.push({
+        name: 'admin-recruit-jobs'
+    })
 }
-// defineExpose({
-//     openModal
-// })
+async function saveJob() {
+    const jobItem = jobItemRef.value
+    const job = state.job
+    if (job.status === 'active') {
+        const result = await $validate(jobItem)
+        job.completeness = result.completeness
+        if (!result.isValid) {
+            return
+        }
+    } else {
+        const result = await $validate(jobItem, {
+            title: '請再次確認',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: '取消',
+        })
+        job.completeness = result.completeness
+        if (!result.value) {
+            return
+        }
+    }
+    // 依據id判斷是否為新增
+    await $sweet.loader(true) // IMPORTANT
+    let response = null
+    if (job.identifier) {
+        response = await repoJob.putJobItem(job)
+    } else {
+        response = await repoJob.postJobItem(job)
+    }
+    if (response.status !== 200) {
+        return
+    }
+    await $sweet.loader(false) // IMPORTANT
+    return true
+}
+async function handleSave() {
+    const isSuccess = await saveJob()
+    if (isSuccess) {
+        goback()
+    }
+}
 </script>
 <style lang="scss" scoped>
-.jobModal__btn {
-    font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.38;
-    letter-spacing: normal;
-    text-align: left;
-    color: #5ea88e;
-    border: none;
-    background-color: inherit;
-
-    .btn__text {
-        max-width: 8rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-    }
-
-    &:hover {
-        text-decoration: underline;
-    }
+.recruitJob__footer {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
 }
 
 .dropLayer__form {
     padding: 20px 40px;
     background-color: white;
     border-radius: 10px;
+
 
     .form__header {
         font-size: 18px;
@@ -453,16 +424,6 @@ async function handleSave() {
     }
 }
 
-.jobModal__footer {
-    display: flex;
-    flex-wrap: nowrap;
-
-    .jobModal__footer__btn {
-        background-color: inherit;
-        border: none;
-    }
-}
-
 .label__circle {
     position: relative;
     width: 24px;
@@ -494,6 +455,31 @@ async function handleSave() {
         height: 14px;
         background-color: #5ea88e;
         border-radius: 50%;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .dropLayer__form {
+        .form__addressGroup {
+
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+
+            .addressGroup__addressRegion {
+                width: 8rem;
+
+            }
+        }
+    }
+
+    .recruitJob__footer {
+        flex-direction: row;
+        margin-top: 20px;
+
+        .footer__btn {
+            width: 226px;
+        }
     }
 }
 </style>

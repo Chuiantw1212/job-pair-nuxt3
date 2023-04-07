@@ -7,7 +7,6 @@ export default defineStore('auth', () => {
         user: null,
         company: null,
         isLogginIn: false,
-        memberOf: null,
     })
     async function postSignin(data) {
         if (state.isLogginIn) {

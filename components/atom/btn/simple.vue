@@ -74,6 +74,16 @@ onMounted(() => {
     }
 }
 
+.btnSimple--outline--danger {
+    background-color: white;
+    color: #da4437;
+    border: 1px solid #da4437;
+
+    &:hover {
+        background-color: unset;
+    }
+}
+
 .btnSimple--disabled {
     background-color: #d3d3d3;
     color: #969696;
