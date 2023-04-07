@@ -18,7 +18,7 @@
                         地點：{{ state.event.location }}
                     </div>
                     <div>
-                        報名日期：<span id="signUpDate">???</span>
+                        報名日期：<span id="signUpDate"></span>
                     </div>
                 </div>
             </div>
