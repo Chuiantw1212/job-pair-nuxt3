@@ -5,6 +5,7 @@ import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watch
 export default defineStore('device', () => {
     const state = reactive({
         isLarge: false,
+        isDesktop: false,
         isNativeWeb: false,
     })
     onMounted(() => {
@@ -12,6 +13,7 @@ export default defineStore('device', () => {
             window.addEventListener("resize", calculateWidth)
             calculateWidth()
             state.isNativeWeb = checkIsNativeWeb()
+            state.isDesktop = window.screen.width >= 992
         }
     })
     // methods

@@ -17,7 +17,7 @@
                             <div class="emailSent__footer">
                                 <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
                                     disabled>{{
-                                            loginComposable.state.cdVisible
+                                        loginComposable.state.cdVisible
                                     }}
                                 </LazyAtomBtnSimple>
                                 <LazyAtomBtnSimple v-else class="emailSent__resend"
@@ -79,7 +79,7 @@ async function renderFirebaseUI() {
             requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
         }
     ]
-    if (device.state.isNativeWeb) {
+    if (device.state.isDesktop) {
         signInOptions.push({
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         })

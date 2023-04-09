@@ -21,10 +21,10 @@
                                 <div>( 若無請至垃圾信箱查找 )</div>
                             </div>
                             <div class="emailSent__footer">
-                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval"
-                                    class="emailSent__resend" disabled>{{
-        loginComposable.state.cdVisible
-}}
+                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
+                                    disabled>{{
+                                        loginComposable.state.cdVisible
+                                    }}
                                 </LazyAtomBtnSimple>
                                 <LazyAtomBtnSimple v-else class="emailSent__resend"
                                     @click="loginComposable.sendEmailLink('employee')">
@@ -69,7 +69,6 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
-    // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
     state.bsModal.show()
     renderFirebaseUI()
 }
@@ -89,11 +88,11 @@ async function renderFirebaseUI() {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
             requireDisplayName: true
         },
-        {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        }
     ]
-    if (device.state.isNativeWeb) {
+    if (device.state.isDesktop) {
+        signInOptions.push({
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        })
         signInOptions.push({
             provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
             scopes: ["public_profile", "email"]
@@ -107,7 +106,6 @@ async function renderFirebaseUI() {
                 return false
             }
         },
-        signInFlow: 'popup',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
