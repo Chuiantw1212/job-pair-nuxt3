@@ -8,6 +8,12 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">人資與企業主登入註冊</h3>
+                        <div v-if="!device.state.isNativeWeb" class="body__subheader">
+                            <div>
+                                ※系統偵測到內嵌瀏覽器※<br>
+                                可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
+                            </div>
+                        </div>
                         <div v-show="loginComposable.state.isSent" class="body__emailSent">
                             <h1 class="emailSent__header">驗證信已寄出</h1>
                             <div class="emailSent__desc">
@@ -77,13 +83,11 @@ async function renderFirebaseUI() {
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
             requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
+        },
+        {
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         }
     ]
-    if (device.state.isDesktop) {
-        signInOptions.push({
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        })
-    }
     const element = document.querySelector("#company-auth-container")
     ui = ui.start(element, {
         callbacks: {
@@ -92,7 +96,6 @@ async function renderFirebaseUI() {
                 return false
             }
         },
-        signInFlow: 'popup',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",

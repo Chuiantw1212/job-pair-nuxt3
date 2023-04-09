@@ -8,6 +8,12 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="body__header">歡迎來到Job Pair！</h3>
+                        <div v-if="!device.state.isNativeWeb" class="body__subheader">
+                            <div>
+                                ※系統偵測到內嵌瀏覽器※<br>
+                                可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
+                            </div>
+                        </div>
                         <div class="body__body">
                             <div class="body__card" @click="showEmployeeModal()">
                                 <div class="body__card__imageWrap">

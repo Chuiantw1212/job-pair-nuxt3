@@ -69,13 +69,13 @@ export default function setup() {
             await $sweet.alert('請使用其他方式登入')
             return
         }
+        $sweet.loader(true)
         if (basicInfo.emailVerified) {
-            $sweet.loader(true)
             await signIn(basicInfo)
-            $sweet.loader(false)
         } else {
-            sendEmailLink(type)
+            await sendEmailLink(type)
         }
+        $sweet.loader(false)
     }
     async function setIdToken() {
         const auth = getAuth()
