@@ -33,7 +33,7 @@
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.job.occupationalCategory"
                                     :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                                    :isDesktop="device.state.isDesktop" required name="職務類型">
+                                    :isLarge="device.state.isLarge" required name="職務類型">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>

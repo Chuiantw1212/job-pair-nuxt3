@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
 export default defineStore('device', () => {
     const state = reactive({
+        isLarge: false,
         isDesktop: false,
         isNativeWeb: false,
     })
@@ -12,11 +13,12 @@ export default defineStore('device', () => {
             window.addEventListener("resize", calculateWidth)
             calculateWidth()
             state.isNativeWeb = checkIsNativeWeb()
+            state.isDesktop = window.screen.width >= 992
         }
     })
     // methods
     function calculateWidth() {
-        state.isDesktop = window.innerWidth >= 992
+        state.isLarge = window.innerWidth >= 992
     }
     function checkIsNativeWeb() {
         const u = navigator.userAgent

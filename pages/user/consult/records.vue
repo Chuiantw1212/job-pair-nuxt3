@@ -83,7 +83,7 @@
                 </div>
             </template>
         </LazyMoleculeConsultCard>
-        <div v-if="device.state.isDesktop" class="consult__themeDesktop">
+        <div v-if="device.state.isLarge" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
                     <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />

@@ -48,7 +48,7 @@
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
                                     :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
-                                    :isDesktop="device.state.isDesktop" required name="產業類別">
+                                    :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>

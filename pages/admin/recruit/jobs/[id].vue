@@ -15,7 +15,7 @@
                 </template>
                 <template v-slot:body>
                     <LazyMoleculeFilterCategory v-model="state.job.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :max="3" :isDesktop="device.state.isDesktop" required
+                        :categoryMap="repoSelect.jobCategoryMap" :max="3" :isLarge="device.state.isLarge" required
                         name="職務類型">
                     </LazyMoleculeFilterCategory>
                 </template>
@@ -135,7 +135,7 @@
             </div>
         </div>
         <div class="recruitJob__footer">
-            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存並返回</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
