@@ -1,7 +1,7 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <img v-if="device.state.isDesktop" class="banner__image" src="~/assets/admin/index/img_banner2.png"
+            <img v-if="device.state.isLarge" class="banner__image" src="~/assets/admin/index/img_banner2.png"
                 alt="banner">
             <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png" alt="banner">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">

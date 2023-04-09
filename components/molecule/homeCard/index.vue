@@ -1,6 +1,6 @@
 <template>
     <div class="homeCard">
-        <template v-if="device.state.isDesktop">
+        <template v-if="device.state.isLarge">
             <img src="./Group899.svg">
             <div class="homeCard__jobPairDesc">
                 {{ jobPairDesc }}

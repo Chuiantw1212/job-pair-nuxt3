@@ -31,7 +31,7 @@
                                 :placeholder="'職務類型'" class="mb-2">
                                 <LazyMoleculeFilterCategory v-model="localValue.occupationalCategory"
                                     :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
-                                    :isDesktop="device.state.isDesktop" :showSelectAll="true">
+                                    :isLarge="device.state.isLarge" :showSelectAll="true">
                                 </LazyMoleculeFilterCategory>
                             </LazyAtomInputSelectContainer>
                             <div>

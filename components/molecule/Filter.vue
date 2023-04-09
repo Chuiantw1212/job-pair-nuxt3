@@ -1,6 +1,6 @@
 <template>
     <div class="filter" :class="{ 'filter--isOpened': modelValue, 'filter--isHidden': !state.isOpen }">
-        <div v-if="!device.state.isDesktop" class="filter__background" @click="closeFilter()"></div>
+        <div v-if="!device.state.isLarge" class="filter__background" @click="closeFilter()"></div>
         <div class="filter__content">
             <slot></slot>
         </div>
