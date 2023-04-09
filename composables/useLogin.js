@@ -71,7 +71,7 @@ export default function setup() {
         }
         if (basicInfo.emailVerified) {
             $sweet.loader(true)
-            signIn(basicInfo)
+            await signIn(basicInfo)
             $sweet.loader(false)
         } else {
             sendEmailLink(type)
