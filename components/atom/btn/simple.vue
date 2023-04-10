@@ -1,6 +1,6 @@
 <template>
     <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled, 'btnSimple--sm': size === 'sm' }"
-        :disabled="disabled">
+        :disabled="disabled" ref="simple">
         <slot></slot>
     </button>
 </template>
@@ -18,19 +18,29 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    type: {
+    color: {
         type: String,
         default: 'success',
     },
     size: {
         type: String,
         default: 'medium'
+    },
+    outline: {
+        type: Boolean,
+        default: false
+    }
+})
+const instance = getCurrentInstance()
+onMounted(() => {
+    if (props.color && props.outline) {
+        instance.refs.simple.classList.add(`btnSimple--outline--${props.color}`)
     }
 })
 </script>
 <style lang="scss" scoped>
 .btnSimple {
-    width: 100%;
+    width: 100%; // important
     line-height: 1.3;
     border-radius: 5px;
     background-color: #5ea88e;
@@ -53,10 +63,21 @@ const props = defineProps({
     }
 }
 
-.btnSimple--outline--primary {
+// IMPORTANT: 直接由外部套用樣式
+.btnSimple--outline--success {
     background-color: white;
     color: #29b0ab;
     border: 1px solid #29b0ab;
+
+    &:hover {
+        background-color: unset;
+    }
+}
+
+.btnSimple--outline--danger {
+    background-color: white;
+    color: #da4437;
+    border: 1px solid #da4437;
 
     &:hover {
         background-color: unset;

@@ -17,8 +17,8 @@
                 </div>
                 <div class="modal-body jobItem" ref="jobItemRef">
                     <div v-if="repoSelect.state.selectByQueryRes" class="dropLayer__form">
-                        <div>職缺狀態</div>
-                        <LazyAtomInputSwitch v-model="state.job.status">
+                        <div class="form__header">職缺狀態</div>
+                        <LazyAtomInputSwitch class="mt-1" width="91" height="32" fontSize="18" v-model="state.job.status">
                         </LazyAtomInputSwitch>
                         <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled"
                             class="mt-4">
@@ -33,7 +33,7 @@
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.job.occupationalCategory"
                                     :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                                    :isDesktop="device.state.isDesktop" required name="職務類型">
+                                    :isLarge="device.state.isLarge" required name="職務類型">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
@@ -112,10 +112,16 @@
                             </LazyAtomInputRadio>
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required :toolbar="state.toolbar" class="mt-4">
+                            required :toolbar="state.toolbar" ref="description" class="mt-4">
+                            <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                                :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
+                            </LazyOrganismChatGptModal> -->
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :removePlatformLink="true" :toolbar="state.toolbar" class="mt-4">
+                            :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
+                            <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
+                                :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
+                            </LazyOrganismChatGptModal> -->
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
@@ -153,8 +159,9 @@
                     </div>
                 </div>
                 <div class="modal-footer jobModal__footer">
-                    <LazyAtomBtnSimple class="header__button" @click="handleSave()">儲存</LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="btnSimple--outline--primary" @click="closeModal()">取消</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="footer__button" @click="handleSave()">儲存</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="footer__button btnSimple--outline--success" @click="closeModal()">取消
+                    </LazyAtomBtnSimple>
                     <button class="jobModal__footer__btn" @click="showAlert()">
                         <img src="~/assets/admin/icon_delete_g.svg" label="刪除職缺">
                     </button>
@@ -169,6 +176,7 @@ const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
+const repoChat = useRepoChat()
 const device = useDevice()
 const state = reactive({
     job: null,
@@ -232,6 +240,22 @@ watch(() => repoSelect.jobCategoryMap, () => {
         state.jobCategoryLevel2Dropdown[key] = false
     }
 }, { deep: true })
+// methods
+const instance = getCurrentInstance()
+function setDescription(value) {
+    instance.refs.description.setData(value)
+}
+function setSkills(value) {
+    instance.refs.skills.setData(value)
+}
+async function handleChatDescription(value) {
+    const res = await repoChat.postChatJobDescription(value)
+    return res
+}
+async function handleChatSkills(value) {
+    const res = await repoChat.postChatJobDescription(value)
+    return res
+}
 function getJobName() {
     const { name = '' } = props.modelValue
     if (name && String(name).trim()) {
@@ -262,7 +286,6 @@ function closeModal() {
 }
 function setJob() {
     const job = JSON.parse(JSON.stringify(props.modelValue))
-    const { user } = repoAuth.state
     // 給定預設值
     if (!job.preference) {
         job.preference = {}
@@ -274,6 +297,7 @@ function setJob() {
         job.status = "closed"
     }
     if (!job.adminId) {
+        const { user } = repoAuth.state
         job.adminId = user.id
     }
     if (!job.jobLocationType) {
@@ -300,11 +324,6 @@ function clearAddress() {
     state.job.addressLocality = ''
     state.job.streetAddress = ''
 }
-function clearSalary() {
-    state.job.salaryMin = ''
-    state.job.salaryMax = ''
-    state.job.incentiveCompensation = ''
-}
 function getMinSalary(salaryMin = 0) {
     const { salaryType } = state.job
     const { selectByQueryRes } = repoSelect.state
@@ -326,14 +345,6 @@ function resetAddress() {
 function checkAddressRequired() {
     const { jobLocationType = '' } = state.job
     return jobLocationType !== 'fullyRemote'
-}
-function getSalaryRange() {
-    const { salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = state.job
-    const yearlyLow = Number(salaryMin * 12)
-    const yearlyHigh = Math.max(Number(salaryMax * 12), yearlyLow) + Number(incentiveCompensation)
-    const formatLow = yearlyLow.toLocaleString()
-    const formatHigh = yearlyHigh.toLocaleString()
-    return `${formatLow} ~ ${formatHigh}`
 }
 const jobItemRef = ref(null)
 async function handleSave() {
@@ -409,30 +420,16 @@ defineExpose({
 .jobItem {
 
     .dropLayer__form {
+        .form__header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
         .form__salary {
-            .salary__header {
-                display: flex;
-                margin-bottom: 4px;
-
-                .header__text {
-                    font-size: 16px;
-                    margin-right: 24px;
-                }
-
-                .header__inputGroup {
-                    margin-right: 16px;
-                }
-            }
 
             .salary__type {
                 display: flex;
                 align-items: center;
-
-                .type__year {
-                    margin-top: 24px;
-                    font-size: 18px;
-                    margin-left: 18px;
-                }
             }
         }
 
@@ -460,7 +457,7 @@ defineExpose({
                         .question__input {
                             width: 24px;
                             height: 24px;
-                            border: 1px solid #d9d9d9;
+                            border: 1px solid #d3d3d3;
                             margin-right: 8px;
                         }
                     }

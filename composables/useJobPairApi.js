@@ -1,12 +1,11 @@
 import axios from 'axios'
-import Swal from 'sweetalert2'
 import { getAuth } from "firebase/auth"
 export default function () {
+    const { $sweet, } = useNuxtApp()
     const config = useRuntimeConfig()
     const state = reactive({
         axiosInstance: axios.create({
             baseURL: config.public.apiBase,
-            timeout: 20 * 60 * 1000,
         }),
         token: null
     })
@@ -45,7 +44,7 @@ export default function () {
                 step()
             })
         }
-        const { method, url, data, params = {}, headers, commit = false } = options
+        const { method, url, data, params = {}, headers, commit = false, timeout = config.axiosTimeout } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }
@@ -61,7 +60,8 @@ export default function () {
             url,
             method,
             params,
-            headers: headersFinale
+            headers: headersFinale,
+            timeout,
         }
         if (data) {
             const dataCopy = JSON.parse(JSON.stringify(data))
@@ -75,7 +75,7 @@ export default function () {
             // eslint-disable-next-line
             // console.timeEnd(`${url}請求`)
         } catch (error) {
-            const { config, request, response, isAxiosError, toJSON, message = '' } = error
+            const { config = { data: {} }, request, response = {}, isAxiosError, toJSON, message = '' } = error
             axiosResponse = response
             // 顯示錯誤訊息與下載錯誤檔案
             const errorConfig = {
@@ -88,15 +88,18 @@ export default function () {
                 Object.assign(errorConfig, {
                     text: response.data,
                 })
-            } else if (error.message !== 'Network Error') {
-                const { statusText } = response
-                downloadErrorJSON(config, statusText)
-                Object.assign(errorConfig, {
-                    title: response.statusText,
-                    text: response.data.details,
-                })
+            } else {
+                // downloadErrorJSON(config, message)
+                Object.assign(errorConfig,)
             }
-            await Swal.fire(errorConfig)
+            const errorText = {
+                "baseURL": config.baseURL,
+                "url": config.url,
+                "method": config.method,
+                "params": config.params,
+                "data": config.data,
+            }
+            await $sweet.alert(JSON.stringify(errorText), errorConfig)
         } finally {
             // /**
             //  * Commit response to store state at once

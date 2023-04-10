@@ -59,7 +59,7 @@ export default defineStore('job', () => {
     async function deleteJobItem(data) {
         const response = await jobPairApi.request({
             method: 'delete',
-            url: `/job`,
+            url: `/job/${data.identifier}`,
             data,
         })
         return response

@@ -1,9 +1,9 @@
 <template>
     <div class="inputGroup">
-        <div class="inputGroup__nameGroup">
+        <div v-if="name" class="inputGroup__nameGroup">
             {{ name }}
         </div>
-        <label class="inputGroup__label inputGroup__label--dahsed">
+        <label class="inputGroup__label inputGroup__label--dashed">
             <template v-if="localValue">
                 <img class="label__image" :src="getImageSrc()">
                 <img class="label__icon" src="./icon_upload_circle.svg" />
@@ -158,7 +158,7 @@ export default {
     }
 }
 
-.inputGroup__label--dahsed {
+.inputGroup__label--dashed {
     border: 1px dashed #5ea88e;
     border-radius: 10px;
 }

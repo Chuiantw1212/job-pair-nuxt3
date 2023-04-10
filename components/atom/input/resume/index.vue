@@ -156,7 +156,7 @@ export default {
 
         .body__label {
             padding: 7px 12px;
-            border: 1px solid #d9d9d9;
+            border: 1px solid #d3d3d3;
             border-radius: 10px;
             width: 100%;
             background-color: white;

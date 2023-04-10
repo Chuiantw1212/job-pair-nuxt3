@@ -92,10 +92,21 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    style: {
+        type: Object,
+        default: function () {
+            return {}
+        }
+    }
 })
 let localValue = computed({
     get() {
-        return props.modelValue ?? '' // important
+        const value = props.modelValue ?? ''
+        const ckeditorInstance = state.ckeditorInstance
+        if (value && ckeditorInstance) {
+            ckeditorInstance.setData(newValue)
+        }
+        return value  // important
     },
     set(newValue) {
         emit('update:modelValue', newValue)
@@ -112,17 +123,10 @@ onBeforeUnmount(() => {
         ckeditorInstance.destroy()
     }
 })
-watch(() => localValue, (newValue, oldValue) => {
-    const ckeditorInstance = state.ckeditorInstance
-    // 職缺新增錯誤處理
-    if (!newValue && oldValue && ckeditorInstance) {
-        ckeditorInstance.setData(newValue)
-    }
-})
 // methods
 function getValue() {
     const case1 = !!props.modelValue
-    const case2 = props.modelValue !== '<p></p>'
+    // const case2 = props.modelValue !== '<p></p>'
     return case1
 }
 async function initializeCKEditor() {
@@ -138,6 +142,15 @@ async function initializeCKEditor() {
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const ClassicEditor = importedEditor || window.ClassicEditor
     const editor = await ClassicEditor.create(editorRef.value, editorConfig)
+    editor.ui.view.editable.element.style.maxHeight = props.style.height
+    // Set Height
+    editor.editing.view.change(writer => {
+        for (let attr in props.style) {
+            const value = props.style[attr]
+            writer.setStyle(attr, value, editor.editing.view.document.getRoot());
+        }
+
+    })
     if (localValue.value) {
         editor.setData(localValue.value)
     }
@@ -152,16 +165,16 @@ async function initializeCKEditor() {
     }
     editor.model.document.on('change:data', () => {
         let newValue = editor.getData()
-        // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
-        if (props.removePlatformLink) {
-            // const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
-            //     return newValue.includes(link)
-            // })
-            // if (hasPlatformLink) {
-            newValue = newValue.replaceAll(/href=".*?"/g, '')
-            newValue = newValue.replaceAll('<a', '<div')
-            // }
-        }
+        // // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
+        // if (props.removePlatformLink) {
+        //     // const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
+        //     //     return newValue.includes(link)
+        //     // })
+        //     // if (hasPlatformLink) {
+        //     newValue = newValue.replaceAll(/href=".*?"/g, '')
+        //     newValue = newValue.replaceAll('<a', '<div')
+        //     // }
+        // }
         localValue.value = newValue
     })
     state.ckeditorInstance = markRaw(editor)
@@ -181,7 +194,8 @@ defineExpose({
 </script>
 <style lang="scss" scoped>
 .inputGroup__nameGroup {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     color: #1f1f1f;
     margin-bottom: 4px;
     display: flex;
@@ -190,7 +204,7 @@ defineExpose({
 </style>
 <style lang="scss">
 .ckeditor--edit {
-    border: 1px solid #d9d9d9;
+    border: 1px solid #d3d3d3;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -208,6 +222,6 @@ defineExpose({
 }
 
 .ck-read-only {
-    border: 1px solid #d9d9d9;
+    border: 1px solid #d3d3d3;
 }
 </style>

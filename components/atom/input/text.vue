@@ -84,40 +84,5 @@ watch(() => localValue.value, () => {
 })
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    .inputGroup__nameGroup {
-        font-size: 16px;
-        color: #1f1f1f;
-        margin-bottom: 4px;
-    }
-
-    .inputGroup__label {
-        padding: 7px 12px;
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        width: 100%;
-        background-color: white;
-
-        .label__input {
-            border: none;
-            width: 100%;
-
-            &:focus {
-                outline: none;
-            }
-
-            &::placeholder {
-                color: #d3d3d3;
-            }
-        }
-    }
-
-    .inputGroup__label--disabled {
-        background-color: rgba(239, 239, 239);
-
-        .label__input {
-            background-color: rgba(239, 239, 239);
-        }
-    }
-}
+@import './inputGroup.scss';
 </style>

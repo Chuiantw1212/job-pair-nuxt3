@@ -33,7 +33,6 @@ npm run dev
 | --  Mitt                   | 基於原生JS的Event Bus，避免甚麼鬼都記錄在pinia |
 | UI相關套件                 |                                                |
 | --  @glidejs/glide         | 基於原生JS的輕量套件                           |
-| --  aos                    | Animate on scroll                              |
 | --  bootstrap              | Bootstrap                                      |
 | --  ckeditor5-custom-build | Rich Text Editor                               |
 | --  flatpickr              | 基於原生JS的輕量套件                           |
@@ -62,3 +61,6 @@ npm run deploy
 ```
 rmdir  .\node_modules\
 ```
+
+### Firebase相關
+配置標頭 (https://firebase.google.com/docs/hosting/full-config#headers)

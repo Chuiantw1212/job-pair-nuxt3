@@ -8,15 +8,18 @@ export default defineNuxtConfig({
     app: {
         head: {
             title: title,
-            description: description,
-            // 初始共用的設定，這裡不放title與description
             meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: description
+                },
                 { property: 'og:title', content: title },
                 { property: 'og:description', content: description },
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol
-                { property: 'og:url', content: 'https://job-pair.com' },
+                // { property: 'og:url', content: 'https://job-pair.com' }, // redirect???
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
                 { property: 'og:image', content: imageUrl },
@@ -53,9 +56,10 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'http://localhost:8080',
-            origin: 'http://localhost:3000',
-            LIFF_ID: '1660783051-vP4Ojz2r',
+            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
+            origin: 'https://job-pair-taiwan-dev.web.app',
+            liffId: '1660751537-PvmLAvMr',
+            axiosTimeout: 30000,
         }
     },
     // ... other options
@@ -70,6 +74,8 @@ export default defineNuxtConfig({
     },
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
+        // https://github.com/nuxt/framework/issues/8301
+        preset: 'firebase',
         // https://nitro.unjs.io/config#compresspublicassets
         compressPublicAssets: {
             gzip: true,

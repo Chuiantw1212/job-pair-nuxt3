@@ -1,7 +1,7 @@
 <template>
-    <div class="jobView" :class="{ container: device.state.isDesktop }">
+    <div class="jobView" :class="{ container: device.state.isLarge }">
         <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
-        <section id="jobView__basic" class="jobView__section mt-4">
+        <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__basic">
                 <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company?.logo})` }">
@@ -27,7 +27,7 @@
             </div>
         </section>
         <div class="row jobView__body">
-            <div class="mobileGrid__right" :class="{ 'col-4': device.state.isDesktop }">
+            <div class="mobileGrid__right" :class="{ 'col-4': device.state.isLarge }">
                 <div class="jobView__card jobView__features mt-3">
                     <div class="features__item">
                         <span class="item__header">
@@ -109,7 +109,8 @@
 }}</span>
                     </div>
                     <div class="mt-3">
-                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()">立即應徵
+                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                            :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
                         <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
@@ -120,13 +121,13 @@
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
-                    <iframe class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
+                    <iframe title="google map" class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy"
+                        allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
                         @load="setMapHeight()">
                     </iframe>
                 </div>
             </div>
-            <div class="mobileGrid__left" :class="{ 'col-8': device.state.isDesktop }">
+            <div class="mobileGrid__left" :class="{ 'col-8': device.state.isLarge }">
                 <section id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card">
                         <div class="card__header">職責介紹</div>
@@ -163,7 +164,7 @@
                     </div>
                 </NuxtLink>
                 <button class="btn-close card__cancel" @click="hideAd()" aria-label="close ads"></button>
-                <img class="d-none d-lg-block ad__card__image" src="~/assets/jobs/img_consult.png" />
+                <img class="d-none d-lg-block ad__card__image" alt="promotion" src="~/assets/jobs/img_consult.png" />
             </div>
         </section>
         <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
@@ -245,20 +246,27 @@ const browserConfig = computed({
 })
 const currentInstance = getCurrentInstance()
 // hooks
-const { data: job } = await useFetch(`${runTime.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.job.description.replace(regex, "")
-        return descriptionContent
+        if (state.job.description) {
+            const descriptionContent = state.job.description.replace(regex, "")
+            return descriptionContent
+        }
     },
     ogDescription: () => {
         const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.job.description.replace(regex, "")
-        return descriptionContent
+        if (state.job.description) {
+            const descriptionContent = state.job.description.replace(regex, "")
+            return descriptionContent
+        }
+    },
+    ogUrl: () => {
+        return `${runTime.public.origin}/job/${state.job.identifier}`
     }
 })
 useJsonld(() => ({
