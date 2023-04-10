@@ -16,6 +16,7 @@
 const { $VConsole, $liff } = useNuxtApp()
 const repoLine = useRepoLine()
 const repoSelect = useRepoSelect()
+const config = useRuntimeConfig()
 onMounted(async () => {
     await Promise.all([
         repoSelect.getSelectByQuery(),
@@ -38,8 +39,12 @@ async function startLiff() {
         vConsole
     });
     // 调用 console 方法输出日志
-    console.log('Hello world');
     if ($liff) {
+        try {
+            await $liff.init({ liffId: config.public.LIFF_ID })
+        } catch (error) {
+            console.log(error.message || error);
+        }
         const profile = await $liff.getProfile()
         console.log({
             profile
