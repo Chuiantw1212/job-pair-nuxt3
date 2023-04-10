@@ -55,7 +55,7 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'development',
             apiBase: 'http://localhost:8080',
             origin: 'http://localhost:3000',
-            LIFF_ID: '1660751537-PvmLAvMr',
+            LIFF_ID: '1660783051-vP4Ojz2r',
         }
     },
     // ... other options
