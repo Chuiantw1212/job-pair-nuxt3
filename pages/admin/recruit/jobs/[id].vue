@@ -215,11 +215,15 @@ function setSkills(value) {
     instance.refs.skills.setData(value)
 }
 async function handleChatDescription(value) {
-    const res = await repoChat.postChatJobDescription(value)
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
     return res
 }
 async function handleChatSkills(value) {
-    const res = await repoChat.postChatJobDescription(value)
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
     return res
 }
 async function handlePreview() {
