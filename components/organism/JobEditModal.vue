@@ -113,15 +113,15 @@
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             required :toolbar="state.toolbar" ref="description" class="mt-4">
-                            <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                            <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
                                 :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                            </LazyOrganismChatGptModal> -->
+                            </LazyOrganismChatGptModal>
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                             :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                            <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
+                            <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
                                 :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
-                            </LazyOrganismChatGptModal> -->
+                            </LazyOrganismChatGptModal>
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
