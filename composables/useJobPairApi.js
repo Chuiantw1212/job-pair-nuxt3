@@ -44,7 +44,7 @@ export default function () {
                 step()
             })
         }
-        const { method, url, data, params = {}, headers, commit = false, timeout = config.axiosTimeout } = options
+        const { method, url, data, params = {}, headers, commit = false, timeout = config.axiosTimeout, } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }
@@ -89,8 +89,10 @@ export default function () {
                     text: response.data,
                 })
             } else {
-                // downloadErrorJSON(config, message)
-                Object.assign(errorConfig,)
+                Object.assign(errorConfig, {
+                    title: response.data.error,
+                    text: response.data.message,
+                })
             }
             const errorText = {
                 "baseURL": config.baseURL,

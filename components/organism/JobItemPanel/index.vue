@@ -168,7 +168,7 @@ async function handleSaveJob() {
 }
 async function shareLinkNative() {
     const { origin } = window.location
-    const url = `${origin}/job/${props.modelValue.identifier}`
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
     await navigator.share({
         title: `在Job Pair上應徵${props.modelValue.name}`,
         text: `在Job Pair上應徵${props.modelValue.name}`,
@@ -178,7 +178,7 @@ async function shareLinkNative() {
 async function shareLinkBootstrap() {
     // 不支援貼到記憶體裡面
     const { origin } = window.location
-    const url = `${origin}/job/${props.modelValue.identifier}`
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
     await navigator.clipboard.writeText(url)
     state.shareButtonToolTip.hide()
     state.isCopied = true
