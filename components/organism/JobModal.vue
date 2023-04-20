@@ -157,31 +157,6 @@ function closeModal() {
 }
 </script>
 <style lang="scss" scoped>
-.modal__button {
-    width: 182px;
-    height: 48px;
-    background-color: white;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    border: 1px solid #1f1f1f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-        margin-right: 8px;
-    }
-
-    &:hover {
-        background-color: #29b0ab;
-        color: white;
-
-        border: none svg {
-            color: white;
-        }
-    }
-}
-
 .modal-content {
     border-radius: 10px;
     line-height: 1;
