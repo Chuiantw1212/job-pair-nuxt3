@@ -58,7 +58,7 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'development',
             apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
             origin: 'https://job-pair-taiwan-dev.web.app',
-            liffId: '1660751537-PvmLAvMr',
+            LIFF_ID: '1660783051-vP4Ojz2r',
             axiosTimeout: 30000,
         }
     },

@@ -6,9 +6,9 @@
             </span>
         </div>
         <label class="inputGroup__label">
-            <input v-if="!disabled" v-model="localValue" class="label__input" :type="type" autocomplete="off" :step="step"
-                :min="min ? min : undefined" :max="max ? max : undefined" @keypress="checkIsNumber($event)"
-                @blur="formatNumber()" />
+            <input v-if="!disabled" v-model="localValue" class="label__input" :type="type" pattern="\d*" inputmode="numeric"
+                autocomplete="off" :step="step" :min="min ? min : undefined" :max="max ? max : undefined"
+                @keypress="checkIsNumber($event)" @blur="formatNumber()" />
             <input v-else :disabled="true" :class="{ 'label__input--disabled': disabled }" class="label__input" :type="type"
                 :value="localValue" :readonly="value" />
         </label>

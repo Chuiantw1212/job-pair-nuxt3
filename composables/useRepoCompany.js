@@ -4,6 +4,13 @@ export default defineStore('company', () => {
     const state = reactive({
         companyJobsRes: null,
     })
+    async function getCompanyWalletBalance() {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/company/wallet/balance`,
+        })
+        return response
+    }
     async function patchCompany(data) {
         const response = await jobPairApi.request({
             method: 'patch',
@@ -82,5 +89,6 @@ export default defineStore('company', () => {
         getCompanyNews,
         putCompanyLogoBlob,
         putCompanyBannerBlob,
+        getCompanyWalletBalance
     }
 })
