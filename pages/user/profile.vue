@@ -84,9 +84,9 @@
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
-                    <!-- <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
+                    <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
                         :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                    </LazyOrganismChatGptModal> -->
+                    </LazyOrganismChatGptModal>
                 </LazyAtomInputCkeditor>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">

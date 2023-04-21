@@ -1,8 +1,11 @@
 <template>
     <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
-            <div class="form__header">職缺狀態</div>
-            <LazyAtomInputSwitch class="mt-1" v-model="state.job.status">
+            <div class="form__header">
+                職缺狀態
+                <span class="header__wallet">錢包餘額：45點</span>
+            </div>
+            <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
@@ -62,7 +65,7 @@
                 :items="repoSelect.state.selectByQueryRes.jobLocationType" :disabled="state.disabled"
                 @change="resetAddress()">
             </LazyAtomInputSelect>
-            <div class="form__addressGroup">
+            <div v-if="repoSelect.state.locationRes" class="form__addressGroup">
                 <LazyAtomInputSelect class="addressGroup__addressRegion" v-model="state.job.addressRegion" name="工作縣市"
                     :items="repoSelect.state.locationRes.taiwan"
                     :disabled="state.disabled || state.job.jobLocationType === 'fullyRemote'"
@@ -90,15 +93,15 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 :toolbar="state.toolbar" ref="description" class="mt-4">
-                <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
                     :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatGptModal> -->
+                </LazyOrganismChatGptModal>
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
+                <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
-                </LazyOrganismChatGptModal> -->
+                </LazyOrganismChatGptModal>
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -139,10 +142,11 @@
             <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
+        <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal>
     </div>
 </template>
 <script setup>
-const { $bootstrap, $sweet, $validate, $optionText, $requestSelector } = useNuxtApp()
+const { $sweet, $validate, $optionText, } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
 const route = useRoute()
 const router = useRouter()
@@ -152,6 +156,7 @@ const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const repoChat = useRepoChat()
 const device = useDevice()
+const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
@@ -208,6 +213,18 @@ watch(() => repoSelect.jobCategoryMap, () => {
 }, { deep: true })
 // methods
 const instance = getCurrentInstance()
+async function checkWalletBallance(value) {
+    if (value !== 'active') {
+        return
+    }
+    const res = await repoCompany.getCompanyWalletBalance()
+    if (res.status !== 200) {
+        return
+    }
+    if (!res.data || res.data.balance === 0) {
+        instance.refs.noBallanceModal.openModal()
+    }
+}
 function setDescription(value) {
     instance.refs.description.setData(value)
 }
@@ -215,11 +232,15 @@ function setSkills(value) {
     instance.refs.skills.setData(value)
 }
 async function handleChatDescription(value) {
-    const res = await repoChat.postChatJobDescription(value)
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
     return res
 }
 async function handleChatSkills(value) {
-    const res = await repoChat.postChatJobDescription(value)
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
     return res
 }
 async function handlePreview() {
@@ -309,14 +330,6 @@ function checkAddressRequired() {
     const { jobLocationType = '' } = state.job
     return jobLocationType !== 'fullyRemote'
 }
-function getSalaryRange() {
-    const { salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = state.job
-    const yearlyLow = Number(salaryMin * 12)
-    const yearlyHigh = Math.max(Number(salaryMax * 12), yearlyLow) + Number(incentiveCompensation)
-    const formatLow = yearlyLow.toLocaleString()
-    const formatHigh = yearlyHigh.toLocaleString()
-    return `${formatLow} ~ ${formatHigh}`
-}
 const jobItemRef = ref(null)
 async function goback() {
     router.push({
@@ -381,6 +394,17 @@ async function handleSave() {
     .form__header {
         font-size: 18px;
         font-weight: bold;
+
+        .header__wallet {
+            font-size: 18px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: #5ea88e;
+        }
     }
 
     .form__salary {
