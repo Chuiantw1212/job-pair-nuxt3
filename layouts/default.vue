@@ -61,16 +61,6 @@ async function startLiff() {
             console.log({
                 userId
             });
-            const LinkTokenRes = await repoLine.issueLinkToken({
-                userId: userId
-            })
-            // const issueLinkTokenExample = {
-            //     "linkToken": "NMZTNuVrPTqlr2IF8Bnymkb7rXfYv5EY"
-            // }
-            state.linkToken = LinkTokenRes
-            console.log({
-                response
-            });
         }
     }
 }
