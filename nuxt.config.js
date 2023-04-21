@@ -56,10 +56,10 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'http://localhost:8080',
-            origin: 'http://localhost:3000',
-            liffId: '1660751537-PvmLAvMr',
-            axiosTimeout: 3000,
+            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
+            origin: 'https://job-pair-taiwan-dev.web.app',
+            LIFF_ID: '1660783051-vP4Ojz2r',
+            axiosTimeout: 30000,
         }
     },
     // ... other options
@@ -74,6 +74,8 @@ export default defineNuxtConfig({
     },
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
+        // https://github.com/nuxt/framework/issues/8301
+        preset: 'firebase',
         // https://nitro.unjs.io/config#compresspublicassets
         compressPublicAssets: {
             gzip: true,

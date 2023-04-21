@@ -61,3 +61,6 @@ npm run deploy
 ```
 rmdir  .\node_modules\
 ```
+
+### Firebase相關
+配置標頭 (https://firebase.google.com/docs/hosting/full-config#headers)

@@ -68,7 +68,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, } = useNuxtApp()
+const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()

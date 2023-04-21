@@ -103,9 +103,9 @@ watch(() => repoAuth.state.user, () => {
     const { user } = repoAuth.state
     // 使用者已註冊
     if (user && user.id && user.type === 'employee') {
-        router.replace({
-            name: 'jobs'
-        })
+        // router.replace({
+        //     name: 'jobs'
+        // })
         if (process.client) {
             localStorage.removeItem("user")
         }
