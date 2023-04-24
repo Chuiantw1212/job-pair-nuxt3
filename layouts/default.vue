@@ -22,15 +22,9 @@ onMounted(async () => {
         repoSelect.getSelectByQuery(),
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
-        repoSelect.getQuestions()
+        repoSelect.getQuestions(),
+        startLiff()
     ])
-    // return
-    // Fetch user profile
-    try {
-        await startLiff()
-    } catch (error) {
-        console.log(error)
-    }
 })
 async function startLiff() {
     // 或者使用配置参数进行初始化
