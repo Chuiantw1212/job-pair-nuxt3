@@ -23,18 +23,18 @@ onMounted(async () => {
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
         repoSelect.getQuestions(),
-        startLiff()
+        // startLiff()
     ])
 })
 async function startLiff() {
-    // 或者使用配置参数进行初始化
-    const vConsole = new $VConsole({ theme: 'dark' });
-    console.log({
-        vConsole
-    });
     // 调用 console 方法输出日志
-    if ($liff) {
+    if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
         try {
+            // 或者使用配置参数进行初始化
+            const vConsole = new $VConsole({ theme: 'dark' });
+            console.log({
+                vConsole
+            });
             await $liff.init({ liffId: config.public.LIFF_ID })
         } catch (error) {
             console.log(error.message || error);

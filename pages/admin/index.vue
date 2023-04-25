@@ -1,8 +1,7 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <img v-if="device.state.isLarge" class="banner__image" src="~/assets/admin/index/img_banner2.png"
-                alt="banner">
+            <img v-if="device.state.isLarge" class="banner__image" src="~/assets/admin/index/img_banner2.png" alt="banner">
             <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png" alt="banner">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">
                 免費加入
@@ -104,7 +103,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, } = useNuxtApp()
+const { $emitter, $VConsole, $liff } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -140,8 +139,41 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
+        await startLiff()
     }
 })
+async function startLiff() {
+    // 调用 console 方法输出日志
+    if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
+        try {
+            // 或者使用配置参数进行初始化
+            const vConsole = new $VConsole({ theme: 'dark' });
+            console.log({
+                vConsole
+            });
+            await $liff.init({ liffId: config.public.LIFF_ID })
+        } catch (error) {
+            console.log(error.message || error);
+        }
+        const profile = await $liff.getProfile()
+        console.log({
+            profile
+        });
+        state.profile = profile
+        // const getProfileExample = {
+        //     "userId": "U4af4980629...",
+        //     "displayName": "Brown",
+        //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+        //     "statusMessage": "Hello, LINE!"
+        // }
+        if (profile) {
+            const { userId = '' } = profile
+            console.log({
+                userId
+            });
+        }
+    }
+}
 function openAdminModal() {
     const { user } = repoAuth.state
     if (user && user.type === 'admin') {
