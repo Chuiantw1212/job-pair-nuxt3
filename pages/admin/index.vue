@@ -151,7 +151,7 @@ async function startLiff() {
             console.log({
                 vConsole
             });
-            await $liff.init({ liffId: config.public.LIFF_ID })
+            await $liff.init({ liffId: runTime.public.LIFF_ID })
         } catch (error) {
             console.log(error.message || error);
         }
