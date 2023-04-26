@@ -1,5 +1,5 @@
 <template>
-    <div class="company" :class="{ container: device.state.isDesktop }">
+    <div class="company" :class="{ container: device.state.isLarge }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
         <section id="company__info" class="company__section mt-3">
             <div :key="state.renderKey" class="company__bannerGroup">
@@ -95,7 +95,7 @@
             </div>
         </div>
         <section id="company__jobs" class="company__section mt-3">
-            <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
+            <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
                     <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
@@ -141,7 +141,7 @@ const state = reactive({
     glideDesktopConfig: {
         perView: 4
     },
-    isDesktop: false,
+    isLarge: false,
     focusedImageSrc: "",
     resizeTimer: null,
     renderKey: Math.random()

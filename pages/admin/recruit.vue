@@ -1,6 +1,6 @@
 <template>
-    <div class="dashboard" :class="{ container: device.state.isDesktop }">
-        <div :class="{ row: device.state.isDesktop }">
+    <div class="dashboard" :class="{ container: device.state.isLarge }">
+        <div :class="{ row: device.state.isLarge }">
             <div class="dashboard__menu">
                 <ul class="menu__content">
                     <li class="menu__item">
@@ -40,7 +40,7 @@
                 </ul>
             </div>
         </div>
-        <div class="dashboard__view" :class="{ col: device.state.isDesktop }">
+        <div class="dashboard__view" :class="{ col: device.state.isLarge }">
             <NuxtPage v-model="state.appliedList"></NuxtPage>
         </div>
     </div>

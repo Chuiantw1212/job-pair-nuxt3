@@ -3,7 +3,7 @@
         <div class="about__banner">
             "每個人都能因認識自己而遇見更好的職涯，企業也能因了解人選的需求而創造更長遠的合作與價值。"
         </div>
-        <div :class="{ 'container': device.state.isDesktop }">
+        <div :class="{ 'container': device.state.isLarge }">
             <div class="about__card">
                 <h2 class="card__header">關於Job Pair</h2>
                 <div class="card__body text-center mt-3">

@@ -1,5 +1,6 @@
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
@@ -14,7 +15,6 @@ export default function setup() {
     // state
     const state = reactive({
         ui: null,
-        unsubscribe: null,
         isSent: false,
         authResult: null,
         countdownInterval: null,
@@ -26,8 +26,25 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const firebaseAuth = getAuth()
-        state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
+        const auth = firebase.auth();
+        auth.getRedirectResult().then(function (result) {
+            console.log('getRedirectResult', result);
+            if (result.credential) {
+                // This gives you a Google Access Token.
+                var token = result.credential.accessToken;
+            }
+            var user = result.user;
+        })
+        // auth.signInWithPopup(provider).then(function (result) {
+        //     console.log('signInWithPopup', result);
+        //     // This gives you a Facebook Access Token.
+        //     var token = result.credential.accessToken;
+        //     // The signed-in user info.
+        //     var user = result.user;
+        // });
+        auth.onAuthStateChanged(async (userInfo) => {
+            console.log('onAuthStateChanged', userInfo);
+            $sweet.loader(false)
             if (!userInfo) {
                 // 造成登入機制無法連貫
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
@@ -65,21 +82,23 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
+        console.log('handleAuthResult', basicInfo);
         if (!basicInfo.email) {
             await $sweet.alert('請使用其他方式登入')
             return
         }
+        $sweet.loader(true)
         if (basicInfo.emailVerified) {
-            $sweet.loader(true)
-            signIn(basicInfo)
-            $sweet.loader(false)
+            await signIn(basicInfo)
         } else {
-            sendEmailLink(type)
+            await sendEmailLink(type)
         }
+        $sweet.loader(false)
     }
     async function setIdToken() {
-        const auth = getAuth()
+        const auth = firebase.auth();
         if (!auth || !auth.currentUser) {
+            console.log('setIdToken no auth', auth);
             return
         }
         const idToken = await auth.currentUser.getIdToken()
@@ -89,6 +108,7 @@ export default function setup() {
     async function signIn(user) {
         const idToken = await setIdToken()
         if (!idToken) {
+            console.log('signIn no idToken')
             return
         }
         const signInResult = await repoAuth.postSignin(idToken)

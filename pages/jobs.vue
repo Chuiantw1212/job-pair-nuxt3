@@ -1,12 +1,12 @@
 <template>
-    <div class="jobs" :class="{ container: device.state.isDesktop }">
+    <div class="jobs" :class="{ container: device.state.isLarge }">
         <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
-            class="jobs__filter" :class="{ 'col col-3': device.state.isDesktop }">
+            class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
                     <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :isDesktop="device.state.isDesktop" :showSelectAll="true">
+                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -59,7 +59,7 @@
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
                     <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
-                        :categoryMap="repoSelect.industryCategoryMap" :isDesktop="device.state.isDesktop"
+                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge"
                         :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
@@ -87,7 +87,7 @@
                 <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
             </div>
         </LazyMoleculeFilter>
-        <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
+        <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
                     <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">

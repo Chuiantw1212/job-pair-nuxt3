@@ -39,7 +39,7 @@
                     <template v-slot:body>
                         <LazyMoleculeFilterCategory v-model="state.profile.educationCategory"
                             :items="repoSelect.state.selectByQueryRes.educationCategory"
-                            :categoryMap="repoSelect.educationCategoryMap" :max="1" :isDesktop="device.state.isDesktop"
+                            :categoryMap="repoSelect.educationCategoryMap" :max="1" :isLarge="device.state.isLarge"
                             name="學科分類">
                         </LazyMoleculeFilterCategory>
                     </template>
@@ -64,7 +64,7 @@
                     <template v-slot:body>
                         <LazyMoleculeFilterCategory v-model="state.profile.occupationalCategory"
                             :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :max="3"
-                            :isDesktop="device.state.isDesktop" required name="欲申請職務類別">
+                            :isLarge="device.state.isLarge" required name="欲申請職務類別">
                         </LazyMoleculeFilterCategory>
                     </template>
                 </LazyMoleculeProfileSelectContainer>
@@ -84,14 +84,14 @@
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
                     placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true" ref="description">
-                    <!-- <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
+                    <LazyOrganismChatGptModal v-model="state.profile.description" name="個人簡歷"
                         :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                    </LazyOrganismChatGptModal> -->
+                    </LazyOrganismChatGptModal>
                 </LazyAtomInputCkeditor>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
-                    :required="device.state.isDesktop">
+                    :required="device.state.isLarge">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>

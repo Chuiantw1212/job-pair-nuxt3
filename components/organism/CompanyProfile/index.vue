@@ -48,7 +48,7 @@
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
                                     :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
-                                    :isDesktop="device.state.isDesktop" required name="產業類別">
+                                    :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
@@ -89,15 +89,15 @@
                 <div class="body__companyInfo">
                     <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
                         class="mb-2" ref="descriptionRef">
-                        <!-- <LazyOrganismChatGptModal v-model="state.companyInfo.description" name="企業介紹"
+                        <LazyOrganismChatGptModal v-model="state.companyInfo.description" name="企業介紹"
                             :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                        </LazyOrganismChatGptModal> -->
+                        </LazyOrganismChatGptModal>
                     </LazyAtomInputCkeditor>
                     <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
                         class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
-                        <!-- <LazyOrganismChatGptModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                        <LazyOrganismChatGptModal v-model="state.companyInfo.jobBenefits" name="福利制度"
                             :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
-                        </LazyOrganismChatGptModal> -->
+                        </LazyOrganismChatGptModal>
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
@@ -144,7 +144,7 @@ export default {
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')
-const { $validate, $sweet, $requestSelector } = useNuxtApp()
+const { $validate, $sweet, $requestSelector, $filter } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
@@ -194,7 +194,9 @@ function setDescription(value) {
     currentInstance.refs.descriptionRef.setData(value)
 }
 async function handleChatRequest(value) {
-    const res = await repoChat.postChatJobDescription(value)
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
     return res
 }
 function getWelfareString(key) {

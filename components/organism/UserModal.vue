@@ -69,7 +69,6 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
-    // localStorage.removeItem("user") // 這一行新增會把使用者的作答紀錄清除
     state.bsModal.show()
     renderFirebaseUI()
 }
@@ -87,25 +86,27 @@ async function renderFirebaseUI() {
     const signInOptions = [
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
+            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
         },
         {
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         },
-        {
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        }
     ]
     const element = document.querySelector("#user-auth-container")
     ui = ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+                console.log({
+                    authResult
+                });
+                console.log({
+                    redirectUrl
+                });
                 loginComposable.handleAuthResult(authResult, "employee")
                 return false
             }
         },
-        signInFlow: 'popup',
+        signInFlow: 'redirect',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",

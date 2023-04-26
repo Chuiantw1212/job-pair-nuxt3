@@ -1,5 +1,5 @@
 <template>
-    <div class="jobView" :class="{ container: device.state.isDesktop }">
+    <div class="jobView" :class="{ container: device.state.isLarge }">
         <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
         <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__basic">
@@ -27,7 +27,7 @@
             </div>
         </section>
         <div class="row jobView__body">
-            <div class="mobileGrid__right" :class="{ 'col-4': device.state.isDesktop }">
+            <div class="mobileGrid__right" :class="{ 'col-4': device.state.isLarge }">
                 <div class="jobView__card jobView__features mt-3">
                     <div class="features__item">
                         <span class="item__header">
@@ -127,7 +127,7 @@
                     </iframe>
                 </div>
             </div>
-            <div class="mobileGrid__left" :class="{ 'col-8': device.state.isDesktop }">
+            <div class="mobileGrid__left" :class="{ 'col-8': device.state.isLarge }">
                 <section id="jobView__description" class="jobView__section jobView__description mt-3">
                     <div class="jobView__card">
                         <div class="card__header">職責介紹</div>
