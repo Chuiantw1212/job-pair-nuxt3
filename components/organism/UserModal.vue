@@ -83,9 +83,6 @@ async function renderFirebaseUI() {
         $sweet.loader(true)
     }
     // 不同裝置給予不同登入方式
-    console.log({
-        FacebookAuthProvider
-    });
     const signInOptions = [
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
