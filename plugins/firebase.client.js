@@ -1,5 +1,6 @@
 import { auth } from "firebaseui"
-import { initializeApp } from "firebase/app"
+// import { initializeApp } from "firebase/app"
+import firebase from "firebase/compat/app"
 import { getAnalytics } from "firebase/analytics"
 export default defineNuxtPlugin(() => {
     // Create App
@@ -26,22 +27,17 @@ export default defineNuxtPlugin(() => {
             measurementId: "G-H0LNN14FD5"
         }
     }
-    function firebaseInitializeApp() {
-        const firebaseApp = initializeApp(firebaseConfig)
-        console.log('initializeApp', firebaseApp);
-        // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
-        try {
-            getAnalytics(firebaseApp)
-        } catch (error) {
-            console.log(error.message);
-        }
-        return firebaseApp
+    const firebaseApp = firebase.initializeApp(firebaseConfig)
+    console.log('initializeApp', firebaseApp);
+    // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
+    try {
+        getAnalytics(firebaseApp)
+    } catch (error) {
+        console.log(error.message);
     }
     return {
         provide: {
             firebaseuiAuth: auth,
-            firebaseInitializeApp,
-            // firebaseApp,
             storageBucket: firebaseConfig.storageBucket
         }
     }

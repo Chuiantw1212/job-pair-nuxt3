@@ -1,8 +1,8 @@
 import { useRouter, useRoute } from 'vue-router'
 import firebase from 'firebase/compat/app';
-import { getAuth } from "firebase/auth"
+import "firebase/compat/auth";
 export default function setup() {
-    const { $emitter, $sweet, $firebaseInitializeApp } = useNuxtApp()
+    const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
     const jobPairApi = useJobPairApi()
@@ -26,11 +26,8 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const app = $firebaseInitializeApp()
-        console.log('listenToAuthState', app);
-        const defaultAuth = firebase.auth()
-        console.log('listenToAuthState', defaultAuth);
-        firebase.auth().onAuthStateChanged(async (userInfo) => {
+        const auth = firebase.auth();
+        auth.onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
             if (!userInfo) {
