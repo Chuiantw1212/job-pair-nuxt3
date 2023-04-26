@@ -12,7 +12,6 @@ export default function setup() {
     const repoJobApplication = useRepoJobApplication()
     const repoCompany = useRepoCompany()
     const repoSelect = useRepoSelect()
-    const auth = firebase.auth();
     // state
     const state = reactive({
         ui: null,
@@ -27,6 +26,7 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
+        const auth = firebase.auth();
         auth.onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
@@ -81,6 +81,7 @@ export default function setup() {
         $sweet.loader(false)
     }
     async function setIdToken() {
+        const auth = firebase.auth();
         if (!auth || !auth.currentUser) {
             console.log('setIdToken no auth', auth);
             return
