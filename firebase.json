@@ -39,6 +39,10 @@
           {
             "key": "Permissions-Policy",
             "value": "geolocation=*"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "*"
           }
         ]
       }
