@@ -3,7 +3,7 @@
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">
                 職缺狀態
-                <span class="header__wallet">錢包餘額：45點</span>
+                <!-- <span class="header__wallet">錢包餘額：45點</span> -->
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
