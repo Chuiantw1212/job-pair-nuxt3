@@ -221,8 +221,9 @@ async function checkWalletBallance(value) {
     if (res.status !== 200) {
         return
     }
-    if (!res.data || res.data.balance === 0) {
-        instance.refs.noBallanceModal.openModal()
+    const noBallanceModal = instance.refs.noBallanceModal
+    if (!res.data || res.data.balance === 0 && noBallanceModal) {
+        noBallanceModal.openModal()
     }
 }
 function setDescription(value) {
