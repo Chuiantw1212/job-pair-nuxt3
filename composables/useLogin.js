@@ -28,6 +28,7 @@ export default function setup() {
     function listenToAuthState() {
         const firebaseAuth = getAuth()
         state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
+            console.log('onAuthStateChanged', userInfo);
             if (!userInfo) {
                 // 造成登入機制無法連貫
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
@@ -65,6 +66,7 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
+        console.log('handleAuthResult', basicInfo);
         if (!basicInfo.email) {
             await $sweet.alert('請使用其他方式登入')
             return
