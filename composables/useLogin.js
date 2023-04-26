@@ -80,6 +80,7 @@ export default function setup() {
     async function setIdToken() {
         const auth = getAuth()
         if (!auth || !auth.currentUser) {
+            console.log('setIdToken no auth', auth);
             return
         }
         const idToken = await auth.currentUser.getIdToken()
@@ -89,6 +90,7 @@ export default function setup() {
     async function signIn(user) {
         const idToken = await setIdToken()
         if (!idToken) {
+            console.log('signIn no idToken')
             return
         }
         const signInResult = await repoAuth.postSignin(idToken)
