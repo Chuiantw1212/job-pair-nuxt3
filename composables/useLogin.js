@@ -1,5 +1,6 @@
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import firebase from 'firebase/compat/app';
+import { getAuth } from "firebase/auth"
 export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
@@ -14,7 +15,6 @@ export default function setup() {
     // state
     const state = reactive({
         ui: null,
-        unsubscribe: null,
         isSent: false,
         authResult: null,
         countdownInterval: null,
@@ -26,8 +26,7 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const firebaseAuth = getAuth()
-        state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
+        firebase.auth().onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
             if (!userInfo) {

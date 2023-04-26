@@ -41,7 +41,7 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, FacebookAuthProvider } from "firebase/auth"
+import { getAuth, } from "firebase/auth"
 import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
@@ -113,6 +113,7 @@ async function renderFirebaseUI() {
                 return false
             }
         },
+        signInFlow: 'redirect',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
