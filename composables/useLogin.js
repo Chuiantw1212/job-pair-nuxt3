@@ -35,13 +35,13 @@ export default function setup() {
             }
             var user = result.user;
         })
-        auth.signInWithPopup(provider).then(function (result) {
-            console.log('signInWithPopup', result);
-            // This gives you a Facebook Access Token.
-            var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-        });
+        // auth.signInWithPopup(provider).then(function (result) {
+        //     console.log('signInWithPopup', result);
+        //     // This gives you a Facebook Access Token.
+        //     var token = result.credential.accessToken;
+        //     // The signed-in user info.
+        //     var user = result.user;
+        // });
         auth.onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
