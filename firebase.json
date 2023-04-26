@@ -30,11 +30,11 @@
           },
           {
             "key": "Content-Security-Policy",
-            "value": "default-src 'self'"
+            "value": "default-src 'self';script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://www.googletagmanager.com https://apis.google.com https://static.line-scdn.net;img-src 'self' data: https://www.gstatic.com https://storage.googleapis.com;font-src https://fonts.googleapis.com https://fonts.gstatic.com;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com https://cdn.jsdelivr.net;connect-src 'self' https://*.googleapis.com https://job-pair-taiwan-dev.de.r.appspot.com;frame-src https://job-pair-taiwan-dev.firebaseapp.com https://www.google.com;"
           },
           {
             "key": "Referrer-Policy",
-            "value": "default-src 'self'"
+            "value": "strict-origin-when-cross-origin"
           },
           {
             "key": "Permissions-Policy",
