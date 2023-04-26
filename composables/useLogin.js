@@ -29,6 +29,7 @@ export default function setup() {
         const firebaseAuth = getAuth()
         state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
+            $sweet.loader(false)
             if (!userInfo) {
                 // 造成登入機制無法連貫
                 if (repoAuth.state.user && repoAuth.state.user.uid) {

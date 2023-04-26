@@ -41,7 +41,7 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
+import { getAuth, FacebookAuthProvider } from "firebase/auth"
 import firebase from "firebase/compat/app"
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
@@ -83,6 +83,9 @@ async function renderFirebaseUI() {
         $sweet.loader(true)
     }
     // 不同裝置給予不同登入方式
+    console.log({
+        FacebookAuthProvider
+    });
     const signInOptions = [
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
@@ -100,6 +103,12 @@ async function renderFirebaseUI() {
     ui = ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+                console.log({
+                    authResult
+                });
+                console.log({
+                    redirectUrl
+                });
                 loginComposable.handleAuthResult(authResult, "employee")
                 return false
             }
