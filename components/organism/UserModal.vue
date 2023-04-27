@@ -41,8 +41,8 @@
 </template>
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
-import firebase from "firebase/compat/app"
+
+import firebase from "firebase"
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
 const route = useRoute()

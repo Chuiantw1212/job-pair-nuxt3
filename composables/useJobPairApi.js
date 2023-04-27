@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { getAuth } from "firebase/auth"
+import firebase from "firebase"
+console.log({
+    firebase
+});
+
 export default function () {
     const { $sweet, } = useNuxtApp()
     const config = useRuntimeConfig()

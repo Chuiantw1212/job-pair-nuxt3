@@ -1,6 +1,5 @@
 import { useRouter, useRoute } from 'vue-router'
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import firebase from "firebase";
 export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()

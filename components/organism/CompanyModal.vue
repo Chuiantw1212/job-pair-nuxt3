@@ -39,8 +39,8 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase/compat/app"
-import { getAuth, } from "firebase/auth"
+import firebase from "firebase"
+
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
 const loginComposable = useLogin()

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAuth, } from "firebase/auth"
+
 export default defineStore('auth', () => {
     const jobPairApi = useJobPairApi()
     const repoJobApplication = useRepoJobApplication()
