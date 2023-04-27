@@ -9,6 +9,7 @@ export default defineStore('auth', () => {
         isLogginIn: false,
     })
     async function postSignin(data) {
+        console.log('postSignin', state.isLogginIn);
         if (state.isLogginIn) {
             return
         }

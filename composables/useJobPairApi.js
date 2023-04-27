@@ -1,9 +1,5 @@
 import axios from 'axios'
 import firebase from "firebase"
-console.log({
-    firebase
-});
-
 export default function () {
     const { $sweet, } = useNuxtApp()
     const config = useRuntimeConfig()
@@ -39,7 +35,7 @@ export default function () {
             auth = await new Promise((resolve) => {
                 const step = function () {
                     try {
-                        let auth = getAuth()
+                        let auth = firebase.auth()
                         resolve(auth)
                     } catch (error) {
                         window.requestAnimationFrame(step)
