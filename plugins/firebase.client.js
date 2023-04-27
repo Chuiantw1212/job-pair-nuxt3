@@ -1,7 +1,6 @@
 import { auth } from "firebaseui"
 // import { initializeApp } from "firebase/app"
-import firebase from "firebase/compat/app"
-import { getAnalytics } from "firebase/analytics"
+import firebase from "firebase"
 export default defineNuxtPlugin(() => {
     // Create App
     const runtimeConfig = useRuntimeConfig()
@@ -31,7 +30,7 @@ export default defineNuxtPlugin(() => {
     console.log('initializeApp', firebaseApp);
     // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
     try {
-        getAnalytics(firebaseApp)
+        // getAnalytics(firebaseApp)
     } catch (error) {
         console.log(error.message);
     }

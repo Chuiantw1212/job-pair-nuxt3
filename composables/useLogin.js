@@ -1,6 +1,5 @@
 import { useRouter, useRoute } from 'vue-router'
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import firebase from "firebase";
 export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
@@ -26,22 +25,11 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const auth = firebase.auth();
-        auth.getRedirectResult().then(function (result) {
-            console.log('getRedirectResult', result);
-            if (result.credential) {
-                // This gives you a Google Access Token.
-                var token = result.credential.accessToken;
-            }
-            var user = result.user;
-        })
-        // auth.signInWithPopup(provider).then(function (result) {
-        //     console.log('signInWithPopup', result);
-        //     // This gives you a Facebook Access Token.
-        //     var token = result.credential.accessToken;
-        //     // The signed-in user info.
-        //     var user = result.user;
-        // });
+        const auth = firebase.auth()
+        const currentUser = auth.currentUser
+        console.log({
+            currentUser
+        });
         auth.onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)

@@ -48,8 +48,7 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase/compat/app"
-// import { identicon } from 'minidenticons'
+import firebase from "firebase"
 const { $sweet } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
