@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { getAuth } from "firebase/auth"
+
 export default function () {
     const config = useRuntimeConfig()
     const state = reactive({

@@ -39,8 +39,8 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase/compat/app"
-import { getAuth, } from "firebase/auth"
+import firebase from "firebase"
+
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
 const device = useDevice()
 const loginComposable = useLogin()
@@ -69,12 +69,12 @@ function showModal() {
     renderFirebaseUI()
 }
 async function renderFirebaseUI() {
-    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
-    if (!ui) {
-        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
-    }
+    const firebaseAuth = firebase.auth()
+    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
     const isPendingRedirect = ui.isPendingRedirect()
+    console.log({
+        isPendingRedirect
+    });
     if (isPendingRedirect) {
         $sweet.loader(true)
     }
@@ -89,13 +89,18 @@ async function renderFirebaseUI() {
         }
     ]
     const element = document.querySelector("#company-auth-container")
-    ui = ui.start(element, {
+    ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                 loginComposable.handleAuthResult(authResult, "admin")
                 return false
+            },
+            signInFailure: (error) => {
+                console.log(error.message);
+                console.dir(error);
             }
         },
+        signInFlow: 'popup',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
