@@ -100,6 +100,7 @@ async function renderFirebaseUI() {
                 console.dir(error);
             }
         },
+        signInFlow: 'popup',
         signInOptions,
         tosUrl:
             "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
