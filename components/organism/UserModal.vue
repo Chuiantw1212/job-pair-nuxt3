@@ -91,6 +91,10 @@ async function renderFirebaseUI() {
         {
             provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
         },
+        {
+            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+            scopes: ["public_profile", "email"]
+        }
     ]
     const element = document.querySelector("#user-auth-container")
     ui = ui.start(element, {
