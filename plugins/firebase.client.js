@@ -1,6 +1,6 @@
 import { auth } from "firebaseui"
-// import { initializeApp } from "firebase/app"
 import firebase from "firebase"
+import "firebase/analytics"
 export default defineNuxtPlugin(() => {
     // Create App
     const runtimeConfig = useRuntimeConfig()
