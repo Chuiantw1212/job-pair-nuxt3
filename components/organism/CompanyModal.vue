@@ -72,6 +72,9 @@ async function renderFirebaseUI() {
     const firebaseAuth = firebase.auth()
     const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
     const isPendingRedirect = ui.isPendingRedirect()
+    console.log({
+        isPendingRedirect
+    });
     if (isPendingRedirect) {
         $sweet.loader(true)
     }
@@ -91,6 +94,10 @@ async function renderFirebaseUI() {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                 loginComposable.handleAuthResult(authResult, "admin")
                 return false
+            },
+            signInFailure: (error) => {
+                console.log(error.message);
+                console.dir(error);
             }
         },
         signInOptions,
