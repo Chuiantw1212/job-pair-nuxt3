@@ -70,7 +70,7 @@ function showModal() {
 }
 async function renderFirebaseUI() {
     let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
+    const firebaseAuth = firebase.auth()
     if (!ui) {
         ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
     }

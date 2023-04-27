@@ -74,7 +74,7 @@ function showModal() {
 }
 async function renderFirebaseUI() {
     let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
+    const firebaseAuth = firebase.auth()
     if (!ui) {
         ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
     }
@@ -96,12 +96,6 @@ async function renderFirebaseUI() {
     ui = ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                console.log({
-                    authResult
-                });
-                console.log({
-                    redirectUrl
-                });
                 loginComposable.handleAuthResult(authResult, "employee")
                 return false
             }
