@@ -73,11 +73,8 @@ function showModal() {
     renderFirebaseUI()
 }
 async function renderFirebaseUI() {
-    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
     const firebaseAuth = firebase.auth()
-    if (!ui) {
-        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
-    }
+    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
     const isPendingRedirect = ui.isPendingRedirect()
     if (isPendingRedirect) {
         $sweet.loader(true)
@@ -97,7 +94,7 @@ async function renderFirebaseUI() {
         }
     ]
     const element = document.querySelector("#user-auth-container")
-    ui = ui.start(element, {
+    ui.start(element, {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                 loginComposable.handleAuthResult(authResult, "employee")

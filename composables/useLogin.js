@@ -26,6 +26,10 @@ export default function setup() {
     // methods
     function listenToAuthState() {
         const auth = firebase.auth()
+        const currentUser = auth.currentUser
+        console.log({
+            currentUser
+        });
         auth.onAuthStateChanged(async (userInfo) => {
             console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
