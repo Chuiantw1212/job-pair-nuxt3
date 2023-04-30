@@ -103,7 +103,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, $VConsole, $liff } = useNuxtApp()
+const { $emitter, $liff } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -146,11 +146,6 @@ async function startLiff() {
     // 调用 console 方法输出日志
     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
         try {
-            // 或者使用配置参数进行初始化
-            const vConsole = new $VConsole({ theme: 'dark' });
-            console.log({
-                vConsole
-            });
             await $liff.init({ liffId: runTime.public.LIFF_ID })
         } catch (error) {
             console.log(error.message || error);
