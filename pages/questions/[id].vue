@@ -1,12 +1,31 @@
 <template>
     <div class="questions">
-        <div class="questions__description">
+        <!-- <div class="questions__description">
             此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
-        </div>
+        </div> -->
         <LazyAtomProgress class="questions__progress"></LazyAtomProgress>
         <img class="questions__leftImage" src="~/assets/questions/left.png" />
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
-        <template v-for="(questionGroup, key) in state.questions" :key="key">
+        <div class="questions__body">
+            <template v-for="(item, index) in state.questions">
+                <AtomInputSelect v-if="index < 5" class="body__select" :name="`Q${index + 1}：${item.descUser}`"
+                    :items="state.questions[index].items" itemText="textUser">
+                </AtomInputSelect>
+                <div v-else class="body__multiselect">
+                    <div>Q{{ index + 1 }}：{{ item.descUser }}(多選)</div>
+                    <div class="multiselect__list">
+                        <label v-for="(subItem, index2) in  item.items" class="inputOptions__multipleSelect">
+                            <img v-show="checkOptionSelected(subItem)" src="~/assets/questions/checkboxSelected.svg">
+                            <input v-show="!checkOptionSelected(subItem)" v-model="state.tempUser.preference['culture']"
+                                :value="subItem.value" class="multiSelect__checkbox" type="checkbox"
+                                :disabled="checkOptionDisabled(subItem)" @change="setCulture()">
+                            <span class="multipleSelect__description">{{ subItem.textUser }}</span>
+                        </label>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <!-- <template v-for="(questionGroup, key) in state.questions" :key="key">
             <div v-if="questionId == key" class="questions__questionGroup">
                 <h2 class="questionGroup__header">{{ questionGroup.descUser }}
                     <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
@@ -53,9 +72,14 @@
             <LazyAtomBtnSimple @click="routeToCategory()">下一步
             </LazyAtomBtnSimple>
             <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button>
-        </div>
+        </div> -->
     </div>
 </template>
+<script>
+export default {
+    name: 'QuestionForm'
+}
+</script>
 <script setup>
 const { $bootstrap, $sweet, $validate } = useNuxtApp()
 const repoSelect = useRepoSelect()
@@ -256,20 +280,66 @@ function handleClickNext() {
     min-height: calc(100vh - 88px);
     z-index: 10;
     position: relative;
+    padding-top: 20px;
     padding-bottom: 97px;
     min-height: 100vh;
 
-    .questions__description {
-        padding: 12px 36px;
-        background-color: rgba(255, 243, 205, 0.6);
-        color: #856404;
-        font-size: 14px;
-        font-weight: normal;
-        text-align: center;
+    .questions__progress {
+        margin: 0 auto;
+        max-width: 120px;
     }
 
-    .questions__progress {
-        margin: 30px auto 50px auto;
+    .questions__body {
+        margin-top: 20px;
+        padding: 0 20px;
+
+        .body__select {
+            &:not(:first-child) {
+                margin-top: 20px;
+            }
+        }
+
+        .body__multiselect {
+            font-size: 18px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: #1f1f1f;
+            margin-top: 20px;
+
+            .multiselect__list {
+                .inputOptions__multipleSelect {
+                    font-size: 16px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.63;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #333;
+                    display: flex;
+                    margin-top: 8px;
+
+                    &:not(:first-child) {
+                        margin-top: 20px;
+                    }
+
+                    .multipleSelect__description {
+                        margin-left: 10px;
+                        text-align: left;
+                    }
+
+                    .multiSelect__checkbox {
+                        min-width: 20px;
+                        min-height: 20px;
+                    }
+                }
+            }
+        }
+
     }
 
     .questions__leftImage {
@@ -375,32 +445,7 @@ function handleClickNext() {
                     color: white !important;
                 }
 
-                .inputOptions__multipleSelect {
-                    width: 100%;
-                    font-size: 17px;
-                    font-weight: normal;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1.5;
-                    letter-spacing: 0.51px;
-                    color: #42708f;
-                    display: flex;
-                    align-items: center;
 
-                    &:not(:first-child) {
-                        margin-top: 20px;
-                    }
-
-                    .multipleSelect__description {
-                        margin-left: 10px;
-                        text-align: left;
-                    }
-
-                    .multiSelect__checkbox {
-                        width: 20px;
-                        height: 20px;
-                    }
-                }
             }
         }
     }

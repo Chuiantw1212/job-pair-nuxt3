@@ -2,13 +2,13 @@
     <div class="custom-progress">
         <hr class="progress__line" />
         <ul class="progress__list">
-            <li v-for="number in 6" :key="number" class="progress__item">
+            <li v-for="(item, index) in items" :key="index" class="progress__item">
                 <div class="progress__item__content">
                     <div class="item__content__badge"
-                        :class="{ 'item__content__badge--active': number <= Number(questionId) }">
+                        :class="{ 'item__content__badge--active': index <= Number(questionId) }">
                         <img class="badge__icon" src="./icon_Check.svg" />
                     </div>
-                    第{{ number }}題
+                    {{ item.text }}
                 </div>
             </li>
         </ul>
@@ -17,13 +17,32 @@
 <script>
 export default {
     name: 'question-progress',
-    computed: {
-        questionId() {
-            const value = this.$route.params.id || 0
-            return value
-        },
-    },
 }
+</script>
+<script setup>
+const route = useRoute()
+const props = defineProps({
+    items: {
+        type: Array,
+        default: function () {
+            return [
+                {
+                    text: '求職偏好',
+                    name: ''
+                },
+                {
+                    text: '個人資料',
+                    name: ''
+                }
+            ]
+        }
+    }
+})
+const questionId = computed({
+    get() {
+        return route.params.id || 0
+    }
+})
 </script>
 <style lang="scss" scoped>
 .custom-progress {
