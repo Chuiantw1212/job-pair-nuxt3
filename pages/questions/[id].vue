@@ -9,12 +9,16 @@
         <div class="questions__body">
             <template v-for="(item, index) in state.questions">
                 <AtomInputSelect v-if="index < 5" class="body__select" :name="`Q${index + 1}：${item.descUser}`"
-                    :items="state.questions[index].items" itemText="textUser">
+                    :items="state.questions[index].items" required itemText="textUser">
                 </AtomInputSelect>
                 <div v-else class="body__multiselect">
-                    <div>Q{{ index + 1 }}：{{ item.descUser }}(多選)</div>
+                    <div>
+                        <span class="text-danger">*</span>Q{{ index + 1 }}：{{ item.descUser }}(多選)
+                    </div>
                     <div class="multiselect__list">
-                        <label v-for="(subItem, index2) in  item.items" class="inputOptions__multipleSelect">
+                        <input v-show="false" :value="checkSomeSelected()" :data-required="true" :data-name="item.descUser">
+                        <label v-for="(subItem, index2) in  item.items" :key="`multiItem${index2}`"
+                            class="inputOptions__multipleSelect">
                             <img v-show="checkOptionSelected(subItem)" src="~/assets/questions/checkboxSelected.svg">
                             <input v-show="!checkOptionSelected(subItem)" v-model="state.tempUser.preference['culture']"
                                 :value="subItem.value" class="multiSelect__checkbox" type="checkbox"
@@ -24,6 +28,11 @@
                     </div>
                 </div>
             </template>
+        </div>
+        <div class="questions__footer">
+            <LazyAtomBtnSimple @click="routeToCategory()">下一步
+            </LazyAtomBtnSimple>
+            <!-- <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button> -->
         </div>
         <!-- <template v-for="(questionGroup, key) in state.questions" :key="key">
             <div v-if="questionId == key" class="questions__questionGroup">
@@ -169,6 +178,10 @@ function routeToFisrt() {
     router.push('/questions/1')
 }
 async function routeToCategory() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
     const submitted = await handleSubmit()
     if (!submitted) {
         return
@@ -221,6 +234,9 @@ function checkOptionDisabled(item) {
 }
 function checkOptionSelected(item) {
     return state.tempUser.preference['culture'].includes(item.value)
+}
+function checkSomeSelected() {
+    return state.tempUser.preference['culture'].length >= 1
 }
 function setCulture() {
     if (process.client) {
