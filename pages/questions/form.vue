@@ -8,9 +8,9 @@
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
         <div class="questions__body">
             <template v-for="(item, index) in state.questions">
-                <AtomInputSelect v-if="index < 5" class="body__select" :name="`Q${index + 1}：${item.descUser}`"
-                    :items="state.questions[index].items" required itemText="textUser"
-                    @update:modelValue="setAnswers($event, item.key)">
+                <AtomInputSelect v-if="index < 5" v-model="state.tempUser.preference[item.key]" class="body__select"
+                    :name="`Q${index + 1}：${item.descUser}`" :items="state.questions[index].items" required
+                    itemText="textUser" @update:modelValue="setAnswers($event, item.key)">
                 </AtomInputSelect>
                 <div v-else class="body__multiselect">
                     <div>
@@ -61,10 +61,6 @@ const state = reactive({
     },
     singleSelects: ['']
 })
-const questionId = computed(() => {
-    const id = Number(route.params.id) - 1
-    return Number(id) || 0
-})
 // hooks
 useSeoMeta({
     title: () => `求職偏好 - 註冊流程 - Job Pair`,
@@ -90,12 +86,55 @@ watch(() => repoAuth.state.user, () => {
         localStorage.removeItem("user")
     }
 }, { immediate: true })
-watch(() => questionId.value, () => {
-    nextTick(() => {
-        initTooltip()
-    })
-}, { immediate: true })
 // methods
+// async function validate(element, config = { title: '錯誤', icon: 'error' }) {
+//     if (!process.client) {
+//         return
+//     }
+//     if (!element) {
+//         element = document
+//     }
+//     const selects = element.getElementsByTagName("select")
+//     const inputs = element.getElementsByTagName("input")
+//     const textareas = element.getElementsByTagName('textarea')
+//     const allFormInputs = [...inputs, ...selects, ...textareas]
+//     const allRequiredInputs = allFormInputs.filter(item => {
+//         return item.dataset.required == 'true'
+//     })
+//     const nullable = ['null', null, 'undefined', undefined, false, 'false']
+//     const emptyFields = allRequiredInputs.filter((input, index) => {
+//         const formValue = input.dataset.value || input.value
+//         return nullable.includes(formValue)
+//     })
+//     // 顯示彈跳視窗
+//     let alertResult = { value: 1 } // 永遠預設為通過
+//     if (emptyFields.length && config.icon) {
+//         const emptyFieldNames = emptyFields.map(item => {
+//             return item.dataset.name
+//         })
+//         const fieldString = emptyFieldNames.join(', ')
+//         const text = `${fieldString}未填寫`
+//         const swalConfig = Object.assign({
+//             text,
+//             confirmButtonText: '確認',
+//             confirmButtonColor: '#5ea88e',
+//         }, config)
+//         alertResult = await $sweet.fire(swalConfig)
+//         setTimeout(() => {
+//             emptyFields[0].scrollIntoView({ block: "center", });
+//         }, 500)
+//     }
+//     // 回傳驗證結果
+//     const numer = allRequiredInputs.length - emptyFields.length
+//     const deno = allRequiredInputs.length
+//     const completeness = Math.floor(numer / deno * 100)
+//     const result = {
+//         isValid: !emptyFields.length,
+//         completeness,
+//         value: alertResult.value
+//     }
+//     return result
+// }
 function checkOptionDisabled(item) {
     const isSelected = checkOptionSelected(item)
     return state.tempUser.preference['culture'].length >= 2 && !isSelected
@@ -132,30 +171,14 @@ function getAnswers() {
         state.tempUser = user
     }
 }
-function initTooltip() {
-    if (process.client) {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new $bootstrap.Tooltip(tooltipTriggerEl, {
-                placement: "right",
-            })
-        })
-    }
-}
 async function handleClickNext() {
-    const result = await $validate()
+    const result = await validate()
     if (!result.isValid) {
         return
     }
     router.push({
         name: 'questions-profile'
     })
-    // const id = questionId.value + 1
-    // if (id >= 6) {
-    //     router.push(`/questions/result`)
-    // } else {
-    //     router.push(`/questions/${id + 1}`)
-    // }
 }
 </script>
 <style lang="scss" scoped>
@@ -171,7 +194,7 @@ async function handleClickNext() {
 
     .questions__progress {
         margin: 0 auto;
-        max-width: 120px;
+        max-width: 240px;
     }
 
     .questions__body {

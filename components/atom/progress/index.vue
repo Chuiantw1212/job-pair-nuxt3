@@ -33,6 +33,10 @@ const props = defineProps({
                 {
                     text: '個人資料',
                     name: ''
+                },
+                {
+                    text: '註冊結果',
+                    name: ''
                 }
             ]
         }
@@ -48,7 +52,7 @@ const questionId = computed({
 .custom-progress {
     position: relative;
     margin-bottom: 18px;
-    max-width: 248px;
+    // max-width: 248px;
 
     .progress__line {
         position: absolute;
@@ -99,7 +103,7 @@ const questionId = computed({
 
 @media screen and (min-width: 992px) {
     .custom-progress {
-        max-width: 480px;
+        // max-width: 480px;
 
         .progress__list {
             .progress__item {
