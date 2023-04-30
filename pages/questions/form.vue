@@ -9,7 +9,8 @@
         <div class="questions__body">
             <template v-for="(item, index) in state.questions">
                 <AtomInputSelect v-if="index < 5" class="body__select" :name="`Q${index + 1}：${item.descUser}`"
-                    :items="state.questions[index].items" required itemText="textUser">
+                    :items="state.questions[index].items" required itemText="textUser"
+                    @update:modelValue="setAnswers($event, item.key)">
                 </AtomInputSelect>
                 <div v-else class="body__multiselect">
                     <div>
@@ -30,58 +31,9 @@
             </template>
         </div>
         <div class="questions__footer">
-            <LazyAtomBtnSimple @click="routeToCategory()">下一步
+            <LazyAtomBtnSimple @click="handleClickNext()">下一步
             </LazyAtomBtnSimple>
-            <!-- <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button> -->
         </div>
-        <!-- <template v-for="(questionGroup, key) in state.questions" :key="key">
-            <div v-if="questionId == key" class="questions__questionGroup">
-                <h2 class="questionGroup__header">{{ questionGroup.descUser }}
-                    <div v-if="questionGroup.key === 'culture'" class="header__subheader">至少一項、至多兩項</div>
-                </h2>
-                <div class="questionGroup__body">
-                    <button v-if="questionId > 0" class="body__button body__button--left" type="button"
-                        :disabled="questionId <= 0" @click="handleClickLast()">
-                        <img src="~/assets/questions/btn_arrow.svg">
-                    </button>
-                    <div class="body__inputOptions">
-                        <template v-for="(item, index) in questionGroup.items" :key="index">
-                            <template v-if="questionGroup.key !== 'culture'">
-                                <label class="inputOptions__singleSelect" :class="{
-                                    'inputOptions__singleSelect--selected': checkSelected(item, questionGroup),
-                                }" :for="`inputOptions__singleSelect${item.value}`">
-                                    <input v-show="false" v-model="state.tempUser.preference[questionGroup.key]"
-                                        type="radio" :id="`inputOptions__singleSelect${item.value}`" :value="item.value"
-                                        @click="setAnswers(item.value, questionGroup.key)" />
-                                    <span class="label__description">{{ item.textUser }}</span>
-                                </label>
-                            </template>
-                            <template v-else>
-                                <label class="inputOptions__multipleSelect">
-                                    <img v-show="checkOptionSelected(item)" src="~/assets/questions/checkboxSelected.svg">
-                                    <input v-show="!checkOptionSelected(item)"
-                                        v-model="state.tempUser.preference['culture']" :value="item.value"
-                                        class="multiSelect__checkbox" type="checkbox" :disabled="checkOptionDisabled(item)"
-                                        @change="setCulture()">
-                                    <span class="multipleSelect__description">{{ item.textUser }}</span>
-                                </label>
-                            </template>
-                        </template>
-                        <input v-show="false" :value="state.tempUser.preference['culture'].length !== 0"
-                            :data-required="true" :data-name="questionGroup.descUser">
-                    </div>
-                    <button v-if="questionId < 5" class="body__button body__button--right" type="button"
-                        :disabled="checkQuestionAnswered()" @click="handleClickNext()">
-                        <img :style="{ transform: 'scaleX(-1)' }" src="~/assets/questions/btn_arrow.svg">
-                    </button>
-                </div>
-            </div>
-        </template>
-        <div v-if="questionId == 5" class="questions__footer">
-            <LazyAtomBtnSimple @click="routeToCategory()">下一步
-            </LazyAtomBtnSimple>
-            <button type="button" class="btn btn-light mt-2" @click="routeToFisrt()">修改偏好答案</button>
-        </div> -->
     </div>
 </template>
 <script>
@@ -95,7 +47,6 @@ const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoUser = useRepoUser()
-const repoEvent = useRepoEvent()
 const route = useRoute()
 const router = useRouter()
 const loginComposable = useLogin()
@@ -116,7 +67,7 @@ const questionId = computed(() => {
 })
 // hooks
 useSeoMeta({
-    title: () => `偏好量表 ${questionId.value + 1} - Job Pair`,
+    title: () => `求職偏好 - 註冊流程 - Job Pair`,
 })
 onMounted(async () => {
     let questions = []
@@ -135,13 +86,8 @@ onMounted(async () => {
 watch(() => repoAuth.state.user, () => {
     const { user } = repoAuth.state
     // 使用者已註冊
-    if (user && user.id && user.type === 'employee') {
-        // router.replace({
-        //     name: 'jobs'
-        // })
-        if (process.client) {
-            localStorage.removeItem("user")
-        }
+    if (user && user.id && user.type === 'employee' && process.client) {
+        localStorage.removeItem("user")
     }
 }, { immediate: true })
 watch(() => questionId.value, () => {
@@ -150,84 +96,6 @@ watch(() => questionId.value, () => {
     })
 }, { immediate: true })
 // methods
-async function handleSubmit() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const user = Object.assign({}, repoAuth.state.user, state.tempUser)
-    $sweet.loader(true)
-    const postResponse = await repoUser.postUser(user)
-    if (postResponse.status !== 200) {
-        return
-    }
-    const userData = postResponse.data
-    repoAuth.setUser(userData)
-    await loginComposable.setIdToken()
-    try {
-        await repoJob.getJobRecommended()
-    } catch (error) {
-        console.log(error.message);
-    }
-    $sweet.loader(false)
-    // 刪除暫存資料
-    localStorage.removeItem("user")
-    return userData
-}
-function routeToFisrt() {
-    router.push('/questions/1')
-}
-async function routeToCategory() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const submitted = await handleSubmit()
-    if (!submitted) {
-        return
-    }
-    if (repoEvent.state.contributor) {
-        await repoEvent.postEventRegistration({
-            eventId: repoEvent.state.eventId,
-            contributor: repoEvent.state.contributor
-        })
-    }
-    router.push({
-        name: 'questions-result'
-    })
-}
-function checkSelected(item, questionGroup) {
-    const questionKey = questionGroup.key
-    const modelValue = state.tempUser.preference[questionKey]
-    if (modelValue === "" && item.value === "") {
-        const userString = localStorage.getItem("user")
-        if (userString && userString !== "false") {
-            const user = JSON.parse(userString)
-            if (user.preference) {
-                const answer = user.preference[questionKey]
-                if (![null, undefined].includes(answer)) {
-                    return true
-                }
-            }
-        }
-    } else {
-        if (modelValue === item.value) {
-            return true
-        }
-    }
-    return false
-}
-function checkQuestionAnswered() {
-    const index = questionId.value
-    const currentQuestion = state.questions[index]
-    const { key } = currentQuestion
-    const answer = state.tempUser.preference[key]
-    if (answer || answer === "") {
-        return false
-    } else {
-        return true
-    }
-}
 function checkOptionDisabled(item) {
     const isSelected = checkOptionSelected(item)
     return state.tempUser.preference['culture'].length >= 2 && !isSelected
@@ -244,11 +112,9 @@ function setCulture() {
     }
 }
 function setAnswers(value, key) {
+    console.log('setAnswers');
     state.tempUser.preference[key] = value
-    if (process.client) {
-        localStorage.setItem("user", JSON.stringify(state.tempUser))
-    }
-    handleClickNext()
+    localStorage.setItem("user", JSON.stringify(state.tempUser))
 }
 function getAnswers() {
     if (process.client) {
@@ -276,17 +142,20 @@ function initTooltip() {
         })
     }
 }
-function handleClickLast() {
-    const id = questionId.value + 1
-    router.push(`/questions/${id - 1}`)
-}
-function handleClickNext() {
-    const id = questionId.value + 1
-    if (id >= 6) {
-        router.push(`/questions/result`)
-    } else {
-        router.push(`/questions/${id + 1}`)
+async function handleClickNext() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
     }
+    router.push({
+        name: 'questions-profile'
+    })
+    // const id = questionId.value + 1
+    // if (id >= 6) {
+    //     router.push(`/questions/result`)
+    // } else {
+    //     router.push(`/questions/${id + 1}`)
+    // }
 }
 </script>
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
             <img class="questions__rightImage" src="~/assets/questions/right.png" />
             <div class="questions__frame">
                 <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
-                <h1 class="frame__title">求職偏好已完成</h1>
+                <h1 class="frame__title">註冊流程已完成</h1>
                 <div class="frame__textarea">
                     接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
                 </div>
@@ -30,7 +30,7 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `偏好量表結果 - Job Pair`,
+    title: `註冊完成 - 註冊流程 - Job Pair`,
 })
 onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')

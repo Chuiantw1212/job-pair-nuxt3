@@ -28,7 +28,6 @@ export default function setup() {
         const auth = firebase.auth()
         auth.onAuthStateChanged(async (userInfo) => {
             $sweet.loader(false)
-            return
             if (!userInfo) {
                 // 造成登入機制無法連貫
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
@@ -199,10 +198,14 @@ export default function setup() {
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
                 if (unAnsweredIndex !== -1) {
-                    router.push(`/questions/${unAnsweredIndex + 1}`)
+                    router.push({
+                        name: 'questions-form'
+                    })
                 }
                 else if (!categorySelected) {
-                    router.push(`/questions/result`)
+                    router.push({
+                        name: 'questions-result'
+                    })
                 }
             }
             // 不論是否答題完成都要跑以下程式碼
@@ -218,7 +221,9 @@ export default function setup() {
             router.push(`/admin/register`)
         } else {
             user.type = "employee"
-            router.push(`/questions/1`)
+            router.push({
+                name: 'questions-form'
+            })
         }
         repoAuth.setUser(user)
         hideModals()
