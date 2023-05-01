@@ -36,14 +36,11 @@ export default {
 }
 </script>
 <script setup>
-const { $bootstrap, $sweet, $validate } = useNuxtApp()
+const { $sweet, $validate } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const state = reactive({
-    // 注意資料結構共用
-    currentIndex: 0,
     questions: [],
-    singleSelects: ['']
 })
 const props = defineProps({
     modelValue: {
@@ -73,7 +70,6 @@ onMounted(async () => {
         questions = response.data
     }
     state.questions = questions
-    getAnswers()
 })
 function checkOptionDisabled(item) {
     const isSelected = checkOptionSelected(item)
@@ -85,24 +81,8 @@ function checkOptionSelected(item) {
 function checkSomeSelected() {
     return props.modelValue.preference['culture'].length >= 1
 }
-function getAnswers() {
-    if (process.client) {
-        const userString = localStorage.getItem("user")
-        if (!userString || userString === "false") {
-            return
-        }
-        const user = JSON.parse(userString)
-        if (!user.preference) {
-            user.preference = {}
-        }
-        if (!user.preference.culture) {
-            user.preference.culture = []
-        }
-        state.tempUser = user
-    }
-}
 async function handleClickNext() {
-    const result = await validate()
+    const result = await $validate()
     if (!result.isValid) {
         return
     }
