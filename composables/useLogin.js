@@ -26,12 +26,7 @@ export default function setup() {
     // methods
     function listenToAuthState() {
         const auth = firebase.auth()
-        const currentUser = auth.currentUser
-        console.log({
-            currentUser
-        });
         auth.onAuthStateChanged(async (userInfo) => {
-            console.log('onAuthStateChanged', userInfo);
             $sweet.loader(false)
             if (!userInfo) {
                 // 造成登入機制無法連貫
@@ -203,10 +198,14 @@ export default function setup() {
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
                 if (unAnsweredIndex !== -1) {
-                    router.push(`/questions/${unAnsweredIndex + 1}`)
+                    router.push({
+                        name: 'questions-preference'
+                    })
                 }
                 else if (!categorySelected) {
-                    router.push(`/questions/result`)
+                    router.push({
+                        name: 'questions-result'
+                    })
                 }
             }
             // 不論是否答題完成都要跑以下程式碼
@@ -222,7 +221,9 @@ export default function setup() {
             router.push(`/admin/register`)
         } else {
             user.type = "employee"
-            router.push(`/questions/1`)
+            router.push({
+                name: 'questions-preference'
+            })
         }
         repoAuth.setUser(user)
         hideModals()

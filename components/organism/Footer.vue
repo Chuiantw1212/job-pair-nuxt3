@@ -22,7 +22,6 @@ export default {}
     width: 100%;
     margin: 0 auto;
     height: auto;
-    position: relative;
     color: white;
     display: flex;
     flex-direction: column;
