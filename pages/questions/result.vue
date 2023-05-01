@@ -1,23 +1,19 @@
 <template>
-    <div class="questions">
-        <div class="questions__result">
-            <img class="questions__leftImage" src="~/assets/questions/left.png" />
-            <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <div class="questions__frame">
-                <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
-                <h1 class="frame__title">註冊流程已完成</h1>
-                <div class="frame__textarea">
-                    接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
-                </div>
+    <div class="questions__result">
+        <div class="questions__frame">
+            <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
+            <h1 class="frame__title">註冊流程已完成</h1>
+            <div class="frame__textarea">
+                接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
             </div>
-            <div class="result__final">
-                <div v-if="state.isSigned" class="final__text">
-                    已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
-            </div>
-            <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
-            <div class="result__footer">
-                <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
-            </div>
+        </div>
+        <div v-if="state.isSigned" class="result__final">
+            <div class="final__text">
+                已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
+        </div>
+        <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
+        <div class="result__footer">
+            <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
         </div>
     </div>
 </template>
@@ -80,12 +76,10 @@ async function routeToJobs() {
 </script>
 <style lang="scss">
 .questions__result {
-    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 250px 5vw 200px 5vw;
-    min-height: calc(100vh - 88px);
+    padding: 200px 20px 0 20px;
 
     .questions__leftImage {
         position: absolute;
@@ -107,8 +101,7 @@ async function routeToJobs() {
         border: solid 1px #5b2714;
         background-color: #fff;
         position: relative;
-        min-width: 324px;
-        margin: auto;
+        margin: 0 auto;
 
         .frame__image {
             position: absolute;
@@ -220,6 +213,14 @@ async function routeToJobs() {
     .result__tooltip {
         .tooltip__icon {
             margin-left: 8px;
+        }
+    }
+}
+
+@media screen and (min-width:992px) {
+    .questions__result {
+        .questions__frame {
+            min-width: 324px;
         }
     }
 }

@@ -14,7 +14,6 @@ export default {
 <script setup>
 const route = useRoute()
 const router = useRouter()
-const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const state = reactive({
     tempUser: {
@@ -27,7 +26,7 @@ onMounted(async () => {
     const currentRouteName = route.name
     if (currentRouteName === 'questions') {
         router.replace({
-            name: 'questions-form'
+            name: 'questions-preference'
         })
     }
     if (process.client) {
@@ -42,15 +41,9 @@ watch(() => repoAuth.state.user, () => {
     }
 }, { immediate: true })
 watch(() => state.tempUser, () => {
-    console.log('setAnswers');
     localStorage.setItem("user", JSON.stringify(state.tempUser))
 }, { deep: true })
 // methods
-function setSessionUser() {
-    console.log('setAnswers');
-    // state.tempUser.preference[key] = value
-    localStorage.setItem("user", JSON.stringify(state.tempUser))
-}
 function getAnswers() {
     const userString = localStorage.getItem("user")
     if (!userString || userString === "false") {
@@ -61,7 +54,7 @@ function getAnswers() {
         user.preference = {}
     }
     if (!user.preference.culture) {
-        user.preference.culture = ['A']
+        user.preference.culture = []
     }
     state.tempUser = user
 }
@@ -95,6 +88,7 @@ function getAnswers() {
         right: 0;
         width: 15vw;
         bottom: 0;
+        z-index: -1;
     }
 }
 </style>

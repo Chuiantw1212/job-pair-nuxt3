@@ -1,7 +1,7 @@
 <template>
     <div class="inputDropdownContainer" ref="input">
         <div class="container__nameGroup"><span v-if="required" class="text-danger">* </span>{{ name }}
-            <span v-if="max">(最多{{ max }}個)</span>
+            <span v-if="max">(最多{{ max }}項)</span>
         </div>
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
