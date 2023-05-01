@@ -37,7 +37,7 @@ onMounted(() => {
     }
 })
 watch(() => repoAuth.state.user, async (newValue, oldValue) => {
-    if (newValue) {
+    if (newValue && repoEvent.state.eventId) {
         setEventInformation()
     }
 }, { immediate: true })
