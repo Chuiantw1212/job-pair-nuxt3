@@ -107,6 +107,12 @@ onMounted(() => {
 function handleConfirm() {
     emit('update:modelValue', state.afterChatGpt)
     state.afterChatGpt = ''
+    const ckEditor = currentInstance.refs.afterChatGpt
+    if (ckEditor) {
+        ckEditor.setData('')
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+    }
     state.chatModal.hide()
 }
 async function openModal() {
