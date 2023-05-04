@@ -18,7 +18,7 @@
                         <LazyAtomInputTextarea name="我的優勢" v-model="state.form.strength"
                             placeholder="針對職缺條件撰寫自我推薦，提高履歷被點開的機率。" :rows="2" class="mt-3">
                         </LazyAtomInputTextarea>
-                        <LazyAtomInputTextarea name="實際案例" v-model="state.form.strength"
+                        <LazyAtomInputTextarea name="實際案例" v-model="state.form.records"
                             placeholder="範例：在 YouTube 網紅世代剛開始時，我就在目前的公司提議導入網紅行銷，成為業界中首先切入網紅行銷的產品，事後證實成效很好。因為我願意不斷探索新的方式，才可能促成業界首例"
                             class="mt-3" :rows="4">
                         </LazyAtomInputTextarea>
@@ -27,7 +27,7 @@
                         <div class="footer__buttonGroup">
                             <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
                             </LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">開始生成
                             </LazyAtomBtnSimple>
                         </div>
                     </div>
@@ -54,6 +54,7 @@ const state = reactive({
     form: {
         jobTitle: "",
         strength: "",
+        records: "",
     },
     beforeChatGpt: '',
     afterChatGpt: '',
