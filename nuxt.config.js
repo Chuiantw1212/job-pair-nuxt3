@@ -65,7 +65,7 @@ export default defineNuxtConfig({
     // ... other options
     modules: [
         '@pinia/nuxt',
-        'nuxt-jsonld',
+        // 'nuxt-jsonld',
     ],
     vite: {
         define: {
