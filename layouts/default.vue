@@ -22,7 +22,7 @@ onMounted(async () => {
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
         repoSelect.getQuestions(),
-        startLiff()
+        // startLiff()
     ])
 })
 async function startLiff() {

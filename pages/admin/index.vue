@@ -139,7 +139,7 @@ onMounted(async () => {
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
-        await startLiff()
+        // await startLiff()
     }
 })
 async function startLiff() {
