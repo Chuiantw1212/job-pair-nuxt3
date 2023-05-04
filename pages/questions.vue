@@ -64,7 +64,6 @@ function getAnswers() {
     position: relative;
     background-color: white;
     min-height: calc(100vh - 88px);
-    z-index: 10;
     position: relative;
     padding-top: 20px;
     padding-bottom: 50px;
