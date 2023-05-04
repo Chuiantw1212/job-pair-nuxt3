@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div class="profile container">
         <div class="profile__header">最後一個步驟，<br class="d-lg-none">就完成會員註冊囉！</div>
         <div class="profile__body">
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="選擇職務類別" class="mt-4"
@@ -16,9 +16,10 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="resume__introduction mt-3"
-                :required="true" :toolbar="[]" placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。" :hasBtn="true"
-                ref="description">
+            <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="mt-3" :required="true" :toolbar="[]"
+                placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。" :hasBtn="true" ref="description">
+                <LazyOrganismIntroModal>
+                </LazyOrganismIntroModal>
             </LazyAtomInputCkeditor>
         </div>
         <div class="profile__footer">
