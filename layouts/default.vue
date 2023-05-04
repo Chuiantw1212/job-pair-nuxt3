@@ -22,7 +22,7 @@ onMounted(async () => {
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
         repoSelect.getQuestions(),
-        // startLiff()
+        startLiff()
     ])
 })
 async function startLiff() {
@@ -38,6 +38,7 @@ async function startLiff() {
             profile
         });
         state.profile = profile
+        window.open(`https://line.me/R/oaMEssage/@428awwlj/?測試訊息`)
         // const getProfileExample = {
         //     "userId": "U4af4980629...",
         //     "displayName": "Brown",
