@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-    name: 'textarea',
+    name: 'customTextarea',
     data: function () {
         return this.newData()
     },

@@ -18,7 +18,7 @@
             </LazyMoleculeProfileSelectContainer>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="mt-3" :required="true" :toolbar="[]"
                 placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。" :hasBtn="true" ref="description">
-                <LazyOrganismIntroModal>
+                <LazyOrganismIntroModal :occupationalCategory="modelValue.occupationalCategory">
                 </LazyOrganismIntroModal>
             </LazyAtomInputCkeditor>
         </div>
