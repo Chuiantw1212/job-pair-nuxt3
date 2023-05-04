@@ -1,9 +1,8 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-1" src="./Frame.svg" alt="icon">
+        <button class="chatGptModal__btn" @click="openModal()">
             簡歷產生器
-        </LazyAtomBtnSimple>
+        </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -12,7 +11,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
-                    <div class="modal-body" ref="modalBodyRef">
+                    <div class="modal-body">
                         <LazyAtomInputText name="期望的職位名稱" v-model="state.form.jobTitle" placeholder="例如：行銷專員" class="mt-3">
                         </LazyAtomInputText>
                         <LazyAtomInputTextarea name="我的優勢" v-model="state.form.strength"
@@ -40,7 +39,7 @@
 const { $bootstrap, $uuid4, $sweet, $requestSelector, $filter } = useNuxtApp()
 const repoChat = useRepoChat()
 const repoSelect = useRepoSelect()
-const emit = defineEmits(['applied', 'update:modelValue', 'request'])
+const emit = defineEmits(['update:modelValue',])
 const state = reactive({
     id: null,
     chatModal: null,
@@ -116,14 +115,7 @@ async function handleConfirm() {
         return
     }
     $sweet.loader(false)
-    // emit('update:modelValue', state.afterChatGpt)
-    // state.afterChatGpt = ''
-    // const ckEditor = currentInstance.refs.afterChatGpt
-    // if (ckEditor) {
-    //     ckEditor.setData('')
-    // } else {
-    //     console.log('Error trying to setInvitationTemplate: ', ckEditor);
-    // }
+    emit('update:modelValue', res.data)
     state.chatModal.hide()
 }
 async function openModal() {
@@ -134,31 +126,20 @@ function handleClose() {
     ckEditor.setData(props.modelValue)
     state.chatModal.hide()
 }
-const modalBodyRef = ref(null)
-async function handleOptimization() {
-    $sweet.loader(true, {
-        title: '泡杯咖啡再回來',
-        text: '「如果還沒好，那就再來一杯」',
-    })
-    const res = await props.chatRequest(state.beforeChatGpt)
-    if (res.status !== 200) {
-        return
-    }
-    $sweet.loader(false)
-    state.afterChatGpt = res.data
-    const ckEditor = currentInstance.refs.afterChatGpt
-    if (ckEditor) {
-        ckEditor.setData(res.data)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
-    }
-}
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    width: 115px;
-    height: 40px;
-    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+    color: #70a68f;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    margin-left: 16px;
 }
 
 .modal-content {

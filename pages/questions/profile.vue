@@ -17,8 +17,10 @@
                 </template>
             </LazyMoleculeProfileSelectContainer>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="mt-3" :required="true" :toolbar="[]"
-                placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。" :hasBtn="true" ref="description">
-                <LazyOrganismIntroModal :occupationalCategory="modelValue.occupationalCategory">
+                placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。或是使用 簡歷產生器 快速生成，之後也可在個人檔案重新編輯唷！" :hasBtn="true"
+                ref="description">
+                <LazyOrganismIntroModal :occupationalCategory="modelValue.occupationalCategory"
+                    @update:modelValue="setDescription($event)">
                 </LazyOrganismIntroModal>
             </LazyAtomInputCkeditor>
         </div>
@@ -65,6 +67,13 @@ const props = defineProps({
     }
 })
 // methods
+const currentInstance = getCurrentInstance()
+async function setDescription(data) {
+    const descriptionRef = currentInstance.refs.description
+    if (descriptionRef) {
+        descriptionRef.setData(data)
+    }
+}
 async function handleSubmit() {
     const user = Object.assign({}, repoAuth.state.user, props.modelValue)
     $sweet.loader(true)
