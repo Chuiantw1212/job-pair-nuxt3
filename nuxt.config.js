@@ -71,6 +71,11 @@ export default defineNuxtConfig({
         define: {
             "process.env.DEBUG": false,
         },
+        build: {
+            rollupOptions: {
+                external: ['@popperjs/core']
+            }
+        }
     },
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
