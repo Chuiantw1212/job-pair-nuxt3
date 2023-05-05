@@ -6,9 +6,9 @@
             <span v-if="hint">({{ hint }})</span>
         </div>
         <label class="inputGroup__label">
-            <textarea v-if="disabled" class="label__input label__input--disabled label__input--textarea " :disabled="true"
+            <textarea v-if="disabled" class="label__input label__input--disabled" :disabled="true"
                 :value="_value" :rows="rows" />
-            <textarea v-else class="label__input label__input--textarea" v-model="_value" :rows="rows"
+            <textarea v-else class="label__input" v-model="_value" :rows="rows"
                 :placeholder="placeholder" :data-required="required" :data-name="name" :message="message" autocomplete="off"
                 @keypress="$emit('keypress', $event)" @blur="$emit('blur', $event)" />
         </label>
@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-    name: 'textarea',
+    name: 'customTextarea',
     data: function () {
         return this.newData()
     },

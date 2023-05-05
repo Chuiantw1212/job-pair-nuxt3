@@ -1,33 +1,32 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-1" src="./Frame.svg" alt="icon">
-            一鍵優化
-        </LazyAtomBtnSimple>
+        <button class="chatGptModal__btn" @click="openModal()">
+            簡歷產生器
+        </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">一鍵優化</h4>
+                        <h4 class="modal-title">簡歷產生器</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
-                    <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
-                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
-                        </LazyAtomInputCkeditor>
-                        <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
-                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
-                            ref="afterChatGpt" :style="{ 'height': '324px' }">
-                        </LazyAtomInputCkeditor>
-                        <!-- </div> -->
+                    <div class="modal-body">
+                        <LazyAtomInputText name="期望的職位名稱" v-model="state.form.jobTitle" placeholder="例如：行銷專員" class="mt-3">
+                        </LazyAtomInputText>
+                        <LazyAtomInputTextarea name="我的優勢" v-model="state.form.strength"
+                            placeholder="針對職缺條件撰寫自我推薦，提高履歷被點開的機率。" :rows="2" class="mt-3">
+                        </LazyAtomInputTextarea>
+                        <LazyAtomInputTextarea name="實際案例" v-model="state.form.records"
+                            placeholder="範例：在 YouTube 網紅世代剛開始時，我就在目前的公司提議導入網紅行銷，成為業界中首先切入網紅行銷的產品，事後證實成效很好。因為我願意不斷探索新的方式，才可能促成業界首例"
+                            class="mt-3" :rows="4">
+                        </LazyAtomInputTextarea>
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
                             <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
                             </LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">開始生成
                             </LazyAtomBtnSimple>
                         </div>
                     </div>
@@ -37,28 +36,17 @@
     </div>
 </template>
 <script setup>
-/**
- * 
-您好！我叫朱奕安，很高興有這個機會面試貴公司的業務職位。我二○一二年畢業於中興大學行銷系。台中人。
-畢業之後，我就一直在普鴻公司從事業務工作。在將近四年的時間裡，我一步步走到了業務主管的職位。在這過程中，我開發了將近十個大客戶，年平均銷售額三百萬元，在公司排名第二。面試這個職位，我覺得我的優勢有以下三點：第一點，溝通能力強，能夠順利地和客戶打交道；第二點，抗壓能力強，能夠承受高業績帶來的壓力，並且調節好自己的情緒；第三點，有過成功的大客戶開發經驗，擅長專案管理。
-我非常欣賞貴公司的企業文化，而且這個職位也是我非常喜歡的，希望能夠有機會進入公司，謝謝。
-*/
-const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
-const repoJobApplication = useRepoJobApplication()
-const repoAuth = useRepoAuth()
-const emit = defineEmits(['applied', 'update:modelValue', 'request'])
-const router = useRouter()
+const { $bootstrap, $uuid4, $sweet, $requestSelector, $filter } = useNuxtApp()
+const repoChat = useRepoChat()
+const repoSelect = useRepoSelect()
+const emit = defineEmits(['update:modelValue',])
 const state = reactive({
     id: null,
     chatModal: null,
-    glideInstance: null,
-    glideIndex: 0,
-    resume: null,
-    duration: "",
-    schedules: [],
     form: {
-        subject: "",
-        template: "",
+        jobTitle: "",
+        strength: "",
+        records: "",
     },
     beforeChatGpt: '',
     afterChatGpt: '',
@@ -78,6 +66,12 @@ const props = defineProps({
         type: Function,
         default: function () {
             return false
+        }
+    },
+    occupationalCategory: {
+        type: Array,
+        default: function () {
+            return []
         }
     }
 })
@@ -104,15 +98,24 @@ onMounted(() => {
     }
 })
 // methods
-function handleConfirm() {
-    emit('update:modelValue', state.afterChatGpt)
-    state.afterChatGpt = ''
-    const ckEditor = currentInstance.refs.afterChatGpt
-    if (ckEditor) {
-        ckEditor.setData('')
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+async function handleConfirm() {
+    const occupationalCategory = props.occupationalCategory.map(item => {
+        return $filter.optionText(item, repoSelect.jobCategory)
+    })
+    const form = {
+        ...this.state.form,
+        occupationalCategory,
     }
+    $sweet.loader(true, {
+        title: '泡杯咖啡再回來',
+        text: '「如果還沒好，那就再來一杯」',
+    })
+    const res = await repoChat.postChatIntro(form)
+    if (res.status !== 200) {
+        return
+    }
+    $sweet.loader(false)
+    emit('update:modelValue', res.data)
     state.chatModal.hide()
 }
 async function openModal() {
@@ -123,31 +126,20 @@ function handleClose() {
     ckEditor.setData(props.modelValue)
     state.chatModal.hide()
 }
-const modalBodyRef = ref(null)
-async function handleOptimization() {
-    $sweet.loader(true, {
-        title: '泡杯咖啡再回來',
-        text: '「如果還沒好，那就再來一杯」',
-    })
-    const res = await props.chatRequest(state.beforeChatGpt)
-    if (res.status !== 200) {
-        return
-    }
-    $sweet.loader(false)
-    state.afterChatGpt = res.data
-    const ckEditor = currentInstance.refs.afterChatGpt
-    if (ckEditor) {
-        ckEditor.setData(res.data)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
-    }
-}
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    width: 115px;
-    height: 40px;
-    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+    color: #70a68f;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    margin-left: 16px;
 }
 
 .modal-content {

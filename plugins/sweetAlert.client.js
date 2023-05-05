@@ -4,6 +4,9 @@ export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             sweet: {
+                fire: async function (swalConfig) {
+                    return Swal.fire(swalConfig)
+                },
                 alert: async function (text = '', config) {
                     const swalConfig = Object.assign({
                         title: '錯誤',
