@@ -67,8 +67,8 @@
                                     <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                         aria-label="換圖片">
                                         <img class="env__glideImage" :style="{
-                                                    'background-image': `url(${image.url})`,
-                                                }" />
+                                            'background-image': `url(${image.url})`,
+                                        }" />
                                     </button>
                                 </li>
                             </template>
@@ -180,19 +180,19 @@ useSeoMeta({
         return `${runTime.public.origin}/company/${state.companyInfo.id}`
     }
 })
-// useJsonld(() => ({
-//     // https://schema.org/Organization
-//     '@context': 'https://schema.org',
-//     '@type': 'Corporation',
-//     email: company.value.email,
-//     logo: company.value.logo,
-//     description: company.value.description,
-//     identifier: company.value.id,
-//     url: `${runTime.public.origin}/company/${company.value.id}`,
-//     address: getLocationText(),
-//     location: getLocationText(),
-//     image: company.value.banner,
-// }));
+useJsonld(() => ({
+    // https://schema.org/Organization
+    '@context': 'https://schema.org',
+    '@type': 'Corporation',
+    email: company.value.email,
+    logo: company.value.logo,
+    description: company.value.description,
+    identifier: company.value.id,
+    url: `${runTime.public.origin}/company/${company.value.id}`,
+    address: getLocationText(),
+    location: getLocationText(),
+    image: company.value.banner,
+}));
 onMounted(async () => {
     state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]

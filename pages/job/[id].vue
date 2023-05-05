@@ -269,48 +269,48 @@ useSeoMeta({
         return `${runTime.public.origin}/job/${state.job.identifier}`
     }
 })
-// useJsonld(() => ({
-//     // https://schema.org/JobPosting
-//     '@context': 'https://schema.org',
-//     '@type': 'JobPosting',
-//     title: job.value.name,
-//     description: job.value.description,
-//     url: `${runTime.public.origin}/job/${job.value.identifier}`,
-//     image: job.value.image,
-//     identifier: job.value.identifier,
-//     applicantLocationRequirements: {
-//         "@type": "Country",
-//         "name": "Anywhere"
-//     },
-//     datePosted: job.value.datePosted,
-//     employmentType: job.value.employmentType,
-//     hiringOrganization: {
-//         "@type": "Organization",
-//         name: job.value.organizationName,
-//     },
-//     jobLocation: {
-//         "@type": "Place",
-//         address: {
-//             "@type": "PostalAddress",
-//             "streetAddress": job.value.streetAddress,
-//             "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
-//             "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
-//             "addressCountry": "台灣"
-//         }
-//     },
-//     "baseSalary": {
-//         "@type": "MonetaryAmount",
-//         "currency": "TWD",
-//         "value": {
-//             "@type": "QuantitativeValue",
-//             "minValue": job.value.salaryMin,
-//             "maxValue": job.value.salaryMax,
-//             "value": Math.floor((job.value.salaryMin + job.value.salaryMax) / 2),
-//             "unitText": job.value.salaryType
-//         }
-//     },
-//     jobLocationType: job.value.jobLocationType
-// }))
+useJsonld(() => ({
+    // https://schema.org/JobPosting
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.value.name,
+    description: job.value.description,
+    url: `${runTime.public.origin}/job/${job.value.identifier}`,
+    image: job.value.image,
+    identifier: job.value.identifier,
+    applicantLocationRequirements: {
+        "@type": "Country",
+        "name": "Anywhere"
+    },
+    datePosted: job.value.datePosted,
+    employmentType: job.value.employmentType,
+    hiringOrganization: {
+        "@type": "Organization",
+        name: job.value.organizationName,
+    },
+    jobLocation: {
+        "@type": "Place",
+        address: {
+            "@type": "PostalAddress",
+            "streetAddress": job.value.streetAddress,
+            "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
+            "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
+            "addressCountry": "台灣"
+        }
+    },
+    "baseSalary": {
+        "@type": "MonetaryAmount",
+        "currency": "TWD",
+        "value": {
+            "@type": "QuantitativeValue",
+            "minValue": job.value.salaryMin,
+            "maxValue": job.value.salaryMax,
+            "value": Math.floor((job.value.salaryMin + job.value.salaryMax) / 2),
+            "unitText": job.value.salaryType
+        }
+    },
+    jobLocationType: job.value.jobLocationType
+}))
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
