@@ -67,8 +67,8 @@
                                     <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                         aria-label="換圖片">
                                         <img class="env__glideImage" :style="{
-                                                    'background-image': `url(${image.url})`,
-                                                }" />
+                                            'background-image': `url(${image.url})`,
+                                        }" />
                                     </button>
                                 </li>
                             </template>
