@@ -122,8 +122,6 @@ async function openModal() {
     state.chatModal.show()
 }
 function handleClose() {
-    const ckEditor = currentInstance.refs.beforeChatGpt
-    ckEditor.setData(props.modelValue)
     state.chatModal.hide()
 }
 </script>
