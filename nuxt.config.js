@@ -73,7 +73,7 @@ export default defineNuxtConfig({
         },
         build: {
             rollupOptions: {
-                external: ['@popperjs/core']
+                external: ['/@popperjs/core']
             }
         }
     },
