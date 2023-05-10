@@ -322,6 +322,7 @@ async function addJobDraft() {
     state.jobList.unshift(res.data)
     const { identifier = '' } = res.data
     router.push(`jobs/${identifier}`)
+    $sweet.loader(false)
 }
 </script>
 <style lang="scss" scoped>
