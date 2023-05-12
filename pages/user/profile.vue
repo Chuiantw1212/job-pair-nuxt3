@@ -44,11 +44,15 @@
                         </LazyMoleculeFilterCategory>
                     </template>
                 </LazyMoleculeProfileSelectContainer>
-                <div class="profile__management">
+                <div class="profile__management mt-3">
                     帳戶管理
                     <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
                 </div>
-                <LazyAtomBtnSimple class="mt-2" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
+                <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.subscribed"
+                    name="目前求職狀態">
+                    <span class="isActive__desc">我願意收到EDM</span>
+                </LazyAtomInputCheckSingle>
+                <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="求職資訊" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profile.isActive" name="目前求職狀態">
@@ -141,11 +145,12 @@ function initialize() {
     }
     // 生成預設格式
     const profile = JSON.parse(JSON.stringify(user))
-    const { resumes = [], portfolio = [], isActive = true, educationCategory = [], certificates = [] } = user
+    const { resumes = [], portfolio = [], isActive = true, educationCategory = [], certificates = [], subscribed } = user
     profile.resumes = resumes ?? []
     profile.certificates = certificates ?? []
     profile.portfolio = portfolio ?? []
     profile.isActive = isActive ?? true
+    profile.subscribed = subscribed ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
 }
