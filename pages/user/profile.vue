@@ -49,7 +49,7 @@
                     <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
                 </div>
                 <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profile.subscribed"
-                    name="目前求職狀態">
+                    name="EDM訂閱">
                     <span class="isActive__desc">我願意收到EDM</span>
                 </LazyAtomInputCheckSingle>
                 <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
