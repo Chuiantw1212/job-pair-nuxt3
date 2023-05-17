@@ -187,7 +187,6 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
-const { locationRes = {} } = repoSelect.state
 const repoCompany = useRepoCompany()
 const jobScroller = useJobScroller()
 const device = useDevice()
@@ -248,6 +247,7 @@ const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
+const { data: location } = await useFetch(`${runTime.public.apiBase}/select/location`, { initialCache: false })
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
@@ -272,6 +272,12 @@ useSeoMeta({
 useJsonld(() => {
     const validThroughDate = new Date(job.value.datePosted)
     validThroughDate.setDate(validThroughDate.getDate() + 7)
+    const locationValue = location.value
+    const addressRegionItems = locationValue[job.value.addressRegion]
+    const targetRegion = addressRegionItems.find(item => {
+        return item.value === job.value.addressLocality
+    })
+    const { text: addressLocality = '', postalCode } = targetRegion
     const jsonld = {
         // https://schema.org/JobPosting
         '@context': 'https://schema.org',
@@ -297,8 +303,9 @@ useJsonld(() => {
             address: {
                 "@type": "PostalAddress",
                 "streetAddress": job.value.streetAddress,
-                "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
-                "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
+                "addressRegion": $filter.optionText(job.value.addressRegion, locationValue?.taiwan),
+                "addressLocality": addressLocality,
+                "postalCode": postalCode,
                 "addressCountry": "台灣"
             }
         },
