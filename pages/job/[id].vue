@@ -270,6 +270,8 @@ useSeoMeta({
     }
 })
 useJsonld(() => {
+    const validThroughDate = new Date(job.value.datePosted)
+    validThroughDate.setDate(validThroughDate.getDate() + 7)
     const jsonld = {
         // https://schema.org/JobPosting
         '@context': 'https://schema.org',
@@ -284,6 +286,7 @@ useJsonld(() => {
             "name": "Anywhere"
         },
         datePosted: job.value.datePosted,
+        validThrough: validThroughDate.toISOString(),
         employmentType: job.value.employmentType,
         hiringOrganization: {
             "@type": "Organization",
