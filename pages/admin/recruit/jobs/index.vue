@@ -50,9 +50,6 @@
                             <NuxtLink class="table__jobName" :to="`jobs/${job.identifier}`">
                                 {{ getJobName(job) }}
                             </NuxtLink>
-                            <!-- <LazyOrganismJobEditModal v-model="state.jobList[index]" @remove="removeJob(index)"
-                                ref="jobModalRefs">
-                            </LazyOrganismJobEditModal> -->
                         </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">
@@ -229,9 +226,7 @@ async function checkJobStatus(newStatus, job, index) {
             state.jobList[index].status = 'closed'
             state.renderKey = Math.random()
             await $sweet.info('職缺資料未完成，確認後繼續完成職缺')
-            const jobModals = currentInstance.refs.jobModalRefs
-            const targetModal = jobModals[index]
-            targetModal.openModal('active')
+            router.push(`jobs/${job.identifier}`)
             return
         }
     }
