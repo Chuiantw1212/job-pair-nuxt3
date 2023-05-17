@@ -73,13 +73,9 @@ function showModal() {
     renderFirebaseUI()
 }
 async function renderFirebaseUI() {
-    console.log('renderFirebaseUI');
     const firebaseAuth = firebase.auth()
     const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
     const isPendingRedirect = ui.isPendingRedirect()
-    console.log({
-        isPendingRedirect
-    });
     if (isPendingRedirect) {
         $sweet.loader(true)
     }
