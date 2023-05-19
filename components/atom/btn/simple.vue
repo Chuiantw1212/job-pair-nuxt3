@@ -70,7 +70,7 @@ onMounted(() => {
     border: 1px solid #29b0ab;
 
     &:hover {
-        background-color: unset;
+        background-color: white;
         color: #21cc90;
     }
 }
