@@ -24,6 +24,9 @@
                     <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
                         <img class="icons__Group__image" src="./icon_nav_member.svg" alt="account" />
                     </NuxtLink>
+                    <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
+                        <img class="icons__Group__image" src="./jobgpt.svg" alt="account" />
+                    </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()">
