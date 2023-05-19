@@ -24,7 +24,7 @@
                     <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
                         <img class="icons__Group__image" src="./icon_nav_member.svg" alt="account" />
                     </NuxtLink>
-                    <NuxtLink class="icons__Group" :to="{ name: 'user-profile' }">
+                    <NuxtLink class="icons__Group" :to="{ name: 'user-chatgpt' }">
                         <img class="icons__Group__image" src="./jobgpt.svg" alt="account" />
                     </NuxtLink>
                 </div>

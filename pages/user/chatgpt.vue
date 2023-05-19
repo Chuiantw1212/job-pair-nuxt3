@@ -42,6 +42,22 @@
                 </li>
             </ul>
         </div>
+        <div class="chatgpt__card">
+            <div class="card__header">
+
+            </div>
+            <div class="card__body">
+                <h2 class="body__title">如何寫簡歷？</h2>
+                <div class="body__desc">
+                    寫一份簡歷，突出你的任職資格，包括[你的姓名]，[工作年限]，以及你最近的兩個職位和任職日期。 例如，[工作1 - 職位]、[工作1公司名稱]、[工作1日期範圍]和[工作2 -
+                    職位]、[工作2公司名稱〕、[工作2日期範圍]。
+                    <br><br>
+
+                    此外，還應包括你的教育背景資訊，包括[你畢業的學校名稱]、[你的專業]和[你的畢業年份]。
+                </div>
+                <AtomBtnSimple class="body__btn btnSimple--outline--success ">點我複製</AtomBtnSimple>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -88,6 +104,7 @@
                 letter-spacing: normal;
                 text-align: center;
                 color: #5ea88e;
+                max-width: 64px;
 
                 .item__badge {
                     width: 60px;
@@ -110,6 +127,46 @@
                 .item__text {
                     margin-top: 16px;
                 }
+            }
+        }
+    }
+
+    .chatgpt__card {
+        margin-top: 24px;
+
+        .card__header {
+            height: 7px;
+            background-color: #5ea88e;
+        }
+
+        .card__body {
+            padding: 20px;
+            background-color: white;
+
+            .body__title {
+                font-size: 16px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #333;
+            }
+
+            .body__desc {
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #333;
+            }
+
+            .body__btn {
+                margin-top: 16px;
             }
         }
     }
