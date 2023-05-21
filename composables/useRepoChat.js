@@ -20,6 +20,15 @@ export default defineStore('chat', () => {
         })
         return response
     }
+    async function postChatJdGenerate(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/chat/jobDescription/generate`,
+            data,
+            timeout: 180000,
+        })
+        return response
+    }
     async function postChatJobDescription(data) {
         const { content = '' } = data
         const dataBlob = new Blob([content])
@@ -40,5 +49,6 @@ export default defineStore('chat', () => {
         postChatProfile,
         postChatJobDescription,
         postChatIntro,
+        postChatJdGenerate,
     }
 })
