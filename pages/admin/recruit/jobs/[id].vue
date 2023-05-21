@@ -80,6 +80,7 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
+            <LazyOrganismJdGenerator></LazyOrganismJdGenerator>
             <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
                 :disabled="state.job.jobLocationType === 'fullyRemote'">
             </LazyAtomInputText> -->
