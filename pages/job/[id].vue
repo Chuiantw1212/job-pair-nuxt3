@@ -274,10 +274,13 @@ useJsonld(() => {
     validThroughDate.setDate(validThroughDate.getDate() + 7)
     const locationValue = location.value
     const addressRegionItems = locationValue[job.value.addressRegion]
-    const targetRegion = addressRegionItems.find(item => {
-        return item.value === job.value.addressLocality
-    })
-    const { text: addressLocality = '', postalCode } = targetRegion
+    let targetRegion = {}
+    if (addressRegionItems) {
+        targetRegion = addressRegionItems.find(item => {
+            return item.value === job.value.addressLocality
+        })
+    }
+    const { text: addressLocality = null, postalCode = null } = targetRegion
     const jsonld = {
         // https://schema.org/JobPosting
         '@context': 'https://schema.org',
