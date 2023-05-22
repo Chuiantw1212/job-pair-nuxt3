@@ -121,7 +121,9 @@ async function submitNewPass() {
         state.newPass = null
         state.newPassAgain = null
         state.toggleChangePassword = false
-        $sweet.succeed('修改密碼完成')
+        $sweet.succeed({
+            text: '修改密碼完成',
+        })
     } catch (error) {
         // 更新失敗
         $sweet.alert(error.message)
@@ -150,7 +152,8 @@ async function submitProfile() {
         background-color: #fafafa;
         padding: 45px 64px;
         border-radius: 10px;
-        .card__headerGroup{
+
+        .card__headerGroup {
             display: flex;
             gap: 8px;
         }
