@@ -12,11 +12,11 @@
                         會員中心
                     </NuxtLink>
                 </li>
-                <li class="nav-item" @click="emit('collapse')">
+                <!-- <li class="nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" to="/jobgpt">
                         JobGpt
                     </NuxtLink>
-                </li>
+                </li> -->
             </template>
             <template v-else>
                 <li class="nav-item" @click="emit('collapse')">
@@ -43,11 +43,11 @@
             <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <NuxtLink class="navItem__button" to="/jobgpt">
                     JobGpt
                 </NuxtLink>
-            </li>
+            </li> -->
         </template>
     </ul>
 </template>
