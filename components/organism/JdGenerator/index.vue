@@ -73,10 +73,15 @@ const state = reactive({
     duration: "",
     schedules: [],
     form: {
-        manager: false,
-        primary: [],
-        secondary: [],
-        personality: [],
+        manager: true,
+        primary: [
+            '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
+            '規劃與執行公司對內、外的行銷活動（如：展覽、促銷活動）',
+            '熟悉社群媒體經營，撰寫文案、各媒體及新聞稿等相關事務',
+            '行銷製作物規劃與執行、品牌行銷管理（如：產品型錄、簡介、贈品等銷售工具）'
+        ],
+        secondary: ['跨部門溝通協調、創意發想', '其他主管交辦事項'],
+        personality: ['堅定，目標導向', '冒險，自我挑戰', '追求成就', '企圖心高'],
     },
     question1: [
         {
