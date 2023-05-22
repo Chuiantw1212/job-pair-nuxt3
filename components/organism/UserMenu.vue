@@ -16,7 +16,7 @@
                     <NuxtLink class="navItem__button" to="/cvgpt">
                         CVgpt
                     </NuxtLink>
-                </li> -->
+                </li>
             </template>
             <template v-else>
                 <li class="nav-item" @click="emit('collapse')">
@@ -47,7 +47,7 @@
                 <NuxtLink class="navItem__button" to="/cvgpt">
                     CVgpt
                 </NuxtLink>
-            </li> -->
+            </li>
         </template>
     </ul>
 </template>
