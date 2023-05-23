@@ -172,8 +172,10 @@
     </div>
 </template>
 <script setup>
+import { Buffer } from 'buffer/'
 const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
+const runTime = useRuntimeConfig()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
@@ -286,11 +288,24 @@ async function streamResume(item = {}) {
     if (res.status !== 200) {
         return
     }
-    const resumeBlob = res.data
-    console.log('resumeBlob', typeof resumeBlob);
-    const pdffile_url = URL.createObjectURL(resumeBlob)
-    window.open(pdffile_url, '_blank')
-    console.log('resumeBlob', resumeBlob)
+    // const buffer = res.data
+    // let formatBuffer = buffer
+    // if (!(buffer instanceof Uint8Array)) {
+    //     formatBuffer = Buffer.from(buffer)
+    // }
+    // const typedArray = new Uint8Array(formatBuffer)
+    // const blob = new Blob([typedArray], { type: 'application/pdf' })
+    // const pdffile_url = URL.createObjectURL(blob)
+    // const newTab = window.open(pdffile_url, '_blank')
+    // newTab.document.title = fileName
+
+    // const anchorElement = document.createElement('a');
+    // anchorElement.href = pdffile_url;
+    // anchorElement.download = fileName;
+    // anchorElement.click();
+    // window.URL.revokeObjectURL(url);
+
+    // window.open(pdffile_url, '_blank')
 }
 function resetApplicantId() {
     state.applicantId = ''

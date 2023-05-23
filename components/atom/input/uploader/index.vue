@@ -109,7 +109,7 @@ export default {
                 }
                 reader.onerror = (error) => reject(error)
             })
-            const { lastModified, name, size, type } = file
+            const { name, size, type } = file
             const buffer = Buffer.from(arrayBuffer)
             const newResume = {
                 url: URL.createObjectURL(file),
