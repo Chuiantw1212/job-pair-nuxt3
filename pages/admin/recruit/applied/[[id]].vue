@@ -137,14 +137,14 @@
                                 <div v-if="item.applyFlow === 'notified'" class="footer__date">
                                     邀約時間：{{ getUpdatedDate(item) }}
                                 </div>
-                                <AtomBtnSimple v-if="item.resume && item.resume.url" @click="streamResume(item)">
-                                    查看履歷
+                                <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
+                                    @click="previewResume(item)">
+                                    下載履歷
                                 </AtomBtnSimple>
-                                <!-- <a v-if="item.resume && item.resume.url" class="footer__preview" :href="item.resume.url"
-                                    target="_blank">
-                                    <img src="~/assets/admin/icon_link.svg">
-                                    
-                                </a> -->
+                                <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
+                                    @click="downloadResume(item)">
+                                    預覽履歷
+                                </AtomBtnSimple>
                             </div>
                         </div>
                         <hr>
@@ -273,7 +273,7 @@ watch(() => state.searchForm, (newValue, oldValue) => {
     })()
 }, { deep: true })
 // methods
-async function streamResume(item = {}) {
+async function getFileUrl(item = {}) {
     const { resume = {}, applicantId = '', jobId = '', } = item
     const { url = '' } = resume
     if (!url) {
@@ -288,24 +288,28 @@ async function streamResume(item = {}) {
     if (res.status !== 200) {
         return
     }
-    // const buffer = res.data
-    // let formatBuffer = buffer
-    // if (!(buffer instanceof Uint8Array)) {
-    //     formatBuffer = Buffer.from(buffer)
-    // }
-    // const typedArray = new Uint8Array(formatBuffer)
-    // const blob = new Blob([typedArray], { type: 'application/pdf' })
-    // const pdffile_url = URL.createObjectURL(blob)
-    // const newTab = window.open(pdffile_url, '_blank')
-    // newTab.document.title = fileName
-
-    // const anchorElement = document.createElement('a');
-    // anchorElement.href = pdffile_url;
-    // anchorElement.download = fileName;
-    // anchorElement.click();
-    // window.URL.revokeObjectURL(url);
-
-    // window.open(pdffile_url, '_blank')
+    const buffer = res.data
+    let formatBuffer = buffer
+    if (!(buffer instanceof Uint8Array)) {
+        formatBuffer = Buffer.from(buffer)
+    }
+    const typedArray = new Uint8Array(formatBuffer)
+    const blob = new Blob([typedArray], { type: 'application/pdf' })
+    const objectUrl = URL.createObjectURL(blob)
+    return objectUrl
+}
+async function previewResume(item = {}) {
+    const objectUrl = await getFileUrl(item)
+    window.open(objectUrl, '_blank')
+    window.URL.revokeObjectURL(objectUrl);
+}
+async function downloadResume(item = {}) {
+    const objectUrl = await getFileUrl(item)
+    const anchorElement = document.createElement('a');
+    anchorElement.href = objectUrl;
+    anchorElement.download = fileName;
+    anchorElement.click();
+    window.URL.revokeObjectURL(objectUrl);
 }
 function resetApplicantId() {
     state.applicantId = ''
