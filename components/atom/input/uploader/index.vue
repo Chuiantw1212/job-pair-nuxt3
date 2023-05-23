@@ -9,7 +9,6 @@
                     <div v-if="checkIsImage(item)">
                         <img :src="item.url" class="previewGroup__item__viewer">
                     </div>
-                    <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
                     <div class="previewGroup__item__body">
                         <div v-if="item.name" class="previewGroup__item__body__item">
                             <div class="item__name">
@@ -21,9 +20,9 @@
                         </div>
                         <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
                             {{ $filter.time(item.date) }}
-                            <button class="doc__btn" @click="openResume(item)">
+                            <!-- <button class="doc__btn" @click="openResume(item)">
                                 <img class="btn__icon" src="./icon_preview_g.svg" />
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </div>

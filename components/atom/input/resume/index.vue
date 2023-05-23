@@ -10,9 +10,9 @@
                 <input v-show="false" class="body__input" :placeholder="placeholder" :disabled="disabled"
                     autocomplete="off" type="file" accept=".pdf" @change="handleFiles($event)" />
             </label>
-            <button v-if="hasPreviewButton" class="body__preview" @click="openResume()">
+            <!-- <button v-if="hasPreviewButton" class="body__preview" @click="openResume()">
                 <img class="preview__icon" src="./icon_preview_g.svg" />
-            </button>
+            </button> -->
         </div>
         <iframe v-if="modelValue && modelValue.buffer" v-show="hasPreview" id="inputGroup__viewer"
             class="inputGroup__viewer"></iframe>
