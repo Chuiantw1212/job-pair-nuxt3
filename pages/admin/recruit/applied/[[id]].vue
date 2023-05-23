@@ -64,8 +64,7 @@
         <div class="appliedList__form">
             <div class="form__selectGroup">
                 <LazyAtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
-                    :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'"
-                    :itemText="'name'">
+                    :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'" :itemText="'name'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
                     :itemText="'name'" :itemValue="'applicantId'" @change="replaceParamsId()">
@@ -138,11 +137,14 @@
                                 <div v-if="item.applyFlow === 'notified'" class="footer__date">
                                     邀約時間：{{ getUpdatedDate(item) }}
                                 </div>
-                                <a v-if="item.resume && item.resume.url" class="footer__preview" :href="item.resume.url"
+                                <AtomBtnSimple v-if="item.resume && item.resume.url" @click="streamResume(item)">
+                                    查看履歷
+                                </AtomBtnSimple>
+                                <!-- <a v-if="item.resume && item.resume.url" class="footer__preview" :href="item.resume.url"
                                     target="_blank">
                                     <img src="~/assets/admin/icon_link.svg">
-                                    查看履歷
-                                </a>
+                                    
+                                </a> -->
                             </div>
                         </div>
                         <hr>
@@ -150,8 +152,8 @@
                             <LazyOrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
                             </LazyOrganismScheduleModal>
-                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'"
-                                v-model="state.applications[index]" @update:modelValue="updateChart()">
+                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
+                                @update:modelValue="updateChart()">
                                 婉拒
                             </LazyOrganismRejectModal>
                             <LazyAtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
@@ -174,6 +176,7 @@ const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
+const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
 const router = useRouter()
@@ -268,6 +271,27 @@ watch(() => state.searchForm, (newValue, oldValue) => {
     })()
 }, { deep: true })
 // methods
+async function streamResume(item = {}) {
+    const { resume = {}, applicantId = '', jobId = '', } = item
+    const { url = '' } = resume
+    if (!url) {
+        return
+    }
+    const fileName = url.split('/').slice(-1)[0]
+    const res = await repoJob.getJobApplicantResume({
+        jobId,
+        applicantId,
+        fileName,
+    })
+    if (res.status !== 200) {
+        return
+    }
+    const resumeBlob = res.data
+    console.log('resumeBlob', typeof resumeBlob);
+    const pdffile_url = URL.createObjectURL(resumeBlob)
+    window.open(pdffile_url, '_blank')
+    console.log('resumeBlob', resumeBlob)
+}
 function resetApplicantId() {
     state.applicantId = ''
 }
