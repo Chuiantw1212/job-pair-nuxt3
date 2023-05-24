@@ -146,7 +146,6 @@
                                     <img src="~/assets/admin/icon_link.svg" alt="preview" />
                                     預覽履歷
                                 </AtomBtnSimple>
-                                <LazyOrganismPdfModal :modelValue="item"></LazyOrganismPdfModal>
                             </div>
                         </div>
                         <hr>
@@ -303,15 +302,7 @@ async function getFileUrl(item = {}) {
 }
 async function downloadResume(item = {}) {
     const { buffer, fileName } = await getFileUrl(item)
-    // create url
-    // let formatBuffer = buffer
-    // if (!(buffer instanceof Uint8Array)) {
-    //     formatBuffer = Buffer.from(buffer)
-    // }
-    // const typedArray = new Uint8Array(formatBuffer)
-    const blob = new Blob([buffer], { type: 'application/pdf' })
-    const objectUrl = URL.createObjectURL(blob)
-    // download
+    const objectUrl = URL.createObjectURL(buffer)
     const anchorElement = document.createElement('a');
     anchorElement.href = objectUrl
     anchorElement.download = fileName
@@ -319,10 +310,8 @@ async function downloadResume(item = {}) {
     anchorElement.click()
 }
 async function previewResume(item = {}) {
-    const { buffer, objectUrl } = await getFileUrl(item)
+    const { objectUrl } = await getFileUrl(item)
     window.open(objectUrl, "_blank")
-    // const dataURI = "data:application/pdf;base64," + buffer
-    // window.open(dataURI, '_blank')
 }
 function resetApplicantId() {
     state.applicantId = ''
