@@ -138,11 +138,12 @@
                                     邀約時間：{{ getUpdatedDate(item) }}
                                 </div>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
-                                    @click="previewResume(item)">
+                                    @click="downloadResume(item)">
                                     下載履歷
                                 </AtomBtnSimple>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
-                                    @click="downloadResume(item)">
+                                    @click="previewResume(item)">
+                                    <img src="~/assets/admin/icon_link.svg" alt="preview" />
                                     預覽履歷
                                 </AtomBtnSimple>
                             </div>
@@ -173,7 +174,7 @@
 </template>
 <script setup>
 import { Buffer } from 'buffer/'
-const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
+const { $time, $optionText, $rank, $sweet } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const runTime = useRuntimeConfig()
 const repoCompany = useRepoCompany()
@@ -280,11 +281,13 @@ async function getFileUrl(item = {}) {
         return
     }
     const fileName = url.split('/').slice(-1)[0]
+    $sweet.loader(true)
     const res = await repoJob.getJobApplicantResume({
         jobId,
         applicantId,
         fileName,
     })
+    $sweet.loader(false)
     if (res.status !== 200) {
         return
     }
@@ -298,18 +301,17 @@ async function getFileUrl(item = {}) {
     const objectUrl = URL.createObjectURL(blob)
     return objectUrl
 }
-async function previewResume(item = {}) {
-    const objectUrl = await getFileUrl(item)
-    window.open(objectUrl, '_blank')
-    window.URL.revokeObjectURL(objectUrl);
-}
 async function downloadResume(item = {}) {
     const objectUrl = await getFileUrl(item)
     const anchorElement = document.createElement('a');
     anchorElement.href = objectUrl;
-    anchorElement.download = fileName;
     anchorElement.click();
-    window.URL.revokeObjectURL(objectUrl);
+    // window.URL.revokeObjectURL(objectUrl);
+}
+async function previewResume(item = {}) {
+    const objectUrl = await getFileUrl(item)
+    window.open(objectUrl, '_blank')
+    // window.URL.revokeObjectURL(objectUrl);
 }
 function resetApplicantId() {
     state.applicantId = ''
@@ -743,8 +745,8 @@ async function initializeSearch() {
 
                 .profile__footer {
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
+                    gap: 8px;
 
                     .footer__date {
                         font-size: 16px;
@@ -765,6 +767,7 @@ async function initializeSearch() {
                         display: flex;
                         align-items: center;
                         gap: 8px;
+                        width: fit-content;
                     }
                 }
             }
