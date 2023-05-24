@@ -30,12 +30,11 @@ export default defineStore('user', () => {
         })
         return response
     }
-    async function putUserResume(data) {
+    async function getUserResume(data) {
         const response = await jobPairApi.request({
-            method: 'put',
-            url: `/user/${data.uid}/resume`,
-            data: data.file,
-            commit: true,
+            method: 'get',
+            url: `/user/resume/${data.fileName}`,
+            responseType: 'blob',
         })
         return response
     }
@@ -77,10 +76,10 @@ export default defineStore('user', () => {
         deleteUser,
         postUser,
         patchUserProfile,
-        putUserResume,
         putUserResumes,
         putUserCertificates,
         putUserPhoto,
         patchUserPreference,
+        getUserResume,
     }
 })

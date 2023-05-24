@@ -20,9 +20,9 @@
                         </div>
                         <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
                             {{ $filter.time(item.date) }}
-                            <!-- <button class="doc__btn" @click="openResume(item)">
+                            <button class="doc__btn" @click="openResume(item)">
                                 <img class="btn__icon" src="./icon_preview_g.svg" />
-                            </button> -->
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -70,6 +70,10 @@ export default {
         max: {
             type: Number,
             default: 0
+        },
+        getFileUrl: {
+            type: Function,
+            default: function () { }
         }
     },
     computed: {
@@ -131,7 +135,10 @@ export default {
             this.$emit("update:modelValue", newResumes)
         },
         async openResume(item) {
-            window.open(item.url)
+            const itemUrl = await this.getFileUrl(item)
+            if (itemUrl) {
+                window.open(item.url, '_blank')
+            }
         },
         async deleteResume(row = 0, col = 0) {
             const index = (row - 1) * 3 + col

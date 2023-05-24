@@ -295,14 +295,12 @@ async function getFileUrl(item = {}) {
     const blob = new Blob([buffer], { type: 'application/pdf' })
     const objectUrl = URL.createObjectURL(blob)
     return {
-        buffer,
         fileName,
         objectUrl
     }
 }
 async function downloadResume(item = {}) {
-    const { buffer, fileName } = await getFileUrl(item)
-    const objectUrl = URL.createObjectURL(buffer)
+    const { objectUrl, fileName } = await getFileUrl(item)
     const anchorElement = document.createElement('a');
     anchorElement.href = objectUrl
     anchorElement.download = fileName
