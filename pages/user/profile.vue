@@ -83,7 +83,8 @@
                         :items="repoSelect.state.selectByQueryRes.proficiency">
                     </LazyAtomInputRadio>
                 </div>
-                <LazyAtomInputUploader class="mt-3" v-model="state.profile.certificates" name="證照與證明">
+                <LazyAtomInputUploader class="mt-3" v-model="state.profile.certificates" :getFileBuffer="getUserCertificate"
+                    name="證照與證明">
                 </LazyAtomInputUploader>
                 <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profile.description" hint="此區塊將會揭露給企業端參考"
                     class="resume__introduction mt-3" :required="state.profile.isActive"
@@ -95,7 +96,7 @@
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
-                    :required="device.state.isLarge" :getFileBuffer="getFileBuffer">
+                    :required="device.state.isLarge" :getFileBuffer="getUserResume">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
@@ -154,7 +155,21 @@ function initialize() {
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
 }
-async function getFileBuffer(item = {}) {
+async function getUserCertificate(item = {}) {
+    const { name = '', url = '', } = item
+    console.log(item);
+    $sweet.loader(true)
+    const res = await repoUser.getUserCertificate({
+        fileName: name,
+    })
+    $sweet.loader(false)
+    if (res.status !== 200) {
+        return
+    }
+    const buffer = res.data
+    return buffer
+}
+async function getUserResume(item = {}) {
     const { name = '' } = item
     $sweet.loader(true)
     const res = await repoUser.getUserResume({

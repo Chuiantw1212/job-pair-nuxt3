@@ -30,6 +30,14 @@ export default defineStore('user', () => {
         })
         return response
     }
+    async function getUserCertificate(data) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/user/certificate/${data.fileName}`,
+            responseType: 'blob',
+        })
+        return response
+    }
     async function getUserResume(data) {
         const response = await jobPairApi.request({
             method: 'get',
@@ -81,5 +89,6 @@ export default defineStore('user', () => {
         putUserPhoto,
         patchUserPreference,
         getUserResume,
+        getUserCertificate,
     }
 })
