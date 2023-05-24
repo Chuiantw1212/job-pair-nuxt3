@@ -299,17 +299,21 @@ async function getFileUrl(item = {}) {
     const typedArray = new Uint8Array(formatBuffer)
     const blob = new Blob([typedArray], { type: 'application/pdf' })
     const objectUrl = URL.createObjectURL(blob)
-    return objectUrl
+    return {
+        objectUrl,
+        fileName,
+    }
 }
 async function downloadResume(item = {}) {
-    const objectUrl = await getFileUrl(item)
+    const { objectUrl, fileName } = await getFileUrl(item)
     const anchorElement = document.createElement('a');
-    anchorElement.href = objectUrl;
-    anchorElement.click();
-    // window.URL.revokeObjectURL(objectUrl);
+    anchorElement.href = objectUrl
+    anchorElement.download = fileName
+    anchorElement.style.visibility = 'hidden'
+    anchorElement.click()
 }
 async function previewResume(item = {}) {
-    const objectUrl = await getFileUrl(item)
+    const { objectUrl } = await getFileUrl(item)
     window.open(objectUrl, '_blank')
     // window.URL.revokeObjectURL(objectUrl);
 }
