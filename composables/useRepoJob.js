@@ -10,6 +10,11 @@ export default defineStore('job', () => {
         const response = await jobPairApi.request({
             method: 'get',
             url: `/job/${jobId}/${applicantId}/${fileName}`,
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'Accept': 'application/pdf'
+            // },
+            responseType: 'blob',
         })
         return response
     }

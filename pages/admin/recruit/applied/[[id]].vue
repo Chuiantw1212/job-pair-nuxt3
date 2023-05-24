@@ -74,7 +74,7 @@
             </div>
         </div>
         <ul v-if="getFilteredItems().length" class="appliedList__list">
-            <li v-for="(item, index) in  getFilteredItems()" :key="index">
+            <li v-for="(item, index) in getFilteredItems()" :key="index">
                 <div class="list__item__content">
                     <div class="content__header">
                         <div>
@@ -146,6 +146,7 @@
                                     <img src="~/assets/admin/icon_link.svg" alt="preview" />
                                     預覽履歷
                                 </AtomBtnSimple>
+                                <LazyOrganismPdfModal :modelValue="item"></LazyOrganismPdfModal>
                             </div>
                         </div>
                         <hr>
@@ -292,20 +293,25 @@ async function getFileUrl(item = {}) {
         return
     }
     const buffer = res.data
-    let formatBuffer = buffer
-    if (!(buffer instanceof Uint8Array)) {
-        formatBuffer = Buffer.from(buffer)
-    }
-    const typedArray = new Uint8Array(formatBuffer)
-    const blob = new Blob([typedArray], { type: 'application/pdf' })
+    const blob = new Blob([buffer], { type: 'application/pdf' })
     const objectUrl = URL.createObjectURL(blob)
     return {
-        objectUrl,
+        buffer,
         fileName,
+        objectUrl
     }
 }
 async function downloadResume(item = {}) {
-    const { objectUrl, fileName } = await getFileUrl(item)
+    const { buffer, fileName } = await getFileUrl(item)
+    // create url
+    // let formatBuffer = buffer
+    // if (!(buffer instanceof Uint8Array)) {
+    //     formatBuffer = Buffer.from(buffer)
+    // }
+    // const typedArray = new Uint8Array(formatBuffer)
+    const blob = new Blob([buffer], { type: 'application/pdf' })
+    const objectUrl = URL.createObjectURL(blob)
+    // download
     const anchorElement = document.createElement('a');
     anchorElement.href = objectUrl
     anchorElement.download = fileName
@@ -313,9 +319,10 @@ async function downloadResume(item = {}) {
     anchorElement.click()
 }
 async function previewResume(item = {}) {
-    const { objectUrl } = await getFileUrl(item)
-    window.open(objectUrl, '_blank')
-    // window.URL.revokeObjectURL(objectUrl);
+    const { buffer, objectUrl } = await getFileUrl(item)
+    window.open(objectUrl, "_blank")
+    // const dataURI = "data:application/pdf;base64," + buffer
+    // window.open(dataURI, '_blank')
 }
 function resetApplicantId() {
     state.applicantId = ''
