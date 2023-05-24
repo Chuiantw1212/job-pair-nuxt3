@@ -139,11 +139,12 @@
                                 </div>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
                                     @click="downloadResume(item)">
+                                    <img class="preview__icon" src="~/assets/admin/download.svg" alt="download" />
                                     下載履歷
                                 </AtomBtnSimple>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
                                     @click="previewResume(item)">
-                                    <img src="~/assets/admin/icon_link.svg" alt="preview" />
+                                    <img class="preview__icon" src="~/assets/admin/icon_link.svg" alt="preview" />
                                     預覽履歷
                                 </AtomBtnSimple>
                             </div>
@@ -766,6 +767,11 @@ async function initializeSearch() {
                         align-items: center;
                         gap: 8px;
                         width: fit-content;
+
+                        .preview__icon {
+                            width: 16px;
+                            height: 16px;
+                        }
                     }
                 }
             }

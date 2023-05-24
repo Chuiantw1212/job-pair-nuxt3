@@ -71,7 +71,7 @@ export default {
             type: Number,
             default: 0
         },
-        getFileUrl: {
+        getFileBuffer: {
             type: Function,
             default: function () { }
         }
@@ -135,10 +135,14 @@ export default {
             this.$emit("update:modelValue", newResumes)
         },
         async openResume(item) {
-            const itemUrl = await this.getFileUrl(item)
-            if (itemUrl) {
-                window.open(item.url, '_blank')
+            const { buffer } = item
+            let fileBuffer = buffer
+            if (!fileBuffer) {
+                fileBuffer = await this.getFileBuffer(item)
             }
+            const blob = new Blob([fileBuffer], { type: 'application/pdf' })
+            const objectUrl = URL.createObjectURL(blob)
+            window.open(objectUrl, '_blank')
         },
         async deleteResume(row = 0, col = 0) {
             const index = (row - 1) * 3 + col

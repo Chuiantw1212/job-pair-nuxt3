@@ -95,7 +95,7 @@
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
-                    :required="device.state.isLarge" :getFileUrl="getFileUrl">
+                    :required="device.state.isLarge" :getFileBuffer="getFileBuffer">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
@@ -154,7 +154,7 @@ function initialize() {
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
 }
-async function getFileUrl(item = {}) {
+async function getFileBuffer(item = {}) {
     const { name = '' } = item
     $sweet.loader(true)
     const res = await repoUser.getUserResume({
@@ -165,9 +165,7 @@ async function getFileUrl(item = {}) {
         return
     }
     const buffer = res.data
-    const blob = new Blob([buffer], { type: 'application/pdf' })
-    const objectUrl = URL.createObjectURL(blob)
-    window.open(objectUrl, '_blank')
+    return buffer
 }
 async function handleChatRequest(value) {
     const res = await repoChat.postChatProfile(value)
