@@ -95,7 +95,7 @@
             </LazyMoleculeProfileCard>
             <LazyMoleculeProfileCard name="履歷作品集" class="profile__information profile__doc mt-3 ">
                 <LazyAtomInputUploader v-model="state.profile.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
-                    :required="device.state.isLarge">
+                    :required="device.state.isLarge" :getFileBuffer="getFileBuffer">
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio"></LazyMoleculePortfolio>
             </LazyMoleculeProfileCard>
@@ -107,7 +107,7 @@
     </div>
 </template>
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, } from 'vue-router'
 import { reactive, onMounted, watch, } from 'vue'
 const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
@@ -153,6 +153,19 @@ function initialize() {
     profile.subscribed = subscribed ?? true
     profile.educationCategory = educationCategory ? educationCategory : []
     state.profile = profile
+}
+async function getFileBuffer(item = {}) {
+    const { name = '' } = item
+    $sweet.loader(true)
+    const res = await repoUser.getUserResume({
+        fileName: name
+    })
+    $sweet.loader(false)
+    if (res.status !== 200) {
+        return
+    }
+    const buffer = res.data
+    return buffer
 }
 async function handleChatRequest(value) {
     const res = await repoChat.postChatProfile(value)

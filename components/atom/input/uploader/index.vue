@@ -9,7 +9,6 @@
                     <div v-if="checkIsImage(item)">
                         <img :src="item.url" class="previewGroup__item__viewer">
                     </div>
-                    <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
                     <div class="previewGroup__item__body">
                         <div v-if="item.name" class="previewGroup__item__body__item">
                             <div class="item__name">
@@ -71,6 +70,10 @@ export default {
         max: {
             type: Number,
             default: 0
+        },
+        getFileBuffer: {
+            type: Function,
+            default: function () { }
         }
     },
     computed: {
@@ -110,7 +113,7 @@ export default {
                 }
                 reader.onerror = (error) => reject(error)
             })
-            const { lastModified, name, size, type } = file
+            const { name, size, type } = file
             const buffer = Buffer.from(arrayBuffer)
             const newResume = {
                 url: URL.createObjectURL(file),
@@ -132,7 +135,14 @@ export default {
             this.$emit("update:modelValue", newResumes)
         },
         async openResume(item) {
-            window.open(item.url)
+            const { buffer } = item
+            let fileBuffer = buffer
+            if (!fileBuffer) {
+                fileBuffer = await this.getFileBuffer(item)
+            }
+            const blob = new Blob([fileBuffer], { type: 'application/pdf' })
+            const objectUrl = URL.createObjectURL(blob)
+            window.open(objectUrl, '_blank')
         },
         async deleteResume(row = 0, col = 0) {
             const index = (row - 1) * 3 + col

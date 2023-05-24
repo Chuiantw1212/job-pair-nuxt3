@@ -15,7 +15,7 @@
                     <template v-if="repoAuth.state.user.resumes && repoAuth.state.user.resumes.length === 1">
                         <div class="body__resume">
                             <LazyAtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
-                                :disabled="true" class="resume__input" :hasPreviewButton="true"></LazyAtomInputResume>
+                                :disabled="true" class="resume__input" :getFileBuffer="getFileBuffer"></LazyAtomInputResume>
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
@@ -59,6 +59,7 @@
 const emit = defineEmits(['applied'])
 const { $bootstrap, $uuid4, $emitter, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
+const repoUser = useRepoUser()
 const repoJobApplication = useRepoJobApplication()
 const state = reactive({
     id: null,
@@ -102,6 +103,19 @@ onMounted(() => {
 })
 // methods
 const coverLetterRef = ref(null)
+async function getFileBuffer(item = {}) {
+    const { name = '' } = item
+    $sweet.loader(true)
+    const res = await repoUser.getUserResume({
+        fileName: name
+    })
+    $sweet.loader(false)
+    if (res.status !== 200) {
+        return
+    }
+    const buffer = res.data
+    return buffer
+}
 function setApplication() {
     const { user } = repoAuth.state
     // 拉取資料
