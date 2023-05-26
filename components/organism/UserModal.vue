@@ -142,12 +142,16 @@ async function loginAndRegister() {
         return
     }
     try {
-        const res = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+        const res = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
     } catch (error) {
         // 參考自FirebaseUI的錯誤訊息翻譯
         const messageMap = {
-            'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
             'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
+            'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
+            'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
+            'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
+            'auth/admin-restricted-operation': '',
+            'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
         }
         // 顯示錯誤訊息
         const { code = '', message = '' } = error
