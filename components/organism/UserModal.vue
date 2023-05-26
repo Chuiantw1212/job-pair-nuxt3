@@ -32,7 +32,67 @@
                                 </LazyAtomBtnSimple>
                             </div>
                         </div>
-                        <div v-show="!loginComposable.state.isSent" id="user-auth-container"></div>
+                        <div v-show="!loginComposable.state.isSent">
+                            <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+                                <form onsubmit="return false;">
+                                    <div class="firebaseui-card-header">
+                                        <h1 class="firebaseui-title">用Email登入註冊</h1>
+                                    </div>
+                                    <div class="firebaseui-card-content">
+                                        <div class="firebaseui-relative-wrapper">
+                                            <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                                                data-upgraded=",MaterialTextfield">
+                                                <!-- <label class="mdl-textfield__label firebaseui-label"
+                                                    for="ui-sign-in-email-input">Email</label> -->
+                                                <input v-model="state.email" type="email" name="email"
+                                                    id="ui-sign-in-email-input" autocomplete="username" placeholder="email"
+                                                    class="mdl-textfield__input firebaseui-input firebaseui-id-email">
+                                            </div>
+                                            <div v-if="state.isShowPassword"
+                                                class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                                                data-upgraded=",MaterialTextfield">
+                                                <LazyAtomInputPass v-model="state.password" name="密碼" placeholder="密碼"
+                                                    required>
+                                                </LazyAtomInputPass>
+                                                <!-- <input v-model="state.password" type="password" placeholder="密碼"
+                                                    name="password" id="ui-sign-in-password-input"
+                                                    autocomplete="current-password"
+                                                    class="mdl-textfield__input firebaseui-input firebaseui-id-password"> -->
+                                            </div>
+                                            <div class="firebaseui-error-wrapper">
+                                                <p
+                                                    class="firebaseui-error firebaseui-text-input-error firebaseui-id-email-error">
+                                                    {{ state.errorMessage }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="firebaseui-card-actions">
+                                        <div class="firebaseui-form-actions">
+                                            <button
+                                                class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
+                                                data-upgraded=",MaterialButton">取消</button>
+                                            <button v-if="state.isShowPassword" type="submit"
+                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                                data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄/註冊</button>
+                                            <button v-else type="submit"
+                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                                data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
+                                        </div>
+                                    </div>
+                                    <div class="firebaseui-card-footer">
+                                        <ul class="firebaseui-tos-list firebaseui-tos">
+                                            <li class="firebaseui-inline-list-item"><a href="javascript:void(0)"
+                                                    class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
+                                            </li>
+                                            <li class="firebaseui-inline-list-item"><a href="javascript:void(0)"
+                                                    class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,15 +100,16 @@
     </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-
+import { useRoute } from 'vue-router'
 import firebase from "firebase"
-const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, $validate, } = useNuxtApp()
 const device = useDevice()
 const route = useRoute()
 const loginComposable = useLogin()
 const state = reactive({
     bsModal: null,
+    email: '',
+    isShowPassword: false,
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -60,17 +121,47 @@ onMounted(() => {
         })
         // 初始化FirebaseUI使系統可以自動跳轉
         if (route && !route.path.includes("admin")) {
-            renderFirebaseUI()
+            // renderFirebaseUI()
         }
     }
 })
+// methods
+async function checkEmailRegistered() {
+    const res = await firebase.auth().fetchSignInMethodsForEmail(state.email)
+    const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
+    if (res.includes(emailProviderId)) {
+        // 顯示密碼
+        state.isShowPassword = true
+    } else {
+        // 註冊用戶
+    }
+}
+async function loginAndRegister() {
+    const validateResult = await $validate()
+    if (!validateResult.isValid) {
+        return
+    }
+    try {
+        const res = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+    } catch (error) {
+        // 參考自FirebaseUI的錯誤訊息翻譯
+        const messageMap = {
+            'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
+            'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
+        }
+        // 顯示錯誤訊息
+        const { code = '', message = '' } = error
+        console.log(code);
+        state.errorMessage = messageMap[code] || message
+    }
+}
 function hideModal() {
     loginComposable.state.isSent = false
     state.bsModal.hide()
 }
 function showModal() {
     state.bsModal.show()
-    renderFirebaseUI()
+    // renderFirebaseUI()
 }
 async function renderFirebaseUI() {
     const firebaseAuth = firebase.auth()
