@@ -8,7 +8,7 @@
                     僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
                 </div>
             </div>
-            <LazyMoleculeProfileCard name="基本求職資料" class="mt-3">
+            <LazyMoleculeProfileCard id="profileBasic" name="基本求職資料" class="mt-3">
                 <div class="profile__basic">
                     <LazyAtomInputPhotoSingle v-model="state.profile.image" class="basic__image" :size="'240px'"
                         @update:modelValue="uploadImage($event)">
@@ -48,11 +48,11 @@
                     </LazyOrganismChatGptModal>
                 </LazyAtomInputCkeditor>
                 <div class="card__footer">
-                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存
+                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileBasic')">儲存
                     </LazyAtomBtnSimple>
                 </div>
             </LazyMoleculeProfileCard>
-            <LazyMoleculeProfileCard name="進階求職資料" class="profile__information profile__doc mt-3 ">
+            <LazyMoleculeProfileCard id="profileAdvanced" name="進階求職資料" class="profile__information profile__doc mt-3">
                 <div class="profile__languageGroup">
                     <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                         v-model="state.profile.language" name="語言能力" placeholder="選擇語言"
@@ -69,11 +69,11 @@
                 </LazyAtomInputUploader>
                 <LazyMoleculePortfolio v-model="state.profile.portfolio" class="mt-3"></LazyMoleculePortfolio>
                 <div class="card__footer">
-                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存
+                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileAdvanced')">儲存
                     </LazyAtomBtnSimple>
                 </div>
             </LazyMoleculeProfileCard>
-            <LazyMoleculeProfileCard name="精準推送" class="mt-3">
+            <LazyMoleculeProfileCard id="profileBroadcast" name="精準推送" class="mt-3">
                 <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profile.isActive" name="目前求職狀態">
                     <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
                 </LazyAtomInputCheckSingle>
@@ -106,7 +106,7 @@
                     </template>
                 </LazyMoleculeProfileSelectContainer>
                 <div class="card__footer">
-                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit()">儲存
+                    <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileBroadcast')">儲存
                     </LazyAtomBtnSimple>
                 </div>
 
@@ -219,12 +219,16 @@ async function uploadImage(photo) {
         repoAuth.setUser(patchedUser)
     }
 }
-async function handleSubmit() {
+async function handleSubmit(key = '') {
     // 檢核必填寫欄位
     if (state.profile.description === '<p></p>') {
         state.profile.description = ''
     }
-    const result = await $validate()
+    let dom = document
+    if (key) {
+        dom = document.querySelector(`#${key}`)
+    }
+    const result = await $validate(dom)
     if (!result.isValid) {
         return
     }
