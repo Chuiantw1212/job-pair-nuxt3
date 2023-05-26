@@ -38,26 +38,19 @@
                                     <div class="firebaseui-card-header">
                                         <h1 class="firebaseui-title">用Email登入註冊</h1>
                                     </div>
-                                    <div class="firebaseui-card-content">
+                                    <div v-if="state.isContentVisible" class="firebaseui-card-content">
                                         <div class="firebaseui-relative-wrapper">
                                             <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                                 data-upgraded=",MaterialTextfield">
-                                                <!-- <label class="mdl-textfield__label firebaseui-label"
-                                                    for="ui-sign-in-email-input">Email</label> -->
-                                                <input v-model="state.email" type="email" name="email"
-                                                    id="ui-sign-in-email-input" autocomplete="username" placeholder="email"
-                                                    class="mdl-textfield__input firebaseui-input firebaseui-id-email">
+                                                <LazyAtomInputEmail id="loginEmail" v-model="state.email" name="電子郵件信箱"
+                                                    placeholder="電子郵件信箱" required></LazyAtomInputEmail>
                                             </div>
-                                            <div v-if="state.isShowPassword"
+                                            <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
                                                 class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                                 data-upgraded=",MaterialTextfield">
                                                 <LazyAtomInputPass v-model="state.password" name="密碼" placeholder="密碼"
                                                     required>
                                                 </LazyAtomInputPass>
-                                                <!-- <input v-model="state.password" type="password" placeholder="密碼"
-                                                    name="password" id="ui-sign-in-password-input"
-                                                    autocomplete="current-password"
-                                                    class="mdl-textfield__input firebaseui-input firebaseui-id-password"> -->
                                             </div>
                                             <div class="firebaseui-error-wrapper">
                                                 <p
@@ -72,9 +65,12 @@
                                             <button
                                                 class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
                                                 data-upgraded=",MaterialButton">取消</button>
-                                            <button v-if="state.isShowPassword" type="submit"
+                                            <button v-if="state.isShowPasswordLogin" type="submit"
                                                 class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                                data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄/註冊</button>
+                                                data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
+                                            <button v-else-if="state.isShowPasswordRegister" type="submit"
+                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                                data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
                                             <button v-else type="submit"
                                                 class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                                                 data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
@@ -108,8 +104,11 @@ const route = useRoute()
 const loginComposable = useLogin()
 const state = reactive({
     bsModal: null,
+    isContentVisible: false,
     email: '',
-    isShowPassword: false,
+    password: '',
+    isShowPasswordLogin: false,
+    isShowPasswordRegister: false,
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -119,21 +118,31 @@ onMounted(() => {
             keyboard: false,
             backdrop: "static"
         })
-        // 初始化FirebaseUI使系統可以自動跳轉
-        if (route && !route.path.includes("admin")) {
-            // renderFirebaseUI()
-        }
     }
 })
 // methods
 async function checkEmailRegistered() {
+    const validateResult = await $validate()
+    if (!validateResult.isValid) {
+        return
+    }
     const res = await firebase.auth().fetchSignInMethodsForEmail(state.email)
     const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
     if (res.includes(emailProviderId)) {
         // 顯示密碼
-        state.isShowPassword = true
+        state.isShowPasswordLogin = true
     } else {
         // 註冊用戶
+        state.isShowPasswordRegister = true
+    }
+}
+async function signupUser() {
+    try {
+        const authResult = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+        loginComposable.handleAuthResult(authResult, "employee")
+        clearForm()
+    } catch (error) {
+        handleFirebaseError(error)
     }
 }
 async function loginAndRegister() {
@@ -142,67 +151,39 @@ async function loginAndRegister() {
         return
     }
     try {
-        const res = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+        const authResult = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+        loginComposable.handleAuthResult(authResult, "employee")
+        clearForm()
     } catch (error) {
-        // 參考自FirebaseUI的錯誤訊息翻譯
-        const messageMap = {
-            'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
-            'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
-            'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
-            'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
-            'auth/admin-restricted-operation': '',
-            'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
-        }
-        // 顯示錯誤訊息
-        const { code = '', message = '' } = error
-        console.log(code);
-        state.errorMessage = messageMap[code] || message
+        handleFirebaseError(error)
     }
+}
+function handleFirebaseError(error) {
+    // 參考自FirebaseUI的錯誤訊息翻譯
+    const messageMap = {
+        'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
+        'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
+        'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
+        'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
+        'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
+        'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶'
+    }
+    // 顯示錯誤訊息
+    const { code = '', message = '' } = error
+    state.errorMessage = messageMap[code] || message
+}
+function clearForm() {
+    state.email = ''
+    state.password = ''
 }
 function hideModal() {
     loginComposable.state.isSent = false
+    state.isContentVisible = false
     state.bsModal.hide()
 }
 function showModal() {
     state.bsModal.show()
-    // renderFirebaseUI()
-}
-async function renderFirebaseUI() {
-    const firebaseAuth = firebase.auth()
-    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
-    const isPendingRedirect = ui.isPendingRedirect()
-    if (isPendingRedirect) {
-        $sweet.loader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
-        },
-        {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        },
-        {
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        }
-    ]
-    const element = document.querySelector("#user-auth-container")
-    ui.start(element, {
-        callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                loginComposable.handleAuthResult(authResult, "employee")
-                return false
-            }
-        },
-        signInFlow: 'popup', // redirect會造成臉書登入失效
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
+    state.isContentVisible = true
 }
 </script>
 <style lang="scss" scoped>

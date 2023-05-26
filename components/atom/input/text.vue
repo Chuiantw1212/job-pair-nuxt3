@@ -5,9 +5,9 @@
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
+            <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
                 :data-required="required" :data-name="name" autocomplete="off" />
-            <input v-else :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
+            <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
     </div>
@@ -24,6 +24,10 @@ const state = reactive({
     key: null,
 })
 const props = defineProps({
+    id: {
+        type: String,
+        default: undefined,
+    },
     name: {
         type: String,
         default: "",
