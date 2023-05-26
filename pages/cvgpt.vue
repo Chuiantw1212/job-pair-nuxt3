@@ -1,7 +1,7 @@
 <template>
     <div class="container chatgpt">
         <div class="chatgpt__instruction">
-            <h1 class="instruction__header">JobGPT 快速更新或改善簡歷</h1>
+            <h1 class="instruction__header">CVgpt 快速更新或改善簡歷</h1>
             <div class="chatgpt__desc">
                 我們量身訂製一套適合ChatGPT求職人士的指令，從製作一份殺手級的簡歷到準備棘手的面試問題。
                 <br>
