@@ -47,7 +47,7 @@
                 </LazyOrganismChatGptModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileBasic')">儲存
+                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
                 </LazyAtomBtnSimple>
             </div>
         </LazyMoleculeProfileCard>
@@ -70,7 +70,7 @@
             </LazyAtomInputUploader>
             <LazyMoleculePortfolio v-model="state.profileAdvanced.portfolio" class="mt-3"></LazyMoleculePortfolio>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileAdvanced')">儲存
+                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
                 </LazyAtomBtnSimple>
             </div>
         </LazyMoleculeProfileCard>
@@ -106,7 +106,7 @@
                 </template>
             </LazyMoleculeProfileSelectContainer>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmit('profileBroadcast')">儲存
+                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimple>
             </div>
 
@@ -256,46 +256,66 @@ async function uploadImage(photo) {
     const response = await repoUser.putUserPhoto(photo)
     if (response.status === 200) {
         const image = response.data
-        state.profile.image = image
+        state.profileBasic.image = image
         const patchedUser = Object.assign({}, repoAuth.user, {
             image,
         })
         repoAuth.setUser(patchedUser)
     }
 }
-async function handleSubmit(key = '') {
-    // 檢核必填寫欄位
-    if (state.profile.description === '<p></p>') {
-        state.profile.description = ''
+async function handleSubmitBasic() {
+    // 檢核表單
+    if (state.profileBasic.description === '<p></p>') {
+        state.profileBasic.description = ''
     }
-    let dom = document
-    if (key) {
-        dom = document.querySelector(`#${key}`)
-    }
+    const dom = document.querySelector(`#profileBasic`)
     const result = await $validate(dom)
     if (!result.isValid) {
         return
     }
-    const validPorfolio = state.profile.portfolio.filter((item) => {
+    // 更新履歷pdf
+    $sweet.loader(true)
+    const validResumes = state.profileBasic.resumes.filter((item) => item.url)
+    const reseumeResponse = await repoUser.putUserResumes(validResumes)
+    state.profileBasic.resumes = reseumeResponse.data
+    // 更新個人資料
+    await repoUser.patchUserProfile(state.profileBasic)
+    const patchedUser = Object.assign({}, repoAuth.user, state.profileBasic)
+    repoAuth.setUser(patchedUser)
+    $sweet.succeed()
+}
+async function handleSubmitAdvanced() {
+    const dom = document.querySelector(`#profileAdvanced`)
+    const result = await $validate(dom)
+    if (!result.isValid) {
+        return
+    }
+    // 更新Blobs
+    const validPorfolio = state.profileAdvanced.portfolio.filter((item) => {
         const { name = "", url = "" } = item
         const hasName = !!name.trim()
         const hasUrl = !!url.trim()
         return hasName && hasUrl
     })
-    state.profile.portfolio = validPorfolio
-    // 更新履歷pdf
-    $sweet.loader(true)
-    const validResumes = state.profile.resumes.filter((item) => item.url)
-    const reseumeResponse = await repoUser.putUserResumes(validResumes)
-    state.profile.resumes = reseumeResponse.data
-    // 更新語言證明
-    const validCertificates = state.profile.certificates.filter((item) => item.url)
+    state.profileAdvanced.portfolio = validPorfolio
+    const validCertificates = state.profileAdvanced.certificates.filter((item) => item.url)
     const certificatesRes = await repoUser.putUserCertificates(validCertificates)
-    state.profile.certificates = certificatesRes.data
+    state.profileAdvanced.certificates = certificatesRes.data
+    // 更新個人資料
+    await repoUser.patchUserProfile(state.profileAdvanced)
+    const patchedUser = Object.assign({}, repoAuth.user, state.profileAdvanced)
+    repoAuth.setUser(patchedUser)
+    $sweet.succeed()
+}
+async function handleSubmitBroadcast() {
+    const dom = document.querySelector(`#profileBroadcast`)
+    const result = await $validate(dom)
+    if (!result.isValid) {
+        return
+    }
     // 再更新個人資料
-    await repoUser.patchUserProfile(state.profile)
-    // 收尾
-    const patchedUser = Object.assign({}, repoAuth.user, state.profile)
+    await repoUser.patchUserProfile(state.profileBroadcast)
+    const patchedUser = Object.assign({}, repoAuth.user, state.profileBroadcast)
     repoAuth.setUser(patchedUser)
     $sweet.succeed()
 }
