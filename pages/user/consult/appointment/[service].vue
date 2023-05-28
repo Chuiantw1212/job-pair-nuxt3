@@ -47,7 +47,7 @@
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
-                                <img class="appointment__consultant__image" :src="getEnvImage(consultant.name)"
+                                <img v-if="consultant.image" class="appointment__consultant__image" :src="consultant.image"
                                     onerror="this.style.display = 'none'" />
                                 <div class="appointment__consultant__name">
                                     {{ consultant.name }}
@@ -161,9 +161,6 @@ function switchConsultant(consultant) {
         consultantId: consultant.id,
         time: {},
     })
-}
-function getEnvImage(id) {
-    return `https://storage.googleapis.com/${$storageBucket}/consultant/${id}/photo.webp`
 }
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
