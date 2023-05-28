@@ -44,7 +44,7 @@ export default function () {
                 step()
             })
         }
-        const { method, url, data, params = {}, headers, commit = false, timeout = config.public.axiosTimeout, } = options
+        const { method, url, data, params = {}, headers, commit = false, timeout = config.public.axiosTimeout, responseType = 'json' } = options
         const baseHeaders = {
             'Content-Type': 'application/json',
         }
@@ -62,6 +62,7 @@ export default function () {
             params,
             headers: headersFinale,
             timeout,
+            responseType,
         }
         if (data) {
             const dataCopy = JSON.parse(JSON.stringify(data))
@@ -102,31 +103,14 @@ export default function () {
                 "data": config.data,
             }
             await $sweet.alert(JSON.stringify(errorText), errorConfig)
-        } finally {
-            // /**
-            //  * Commit response to store state at once
-            //  * replacedType = SaveStockAlert
-            //  * mutationName = setSaveStockAlert
-            //  * @type {config, data, headers, request, status, statusText} axiosResponse
-            //  * @type {AP, Data, IsSuccessful, Message, ResultCode, WarningMessage} sswResponse
-            //  */
-            // // eslint-disable-next-line
-            // // console.time(`${url}轉譯`)
-            // if (commit && axiosResponse && axiosResponse.data) {
-            //     const deepCopy = JSON.parse(JSON.stringify(axiosResponse.data))
-            //     const sswResponse = deepCopy
-            //     const mutationName = `set${replacedType}Res`
-            //     store.commit(mutationName, sswResponse)
-            // }
-            // // eslint-disable-next-line
-            // // console.timeEnd(`${url}轉譯`)
         }
         const { status = '', statusText = '' } = axiosResponse
-        return JSON.parse(JSON.stringify({
+        // 不可多用JSON.parse(JSON.stringify())，造成blob解析異常
+        return {
             data: axiosResponse.data,
             status,
             statusText
-        }))
+        }
     }
     return {
         state,

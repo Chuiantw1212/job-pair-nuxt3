@@ -5,6 +5,15 @@ export default defineStore('job', () => {
     const state = reactive({
         jobRecommendedRes: null,
     })
+    async function getJobApplicantResume(data) {
+        const { jobId, applicantId, fileName } = data
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/job/${jobId}/${applicantId}/${fileName}`,
+            responseType: 'blob',
+        })
+        return response
+    }
     async function getJobCrawlResult(params) {
         const response = await jobPairApi.request({
             method: 'get',
@@ -100,6 +109,7 @@ export default defineStore('job', () => {
         deleteJobItem,
         getJobApplicantByQuery,
         getJobProspect,
-        getJobProspectProfile
+        getJobProspectProfile,
+        getJobApplicantResume
     }
 })

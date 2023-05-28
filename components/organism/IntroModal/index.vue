@@ -103,7 +103,7 @@ async function handleConfirm() {
         return $filter.optionText(item, repoSelect.jobCategory)
     })
     const form = {
-        ...this.state.form,
+        ...state.form,
         occupationalCategory,
     }
     $sweet.loader(true, {

@@ -71,7 +71,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .profile__portfolio {
-    margin-top: 20px;
 
     .portfolio__inputGroup {
         display: flex;
