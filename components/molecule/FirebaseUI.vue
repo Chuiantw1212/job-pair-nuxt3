@@ -11,7 +11,7 @@
                                 @click="signInWithEmail()"><span class="firebaseui-idp-icon-wrapper"><img
                                         class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with email</span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件地址登入</span><span
                                     class="firebaseui-idp-text firebaseui-idp-text-short">Email</span></button></li>
                         <!-- <li class="firebaseui-list-item"><button
                                 class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
@@ -33,10 +33,10 @@
                 </form>
             </div>
             <div class="firebaseui-card-footer firebaseui-provider-sign-in-footer">
-                <p class="firebaseui-tos firebaseui-tospp-full-message">By continuing, you are indicating that you accept
-                    our <a :href="state.termOfUse" class="firebaseui-link firebaseui-tos-link" target="_blank">Terms of
-                        Service</a> and <a :href="state.privacyPolicy" class="firebaseui-link firebaseui-pp-link"
-                        target="_blank">Privacy Policy</a>.</p>
+                <p class="firebaseui-tos firebaseui-tospp-full-message">選擇繼續即表示您同意接受我們的<br />
+                    <a :href="state.termOfUse" class="firebaseui-link firebaseui-tos-link" target="_blank">服務條款</a>
+                    與 <a :href="state.privacyPolicy" class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權政策</a>.
+                </p>
             </div>
         </div>
         <div v-if="state.isShowEmail" class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
@@ -83,7 +83,7 @@
                 <div class="firebaseui-card-footer">
                     <ul class="firebaseui-tos-list firebaseui-tos">
                         <li class="firebaseui-inline-list-item"><a :href="state.termOfUse"
-                                class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
+                                class="firebaseui-link firebaseui-tos-link" target="_blank">服務條款</a>
                         </li>
                         <li class="firebaseui-inline-list-item"><a :href="state.privacyPolicy"
                                 class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
