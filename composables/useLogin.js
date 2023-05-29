@@ -65,7 +65,10 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
-        console.log('handleAuthResult', basicInfo);
+        if (!basicInfo) {
+            await $sweet.alert('查無使用者資料')
+            return
+        }
         if (!basicInfo.email) {
             await $sweet.alert('請使用其他方式登入')
             return
@@ -235,18 +238,20 @@ export default function setup() {
     }
     function getBasicInfo(type) {
         const user = state.authResult.user
-        const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
-        const basicInfo = {
-            name: displayName,
-            email,
-            uid,
-            telephone: phoneNumber,
-            image: photoURL,
-            type,
-            emailVerified,
+        if (user) {
+            const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
+            const basicInfo = {
+                name: displayName,
+                email,
+                uid,
+                telephone: phoneNumber,
+                image: photoURL,
+                type,
+                emailVerified,
+            }
+            state.basicInfo = basicInfo
+            return basicInfo
         }
-        state.basicInfo = basicInfo
-        return basicInfo
     }
     async function sendEmailLink(type) {
         const basicInfo = getBasicInfo(type)

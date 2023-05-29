@@ -11,24 +11,24 @@
                                 @click="signInWithEmail()"><span class="firebaseui-idp-icon-wrapper"><img
                                         class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件地址登入</span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-short">Email</span></button></li>
-                        <!-- <li class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件登入</span>
+                            </button>
+                        </li>
+                        <li class="firebaseui-list-item"><button
                                 class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
                                 data-provider-id="google.com" style="background-color:#ffffff"
-                                data-upgraded=",MaterialButton"><span class="firebaseui-idp-icon-wrapper"><img
-                                        class="firebaseui-idp-icon" alt=""
+                                data-upgraded=",MaterialButton" @click="signInWithGoogle()"><span
+                                    class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with Google</span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-short">Google</span></button></li> -->
-                        <!-- <li class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用Google登入</span></button></li>
+                        <li class="firebaseui-list-item"><button
                                 class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
                                 data-provider-id="facebook.com" style="background-color:#3b5998"
                                 data-upgraded=",MaterialButton"><span class="firebaseui-idp-icon-wrapper"><img
                                         class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with Facebook</span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-short">Facebook</span></button></li> -->
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用
+                                    Facebook登入</span></button></li>
                     </ul>
                 </form>
             </div>
@@ -134,6 +134,16 @@ async function cancelEmail() {
 }
 async function signInWithEmail() {
     state.isShowEmail = true
+}
+async function signInWithGoogle() {
+    try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const authResult = await firebase.auth().signInWithPopup(provider)
+        loginComposable.handleAuthResult(authResult, "employee")
+    } catch (error) {
+        console.trace(error);
+        // handleFirebaseError(error)
+    }
 }
 async function loginAndRegister() {
     const validateResult = await $validate()
