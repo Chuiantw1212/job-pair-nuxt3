@@ -1,6 +1,6 @@
 <template>
     <div style="" id="user-auth-container" data-v-19384ea0="">
-        <div
+        <div v-if="!state.isShowEmail"
             class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
             <div class="firebaseui-card-content">
                 <form onsubmit="return false;">
@@ -8,7 +8,7 @@
                         <li class="firebaseui-list-item"><button
                                 class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
                                 data-provider-id="password" style="background-color:#db4437" data-upgraded=",MaterialButton"
-                                @click="signInWithEmailLink()"><span class="firebaseui-idp-icon-wrapper"><img
+                                @click="signInWithEmail()"><span class="firebaseui-idp-icon-wrapper"><img
                                         class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
                                     class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with email</span><span
@@ -20,8 +20,8 @@
                                         class="firebaseui-idp-icon" alt=""
                                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
                                     class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with Google</span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-short">Google</span></button></li>
-                        <li class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-text firebaseui-idp-text-short">Google</span></button></li> -->
+                        <!-- <li class="firebaseui-list-item"><button
                                 class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
                                 data-provider-id="facebook.com" style="background-color:#3b5998"
                                 data-upgraded=",MaterialButton"><span class="firebaseui-idp-icon-wrapper"><img
@@ -39,70 +39,71 @@
                         target="_blank">Privacy Policy</a>.</p>
             </div>
         </div>
+        <div v-if="state.isShowEmail" class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+            <form onsubmit="return false;">
+                <div class="firebaseui-card-header">
+                    <h1 class="firebaseui-title">用Email登入註冊</h1>
+                </div>
+                <div class="firebaseui-card-content">
+                    <div class="firebaseui-relative-wrapper">
+                        <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                            data-upgraded=",MaterialTextfield">
+                            <LazyAtomInputEmail id="loginEmail" v-model="state.form.email" name="電子郵件信箱"
+                                placeholder="電子郵件信箱" required></LazyAtomInputEmail>
+                        </div>
+                        <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
+                            class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                            data-upgraded=",MaterialTextfield">
+                            <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼" required>
+                            </LazyAtomInputPass>
+                        </div>
+                        <div class="firebaseui-error-wrapper">
+                            <p class="firebaseui-error firebaseui-text-input-error firebaseui-id-email-error">
+                                {{ state.errorMessage }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="firebaseui-card-actions">
+                    <div class="firebaseui-form-actions">
+                        <button
+                            class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
+                            data-upgraded=",MaterialButton" @click="cancelEmail()">取消</button>
+                        <button v-if="state.isShowPasswordLogin" type="submit"
+                            class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                            data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
+                        <button v-else-if="state.isShowPasswordRegister" type="submit"
+                            class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                            data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
+                        <button v-else type="submit"
+                            class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                            data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
+                    </div>
+                </div>
+                <div class="firebaseui-card-footer">
+                    <ul class="firebaseui-tos-list firebaseui-tos">
+                        <li class="firebaseui-inline-list-item"><a :href="state.termOfUse"
+                                class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
+                        </li>
+                        <li class="firebaseui-inline-list-item"><a :href="state.privacyPolicy"
+                                class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
     </div>
-    <!-- <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
-        <form onsubmit="return false;">
-            <div class="firebaseui-card-header">
-                <h1 class="firebaseui-title">用Email登入註冊</h1>
-            </div>
-            <div class="firebaseui-card-content">
-                <div class="firebaseui-relative-wrapper">
-                    <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
-                        data-upgraded=",MaterialTextfield">
-                        <LazyAtomInputEmail id="loginEmail" v-model="state.email" name="電子郵件信箱" placeholder="電子郵件信箱"
-                            required></LazyAtomInputEmail>
-                    </div>
-                    <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
-                        class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
-                        data-upgraded=",MaterialTextfield">
-                        <LazyAtomInputPass v-model="state.password" name="密碼" placeholder="密碼" required>
-                        </LazyAtomInputPass>
-                    </div>
-                    <div class="firebaseui-error-wrapper">
-                        <p class="firebaseui-error firebaseui-text-input-error firebaseui-id-email-error">
-                            {{ state.errorMessage }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="firebaseui-card-actions">
-                <div class="firebaseui-form-actions">
-                    <button
-                        class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
-                        data-upgraded=",MaterialButton">取消</button>
-                    <button v-if="state.isShowPasswordLogin" type="submit"
-                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                        data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
-                    <button v-else-if="state.isShowPasswordRegister" type="submit"
-                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                        data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
-                    <button v-else type="submit"
-                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                        data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
-                </div>
-            </div>
-            <div class="firebaseui-card-footer">
-                <ul class="firebaseui-tos-list firebaseui-tos">
-                    <li class="firebaseui-inline-list-item"><a
-                            href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf"
-                            class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
-                    </li>
-                    <li class="firebaseui-inline-list-item"><a
-                            href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-                            class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
-                    </li>
-                </ul>
-            </div>
-        </form>
-    </div> -->
 </template>
 <script setup>
 import firebase from "firebase"
 const { $emitter, $bootstrap, $sweet, $validate, } = useNuxtApp()
 const loginComposable = useLogin()
 const state = reactive({
-    email: '',
-    password: '',
+    form: {
+        email: '',
+        password: '',
+    },
+    isShowEmail: false,
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
     errorMessage: '',
@@ -124,8 +125,11 @@ function handleFirebaseError(error) {
     const { code = '', message = '' } = error
     state.errorMessage = messageMap[code] || message
 }
-async function signInWithEmailLink() {
-
+async function cancelEmail() {
+    state.isShowEmail = false
+}
+async function signInWithEmail() {
+    state.isShowEmail = true
 }
 async function loginAndRegister() {
     const validateResult = await $validate()
@@ -133,7 +137,8 @@ async function loginAndRegister() {
         return
     }
     try {
-        const authResult = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+        const { email = '', password = '' } = state.form
+        const authResult = await firebase.auth().signInWithEmailAndPassword(email, password)
         loginComposable.handleAuthResult(authResult, "employee")
         clearForm()
     } catch (error) {
@@ -142,7 +147,8 @@ async function loginAndRegister() {
 }
 async function signupUser() {
     try {
-        const authResult = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+        const { email = '', password = '' } = state.form
+        const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password)
         loginComposable.handleAuthResult(authResult, "employee")
         clearForm()
     } catch (error) {
@@ -154,7 +160,8 @@ async function checkEmailRegistered() {
     if (!validateResult.isValid) {
         return
     }
-    const res = await firebase.auth().fetchSignInMethodsForEmail(state.email)
+    const { email = '', password = '' } = state.form
+    const res = await firebase.auth().fetchSignInMethodsForEmail(email)
     const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
     if (res.includes(emailProviderId)) {
         // 顯示密碼
@@ -165,7 +172,9 @@ async function checkEmailRegistered() {
     }
 }
 function clearForm() {
-    state.email = ''
-    state.password = ''
+    state.form = {
+        email: '',
+        password: ''
+    }
 }
 </script>
