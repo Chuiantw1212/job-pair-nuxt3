@@ -112,19 +112,42 @@ const state = reactive({
     privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
 })
 // methods
-function handleFirebaseError(error) {
-    // 參考自FirebaseUI的錯誤訊息翻譯
-    const messageMap = {
-        'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
-        'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
-        'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
-        'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
-        'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
-        'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶'
-    }
+async function handleFirebaseError(error) {
     // 顯示錯誤訊息
-    const { code = '', message = '' } = error
-    state.errorMessage = messageMap[code] || message
+    const { code = '', message = '', email = '', credential = {} } = error
+    const { accessToken = '', providerId = '', signInMethod = '' } = credential // facebookCredential
+    switch (code) {
+        case 'auth/account-exists-with-different-credential': {
+            const providers = await firebase.auth().fetchProvidersForEmail(email)
+            const googleProviderId = firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            console.log({
+                googleProviderId
+            });
+            if (providers.includes(googleProviderId)) {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({
+                    login_hint: error.email
+                })
+                console.log({
+                    provider
+                });
+                signInWithGoogle(provider)
+            }
+            break;
+        }
+        default: {
+            // 參考自FirebaseUI的錯誤訊息翻譯
+            const messageMap = {
+                'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
+                'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
+                'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
+                'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
+                'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
+                'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶',
+            }
+            state.errorMessage = messageMap[code] || message
+        }
+    }
 }
 async function clearErrorMessage() {
     state.errorMessage = ''
@@ -135,9 +158,9 @@ async function cancelEmail() {
 async function signInWithEmail() {
     state.isShowEmail = true
 }
-async function signInWithGoogle() {
+async function signInWithGoogle(customProvier = null) {
     try {
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = customProvier || new firebase.auth.GoogleAuthProvider();
         const authResult = await firebase.auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, "employee")
     } catch (error) {
@@ -151,8 +174,8 @@ async function signInWithFacebook() {
         const authResult = await firebase.auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, "employee")
     } catch (error) {
-        console.trace(error);
-        // handleFirebaseError(error)
+        // console.trace(error);
+        handleFirebaseError(error)
     }
 }
 async function loginAndRegister() {
