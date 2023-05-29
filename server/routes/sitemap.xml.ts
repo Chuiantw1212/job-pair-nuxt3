@@ -12,7 +12,7 @@ interface companySitemapItem {
   updatedDate: string;
 }
 const config = useRuntimeConfig()
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const sitemap = new SitemapStream({ hostname: config.public.origin })
   sitemap.write({ url: config.public.origin, changefreq: 'monthly' })
   sitemap.write({ url: `${config.public.origin}/admin`, changefreq: 'monthly' })

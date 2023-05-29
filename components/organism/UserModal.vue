@@ -92,6 +92,47 @@ function showModal() {
     state.bsModal.show()
     state.isContentVisible = true
 }
+async function renderFirebaseUI() {
+    const firebaseAuth = firebase.auth()
+    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
+    const isPendingRedirect = ui.isPendingRedirect()
+    if (isPendingRedirect) {
+        $sweet.loader(true)
+    }
+    // 不同裝置給予不同登入方式
+    const signInOptions = [
+        {
+            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
+        },
+        {
+            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        },
+        {
+            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+            scopes: ["public_profile", "email"]
+        }
+    ]
+    const element = document.querySelector("#user-auth-container")
+    try {
+        ui.start(element, {
+            callbacks: {
+                signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+                    loginComposable.handleAuthResult(authResult, "employee")
+                    return false
+                }
+            },
+            signInFlow: 'popup', // redirect會造成臉書登入失效
+            signInOptions,
+            tosUrl:
+                "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
+            privacyPolicyUrl:
+                "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
+        })
+    } catch (error) {
+        console.trace(error)
+    }
+}
 </script>
 <style lang="scss" scoped>
 .modal-content {

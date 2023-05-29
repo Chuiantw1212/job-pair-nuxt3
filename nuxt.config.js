@@ -56,8 +56,8 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'http://localhost:8080',
-            origin: 'http://localhost:3000',
+            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
+            origin: 'https://job-pair-taiwan-dev.web.app',
             LIFF_ID: '1660783051-vP4Ojz2r',
             axiosTimeout: 30000,
         }
@@ -71,6 +71,11 @@ export default defineNuxtConfig({
         define: {
             "process.env.DEBUG": false,
         },
+        build: {
+            rollupOptions: {
+                external: ['/@popperjs/core']
+            }
+        }
     },
     // https://github.com/nuxt/framework/issues/7197
     nitro: {
