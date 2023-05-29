@@ -419,7 +419,7 @@ function checkInfoIncomplete() {
     const { user } = repoAuth.state
     if (user) {
         // 一般欄位
-        const requiredFieds = ['name', 'email', 'telephone', 'birthDate', 'gender']
+        const requiredFieds = ['name', 'email']
         const incompleteFields = requiredFieds.filter(field => {
             return !user[field] || !String(user[field]).trim()
         })
