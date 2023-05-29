@@ -1,5 +1,46 @@
 <template>
-    <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+    <div style="" id="user-auth-container" data-v-19384ea0="">
+        <div
+            class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
+            <div class="firebaseui-card-content">
+                <form onsubmit="return false;">
+                    <ul class="firebaseui-idp-list">
+                        <li class="firebaseui-list-item"><button
+                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
+                                data-provider-id="password" style="background-color:#db4437" data-upgraded=",MaterialButton"
+                                @click="signInWithEmailLink()"><span class="firebaseui-idp-icon-wrapper"><img
+                                        class="firebaseui-idp-icon" alt=""
+                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with email</span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-short">Email</span></button></li>
+                        <!-- <li class="firebaseui-list-item"><button
+                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
+                                data-provider-id="google.com" style="background-color:#ffffff"
+                                data-upgraded=",MaterialButton"><span class="firebaseui-idp-icon-wrapper"><img
+                                        class="firebaseui-idp-icon" alt=""
+                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with Google</span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-short">Google</span></button></li>
+                        <li class="firebaseui-list-item"><button
+                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
+                                data-provider-id="facebook.com" style="background-color:#3b5998"
+                                data-upgraded=",MaterialButton"><span class="firebaseui-idp-icon-wrapper"><img
+                                        class="firebaseui-idp-icon" alt=""
+                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with Facebook</span><span
+                                    class="firebaseui-idp-text firebaseui-idp-text-short">Facebook</span></button></li> -->
+                    </ul>
+                </form>
+            </div>
+            <div class="firebaseui-card-footer firebaseui-provider-sign-in-footer">
+                <p class="firebaseui-tos firebaseui-tospp-full-message">By continuing, you are indicating that you accept
+                    our <a :href="state.termOfUse" class="firebaseui-link firebaseui-tos-link" target="_blank">Terms of
+                        Service</a> and <a :href="state.privacyPolicy" class="firebaseui-link firebaseui-pp-link"
+                        target="_blank">Privacy Policy</a>.</p>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
         <form onsubmit="return false;">
             <div class="firebaseui-card-header">
                 <h1 class="firebaseui-title">用Email登入註冊</h1>
@@ -53,7 +94,7 @@
                 </ul>
             </div>
         </form>
-    </div>
+    </div> -->
 </template>
 <script setup>
 import firebase from "firebase"
@@ -65,6 +106,8 @@ const state = reactive({
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
     errorMessage: '',
+    termOfUse: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf',
+    privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
 })
 // methods
 function handleFirebaseError(error) {
@@ -80,6 +123,9 @@ function handleFirebaseError(error) {
     // 顯示錯誤訊息
     const { code = '', message = '' } = error
     state.errorMessage = messageMap[code] || message
+}
+async function signInWithEmailLink() {
+
 }
 async function loginAndRegister() {
     const validateResult = await $validate()
