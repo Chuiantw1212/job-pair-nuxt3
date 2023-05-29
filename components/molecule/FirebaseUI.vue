@@ -54,7 +54,8 @@
                         <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
                             class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                             data-upgraded=",MaterialTextfield">
-                            <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼" required>
+                            <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼"
+                                @update:modelValue="clearErrorMessage()" required>
                             </LazyAtomInputPass>
                         </div>
                         <div class="firebaseui-error-wrapper">
@@ -124,6 +125,9 @@ function handleFirebaseError(error) {
     // 顯示錯誤訊息
     const { code = '', message = '' } = error
     state.errorMessage = messageMap[code] || message
+}
+async function clearErrorMessage() {
+    state.errorMessage = ''
 }
 async function cancelEmail() {
     state.isShowEmail = false
