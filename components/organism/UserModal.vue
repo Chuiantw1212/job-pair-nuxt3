@@ -33,61 +33,7 @@
                             </div>
                         </div>
                         <div v-show="!loginComposable.state.isSent">
-                            <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
-                                <form onsubmit="return false;">
-                                    <div class="firebaseui-card-header">
-                                        <h1 class="firebaseui-title">用Email登入註冊</h1>
-                                    </div>
-                                    <div v-if="state.isContentVisible" class="firebaseui-card-content">
-                                        <div class="firebaseui-relative-wrapper">
-                                            <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
-                                                data-upgraded=",MaterialTextfield">
-                                                <LazyAtomInputEmail id="loginEmail" v-model="state.email" name="電子郵件信箱"
-                                                    placeholder="電子郵件信箱" required></LazyAtomInputEmail>
-                                            </div>
-                                            <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
-                                                class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
-                                                data-upgraded=",MaterialTextfield">
-                                                <LazyAtomInputPass v-model="state.password" name="密碼" placeholder="密碼"
-                                                    required>
-                                                </LazyAtomInputPass>
-                                            </div>
-                                            <div class="firebaseui-error-wrapper">
-                                                <p
-                                                    class="firebaseui-error firebaseui-text-input-error firebaseui-id-email-error">
-                                                    {{ state.errorMessage }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="firebaseui-card-actions">
-                                        <div class="firebaseui-form-actions">
-                                            <button
-                                                class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
-                                                data-upgraded=",MaterialButton">取消</button>
-                                            <button v-if="state.isShowPasswordLogin" type="submit"
-                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                                data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
-                                            <button v-else-if="state.isShowPasswordRegister" type="submit"
-                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                                data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
-                                            <button v-else type="submit"
-                                                class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                                data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
-                                        </div>
-                                    </div>
-                                    <div class="firebaseui-card-footer">
-                                        <ul class="firebaseui-tos-list firebaseui-tos">
-                                            <li class="firebaseui-inline-list-item"><a href="javascript:void(0)"
-                                                    class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
-                                            </li>
-                                            <li class="firebaseui-inline-list-item"><a href="javascript:void(0)"
-                                                    class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </form>
-                            </div>
+                            <MoleculeFirebaseUI v-if="state.isContentVisible"></MoleculeFirebaseUI>
                         </div>
                     </div>
                 </div>
@@ -96,11 +42,9 @@
     </div>
 </template>
 <script setup>
-import { useRoute } from 'vue-router'
 import firebase from "firebase"
 const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, $validate, } = useNuxtApp()
 const device = useDevice()
-const route = useRoute()
 const loginComposable = useLogin()
 const state = reactive({
     bsModal: null,
@@ -121,43 +65,6 @@ onMounted(() => {
     }
 })
 // methods
-async function checkEmailRegistered() {
-    const validateResult = await $validate()
-    if (!validateResult.isValid) {
-        return
-    }
-    const res = await firebase.auth().fetchSignInMethodsForEmail(state.email)
-    const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
-    if (res.includes(emailProviderId)) {
-        // 顯示密碼
-        state.isShowPasswordLogin = true
-    } else {
-        // 註冊用戶
-        state.isShowPasswordRegister = true
-    }
-}
-async function signupUser() {
-    try {
-        const authResult = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
-        loginComposable.handleAuthResult(authResult, "employee")
-        clearForm()
-    } catch (error) {
-        handleFirebaseError(error)
-    }
-}
-async function loginAndRegister() {
-    const validateResult = await $validate()
-    if (!validateResult.isValid) {
-        return
-    }
-    try {
-        const authResult = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
-        loginComposable.handleAuthResult(authResult, "employee")
-        clearForm()
-    } catch (error) {
-        handleFirebaseError(error)
-    }
-}
 function handleFirebaseError(error) {
     // 參考自FirebaseUI的錯誤訊息翻譯
     const messageMap = {

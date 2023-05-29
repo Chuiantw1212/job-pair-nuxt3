@@ -1,0 +1,125 @@
+<template>
+    <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+        <form onsubmit="return false;">
+            <div class="firebaseui-card-header">
+                <h1 class="firebaseui-title">用Email登入註冊</h1>
+            </div>
+            <div class="firebaseui-card-content">
+                <div class="firebaseui-relative-wrapper">
+                    <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                        data-upgraded=",MaterialTextfield">
+                        <LazyAtomInputEmail id="loginEmail" v-model="state.email" name="電子郵件信箱" placeholder="電子郵件信箱"
+                            required></LazyAtomInputEmail>
+                    </div>
+                    <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
+                        class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                        data-upgraded=",MaterialTextfield">
+                        <LazyAtomInputPass v-model="state.password" name="密碼" placeholder="密碼" required>
+                        </LazyAtomInputPass>
+                    </div>
+                    <div class="firebaseui-error-wrapper">
+                        <p class="firebaseui-error firebaseui-text-input-error firebaseui-id-email-error">
+                            {{ state.errorMessage }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="firebaseui-card-actions">
+                <div class="firebaseui-form-actions">
+                    <button
+                        class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
+                        data-upgraded=",MaterialButton">取消</button>
+                    <button v-if="state.isShowPasswordLogin" type="submit"
+                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
+                    <button v-else-if="state.isShowPasswordRegister" type="submit"
+                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
+                    <button v-else type="submit"
+                        class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                        data-upgraded=",MaterialButton" @click="checkEmailRegistered()">下一步</button>
+                </div>
+            </div>
+            <div class="firebaseui-card-footer">
+                <ul class="firebaseui-tos-list firebaseui-tos">
+                    <li class="firebaseui-inline-list-item"><a
+                            href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf"
+                            class="firebaseui-link firebaseui-tos-link" target="_blank">使用者條款</a>
+                    </li>
+                    <li class="firebaseui-inline-list-item"><a
+                            href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
+                            class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</template>
+<script setup>
+import firebase from "firebase"
+const { $emitter, $bootstrap, $sweet, $validate, } = useNuxtApp()
+const loginComposable = useLogin()
+const state = reactive({
+    email: '',
+    password: '',
+    isShowPasswordLogin: false,
+    isShowPasswordRegister: false,
+    errorMessage: '',
+})
+// methods
+function handleFirebaseError(error) {
+    // 參考自FirebaseUI的錯誤訊息翻譯
+    const messageMap = {
+        'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
+        'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
+        'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
+        'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
+        'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
+        'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶'
+    }
+    // 顯示錯誤訊息
+    const { code = '', message = '' } = error
+    state.errorMessage = messageMap[code] || message
+}
+async function loginAndRegister() {
+    const validateResult = await $validate()
+    if (!validateResult.isValid) {
+        return
+    }
+    try {
+        const authResult = await firebase.auth().signInWithEmailAndPassword(state.email, state.password)
+        loginComposable.handleAuthResult(authResult, "employee")
+        clearForm()
+    } catch (error) {
+        handleFirebaseError(error)
+    }
+}
+async function signupUser() {
+    try {
+        const authResult = await firebase.auth().createUserWithEmailAndPassword(state.email, state.password)
+        loginComposable.handleAuthResult(authResult, "employee")
+        clearForm()
+    } catch (error) {
+        handleFirebaseError(error)
+    }
+}
+async function checkEmailRegistered() {
+    const validateResult = await $validate()
+    if (!validateResult.isValid) {
+        return
+    }
+    const res = await firebase.auth().fetchSignInMethodsForEmail(state.email)
+    const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
+    if (res.includes(emailProviderId)) {
+        // 顯示密碼
+        state.isShowPasswordLogin = true
+    } else {
+        // 註冊用戶
+        state.isShowPasswordRegister = true
+    }
+}
+function clearForm() {
+    state.email = ''
+    state.password = ''
+}
+</script>
