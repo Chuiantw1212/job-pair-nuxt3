@@ -138,6 +138,7 @@ const state = reactive({
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
     isShowFederatedLinking: false,
+    pendingCredential: null,
     errorMessage: '',
     termOfUse: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf',
     privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
@@ -167,21 +168,16 @@ async function handleFirebaseError(error) {
                 'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
                 'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
                 'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶',
+                'auth/argument-error': ''
             }
             state.errorMessage = messageMap[code] || message
         }
     }
 }
 function handleFederatedLinking(data = {}) {
-    const { providers = [], error = {} } = data
-    const { credential = {} } = error
-    // setPendingEmailCredential
-    const item = {
-        email,
-        credential
-    }
-    const itemString = JSON.stringify(item)
-    sessionStorage.setItem('pendingEmailCredential', itemString)
+    const { providers = [], error = {}, } = data
+    const { credential = {}, email = '', } = error
+    state.pendingCredential = credential
     // Get First Federated Provider
     const nonFederatedProviders = [
         'emailLink',
@@ -212,12 +208,9 @@ async function signInWithGoogle(data = {}) {
         const authResult = await firebase.auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, "employee")
         if (isLink) {
-            const itemString = sessionStorage.getItem('pendingEmailCredential')
-            if (itemString) {
-                const pendingEmailCredential = JSON.parse(itemString)
-                const { user = {} } = authResult
-                user.linkWithCredential(pendingEmailCredential)
-            }
+            const { user = {} } = authResult
+            console.log(state.pendingCredential);
+            user.linkWithCredential(state.pendingCredential)
         }
     } catch (error) {
         handleFirebaseError(error)
