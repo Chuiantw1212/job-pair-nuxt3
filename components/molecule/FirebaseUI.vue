@@ -127,7 +127,7 @@
 </template>
 <script setup>
 import firebase from "firebase"
-const { $emitter, $bootstrap, $sweet, $validate, } = useNuxtApp()
+const { $emitter, $bootstrap, $sweet, $validate, $firebaseApp } = useNuxtApp()
 const loginComposable = useLogin()
 const state = reactive({
     form: {
@@ -151,7 +151,7 @@ async function handleFirebaseError(error) {
     switch (code) {
         case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
-            const providers = await firebase.auth().fetchProvidersForEmail(email)
+            const providers = await $firebaseApp.auth().fetchProvidersForEmail(email)
             handleFederatedLinking({
                 error,
                 providers
@@ -262,7 +262,8 @@ async function checkEmailRegistered() {
         return
     }
     const { email = '', password = '' } = state.form
-    const res = await firebase.auth().fetchSignInMethodsForEmail(email)
+    const res = await app.getAuth().fetchSignInMethodsForEmail(email)
+    // const res = await firebase.auth.Auth.fetchSignInMethodsForEmail(email)
     const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
     if (res.includes(emailProviderId)) {
         // 顯示密碼
