@@ -93,6 +93,36 @@
                 </div>
             </form>
         </div>
+        <div v-if="state.isShowFederatedLinking"
+            class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-federated-linking">
+            <form onsubmit="return false;">
+                <div class="firebaseui-card-header">
+                    <h1 class="firebaseui-title">登入</h1>
+                </div>
+                <div class="firebaseui-card-content">
+                    <h2 class="firebaseui-subtitle">您已經有了帳戶</h2>
+                    <p class="firebaseui-text">目前您使用的是 <strong>{{ state.form.email }}</strong>。如要繼續，請使用
+                        Google 帳戶登入。</p>
+                </div>
+                <div class="firebaseui-card-actions">
+                    <div class="firebaseui-form-actions"><button type="submit"
+                            class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                            data-upgraded=",MaterialButton" @click="signInWithGoogle({ isLink: true })">以 Google
+                            帳戶登入</button>
+                    </div>
+                </div>
+                <div class="firebaseui-card-footer">
+                    <ul class="firebaseui-tos-list firebaseui-tos">
+                        <li class="firebaseui-inline-list-item"><a :href="state.termOfUse"
+                                class="firebaseui-link firebaseui-tos-link" target="_blank">服務條款</a>
+                        </li>
+                        <li class="firebaseui-inline-list-item"><a :href="state.privacyPolicy"
+                                class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 <script setup>
@@ -107,21 +137,25 @@ const state = reactive({
     isShowEmail: false,
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
+    isShowFederatedLinking: false,
     errorMessage: '',
     termOfUse: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf',
     privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
 })
 // methods
 async function handleFirebaseError(error) {
+    console.trace(error);
     // 顯示錯誤訊息
     const { code = '', message = '', email = '', credential = {} } = error
     const { accessToken = '', providerId = '', signInMethod = '' } = credential // facebookCredential
     switch (code) {
         case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
-            setPendingEmailCredential(error)
             const providers = await firebase.auth().fetchProvidersForEmail(email)
-            handleErrorByProviders(providers)
+            handleFederatedLinking({
+                error,
+                providers
+            })
             break;
         }
         default: {
@@ -138,17 +172,29 @@ async function handleFirebaseError(error) {
         }
     }
 }
-function setPendingEmailCredential(error) {
-    const { email = '', credential = {} } = error
+function handleFederatedLinking(data = {}) {
+    const { providers = [], error = {} } = data
+    const { credential = {} } = error
+    // setPendingEmailCredential
     const item = {
         email,
         credential
     }
     const itemString = JSON.stringify(item)
     sessionStorage.setItem('pendingEmailCredential', itemString)
-}
-function handleErrorByProviders(providers = []) {
-    
+    // Get First Federated Provider
+    const nonFederatedProviders = [
+        'emailLink',
+        'password',
+        'phone'
+    ]
+    const enabledProviders = providers.filter(item => {
+        return !nonFederatedProviders.includes(item)
+    })
+    const firstFederatedProvider = enabledProviders[0]
+    if (firstFederatedProvider) {
+        state.isShowFederatedLinking = true
+    }
 }
 async function clearErrorMessage() {
     state.errorMessage = ''
@@ -159,14 +205,22 @@ async function cancelEmail() {
 async function signInWithEmail() {
     state.isShowEmail = true
 }
-async function signInWithGoogle(customProvier = null) {
+async function signInWithGoogle(data = {}) {
+    const { isLink = false } = data
     try {
-        const provider = customProvier || new firebase.auth.GoogleAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider();
         const authResult = await firebase.auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, "employee")
+        if (isLink) {
+            const itemString = sessionStorage.getItem('pendingEmailCredential')
+            if (itemString) {
+                const pendingEmailCredential = JSON.parse(itemString)
+                const { user = {} } = authResult
+                user.linkWithCredential(pendingEmailCredential)
+            }
+        }
     } catch (error) {
-        console.trace(error);
-        // handleFirebaseError(error)
+        handleFirebaseError(error)
     }
 }
 async function signInWithFacebook() {
@@ -175,7 +229,6 @@ async function signInWithFacebook() {
         const authResult = await firebase.auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, "employee")
     } catch (error) {
-        // console.trace(error);
         handleFirebaseError(error)
     }
 }
