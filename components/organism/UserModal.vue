@@ -89,8 +89,6 @@ function hideModal() {
     state.bsModal.hide()
 }
 function showModal() {
-    const firebaseAuth = firebase.auth()
-    console.log(firebaseAuth.fetchProvidersForEmail);
     state.bsModal.show()
     state.isContentVisible = true
 }

@@ -151,7 +151,7 @@ async function handleFirebaseError(error) {
     switch (code) {
         case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
-            const providers = await $firebaseApp.auth().fetchProvidersForEmail(email)
+            const providers = await firebase.auth().fetchSignInMethodsForEmail(email)
             handleFederatedLinking({
                 error,
                 providers
