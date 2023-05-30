@@ -117,22 +117,11 @@ async function handleFirebaseError(error) {
     const { code = '', message = '', email = '', credential = {} } = error
     const { accessToken = '', providerId = '', signInMethod = '' } = credential // facebookCredential
     switch (code) {
+        case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
+            setPendingEmailCredential(error)
             const providers = await firebase.auth().fetchProvidersForEmail(email)
-            const googleProviderId = firebase.auth.GoogleAuthProvider.PROVIDER_ID
-            console.log({
-                googleProviderId
-            });
-            if (providers.includes(googleProviderId)) {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({
-                    login_hint: error.email
-                })
-                console.log({
-                    provider
-                });
-                signInWithGoogle(provider)
-            }
+            handleErrorByProviders(providers)
             break;
         }
         default: {
@@ -148,6 +137,18 @@ async function handleFirebaseError(error) {
             state.errorMessage = messageMap[code] || message
         }
     }
+}
+function setPendingEmailCredential(error) {
+    const { email = '', credential = {} } = error
+    const item = {
+        email,
+        credential
+    }
+    const itemString = JSON.stringify(item)
+    sessionStorage.setItem('pendingEmailCredential', itemString)
+}
+function handleErrorByProviders(providers = []) {
+    
 }
 async function clearErrorMessage() {
     state.errorMessage = ''
