@@ -177,9 +177,15 @@ async function handleFirebaseError(error) {
 }
 function handleFederatedLinking(data = {}) {
     const { providers = [], error = {}, } = data
-    const { credential = {}, email = '', } = error
+    const { credential = {}, } = error
     state.pendingCredential = credential
     // Get First Federated Provider
+    const firstFederatedProvider = getFirstFederatedProvider(providers)
+    if (firstFederatedProvider) {
+        state.isShowFederatedLinking = true
+    }
+}
+function getFirstFederatedProvider(providers = []) {
     const nonFederatedProviders = [
         'emailLink',
         'password',
@@ -189,9 +195,7 @@ function handleFederatedLinking(data = {}) {
         return !nonFederatedProviders.includes(item)
     })
     const firstFederatedProvider = enabledProviders[0]
-    if (firstFederatedProvider) {
-        state.isShowFederatedLinking = true
-    }
+    return firstFederatedProvider
 }
 async function clearErrorMessage() {
     state.errorMessage = ''
@@ -212,7 +216,6 @@ async function signInWithGoogle(data = {}) {
         loginComposable.handleAuthResult(authResult, "employee")
         if (isLink) {
             const { user = {} } = authResult
-            console.log(state.pendingCredential);
             user.linkWithCredential(state.pendingCredential)
         }
     } catch (error) {
@@ -258,9 +261,16 @@ async function checkEmailRegistered() {
         return
     }
     const { email = '', password = '' } = state.form
-    const res = await firebase.auth().fetchSignInMethodsForEmail(email)
+    const providers = await firebase.auth().fetchSignInMethodsForEmail(email)
+    // Get First Federated Provider and show
+    const firstFederatedProvider = getFirstFederatedProvider(providers)
+    if (firstFederatedProvider) {
+        state.isShowFederatedLinking = true
+        return
+    }
+    // Show email login
     const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
-    if (res.includes(emailProviderId)) {
+    if (providers.includes(emailProviderId)) {
         // 顯示密碼
         state.isShowPasswordLogin = true
     } else {
