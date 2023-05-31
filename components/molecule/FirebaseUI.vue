@@ -103,12 +103,12 @@
                 <div class="firebaseui-card-content">
                     <h2 class="firebaseui-subtitle">您已經有了帳戶</h2>
                     <p class="firebaseui-text">目前您使用的是 <strong>{{ state.form.email }}</strong>。如要繼續，請使用
-                        Google 帳戶登入。</p>
+                        {{ providerName }} 帳戶登入。</p>
                 </div>
                 <div class="firebaseui-card-actions">
                     <div class="firebaseui-form-actions"><button type="submit"
                             class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                            data-upgraded=",MaterialButton" @click="signInWithGoogle({ isLink: true })">以 Google
+                            data-upgraded=",MaterialButton" @click="signInWithGoogle({ isLink: true })">以 {{ providerName }}
                             帳戶登入</button>
                     </div>
                 </div>
@@ -135,6 +135,19 @@ const state = reactive({
         email: '',
         password: '',
     },
+    defaultProviderNames: {
+        'google.com': '{{providerName}}',
+        'github.com': 'GitHub',
+        'facebook.com': 'Facebook',
+        'twitter.com': 'Twitter',
+        'password': 'Password',
+        'phone': 'Phone',
+        'anonymous': 'Guest',
+        'microsoft.com': 'Microsoft',
+        'yahoo.com': 'Yahoo',
+        'apple.com': 'Apple',
+    },
+    providerName: '',
     dialogName: 'default',
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
@@ -182,8 +195,14 @@ function handleFederatedLinking(data = {}) {
     // Get First Federated Provider
     const firstFederatedProvider = getFirstFederatedProvider(providers)
     if (firstFederatedProvider) {
-        state.dialogName = 'federatedLinking'
+        setFederatedDialog(firstFederatedProvider)
     }
+}
+function setFederatedDialog(provider = {}) {
+    const { providerId = '' } = provider
+    const providerName = state.defaultProviderNames[providerId]
+    state.providerName = providerName
+    state.dialogName = 'federatedLinking'
 }
 function getFirstFederatedProvider(providers = []) {
     const nonFederatedProviders = [
@@ -263,7 +282,7 @@ async function checkEmailRegistered() {
     // Get First Federated Provider and show
     const firstFederatedProvider = getFirstFederatedProvider(providers)
     if (firstFederatedProvider) {
-        state.dialogName = 'federatedLinking'
+        setFederatedDialog(firstFederatedProvider)
         return
     }
     // Show email login
