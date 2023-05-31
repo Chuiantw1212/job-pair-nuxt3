@@ -1,6 +1,6 @@
 <template>
     <div style="" id="user-auth-container" data-v-19384ea0="">
-        <div v-if="state.isShowDefault"
+        <div v-if="state.dialogName === 'default'"
             class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
             <div class="firebaseui-card-content">
                 <form onsubmit="return false;">
@@ -39,7 +39,8 @@
                 </p>
             </div>
         </div>
-        <div v-if="state.isShowEmail" class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+        <div v-if="state.dialogName === 'email'"
+            class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
             <form onsubmit="return false;">
                 <div class="firebaseui-card-header">
                     <h1 class="firebaseui-title">用Email登入註冊</h1>
@@ -93,7 +94,7 @@
                 </div>
             </form>
         </div>
-        <div v-if="state.isShowFederatedLinking"
+        <div v-if="state.dialogName === 'federatedLinking'"
             class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-federated-linking">
             <form onsubmit="return false;">
                 <div class="firebaseui-card-header">
@@ -134,8 +135,7 @@ const state = reactive({
         email: '',
         password: '',
     },
-    isShowDefault: true,
-    isShowEmail: false,
+    dialogName: 'default',
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
     isShowFederatedLinking: false,
@@ -182,7 +182,7 @@ function handleFederatedLinking(data = {}) {
     // Get First Federated Provider
     const firstFederatedProvider = getFirstFederatedProvider(providers)
     if (firstFederatedProvider) {
-        state.isShowFederatedLinking = true
+        state.dialogName = 'federatedLinking'
     }
 }
 function getFirstFederatedProvider(providers = []) {
@@ -201,12 +201,10 @@ async function clearErrorMessage() {
     state.errorMessage = ''
 }
 async function cancelEmail() {
-    state.isShowEmail = false
-    state.isShowDefault = true
+    state.dialogName = 'default'
 }
 async function signInWithEmail() {
-    state.isShowEmail = true
-    state.isShowDefault = false
+    state.dialogName = 'email'
 }
 async function signInWithGoogle(data = {}) {
     const { isLink = false } = data
@@ -265,7 +263,7 @@ async function checkEmailRegistered() {
     // Get First Federated Provider and show
     const firstFederatedProvider = getFirstFederatedProvider(providers)
     if (firstFederatedProvider) {
-        state.isShowFederatedLinking = true
+        state.dialogName = 'federatedLinking'
         return
     }
     // Show email login
