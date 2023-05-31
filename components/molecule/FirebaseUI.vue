@@ -5,30 +5,32 @@
             <div class="firebaseui-card-content">
                 <form onsubmit="return false;">
                     <ul class="firebaseui-idp-list">
-                        <li class="firebaseui-list-item"><button
-                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
-                                data-provider-id="password" style="background-color:#db4437" data-upgraded=",MaterialButton"
-                                @click="signInWithEmail()"><span class="firebaseui-idp-icon-wrapper"><img
-                                        class="firebaseui-idp-icon" alt=""
-                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件登入</span>
-                            </button>
-                        </li>
-                        <li class="firebaseui-list-item"><button
-                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
-                                data-provider-id="google.com" style="background-color:#ffffff"
-                                data-upgraded=",MaterialButton" @click="signInWithGoogle()"><span
-                                    class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
-                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用Google登入</span></button></li>
-                        <li class="firebaseui-list-item"><button
-                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
-                                data-provider-id="facebook.com" style="background-color:#3b5998"
-                                data-upgraded=",MaterialButton" @click="signInWithFacebook()"><span
-                                    class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
-                                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
-                                    class="firebaseui-idp-text firebaseui-idp-text-long">使用
-                                    Facebook登入</span></button></li>
+                        <template v-for="(provider, index) in props.signInOptions">
+                            <li v-if="provider === 'password'" class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
+                                    data-provider-id="password" style="background-color:#db4437"
+                                    data-upgraded=",MaterialButton" @click="signInWithEmail()"><span
+                                        class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
+                                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
+                                        class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件登入</span>
+                                </button>
+                            </li>
+                            <li v-if="provider === 'google.com'" class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
+                                    data-provider-id="google.com" style="background-color:#ffffff"
+                                    data-upgraded=",MaterialButton" @click="signInWithGoogle()"><span
+                                        class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
+                                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
+                                        class="firebaseui-idp-text firebaseui-idp-text-long">使用Google登入</span></button></li>
+                            <li v-if="provider === 'facebook.com'" class="firebaseui-list-item"><button
+                                    class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
+                                    data-provider-id="facebook.com" style="background-color:#3b5998"
+                                    data-upgraded=",MaterialButton" @click="signInWithFacebook()"><span
+                                        class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
+                                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
+                                        class="firebaseui-idp-text firebaseui-idp-text-long">使用
+                                        Facebook登入</span></button></li>
+                        </template>
                     </ul>
                 </form>
             </div>
@@ -158,6 +160,19 @@ const state = reactive({
     termOfUse: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf',
     privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
 })
+const props = defineProps({
+    type: {
+        type: String,
+        default: 'employee'
+    },
+    signInOptions: {
+        type: Array,
+        default: function () {
+            return []
+        },
+        required: true,
+    }
+})
 // methods
 async function handleFirebaseError(error) {
     console.trace(error);
@@ -230,7 +245,7 @@ async function signInWithGoogle(data = {}) {
     try {
         const provider = new firebase.auth.GoogleAuthProvider();
         const authResult = await firebase.auth().signInWithPopup(provider)
-        loginComposable.handleAuthResult(authResult, "employee")
+        loginComposable.handleAuthResult(authResult, props.type)
         if (isLink && state.pendingCredential) {
             const { user = {} } = authResult
             user.linkWithCredential(state.pendingCredential)
@@ -242,8 +257,10 @@ async function signInWithGoogle(data = {}) {
 async function signInWithFacebook() {
     try {
         const provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('public_profile')
+        provider.addScope('email')
         const authResult = await firebase.auth().signInWithPopup(provider)
-        loginComposable.handleAuthResult(authResult, "employee")
+        loginComposable.handleAuthResult(authResult, props.type)
     } catch (error) {
         handleFirebaseError(error)
     }
@@ -256,7 +273,7 @@ async function loginAndRegister() {
     try {
         const { email = '', password = '' } = state.form
         const authResult = await firebase.auth().signInWithEmailAndPassword(email, password)
-        loginComposable.handleAuthResult(authResult, "employee")
+        loginComposable.handleAuthResult(authResult, props.type)
         clearForm()
     } catch (error) {
         handleFirebaseError(error)
@@ -266,7 +283,7 @@ async function signupUser() {
     try {
         const { email = '', password = '' } = state.form
         const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        loginComposable.handleAuthResult(authResult, "employee")
+        loginComposable.handleAuthResult(authResult, props.type)
         clearForm()
     } catch (error) {
         handleFirebaseError(error)

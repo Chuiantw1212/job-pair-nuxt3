@@ -31,7 +31,10 @@
                                 </LazyAtomBtnSimple>
                             </div>
                         </div>
-                        <div v-show="!loginComposable.state.isSent" id="company-auth-container"></div>
+                        <div v-show="!loginComposable.state.isSent" id="company-auth-container">
+                            <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions"
+                                type="admin"></MoleculeFirebaseUI>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,14 +42,13 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase"
-
-const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, } = useNuxtApp()
 const device = useDevice()
 const loginComposable = useLogin()
-const route = useRoute()
 const state = reactive({
-    bsModal: null
+    bsModal: null,
+    isContentVisible: false,
+    signInOptions: ['password', 'google.com']
 })
 onMounted(() => {
     $emitter.on("showCompanyModal", showModal) // listen
@@ -55,58 +57,15 @@ onMounted(() => {
         keyboard: false,
         backdrop: "static"
     })
-    if (route.path.includes("admin") && process.client) {
-        renderFirebaseUI()
-    }
 })
 function hideModal() {
     loginComposable.state.isSent = false
+    state.isContentVisible = false
     state.bsModal.hide()
 }
 function showModal() {
-    sessionStorage.removeItem("firebaseui::pendingEmailCredential")
+    state.isContentVisible = true
     state.bsModal.show()
-    renderFirebaseUI()
-}
-async function renderFirebaseUI() {
-    const firebaseAuth = firebase.auth()
-    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
-    const isPendingRedirect = ui.isPendingRedirect()
-    console.log({
-        isPendingRedirect
-    });
-    if (isPendingRedirect) {
-        $sweet.loader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
-        },
-        {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        }
-    ]
-    const element = document.querySelector("#company-auth-container")
-    ui.start(element, {
-        callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                loginComposable.handleAuthResult(authResult, "admin")
-                return false
-            },
-            signInFailure: (error) => {
-                console.log(error.message);
-                console.dir(error);
-            }
-        },
-        signInFlow: 'popup', // redirect會造成臉書登入失效
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
 }
 </script>
 <style lang="scss" scoped>

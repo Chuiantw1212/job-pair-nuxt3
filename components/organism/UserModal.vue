@@ -33,7 +33,8 @@
                             </div>
                         </div>
                         <div v-show="!loginComposable.state.isSent">
-                            <MoleculeFirebaseUI v-if="state.isContentVisible"></MoleculeFirebaseUI>
+                            <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions"
+                                type="employee"></MoleculeFirebaseUI>
                         </div>
                     </div>
                 </div>
@@ -43,7 +44,7 @@
 </template>
 <script setup>
 import firebase from "firebase"
-const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, $validate, } = useNuxtApp()
+const { $emitter, $bootstrap, } = useNuxtApp()
 const device = useDevice()
 const loginComposable = useLogin()
 const state = reactive({
@@ -53,6 +54,7 @@ const state = reactive({
     password: '',
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
+    signInOptions: ['password', 'google.com', 'facebook.com']
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -65,24 +67,6 @@ onMounted(() => {
     }
 })
 // methods
-function handleFirebaseError(error) {
-    // 參考自FirebaseUI的錯誤訊息翻譯
-    const messageMap = {
-        'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
-        'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
-        'auth/operation-not-allowed': '操作代碼無效。如果代碼已過期、已使用或格式不正確，就有可能發生這種情況。',
-        'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
-        'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
-        'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶'
-    }
-    // 顯示錯誤訊息
-    const { code = '', message = '' } = error
-    state.errorMessage = messageMap[code] || message
-}
-function clearForm() {
-    state.email = ''
-    state.password = ''
-}
 function hideModal() {
     loginComposable.state.isSent = false
     state.isContentVisible = false
@@ -91,47 +75,6 @@ function hideModal() {
 function showModal() {
     state.bsModal.show()
     state.isContentVisible = true
-}
-async function renderFirebaseUI() {
-    const firebaseAuth = firebase.auth()
-    const ui = $firebaseuiAuth.AuthUI.getInstance() || new $firebaseuiAuth.AuthUI(firebaseAuth)
-    const isPendingRedirect = ui.isPendingRedirect()
-    if (isPendingRedirect) {
-        $sweet.loader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
-        },
-        {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        },
-        {
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        }
-    ]
-    const element = document.querySelector("#user-auth-container")
-    try {
-        ui.start(element, {
-            callbacks: {
-                signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                    loginComposable.handleAuthResult(authResult, "employee")
-                    return false
-                }
-            },
-            signInFlow: 'popup', // redirect會造成臉書登入失效
-            signInOptions,
-            tosUrl:
-                "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-            privacyPolicyUrl:
-                "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-        })
-    } catch (error) {
-        console.trace(error)
-    }
 }
 </script>
 <style lang="scss" scoped>
