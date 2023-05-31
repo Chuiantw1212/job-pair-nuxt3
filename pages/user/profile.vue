@@ -78,6 +78,7 @@
             <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profileBroadcast.isActive" name="目前求職狀態">
                 <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
             </LazyAtomInputCheckSingle>
+            <hr />
             <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.subscribed"
                 name="EDM訂閱">
                 <span class="isActive__desc">我願意收到EDM</span>
