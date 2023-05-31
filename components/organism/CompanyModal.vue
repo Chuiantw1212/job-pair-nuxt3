@@ -14,27 +14,8 @@
                                 可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
                             </div>
                         </div>
-                        <div v-show="loginComposable.state.isSent" class="body__emailSent">
-                            <h1 class="emailSent__header">驗證信已寄出</h1>
-                            <div class="emailSent__desc">
-                                <div>請至E-mail收註冊信開始配對工作</div>
-                                <div>( 若無請至垃圾信箱查找 )</div>
-                            </div>
-                            <div class="emailSent__footer">
-                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
-                                    disabled>{{
-                                        loginComposable.state.cdVisible
-                                    }}
-                                </LazyAtomBtnSimple>
-                                <LazyAtomBtnSimple v-else class="emailSent__resend"
-                                    @click="loginComposable.sendEmailLink('admin')">重新寄送驗證信
-                                </LazyAtomBtnSimple>
-                            </div>
-                        </div>
-                        <div v-show="!loginComposable.state.isSent" id="company-auth-container">
-                            <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions"
-                                type="admin"></MoleculeFirebaseUI>
-                        </div>
+                        <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions" type="admin">
+                        </MoleculeFirebaseUI>
                     </div>
                 </div>
             </div>
@@ -44,14 +25,13 @@
 <script setup>
 const { $emitter, $bootstrap, } = useNuxtApp()
 const device = useDevice()
-const loginComposable = useLogin()
 const state = reactive({
     bsModal: null,
     isContentVisible: false,
     signInOptions: ['password', 'google.com']
 })
 onMounted(() => {
-    $emitter.on("showCompanyModal", showModal) // listen
+    $emitter.on("showCompanyModal", showModal)
     $emitter.on("hideCompanyModal", hideModal)
     state.bsModal = new $bootstrap.Modal(document.getElementById("companyModal"), {
         keyboard: false,
@@ -59,7 +39,6 @@ onMounted(() => {
     })
 })
 function hideModal() {
-    loginComposable.state.isSent = false
     state.isContentVisible = false
     state.bsModal.hide()
 }
@@ -83,36 +62,6 @@ function showModal() {
             text-align: center;
             font-size: 28px;
             font-weight: bold;
-        }
-
-        .body__desc {
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .body__emailSent {
-            text-align: center;
-            padding: 20px 0 0 0;
-
-            .emailSent__header {
-                font-size: 28px;
-                font-weight: bold;
-                margin-bottom: 4px;
-            }
-
-            .emailSent__desc {
-                font-size: 14px;
-                margin-bottom: 2rem;
-            }
-
-            .emailSent__footer {
-                display: flex;
-                justify-content: center;
-
-                .emailSent__resend {
-                    width: 226px;
-                }
-            }
         }
     }
 }

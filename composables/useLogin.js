@@ -65,6 +65,9 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
+        console.log({
+            basicInfo
+        });
         if (!basicInfo) {
             await $sweet.alert('查無使用者資料')
             return
@@ -268,6 +271,7 @@ export default function setup() {
                 state.countdownInterval = null
             }
         }, 1000)
+        console.log('sendEmailLink',);
         state.isSent = true
     }
     return {
