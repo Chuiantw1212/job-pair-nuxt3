@@ -1,6 +1,6 @@
 <template>
     <div style="" id="user-auth-container" data-v-19384ea0="">
-        <div v-if="!state.isShowEmail"
+        <div v-if="state.isShowDefault"
             class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
             <div class="firebaseui-card-content">
                 <form onsubmit="return false;">
@@ -134,6 +134,7 @@ const state = reactive({
         email: '',
         password: '',
     },
+    isShowDefault: true,
     isShowEmail: false,
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
@@ -197,9 +198,11 @@ async function clearErrorMessage() {
 }
 async function cancelEmail() {
     state.isShowEmail = false
+    state.isShowDefault = true
 }
 async function signInWithEmail() {
     state.isShowEmail = true
+    state.isShowDefault = false
 }
 async function signInWithGoogle(data = {}) {
     const { isLink = false } = data
