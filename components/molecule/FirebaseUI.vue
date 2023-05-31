@@ -258,8 +258,7 @@ async function checkEmailRegistered() {
         return
     }
     const { email = '', password = '' } = state.form
-    const res = await app.getAuth().fetchSignInMethodsForEmail(email)
-    // const res = await firebase.auth.Auth.fetchSignInMethodsForEmail(email)
+    const res = await firebase.auth().fetchSignInMethodsForEmail(email)
     const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
     if (res.includes(emailProviderId)) {
         // 顯示密碼
