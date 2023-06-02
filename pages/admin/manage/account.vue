@@ -49,7 +49,7 @@
 </template>
 <script setup>
 import { getAuth, } from "firebase/auth"
-const { $sweet, $firebaseApp } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
@@ -81,7 +81,7 @@ async function logout() {
     await repoAuth.userSignout()
     let user = null
     try {
-        const auth = getAuth($firebaseApp)
+        const auth = getAuth()
         user = auth().currentUser
     } finally {
         if (!user) {
@@ -92,7 +92,7 @@ async function logout() {
     }
 }
 async function handleCredential() {
-    const auth = getAuth($firebaseApp)
+    const auth = getAuth()
     const user = auth().currentUser
     const credential = auth.EmailAuthProvider.credential(user.email, state.pass)
     try {
@@ -127,7 +127,7 @@ async function submitNewPass() {
     }
 }
 async function submitProfile() {
-    const auth = getAuth($firebaseApp)
+    const auth = getAuth()
     const user = auth().currentUser
     try {
         await user.updateProfile({

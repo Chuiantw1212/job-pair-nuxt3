@@ -1,7 +1,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
-    const { $emitter, $sweet, $firebaseApp } = useNuxtApp()
+    const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
     const route = useRoute()
     const jobPairApi = useJobPairApi()
@@ -25,7 +25,7 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const auth = getAuth($firebaseApp)
+        const auth = getAuth()
         auth.onAuthStateChanged(async (userInfo) => {
             $sweet.loader(false)
             if (!userInfo) {
@@ -85,7 +85,7 @@ export default function setup() {
         $sweet.loader(false)
     }
     async function setIdToken() {
-        const auth = getAuth($firebaseApp)
+        const auth = getAuth()
         if (!auth || !auth.currentUser) {
             console.log('setIdToken no auth', auth)
             return

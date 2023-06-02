@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function () {
-    const { $sweet, $firebaseApp } = useNuxtApp()
+    const { $sweet, } = useNuxtApp()
     const config = useRuntimeConfig()
     const state = reactive({
         axiosInstance: axios.create({
@@ -18,7 +18,7 @@ export default function () {
             auth = await new Promise((resolve) => {
                 const step = function () {
                     try {
-                        const auth = getAuth($firebaseApp)
+                        const auth = getAuth()
                         resolve(auth)
                     } catch (error) {
                         window.requestAnimationFrame(step)

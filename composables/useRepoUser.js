@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('user', () => {
-    const { $firebaseApp } = useNuxtApp()
     const jobPairApi = useJobPairApi()
     async function deleteUser() {
-        const auth = getAuth($firebaseApp)
+        const auth = getAuth()
         if (!auth.currentUser) {
             return
         }

@@ -1,4 +1,3 @@
-import { auth } from "firebaseui"
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
 export default defineNuxtPlugin(() => {
@@ -34,8 +33,6 @@ export default defineNuxtPlugin(() => {
     }
     return {
         provide: {
-            firebaseApp: app,
-            firebaseuiAuth: auth,
             storageBucket: firebaseConfig.storageBucket
         }
     }

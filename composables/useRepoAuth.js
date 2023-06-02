@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
-    const { $firebaseApp } = useNuxtApp()
     const jobPairApi = useJobPairApi()
     const repoJobApplication = useRepoJobApplication()
     const state = reactive({
@@ -41,7 +40,7 @@ export default defineStore('auth', () => {
     async function userSignout() {
         try {
             localStorage.removeItem("user")
-            const auth = getAuth($firebaseApp)
+            const auth = getAuth()
             if (auth) {
                 await auth.signOut()
             }

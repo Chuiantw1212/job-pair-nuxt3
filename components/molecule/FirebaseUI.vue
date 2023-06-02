@@ -61,8 +61,7 @@
                         </p>
                     </div>
                 </div>
-                <div v-if="state.dialogName === 'email'"
-                    class="mdl-card firebaseui-container firebaseui-id-page-sign-in">
+                <div v-if="state.dialogName === 'email'" class="mdl-card firebaseui-container firebaseui-id-page-sign-in">
                     <form onsubmit="return false;">
                         <div class="firebaseui-card-header">
                             <h1 class="firebaseui-title">用Email登入註冊</h1>
@@ -154,7 +153,7 @@
 <script setup>
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth"
 import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider } from "firebase/auth";
-const { $validate, $firebaseApp } = useNuxtApp()
+const { $validate, } = useNuxtApp()
 const loginComposable = useLogin()
 const state = reactive({
     form: {
