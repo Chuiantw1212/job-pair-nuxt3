@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div v-if="state.dialogName === 'email'"
-                    class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-sign-in">
+                    class="mdl-card firebaseui-container firebaseui-id-page-sign-in">
                     <form onsubmit="return false;">
                         <div class="firebaseui-card-header">
                             <h1 class="firebaseui-title">用Email登入註冊</h1>
@@ -117,7 +117,7 @@
                     </form>
                 </div>
                 <div v-if="state.dialogName === 'federatedLinking'"
-                    class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-federated-linking">
+                    class="mdl-card firebaseui-container firebaseui-id-page-federated-linking">
                     <form onsubmit="return false;">
                         <div class="firebaseui-card-header">
                             <h1 class="firebaseui-title">登入</h1>
@@ -152,7 +152,7 @@
     </div>
 </template>
 <script setup>
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth"
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth"
 import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider } from "firebase/auth";
 const { $validate, $firebaseApp } = useNuxtApp()
 const loginComposable = useLogin()
@@ -269,7 +269,8 @@ async function signInWithGoogle(data = {}) {
     const { isLink = false } = data
     try {
         const provider = new GoogleAuthProvider()
-        const authResult = await auth().signInWithPopup(provider)
+        const auth = getAuth()
+        const authResult = await signInWithPopup(auth, provider)
         loginComposable.handleAuthResult(authResult, props.type)
         if (isLink && state.pendingCredential) {
             const { user = {} } = authResult
@@ -284,7 +285,8 @@ async function signInWithFacebook() {
         const provider = new FacebookAuthProvider();
         provider.addScope('public_profile')
         provider.addScope('email')
-        const authResult = await auth().signInWithPopup(provider)
+        const auth = getAuth()
+        const authResult = await signInWithPopup(auth, provider)
         loginComposable.handleAuthResult(authResult, props.type)
     } catch (error) {
         handleFirebaseError(error)
