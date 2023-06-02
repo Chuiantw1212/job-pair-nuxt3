@@ -125,13 +125,14 @@
                         <div class="firebaseui-card-content">
                             <h2 class="firebaseui-subtitle">您已經有了帳戶</h2>
                             <p class="firebaseui-text">目前您使用的是 <strong>{{ state.form.email }}</strong>。如要繼續，請使用
-                                {{ state.providerName }} 帳戶登入。</p>
+                                {{ state.federatedProvider.name }} 帳戶登入。</p>
                         </div>
                         <div class="firebaseui-card-actions">
                             <div class="firebaseui-form-actions"><button type="submit"
                                     class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                    data-upgraded=",MaterialButton" @click="signInWithGoogle({ isLink: true })">以 {{
-                                        state.providerName }}
+                                    data-upgraded=",MaterialButton"
+                                    @click="signInWithFirstFederatedProvider({ isLink: true })">以 {{
+                                        state.federatedProvider.name }}
                                     帳戶登入</button>
                             </div>
                         </div>
@@ -173,7 +174,10 @@ const state = reactive({
         'yahoo.com': 'Yahoo',
         'apple.com': 'Apple',
     },
-    providerName: '',
+    federatedProvider: {
+        id: '',
+        name: '',
+    },
     dialogName: 'default',
     isShowPasswordLogin: false,
     isShowPasswordRegister: false,
@@ -240,7 +244,8 @@ function handleFederatedLinking(data = {}) {
 }
 function setFederatedDialog(providerId) {
     const providerName = state.defaultProviderNames[providerId]
-    state.providerName = providerName
+    state.federatedProvider.id = providerId
+    state.federatedProvider.name = providerName
     state.dialogName = 'federatedLinking'
 }
 function getFirstFederatedProvider(providers = []) {
@@ -265,9 +270,18 @@ async function signInWithEmail() {
     state.dialogName = 'email'
     state.errorMessage = ''
 }
+async function signInWithFirstFederatedProvider(data = {}) {
+    const providerId = state.federatedProvider.id
+    if (providerId === GoogleAuthProvider.PROVIDER_ID) {
+        signInWithGoogle(data)
+    }
+    if (providerId === FacebookAuthProvider.PROVIDER_ID) {
+        signInWithFacebook(data)
+    }
+}
 async function signInWithGoogle(data = {}) {
-    const { isLink = false } = data
     try {
+        const { isLink = false } = data
         const provider = new GoogleAuthProvider()
         const auth = getAuth()
         const authResult = await signInWithPopup(auth, provider)
@@ -280,8 +294,9 @@ async function signInWithGoogle(data = {}) {
         handleFirebaseError(error)
     }
 }
-async function signInWithFacebook() {
+async function signInWithFacebook(data = {}) {
     try {
+        const { isLink = false } = data
         const provider = new FacebookAuthProvider();
         provider.addScope('public_profile')
         provider.addScope('email')
@@ -289,6 +304,10 @@ async function signInWithFacebook() {
         const authResult = await signInWithPopup(auth, provider)
         // 比照Email登入流程，也需要信箱驗證
         loginComposable.handleAuthResult(authResult, props.type)
+        if (isLink && state.pendingCredential) {
+            const { user = {} } = authResult
+            user.linkWithCredential(state.pendingCredential)
+        }
     } catch (error) {
         handleFirebaseError(error)
     }
