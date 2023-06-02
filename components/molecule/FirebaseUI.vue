@@ -286,6 +286,7 @@ async function signInWithFacebook() {
         provider.addScope('email')
         const auth = getAuth()
         const authResult = await signInWithPopup(auth, provider)
+        // 比照Email登入流程，也需要信箱驗證
         loginComposable.handleAuthResult(authResult, props.type)
     } catch (error) {
         handleFirebaseError(error)

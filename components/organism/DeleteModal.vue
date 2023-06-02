@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, } from 'vue'
-const { $emitter, $bootstrap, $sweet, $requestSelector } = useNuxtApp()
+const { $bootstrap, $sweet, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
