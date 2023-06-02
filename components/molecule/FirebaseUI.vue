@@ -152,8 +152,9 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase"
-const { $validate, } = useNuxtApp()
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth"
+import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider } from "firebase/auth";
+const { $validate, $firebaseApp } = useNuxtApp()
 const loginComposable = useLogin()
 const state = reactive({
     form: {
@@ -203,7 +204,8 @@ async function handleFirebaseError(error) {
     switch (code) {
         case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
-            const providers = await firebase.auth().fetchSignInMethodsForEmail(email)
+            const auth = getAuth()
+            const providers = await auth().fetchSignInMethodsForEmail(email)
             handleFederatedLinking({
                 error,
                 providers
@@ -266,8 +268,8 @@ async function signInWithEmail() {
 async function signInWithGoogle(data = {}) {
     const { isLink = false } = data
     try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        const authResult = await firebase.auth().signInWithPopup(provider)
+        const provider = new GoogleAuthProvider()
+        const authResult = await auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, props.type)
         if (isLink && state.pendingCredential) {
             const { user = {} } = authResult
@@ -279,10 +281,10 @@ async function signInWithGoogle(data = {}) {
 }
 async function signInWithFacebook() {
     try {
-        const provider = new firebase.auth.FacebookAuthProvider();
+        const provider = new FacebookAuthProvider();
         provider.addScope('public_profile')
         provider.addScope('email')
-        const authResult = await firebase.auth().signInWithPopup(provider)
+        const authResult = await auth().signInWithPopup(provider)
         loginComposable.handleAuthResult(authResult, props.type)
     } catch (error) {
         handleFirebaseError(error)
@@ -295,7 +297,8 @@ async function loginAndRegister() {
     }
     try {
         const { email = '', password = '' } = state.form
-        const authResult = await firebase.auth().signInWithEmailAndPassword(email, password)
+        const auth = getAuth()
+        const authResult = await signInWithEmailAndPassword(auth, email, password)
         loginComposable.handleAuthResult(authResult, props.type)
         clearForm()
     } catch (error) {
@@ -305,7 +308,8 @@ async function loginAndRegister() {
 async function signupUser() {
     try {
         const { email = '', password = '' } = state.form
-        const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        const auth = getAuth()
+        const authResult = await createUserWithEmailAndPassword(auth, email, password)
         loginComposable.handleAuthResult(authResult, props.type)
         clearForm()
     } catch (error) {
@@ -318,7 +322,8 @@ async function checkEmailRegistered() {
         return
     }
     const { email = '', password = '' } = state.form
-    const providers = await firebase.auth().fetchSignInMethodsForEmail(email)
+    const auth = getAuth()
+    const providers = await fetchSignInMethodsForEmail(auth, email)
     // Get First Federated Provider and show
     const providerId = getFirstFederatedProvider(providers)
     if (providerId) {
@@ -326,7 +331,7 @@ async function checkEmailRegistered() {
         return
     }
     // Show email login
-    const emailProviderId = firebase.auth.EmailAuthProvider.PROVIDER_ID
+    const emailProviderId = EmailAuthProvider.PROVIDER_ID
     if (providers.includes(emailProviderId)) {
         // 顯示密碼
         state.isShowPasswordLogin = true

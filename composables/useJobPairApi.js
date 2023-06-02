@@ -1,7 +1,7 @@
 import axios from 'axios'
-import firebase from "firebase"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function () {
-    const { $sweet, } = useNuxtApp()
+    const { $sweet, $firebaseApp } = useNuxtApp()
     const config = useRuntimeConfig()
     const state = reactive({
         axiosInstance: axios.create({
@@ -12,30 +12,13 @@ export default function () {
     function setToken(token) {
         state.token = token
     }
-    function downloadErrorJSON(errorJSON, fileName) {
-        /**
-        * 用Blob創造與下載文件
-        * https://codertw.com/ios/19926/
-        */
-        const blob = new Blob([JSON.stringify(errorJSON)], {
-            type: "application/json"
-        })
-        const objectURL = window.URL.createObjectURL(blob)
-        // Do things
-        const link = document.createElement('a')
-        link.href = objectURL
-        link.download = `${fileName}.json`
-        link.click()
-        // Clear memory
-        window.URL.revokeObjectURL(objectURL)
-    }
     async function request(options) {
         let auth = null
         if (process.client) {
             auth = await new Promise((resolve) => {
                 const step = function () {
                     try {
-                        let auth = firebase.auth()
+                        const auth = getAuth($firebaseApp)
                         resolve(auth)
                     } catch (error) {
                         window.requestAnimationFrame(step)
