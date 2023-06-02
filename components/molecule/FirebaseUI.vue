@@ -71,7 +71,8 @@
                                 <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputEmail id="loginEmail" v-model="state.form.email" name="電子郵件信箱"
-                                        placeholder="電子郵件信箱" required></LazyAtomInputEmail>
+                                        placeholder="電子郵件信箱" @update:modelValue="clearErrorMessage()" required>
+                                    </LazyAtomInputEmail>
                                 </div>
                                 <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"

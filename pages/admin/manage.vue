@@ -47,6 +47,7 @@ const device = useDevice()
             z-index: 1040;
             margin-bottom: 0;
             border-top: 1px solid #c4c4c4;
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
 
             .menu__item {
                 .menu__item__link {

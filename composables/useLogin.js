@@ -257,11 +257,13 @@ export default function setup() {
         }
     }
     async function sendEmailLink(type) {
+        $sweet.loader(true)
         const basicInfo = getBasicInfo(type)
         const response = await repoAuth.postVerificationEmail(basicInfo)
         if (response.status !== 200) {
             return false
         }
+        $sweet.loader(false)
         state.countdownInterval = true
         state.cdVisible = state.cdDefault
         state.countdownInterval = setInterval(() => {
