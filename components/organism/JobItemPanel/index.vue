@@ -61,14 +61,14 @@ export default {
 }
 </script>
 <script setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, } from 'vue'
 const { $uuid4, $bootstrap, $emitter, $rank, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const state = reactive({
     id: null,
-    isCopied: true,
+    isCopied: false,
     copiedTooltip: null,
     application: {},
     navigator: {},
@@ -103,7 +103,7 @@ watch(() => props.modelValue, () => {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`
-        if (props.showShareButton && !state.navigator.share && checkPanelDisplay()) {
+        if (props.showShareButton && !state.navigator.share) {
             state.id = $uuid4()
             nextTick(() => {
                 initialilzeTooltip()
@@ -126,7 +126,6 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
 function getRankedSimilarity() {
     const { user } = repoAuth.state
     let score = user?.id ? 0 : '？'
-    console.log(props.modelValue?.similarity);
     if (props.modelValue?.similarity) {
         score = $rank(props.modelValue.similarity)
     }
@@ -135,11 +134,6 @@ function getRankedSimilarity() {
 function checkPanelDisplay() {
     const { user } = repoAuth.state
     return user?.id
-    // const { modelValue } = props
-    // if (!modelValue || !modelValue.similarity) {
-    //     return
-    // }
-    // return modelValue.similarity === 0 || $rank(modelValue.similarity)
 }
 function resetCopiedTooltip() {
     state.isCopied = false
@@ -191,7 +185,9 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
     await navigator.clipboard.writeText(url)
-    state.shareButtonToolTip.hide()
+    if (state.shareButtonToolTip) {
+        state.shareButtonToolTip.hide()
+    }
     state.isCopied = true
     nextTick(() => {
         state.copiedTooltip.show()
