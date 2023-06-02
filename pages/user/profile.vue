@@ -79,7 +79,7 @@
                 <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
             </LazyAtomInputCheckSingle>
             <hr />
-            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.subscribed"
+            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.isSubscribed"
                 name="EDM訂閱">
                 <span class="isActive__desc">我願意收到EDM</span>
             </LazyAtomInputCheckSingle>
@@ -199,7 +199,7 @@ function initialize() {
     // profileBroadcast
     const {
         isActive = true,
-        subscribed = true,
+        isSubscribed = true,
         birthDate = '',
         gender = '',
         educationLevel = '',
@@ -207,7 +207,7 @@ function initialize() {
     } = profile
     const profileBroadcast = {
         isActive,
-        subscribed,
+        isSubscribed,
         birthDate,
         gender,
         educationLevel,
