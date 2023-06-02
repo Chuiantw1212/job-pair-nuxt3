@@ -69,6 +69,7 @@ async function showSecondConfirm() {
     }
     hideModal()
     // 執行刪除流程
+    $sweet.loader(true)
     switch (repoAuth.state.user.type) {
         case 'employee': {
             const res = await repoUser.deleteUser()
