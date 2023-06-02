@@ -219,7 +219,8 @@ async function handleFirebaseError(error) {
                 'auth/weak-password': '安全強度高的密碼至少需有 6 個字元並混用字母和數字',
                 'auth/wrong-password': '您輸入的電子郵件地址和密碼不相符',
                 'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶',
-                'auth/argument-error': ''
+                'auth/argument-error': '',
+                'auth/popup-closed-by-user': '使用者在完成操作前關閉了彈出視窗',
             }
             state.errorMessage = messageMap[code] || message
         }
@@ -260,6 +261,7 @@ async function cancelEmail() {
 }
 async function signInWithEmail() {
     state.dialogName = 'email'
+    state.errorMessage = ''
 }
 async function signInWithGoogle(data = {}) {
     const { isLink = false } = data
@@ -304,9 +306,6 @@ async function signupUser() {
     try {
         const { email = '', password = '' } = state.form
         const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        console.log({
-            authResult
-        });
         loginComposable.handleAuthResult(authResult, props.type)
         clearForm()
     } catch (error) {
