@@ -204,12 +204,12 @@ const props = defineProps({
 async function handleFirebaseError(error) {
     console.trace(error);
     // 顯示錯誤訊息
-    const { code = '', message = '', email = '', credential = {} } = error
+    const { code = '', message = '', email = '', } = error
     switch (code) {
         case 'auth/email-already-in-use':
         case 'auth/account-exists-with-different-credential': {
             const auth = getAuth()
-            const providers = await auth().fetchSignInMethodsForEmail(email)
+            const providers = await fetchSignInMethodsForEmail(auth, email)
             handleFederatedLinking({
                 error,
                 providers
@@ -233,6 +233,7 @@ async function handleFirebaseError(error) {
     }
 }
 function handleFederatedLinking(data = {}) {
+    // 先Email再臉書也會出此錯誤
     const { providers = [], error = {}, } = data
     const { credential = {}, } = error
     state.pendingCredential = credential
