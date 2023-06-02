@@ -123,7 +123,7 @@
 <script setup>
 import { useRouter, } from 'vue-router'
 import { reactive, onMounted, watch, } from 'vue'
-const { $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, $emitter } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -157,6 +157,8 @@ const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
+        // 跳出登入視窗
+        $emitter.emit("showUserModal")
         return
     }
     const profile = JSON.parse(JSON.stringify(user))
