@@ -13,13 +13,17 @@
                             @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
+                        <!--  -->
                         <LazyAtomInputText v-model="state.form.jobName" name="職務名稱" required></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.department" name="所屬部門"></LazyAtomInputText>
+                        <!--  -->
                         <AtomInputSelect v-model="state.form.manager" name="管理責任"></AtomInputSelect>
                         <LazyAtomInputText v-model="state.form.primary[0]" name="主要工作"></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.primary[1]" name="主要工作"></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.secondary[0]" name="次要工作"></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.secondary[1]" name="次要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.goal" name="具體目標"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.value" name="價值體現"></LazyAtomInputText>
                         <AtomInputSelect v-model="state.form.personality[0]" itemValue="text" :items="state.question1"
                             name="特質期望">
                         </AtomInputSelect>
@@ -32,6 +36,9 @@
                         <AtomInputSelect v-model="state.form.personality[3]" itemValue="text" :items="state.question4"
                             name="特質期望">
                         </AtomInputSelect>
+                        <LazyAtomInputText v-model="state.form.educationLevel" name="學歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.experienceLevel" name="資歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.skillLevel" name="技能要求"></LazyAtomInputText>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.description" ref="description" name="職責簡介"
                             :style="{ 'height': '324px' }">
@@ -68,8 +75,11 @@ const state = reactive({
     form: {
         jobName: '行銷企劃專員',
         department: '行銷推廣部',
-        target: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
-
+        goal: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
+        value: '需要有豐富的創意和創新思維，能夠提供新穎且有吸引力的行銷方案和活動，以吸引目標客戶的關注並脫穎而出',
+        educationLevel: '大學',
+        experienceLevel: '兩年以上',
+        skillLevel: '懂Youtube以及抖音的行銷後台',
         manager: true,
         primary: [
             '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
