@@ -59,8 +59,7 @@
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
                     <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
-                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge"
-                        :showSelectAll="true">
+                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -153,7 +152,6 @@
     </div>
 </template>
 <script setup>
-import { onBeforeRouteUpdate } from 'vue-router'
 const { $requestSelectorAll, $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -198,8 +196,7 @@ useSeoMeta({
 })
 watch(() => repoAuth.state.user, () => {
     const noLocalJobs = !state.jobList.length
-    const { user } = repoAuth.state
-    if (noLocalJobs && user && user.id) {
+    if (noLocalJobs) {
         initializeSearch()
     }
 }, { immediate: true })
@@ -400,15 +397,14 @@ async function initializeSearch(config = {}) {
     }, wait)()
 }
 async function concatJobsFromServer(config = {}) {
-    const { user } = repoAuth.state
-    if (!user || !user.id) {
-        return
-    }
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        userId: user.id,
     })
+    const { user } = repoAuth.state
+    if (user?.id) {
+        requestConfig.userId = user.id
+    }
     $sweet.loader(isLoading)
     const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {

@@ -5,7 +5,6 @@
             {{ getJobName() }}
         </div>
     </button>
-
     <!-- Modal -->
     <div class="modal fade" :id="`modal_${modelValue.identifier}`" tabindex="-1" aria-labelledby="jobModalLabel"
         aria-hidden="true">
@@ -113,15 +112,15 @@
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
                             required :toolbar="state.toolbar" ref="description" class="mt-4">
-                            <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                            <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
                                 :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                            </LazyOrganismChatGptModal> -->
+                            </LazyOrganismChatCvModal> -->
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                             :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                            <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills"
+                            <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills"
                                 :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
-                            </LazyOrganismChatGptModal> -->
+                            </LazyOrganismChatCvModal> -->
                         </LazyAtomInputCkeditor>
                         <div v-if="state.job.preference" class="form__preference mt-4">
                             <div class="preference__header">用人偏好</div>
