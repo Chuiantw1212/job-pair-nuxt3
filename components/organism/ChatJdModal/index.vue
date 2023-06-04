@@ -1,32 +1,33 @@
 <template>
     <div class="chatGptModal">
-        <button class="chatGptModal__btn" @click="openModal()">
-            簡歷產生器
-        </button>
+        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
+            <img class="me-1" src="./Frame.svg" alt="icon">
+            一鍵優化
+        </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">簡歷產生器</h4>
+                        <h4 class="modal-title">一鍵優化</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
-                    <div class="modal-body">
-                        <LazyAtomInputText name="期望的職位名稱" v-model="state.form.jobTitle" placeholder="例如：行銷專員" class="mt-3">
-                        </LazyAtomInputText>
-                        <LazyAtomInputTextarea name="我的優勢" v-model="state.form.strength"
-                            placeholder="針對職缺條件撰寫自我推薦，提高履歷被點開的機率。" :rows="2" class="mt-3">
-                        </LazyAtomInputTextarea>
-                        <LazyAtomInputTextarea name="實際案例" v-model="state.form.records"
-                            placeholder="範例：在 YouTube 網紅世代剛開始時，我就在目前的公司提議導入網紅行銷，成為業界中首先切入網紅行銷的產品，事後證實成效很好。因為我願意不斷探索新的方式，才可能促成業界首例"
-                            class="mt-3" :rows="4">
-                        </LazyAtomInputTextarea>
+                    <div class="modal-body" ref="modalBodyRef">
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
+                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
+                        <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
+                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
+                            ref="afterChatGpt" :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
+                        <!-- </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
                             <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
                             </LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">開始生成
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
                             </LazyAtomBtnSimple>
                         </div>
                     </div>
@@ -36,17 +37,19 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $sweet, $requestSelector, $filter } = useNuxtApp()
-const repoChat = useRepoChat()
-const repoSelect = useRepoSelect()
-const emit = defineEmits(['update:modelValue',])
+const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
+const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
     chatModal: null,
+    glideInstance: null,
+    glideIndex: 0,
+    resume: null,
+    duration: "",
+    schedules: [],
     form: {
-        jobTitle: "",
-        strength: "",
-        records: "",
+        subject: "",
+        template: "",
     },
     beforeChatGpt: '',
     afterChatGpt: '',
@@ -66,12 +69,6 @@ const props = defineProps({
         type: Function,
         default: function () {
             return false
-        }
-    },
-    occupationalCategory: {
-        type: Array,
-        default: function () {
-            return []
         }
     }
 })
@@ -98,46 +95,50 @@ onMounted(() => {
     }
 })
 // methods
-async function handleConfirm() {
-    const occupationalCategory = props.occupationalCategory.map(item => {
-        return $filter.optionText(item, repoSelect.jobCategory)
-    })
-    const form = {
-        ...state.form,
-        occupationalCategory,
+function handleConfirm() {
+    emit('update:modelValue', state.afterChatGpt)
+    state.afterChatGpt = ''
+    const ckEditor = currentInstance.refs.afterChatGpt
+    if (ckEditor) {
+        ckEditor.setData('')
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', ckEditor);
     }
-    $sweet.loader(true, {
-        title: '泡杯咖啡再回來',
-        text: '「如果還沒好，那就再來一杯」',
-    })
-    const res = await repoChat.postChatIntro(form)
-    if (res.status !== 200) {
-        return
-    }
-    $sweet.loader(false)
-    emit('update:modelValue', res.data)
     state.chatModal.hide()
 }
 async function openModal() {
     state.chatModal.show()
 }
 function handleClose() {
+    const ckEditor = currentInstance.refs.beforeChatGpt
+    ckEditor.setData(props.modelValue)
     state.chatModal.hide()
+}
+const modalBodyRef = ref(null)
+async function handleOptimization() {
+    $sweet.loader(true, {
+        title: '泡杯咖啡再回來',
+        text: '「如果還沒好，那就再來一杯」',
+    })
+    const res = await props.chatRequest(state.beforeChatGpt)
+    if (res.status !== 200) {
+        return
+    }
+    $sweet.loader(false)
+    state.afterChatGpt = res.data
+    const ckEditor = currentInstance.refs.afterChatGpt
+    if (ckEditor) {
+        ckEditor.setData(res.data)
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+    }
 }
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    font-size: 18px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.2;
-    letter-spacing: normal;
-    text-align: center;
-    color: #70a68f;
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    margin-left: 16px;
+    width: 115px;
+    height: 40px;
+    margin-left: 8px;
 }
 
 .modal-content {

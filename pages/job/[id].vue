@@ -274,10 +274,13 @@ useJsonld(() => {
     validThroughDate.setDate(validThroughDate.getDate() + 7)
     const locationValue = location.value
     const addressRegionItems = locationValue[job.value.addressRegion]
-    const targetRegion = addressRegionItems.find(item => {
-        return item.value === job.value.addressLocality
-    })
-    const { text: addressLocality = '', postalCode } = targetRegion
+    let targetRegion = {}
+    if (addressRegionItems) {
+        targetRegion = addressRegionItems.find(item => {
+            return item.value === job.value.addressLocality
+        })
+    }
+    const { text: addressLocality = null, postalCode = null } = targetRegion
     const jsonld = {
         // https://schema.org/JobPosting
         '@context': 'https://schema.org',
@@ -416,7 +419,7 @@ function checkInfoIncomplete() {
     const { user } = repoAuth.state
     if (user) {
         // 一般欄位
-        const requiredFieds = ['name', 'email', 'telephone', 'birthDate', 'gender']
+        const requiredFieds = ['name', 'email']
         const incompleteFields = requiredFieds.filter(field => {
             return !user[field] || !String(user[field]).trim()
         })

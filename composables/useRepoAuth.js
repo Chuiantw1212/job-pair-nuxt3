@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import firebase from "firebase"
+import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
     const jobPairApi = useJobPairApi()
     const repoJobApplication = useRepoJobApplication()
@@ -40,7 +40,7 @@ export default defineStore('auth', () => {
     async function userSignout() {
         try {
             localStorage.removeItem("user")
-            const auth = firebase.auth()
+            const auth = getAuth()
             if (auth) {
                 await auth.signOut()
             }

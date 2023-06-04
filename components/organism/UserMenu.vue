@@ -13,8 +13,8 @@
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/jobgpt">
-                        JobGpt
+                    <NuxtLink class="navItem__button" to="/cvgpt">
+                        CVgpt
                     </NuxtLink>
                 </li>
             </template>
@@ -44,8 +44,8 @@
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
             <li class="nav-item">
-                <NuxtLink class="navItem__button" to="/jobgpt">
-                    JobGpt
+                <NuxtLink class="navItem__button" to="/cvgpt">
+                    CVgpt
                 </NuxtLink>
             </li>
         </template>

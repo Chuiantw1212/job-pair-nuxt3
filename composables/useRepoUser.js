@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import firebase from "firebase"
+import { getAuth, } from "firebase/auth"
 export default defineStore('user', () => {
     const jobPairApi = useJobPairApi()
     async function deleteUser() {
-        const auth = firebase.auth()
+        const auth = getAuth()
         if (!auth.currentUser) {
             return
         }
@@ -30,12 +30,19 @@ export default defineStore('user', () => {
         })
         return response
     }
-    async function putUserResume(data) {
+    async function getUserCertificate(data) {
         const response = await jobPairApi.request({
-            method: 'put',
-            url: `/user/${data.uid}/resume`,
-            data: data.file,
-            commit: true,
+            method: 'get',
+            url: `/user/certificate/${data.fileName}`,
+            responseType: 'blob',
+        })
+        return response
+    }
+    async function getUserResume(data) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/user/resume/${data.fileName}`,
+            responseType: 'blob',
         })
         return response
     }
@@ -77,10 +84,11 @@ export default defineStore('user', () => {
         deleteUser,
         postUser,
         patchUserProfile,
-        putUserResume,
         putUserResumes,
         putUserCertificates,
         putUserPhoto,
         patchUserPreference,
+        getUserResume,
+        getUserCertificate,
     }
 })

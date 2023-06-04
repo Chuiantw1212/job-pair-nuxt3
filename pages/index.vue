@@ -24,7 +24,7 @@
                 <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
                 <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
                 <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
-                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="無" othersDesc="有">
+                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="有" othersDesc="無">
                 </MoleculeHomeCard>
             </div>
         </div>

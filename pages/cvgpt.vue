@@ -1,7 +1,7 @@
 <template>
     <div class="container chatgpt">
         <div class="chatgpt__instruction">
-            <h1 class="instruction__header">JobGPT 快速更新或改善簡歷</h1>
+            <h1 class="instruction__header">CVgpt 快速更新或改善簡歷</h1>
             <div class="chatgpt__desc">
                 我們量身訂製一套適合ChatGPT求職人士的指令，從製作一份殺手級的簡歷到準備棘手的面試問題。
                 <br>
@@ -17,12 +17,14 @@
                     </div>
                 </li>
                 <li class="list__item">
-                    <div class="item__badge">
-                        <img class="badge__icon" src="@/assets/user/chatgpt/Frame1.svg">
-                    </div>
-                    <div class="item__text">
-                        2. 開啟ChatGPT
-                    </div>
+                    <a class="item__link" href="https://chat.openai.com/" target="_blank">
+                        <div class="item__badge">
+                            <img class="badge__icon" src="@/assets/user/chatgpt/Frame1.svg">
+                        </div>
+                        <div class="item__text">
+                            2. 開啟ChatGPT
+                        </div>
+                    </a>
                 </li>
                 <li class="list__item">
                     <div class="item__badge">
@@ -33,12 +35,14 @@
                     </div>
                 </li>
                 <li class="list__item">
-                    <div class="item__badge">
-                        <img class="badge__icon" src="@/assets/user/chatgpt/Frame3.svg">
-                    </div>
-                    <div class="item__text">
-                        4. 快速更新簡歷
-                    </div>
+                    <NuxtLink class="item__link" :to="{ name: 'user-profile' }">
+                        <div class="item__badge">
+                            <img class="badge__icon" src="@/assets/user/chatgpt/Frame3.svg">
+                        </div>
+                        <div class="item__text">
+                            4. 快速更新簡歷
+                        </div>
+                    </NuxtLink>
                 </li>
             </ul>
         </div>
@@ -104,6 +108,7 @@
     </div>
 </template>
 <script setup>
+const { $sweet } = useNuxtApp()
 const state = reactive({
     template: {
         q1: `
@@ -123,6 +128,9 @@ const state = reactive({
 async function copyToMemory(key) {
     const text = state.template[key]
     await navigator.clipboard.writeText(text)
+    $sweet.succeed({
+        text: '已複製完整指令模板',
+    })
 }
 </script>
 <style lang="scss" scoped>
@@ -172,6 +180,15 @@ async function copyToMemory(key) {
                 text-align: center;
                 color: #5ea88e;
                 max-width: 64px;
+
+                .item__link {
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                        text-decoration-color: #5ea88e;
+                    }
+                }
 
                 .item__badge {
                     width: 60px;
