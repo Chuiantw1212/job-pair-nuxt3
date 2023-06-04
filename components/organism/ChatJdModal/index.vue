@@ -43,7 +43,7 @@
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.description" ref="description" name="職責簡介"
                             :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.requirement" ref="requirement"
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.skills" ref="skills"
                             name="職務說明第三段" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                     </div>
@@ -149,14 +149,14 @@ const state = reactive({
     beforeChatGpt: '',
     newJob: {
         description: '',
-        requirement: '',
+        skills: '',
     }
 })
 const props = defineProps({
     modelValue: {
         type: String,
         default: function () {
-            return ''
+            return {}
         }
     },
     name: {
@@ -186,6 +186,7 @@ onMounted(() => {
 // methods
 function handleConfirm() {
     const updatedJob = Object.assign({}, props.job, {
+        name: state.form.jobName,
         ...state.newJob
     })
     console.log({
@@ -198,11 +199,11 @@ function handleConfirm() {
     } else {
         console.log('Error trying to setInvitationTemplate: ', descEditor);
     }
-    const requirementEditor = currentInstance.refs.requirement
-    if (requirementEditor) {
-        requirementEditor.setData('')
+    const skillsEditor = currentInstance.refs.skills
+    if (skillsEditor) {
+        skillsEditor.setData('')
     } else {
-        console.log('Error trying to setInvitationTemplate: ', requirementEditor);
+        console.log('Error trying to setInvitationTemplate: ', skillsEditor);
     }
     state.chatModal.hide()
 }
@@ -225,7 +226,7 @@ async function handleSubmit() {
     }
     $sweet.loader(false)
     const { data } = res
-    const { description = '', requirement = '' } = data
+    const { description = '', skills = '' } = data
     state.newJob.description = description
     const descriptionEditor = currentInstance.refs.description
     if (descriptionEditor) {
@@ -233,10 +234,10 @@ async function handleSubmit() {
     } else {
         console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
     }
-    state.newJob.requirement = requirement
-    const listEditor = currentInstance.refs.requirement
+    state.newJob.skills = skills
+    const listEditor = currentInstance.refs.skills
     if (listEditor) {
-        listEditor.setData(requirement)
+        listEditor.setData(skills)
     } else {
         console.log('Error trying to setInvitationTemplate: ', listEditor);
     }
