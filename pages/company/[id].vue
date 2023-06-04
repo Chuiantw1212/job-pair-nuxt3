@@ -174,7 +174,7 @@ useSeoMeta({
     },
     ogImage: () => {
         const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
-        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
         return `${runTime.public.origin}/company/${state.companyInfo.id}`
