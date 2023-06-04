@@ -3,10 +3,13 @@
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">
                 職缺狀態
-                <span class="header__wallet">錢包餘額：45點</span>
+                <!-- <span class="header__wallet">錢包餘額：45點</span> -->
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
+            <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+            </LazyOrganismChatJdModal>
+            {{ state.job }}
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -93,15 +96,15 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 :toolbar="state.toolbar" ref="description" class="mt-4">
-                <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
                     :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatGptModal>
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
+                <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
-                </LazyOrganismChatGptModal>
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -142,7 +145,7 @@
             <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
-        <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal>
+        <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
     </div>
 </template>
 <script setup>
@@ -221,27 +224,22 @@ async function checkWalletBallance(value) {
     if (res.status !== 200) {
         return
     }
-    if (!res.data || res.data.balance === 0) {
-        instance.refs.noBallanceModal.openModal()
+    const noBallanceModal = instance.refs.noBallanceModal
+    if (!res.data || res.data.balance === 0 && noBallanceModal) {
+        noBallanceModal.openModal()
     }
+}
+function setUpdatedJob(value) {
+    const { name = '', description = '', skills = '' } = value
+    state.job.name = name
+    setDescription(description)
+    setSkills(skills)
 }
 function setDescription(value) {
     instance.refs.description.setData(value)
 }
 function setSkills(value) {
     instance.refs.skills.setData(value)
-}
-async function handleChatDescription(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
-}
-async function handleChatSkills(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
 }
 async function handlePreview() {
     await saveJob()

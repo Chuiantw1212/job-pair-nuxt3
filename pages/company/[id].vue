@@ -157,18 +157,24 @@ useSeoMeta({
     title: () => `${state.companyInfo.name} - Job Pair`,
     ogTitle: () => `${state.companyInfo.name} - Job Pair`,
     description: () => {
-        const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.companyInfo.description.replace(regex, "")
-        return descriptionContent
+        // 避免500錯誤影響SEO
+        if (state.companyInfo?.description) {
+            const regex = /(<([^>]+)>)/ig
+            const descriptionContent = state.companyInfo.description.replace(regex, "")
+            return descriptionContent
+        }
     },
     ogDescription: () => {
-        const regex = /(<([^>]+)>)/ig
-        const descriptionContent = state.companyInfo.description.replace(regex, "")
-        return descriptionContent
+        // 避免500錯誤影響SEO
+        if (state.companyInfo?.description) {
+            const regex = /(<([^>]+)>)/ig
+            const descriptionContent = state.companyInfo.description.replace(regex, "")
+            return descriptionContent
+        }
     },
     ogImage: () => {
         const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
-        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/companyBanner.png`
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
         return `${runTime.public.origin}/company/${state.companyInfo.id}`

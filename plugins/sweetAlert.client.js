@@ -4,6 +4,9 @@ export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             sweet: {
+                fire: async function (swalConfig) {
+                    return Swal.fire(swalConfig)
+                },
                 alert: async function (text = '', config) {
                     const swalConfig = Object.assign({
                         title: '錯誤',
@@ -30,17 +33,18 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
-                succeed: async function (text, config) {
-                    const alertResult = await Swal.fire({
+                succeed: async function (config) {
+                    const mergedConfig = Object.assign({
                         title: "完成",
-                        text,
                         icon: "success",
                         confirmButtonText: '確認',
                         confirmButtonColor: '#5ea88e',
+                        timer: 2000,
                         didOpen: () => {
                             Swal.hideLoading()
                         }
-                    })
+                    }, config)
+                    const alertResult = await Swal.fire(mergedConfig)
                     return alertResult
                 },
                 warning: async (text, config) => {

@@ -3,14 +3,27 @@ export default defineStore('chat', () => {
     const { $sweet, } = useNuxtApp()
     const jobPairApi = useJobPairApi()
     async function postChatProfile(data) {
-        const dataBlob = new Blob([data])
-        if (dataBlob.size >= 2000) {
-            await $sweet.alert('內容限制約700字元。')
-            return
-        }
         const response = await jobPairApi.request({
             method: 'post',
             url: `/chat/profile`,
+            data,
+            timeout: 180000,
+        })
+        return response
+    }
+    async function postChatIntro(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/chat/intro`,
+            data,
+            timeout: 180000,
+        })
+        return response
+    }
+    async function postChatJdGenerate(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/chat/jobDescription/generate`,
             data,
             timeout: 180000,
         })
@@ -35,5 +48,7 @@ export default defineStore('chat', () => {
     return {
         postChatProfile,
         postChatJobDescription,
+        postChatIntro,
+        postChatJdGenerate,
     }
 })

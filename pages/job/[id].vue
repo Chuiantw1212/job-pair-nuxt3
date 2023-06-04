@@ -187,7 +187,6 @@ const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
-const { locationRes = {} } = repoSelect.state
 const repoCompany = useRepoCompany()
 const jobScroller = useJobScroller()
 const device = useDevice()
@@ -248,6 +247,7 @@ const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
+const { data: location } = await useFetch(`${runTime.public.apiBase}/select/location`, { initialCache: false })
 useSeoMeta({
     title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
     ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
@@ -269,48 +269,66 @@ useSeoMeta({
         return `${runTime.public.origin}/job/${state.job.identifier}`
     }
 })
-useJsonld(() => ({
-    // https://schema.org/JobPosting
-    '@context': 'https://schema.org',
-    '@type': 'JobPosting',
-    title: job.value.name,
-    description: job.value.description,
-    url: `${runTime.public.origin}/job/${job.value.identifier}`,
-    image: job.value.image,
-    identifier: job.value.identifier,
-    applicantLocationRequirements: {
-        "@type": "Country",
-        "name": "Anywhere"
-    },
-    datePosted: job.value.datePosted,
-    employmentType: job.value.employmentType,
-    hiringOrganization: {
-        "@type": "Organization",
-        name: job.value.organizationName,
-    },
-    jobLocation: {
-        "@type": "Place",
-        address: {
-            "@type": "PostalAddress",
-            "streetAddress": job.value.streetAddress,
-            "addressLocality": $filter.optionText(job.value.addressLocality, locationRes ? locationRes[job.value.addressRegion] : null),
-            "addressRegion": $filter.optionText(job.value.addressRegion, locationRes?.taiwan),
-            "addressCountry": "台灣"
-        }
-    },
-    "baseSalary": {
-        "@type": "MonetaryAmount",
-        "currency": "TWD",
-        "value": {
-            "@type": "QuantitativeValue",
-            "minValue": job.value.salaryMin,
-            "maxValue": job.value.salaryMax,
-            "value": Math.floor((job.value.salaryMin + job.value.salaryMax) / 2),
-            "unitText": job.value.salaryType
-        }
-    },
-    jobLocationType: job.value.jobLocationType
-}))
+useJsonld(() => {
+    const validThroughDate = new Date(job.value.datePosted)
+    validThroughDate.setDate(validThroughDate.getDate() + 7)
+    const locationValue = location.value
+    const addressRegionItems = locationValue[job.value.addressRegion]
+    let targetRegion = {}
+    if (addressRegionItems) {
+        targetRegion = addressRegionItems.find(item => {
+            return item.value === job.value.addressLocality
+        })
+    }
+    const { text: addressLocality = null, postalCode = null } = targetRegion
+    const jsonld = {
+        // https://schema.org/JobPosting
+        '@context': 'https://schema.org',
+        '@type': 'JobPosting',
+        title: job.value.name,
+        description: job.value.description,
+        url: `${runTime.public.origin}/job/${job.value.identifier}`,
+        image: job.value.image,
+        identifier: job.value.identifier,
+        applicantLocationRequirements: {
+            "@type": "Country",
+            "name": "Anywhere"
+        },
+        datePosted: job.value.datePosted,
+        validThrough: validThroughDate.toISOString(),
+        employmentType: job.value.employmentType,
+        hiringOrganization: {
+            "@type": "Organization",
+            name: job.value.organizationName,
+        },
+        jobLocation: {
+            "@type": "Place",
+            address: {
+                "@type": "PostalAddress",
+                "streetAddress": job.value.streetAddress,
+                "addressRegion": $filter.optionText(job.value.addressRegion, locationValue?.taiwan),
+                "addressLocality": addressLocality,
+                "postalCode": postalCode,
+                "addressCountry": "台灣"
+            }
+        },
+        "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "TWD",
+            "value": {
+                "@type": "QuantitativeValue",
+                "minValue": job.value.salaryMin,
+                "maxValue": job.value.salaryMax,
+                "value": Math.floor((job.value.salaryMin + job.value.salaryMax) / 2),
+                "unitText": job.value.salaryType
+            }
+        },
+    }
+    if (job.value.jobLocationType === 'fullyRemote') {
+        jsonld.jobLocationType = "TELECOMMUTE"
+    }
+    return jsonld
+})
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
@@ -401,7 +419,7 @@ function checkInfoIncomplete() {
     const { user } = repoAuth.state
     if (user) {
         // 一般欄位
-        const requiredFieds = ['name', 'email', 'telephone', 'birthDate', 'gender']
+        const requiredFieds = ['name', 'email']
         const incompleteFields = requiredFieds.filter(field => {
             return !user[field] || !String(user[field]).trim()
         })

@@ -78,7 +78,6 @@ function newWork() {
 </script>
 <style lang="scss">
 .profile__portfolio {
-    margin-top: 20px;
 
     .portfolio__inputGroup {
         display: flex;

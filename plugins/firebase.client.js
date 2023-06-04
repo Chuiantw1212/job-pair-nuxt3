@@ -1,4 +1,3 @@
-import { auth } from "firebaseui"
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
 export default defineNuxtPlugin(() => {
@@ -26,17 +25,14 @@ export default defineNuxtPlugin(() => {
             measurementId: "G-H0LNN14FD5"
         }
     }
-    const firebaseApp = initializeApp(firebaseConfig)
-    // https://stackoverflow.com/questions/71823473/i-am-seeing-following-error-while-trying-to-add-firebase-analytics
+    const app = initializeApp(firebaseConfig)
     try {
-        getAnalytics(firebaseApp)
+        getAnalytics(app)
     } catch (error) {
         console.log(error.message);
     }
     return {
         provide: {
-            firebaseuiAuth: auth,
-            firebaseApp,
             storageBucket: firebaseConfig.storageBucket
         }
     }

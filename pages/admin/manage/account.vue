@@ -48,9 +48,8 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase/compat/app"
-// import { identicon } from 'minidenticons'
-const { $sweet } = useNuxtApp()
+import { getAuth, } from "firebase/auth"
+const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
@@ -75,19 +74,15 @@ watch(() => repoAuth.state.user, (newValue) => {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
     }
-    setIdenticon()
 }, { immediate: true })
 // methods
-function setIdenticon() {
-    // const messageIcon = identicon(state.tempUser.chatName)
-    // state.chatIcon = messageIcon
-}
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
     let user = null
     try {
-        user = firebase.auth().currentUser
+        const auth = getAuth()
+        user = auth().currentUser
     } finally {
         if (!user) {
             router.push({
@@ -97,8 +92,9 @@ async function logout() {
     }
 }
 async function handleCredential() {
-    const user = firebase.auth().currentUser
-    const credential = firebase.auth.EmailAuthProvider.credential(user.email, state.pass)
+    const auth = getAuth()
+    const user = auth().currentUser
+    const credential = auth.EmailAuthProvider.credential(user.email, state.pass)
     try {
         const authResult = await user.reauthenticateWithCredential(credential)
         if (authResult.user.refreshToken) {
@@ -122,14 +118,17 @@ async function submitNewPass() {
         state.newPass = null
         state.newPassAgain = null
         state.toggleChangePassword = false
-        $sweet.succeed('修改密碼完成')
+        $sweet.succeed({
+            text: '修改密碼完成',
+        })
     } catch (error) {
         // 更新失敗
         $sweet.alert(error.message)
     }
 }
 async function submitProfile() {
-    const user = firebase.auth().currentUser
+    const auth = getAuth()
+    const user = auth().currentUser
     try {
         await user.updateProfile({
             name: state.tempUser.name,
@@ -151,7 +150,8 @@ async function submitProfile() {
         background-color: #fafafa;
         padding: 45px 64px;
         border-radius: 10px;
-        .card__headerGroup{
+
+        .card__headerGroup {
             display: flex;
             gap: 8px;
         }

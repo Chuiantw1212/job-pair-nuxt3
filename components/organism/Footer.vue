@@ -3,9 +3,9 @@
         <div class="footer__meta">
             <NuxtLink class="meta__button" :to="{ name: 'about' }">關於Job Pair</NuxtLink>
             <a class="meta__button" target="_blank"
-                href="https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf">使用者條款</a>
+                href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf">使用者條款</a>
             <a class="meta__button" target="_blank"
-                href="https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf">隱私權政策</a>
+                href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf">隱私權政策</a>
         </div>
         <div class="footer__info">
             <div>客服信箱：support@job-pair.com</div>
@@ -22,7 +22,6 @@ export default {}
     width: 100%;
     margin: 0 auto;
     height: auto;
-    position: relative;
     color: white;
     display: flex;
     flex-direction: column;

@@ -25,7 +25,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, } from 'vue'
-const { $emitter, $bootstrap, $sweet, $requestSelector } = useNuxtApp()
+const { $bootstrap, $sweet, $requestSelector } = useNuxtApp()
 const state = reactive({
     bsModal: null,
 })
@@ -69,6 +69,7 @@ async function showSecondConfirm() {
     }
     hideModal()
     // 執行刪除流程
+    $sweet.loader(true)
     switch (repoAuth.state.user.type) {
         case 'employee': {
             const res = await repoUser.deleteUser()

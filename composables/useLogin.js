@@ -14,7 +14,6 @@ export default function setup() {
     // state
     const state = reactive({
         ui: null,
-        unsubscribe: null,
         isSent: false,
         authResult: null,
         countdownInterval: null,
@@ -26,8 +25,9 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const firebaseAuth = getAuth()
-        state.unsubscribe = onAuthStateChanged(firebaseAuth, async (userInfo) => {
+        const auth = getAuth()
+        auth.onAuthStateChanged(async (userInfo) => {
+            $sweet.loader(false)
             if (!userInfo) {
                 // 造成登入機制無法連貫
                 if (repoAuth.state.user && repoAuth.state.user.uid) {
@@ -65,6 +65,13 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
+        console.log({
+            basicInfo
+        });
+        if (!basicInfo) {
+            await $sweet.alert('查無使用者資料')
+            return
+        }
         if (!basicInfo.email) {
             await $sweet.alert('請使用其他方式登入')
             return
@@ -80,6 +87,7 @@ export default function setup() {
     async function setIdToken() {
         const auth = getAuth()
         if (!auth || !auth.currentUser) {
+            console.log('setIdToken no auth', auth)
             return
         }
         const idToken = await auth.currentUser.getIdToken()
@@ -89,6 +97,7 @@ export default function setup() {
     async function signIn(user) {
         const idToken = await setIdToken()
         if (!idToken) {
+            console.log('signIn no idToken')
             return
         }
         const signInResult = await repoAuth.postSignin(idToken)
@@ -195,10 +204,14 @@ export default function setup() {
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
                 if (unAnsweredIndex !== -1) {
-                    router.push(`/questions/${unAnsweredIndex + 1}`)
+                    router.push({
+                        name: 'questions-preference'
+                    })
                 }
                 else if (!categorySelected) {
-                    router.push(`/questions/result`)
+                    router.push({
+                        name: 'questions-result'
+                    })
                 }
             }
             // 不論是否答題完成都要跑以下程式碼
@@ -214,7 +227,9 @@ export default function setup() {
             router.push(`/admin/register`)
         } else {
             user.type = "employee"
-            router.push(`/questions/1`)
+            router.push({
+                name: 'questions-preference'
+            })
         }
         repoAuth.setUser(user)
         hideModals()
@@ -226,25 +241,29 @@ export default function setup() {
     }
     function getBasicInfo(type) {
         const user = state.authResult.user
-        const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
-        const basicInfo = {
-            name: displayName,
-            email,
-            uid,
-            telephone: phoneNumber,
-            image: photoURL,
-            type,
-            emailVerified,
+        if (user) {
+            const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
+            const basicInfo = {
+                name: displayName,
+                email,
+                uid,
+                telephone: phoneNumber,
+                image: photoURL,
+                type,
+                emailVerified,
+            }
+            state.basicInfo = basicInfo
+            return basicInfo
         }
-        state.basicInfo = basicInfo
-        return basicInfo
     }
     async function sendEmailLink(type) {
+        $sweet.loader(true)
         const basicInfo = getBasicInfo(type)
         const response = await repoAuth.postVerificationEmail(basicInfo)
         if (response.status !== 200) {
             return false
         }
+        $sweet.loader(false)
         state.countdownInterval = true
         state.cdVisible = state.cdDefault
         state.countdownInterval = setInterval(() => {
@@ -254,6 +273,7 @@ export default function setup() {
                 state.countdownInterval = null
             }
         }, 1000)
+        console.log('sendEmailLink',);
         state.isSent = true
     }
     return {

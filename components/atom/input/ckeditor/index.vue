@@ -10,7 +10,7 @@
                 </slot>
             </span>
         </div>
-        <input v-show="false" :value="getValue()" :data-required="required" :data-name="name">
+        <input v-show="false" :value="checkValue()" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
             <div :id="`editor_${state.id}`" ref="editorRef">
 
@@ -124,10 +124,11 @@ onBeforeUnmount(() => {
     }
 })
 // methods
-function getValue() {
+function checkValue() {
     const case1 = !!props.modelValue
-    // const case2 = props.modelValue !== '<p></p>'
-    return case1
+    const case2 = props.modelValue !== '<p></p>'
+    const hasValue = case1 && case2
+    return hasValue
 }
 async function initializeCKEditor() {
     if (!process.client) {
@@ -165,16 +166,6 @@ async function initializeCKEditor() {
     }
     editor.model.document.on('change:data', () => {
         let newValue = editor.getData()
-        // // 2022/11/09 Sandy@Line: 我想的是乾脆都擋，他們要放就直接放上網址
-        // if (props.removePlatformLink) {
-        //     // const hasPlatformLink = ['104.com.tw', 'cakeresume.com', 'yourator.co', '1111.com.tw'].some(link => {
-        //     //     return newValue.includes(link)
-        //     // })
-        //     // if (hasPlatformLink) {
-        //     newValue = newValue.replaceAll(/href=".*?"/g, '')
-        //     newValue = newValue.replaceAll('<a', '<div')
-        //     // }
-        // }
         localValue.value = newValue
     })
     state.ckeditorInstance = markRaw(editor)

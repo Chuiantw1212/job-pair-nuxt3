@@ -14,25 +14,8 @@
                                 可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
                             </div>
                         </div>
-                        <div v-show="loginComposable.state.isSent" class="body__emailSent">
-                            <h1 class="emailSent__header">驗證信已寄出</h1>
-                            <div class="emailSent__desc">
-                                <div>請至{{ loginComposable.state.basicInfo.email }}收註冊信開始配對工作</div>
-                                <div>( 若無請至垃圾信箱查找 )</div>
-                            </div>
-                            <div class="emailSent__footer">
-                                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend"
-                                    disabled>{{
-                                        loginComposable.state.cdVisible
-                                    }}
-                                </LazyAtomBtnSimple>
-                                <LazyAtomBtnSimple v-else class="emailSent__resend"
-                                    @click="loginComposable.sendEmailLink('employee')">
-                                    重新寄送驗證信
-                                </LazyAtomBtnSimple>
-                            </div>
-                        </div>
-                        <div v-show="!loginComposable.state.isSent" id="user-auth-container"></div>
+                        <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions"
+                            type="employee"></MoleculeFirebaseUI>
                     </div>
                 </div>
             </div>
@@ -40,15 +23,12 @@
     </div>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import { getAuth, } from "firebase/auth"
-import firebase from "firebase/compat/app"
-const { $emitter, $bootstrap, $sweet, $firebaseuiAuth, } = useNuxtApp()
+const { $emitter, $bootstrap, } = useNuxtApp()
 const device = useDevice()
-const route = useRoute()
-const loginComposable = useLogin()
 const state = reactive({
     bsModal: null,
+    isContentVisible: false,
+    signInOptions: ['password', 'google.com', 'facebook.com']
 })
 onMounted(() => {
     $emitter.on("showUserModal", showModal)
@@ -58,58 +38,16 @@ onMounted(() => {
             keyboard: false,
             backdrop: "static"
         })
-        // 初始化FirebaseUI使系統可以自動跳轉
-        if (route && !route.path.includes("admin")) {
-            renderFirebaseUI()
-        }
     }
 })
+// methods
 function hideModal() {
-    loginComposable.state.isSent = false
+    state.isContentVisible = false
     state.bsModal.hide()
 }
 function showModal() {
     state.bsModal.show()
-    renderFirebaseUI()
-}
-async function renderFirebaseUI() {
-    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
-    if (!ui) {
-        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
-    }
-    const isPendingRedirect = ui.isPendingRedirect()
-    if (isPendingRedirect) {
-        $sweet.loader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true // 這邊沒寫的話，寄送的信件會沒有名稱
-        },
-        {
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        },
-        {
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        }
-    ]
-    const element = document.querySelector("#user-auth-container")
-    ui = ui.start(element, {
-        callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                loginComposable.handleAuthResult(authResult, "employee")
-                return false
-            }
-        },
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
+    state.isContentVisible = true
 }
 </script>
 <style lang="scss" scoped>
@@ -132,36 +70,6 @@ async function renderFirebaseUI() {
         .body__subheader {
             color: red;
             text-align: center;
-        }
-
-        .body__desc {
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .body__emailSent {
-            text-align: center;
-            padding: 20px 0 0 0;
-
-            .emailSent__header {
-                font-size: 28px;
-                font-weight: bold;
-                margin-bottom: 4px;
-            }
-
-            .emailSent__desc {
-                font-size: 14px;
-                margin-bottom: 2rem;
-            }
-
-            .emailSent__footer {
-                display: flex;
-                justify-content: center;
-
-                .emailSent__resend {
-                    width: 226px;
-                }
-            }
         }
     }
 }

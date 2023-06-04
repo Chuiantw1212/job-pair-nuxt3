@@ -1,5 +1,5 @@
 <template>
-    <div class="profile__card">
+    <div :id="id" class="profile__card">
         <div class="card__header">
             {{ name }}
         </div>
@@ -16,6 +16,10 @@ export default {
 </script>
 <script setup>
 defineProps({
+    id: {
+        type: String,
+        default: undefined
+    },
     name: {
         type: String,
         default: "標題",

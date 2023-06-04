@@ -6,10 +6,9 @@
                 class="resumes__previewGroup">
                 <div class="previewGroup__item" v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
                     :key="`row${number}col${index}`">
-                    <div v-if="checkIsImage(item)">
+                    <!-- <div v-if="checkIsImage(item)">
                         <img :src="item.url" class="previewGroup__item__viewer">
-                    </div>
-                    <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
+                    </div> -->
                     <div class="previewGroup__item__body">
                         <div v-if="item.name" class="previewGroup__item__body__item">
                             <div class="item__name">
@@ -21,7 +20,7 @@
                         </div>
                         <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
                             {{ $filter.time(item.date) }}
-                            <button class="doc__btn" @click="openResume(item)">
+                            <button class="doc__btn" @click="openFileInTab(item)">
                                 <img class="btn__icon" src="./icon_preview_g.svg" />
                             </button>
                         </div>
@@ -71,6 +70,10 @@ export default {
         max: {
             type: Number,
             default: 0
+        },
+        getFileBuffer: {
+            type: Function,
+            default: function () { }
         }
     },
     computed: {
@@ -110,9 +113,10 @@ export default {
                 }
                 reader.onerror = (error) => reject(error)
             })
-            const { lastModified, name, size, type } = file
+            const { name, size, type } = file
+            console.log('type', type)
             const buffer = Buffer.from(arrayBuffer)
-            const newResume = {
+            const newFile = {
                 url: URL.createObjectURL(file),
                 name,
                 size,
@@ -120,19 +124,26 @@ export default {
                 type,
                 date: new Date().toISOString()
             }
-            const sameResumeIndex = this.localValue.findIndex(item => {
-                return item.name === newResume.name
+            const sameFileIndex = this.localValue.findIndex(item => {
+                return item.name === newFile.name
             })
-            const newResumes = [...this.localValue]
-            if (sameResumeIndex !== -1) {
-                newResumes[sameResumeIndex] = newResume
+            const newFiles = [...this.localValue]
+            if (sameFileIndex !== -1) {
+                newFiles[sameFileIndex] = newFile
             } else {
-                newResumes.push(newResume)
+                newFiles.push(newFile)
             }
-            this.$emit("update:modelValue", newResumes)
+            this.$emit("update:modelValue", newFiles)
         },
-        async openResume(item) {
-            window.open(item.url)
+        async openFileInTab(item) {
+            const { buffer, type = 'application/pdf' } = item
+            let fileBuffer = buffer
+            if (!fileBuffer) {
+                fileBuffer = await this.getFileBuffer(item)
+            }
+            const blob = new Blob([fileBuffer], { type })
+            const objectUrl = URL.createObjectURL(blob)
+            window.open(objectUrl, '_blank')
         },
         async deleteResume(row = 0, col = 0) {
             const index = (row - 1) * 3 + col
