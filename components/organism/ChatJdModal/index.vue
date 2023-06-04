@@ -2,26 +2,50 @@
     <div class="chatGptModal">
         <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
             <img class="me-1" src="./Frame.svg" alt="icon">
-            一鍵優化
+            JD生成
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">一鍵優化</h4>
+                        <h4 class="modal-title">JD生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
-                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
+                        <!--  -->
+                        <LazyAtomInputText v-model="state.form.jobName" name="職務名稱" required></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.department" name="所屬部門"></LazyAtomInputText>
+                        <!--  -->
+                        <AtomInputSelect v-model="state.form.manager" name="管理責任"></AtomInputSelect>
+                        <LazyAtomInputText v-model="state.form.primary[0]" name="主要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.primary[1]" name="主要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.secondary[0]" name="次要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.secondary[1]" name="次要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.goal" name="具體目標"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.value" name="價值體現"></LazyAtomInputText>
+                        <AtomInputSelect v-model="state.form.personality[0]" itemValue="text" :items="state.question1"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[1]" itemValue="text" :items="state.question2"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[2]" itemValue="text" :items="state.question3"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[3]" itemValue="text" :items="state.question4"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <LazyAtomInputText v-model="state.form.educationLevel" name="學歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.experienceLevel" name="資歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.skillLevel" name="技能要求"></LazyAtomInputText>
+                        <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.description" ref="description" name="職責簡介"
+                            :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
-                        <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
-                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
-                            ref="afterChatGpt" :style="{ 'height': '324px' }">
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.skills" ref="skills"
+                            name="職務說明第三段" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
-                        <!-- </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
@@ -38,6 +62,7 @@
 </template>
 <script setup>
 const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
+const repoChat = useRepoChat()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
@@ -48,44 +73,108 @@ const state = reactive({
     duration: "",
     schedules: [],
     form: {
-        subject: "",
-        template: "",
+        jobName: '行銷企劃專員',
+        department: '行銷推廣部',
+        goal: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
+        value: '需要有豐富的創意和創新思維，能夠提供新穎且有吸引力的行銷方案和活動，以吸引目標客戶的關注並脫穎而出',
+        educationLevel: '大學',
+        experienceLevel: '兩年以上',
+        skillLevel: '懂Youtube以及抖音的行銷後台',
+        manager: true,
+        primary: [
+            '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
+            '規劃與執行公司對內、外的行銷活動（如：展覽、促銷活動）',
+            '熟悉社群媒體經營，撰寫文案、各媒體及新聞稿等相關事務',
+            '行銷製作物規劃與執行、品牌行銷管理（如：產品型錄、簡介、贈品等銷售工具）'
+        ],
+        secondary: ['跨部門溝通協調、創意發想', '其他主管交辦事項'],
+        personality: ['堅定，目標導向', '冒險，自我挑戰', '追求成就', '企圖心高'],
     },
+    question1: [
+        {
+            text: '堅定，目標導向',
+        },
+        {
+            text: '說服，擅長表達',
+        },
+        {
+            text: '和善，合作導向',
+        },
+        {
+            text: '仔細，善於思考',
+        }
+    ],
+    question2: [
+        {
+            text: '冒險，自我挑戰',
+        },
+        {
+            text: '開朗，與人交流',
+        },
+        {
+            text: '穩健，支持他人',
+        },
+        {
+            text: '嚴謹，自我要求',
+        }
+    ],
+    question3: [
+        {
+            text: '追求成就',
+        },
+        {
+            text: '追求舞台',
+        },
+        {
+            text: '追求穩定',
+        },
+        {
+            text: '追求正確',
+        }
+    ],
+    question4: [
+        {
+            text: '企圖心高',
+        },
+        {
+            text: '創造力強',
+        },
+        {
+            text: '配合度高',
+        },
+        {
+            text: '準確性高',
+        }
+    ],
     beforeChatGpt: '',
-    afterChatGpt: '',
+    newJob: {
+        description: '',
+        skills: '',
+    }
 })
 const props = defineProps({
     modelValue: {
         type: String,
         default: function () {
-            return ''
+            return {}
         }
     },
     name: {
         type: String,
         default: ''
     },
-    chatRequest: {
-        type: Function,
+    job: {
+        type: Object,
         default: function () {
-            return false
+            return {}
         }
     }
 })
 const currentInstance = getCurrentInstance()
 // hooks
-watch(() => props.modelValue, (newValue) => {
-    state.beforeChatGpt = newValue
-    const beforeChatGpt = currentInstance.refs.beforeChatGpt
-    if (beforeChatGpt) {
-        beforeChatGpt.setData(newValue)
-    }
-    state.afterChatGpt = ''
-}, { immediate: true, deep: true })
 onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
-        state.beforeChatGpt = props.modelValue
         $requestSelector(`#chatModal${state.id}`, (modelElement) => {
             state.chatModal = new $bootstrap.Modal(modelElement, {
                 keyboard: false,
@@ -96,41 +185,61 @@ onMounted(() => {
 })
 // methods
 function handleConfirm() {
-    emit('update:modelValue', state.afterChatGpt)
-    state.afterChatGpt = ''
-    const ckEditor = currentInstance.refs.afterChatGpt
-    if (ckEditor) {
-        ckEditor.setData('')
+    const updatedJob = Object.assign({}, props.job, {
+        name: state.form.jobName,
+        ...state.newJob
+    })
+    console.log({
+        updatedJob
+    });
+    emit('update:modelValue', updatedJob)
+    const descEditor = currentInstance.refs.description
+    if (descEditor) {
+        descEditor.setData('')
     } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+        console.log('Error trying to setInvitationTemplate: ', descEditor);
+    }
+    const skillsEditor = currentInstance.refs.skills
+    if (skillsEditor) {
+        skillsEditor.setData('')
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', skillsEditor);
     }
     state.chatModal.hide()
 }
 async function openModal() {
+    state.form.jobName = props.job?.name
     state.chatModal.show()
 }
 function handleClose() {
-    const ckEditor = currentInstance.refs.beforeChatGpt
-    ckEditor.setData(props.modelValue)
     state.chatModal.hide()
 }
 const modalBodyRef = ref(null)
-async function handleOptimization() {
+async function handleSubmit() {
     $sweet.loader(true, {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
     })
-    const res = await props.chatRequest(state.beforeChatGpt)
+    const res = await repoChat.postChatJdGenerate(state.form)
     if (res.status !== 200) {
         return
     }
     $sweet.loader(false)
-    state.afterChatGpt = res.data
-    const ckEditor = currentInstance.refs.afterChatGpt
-    if (ckEditor) {
-        ckEditor.setData(res.data)
+    const { data } = res
+    const { description = '', skills = '' } = data
+    state.newJob.description = description
+    const descriptionEditor = currentInstance.refs.description
+    if (descriptionEditor) {
+        descriptionEditor.setData(description)
     } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+        console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
+    }
+    state.newJob.skills = skills
+    const listEditor = currentInstance.refs.skills
+    if (listEditor) {
+        listEditor.setData(skills)
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', listEditor);
     }
 }
 </script>
