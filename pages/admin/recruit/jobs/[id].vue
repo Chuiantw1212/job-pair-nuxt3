@@ -157,7 +157,6 @@ const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
-const repoChat = useRepoChat()
 const device = useDevice()
 const repoCompany = useRepoCompany()
 const state = reactive({

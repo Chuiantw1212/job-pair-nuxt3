@@ -317,8 +317,8 @@ watch(() => repoAuth.state.user, async (user) => {
             userId: user.id,
             dateMin: isoString,
         })
-        const recordsWithEcpay = recordRes.data.filter(item => !!item.RtnCode)
-        state.records = recordsWithEcpay
+        // 如果有RtnCode代表有從綠界收到付款回應
+        state.records = recordRes.data
     }
 }, { immediate: true })
 // methods
