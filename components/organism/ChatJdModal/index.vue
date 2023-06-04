@@ -8,11 +8,13 @@
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">一鍵優化</h4>
+                        <h4 class="modal-title">JD生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
+                        <LazyAtomInputText v-model="state.form.jobName" name="職務名稱" required></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.department" name="所屬部門"></LazyAtomInputText>
                         <AtomInputSelect v-model="state.form.manager" name="管理責任"></AtomInputSelect>
                         <LazyAtomInputText v-model="state.form.primary[0]" name="主要工作"></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.primary[1]" name="主要工作"></LazyAtomInputText>
@@ -31,7 +33,7 @@
                             name="特質期望">
                         </AtomInputSelect>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.description" ref="description" name="職務說明第二段"
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.description" ref="description" name="職責簡介"
                             :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor class="mt-3" v-model="state.list" ref="list" name="職務說明第三段"
@@ -52,18 +54,9 @@
     </div>
 </template>
 <script setup>
-/**
- * 
-您好！我叫朱奕安，很高興有這個機會面試貴公司的業務職位。我二○一二年畢業於中興大學行銷系。台中人。
-畢業之後，我就一直在普鴻公司從事業務工作。在將近四年的時間裡，我一步步走到了業務主管的職位。在這過程中，我開發了將近十個大客戶，年平均銷售額三百萬元，在公司排名第二。面試這個職位，我覺得我的優勢有以下三點：第一點，溝通能力強，能夠順利地和客戶打交道；第二點，抗壓能力強，能夠承受高業績帶來的壓力，並且調節好自己的情緒；第三點，有過成功的大客戶開發經驗，擅長專案管理。
-我非常欣賞貴公司的企業文化，而且這個職位也是我非常喜歡的，希望能夠有機會進入公司，謝謝。
-*/
 const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
-const repoJobApplication = useRepoJobApplication()
 const repoChat = useRepoChat()
-const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
-const router = useRouter()
 const state = reactive({
     id: null,
     chatModal: null,
@@ -73,6 +66,10 @@ const state = reactive({
     duration: "",
     schedules: [],
     form: {
+        jobName: '行銷企劃專員',
+        department: '行銷推廣部',
+        target: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
+
         manager: true,
         primary: [
             '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
@@ -154,10 +151,10 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    chatRequest: {
-        type: Function,
+    job: {
+        type: Object,
         default: function () {
-            return false
+            return {}
         }
     }
 })

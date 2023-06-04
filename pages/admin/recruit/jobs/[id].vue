@@ -7,6 +7,7 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
+            <LazyOrganismChatJdModal></LazyOrganismChatJdModal>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -80,7 +81,6 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
-            <LazyOrganismChatJdModal></LazyOrganismChatJdModal>
             <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
                 :disabled="state.job.jobLocationType === 'fullyRemote'">
             </LazyAtomInputText> -->
