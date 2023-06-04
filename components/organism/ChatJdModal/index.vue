@@ -40,19 +40,19 @@
                         <LazyAtomInputText v-model="state.form.experienceLevel" name="資歷要求"></LazyAtomInputText>
                         <LazyAtomInputText v-model="state.form.skillLevel" name="技能要求"></LazyAtomInputText>
                         <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.description" ref="description" name="職責簡介"
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.description" ref="description" name="職責簡介"
                             :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.list" ref="list" name="職務說明第三段"
-                            :style="{ 'height': '324px' }">
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.requirement" ref="requirement"
+                            name="職務說明第三段" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <!-- <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
+                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
                             </LazyAtomBtnSimple>
                             <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
-                            </LazyAtomBtnSimple> -->
+                            </LazyAtomBtnSimple>
                         </div>
                     </div>
                 </div>
@@ -147,8 +147,10 @@ const state = reactive({
         }
     ],
     beforeChatGpt: '',
-    description: '',
-    list: '',
+    newJob: {
+        description: '',
+        requirement: '',
+    }
 })
 const props = defineProps({
     modelValue: {
@@ -183,17 +185,29 @@ onMounted(() => {
 })
 // methods
 function handleConfirm() {
-    emit('update:modelValue', state.description)
-    state.description = ''
-    const ckEditor = currentInstance.refs.description
-    if (ckEditor) {
-        ckEditor.setData('')
+    const updatedJob = Object.assign({}, props.job, {
+        ...state.newJob
+    })
+    console.log({
+        updatedJob
+    });
+    emit('update:modelValue', updatedJob)
+    const descEditor = currentInstance.refs.description
+    if (descEditor) {
+        descEditor.setData('')
     } else {
-        console.log('Error trying to setInvitationTemplate: ', ckEditor);
+        console.log('Error trying to setInvitationTemplate: ', descEditor);
+    }
+    const requirementEditor = currentInstance.refs.requirement
+    if (requirementEditor) {
+        requirementEditor.setData('')
+    } else {
+        console.log('Error trying to setInvitationTemplate: ', requirementEditor);
     }
     state.chatModal.hide()
 }
 async function openModal() {
+    state.form.jobName = props.job?.name
     state.chatModal.show()
 }
 function handleClose() {
@@ -211,19 +225,18 @@ async function handleSubmit() {
     }
     $sweet.loader(false)
     const { data } = res
-    console.log(data);
-    const { description = '', list = '' } = data
-    state.description = description
+    const { description = '', requirement = '' } = data
+    state.newJob.description = description
     const descriptionEditor = currentInstance.refs.description
     if (descriptionEditor) {
         descriptionEditor.setData(description)
     } else {
         console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
     }
-    state.list = list
-    const listEditor = currentInstance.refs.list
+    state.newJob.requirement = requirement
+    const listEditor = currentInstance.refs.requirement
     if (listEditor) {
-        listEditor.setData(list)
+        listEditor.setData(requirement)
     } else {
         console.log('Error trying to setInvitationTemplate: ', listEditor);
     }

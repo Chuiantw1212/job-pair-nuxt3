@@ -7,7 +7,9 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <LazyOrganismChatJdModal></LazyOrganismChatJdModal>
+            <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+            </LazyOrganismChatJdModal>
+            {{ state.job }}
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -226,6 +228,11 @@ async function checkWalletBallance(value) {
     if (!res.data || res.data.balance === 0 && noBallanceModal) {
         noBallanceModal.openModal()
     }
+}
+function setUpdatedJob(value) {
+    console.log({
+        value
+    });
 }
 function setDescription(value) {
     instance.refs.description.setData(value)
