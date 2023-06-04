@@ -3,17 +3,17 @@
         <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink id="navItem__button" class="navItem__button" to="/jobs">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/jobs">
                         職缺探索
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/user/profile">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
                         會員中心
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/cvgpt">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/cvgpt">
                         CVgpt
                     </NuxtLink>
                 </li>
@@ -96,10 +96,15 @@ function showUserModal() {
 
     .navItem__button {
         color: black;
+        transition: all 0.3s;
 
         &:hover {
             color: #21cc90;
         }
+    }
+
+    .navItem__button--active {
+        color: #21cc90;
     }
 
     .navItem__button--disabled {
