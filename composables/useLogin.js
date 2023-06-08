@@ -1,5 +1,5 @@
 import { useRouter, useRoute } from 'vue-router'
-import firebase from "firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
     const { $emitter, $sweet, } = useNuxtApp()
     const router = useRouter()
@@ -25,7 +25,7 @@ export default function setup() {
     })
     // methods
     function listenToAuthState() {
-        const auth = firebase.auth()
+        const auth = getAuth()
         auth.onAuthStateChanged(async (userInfo) => {
             $sweet.loader(false)
             if (!userInfo) {
@@ -65,7 +65,13 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
-        console.log('handleAuthResult', basicInfo);
+        console.log({
+            basicInfo
+        });
+        if (!basicInfo) {
+            await $sweet.alert('查無使用者資料')
+            return
+        }
         if (!basicInfo.email) {
             await $sweet.alert('請使用其他方式登入')
             return
@@ -79,9 +85,9 @@ export default function setup() {
         $sweet.loader(false)
     }
     async function setIdToken() {
-        const auth = firebase.auth();
+        const auth = getAuth()
         if (!auth || !auth.currentUser) {
-            console.log('setIdToken no auth', auth);
+            console.log('setIdToken no auth', auth)
             return
         }
         const idToken = await auth.currentUser.getIdToken()
@@ -235,25 +241,29 @@ export default function setup() {
     }
     function getBasicInfo(type) {
         const user = state.authResult.user
-        const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
-        const basicInfo = {
-            name: displayName,
-            email,
-            uid,
-            telephone: phoneNumber,
-            image: photoURL,
-            type,
-            emailVerified,
+        if (user) {
+            const { displayName, email, uid, phoneNumber, photoURL, emailVerified } = user
+            const basicInfo = {
+                name: displayName,
+                email,
+                uid,
+                telephone: phoneNumber,
+                image: photoURL,
+                type,
+                emailVerified,
+            }
+            state.basicInfo = basicInfo
+            return basicInfo
         }
-        state.basicInfo = basicInfo
-        return basicInfo
     }
     async function sendEmailLink(type) {
+        $sweet.loader(true)
         const basicInfo = getBasicInfo(type)
         const response = await repoAuth.postVerificationEmail(basicInfo)
         if (response.status !== 200) {
             return false
         }
+        $sweet.loader(false)
         state.countdownInterval = true
         state.cdVisible = state.cdDefault
         state.countdownInterval = setInterval(() => {
@@ -263,6 +273,7 @@ export default function setup() {
                 state.countdownInterval = null
             }
         }, 1000)
+        console.log('sendEmailLink',);
         state.isSent = true
     }
     return {

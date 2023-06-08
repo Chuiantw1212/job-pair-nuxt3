@@ -7,6 +7,9 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
+            <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+            </LazyOrganismChatJdModal>
+            {{ state.job }} -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -93,15 +96,15 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 :toolbar="state.toolbar" ref="description" class="mt-4">
-                <!-- <LazyOrganismChatGptModal name="職責簡介" :modelValue="state.job.description"
+                <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
                     :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatGptModal> -->
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
-                <!-- <LazyOrganismChatGptModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
+                <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
-                </LazyOrganismChatGptModal> -->
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -154,7 +157,6 @@ const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
-const repoChat = useRepoChat()
 const device = useDevice()
 const repoCompany = useRepoCompany()
 const state = reactive({
@@ -226,23 +228,17 @@ async function checkWalletBallance(value) {
         noBallanceModal.openModal()
     }
 }
+function setUpdatedJob(value) {
+    const { name = '', description = '', skills = '' } = value
+    state.job.name = name
+    setDescription(description)
+    setSkills(skills)
+}
 function setDescription(value) {
     instance.refs.description.setData(value)
 }
 function setSkills(value) {
     instance.refs.skills.setData(value)
-}
-async function handleChatDescription(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
-}
-async function handleChatSkills(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
 }
 async function handlePreview() {
     await saveJob()

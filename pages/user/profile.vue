@@ -42,9 +42,9 @@
             <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
                 :required="state.profileBasic.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true"
                 ref="description">
-                <LazyOrganismChatGptModal v-model="state.profileBasic.description" name="個人簡歷"
+                <LazyOrganismChatCvModal v-model="state.profileBasic.description" name="個人簡歷"
                     :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatGptModal>
+                </LazyOrganismChatCvModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
@@ -78,7 +78,8 @@
             <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profileBroadcast.isActive" name="目前求職狀態">
                 <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
             </LazyAtomInputCheckSingle>
-            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.subscribed"
+            <hr />
+            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.isSubscribed"
                 name="EDM訂閱">
                 <span class="isActive__desc">我願意收到EDM</span>
             </LazyAtomInputCheckSingle>
@@ -122,7 +123,7 @@
 <script setup>
 import { useRouter, } from 'vue-router'
 import { reactive, onMounted, watch, } from 'vue'
-const { $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, $emitter } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -156,6 +157,8 @@ const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
+        // 跳出登入視窗
+        $emitter.emit("showUserModal")
         return
     }
     const profile = JSON.parse(JSON.stringify(user))
@@ -196,7 +199,7 @@ function initialize() {
     // profileBroadcast
     const {
         isActive = true,
-        subscribed = true,
+        isSubscribed = true,
         birthDate = '',
         gender = '',
         educationLevel = '',
@@ -204,7 +207,7 @@ function initialize() {
     } = profile
     const profileBroadcast = {
         isActive,
-        subscribed,
+        isSubscribed,
         birthDate,
         gender,
         educationLevel,

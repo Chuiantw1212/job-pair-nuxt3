@@ -1,39 +1,41 @@
 <template>
-    <div v-if="checkPanelDisplay()" class="jobItemPanel">
+    <div class="jobItemPanel">
         <div v-if="routeName === 'jobDetails' && jobDetailsException" class="panel__body panel__body--jobDetails">
-            <div class="panel__score">{{ modelValue ? $rank(modelValue.similarity) : 0 }}</div>
+            <div class="panel__score">{{ getRankedSimilarity() }}</div>
             <div class="panel__desc">團隊適配度</div>
         </div>
         <div v-else class="panel__body">
-            <div class="panel__score">{{ modelValue ? $rank(modelValue.similarity) : 0 }}</div>
+            <div class="panel__score">{{ getRankedSimilarity() }}</div>
             <div class="panel__desc">團隊適配度</div>
         </div>
         <div class="panel__footer">
-            <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
-                <img class="store__icon" src="./heart.svg" alt="save" />儲存
-            </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
-                @click.stop="handleUnsavedJob()">
-                <img class="store__icon" src="./icon_Heart.svg" alt="saved" /> 已儲存
-            </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple
-                v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
-                class="panel__store" @click.stop="handleSaveJob()">
-                <img class="store__icon" src="./heart.svg" alt="save" />儲存
-            </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple
-                v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
-                class="panel__store" @click.stop="handleUnsavedJob()">
-                <img class="store__icon" src="./heart.svg" alt="saved" />已儲存
-            </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple v-if="['applied', 'notified'].includes(state.application.applyFlow)"
-                class="panel__store panel__store--applied" :disabled="true">
-                <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="applied" /> 已應徵
-            </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple v-if="['rejected'].includes(state.application.applyFlow)"
-                class="panel__store panel__store--applied" :disabled="true">
-                <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="rejected" /> 已婉拒
-            </LazyAtomBtnSimple>
+            <template v-if="checkPanelDisplay()">
+                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
+                    <img class="store__icon" src="./heart.svg" alt="save" />儲存
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
+                    @click.stop="handleUnsavedJob()">
+                    <img class="store__icon" src="./icon_Heart.svg" alt="saved" /> 已儲存
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple
+                    v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
+                    class="panel__store" @click.stop="handleSaveJob()">
+                    <img class="store__icon" src="./heart.svg" alt="save" />儲存
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple
+                    v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
+                    class="panel__store" @click.stop="handleUnsavedJob()">
+                    <img class="store__icon" src="./heart.svg" alt="saved" />已儲存
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="['applied', 'notified'].includes(state.application.applyFlow)"
+                    class="panel__store panel__store--applied" :disabled="true">
+                    <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="applied" /> 已應徵
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-if="['rejected'].includes(state.application.applyFlow)"
+                    class="panel__store panel__store--applied" :disabled="true">
+                    <img class="store__icon" src="./icon_Rocke_Grey.svg" alt="rejected" /> 已婉拒
+                </LazyAtomBtnSimple>
+            </template>
             <LazyAtomBtnSimple v-if="showShareButton && state.navigator.share" class="panel__share"
                 @click="shareLinkNative()">
                 <img class="share__icon" src="./share.svg" alt="share" />分享
@@ -59,16 +61,14 @@ export default {
 }
 </script>
 <script setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, } from 'vue'
 const { $uuid4, $bootstrap, $emitter, $rank, $requestSelector } = useNuxtApp()
-const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
-const router = useRouter()
 const state = reactive({
     id: null,
-    isCopied: true,
+    isCopied: false,
     copiedTooltip: null,
     application: {},
     navigator: {},
@@ -103,7 +103,7 @@ watch(() => props.modelValue, () => {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`
-        if (props.showShareButton && !state.navigator.share && checkPanelDisplay()) {
+        if (props.showShareButton && !state.navigator.share) {
             state.id = $uuid4()
             nextTick(() => {
                 initialilzeTooltip()
@@ -123,12 +123,17 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
     }
 }, { immediate: true, deep: true })
 // methods
-function checkPanelDisplay() {
-    const { modelValue } = props
-    if (!modelValue || !modelValue.similarity) {
-        return
+function getRankedSimilarity() {
+    const { user } = repoAuth.state
+    let score = user?.id ? 0 : '？'
+    if (props.modelValue?.similarity) {
+        score = $rank(props.modelValue.similarity)
     }
-    return modelValue.similarity === 0 || $rank(modelValue.similarity)
+    return score
+}
+function checkPanelDisplay() {
+    const { user } = repoAuth.state
+    return user?.id
 }
 function resetCopiedTooltip() {
     state.isCopied = false
@@ -180,7 +185,9 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
     await navigator.clipboard.writeText(url)
-    state.shareButtonToolTip.hide()
+    if (state.shareButtonToolTip) {
+        state.shareButtonToolTip.hide()
+    }
     state.isCopied = true
     nextTick(() => {
         state.copiedTooltip.show()
@@ -241,8 +248,10 @@ async function shareLinkBootstrap() {
         display: flex;
         gap: 16px;
         white-space: nowrap;
+        justify-content: center;
 
         .panel__store {
+            max-width: 86px;
             line-height: 1;
             border-radius: 5px;
             font-size: 16px;
@@ -272,7 +281,7 @@ async function shareLinkBootstrap() {
         }
 
         .panel__share {
-            // line-height: 1;
+            max-width: 86px;
             padding: 4px 8px;
             border-radius: 5px;
             border: solid 1px #5ea88e;
