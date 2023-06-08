@@ -7,9 +7,9 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+            <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
             </LazyOrganismChatJdModal>
-            {{ state.job }}
+            {{ state.job }} -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
