@@ -155,6 +155,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
 // methods
 const instance = getCurrentInstance()
 function initialize() {
+    const { user } = repoAuth.state
     const profile = JSON.parse(JSON.stringify(user))
     // profileBasic
     const {
