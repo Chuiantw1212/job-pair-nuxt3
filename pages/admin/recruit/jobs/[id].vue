@@ -9,7 +9,22 @@
             </LazyAtomInputSwitch>
             <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
             </LazyOrganismChatJdModal>
-            {{ state.job }}
+            <div class="form__quick">
+                <h1 class="quick__header">快速建檔</h1>
+                <div class="quick__desc">
+                    在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
+                    <br>
+                    範例：www.104.com.tw/companyInfo/*,
+                    www.yourator.co/companies/*
+                </div>
+                <div class="quick__inputGroup">
+                    <label class="inputGroup__label">
+                        <input v-model="state.crawlerUrl" class="inputGroup__url"
+                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
+                    </label>
+                    <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
+                </div>
+            </div>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -148,6 +163,11 @@
         <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
     </div>
 </template>
+<script>
+export default {
+    name: 'job-id',
+}
+</script>
 <script setup>
 const { $sweet, $validate, $optionText, } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
@@ -195,9 +215,7 @@ const props = defineProps({
     modelValue: {
         type: Object,
         default: function () {
-            return function () {
-                return {}
-            }
+            return {}
         },
     },
     disabled: {
@@ -401,6 +419,53 @@ async function handleSave() {
             letter-spacing: normal;
             text-align: left;
             color: #5ea88e;
+        }
+    }
+
+    .form__quick {
+        background-color: #fee997;
+        padding: 24px 32px;
+        border-radius: 5px;
+        margin-bottom: 45px;
+
+        .quick__header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .quick__desc {
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        .quick__inputGroup {
+            display: flex;
+            gap: 8px;
+
+            .inputGroup__label {
+                padding: 12px 16px;
+                width: 100%;
+                background-color: white;
+                border-radius: 10px;
+
+                .inputGroup__url {
+                    width: 100%;
+                    border: none;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+
+            .inputGroup__button {
+                padding: 12px 16px;
+                background-color: #29b0ab;
+                color: white;
+                border-radius: 10px;
+                white-space: nowrap;
+                border: none;
+            }
         }
     }
 
