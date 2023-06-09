@@ -1,3 +1,7 @@
 <template>
     <NuxtPage></NuxtPage>
-</template> 
+</template>
+<script setup>
+const { $emitter } = useNuxtApp()
+const repoAuth = useRepoAuth()
+</script>
