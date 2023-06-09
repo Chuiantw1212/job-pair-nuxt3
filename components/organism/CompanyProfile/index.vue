@@ -445,7 +445,7 @@ async function set104CompanyInfo(response) {
     } = response
     // 先找到第一級行政區
     const addressRegionText = address.slice(0, 3)
-    const upperTaiDivision = addressRegionText.replace('台', '臺')
+    const upperTaiDivision = addressRegionText.replace('臺', '台')
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })

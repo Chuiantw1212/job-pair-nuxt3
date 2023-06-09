@@ -23,7 +23,6 @@ export default defineStore('company', () => {
         const response = await jobPairApi.request({
             method: 'get',
             url: `/company/${id}`,
-            commit: true,
         })
         return response
     }
@@ -34,7 +33,6 @@ export default defineStore('company', () => {
             params: {
                 url: data.url
             },
-            commit: true,
         })
         return response
     }

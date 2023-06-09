@@ -154,7 +154,7 @@ const state = reactive({
 })
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: Object,
         default: function () {
             return {}
         }

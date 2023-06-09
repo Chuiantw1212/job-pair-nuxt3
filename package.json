@@ -10,7 +10,7 @@
     "deploy": "npx firebase deploy"
   },
   "engines": {
-    "node": "16"
+    "node": ">=16"
   },
   "devDependencies": {
     "@types/node": "^18",
