@@ -411,7 +411,11 @@ async function concatJobsFromServer(config = {}) {
     if (user?.id) {
         requestConfig.userId = user.id
     }
-    $sweet.loader(isLoading)
+    try {
+        $sweet.loader(isLoading)
+    } catch (error) {   
+        console.trace(error);
+    }
     const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {
         $sweet.alert('伺服器塞車了')
@@ -430,7 +434,11 @@ async function concatJobsFromServer(config = {}) {
         })
     }
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    $sweet.loader(false)
+    try {
+        $sweet.loader(false)
+    } catch (error) {
+        console.trace(error);
+    }
 }
 </script>
 <style lang="scss" scoped>

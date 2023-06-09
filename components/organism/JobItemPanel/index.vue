@@ -5,7 +5,9 @@
             <div class="panel__desc">團隊適配度</div>
         </div>
         <div v-else class="panel__body">
-            <div class="panel__score">{{ getRankedSimilarity() }}</div>
+            <div v-if="repoAuth.state.user?.id" class="panel__score">{{ getRankedSimilarity() }}
+            </div>
+            <button v-else class="panel__score" @click="showLoginModal()">？</button>
             <div class="panel__desc">團隊適配度</div>
         </div>
         <div class="panel__footer">
@@ -123,6 +125,9 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
     }
 }, { immediate: true, deep: true })
 // methods
+function showLoginModal() {
+    $emitter.emit("showUserModal")
+}
 function getRankedSimilarity() {
     const { user } = repoAuth.state
     let score = user?.id ? 0 : '？'
@@ -205,6 +210,8 @@ async function shareLinkBootstrap() {
             font-size: 40px;
             font-weight: bold;
             font-family: Roboto;
+            background-color: inherit;
+            border: none;
         }
 
         .panel__desc {
