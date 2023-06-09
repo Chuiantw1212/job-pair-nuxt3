@@ -179,7 +179,7 @@ const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
-    crawlerUrl: '',
+    crawlerUrl: 'https://www.104.com.tw/job/7pwjw?jobsource=jolist_d_relevance',
     filterOpen: {
         occupationalCategory: false,
         employmentType: false,
@@ -246,30 +246,45 @@ async function crawlFromLink() {
         salaryType = 50,
         salaryMin = 0,
         salaryMax = 0,
-        addressRegion,
-        addressArea, // 縣市+行政區
+        addressArea, // 縣市
+        addressRegion, // 縣市+行政區
         addressDetail,
     } = jobDetail
     // convert type
     const typeMap = {
         50: 'monthly',
+        10: '' // 面議
     }
-    const newJobSalaryType = typeMap[salaryType] || 50
+    const test = repoSelect.state.selectByQueryRes
+    const newJobSalaryType = typeMap[salaryType] || 'monthly'
     // compose new job
-    const { locationRes = [] } = repoSelect.state
-    const formatAddressRegion = addressRegion.replace('台')
-    const addressLocality = $optionText(locationRes, addressArea)
+    const { locationRes = {}, selectByQueryRes = {} } = repoSelect.state
+    const salaryTypeItems = selectByQueryRes.salaryType
+    console.log(salaryTypeItems);// salaryType
+    const targetSalaryType = salaryTypeItems.find(item => {
+        return item.value === newJobSalaryType
+    })
+    console.log('targetSalaryType', targetSalaryType)
+    const formattedAddressRegion = addressArea.replace('臺', '台')
+    const level1Items = locationRes.taiwan
+    const targetRegion = level1Items.find(item => {
+        return item.text === formattedAddressRegion
+    })
+    const formatLocality = addressRegion.replace('臺', '台').replace(targetRegion.text, '')
+    const level2Items = locationRes[targetRegion.value]
+    const targetLocality = level2Items.find(item => {
+        return item.text === formatLocality
+    })
     const newJob = {
         description: jobDescription,
-        salaryType: newJobSalaryType,
-        salaryMin,
-        salaryMax,
-        addressRegion, // 縣市
-        addressLocality, // 行政區
+        salaryType: targetSalaryType.value,
+        salaryMin: Math.max(salaryMin, targetSalaryType.min),
+        salaryMax: Math.max(salaryMax, targetSalaryType.min),
+        addressRegion: targetRegion?.value || null, // 縣市
+        addressLocality: targetLocality?.value | null, // 行政區
         streetAddress: addressDetail // 詳細地址
     }
     state.job = newJob
-    console.log(jobRes);
 }
 const instance = getCurrentInstance()
 async function checkWalletBallance(value) {
