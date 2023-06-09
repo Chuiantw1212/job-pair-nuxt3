@@ -39,6 +39,16 @@
 <script setup>
 const device = useDevice()
 const route = useRoute()
+const router = useRouter()
+// hooks
+watch(() => route, (newRoute) => {
+    if (newRoute.name === 'user') {
+        router.push({
+            name: 'user-profile'
+        })
+    }
+}, { immediate: true })
+
 function checkConsultActive() {
     return route.path.includes('/user/consult')
 }
