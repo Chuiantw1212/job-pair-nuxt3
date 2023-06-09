@@ -12,17 +12,14 @@
             <div class="form__quick">
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
-                    在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
-                    <br>
-                    範例：www.104.com.tw/companyInfo/*,
-                    www.yourator.co/companies/*
+                    範例：https://www.104.com.tw/job/*
                 </div>
                 <div class="quick__inputGroup">
                     <label class="inputGroup__label">
                         <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
+                            placeholder="https://www.104.com.tw/job/*" />
                     </label>
-                    <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
+                    <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
                 </div>
             </div>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
@@ -232,6 +229,48 @@ watch(() => repoSelect.jobCategoryMap, () => {
     }
 }, { deep: true })
 // methods
+async function crawlFromLink() {
+    const crawlerUrl = state.crawlerUrl
+    $sweet.loader(true)
+    const jobRes = await repoJob.getJobCrawlResult({
+        url: crawlerUrl
+    })
+    $sweet.loader(false)
+    if (jobRes.status !== 200) {
+        return
+    }
+    const { header = {}, jobDetail = {} } = jobRes.data
+    const { jobName = '' } = header
+    const {
+        jobDescription = '',
+        salaryType = 50,
+        salaryMin = 0,
+        salaryMax = 0,
+        addressRegion,
+        addressArea, // 縣市+行政區
+        addressDetail,
+    } = jobDetail
+    // convert type
+    const typeMap = {
+        50: 'monthly',
+    }
+    const newJobSalaryType = typeMap[salaryType] || 50
+    // compose new job
+    const { locationRes = [] } = repoSelect.state
+    const formatAddressRegion = addressRegion.replace('台')
+    const addressLocality = $optionText(locationRes, addressArea)
+    const newJob = {
+        description: jobDescription,
+        salaryType: newJobSalaryType,
+        salaryMin,
+        salaryMax,
+        addressRegion, // 縣市
+        addressLocality, // 行政區
+        streetAddress: addressDetail // 詳細地址
+    }
+    state.job = newJob
+    console.log(jobRes);
+}
 const instance = getCurrentInstance()
 async function checkWalletBallance(value) {
     if (value !== 'active') {

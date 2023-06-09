@@ -14,11 +14,13 @@ export default defineStore('job', () => {
         })
         return response
     }
-    async function getJobCrawlResult(params) {
+    async function getJobCrawlResult(data) {
         const response = await jobPairApi.request({
             method: 'get',
             url: `/job/crawler`,
-            params
+            params: {
+                url: data.url
+            },
         })
         return response
     }
