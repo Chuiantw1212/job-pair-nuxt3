@@ -22,6 +22,7 @@
                     <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
                 </div>
             </div>
+            <!-- {{ state.job }} -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -239,8 +240,9 @@ async function crawlFromLink() {
     if (jobRes.status !== 200) {
         return
     }
-    const { header = {}, jobDetail = {} } = jobRes.data
+    const { header = {}, jobDetail = {}, condition = {} } = jobRes.data
     const { jobName = '' } = header
+    const { other = '' } = condition
     const {
         jobDescription = '',
         salaryType = 50,
@@ -260,11 +262,9 @@ async function crawlFromLink() {
     // compose new job
     const { locationRes = {}, selectByQueryRes = {} } = repoSelect.state
     const salaryTypeItems = selectByQueryRes.salaryType
-    console.log(salaryTypeItems);// salaryType
     const targetSalaryType = salaryTypeItems.find(item => {
         return item.value === newJobSalaryType
     })
-    console.log('targetSalaryType', targetSalaryType)
     const formattedAddressRegion = addressArea.replace('臺', '台')
     const level1Items = locationRes.taiwan
     const targetRegion = level1Items.find(item => {
@@ -276,15 +276,19 @@ async function crawlFromLink() {
         return item.text === formatLocality
     })
     const newJob = {
+        name: jobName,
         description: jobDescription,
         salaryType: targetSalaryType.value,
         salaryMin: Math.max(salaryMin, targetSalaryType.min),
         salaryMax: Math.max(salaryMax, targetSalaryType.min),
         addressRegion: targetRegion?.value || null, // 縣市
-        addressLocality: targetLocality?.value | null, // 行政區
-        streetAddress: addressDetail // 詳細地址
+        addressLocality: targetLocality?.value || null, // 行政區
+        streetAddress: addressDetail, // 詳細地址
+        skills: other,
     }
     state.job = newJob
+    setDescription(newJob.description)
+    setSkills(newJob.skills)
 }
 const instance = getCurrentInstance()
 async function checkWalletBallance(value) {
