@@ -194,9 +194,15 @@ const state = reactive({
 useSeoMeta({
     title: `職缺探索 - Job Pair`,
 })
-watch(() => repoAuth.state.user, () => {
-    const noLocalJobs = !state.jobList.length
-    if (noLocalJobs) {
+watch(() => repoAuth.state.user, (user) => {
+    // set filter
+    if (user?.id) {
+        state.filter = getDefaultFilter()
+    }
+    // get jobs
+    const firstJob = state.jobList[0]
+    console.log('watch', firstJob);
+    if (!firstJob?.similarity) {
         initializeSearch()
     }
 }, { immediate: true })
@@ -207,7 +213,7 @@ watch(() => state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length === oldValue.length || !process.client) {
         return
     }
-    if (!state.observer && process.client) {
+    if (!state.observer) {
         state.observer = new IntersectionObserver(loadJobItemBatch, {
             rootMargin: "0px",
             threshold: 0,
