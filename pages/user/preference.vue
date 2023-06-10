@@ -110,7 +110,7 @@ async function handleConfirm() {
 function setPreferenceInfo() {
     const { user } = repoAuth.state
     const { preference, preferenceDate, } = user
-    state.preference = JSON.parse(JSON.stringify(preference))
+    state.preference = structuredClone(preference)
     // Set profile disabled
     const currentTime = new Date().getTime()
     const lockEndDate = new Date(preferenceDate)

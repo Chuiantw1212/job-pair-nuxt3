@@ -208,7 +208,7 @@ function setWelfareFlags() {
         return
     }
     const { jobBenefits = "" } = state.companyInfo
-    let welfareCopy = JSON.parse(JSON.stringify(jobBenefits))
+    let welfareCopy = structuredClone(jobBenefits)
     state.benefitFlags.forEach((welfareType) => {
         const labels = jobBenefitsConfig[welfareType]
         state.jobBenefits[welfareType] = labels.filter((keyword) => {
@@ -261,7 +261,7 @@ async function initializeCompanyInfo() {
     }
     let companyInfo = getDefaultCompany()
     if (companyRes.data) {
-        companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+        companyInfo = structuredClone(companyRes.data)
     }
     state.companyInfo = companyInfo
     state.companyLogo = companyInfo.logo
@@ -367,7 +367,7 @@ async function setCakeresumeCompanyInfo(response) {
         story,
         logo,
     }
-    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    state.companyLogo = structuredClone(companyInfo.logo)
     delete companyInfo.logo
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
@@ -417,7 +417,7 @@ async function setYouratorCompanyInfo(response) {
         description,
         logo,
     }
-    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+    state.companyLogo = structuredClone(companyInfo.logo)
     delete companyInfo.logo
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
@@ -505,7 +505,7 @@ async function set104CompanyInfo(response) {
         jobBenefits,
     }
     if (typeof companyInfo.logo === 'object') {
-        state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
+        state.companyLogo = structuredClone(companyInfo.logo)
         delete companyInfo.logo
     }
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)

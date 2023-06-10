@@ -69,7 +69,7 @@ watch(() => repoAuth.state.user, (newValue) => {
     if (!newValue) {
         return
     }
-    state.tempUser = JSON.parse(JSON.stringify(newValue))
+    state.tempUser = structuredClone(newValue)
     if (!state.tempUser.chatName) {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`

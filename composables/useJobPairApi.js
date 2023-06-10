@@ -48,7 +48,8 @@ export default function () {
             responseType,
         }
         if (data) {
-            const dataCopy = JSON.parse(JSON.stringify(data))
+            // Remove null and undefined value
+            const dataCopy =  JSON.parse(JSON.stringify(data))
             axiosConfig.data = dataCopy
         }
         let axiosResponse = null

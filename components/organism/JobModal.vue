@@ -119,7 +119,7 @@ async function getFileBuffer(item = {}) {
 function setApplication() {
     const { user } = repoAuth.state
     // 拉取資料
-    const application = JSON.parse(JSON.stringify(user))
+    const application = structuredClone(user)
     const { resumes } = user
     if (resumes.length === 1) {
         application.resume = resumes[0]
