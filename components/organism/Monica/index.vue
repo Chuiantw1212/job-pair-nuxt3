@@ -20,7 +20,6 @@ export default {
 <script setup>
 const repoAuth = useRepoAuth()
 const router = useRouter()
-const device = useDevice()
 const state = reactive({
     isSet: false,
     isVisible: false
@@ -28,7 +27,13 @@ const state = reactive({
 watchEffect(() => {
     const { user } = repoAuth.state
     if (user && !state.isSet) {
-        const requiredFields = ['telephone', 'birthDate', 'occupationalCategory', 'description', 'resumes']
+        const requiredFields = [
+            'telephone',
+            'birthDate',
+            'occupationalCategory',
+            'description',
+            'resumes'
+        ]
         const isInComplete = requiredFields.some(key => {
             const value = user[key]
             const case1 = Array.isArray(value) && value.length === 0
