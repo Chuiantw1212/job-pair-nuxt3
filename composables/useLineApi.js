@@ -36,7 +36,7 @@ export default function () {
             headers
         }
         if (data) {
-            const dataCopy = structuredClone(data)
+            const dataCopy = JSON.parse(JSON.stringify(data))
             axiosConfig.data = dataCopy
         }
         let axiosResponse = null
@@ -67,11 +67,11 @@ export default function () {
             await Swal.fire(errorConfig)
         }
         const { status = '', statusText = '' } = axiosResponse
-        return structuredClone({
+        return JSON.parse(JSON.stringify({
             data: axiosResponse.data,
             status,
             statusText
-        })
+        }))
     }
     return {
         state,

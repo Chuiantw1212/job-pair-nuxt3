@@ -156,7 +156,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
 const instance = getCurrentInstance()
 function initialize() {
     const { user } = repoAuth.state
-    const profile = structuredClone(user)
+    const profile = JSON.parse(JSON.stringify(user))
     // profileBasic
     const {
         image,

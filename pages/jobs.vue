@@ -347,7 +347,7 @@ function getDefaultFilter() {
     }
     const { user } = repoAuth.state
     if (user && user.occupationalCategory) {
-        defualtFilter.occupationalCategory = structuredClone(user.occupationalCategory)
+        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
     }
     return defualtFilter
 }
@@ -413,7 +413,7 @@ async function concatJobsFromServer(config = {}) {
     }
     try {
         $sweet.loader(isLoading)
-    } catch (error) {
+    } catch (error) {   
         console.trace(error);
     }
     const response = await repoJob.getJobByQuery(requestConfig)

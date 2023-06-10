@@ -239,7 +239,7 @@ function resetFilter() {
     state.filter = getDefaultFilter()
 }
 async function copyJob(item) {
-    const job = structuredClone(item)
+    const job = JSON.parse(JSON.stringify(item))
     job.status = "closed"
     delete job.identifier
     const res = await repoJob.postJobItem(job)
@@ -263,7 +263,7 @@ async function initialize(payload = {}) {
     }
     // 使用客製化欄位顯示
     if (user && user.jobFields) {
-        state.jobFields = structuredClone(user.jobFields)
+        state.jobFields = JSON.parse(JSON.stringify(user.jobFields))
     }
     // 初始化job
     const { id } = company

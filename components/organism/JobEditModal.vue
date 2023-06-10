@@ -288,7 +288,7 @@ function closeModal() {
     state.bsModal.hide()
 }
 function setJob() {
-    const job = structuredClone(props.modelValue)
+    const job = JSON.parse(JSON.stringify(props.modelValue))
     // 給定預設值
     if (!job.preference) {
         job.preference = {}
