@@ -95,15 +95,6 @@ function setApplication() {
         coverLetterRef.value.setData(description)
     })
 }
-function hasSelected(work) {
-    if (!state.application || !state.application.portfolio) {
-        return
-    }
-    const isSelected = state.application.portfolio.find((item) => {
-        return item.name === work.name
-    })
-    return isSelected
-}
 function handleApply() {
     const { user } = repoAuth.state
     if (user && user.id) {
