@@ -103,17 +103,6 @@ function handleApply() {
         $emitter.emit("showUserModal")
     }
 }
-async function handleSubmit() {
-    $sweet.loader(true)
-    const postResponse = await repoJobApplication.postJobApplication(state.application)
-    if (postResponse.status !== 200) {
-        return
-    }
-    await $sweet.succeed()
-    const { applyFlow } = postResponse.data
-    emit("applied", applyFlow)
-    closeModal()
-}
 function closeModal() {
     state.bsModal.hide()
 }
