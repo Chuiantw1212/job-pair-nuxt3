@@ -28,7 +28,7 @@ export default defineStore('jobApplication', () => {
         })
         if (response.status === 200) {
             const targetJob = state.userJobs[data.jobId]
-            const jobCopy = structuredClone(targetJob)
+            const jobCopy = JSON.parse(JSON.stringify(targetJob))
             jobCopy.visibility = 'hidden'
             const { jobId, } = jobCopy
             state.userJobs[jobId] = job
