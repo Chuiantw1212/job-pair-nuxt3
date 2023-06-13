@@ -2,17 +2,13 @@
 const random = Math.random()
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
-const title = 'Job Pair 找對的人，發揮長久價值 | 專業媒合平台，輕鬆高效找工作'
 export default defineNuxtConfig({
     app: {
         head: {
-            title: title,
             meta: [
-                { property: 'og:title', content: title },
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol
-                // { property: 'og:url', content: 'https://job-pair.com' }, // redirect???
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
                 { property: 'og:image', content: imageUrl },
