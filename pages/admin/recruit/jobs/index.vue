@@ -173,7 +173,7 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet, } = useNuxtApp()
+const { $sweet, $meta } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -182,7 +182,7 @@ const repoSelect = useRepoSelect()
 const router = useRouter()
 // hooks
 useSeoMeta({
-    title: `職缺管理 - 招募中心 - Job Pair`
+    title: `職缺管理 - 招募中心 - ${$meta.title}`
 })
 onMounted(() => {
     initialize()
