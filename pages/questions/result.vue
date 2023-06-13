@@ -27,7 +27,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `註冊完成 - 註冊流程 - ${$meta.title}`,
+    title: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
+    ogTitle: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
 })
 onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')

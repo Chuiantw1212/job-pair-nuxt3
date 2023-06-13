@@ -192,7 +192,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `職缺探索 - ${$meta.title}`,
+    title: () => `職缺探索 - ${$meta.title}`,
+    ogTitle: () => `職缺探索 - ${$meta.title}`,
 })
 watch(() => repoAuth.state.user, (user) => {
     // set filter
@@ -413,7 +414,7 @@ async function concatJobsFromServer(config = {}) {
     }
     try {
         $sweet.loader(isLoading)
-    } catch (error) {   
+    } catch (error) {
         console.trace(error);
     }
     const response = await repoJob.getJobByQuery(requestConfig)

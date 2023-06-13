@@ -25,18 +25,10 @@ onMounted(async () => {
     ])
 })
 useSeoMeta({
-    title: () => {
-        return $meta.title
-    },
-    ogTitle: () => {
-        return $meta.title
-    },
-    description: () => {
-        return $meta.description
-    },
-    ogDescription: () => {
-        return $meta.description
-    },
+    title: () => $meta.title,
+    ogTitle: () => $meta.title,
+    description: () => $meta.description,
+    ogDescription: () => $meta.description,
 })
 async function startLiff() {
     // 调用 console 方法输出日志

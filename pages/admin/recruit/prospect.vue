@@ -129,7 +129,8 @@ const props = defineProps({
 })
 // hooks
 useSeoMeta({
-    title: `潛在人選 - 招募中心 - ${$meta.title}`
+    title: () => `潛在人選 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `潛在人選 - 招募中心 - ${$meta.title}`,
 })
 watch(() => state.searchForm, () => {
     const { companyJobsRes } = repoCompany.state

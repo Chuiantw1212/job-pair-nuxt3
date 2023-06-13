@@ -182,7 +182,8 @@ const repoSelect = useRepoSelect()
 const router = useRouter()
 // hooks
 useSeoMeta({
-    title: `職缺管理 - 招募中心 - ${$meta.title}`
+    title: () => `職缺管理 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `職缺管理 - 招募中心 - ${$meta.title}`,
 })
 onMounted(() => {
     initialize()

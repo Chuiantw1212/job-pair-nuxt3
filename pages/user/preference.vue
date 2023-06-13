@@ -56,7 +56,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `求職偏好 - 會員中心 - ${$meta.title}`,
+    title: () => `求職偏好 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `求職偏好 - 會員中心 - ${$meta.title}`,
 })
 watchEffect(() => {
     const { user } = repoAuth.state

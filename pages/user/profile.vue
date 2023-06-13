@@ -142,7 +142,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `個人檔案 - 會員中心 - ${$meta.title}`,
+    title: () => `個人檔案 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `個人檔案 - 會員中心 - ${$meta.title}`,
 })
 onMounted(() => {
     initialize()

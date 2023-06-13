@@ -246,7 +246,8 @@ const props = defineProps({
 })
 // hooks
 useSeoMeta({
-    title: `應徵管理 - 招募中心 - ${$meta.title}`
+    title: () => `應徵管理 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `應徵管理 - 招募中心 - ${$meta.title}`,
 })
 onMounted(async () => {
     const { id } = route.params

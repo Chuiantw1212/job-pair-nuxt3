@@ -4,6 +4,7 @@
 <script setup>
 const { $meta } = useNuxtApp()
 useSeoMeta({
-    title: `企業檔案 - 招募中心 - ${$meta.title}`
+    title: () => `企業檔案 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `企業檔案 - 招募中心 - ${$meta.title}`
 })
 </script>
