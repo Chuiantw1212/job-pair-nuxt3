@@ -199,7 +199,7 @@ export default function setup() {
                 }
                 const questionKeys = questionsRes.map(item => item.key)
                 const unAnsweredIndex = questionKeys.findIndex((key) => {
-                    const isAnswered = tempUser.preference.hasOwnProperty(key)
+                    const isAnswered = tempUser.preference.hasOwn(key)
                     return !isAnswered
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length

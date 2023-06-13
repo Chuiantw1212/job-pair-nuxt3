@@ -12,8 +12,7 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved"
-                        @update:modelValue="setJobComparable()">
+                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved" @update:modelValue="setJobComparable()">
                     </LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
@@ -94,8 +93,7 @@
                                     {{ $rank(state.jobCompare.second.similarity) }}
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body cell__body--bold">
                                     {{ $rank(state.jobCompare.third.similarity) }}
                                 </div>
@@ -154,8 +152,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body">
                                     <div>
                                         {{ getSalaryText(state.jobCompare.third) }}
@@ -174,7 +171,7 @@
                                     <div v-for="(item, index) in state.jobCompare.first.employmentType"
                                         :key="`firstEmploymentType${index}`">
                                         {{ $filter.optionText(item,
-                                                repoSelect.state.selectByQueryRes.employmentType)
+                                            repoSelect.state.selectByQueryRes.employmentType)
                                         }}
                                     </div>
                                 </div>
@@ -185,7 +182,7 @@
                                     <div v-for="(item, index) in state.jobCompare.second.employmentType"
                                         :key="`secondEmploymentType${index}`">
                                         {{ $filter.optionText(item,
-                                                repoSelect.state.selectByQueryRes.employmentType)
+                                            repoSelect.state.selectByQueryRes.employmentType)
                                         }}
                                     </div>
                                 </div>
@@ -195,7 +192,7 @@
                                     <div v-for="(item, index) in state.jobCompare.third.employmentType"
                                         :key="`thirdEmploymentType${index}`">
                                         {{ $filter.optionText(item,
-                                                repoSelect.state.selectByQueryRes.employmentType)
+                                            repoSelect.state.selectByQueryRes.employmentType)
                                         }}
                                     </div>
                                 </div>
@@ -207,7 +204,7 @@
                                 <div class="cell__header d-lg-none">遠端型態</div>
                                 <div class="cell__body mt-2 mt-lg-0">
                                     {{ $filter.optionText(state.jobCompare.first.jobLocationType,
-                                            repoSelect.state.selectByQueryRes.jobLocationType)
+                                        repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
                             </td>
@@ -215,15 +212,14 @@
                                 <div class="cell__header d-lg-none">遠端型態</div>
                                 <div class="cell__body mt-2 mt-lg-0">
                                     {{ $filter.optionText(state.jobCompare.second.jobLocationType,
-                                            repoSelect.state.selectByQueryRes.jobLocationType)
+                                        repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body">
                                     {{ $filter.optionText(state.jobCompare.third.jobLocationType,
-                                            repoSelect.state.selectByQueryRes.jobLocationType)
+                                        repoSelect.state.selectByQueryRes.jobLocationType)
                                     }}
                                 </div>
                             </td>
@@ -242,8 +238,7 @@
                                     {{ getJobLocation(state.jobCompare.second) }}
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body">
                                     {{ getJobLocation(state.jobCompare.third) }}
                                 </div>
@@ -263,8 +258,7 @@
                                     {{ state.jobCompare.second.numberOfEmployees }}
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body">
                                     {{ state.jobCompare.third.numberOfEmployees }}
                                 </div>
@@ -275,8 +269,8 @@
                             <td class="card__table__cell">
                                 <div class="cell__header d-lg-none">公司福利</div>
                                 <div class="cell__body cell__body--center mt-2 mt-lg-0">
-                                    <template v-for="(value, key) in state.jobCompare.first.jobBenefitFlags"
-                                        class="mt-1" :key="key">
+                                    <template v-for="(value, key) in state.jobCompare.first.jobBenefitFlags" class="mt-1"
+                                        :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
@@ -287,8 +281,8 @@
                             <td v-if="state.jobComparable.length >= 2" class="card__table__cell">
                                 <div class="cell__header d-lg-none">公司福利</div>
                                 <div class="cell__body cell__body--center mt-2 mt-lg-0">
-                                    <template v-for="(value, key) in state.jobCompare.second.jobBenefitFlags"
-                                        class="mt-1" :key="key">
+                                    <template v-for="(value, key) in state.jobCompare.second.jobBenefitFlags" class="mt-1"
+                                        :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
@@ -296,11 +290,10 @@
                                     </template>
                                 </div>
                             </td>
-                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                                class="card__table__cell">
+                            <td v-if="device.state.isLarge && state.jobComparable.length >= 3" class="card__table__cell">
                                 <div class="cell__body mt-2 mt-lg-0">
-                                    <template v-for="(value, key) in state.jobCompare.third.jobBenefitFlags"
-                                        class="mt-1" :key="key">
+                                    <template v-for="(value, key) in state.jobCompare.third.jobBenefitFlags" class="mt-1"
+                                        :key="key">
                                         <div v-if="value">
                                             <img src="~/assets/user/job/icon_check_g.svg" />
                                             {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
@@ -337,7 +330,7 @@
     </div>
 </template>
 <script setup>
-const { $filter, $rank } = useNuxtApp()
+const { $filter, $rank, $meta } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
@@ -358,7 +351,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `求職狀態 - 會員中心 - Job Pair`,
+    title: () => `求職狀態 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `求職狀態 - 會員中心 - ${$meta.title}`,
 })
 onMounted(() => {
     initialize()

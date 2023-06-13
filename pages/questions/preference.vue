@@ -36,7 +36,7 @@ export default {
 }
 </script>
 <script setup>
-const { $sweet, $validate } = useNuxtApp()
+const { $sweet, $validate, $meta } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const state = reactive({
@@ -56,7 +56,8 @@ const props = defineProps({
 })
 // hooks
 useSeoMeta({
-    title: () => `求職偏好 - 註冊流程 - Job Pair`,
+    title: () => `求職偏好 - 註冊流程 - ${$meta.title}`,
+    ogTitle: () => `求職偏好 - 註冊流程 - ${$meta.title}`
 })
 onMounted(async () => {
     let questions = []

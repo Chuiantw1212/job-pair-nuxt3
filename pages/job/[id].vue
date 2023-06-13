@@ -180,7 +180,7 @@
 <script setup>
 import placeholderImage from '~/assets/company/company.webp'
 const runTime = useRuntimeConfig()
-const { $emitter, $sweet, $filter } = useNuxtApp()
+const { $emitter, $sweet, $filter, $meta, } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoJob = useRepoJob()
@@ -243,14 +243,21 @@ const browserConfig = computed({
         }
     }
 })
-const currentInstance = getCurrentInstance()
 // hooks
 const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
+const currentInstance = getCurrentInstance()
+const { descriptionRef, skillsRef } = currentInstance.refs
+if (descriptionRef) {
+    descriptionRef.setData(job.description)
+}
+if (skillsRef) {
+    skillsRef.setData(job.skills)
+}
 const { data: location } = await useFetch(`${runTime.public.apiBase}/select/location`, { initialCache: false })
 useSeoMeta({
-    title: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
-    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - Job Pair`,
+    title: () => `${state.job.name} - ${state.job.organizationName} - ${$meta.title}`,
+    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - ${$meta.title}`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
         if (state.job.description) {
@@ -545,15 +552,6 @@ async function initialize() {
         return
     }
     const job = jobResponse.data
-    const { descriptionRef, skillsRef } = currentInstance.refs
-    if (process.client) {
-        if (descriptionRef) {
-            descriptionRef.setData(job.description)
-        }
-        if (skillsRef) {
-            skillsRef.setData(job.skills)
-        }
-    }
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
     const company = companyResponse.data

@@ -123,7 +123,7 @@
 <script setup>
 import { useRouter, } from 'vue-router'
 import { reactive, onMounted, watch, } from 'vue'
-const { $validate, $sweet, } = useNuxtApp()
+const { $validate, $sweet, $meta } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -142,7 +142,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `個人檔案 - 會員中心 - Job Pair`,
+    title: () => `個人檔案 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `個人檔案 - 會員中心 - ${$meta.title}`,
 })
 onMounted(() => {
     initialize()

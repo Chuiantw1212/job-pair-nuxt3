@@ -73,7 +73,7 @@
     </div>
 </template>
 <script setup>
-const { $storageBucket, $validate, $sweet } = useNuxtApp()
+const { $validate, $sweet, $meta } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
@@ -116,7 +116,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `職涯諮詢 - 會員中心 - Job Pair`,
+    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
 })
 onMounted(async () => {
     const service = route.params.service || 'life'

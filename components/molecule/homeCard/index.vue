@@ -51,7 +51,7 @@ const props = defineProps({
     }
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .homeCard {
     position: relative;
     width: fit-content;

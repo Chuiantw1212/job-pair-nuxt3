@@ -40,7 +40,7 @@
     </div>
 </template>
 <script setup>
-const { $sweet, $date } = useNuxtApp()
+const { $sweet, $date, $meta } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -56,7 +56,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `求職偏好 - 會員中心 - Job Pair`,
+    title: () => `求職偏好 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `求職偏好 - 會員中心 - ${$meta.title}`,
 })
 watchEffect(() => {
     const { user } = repoAuth.state
