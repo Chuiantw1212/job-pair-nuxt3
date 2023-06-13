@@ -9,13 +9,13 @@ export default defineNuxtConfig({
         head: {
             title: title,
             meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: description
-                },
+                // {
+                //     hid: 'description',
+                //     name: 'description',
+                //     content: description
+                // },
                 { property: 'og:title', content: title },
-                { property: 'og:description', content: description },
+                // { property: 'og:description', content: description },
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
                 // Open graph protocol

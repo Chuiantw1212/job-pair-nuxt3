@@ -16,14 +16,22 @@
 const { $liff } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const config = useRuntimeConfig()
+const description = 'Job Pair 是專業的媒合平台，專注於助您找到與能力、價值觀相符的工作機會，實現長期價值發揮。透過我們高效的適配功能，輕鬆探索理想職位。立即加入 Job Pair，啟動您的職業生涯。'
 onMounted(async () => {
     await Promise.all([
         repoSelect.getSelectByQuery(),
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
         repoSelect.getQuestions(),
-        // startLiff()
     ])
+})
+useSeoMeta({
+    description: () => {
+        return description
+    },
+    ogDescription: () => {
+        return description
+    }
 })
 async function startLiff() {
     // 调用 console 方法输出日志
