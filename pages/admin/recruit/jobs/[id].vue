@@ -7,9 +7,9 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-            </LazyOrganismChatJdModal>
-            <div class="form__quick">
+            <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+            </LazyOrganismChatJdModal> -->
+            <!-- <div class="form__quick">
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
                     範例：https://www.104.com.tw/job/*
@@ -21,7 +21,7 @@
                     </label>
                     <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
                 </div>
-            </div>
+            </div> -->
             <!-- {{ state.job }} -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
