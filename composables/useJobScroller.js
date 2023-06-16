@@ -61,7 +61,7 @@ export default function setup() {
         }, config)
         // 是使用者時抓取相似度
         if (user && user.id && user.type !== 'admin') {
-            fianalConfig.id = user.id
+            fianalConfig.userId = user.id
         }
         const response = await repoJob.getJobByQuery(fianalConfig)
         if (response.status !== 200) {
