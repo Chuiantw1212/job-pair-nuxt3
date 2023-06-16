@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="closeEditModal()">取消
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--success" @click="closeEditModal()">取消
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple class="footer__button" @click="generateTemplate()">預覽</LazyAtomBtnSimple>
                     </div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="footer__buttonGroup">
-                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--primary" @click="showEditModal()">回上一步
+                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--success" @click="showEditModal()">回上一步
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple class="footer__button" @click="sendInterviewRequest()">送出</LazyAtomBtnSimple>
                     </div>
@@ -422,7 +422,7 @@ function showEditModal() {
 
         .body__ckeditor {
             border-radius: 10px;
-            border: solid 1px #d9d9d9;
+            border: solid 1px #d3d3d3;
             overflow: hidden;
         }
 
@@ -487,7 +487,7 @@ function showEditModal() {
 
                         .timePickerGroup__timePicker {
                             padding: 16px 24px;
-                            border: 1px solid #d9d9d9;
+                            border: 1px solid #d3d3d3;
                             border-radius: 10px;
                             font-size: 16px;
                             font-weight: normal;

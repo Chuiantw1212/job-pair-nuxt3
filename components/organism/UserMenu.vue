@@ -3,13 +3,18 @@
         <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink id="navItem__button" class="navItem__button" to="/jobs">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/jobs">
                         職缺探索
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" to="/user/profile">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user">
                         會員中心
+                    </NuxtLink>
+                </li>
+                <li class="nav-item" @click="emit('collapse')">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/cvgpt">
+                        CVgpt
                     </NuxtLink>
                 </li>
             </template>
@@ -38,12 +43,17 @@
             <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
+            <li class="nav-item">
+                <NuxtLink class="navItem__button" to="/cvgpt">
+                    CVgpt
+                </NuxtLink>
+            </li>
         </template>
     </ul>
 </template>
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
-import { reactive, onMounted, onUnmounted, watch, nextTick, ref, watchEffect, computed } from 'vue'
+import { useRouter, } from 'vue-router'
+import { onMounted, computed } from 'vue'
 const { $emitter } = useNuxtApp()
 const router = useRouter()
 const repoAuth = useRepoAuth()
@@ -86,10 +96,15 @@ function showUserModal() {
 
     .navItem__button {
         color: black;
+        transition: all 0.3s;
 
         &:hover {
             color: #21cc90;
         }
+    }
+
+    .navItem__button--active {
+        color: #21cc90;
     }
 
     .navItem__button--disabled {

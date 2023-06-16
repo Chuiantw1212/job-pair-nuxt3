@@ -7,15 +7,13 @@
             <label class="body__label">
                 <span v-if="modelValue && modelValue.name" class="body__placeholder">{{ modelValue.name }}</span>
                 <span v-else class="body__placeholder">履歷名稱</span>
-                <input v-show="false" class="body__input" :placeholder="placeholder" :disabled="disabled"
-                    autocomplete="off" type="file" accept=".pdf" @change="handleFiles($event)" />
+                <input v-show="false" class="body__input" :placeholder="placeholder" :disabled="disabled" autocomplete="off"
+                    type="file" accept=".pdf" @change="handleFiles($event)" />
             </label>
-            <button v-if="hasPreviewButton" class="body__preview" @click="openResume()">
-                <img class="preview__icon" src="./icon_preview_g.svg" />
+            <button class="body__preview" @click="openResume()">
+                <img class="preview__icon" src="./icon_preview_g.svg" alt="preview" />
             </button>
         </div>
-        <iframe v-if="modelValue && modelValue.buffer" v-show="hasPreview" id="inputGroup__viewer"
-            class="inputGroup__viewer"></iframe>
     </div>
 </template>
 <script>
@@ -55,18 +53,14 @@ export default {
             type: String,
             default: "",
         },
-        hasPreview: {
-            type: Boolean,
-            default: false,
-        },
-        hasPreviewButton: {
-            type: Boolean,
-            default: false,
-        },
         sizeLimit: {
             type: Number,
             default: 0,
         },
+        getFileBuffer: {
+            type: Function,
+            default: function () { }
+        }
     },
     computed: {
         localValue: {
@@ -137,7 +131,14 @@ export default {
             })
         },
         async openResume() {
-            window.open(this.modelValue.url)
+            const { buffer } = this.modelValue
+            let fileBuffer = buffer
+            if (!fileBuffer) {
+                fileBuffer = await this.getFileBuffer(this.modelValue)
+            }
+            const blob = new Blob([fileBuffer], { type: 'application/pdf' })
+            const objectUrl = URL.createObjectURL(blob)
+            window.open(objectUrl, '_blank')
         },
     },
 }
@@ -156,7 +157,7 @@ export default {
 
         .body__label {
             padding: 7px 12px;
-            border: 1px solid #d9d9d9;
+            border: 1px solid #d3d3d3;
             border-radius: 10px;
             width: 100%;
             background-color: white;

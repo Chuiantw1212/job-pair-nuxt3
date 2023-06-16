@@ -11,7 +11,7 @@
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :placeholder="$optionText(categoryKey, items)" class="list__subList"
-                        :arrow="isDesktop ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
+                        :arrow="isLarge ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
                                 <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
@@ -43,8 +43,7 @@
                     </div>
                     <div class="subList__body">
                         <template v-for="(item, index) in list" :key="index">
-                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)"
-                                class="body__item">
+                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
                                 <input v-model="localValue" type="checkbox" :value="item.value"
                                     :disabled="checkItemDisabled(item)" />
                                 <span class="body__item__name">{{ item.text }}</span>
@@ -96,7 +95,7 @@ const props = defineProps({
             return []
         },
     },
-    isDesktop: {
+    isLarge: {
         type: Boolean,
         default: false,
     },
@@ -184,7 +183,7 @@ function initializeData(category) {
     }
     state.fuseInstance = new $Fuse(fuseItems, options)
     nextTick(() => {
-        if (device.state.isDesktop) {
+        if (device.state.isLarge) {
             const [first] = Object.keys(props.categoryMap)
             state.openFlagsTop[first] = true
         }
@@ -201,7 +200,7 @@ function searchOptions() {
         for (let key in state.searchVisible) {
             state.searchVisible[key] = false
         }
-        if (device.state.isDesktop) {
+        if (device.state.isLarge) {
             const [first] = Object.keys(props.categoryMap)
             state.openFlagsTop[first] = true
         }
@@ -269,6 +268,7 @@ function closeOtherItems(categoryKey, newFlag) {
 
             .inputGroup__input {
                 border: none;
+                width: 100%;
 
                 &:focus {
                     outline: none;

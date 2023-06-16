@@ -1,91 +1,87 @@
 <template>
-    <div class="questions">
-        <div class="questions__result">
-            <img class="questions__leftImage" src="~/assets/questions/left.png" />
-            <img class="questions__rightImage" src="~/assets/questions/right.png" />
-            <p class="result__header"></p>
-            <div class="result__final">
-                <div class="final__header">求職偏好已完成！</div>
-                <div class="final__sub">接下來開始編輯個人檔案吧！</div>
-                <div class="final__text">完成個人檔案將大幅提升被企業看到的機會唷</div>
+    <div class="questions__result">
+        <div class="questions__frame">
+            <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
+            <h1 class="frame__title">註冊流程已完成</h1>
+            <div class="frame__textarea">
+                接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
             </div>
-            <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
-            <div class="result__footer">
-                <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
-            </div>
+        </div>
+        <div v-if="state.isSigned" class="result__final">
+            <div class="final__text">
+                已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
+        </div>
+        <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
+        <div class="result__footer">
+            <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
         </div>
     </div>
 </template>
 <script setup>
-const { $sweet, $validate } = useNuxtApp()
-const device = useDevice()
+const repoEvent = useRepoEvent()
 const router = useRouter()
 const repoAuth = useRepoAuth()
-const repoUser = useRepoUser()
-const repoSelect = useRepoSelect()
-const repoJob = useRepoJob()
+const { $meta } = useNuxtApp()
 const state = reactive({
-    filterOpen: {
-        occupationalCategory: false
-    },
-    profile: {}
+    isSigned: false,
 })
 // hooks
-useHead({
-    title: `偏好量表結果 - Job Pair`,
+useSeoMeta({
+    title: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
+    ogTitle: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
 })
-onMounted(async () => {
-    getAnswers()
+onMounted(() => {
+    const eventItemString = sessionStorage.getItem('event')
+    if (eventItemString) {
+        const eventItem = JSON.parse(eventItemString)
+        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.contributor = eventItem.contributor
+    }
 })
+watch(() => repoAuth.state.user, async (newValue, oldValue) => {
+    if (newValue && repoEvent.state.eventId) {
+        setEventInformation()
+    }
+}, { immediate: true })
 // methods
-function getAnswers() {
-    const userString = localStorage.getItem("user")
-    if (!userString || userString === "false") {
+async function setEventInformation() {
+    // Retrieve event information
+    const res = await repoEvent.getEvent({
+        id: repoEvent.state.eventId
+    })
+    if (res.status !== 200) {
         return
     }
-    const user = JSON.parse(userString)
-    state.profile = user
+    state.event = res.data
+    // check signup information
+    const response = await repoEvent.getEventRegistered({
+        eventId: repoEvent.state.eventId
+    })
+    if (response.status !== 200) {
+        return
+    }
+    const mostRecentEvent = response.data[0]
+    if (mostRecentEvent) {
+        state.isSigned = true
+    }
 }
 async function routeToProfile() {
-    await handleSubmit()
     router.push({
         name: 'user-profile'
     })
 }
 async function routeToJobs() {
-    await handleSubmit()
     router.push({
         name: 'jobs'
     })
 }
-async function handleSubmit() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const user = Object.assign({}, repoAuth.state.user, state.profile,)
-    $sweet.loader(true)
-    const postResponse = await repoUser.postUser(user)
-    if (postResponse.status !== 200) {
-        return
-    }
-    const userData = postResponse.data
-    repoAuth.setUser(userData)
-    await repoJob.getJobRecommended()
-    $sweet.loader(false)
-    // 刪除暫存資料
-    localStorage.removeItem("user")
-    window.scrollTo(0, 0)
-}
 </script>
 <style lang="scss">
 .questions__result {
-    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 128px 5vw 200px 5vw;
-    min-height: calc(100vh - 88px);
+    padding: 200px 20px 0 20px;
 
     .questions__leftImage {
         position: absolute;
@@ -99,6 +95,49 @@ async function handleSubmit() {
         right: 0;
         width: 15vw;
         bottom: 0;
+    }
+
+    .questions__frame {
+        padding: 40px 20px 20px;
+        border-radius: 10px;
+        border: solid 1px #5b2714;
+        background-color: #fff;
+        position: relative;
+        margin: 0 auto;
+
+        .frame__image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -90%);
+        }
+
+        .frame__title {
+            font-size: 24px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+            border-bottom: 4px solid #ffd600;
+            width: 144px;
+            margin: auto;
+            white-space: nowrap;
+        }
+
+        .frame__textarea {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: center;
+            color: #332b00;
+        }
     }
 
     .result__header {
@@ -180,5 +219,11 @@ async function handleSubmit() {
     }
 }
 
-@media screen and (min-width: 991px) {}
+@media screen and (min-width:992px) {
+    .questions__result {
+        .questions__frame {
+            min-width: 324px;
+        }
+    }
+}
 </style>

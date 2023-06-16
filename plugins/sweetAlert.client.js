@@ -1,8 +1,12 @@
 import Swal from 'sweetalert2'
+import 'sweetalert2/src/sweetalert2.scss'
 export default defineNuxtPlugin(nuxtApp => {
     return {
         provide: {
             sweet: {
+                fire: async function (swalConfig) {
+                    return Swal.fire(swalConfig)
+                },
                 alert: async function (text = '', config) {
                     const swalConfig = Object.assign({
                         title: '錯誤',
@@ -29,17 +33,18 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
-                succeed: async function (text, config) {
-                    const alertResult = await Swal.fire({
+                succeed: async function (config) {
+                    const mergedConfig = Object.assign({
                         title: "完成",
-                        text,
                         icon: "success",
                         confirmButtonText: '確認',
                         confirmButtonColor: '#5ea88e',
+                        timer: 2000,
                         didOpen: () => {
                             Swal.hideLoading()
                         }
-                    })
+                    }, config)
+                    const alertResult = await Swal.fire(mergedConfig)
                     return alertResult
                 },
                 warning: async (text, config) => {
@@ -57,10 +62,12 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     return Swal.fire(swalConfig)
                 },
-                loader: async function (isOn) {
+                loader: async function (isOn, config = {}) {
                     if (isOn) {
+                        const { title = '載入中', text = '' } = config
                         Swal.fire({
-                            title: '載入中',
+                            title,
+                            text,
                             allowEscapeKey: false,
                             allowOutsideClick: false,
                             showConfirmButton: false,

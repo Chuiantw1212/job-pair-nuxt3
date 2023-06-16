@@ -2,31 +2,35 @@
     <div class="container accountManagement">
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
-                <h4>帳號資訊</h4>
+                <div class="card__headerGroup">
+                    <h4>帳號資訊</h4>
+                    <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
+                </div>
                 <div class="accountManagement__form">
-                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3"></LazyAtomInputText>
+                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
+                    </LazyAtomInputText>
                     <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
                     <!-- <template v-if="!toggleChangePassword">
-                    <form>
-                        <div class="mb-1">密碼變更</div>
-                        <div class="form__password__inputGroup mb-3">
-                            <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
+                        <form>
+                            <div class="mb-1">密碼變更</div>
+                            <div class="form__password__inputGroup mb-3">
+                                <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
+                                </InputPass>
+                                <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
+                            </div>
+                        </form>
+                    </template>
+                    <template v-if="toggleChangePassword">
+                        <form>
+                            <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
+                            <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
                             </InputPass>
-                            <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
-                        </div>
-                    </form>
-                </template>
-                <template v-if="toggleChangePassword">
-                    <form>
-                        <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
-                        <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                        </InputPass>
-                        <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                        </InputPass>
-                        <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
-                    </form>
-                </template> -->
+                            <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
+                            </InputPass>
+                            <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
+                        </form>
+                    </template> -->
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
@@ -44,9 +48,8 @@
     </div>
 </template>
 <script setup>
-import firebase from "firebase/compat/app"
-import { identicon } from 'minidenticons'
-const { $sweet } = useNuxtApp()
+import { getAuth, } from "firebase/auth"
+const { $sweet, $meta } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
@@ -59,8 +62,9 @@ const state = reactive({
     chatIcon: null,
 })
 // hooks
-useHead({
-    title: `帳戶管理 - 招募中心 - Job Pair`
+useSeoMeta({
+    title: () => `帳戶管理 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `帳戶管理 - 招募中心 - ${$meta.title}`,
 })
 watch(() => repoAuth.state.user, (newValue) => {
     if (!newValue) {
@@ -71,26 +75,27 @@ watch(() => repoAuth.state.user, (newValue) => {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
     }
-    setIdenticon()
 }, { immediate: true })
 // methods
-function setIdenticon() {
-    const messageIcon = identicon(state.tempUser.chatName)
-    state.chatIcon = messageIcon
-}
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
-    const user = firebase.auth().currentUser
-    if (!user) {
-        router.push({
-            name: "admin",
-        })
+    let user = null
+    try {
+        const auth = getAuth()
+        user = auth().currentUser
+    } finally {
+        if (!user) {
+            router.push({
+                name: "admin",
+            })
+        }
     }
 }
 async function handleCredential() {
-    const user = firebase.auth().currentUser
-    const credential = firebase.auth.EmailAuthProvider.credential(user.email, state.pass)
+    const auth = getAuth()
+    const user = auth().currentUser
+    const credential = auth.EmailAuthProvider.credential(user.email, state.pass)
     try {
         const authResult = await user.reauthenticateWithCredential(credential)
         if (authResult.user.refreshToken) {
@@ -114,14 +119,17 @@ async function submitNewPass() {
         state.newPass = null
         state.newPassAgain = null
         state.toggleChangePassword = false
-        $sweet.succeed('修改密碼完成')
+        $sweet.succeed({
+            text: '修改密碼完成',
+        })
     } catch (error) {
         // 更新失敗
         $sweet.alert(error.message)
     }
 }
 async function submitProfile() {
-    const user = firebase.auth().currentUser
+    const auth = getAuth()
+    const user = auth().currentUser
     try {
         await user.updateProfile({
             name: state.tempUser.name,
@@ -143,6 +151,11 @@ async function submitProfile() {
         background-color: #fafafa;
         padding: 45px 64px;
         border-radius: 10px;
+
+        .card__headerGroup {
+            display: flex;
+            gap: 8px;
+        }
     }
 
     .accountManagement__form {

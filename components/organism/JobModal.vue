@@ -15,12 +15,12 @@
                     <template v-if="repoAuth.state.user.resumes && repoAuth.state.user.resumes.length === 1">
                         <div class="body__resume">
                             <LazyAtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
-                                :disabled="true" class="resume__input" :hasPreviewButton="true"></LazyAtomInputResume>
+                                :disabled="true" class="resume__input" :getFileBuffer="getFileBuffer"></LazyAtomInputResume>
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
-                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
-                        :required="true" ref="resume" class="mt-3 mb-3">
+                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'" :required="true"
+                        ref="resume" class="mt-3 mb-3">
                     </LazyAtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
                         <div class="content__portfolio__header mt-3">作品集(雲端檔案請開啟瀏覽權限)</div>
@@ -59,6 +59,7 @@
 const emit = defineEmits(['applied'])
 const { $bootstrap, $uuid4, $emitter, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
+const repoUser = useRepoUser()
 const repoJobApplication = useRepoJobApplication()
 const state = reactive({
     id: null,
@@ -76,7 +77,7 @@ const state = reactive({
 const props = defineProps({
     modelValue: {
         // job
-        type: Object,
+        type: [Object, Boolean],
         default: function () {
             return {}
         },
@@ -102,6 +103,19 @@ onMounted(() => {
 })
 // methods
 const coverLetterRef = ref(null)
+async function getFileBuffer(item = {}) {
+    const { name = '' } = item
+    $sweet.loader(true)
+    const res = await repoUser.getUserResume({
+        fileName: name
+    })
+    $sweet.loader(false)
+    if (res.status !== 200) {
+        return
+    }
+    const buffer = res.data
+    return buffer
+}
 function setApplication() {
     const { user } = repoAuth.state
     // 拉取資料
@@ -157,31 +171,6 @@ function closeModal() {
 }
 </script>
 <style lang="scss" scoped>
-.modal__button {
-    width: 182px;
-    height: 48px;
-    background-color: white;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    border: 1px solid #1f1f1f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-        margin-right: 8px;
-    }
-
-    &:hover {
-        background-color: #29b0ab;
-        color: white;
-
-        border: none svg {
-            color: white;
-        }
-    }
-}
-
 .modal-content {
     border-radius: 10px;
     line-height: 1;
@@ -193,43 +182,12 @@ function closeModal() {
         }
     }
 
-    .body__subHeader {
-        font-size: 16px;
-        line-height: 1.5;
-        color: #000;
-        margin-top: 20px;
-    }
-
     .body__resume {
         display: flex;
-        // align-items: center;
         margin-top: 8px;
-
-        .resume__header {
-            font-size: 16px;
-        }
-
-        .resume__inputGroup {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
 
         .resume__input {
             width: 100%;
-        }
-
-        .resume__preview {
-            background-color: inherit;
-            border: none;
-            padding: 0;
-
-            .preview__icon {
-                margin: auto;
-                display: block;
-                width: 32px;
-                height: 32px;
-            }
         }
     }
 
@@ -245,29 +203,13 @@ function closeModal() {
 
     .content__portfolio__header {
         font-size: 18px;
+        font-weight: bold;
     }
 
     .modal__footer {
         display: flex;
         justify-content: space-between;
         gap: 12px;
-
-        .footer__button {
-            padding: 12px 16px;
-            color: #29b0ab;
-            border-radius: 10px;
-            white-space: nowrap;
-            border: none;
-            width: 100%;
-            border: 1px solid #29b0ab;
-            background-color: white;
-            transition: all 0.3s;
-
-            &:hover {
-                background-color: #29b0ab;
-                color: white;
-            }
-        }
     }
 }
 

@@ -6,11 +6,11 @@
             </span>
         </div>
         <label class="inputGroup__label">
-            <input v-if="!disabled" v-model="localValue" class="label__input" :type="type" autocomplete="off"
-                :step="step" :min="min ? min : undefined" :max="max ? max : undefined" @keypress="checkIsNumber($event)"
-                @blur="formatNumber()" />
-            <input v-else :disabled="true" :class="{ 'label__input--disabled': disabled }" class="label__input"
-                :type="type" :value="localValue" :readonly="value" />
+            <input v-if="!disabled" v-model="localValue" class="label__input" :type="type" pattern="\d*" inputmode="numeric"
+                autocomplete="off" :step="step" :min="min ? min : undefined" :max="max ? max : undefined"
+                @keypress="checkIsNumber($event)" @blur="formatNumber()" />
+            <input v-else :disabled="true" :class="{ 'label__input--disabled': disabled }" class="label__input" :type="type"
+                :value="localValue" :readonly="value" />
         </label>
     </div>
 </template>
@@ -158,53 +158,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    .inputGroup__nameGroup {
-        font-size: 16px;
-        color: #1f1f1f;
-        margin-bottom: 4px;
-    }
-
-    .inputGroup__label {
-        padding: 7px 12px;
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        width: 100%;
-        background-color: white;
-
-        .label__input {
-            border: none;
-            width: 100%;
-
-            ::-webkit-input-placeholder {
-                /* Edge */
-                font-size: 14px;
-                color: #999;
-            }
-
-            :-ms-input-placeholder {
-                /* Internet Explorer 10-11 */
-                font-size: 14px;
-                color: #999;
-            }
-
-            ::placeholder {
-                font-size: 14px;
-                color: #999;
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    .inputGroup__label--disabled {
-        background-color: rgba(239, 239, 239);
-
-        .label__input {
-            background-color: rgba(239, 239, 239);
-        }
-    }
-}
+@import './inputGroup.scss';
 </style>

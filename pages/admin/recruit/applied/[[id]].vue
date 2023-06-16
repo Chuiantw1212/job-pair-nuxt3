@@ -64,8 +64,7 @@
         <div class="appliedList__form">
             <div class="form__selectGroup">
                 <LazyAtomInputSelect v-model="state.searchForm.jobIdentifier" placeholder="職缺選擇"
-                    :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'"
-                    :itemText="'name'">
+                    :items="getCompanyJobItems()" @change="resetApplicantId()" :itemValue="'identifier'" :itemText="'name'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-model="state.applicantId" placeholder="人選選擇" :items="getApplicantList()"
                     :itemText="'name'" :itemValue="'applicantId'" @change="replaceParamsId()">
@@ -75,7 +74,7 @@
             </div>
         </div>
         <ul v-if="getFilteredItems().length" class="appliedList__list">
-            <li v-for="(item, index) in  getFilteredItems()" :key="index">
+            <li v-for="(item, index) in getFilteredItems()" :key="index">
                 <div class="list__item__content">
                     <div class="content__header">
                         <div>
@@ -138,11 +137,16 @@
                                 <div v-if="item.applyFlow === 'notified'" class="footer__date">
                                     邀約時間：{{ getUpdatedDate(item) }}
                                 </div>
-                                <a v-if="item.resume && item.resume.url" class="footer__preview" :href="item.resume.url"
-                                    target="_blank">
-                                    <img src="~/assets/admin/icon_link.svg">
-                                    查看履歷
-                                </a>
+                                <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
+                                    @click="downloadResume(item)">
+                                    <img class="preview__icon" src="~/assets/admin/download.svg" alt="download" />
+                                    下載履歷
+                                </AtomBtnSimple>
+                                <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
+                                    @click="previewResume(item)">
+                                    <img class="preview__icon" src="~/assets/admin/icon_link.svg" alt="preview" />
+                                    預覽履歷
+                                </AtomBtnSimple>
                             </div>
                         </div>
                         <hr>
@@ -150,8 +154,8 @@
                             <LazyOrganismScheduleModal v-if="item.applyFlow === 'applied'"
                                 v-model="state.applications[index]" @update:modelValue="updateChart()">
                             </LazyOrganismScheduleModal>
-                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'"
-                                v-model="state.applications[index]" @update:modelValue="updateChart()">
+                            <LazyOrganismRejectModal v-if="item.applyFlow === 'applied'" v-model="state.applications[index]"
+                                @update:modelValue="updateChart()">
                                 婉拒
                             </LazyOrganismRejectModal>
                             <LazyAtomBtnSimple v-if="item.applyFlow === 'notified'" disabled>已通知面試
@@ -170,10 +174,12 @@
     </div>
 </template>
 <script setup>
-const { $time, $optionText, $rank, $uuid4, $sweet } = useNuxtApp()
+const { $time, $optionText, $rank, $sweet, $meta } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
+const runTime = useRuntimeConfig()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
+const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
 const router = useRouter()
@@ -239,8 +245,9 @@ const props = defineProps({
     }
 })
 // hooks
-useHead({
-    title: `應徵管理 - 招募中心 - Job Pair`
+useSeoMeta({
+    title: () => `應徵管理 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `應徵管理 - 招募中心 - ${$meta.title}`,
 })
 onMounted(async () => {
     const { id } = route.params
@@ -268,6 +275,43 @@ watch(() => state.searchForm, (newValue, oldValue) => {
     })()
 }, { deep: true })
 // methods
+async function getFileUrl(item = {}) {
+    const { resume = {}, applicantId = '', jobId = '', } = item
+    const { url = '' } = resume
+    if (!url) {
+        return
+    }
+    const fileName = url.split('/').slice(-1)[0]
+    $sweet.loader(true)
+    const res = await repoJob.getJobApplicantResume({
+        jobId,
+        applicantId,
+        fileName,
+    })
+    $sweet.loader(false)
+    if (res.status !== 200) {
+        return
+    }
+    const buffer = res.data
+    const blob = new Blob([buffer], { type: 'application/pdf' })
+    const objectUrl = URL.createObjectURL(blob)
+    return {
+        fileName,
+        objectUrl
+    }
+}
+async function downloadResume(item = {}) {
+    const { objectUrl, fileName } = await getFileUrl(item)
+    const anchorElement = document.createElement('a');
+    anchorElement.href = objectUrl
+    anchorElement.download = fileName
+    anchorElement.style.visibility = 'hidden'
+    anchorElement.click()
+}
+async function previewResume(item = {}) {
+    const { objectUrl } = await getFileUrl(item)
+    window.open(objectUrl, "_blank")
+}
 function resetApplicantId() {
     state.applicantId = ''
 }
@@ -493,7 +537,6 @@ async function initializeSearch() {
     .appliedList__chart {
         border-radius: 10px;
         background-color: #fff;
-        margin-top: 20px;
         padding: 20px;
 
         .chart__header {
@@ -701,8 +744,8 @@ async function initializeSearch() {
 
                 .profile__footer {
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
+                    gap: 8px;
 
                     .footer__date {
                         font-size: 16px;
@@ -723,6 +766,12 @@ async function initializeSearch() {
                         display: flex;
                         align-items: center;
                         gap: 8px;
+                        width: fit-content;
+
+                        .preview__icon {
+                            width: 16px;
+                            height: 16px;
+                        }
                     }
                 }
             }

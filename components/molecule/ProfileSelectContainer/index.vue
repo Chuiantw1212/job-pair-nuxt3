@@ -1,14 +1,14 @@
 <template>
     <div class="inputDropdownContainer" ref="input">
         <div class="container__nameGroup"><span v-if="required" class="text-danger">* </span>{{ name }}
-            <span v-if="max">(最多{{ max }}個)</span>
+            <span v-if="max">(最多{{ max }}項)</span>
         </div>
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
             <div class="inputDropdownContainer__trigger__header">
                 <slot name="header"></slot>
             </div>
-            <img v-if="!disabled" src="./icon_Down.svg" class="inputDropdownContainer__icon">
+            <img v-if="!disabled" src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
         </button>
         <div class="inputDropdownContainer__layer"
             :class="{ 'inputDropdownContainer__layer--flat': flat, 'inputDropdownContainer__layer--isOn': modelValue }">
@@ -100,6 +100,9 @@ export default {
 
     .container__nameGroup {
         margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
     }
 
     .inputDropdownContainer__trigger {
@@ -138,7 +141,7 @@ export default {
         z-index: 110;
         border: none;
         margin-top: 4px;
-        min-width: 100%;
+        width: 100%;
     }
 
     .inputDropdownContainer__layer--flat {
@@ -153,23 +156,10 @@ export default {
 
 @media screen and (min-width: 992px) {
     .inputDropdownContainer {
-        .inputDropdownContainer__trigger {
-            // padding: 13px 20px;
-            // border-radius: 5px;
-            // // background-color: #eee;
-            // display: flex;
-            // justify-items: center;
-            // justify-content: space-between;
-            // border: none;
-            // width: 100%;
-
-            .placeholder__text {
-                font-size: 20px;
-            }
-        }
 
         .inputDropdownContainer__layer {
-            // width: 420px;
+            min-width: 100%;
+            width: unset;
         }
     }
 }

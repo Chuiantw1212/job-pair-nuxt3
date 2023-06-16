@@ -1,54 +1,33 @@
 <template>
     <div class="inputResumes">
         <h1 class="resume__header"><span v-if="required" class="text-danger">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
-        <div v-if="modelValue.slice(0, 3).length" class="resumes__previewGroup">
-            <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(0, 3)">
-                <div v-if="checkIsImage(item)">
-                    <img :src="item.url" class="previewGroup__item__viewer">
-                </div>
-                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
-                <div class="previewGroup__item__body">
-                    <div v-if="item.name" class="previewGroup__item__body__item">
-                        <div class="item__name">
-                            {{ item.name }}
+        <template v-for="number in Math.ceil(modelValue.length / 3)">
+            <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
+                class="resumes__previewGroup">
+                <div class="previewGroup__item" v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
+                    :key="`row${number}col${index}`">
+                    <!-- <div v-if="checkIsImage(item)">
+                        <img :src="item.url" class="previewGroup__item__viewer">
+                    </div> -->
+                    <div class="previewGroup__item__body">
+                        <div v-if="item.name" class="previewGroup__item__body__item">
+                            <div class="item__name">
+                                {{ item.name }}
+                            </div>
+                            <button class="doc__btn" @click="deleteResume(number, index)">
+                                <img class="btn__icon" src="./icon_delete_g.svg" />
+                            </button>
                         </div>
-                        <button class="doc__btn" @click="deleteResume(index)">
-                            <img class="btn__icon" src="./icon_delete_g.svg" />
-                        </button>
-                    </div>
-                    <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $time(item.date) }}
-                        <button class="doc__btn" @click="openResume(item)">
-                            <img class="btn__icon" src="./icon_preview_g.svg" />
-                        </button>
+                        <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
+                            {{ $filter.time(item.date) }}
+                            <button class="doc__btn" @click="openFileInTab(item)">
+                                <img class="btn__icon" src="./icon_preview_g.svg" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="modelValue.slice(3, 6).length" class="resumes__previewGroup">
-            <div class="previewGroup__item" v-for="(item, index) in modelValue.slice(3, 6)">
-                <div v-if="checkIsImage(item)">
-                    <img :src="item.url" class="previewGroup__item__viewer">
-                </div>
-                <iframe v-else-if="item.url" class="previewGroup__item__viewer" :src="item.url"></iframe>
-                <div class="previewGroup__item__body">
-                    <div v-if="item.name" class="previewGroup__item__body__item">
-                        <div class="item__name">
-                            {{ item.name }}
-                        </div>
-                        <button class="doc__btn" @click="deleteResume(index)">
-                            <img class="btn__icon" src="./icon_delete_g.svg" />
-                        </button>
-                    </div>
-                    <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                        {{ $time(item.date) }}
-                        <button class="doc__btn" @click="openResume(item)">
-                            <img class="btn__icon" src="./icon_preview_g.svg" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </template>
         <label class="resume__footer" :class="{ 'resume__footer--disabled': isMaxLimit }">
             <div class="footer__btn">
                 <img v-if="isMaxLimit" class="btn__icon" src="./addDisabled.svg" />
@@ -91,6 +70,10 @@ export default {
         max: {
             type: Number,
             default: 0
+        },
+        getFileBuffer: {
+            type: Function,
+            default: function () { }
         }
     },
     computed: {
@@ -130,9 +113,10 @@ export default {
                 }
                 reader.onerror = (error) => reject(error)
             })
-            const { lastModified, name, size, type } = file
+            const { name, size, type } = file
+            console.log('type', type)
             const buffer = Buffer.from(arrayBuffer)
-            const newResume = {
+            const newFile = {
                 url: URL.createObjectURL(file),
                 name,
                 size,
@@ -140,21 +124,29 @@ export default {
                 type,
                 date: new Date().toISOString()
             }
-            const sameResumeIndex = this.localValue.findIndex(item => {
-                return item.name === newResume.name
+            const sameFileIndex = this.localValue.findIndex(item => {
+                return item.name === newFile.name
             })
-            const newResumes = [...this.localValue]
-            if (sameResumeIndex !== -1) {
-                newResumes[sameResumeIndex] = newResume
+            const newFiles = [...this.localValue]
+            if (sameFileIndex !== -1) {
+                newFiles[sameFileIndex] = newFile
             } else {
-                newResumes.push(newResume)
+                newFiles.push(newFile)
             }
-            this.$emit("update:modelValue", newResumes)
+            this.$emit("update:modelValue", newFiles)
         },
-        async openResume(item) {
-            window.open(item.url)
+        async openFileInTab(item) {
+            const { buffer, type = 'application/pdf' } = item
+            let fileBuffer = buffer
+            if (!fileBuffer) {
+                fileBuffer = await this.getFileBuffer(item)
+            }
+            const blob = new Blob([fileBuffer], { type })
+            const objectUrl = URL.createObjectURL(blob)
+            window.open(objectUrl, '_blank')
         },
-        async deleteResume(index) {
+        async deleteResume(row = 0, col = 0) {
+            const index = (row - 1) * 3 + col
             this.localValue.splice(index, 1)
         },
     }
@@ -163,8 +155,9 @@ export default {
 <style lang="scss" scoped>
 .inputResumes {
     .resume__header {
-        font-size: 16px;
+        font-size: 18px;
         margin-bottom: 4px;
+        font-weight: bold;
     }
 
     .resumes__previewGroup {
@@ -263,10 +256,6 @@ export default {
 
 @media screen and (min-width:992px) {
     .inputResumes {
-        .resume__header {
-            font-size: 16px;
-        }
-
         .resumes__previewGroup {
             display: flex;
             flex-direction: row;

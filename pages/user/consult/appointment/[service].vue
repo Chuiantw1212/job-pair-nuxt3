@@ -9,9 +9,9 @@
                     <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.appointmentForm.service"
                         name="預約服務" :items="repoSelect.state.selectByQueryRes.consultService" @change="replaceRoute()"
                         class="details__dropdown" required></LazyAtomInputSelect>
-                    <LazyAtomInputTextarea v-model="state.appointmentForm.question" name="諮詢提問" class="mt-2"
+                    <LazyAtomInputCkeditor v-model="state.appointmentForm.question" name="諮詢提問" :toolbar="[]" class="mt-2"
                         placeholder="請詳述你目前的職涯困擾" required>
-                    </LazyAtomInputTextarea>
+                    </LazyAtomInputCkeditor>
                 </div>
             </template>
         </LazyMoleculeAppointmentCard>
@@ -37,7 +37,6 @@
                                 </div>
                             </div>
                             <div class="appointment__consultant__body">
-                                <div class="body__header">關於我</div>
                                 <div class="body__text">
                                     我們將針對您的經歷，安排最適合的諮詢師。
                                 </div>
@@ -48,7 +47,7 @@
                         </template>
                         <template v-else>
                             <div class="appointment__consultant__header">
-                                <img class="appointment__consultant__image" :src="getEnvImage(consultant.name)"
+                                <img v-if="consultant.image" class="appointment__consultant__image" :src="consultant.image"
                                     onerror="this.style.display = 'none'" />
                                 <div class="appointment__consultant__name">
                                     {{ consultant.name }}
@@ -56,8 +55,7 @@
                             </div>
                             <div class="appointment__consultant__body">
                                 <div class="body__header">關於我</div>
-                                <div class="body__text">
-                                    {{ consultant.descLong }}
+                                <div class="body__text" v-html="consultant.descLong">
                                 </div>
                             </div>
                             <LazyMoleculeFeedbackList v-model="consultant.feedbacks"></LazyMoleculeFeedbackList>
@@ -75,7 +73,7 @@
     </div>
 </template>
 <script setup>
-const { $storageBucket, $validate, $sweet } = useNuxtApp()
+const { $validate, $sweet, $meta } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
@@ -117,15 +115,16 @@ const state = reactive({
     },
 })
 // hooks
-useHead({
-    title: `職涯諮詢 - 會員中心 - Job Pair`,
+useSeoMeta({
+    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
 })
 onMounted(async () => {
     const service = route.params.service || 'life'
     state.appointmentForm.service = service
-    $sweet.loader(true)
+    // $sweet.loader(true)
     await loadConsultants()
-    $sweet.loader(false)
+    // $sweet.loader(false)
 })
 // methods
 async function loadConsultants() {
@@ -134,11 +133,12 @@ async function loadConsultants() {
         return
     }
     // 建構預設諮詢師
+    const validItems = response.data.filter(item => !!item.email)
     const recommendConsultant = {
         name: "為您安排",
         id: "recommend",
     }
-    const shuffled = shuffle(response.data)
+    const shuffled = shuffle(validItems)
     const consultants = [recommendConsultant, ...shuffled]
     const allFeedBacks = []
     consultants.forEach(consultant => {
@@ -163,9 +163,6 @@ function switchConsultant(consultant) {
         time: {},
     })
 }
-function getEnvImage(id) {
-    return `https://storage.googleapis.com/${$storageBucket}/consultant/${id}/photo.webp`
-}
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var rand = Math.floor(Math.random() * (i + 1))
@@ -181,6 +178,9 @@ async function submitAppointment() {
     state.appointmentForm.userId = repoAuth.state.user.id
     const VITE_APP_ECPAY_AMOUNT = `${config.public.VITE_APP_ECPAY_AMOUNT}`
     state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
+    if (repoAuth.state?.user?.email === 'chuiantw1212@gmail.com') {
+        state.appointmentForm.amount = 5
+    }
     const response = await repoConsult.postConsultAppointment(state.appointmentForm)
     if (response.status !== 200) {
         state.consultants.forEach(item => {
@@ -266,6 +266,7 @@ async function submitAppointment() {
                 letter-spacing: normal;
                 text-align: left;
                 color: #333;
+                margin-top: 10px;
             }
         }
 

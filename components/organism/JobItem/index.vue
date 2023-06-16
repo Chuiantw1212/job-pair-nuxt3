@@ -4,7 +4,6 @@
             <div v-if="modelValue.image" class="item__logo" :style="{ 'background-image': `url(${modelValue.image})` }">
             </div>
             <div v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
-
             </div>
         </div>
         <div class="item__body">
@@ -12,8 +11,12 @@
                 {{ modelValue.name }}
             </NuxtLink>
             <NuxtLink class="body__company" :to="`/company/${modelValue.organizationId}`">
-                <img class="company__logo d-lg-none" :src="modelValue.image" onerror="this.style.display = 'none'"
-                    alt="logo" />
+                <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
+                     onerror="this.style.display = 'none'"
+                     alt="logo" />
+                <img v-else class="company__logo d-lg-none" :src="defaultLogo"
+                     onerror="this.style.display = 'none'"
+                     alt="logo" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
             <div class="body__main">
@@ -23,31 +26,31 @@
                         <div class="label__textGroup">
                             <span v-for="(item, index) in modelValue.employmentType" class="label__text">
                                 {{ $optionText(item,
-                                        repoSelect.state.selectByQueryRes?.employmentType)
-                                }}·
+        repoSelect.state.selectByQueryRes?.employmentType)
+}}·
                             </span>
                             <span class="label__text">
                                 {{ $optionText(modelValue.responsibilities,
-                                        repoSelect.state.selectByQueryRes?.responsibilities)
-                                }}
+        repoSelect.state.selectByQueryRes?.responsibilities)
+}}
                             </span>
                         </div>
                     </div>
                     <div v-if="getLocationText()" class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="location" />
                         {{
-                                getLocationText()
-                        }}
+        getLocationText()
+}}
                     </div>
                     <div class="main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
-                        {{ $salary(modelValue) }}
+                        {{ $filter.salary(modelValue) }}
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
                         <span>{{ $optionText(modelValue.jobLocationType,
-                                repoSelect.state.selectByQueryRes?.jobLocationType)
-                        }}</span>
+        repoSelect.state.selectByQueryRes?.jobLocationType)
+}}</span>
                     </div>
                     <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" alt="category" />
@@ -73,7 +76,7 @@ export default {
 <script setup>
 import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
-const { $optionText, $salary } = useNuxtApp()
+const { $optionText, $filter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({

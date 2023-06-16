@@ -6,17 +6,17 @@
             <span v-if="hint">({{ hint }})</span>
         </div>
         <label class="inputGroup__label">
-            <textarea v-if="disabled" class="label__input label__input--disabled label__input--textarea "
-                :disabled="true" :value="_value" :rows="rows" />
-            <textarea v-else class="label__input label__input--textarea" v-model="_value" :rows="rows"
-                :placeholder="placeholder" :data-required="required" :data-name="name" :message="message"
-                autocomplete="off" @keypress="$emit('keypress', $event)" @blur="$emit('blur', $event)" />
+            <textarea v-if="disabled" class="label__input label__input--disabled" :disabled="true"
+                :value="_value" :rows="rows" />
+            <textarea v-else class="label__input" v-model="_value" :rows="rows"
+                :placeholder="placeholder" :data-required="required" :data-name="name" :message="message" autocomplete="off"
+                @keypress="$emit('keypress', $event)" @blur="$emit('blur', $event)" />
         </label>
     </div>
 </template>
 <script>
 export default {
-    name: 'textarea',
+    name: 'customTextarea',
     data: function () {
         return this.newData()
     },
@@ -82,19 +82,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    font-size: 18px;
-
-    .inputGroup__label {
-        width: 100%;
-        margin-top: 10px;
-
-        .label__input--textarea {
-            padding: 12px 16px;
-            width: 100%;
-            border: 1px solid #d9d9d9;
-            border-radius: 10px;
-        }
-    }
-}
+@import './inputGroup.scss';
 </style>

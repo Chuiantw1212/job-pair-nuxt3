@@ -82,7 +82,7 @@
     </div>
 </template>
 <script setup>
-const { $filter } = useNuxtApp()
+const { $filter, $meta } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
@@ -128,8 +128,9 @@ const props = defineProps({
     }
 })
 // hooks
-useHead({
-    title: `潛在人選 - 招募中心 - Job Pair`
+useSeoMeta({
+    title: () => `潛在人選 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `潛在人選 - 招募中心 - ${$meta.title}`,
 })
 watch(() => state.searchForm, () => {
     const { companyJobsRes } = repoCompany.state
@@ -212,8 +213,8 @@ async function initializeSearch() {
         return
     }
     // 依照適配度排序
-    const results = await repoJob.getJobProspect(state.searchForm)
     state.applications = []
+    const results = await repoJob.getJobProspect(state.searchForm)
     const items = [...results.data,]
     items.sort((a, b) => {
         return b.similarity - a.similarity
@@ -253,33 +254,6 @@ async function initializeSearch() {
             border-radius: 10px;
             background-color: #fff;
             padding: 20px;
-
-            .item__content__body {
-                // display: flex;
-                // gap: 40px;
-                // margin-top: 20px;
-            }
-
-            .content__header {
-                font-size: 16px;
-                font-weight: bold;
-                color: #333;
-                display: flex;
-                align-items: center;
-                border: none;
-                background-color: inherit;
-
-                .header__span {
-                    font-size: 16px;
-                    font-weight: normal;
-                    color: #a9a9a9;
-                }
-
-                .header__icon {
-                    display: block;
-                    margin-left: 8px;
-                }
-            }
 
             .content__profile {
                 border-radius: 10px;

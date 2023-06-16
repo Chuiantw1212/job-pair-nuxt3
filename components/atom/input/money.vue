@@ -7,8 +7,8 @@
             </span>
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-model="shownValue" class="label__input" :type="type" autocomplete="off"
-                @focus="handleFocus($event)" @blur="handleBlur($event)" :placeholder="placeholder" />
+            <input v-model="shownValue" class="label__input" :type="type" autocomplete="off" @focus="handleFocus($event)"
+                @blur="handleBlur($event)" :placeholder="placeholder" />
             <input v-show="false" v-model="localValue" :data-required="required" :data-name="name" :type="type"
                 autocomplete="off" />
         </label>
@@ -189,53 +189,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    .inputGroup__nameGroup {
-        font-size: 16px;
-        color: #1f1f1f;
-        margin-bottom: 4px;
-    }
-
-    .inputGroup__label {
-        padding: 7px 12px;
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        width: 100%;
-        background-color: white;
-
-        .label__input {
-            border: none;
-            width: 100%;
-
-            ::-webkit-input-placeholder {
-                /* Edge */
-                font-size: 14px;
-                color: #999;
-            }
-
-            :-ms-input-placeholder {
-                /* Internet Explorer 10-11 */
-                font-size: 14px;
-                color: #999;
-            }
-
-            ::placeholder {
-                font-size: 14px;
-                color: #999;
-            }
-
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    .inputGroup__label--disabled {
-        background-color: rgba(239, 239, 239);
-
-        .label__input {
-            background-color: rgba(239, 239, 239);
-        }
-    }
-}
+@import './inputGroup.scss';
 </style>

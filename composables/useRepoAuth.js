@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
 import { getAuth, } from "firebase/auth"
 export default defineStore('auth', () => {
-    const axios = useAxios()
+    const jobPairApi = useJobPairApi()
     const repoJobApplication = useRepoJobApplication()
     const state = reactive({
         user: null,
         company: null,
-        isLogginIn: false
+        isLogginIn: false,
     })
     async function postSignin(data) {
         if (state.isLogginIn) {
             return
         }
         state.isLogginIn = true
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/auth/signIn`,
             data,
@@ -22,7 +22,7 @@ export default defineStore('auth', () => {
         return response
     }
     async function postVerificationEmail(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'post',
             url: `/auth/verificationEmail`,
             data
@@ -30,7 +30,7 @@ export default defineStore('auth', () => {
         return response
     }
     async function getReauthResult(data) {
-        const response = await axios.request({
+        const response = await jobPairApi.request({
             method: 'get',
             url: `/auth/password`,
             data
@@ -52,6 +52,7 @@ export default defineStore('auth', () => {
         }
     }
     function setUser(user) {
+        // 在多數程式碼，一旦user非null就視為登入，故這邊不可更動
         state.user = user
     }
     function setCompany(company) {

@@ -83,7 +83,7 @@
                 </div>
             </template>
         </LazyMoleculeConsultCard>
-        <div v-if="device.state.isDesktop" class="consult__themeDesktop">
+        <div v-if="device.state.isLarge" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
                     <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />
@@ -275,7 +275,7 @@
 </template>
 <script setup>
 import { reactive, onMounted, } from 'vue'
-const { $time, } = useNuxtApp()
+const { $time, $meta } = useNuxtApp()
 const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
@@ -287,8 +287,9 @@ const state = reactive({
     activeTab: 'life'
 })
 // hooks
-useHead({
-    title: `職涯諮詢 - 會員中心 - Job Pair`,
+useSeoMeta({
+    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
 })
 onMounted(async () => {
     // console.log('??');
@@ -317,8 +318,8 @@ watch(() => repoAuth.state.user, async (user) => {
             userId: user.id,
             dateMin: isoString,
         })
-        const recordsWithEcpay = recordRes.data.filter(item => !!item.RtnCode)
-        state.records = recordsWithEcpay
+        // 如果有RtnCode代表有從綠界收到付款回應
+        state.records = recordRes.data
     }
 }, { immediate: true })
 // methods

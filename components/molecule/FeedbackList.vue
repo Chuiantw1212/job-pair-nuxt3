@@ -14,7 +14,7 @@
                                 <div class="content__name">{{ feedback.name }}</div>
                                 <div class="content__to">諮詢師：{{ feedback.to }}</div>
                                 <div class="content__desc">
-                                    {{ feedback.desc }}
+                                    <div v-html="feedback.desc"></div>
                                 </div>
                                 <button class="content__openModal" @click="showFeedback(feedback)">詳全文</button>
                             </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="content__desc">
-                                {{ state.modalFeedback.desc }}
+                                <div v-html="state.modalFeedback.desc"></div>
                             </div>
                         </div>
                     </div>
@@ -109,6 +109,7 @@ function mountGlideInstance() {
     $requestSelector(`#glide${state.id}`, (element) => {
         nextTick(() => {
             const feedbackGlideInstance = new $Glide.Default(element, {
+                type: 'carousel',
                 gap: 10,
                 rewind: true,
                 bound: true,
@@ -150,19 +151,13 @@ function getSlicedDesc(desc = "") {
     position: relative;
     border-top: 1px solid #c4c4c4;
 
-    .feedback__header {
-        font-size: 18px;
-        font-weight: bold;
-        line-height: 1.2;
-        letter-spacing: normal;
-        text-align: left;
-        color: #333;
-        padding: 20px;
-    }
-
     .feedback__list {
-        padding: 0 20px;
-        margin-top: 20px;
+        margin: 20px;
+
+        .glide__arrow {
+            color: black;
+            background-color: white;
+        }
 
         .feedback__list__feedback {
             border-radius: 10px;

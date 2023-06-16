@@ -7,13 +7,13 @@
                 <div class="quick__desc">
                     在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                     <br>
-                    範例：https://www.104.com.tw/companyInfo/*,
-                    https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*
+                    範例：www.104.com.tw/companyInfo/*,
+                    www.yourator.co/companies/*
                 </div>
                 <div class="quick__inputGroup">
                     <label class="inputGroup__label">
                         <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="https://www.104.com.tw/companyInfo/*, https://www.yourator.co/companies/*, https://www.cakeresume.com/companies/*" />
+                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
                     </label>
                     <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
                 </div>
@@ -26,8 +26,7 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
-                            class="mb-2">
+                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
                         </LazyAtomInputPhotoSingle>
                         <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
                             placeholder="請輸入企業法人名稱">
@@ -48,11 +47,14 @@
                             </template>
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
-                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
-                                    :max="5" :isDesktop="device.state.isDesktop" required name="產業類別">
+                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
+                                    :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
+                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                            required>
+                        </LazyAtomInputText>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
@@ -60,25 +62,24 @@
                                 @change="state.companyInfo.addressLocality = ''" class="mb-2">
                             </LazyAtomInputSelect>
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
-                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2"
-                                placeholder="請選擇鄉鎮市區"
+                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2" placeholder="請選擇鄉鎮市區"
                                 :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
                             </LazyAtomInputSelect>
                             <LazyAtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
                                 placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
                             </LazyAtomInputText>
                         </div>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)"
-                            class="mb-2" required>
-                        </LazyAtomInputText>
+                        <!-- <LazyAtomInputText v-model="state.companyInfo.remark" name="地址備註"
+                            placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" class="mb-2">
+                        </LazyAtomInputText> -->
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
-                            class="mt-3 mb-2">
+                            class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
-                            placeholder="請輸入阿拉伯數字" class="mb-2">
+                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
+                            class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
-                            v-model="state.companyInfo.url.default" class="mb-2">
+                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
+                            class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
                             :accept="'image/*'" :max="12">
@@ -86,20 +87,24 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
-                        required class="mb-2" ref="descriptionRef">
+                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
+                        class="mb-2" ref="descriptionRef">
+                        <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
+                            :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
+                        </LazyOrganismChatCvModal> -->
                     </LazyAtomInputCkeditor>
-                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
-                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
-                        @update:modelValue="setWelfareFlags()">
+                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
+                        class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
+                        <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                            :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
+                        </LazyOrganismChatCvModal> -->
                     </LazyAtomInputCkeditor>
                     <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
                         <div>
                             ※ 系統自動偵測項目
                         </div>
                         <ul>
-                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits"
-                                :key="index">
+                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
                                 <li v-if="state.jobBenefits[item.value].length" class="content__item">
                                     {{ item.text }}：{{ getWelfareString(item.value) }}
                                 </li>
@@ -139,12 +144,13 @@ export default {
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')
-const { $validate, $sweet, $requestSelector } = useNuxtApp()
+const { $validate, $sweet, $requestSelector, $filter } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
+const repoChat = useRepoChat()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
 const state = reactive({
@@ -181,6 +187,18 @@ watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
 // methods
+function setJobBenefits(value) {
+    currentInstance.refs.jobBenefitsRef.setData(value)
+}
+function setDescription(value) {
+    currentInstance.refs.descriptionRef.setData(value)
+}
+async function handleChatRequest(value) {
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
+    return res
+}
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
     return labels.join(" ,")
@@ -221,6 +239,7 @@ function getDefaultCompany(id = '') {
         url: {
             default: ''
         },
+        remark: ''
     }
     return companyInfo
 }
@@ -231,6 +250,7 @@ async function initializeCompanyInfo() {
         return
     }
     const companyRes = await repoAdmin.getAdminCompany()
+    $sweet.loader(false)
     if (companyRes.status !== 200) {
         return
     }
@@ -425,7 +445,7 @@ async function set104CompanyInfo(response) {
     } = response
     // 先找到第一級行政區
     const addressRegionText = address.slice(0, 3)
-    const upperTaiDivision = addressRegionText.replace('台', '臺')
+    const upperTaiDivision = addressRegionText.replace('臺', '台')
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
@@ -498,24 +518,6 @@ async function saveCompanyInfo(config) {
             return
         }
     }
-    $sweet.loader(true)
-    const updatedCompany = await refineAndUpdateCompanyInfo()
-    if (!updatedCompany) {
-        return
-    }
-    repoAuth.setCompany(updatedCompany)
-    if (to) {
-        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
-            title: '身分驗證',
-            icon: 'info',
-            confirmButtonText: '發佈職缺',
-        })
-        router.push(to)
-    } else {
-        $sweet.succeed()
-    }
-}
-async function refineAndUpdateCompanyInfo() {
     state.companyInfo.jobBenefitFlags = {}
     state.benefitFlags.forEach(welfareType => {
         const labels = jobBenefitsConfig[welfareType]
@@ -532,6 +534,7 @@ async function refineAndUpdateCompanyInfo() {
      * 這個時間點admin已經註冊，
      * 但寫入一律用user.uid操作
      */
+    $sweet.loader(true)
     let companyRes = null
     if (state.companyInfo.id) {
         companyRes = await repoCompany.patchCompany(state.companyInfo)
@@ -544,27 +547,41 @@ async function refineAndUpdateCompanyInfo() {
     if (companyRes.status !== 200) {
         return false
     }
-    //
-    const updatedResult = companyRes.data
-    const blobPromises = []
+    // set blobs
     if (state.companyBanner && typeof state.companyBanner !== 'string') {
-        const promise = repoCompany.putCompanyBannerBlob(state.companyBanner)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyBannerBlob(state.companyBanner)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
     if (state.companyLogo && typeof state.companyLogo !== 'string') {
-        const promise = repoCompany.putCompanyLogoBlob(state.companyLogo)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyLogoBlob(state.companyLogo)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
     if (state.companyImages.length) {
-        const promise = repoCompany.putCompanyPhotos(state.companyImages)
-        blobPromises.push(promise)
+        try {
+            repoCompany.putCompanyPhotos(state.companyImages)
+        } catch (error) {
+            console.log(error.message);
+        }
     }
-    const results = await Promise.all(blobPromises)
-    const hasError = results.some(result => result.status !== 200)
-    if (hasError) {
-        return false
+    // set company
+    const updatedResult = companyRes.data
+    repoAuth.setCompany(updatedResult)
+    if (to) {
+        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
+            title: '身分驗證',
+            icon: 'info',
+            confirmButtonText: '發佈職缺',
+        })
+        router.push(to)
+    } else {
+        $sweet.succeed()
     }
-    return updatedResult
 }
 </script>
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
             <span class="placeholder__text">{{ placeholder }}</span>
-            <img src="./icon_Down.svg" class="inputDropdownContainer__icon">
+            <img src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
             <!-- <img > -->
         </button>
         <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
@@ -94,7 +94,7 @@ export default {
         overflow: hidden;
         z-index: 110;
         padding: 0px !important; // 不可以有Padding
-        min-width: 100%;
+        width: 100%;
     }
 
     .inputDropdownContainer__layer--isOn {
@@ -120,7 +120,8 @@ export default {
         }
 
         .inputDropdownContainer__layer {
-            // width: 420px;
+            min-width: 100%;
+            width: unset;
         }
     }
 }

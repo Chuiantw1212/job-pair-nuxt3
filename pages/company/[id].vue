@@ -1,69 +1,71 @@
 <template>
-    <div class="company" :class="{ container: device.state.isDesktop }">
+    <div class="company" :class="{ container: device.state.isLarge }">
         <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-        <section v-if="state.companyInfo" id="company__info" class="company__section mt-4">
-            <div class="company__bannerGroup">
-                <img v-if="state.companyInfo.banner" class="company__banner company__banner--fit-content"
-                    :src="state.companyInfo.banner" />
-                <img v-else class="company__banner" src="~/assets/company/img_banner_default.png" alt="banner" />
+        <section id="company__info" class="company__section mt-3">
+            <div :key="state.renderKey" class="company__bannerGroup">
+                <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
             </div>
             <div class="company__card company__basic">
                 <div class="basic__basicGroup1">
-                    <div v-if="state.companyInfo.logo" class="basic__logo"
-                        :style="{ 'background-image': `url(${state.companyInfo.logo})` }">
+                    <div v-if="state.companyInfo?.logo" class="basic__logo"
+                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
                     </div>
                     <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
                     </div>
-                    <div class="basic__header">{{ state.companyInfo.name }}</div>
+                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
                 </div>
                 <div class="d-none d-lg-flex basic__basicGroup2">
-                    <div v-if="state.companyInfo.numberOfEmployees" class="basicGroup__item">
-                        <img src="~/assets/company/icon_User.svg" />
-                        {{ state.companyInfo.numberOfEmployees }}
+                    <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
+                        <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
+                        {{ state.companyInfo?.numberOfEmployees }}
                     </div>
                     <div class="basicGroup__item">
-                        <img src="~/assets/company/icon_Environment.svg" />
+                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                         {{ getLocationText() }}
                     </div>
-                    <div v-if="state.companyInfo.capital" class="basicGroup__item">
-                        <img src="~/assets/company/icon_Wallet.svg" />
-                        資本額 {{ getCapical(state.companyInfo.capital) }}
+                    <div v-if="state.companyInfo?.capital" class="basicGroup__item">
+                        <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
+                        資本額 {{ getCapical(state.companyInfo?.capital) }}
                     </div>
                 </div>
             </div>
-            <div v-if="state.companyInfo" class="d-lg-none company__card company__features">
+            <div class="d-lg-none company__card company__features">
                 <div class="features__item">
                     <span class="item__header">地點</span>
                     <span class="item__body">{{ getLocationText() }}</span>
                 </div>
-                <div v-if="state.companyInfo" class="features__item">
+                <div class="features__item">
                     <span class="item__header">產業類別</span>
-                    <span v-for="(value, index) in state.companyInfo.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
+                    <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
+                        $optionText(value, repoSelect.industryItems)
                     }}</span>
                 </div>
             </div>
         </section>
         <div class="company__body">
             <div class="body__textGroup">
-                <div v-if="state.companyInfo" class="company__card company__intro">
+                <div class="company__card company__intro">
                     <div class="card__header">公司介紹</div>
-                    <div class="card__body" v-html="state.companyInfo.description"></div>
+                    <div class="card__body">
+                        <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
+                    </div>
                 </div>
-                <div v-if="state.companyInfo" class="company__card company__welfare">
+                <div class="company__card company__welfare">
                     <div class="card__header">公司福利</div>
-                    <div class="card__body" v-html="state.companyInfo.jobBenefits"></div>
+                    <div class="card__body">
+                        <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
+                    </div>
                 </div>
             </div>
-            <div v-if="state.companyInfo && state.companyInfo.images && state.companyInfo.images.length"
-                v-show="state.companyInfo.images" class="company__env">
+            <div v-show="state.companyInfo?.images" class="company__env">
                 <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                 <div class="glide" :class="`glide${state.id}`">
                     <div class="glide__track" data-glide-el="track">
                         <ul class="glide__slides">
-                            <template v-for="(image, index) in state.companyInfo.images" :key="index">
+                            <template v-for="(image, index) in state.companyInfo?.images" :key="index">
                                 <li class="glide__slide">
-                                    <button class="env__glideButton" @click="state.focusedImageSrc = image.url">
+                                    <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
+                                        aria-label="換圖片">
                                         <img class="env__glideImage" :style="{
                                             'background-image': `url(${image.url})`,
                                         }" />
@@ -72,7 +74,7 @@
                             </template>
                         </ul>
                     </div>
-                    <div data-glide-el="controls">
+                    <!-- <div data-glide-el="controls">
                         <button class="slider__arrow slider__arrow--prev glide__arrow glide__arrow--prev"
                             data-glide-dir="<">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
@@ -88,16 +90,15 @@
                                     d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z" />
                             </svg>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
         <section id="company__jobs" class="company__section mt-3">
-            <div class="company__jobs" :class="{ company__card: !device.state.isDesktop }">
+            <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike"
-                        @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -111,7 +112,7 @@
 <script setup>
 import defaultBanner from '~/assets/company/img_banner_default.png'
 import defaultLogo from '~/assets/company/company.webp'
-const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
+const { $uuid4, $requestSelector, $optionText, $Glide, $meta } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
@@ -140,34 +141,44 @@ const state = reactive({
     glideDesktopConfig: {
         perView: 4
     },
-    isDesktop: false,
+    isLarge: false,
     focusedImageSrc: "",
-    resizeTimer: null
+    resizeTimer: null,
+    renderKey: Math.random()
 })
 const jobItems = ref([])
 // hooks
 const organizationId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTime.apiBase}/company/${organizationId.value}`, { initialCache: false })
-if (process.client) {
-    state.companyInfo = company.value
-}
-useHead(() => {
-    const headConfig = {
-        title: `Job Pair`,
-        meta: [
-            { property: 'og:image', content: defaultBanner }
-        ]
+const { data: company } = await useFetch(`${runTime.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
+state.companyInfo = company
+useSeoMeta({
+    title: () => `${state.companyInfo.name} - ${$meta.title}`,
+    ogTitle: () => `${state.companyInfo.name} - ${$meta.title}`,
+    description: () => {
+        // 避免500錯誤影響SEO
+        if (state.companyInfo?.description) {
+            const regex = /(<([^>]+)>)/ig
+            const descriptionContent = state.companyInfo.description.replace(regex, "")
+            return descriptionContent
+        }
+    },
+    ogDescription: () => {
+        // 避免500錯誤影響SEO
+        if (state.companyInfo?.description) {
+            const regex = /(<([^>]+)>)/ig
+            const descriptionContent = state.companyInfo.description.replace(regex, "")
+            return descriptionContent
+        }
+    },
+    ogImage: () => {
+        const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
+        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
+    },
+    ogUrl: () => {
+        return `${runTime.public.origin}/company/${state.companyInfo.id}`
     }
-    if (company.value) {
-        const { name: companyName, banner = defaultBanner } = company.value
-        headConfig.title = `${companyName} - Job Pair`
-        headConfig.meta = [
-            { property: 'og:image', content: banner }
-        ]
-    }
-    return headConfig
 })
 useJsonld(() => ({
     // https://schema.org/Organization
@@ -204,10 +215,18 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function getCompanyBanner() {
+    if (state.companyInfo?.banner) {
+        return state.companyInfo?.banner
+    } else {
+        return defaultBanner
+    }
+}
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
     state.companyInfo = company
+    state.renderKey = Math.random()
     const { images = [], } = company
     if (images && images.length) {
         state.focusedImageSrc = images[0].url
@@ -236,7 +255,9 @@ function initialGlide() {
             config = state.glideDesktopConfig
         }
         const glideInstance = new $Glide.Default(`.glide`, config)
-        glideInstance.mount()
+        glideInstance.mount({
+            type: 'carousel',
+        })
         state.glideInstance = glideInstance
     })
 }
@@ -281,8 +302,11 @@ function getLocationText() {
     }
 
     .company__banner {
-        width: 100%;
+        width: fit-content;
+        max-width: 100%;
+        height: fit-content;
         display: block;
+        min-height: 96px;
     }
 
     .company__basic {
@@ -422,10 +446,6 @@ function getLocationText() {
             max-height: 432px;
         }
 
-        .company__banner--fit-content {
-            width: fit-content;
-        }
-
         .company__basic {
             display: flex;
             padding: 40px 30px;
@@ -463,6 +483,11 @@ function getLocationText() {
 
                     &:not(:first-child) {
                         margin-top: 8px;
+                    }
+
+                    .item__icon {
+                        width: 20px;
+                        height: 33px;
                     }
                 }
             }

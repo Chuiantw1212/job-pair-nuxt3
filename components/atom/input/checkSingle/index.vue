@@ -8,8 +8,8 @@
             <div class="label__checkbox">
                 <img v-show="modelValue === true" class="checkbox__check" src="@/assets/checkboxSelected.svg" />
             </div>
-            <input v-show="false" v-model="localValue" class="label__input" :value="modelValue"
-                :data-required="required" :data-name="name" type="checkbox" />
+            <input v-show="false" v-model="localValue" class="label__input" :value="modelValue" :data-required="required"
+                :data-name="name" type="checkbox" />
             <div class="label__desc">
                 <slot></slot>
             </div>
@@ -59,6 +59,8 @@ export default {
 .checkSingle {
     .checkSingle__nameGroup {
         margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .checkSingle__label {

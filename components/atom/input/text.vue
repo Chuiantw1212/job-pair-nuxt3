@@ -5,9 +5,9 @@
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
+            <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
                 :data-required="required" :data-name="name" autocomplete="off" />
-            <input v-else :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
+            <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
     </div>
@@ -24,6 +24,10 @@ const state = reactive({
     key: null,
 })
 const props = defineProps({
+    id: {
+        type: String,
+        default: undefined,
+    },
     name: {
         type: String,
         default: "",
@@ -84,40 +88,5 @@ watch(() => localValue.value, () => {
 })
 </script>
 <style lang="scss" scoped>
-.inputGroup {
-    .inputGroup__nameGroup {
-        font-size: 16px;
-        color: #1f1f1f;
-        margin-bottom: 4px;
-    }
-
-    .inputGroup__label {
-        padding: 7px 12px;
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        width: 100%;
-        background-color: white;
-
-        .label__input {
-            border: none;
-            width: 100%;
-
-            &:focus {
-                outline: none;
-            }
-
-            &::placeholder {
-                color: #d3d3d3;
-            }
-        }
-    }
-
-    .inputGroup__label--disabled {
-        background-color: rgba(239, 239, 239);
-
-        .label__input {
-            background-color: rgba(239, 239, 239);
-        }
-    }
-}
+@import './inputGroup.scss';
 </style>

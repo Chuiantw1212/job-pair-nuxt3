@@ -1,13 +1,12 @@
 <template>
-    <div class="jobs" :class="{ container: device.state.isDesktop }">
+    <div class="jobs" :class="{ container: device.state.isLarge }">
         <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
-            class="jobs__filter" :class="{ 'col col-3': device.state.isDesktop }">
+            class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory"
-                        :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
-                        :isDesktop="device.state.isDesktop" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -60,8 +59,7 @@
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
                     <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
-                        :categoryMap="repoSelect.industryCategoryMap" :isDesktop="device.state.isDesktop"
-                        :showSelectAll="true">
+                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -88,11 +86,10 @@
                 <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
             </div>
         </LazyMoleculeFilter>
-        <div class="jobs__body" :class="{ 'col col-9': device.state.isDesktop }">
+        <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()"
-                        placeholder="搜尋技能、公司＆職缺">
+                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
             </div>
@@ -103,7 +100,7 @@
                     <template v-else>符合您篩選條件的共{{ state.count }}個職缺</template>
                 </div>
                 <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
-                    <img src="~/assets/jobs/icon_Filter.svg" />
+                    <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
                     <span class="filter__desc">篩選
                         <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
                     </span>
@@ -130,12 +127,11 @@
                 <ul class="main__list">
                     <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
                         <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
-                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item"
-                            :recommend="true">
+                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
-                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]"
-                        :key="index" :ref="`jobItems`" class="main__list__item jobItem">
+                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
+                        :ref="`jobItems`" class="main__list__item jobItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -156,7 +152,7 @@
     </div>
 </template>
 <script setup>
-const { $requestSelectorAll, $sweet } = useNuxtApp()
+const { $requestSelectorAll, $sweet, $meta } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -195,13 +191,19 @@ const state = reactive({
     },
 })
 // hooks
-useHead({
-    title: `職缺探索 - Job Pair`,
+useSeoMeta({
+    title: () => `職缺探索 - ${$meta.title}`,
+    ogTitle: () => `職缺探索 - ${$meta.title}`,
 })
-watch(() => repoAuth.state.user, () => {
-    const noLocalJobs = !state.jobList.length
-    const { user } = repoAuth.state
-    if (noLocalJobs && user && user.id) {
+watch(() => repoAuth.state.user, (user) => {
+    // set filter
+    if (user?.id) {
+        state.filter = getDefaultFilter()
+    }
+    // get jobs
+    const firstJob = state.jobList[0]
+    console.log('watch', firstJob);
+    if (!firstJob?.similarity) {
         initializeSearch()
     }
 }, { immediate: true })
@@ -212,7 +214,7 @@ watch(() => state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length === oldValue.length || !process.client) {
         return
     }
-    if (!state.observer && process.client) {
+    if (!state.observer) {
         state.observer = new IntersectionObserver(loadJobItemBatch, {
             rootMargin: "0px",
             threshold: 0,
@@ -318,6 +320,14 @@ function filterRecommendedJobs() {
             return Number(item.salaryMin) > Number(salaryMin)
         })
     }
+    if (state.searchLike) {
+        filteredResult = filteredResult.filter(item => {
+            const searchableFields = ['description', 'skills', 'name', 'organizationName']
+            return searchableFields.some(field => {
+                return String(item[field]).includes(state.searchLike)
+            })
+        })
+    }
     const topTwo = filteredResult.slice(0, 2)
     return topTwo
 }
@@ -394,17 +404,19 @@ async function initializeSearch(config = {}) {
     }, wait)()
 }
 async function concatJobsFromServer(config = {}) {
-    const { user } = repoAuth.state
-    if (!user || !user.id) {
-        return
-    }
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        id: user.id, // deprecated
-        identifier: user.id,
     })
-    $sweet.loader(isLoading)
+    const { user } = repoAuth.state
+    if (user?.id) {
+        requestConfig.userId = user.id
+    }
+    try {
+        $sweet.loader(isLoading)
+    } catch (error) {
+        // console.trace(error);
+    }
     const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {
         $sweet.alert('伺服器塞車了')
@@ -423,7 +435,11 @@ async function concatJobsFromServer(config = {}) {
         })
     }
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    $sweet.loader(false)
+    try {
+        $sweet.loader(false)
+    } catch (error) {
+        // console.trace(error);
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -539,7 +555,7 @@ async function concatJobsFromServer(config = {}) {
             list-style: none;
             padding: 0;
             margin-top: 138px;
-            height: calc(100vh - 246px);
+            height: calc(100vh - 200px);
             overflow-y: auto;
 
             .main__list__item {
@@ -573,9 +589,8 @@ async function concatJobsFromServer(config = {}) {
     .jobs {
         display: flex;
         flex-direction: row;
-        margin-top: 42px;
-        margin-bottom: 50px;
         gap: 16px;
+        padding-top: 20px;
 
         .jobs__filter {
             .filter__list {

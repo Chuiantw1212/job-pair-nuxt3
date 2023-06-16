@@ -2,7 +2,9 @@
     <LazyOrganismCompanyProfile></LazyOrganismCompanyProfile>
 </template>
 <script setup>
-useHead({
-    title: `企業檔案 - 招募中心 - Job Pair`
+const { $meta } = useNuxtApp()
+useSeoMeta({
+    title: () => `企業檔案 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `企業檔案 - 招募中心 - ${$meta.title}`
 })
 </script>
