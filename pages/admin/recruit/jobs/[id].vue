@@ -21,7 +21,7 @@
                     </label>
                     <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
                 </div>
-            </div>
+            </div>-->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
