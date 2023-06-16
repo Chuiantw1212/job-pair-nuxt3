@@ -112,7 +112,7 @@
 <script setup>
 import defaultBanner from '~/assets/company/img_banner_default.png'
 import defaultLogo from '~/assets/company/company.webp'
-const { $uuid4, $requestSelector, $optionText, $Glide } = useNuxtApp()
+const { $uuid4, $requestSelector, $optionText, $Glide, $meta } = useNuxtApp()
 const runTime = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
@@ -154,8 +154,8 @@ const organizationId = computed(() => {
 const { data: company } = await useFetch(`${runTime.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
-    title: () => `${state.companyInfo.name} - Job Pair`,
-    ogTitle: () => `${state.companyInfo.name} - Job Pair`,
+    title: () => `${state.companyInfo.name} - ${$meta.title}`,
+    ogTitle: () => `${state.companyInfo.name} - ${$meta.title}`,
     description: () => {
         // 避免500錯誤影響SEO
         if (state.companyInfo?.description) {

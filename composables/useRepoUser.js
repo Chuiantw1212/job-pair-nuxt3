@@ -18,7 +18,6 @@ export default defineStore('user', () => {
             method: 'post',
             url: `/user`,
             data,
-            commit: true,
         })
         return response
     }
@@ -51,7 +50,6 @@ export default defineStore('user', () => {
             method: 'put',
             url: `/user/resumes`,
             data,
-            commit: true,
         })
         return response
     }
@@ -60,7 +58,6 @@ export default defineStore('user', () => {
             method: 'put',
             url: `/user/certificates`,
             data,
-            commit: true,
         })
         return response
     }

@@ -95,15 +95,6 @@ function setApplication() {
         coverLetterRef.value.setData(description)
     })
 }
-function hasSelected(work) {
-    if (!state.application || !state.application.portfolio) {
-        return
-    }
-    const isSelected = state.application.portfolio.find((item) => {
-        return item.name === work.name
-    })
-    return isSelected
-}
 function handleApply() {
     const { user } = repoAuth.state
     if (user && user.id) {
@@ -111,17 +102,6 @@ function handleApply() {
     } else {
         $emitter.emit("showUserModal")
     }
-}
-async function handleSubmit() {
-    $sweet.loader(true)
-    const postResponse = await repoJobApplication.postJobApplication(state.application)
-    if (postResponse.status !== 200) {
-        return
-    }
-    await $sweet.succeed()
-    const { applyFlow } = postResponse.data
-    emit("applied", applyFlow)
-    closeModal()
 }
 function closeModal() {
     state.bsModal.hide()

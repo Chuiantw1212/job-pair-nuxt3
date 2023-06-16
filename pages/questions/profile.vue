@@ -36,7 +36,7 @@ export default {
 }
 </script>
 <script setup>
-const { $sweet, $validate } = useNuxtApp()
+const { $sweet, $validate, $meta } = useNuxtApp()
 const repoEvent = useRepoEvent()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
@@ -52,7 +52,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `個人資料 - 註冊流程 - Job Pair`,
+    title: () => `個人資料 - 註冊流程 - ${$meta.title}`,
+    ogTitle: () => `個人資料 - 註冊流程 - ${$meta.title}`,
 })
 const props = defineProps({
     modelValue: {

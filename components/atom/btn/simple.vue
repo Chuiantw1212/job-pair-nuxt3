@@ -81,7 +81,7 @@ onMounted(() => {
     border: 1px solid #da4437;
 
     &:hover {
-        background-color: unset;
+        background-color: white;
     }
 }
 

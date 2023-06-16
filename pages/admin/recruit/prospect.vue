@@ -82,7 +82,7 @@
     </div>
 </template>
 <script setup>
-const { $filter } = useNuxtApp()
+const { $filter, $meta } = useNuxtApp()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
@@ -129,7 +129,8 @@ const props = defineProps({
 })
 // hooks
 useSeoMeta({
-    title: `潛在人選 - 招募中心 - Job Pair`
+    title: () => `潛在人選 - 招募中心 - ${$meta.title}`,
+    ogTitle: () => `潛在人選 - 招募中心 - ${$meta.title}`,
 })
 watch(() => state.searchForm, () => {
     const { companyJobsRes } = repoCompany.state

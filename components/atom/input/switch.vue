@@ -149,7 +149,7 @@ export default {
             return typeof value === 'object'
         },
         has(object, key) {
-            return this.isObject(object) && object.hasOwnProperty(key)
+            return this.isObject(object) && object.hasOwn(key)
         },
         get(object, key, defaultValue) {
             return this.has(object, key) ? object[key] : defaultValue

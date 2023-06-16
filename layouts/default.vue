@@ -13,7 +13,7 @@
     </div>
 </template>
 <script setup>
-const { $liff } = useNuxtApp()
+const { $liff, $meta, } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const config = useRuntimeConfig()
 onMounted(async () => {
@@ -22,8 +22,13 @@ onMounted(async () => {
         repoSelect.getLocation(),
         repoSelect.getIndustryCategory(),
         repoSelect.getQuestions(),
-        // startLiff()
     ])
+})
+useSeoMeta({
+    title: () => $meta.title,
+    ogTitle: () => $meta.title,
+    description: () => $meta.description,
+    ogDescription: () => $meta.description,
 })
 async function startLiff() {
     // 调用 console 方法输出日志

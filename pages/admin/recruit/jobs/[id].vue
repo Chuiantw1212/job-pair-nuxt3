@@ -8,8 +8,20 @@
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
             <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-            </LazyOrganismChatJdModal>
-            {{ state.job }} -->
+            </LazyOrganismChatJdModal> -->
+            <!-- <div class="form__quick">
+                <h1 class="quick__header">快速建檔</h1>
+                <div class="quick__desc">
+                    範例：https://www.104.com.tw/job/*
+                </div>
+                <div class="quick__inputGroup">
+                    <label class="inputGroup__label">
+                        <input v-model="state.crawlerUrl" class="inputGroup__url"
+                            placeholder="https://www.104.com.tw/job/*" />
+                    </label>
+                    <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
+                </div>
+            </div>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -148,6 +160,11 @@
         <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
     </div>
 </template>
+<script>
+export default {
+    name: 'job-id',
+}
+</script>
 <script setup>
 const { $sweet, $validate, $optionText, } = useNuxtApp()
 const emit = defineEmits(['remove', 'save', 'update:modelValue'])
@@ -162,7 +179,7 @@ const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
-    crawlerUrl: '',
+    crawlerUrl: 'https://www.104.com.tw/job/7pwjw?jobsource=jolist_d_relevance',
     filterOpen: {
         occupationalCategory: false,
         employmentType: false,
@@ -195,9 +212,7 @@ const props = defineProps({
     modelValue: {
         type: Object,
         default: function () {
-            return function () {
-                return {}
-            }
+            return {}
         },
     },
     disabled: {
@@ -214,6 +229,66 @@ watch(() => repoSelect.jobCategoryMap, () => {
     }
 }, { deep: true })
 // methods
+async function crawlFromLink() {
+    const crawlerUrl = state.crawlerUrl
+    $sweet.loader(true)
+    const jobRes = await repoJob.getJobCrawlResult({
+        url: crawlerUrl
+    })
+    $sweet.loader(false)
+    if (jobRes.status !== 200) {
+        return
+    }
+    const { header = {}, jobDetail = {}, condition = {} } = jobRes.data
+    const { jobName = '' } = header
+    const { other = '' } = condition
+    const {
+        jobDescription = '',
+        salaryType = 50,
+        salaryMin = 0,
+        salaryMax = 0,
+        addressArea, // 縣市
+        addressRegion, // 縣市+行政區
+        addressDetail,
+    } = jobDetail
+    // convert type
+    const typeMap = {
+        50: 'monthly',
+        10: '' // 面議
+    }
+    const test = repoSelect.state.selectByQueryRes
+    const newJobSalaryType = typeMap[salaryType] || 'monthly'
+    // compose new job
+    const { locationRes = {}, selectByQueryRes = {} } = repoSelect.state
+    const salaryTypeItems = selectByQueryRes.salaryType
+    const targetSalaryType = salaryTypeItems.find(item => {
+        return item.value === newJobSalaryType
+    })
+    const formattedAddressRegion = addressArea.replace('臺', '台')
+    const level1Items = locationRes.taiwan
+    const targetRegion = level1Items.find(item => {
+        return item.text === formattedAddressRegion
+    })
+    const formatLocality = addressRegion.replace('臺', '台').replace(targetRegion.text, '')
+    const level2Items = locationRes[targetRegion.value]
+    const targetLocality = level2Items.find(item => {
+        return item.text === formatLocality
+    })
+    const newJob = {
+        name: jobName,
+        description: jobDescription,
+        salaryType: targetSalaryType.value,
+        salaryMin: Math.max(salaryMin, targetSalaryType.min),
+        salaryMax: Math.max(salaryMax, targetSalaryType.min),
+        addressRegion: targetRegion?.value || null, // 縣市
+        addressLocality: targetLocality?.value || null, // 行政區
+        streetAddress: addressDetail, // 詳細地址
+        skills: other,
+    }
+    state.job = newJob
+    setDescription(newJob.description)
+    setSkills(newJob.skills)
+}
 const instance = getCurrentInstance()
 async function checkWalletBallance(value) {
     if (value !== 'active') {
@@ -401,6 +476,53 @@ async function handleSave() {
             letter-spacing: normal;
             text-align: left;
             color: #5ea88e;
+        }
+    }
+
+    .form__quick {
+        background-color: #fee997;
+        padding: 24px 32px;
+        border-radius: 5px;
+        margin-bottom: 45px;
+
+        .quick__header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .quick__desc {
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        .quick__inputGroup {
+            display: flex;
+            gap: 8px;
+
+            .inputGroup__label {
+                padding: 12px 16px;
+                width: 100%;
+                background-color: white;
+                border-radius: 10px;
+
+                .inputGroup__url {
+                    width: 100%;
+                    border: none;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+
+            .inputGroup__button {
+                padding: 12px 16px;
+                background-color: #29b0ab;
+                color: white;
+                border-radius: 10px;
+                white-space: nowrap;
+                border: none;
+            }
         }
     }
 

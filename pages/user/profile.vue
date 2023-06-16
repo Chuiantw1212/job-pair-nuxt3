@@ -123,7 +123,7 @@
 <script setup>
 import { useRouter, } from 'vue-router'
 import { reactive, onMounted, watch, } from 'vue'
-const { $validate, $sweet, $emitter } = useNuxtApp()
+const { $validate, $sweet, $meta } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -142,25 +142,18 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `個人檔案 - 會員中心 - Job Pair`,
-})
-onMounted(() => {
-    initialize()
+    title: () => `個人檔案 - 會員中心 - ${$meta.title}`,
+    ogTitle: () => `個人檔案 - 會員中心 - ${$meta.title}`,
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (newValue && !oldValue) {
         initialize()
     }
-})
+}, { immediate: true })
 // methods
 const instance = getCurrentInstance()
 function initialize() {
-    const { user } = repoAuth.state
-    if (!user || !user.id) {
-        // 跳出登入視窗
-        $emitter.emit("showUserModal")
-        return
-    }
+    const { user = '' } = repoAuth.state
     const profile = JSON.parse(JSON.stringify(user))
     // profileBasic
     const {
@@ -260,7 +253,7 @@ async function uploadImage(photo) {
     if (response.status === 200) {
         const image = response.data
         state.profileBasic.image = image
-        const patchedUser = Object.assign({}, repoAuth.user, {
+        const patchedUser = Object.assign({}, repoAuth.state.user, {
             image,
         })
         repoAuth.setUser(patchedUser)
@@ -283,7 +276,7 @@ async function handleSubmitBasic() {
     state.profileBasic.resumes = reseumeResponse.data
     // 更新個人資料
     await repoUser.patchUserProfile(state.profileBasic)
-    const patchedUser = Object.assign({}, repoAuth.user, state.profileBasic)
+    const patchedUser = Object.assign({}, repoAuth.state.user, state.profileBasic)
     repoAuth.setUser(patchedUser)
     $sweet.succeed()
 }
@@ -306,7 +299,7 @@ async function handleSubmitAdvanced() {
     state.profileAdvanced.certificates = certificatesRes.data
     // 更新個人資料
     await repoUser.patchUserProfile(state.profileAdvanced)
-    const patchedUser = Object.assign({}, repoAuth.user, state.profileAdvanced)
+    const patchedUser = Object.assign({}, repoAuth.state.user, state.profileAdvanced)
     repoAuth.setUser(patchedUser)
     $sweet.succeed()
 }
@@ -318,7 +311,7 @@ async function handleSubmitBroadcast() {
     }
     // 再更新個人資料
     await repoUser.patchUserProfile(state.profileBroadcast)
-    const patchedUser = Object.assign({}, repoAuth.user, state.profileBroadcast)
+    const patchedUser = Object.assign({}, repoAuth.state.user, state.profileBroadcast)
     repoAuth.setUser(patchedUser)
     $sweet.succeed()
 }

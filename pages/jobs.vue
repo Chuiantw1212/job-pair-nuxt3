@@ -152,7 +152,7 @@
     </div>
 </template>
 <script setup>
-const { $requestSelectorAll, $sweet } = useNuxtApp()
+const { $requestSelectorAll, $sweet, $meta } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -192,11 +192,18 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `職缺探索 - Job Pair`,
+    title: () => `職缺探索 - ${$meta.title}`,
+    ogTitle: () => `職缺探索 - ${$meta.title}`,
 })
-watch(() => repoAuth.state.user, () => {
-    const noLocalJobs = !state.jobList.length
-    if (noLocalJobs) {
+watch(() => repoAuth.state.user, (user) => {
+    // set filter
+    if (user?.id) {
+        state.filter = getDefaultFilter()
+    }
+    // get jobs
+    const firstJob = state.jobList[0]
+    console.log('watch', firstJob);
+    if (!firstJob?.similarity) {
         initializeSearch()
     }
 }, { immediate: true })
@@ -207,7 +214,7 @@ watch(() => state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length === oldValue.length || !process.client) {
         return
     }
-    if (!state.observer && process.client) {
+    if (!state.observer) {
         state.observer = new IntersectionObserver(loadJobItemBatch, {
             rootMargin: "0px",
             threshold: 0,
@@ -405,7 +412,11 @@ async function concatJobsFromServer(config = {}) {
     if (user?.id) {
         requestConfig.userId = user.id
     }
-    $sweet.loader(isLoading)
+    try {
+        $sweet.loader(isLoading)
+    } catch (error) {
+        console.trace(error);
+    }
     const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {
         $sweet.alert('伺服器塞車了')
@@ -424,7 +435,11 @@ async function concatJobsFromServer(config = {}) {
         })
     }
     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    $sweet.loader(false)
+    try {
+        $sweet.loader(false)
+    } catch (error) {
+        console.trace(error);
+    }
 }
 </script>
 <style lang="scss" scoped>
