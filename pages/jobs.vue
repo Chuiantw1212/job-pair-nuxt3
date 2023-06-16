@@ -415,7 +415,7 @@ async function concatJobsFromServer(config = {}) {
     try {
         $sweet.loader(isLoading)
     } catch (error) {
-        console.trace(error);
+        // console.trace(error);
     }
     const response = await repoJob.getJobByQuery(requestConfig)
     if (response.status !== 200) {
@@ -438,7 +438,7 @@ async function concatJobsFromServer(config = {}) {
     try {
         $sweet.loader(false)
     } catch (error) {
-        console.trace(error);
+        // console.trace(error);
     }
 }
 </script>
