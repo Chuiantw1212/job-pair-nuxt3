@@ -113,7 +113,9 @@
 <script setup>
 const device = useDevice()
 const runTime = useRuntimeConfig()
+const { $meta } = useNuxtApp()
 useSeoMeta({
+    title: () => `關於Job Pair - ${$meta.title}`,
     ogUrl: () => {
         return `${runTime.public.origin}/about`
     }
