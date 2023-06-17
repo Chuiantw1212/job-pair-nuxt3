@@ -1,5 +1,8 @@
 <template>
     <div id="app" class="app w-100">
+        <SeoKit />
+        <!-- <OgImageScreenshot />
+        <OgImageStatic /> -->
         <LazyOrganismHeader />
         <div class="main">
             <slot>

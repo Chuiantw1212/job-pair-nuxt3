@@ -57,7 +57,9 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
-        'nuxt-simple-sitemap',
+    ],
+    extends: [
+        'nuxt-seo-kit'
     ],
     vite: {
         define: {
