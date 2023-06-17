@@ -193,8 +193,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `職缺探索 - ${runTimeConfig.public.title}`,
-    ogTitle: () => `職缺探索 - ${runTimeConfig.public.title}`,
+    title: () => `職缺探索 - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `職缺探索 - ${runTimeConfig.public.siteName}`,
 })
 watch(() => repoAuth.state.user, (user) => {
     // set filter

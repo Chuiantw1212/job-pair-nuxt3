@@ -141,8 +141,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.title}`,
-    ogTitle: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.title}`,
+    title: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.siteName}`,
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (newValue && !oldValue) {

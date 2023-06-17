@@ -352,8 +352,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `求職狀態 - 會員中心 - ${runTimeConfig.public.title}`,
-    ogTitle: () => `求職狀態 - 會員中心 - ${runTimeConfig.public.title}`,
+    title: () => `求職狀態 - 會員中心 - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `求職狀態 - 會員中心 - ${runTimeConfig.public.siteName}`,
 })
 onMounted(() => {
     initialize()

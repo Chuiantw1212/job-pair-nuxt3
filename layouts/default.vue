@@ -28,10 +28,10 @@ onMounted(async () => {
     ])
 })
 useSeoMeta({
-    title: () => runTimeConfig.public.title,
-    ogTitle: () => runTimeConfig.public.title,
-    description: () => runTimeConfig.public.description,
-    ogDescription: () => runTimeConfig.public.description,
+    title: () => runTimeConfig.public.siteName,
+    ogTitle: () => runTimeConfig.public.siteName,
+    description: () => runTimeConfig.public.siteDescription,
+    ogDescription: () => runTimeConfig.public.siteDescription,
 })
 useSchemaOrg([
     defineOrganization({

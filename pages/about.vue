@@ -114,7 +114,7 @@
 const device = useDevice()
 const runTimeConfig = useRuntimeConfig()
 useSeoMeta({
-    title: () => `關於Job Pair - ${runTimeConfig.public.title}`,
+    title: () => `關於Job Pair - ${runTimeConfig.public.siteName}`,
     ogUrl: () => {
         return `${runTimeConfig.public.origin}/about`
     }

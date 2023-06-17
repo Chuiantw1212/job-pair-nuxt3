@@ -256,8 +256,8 @@ if (skillsRef) {
 }
 const { data: location } = await useFetch(`${runTimeConfig.public.apiBase}/select/location`, { initialCache: false })
 useSeoMeta({
-    title: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.title}`,
-    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.title}`,
+    title: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.siteName}`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
         if (state.job.description) {

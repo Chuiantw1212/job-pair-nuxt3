@@ -4,6 +4,6 @@
 <script setup>
 const runTimeConfig = useRuntimeConfig()
 useSeoMeta({
-    title: () => `企業專區 - ${runTimeConfig.public.title}`,
+    title: () => `企業專區 - ${runTimeConfig.public.siteName}`,
 })
 </script>

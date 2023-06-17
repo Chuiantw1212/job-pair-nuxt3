@@ -154,8 +154,8 @@ const organizationId = computed(() => {
 const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
-    title: () => `${state.companyInfo.name} - ${runTimeConfig.public.title}`,
-    ogTitle: () => `${state.companyInfo.name} - ${runTimeConfig.public.title}`,
+    title: () => `${state.companyInfo.name} - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `${state.companyInfo.name} - ${runTimeConfig.public.siteName}`,
     description: () => {
         // 避免500錯誤影響SEO
         if (state.companyInfo?.description) {

@@ -56,8 +56,8 @@ const props = defineProps({
 })
 // hooks
 useSeoMeta({
-    title: () => `求職偏好 - 註冊流程 - ${runTimeConfig.public.title}`,
-    ogTitle: () => `求職偏好 - 註冊流程 - ${runTimeConfig.public.title}`
+    title: () => `求職偏好 - 註冊流程 - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `求職偏好 - 註冊流程 - ${runTimeConfig.public.siteName}`
 })
 onMounted(async () => {
     let questions = []

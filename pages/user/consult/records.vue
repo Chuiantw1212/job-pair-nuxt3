@@ -288,8 +288,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.title}`,
-    ogTitle: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.title}`,
+    title: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.siteName}`,
+    ogTitle: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.siteName}`,
 })
 onMounted(async () => {
     // console.log('??');
