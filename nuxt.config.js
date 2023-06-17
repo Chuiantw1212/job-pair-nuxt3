@@ -15,9 +15,9 @@ export default defineNuxtConfig({
                 // Open graph protocol
                 { property: 'og:type', content: 'website' },
                 { property: 'og:locale', content: 'zh_TW' },
-                // { property: 'og:image', content: imageUrl },
-                // { property: 'og:image:secure_url', content: imageUrl },
-                // { property: 'og:image:alt', content: 'banner' },
+                { property: 'og:image', content: imageUrl },
+                { property: 'og:image:secure_url', content: imageUrl },
+                { property: 'og:image:alt', content: 'banner' },
                 // Social Media
                 { property: 'fb:app_id', content: '411339927562100' },
             ],
