@@ -140,9 +140,8 @@ const state = reactive({
     toggleChangePassword: false,
 })
 // hooks
-useSeoMeta({
-    title: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '個人檔案 - 會員中心'
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (newValue && !oldValue) {

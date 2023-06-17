@@ -181,9 +181,8 @@ const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 // hooks
-useSeoMeta({
-    title: () => `職缺管理 - 招募中心 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `職缺管理 - 招募中心 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '職缺管理 - 招募中心'
 })
 onMounted(() => {
     initialize()

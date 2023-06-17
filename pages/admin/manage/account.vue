@@ -63,9 +63,8 @@ const state = reactive({
     chatIcon: null,
 })
 // hooks
-useSeoMeta({
-    title: () => `帳戶管理 - 招募中心 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `帳戶管理 - 招募中心 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '帳戶管理 - 招募中心'
 })
 watch(() => repoAuth.state.user, (newValue) => {
     if (!newValue) {

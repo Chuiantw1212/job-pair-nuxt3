@@ -116,11 +116,6 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useSeoMeta({
-    ogUrl: () => {
-        return `${runTimeConfig.public.origin}/admin`
-    }
-})
 onMounted(async () => {
     if (process.client) {
         const response = await repoJob.getJobByQuery({

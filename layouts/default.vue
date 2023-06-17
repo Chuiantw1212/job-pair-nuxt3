@@ -27,12 +27,12 @@ onMounted(async () => {
         repoSelect.getQuestions(),
     ])
 })
-useSeoMeta({
-    title: () => runTimeConfig.public.siteName,
-    ogTitle: () => runTimeConfig.public.siteName,
-    description: () => runTimeConfig.public.siteDescription,
-    ogDescription: () => runTimeConfig.public.siteDescription,
-})
+// useSeoMeta({
+//     title: () => runTimeConfig.public.siteName,
+//     ogTitle: () => runTimeConfig.public.siteName,
+//     description: () => runTimeConfig.public.siteDescription,
+//     ogDescription: () => runTimeConfig.public.siteDescription,
+// })
 useSchemaOrg([
     defineOrganization({
         name: 'Job Pair',

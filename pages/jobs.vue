@@ -153,7 +153,6 @@
 </template>
 <script setup>
 const { $requestSelectorAll, $sweet, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -192,9 +191,8 @@ const state = reactive({
     },
 })
 // hooks
-useSeoMeta({
-    title: () => `職缺探索 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `職缺探索 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '職缺探索'
 })
 watch(() => repoAuth.state.user, (user) => {
     // set filter

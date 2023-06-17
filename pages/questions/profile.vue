@@ -52,9 +52,8 @@ const state = reactive({
     }
 })
 // hooks
-useSeoMeta({
-    title: () => `個人資料 - 註冊流程 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `個人資料 - 註冊流程 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '個人資料 - 註冊流程'
 })
 const props = defineProps({
     modelValue: {

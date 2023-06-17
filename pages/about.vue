@@ -112,12 +112,8 @@
 </template>
 <script setup>
 const device = useDevice()
-const runTimeConfig = useRuntimeConfig()
-useSeoMeta({
-    title: () => `關於Job Pair - ${runTimeConfig.public.siteName}`,
-    ogUrl: () => {
-        return `${runTimeConfig.public.origin}/about`
-    }
+useHead({
+    title: '關於我們'
 })
 </script>
 <style lang="scss">

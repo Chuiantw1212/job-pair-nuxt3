@@ -287,12 +287,10 @@ const state = reactive({
     activeTab: 'life'
 })
 // hooks
-useSeoMeta({
-    title: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '職涯諮詢 - 會員中心'
 })
 onMounted(async () => {
-    // console.log('??');
     const consultantsRes = await repoConsult.getConsultants()
     const consultants = consultantsRes.data
     let allFeedbacks = []

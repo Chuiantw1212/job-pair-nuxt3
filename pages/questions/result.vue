@@ -26,9 +26,8 @@ const state = reactive({
     isSigned: false,
 })
 // hooks
-useSeoMeta({
-    title: () => `註冊完成 - 註冊流程 - ${runTimeConfig.public.siteName}`,
-    ogTitle: () => `註冊完成 - 註冊流程 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '註冊完成 - 註冊流程'
 })
 onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')

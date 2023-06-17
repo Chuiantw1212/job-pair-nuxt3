@@ -126,9 +126,8 @@ const state = reactive({
     }
 })
 // hooks
-const runTimeConfig = useRuntimeConfig()
-useSeoMeta({
-    title: () => `履歷模板 - ${runTimeConfig.public.siteName}`,
+useHead({
+    title: '履歷模板'
 })
 // methods
 async function copyToMemory(key) {
