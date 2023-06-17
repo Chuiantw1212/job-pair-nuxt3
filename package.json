@@ -10,7 +10,7 @@
     "predeploy": "firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
-    "analyze": "nuxt build --analyze"
+    "analyze": "npx nuxi analyze"
   },
   "engines": {
     "node": ">=16"
@@ -35,7 +35,6 @@
     "firebase": "^9.22.1",
     "flatpickr": "^4.6.13",
     "fuse.js": "^6.6.2",
-    "html2canvas": "^1.4.1",
     "mitt": "^3.0.0",
     "nouislider": "^15.7.0",
     "pinia": "^2.0.33",
