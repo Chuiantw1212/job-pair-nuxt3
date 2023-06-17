@@ -9,7 +9,8 @@
     "postbuild": "cd .output/server && rimraf node_modules && npm install",
     "predeploy": "firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy",
-    "scan": "npx unlighthouse --site localhost:3000"
+    "scan": "npx unlighthouse --site localhost:3000",
+    "analyze": "nuxt build --analyze"
   },
   "engines": {
     "node": ">=16"
