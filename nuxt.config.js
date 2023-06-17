@@ -120,6 +120,7 @@ export default defineNuxtConfig({
                 urls.push({
                     url: `/company/${item.id}`,
                     lastmod: item.updatedDate,
+                    changefreq: 'monthly'
                 })
             })
             return urls

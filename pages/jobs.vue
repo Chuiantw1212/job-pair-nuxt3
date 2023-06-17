@@ -203,7 +203,6 @@ watch(() => repoAuth.state.user, (user) => {
     }
     // get jobs
     const firstJob = state.jobList[0]
-    console.log('watch', firstJob);
     if (!firstJob?.similarity) {
         initializeSearch()
     }
