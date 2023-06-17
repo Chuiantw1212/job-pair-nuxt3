@@ -81,6 +81,11 @@ export default defineNuxtConfig({
     },
     // https://github.com/harlan-zw/nuxt-simple-sitemap
     sitemap: {
+        exclude: [
+            '/questions/**',
+            '/admin/**',
+            '/user/**'
+        ],
         // provide dynamic URLs to be included
         urls: async () => {
             const axiosInstance = axios.create({
