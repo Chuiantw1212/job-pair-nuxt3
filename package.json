@@ -9,10 +9,6 @@
     "predeploy": "cd .output/server && rimraf node_modules && npm install && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy"
   },
-  "os": [
-    "darwin",
-    "linux"
-  ],
   "engines": {
     "node": ">=16"
   },
