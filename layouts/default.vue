@@ -33,6 +33,17 @@ useSeoMeta({
     description: () => $meta.description,
     ogDescription: () => $meta.description,
 })
+useSchemaOrg([
+    defineOrganization({
+        name: 'Job Pair',
+        logo: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/logo.png',
+        sameAs: [
+            'https://www.facebook.com/jobpairtw/'
+        ]
+    }),
+    // defineWebSite({/* ... */}),
+    // defineWebPage(),
+])
 async function startLiff() {
     // 调用 console 方法输出日志
     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
