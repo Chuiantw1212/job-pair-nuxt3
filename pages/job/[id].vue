@@ -273,7 +273,7 @@ useSeoMeta({
         }
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.origin}/job/${state.job.identifier}`
+        return `${runTimeConfig.public.siteUrl}/job/${state.job.identifier}`
     }
 })
 useJsonld(() => {
@@ -294,7 +294,7 @@ useJsonld(() => {
         '@type': 'JobPosting',
         title: job.value.name,
         description: job.value.description,
-        url: `${runTimeConfig.public.origin}/job/${job.value.identifier}`,
+        url: `${runTimeConfig.public.siteUrl}/job/${job.value.identifier}`,
         image: job.value.image,
         identifier: job.value.identifier,
         applicantLocationRequirements: {

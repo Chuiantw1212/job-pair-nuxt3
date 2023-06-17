@@ -177,7 +177,7 @@ useSeoMeta({
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.origin}/company/${state.companyInfo.id}`
+        return `${runTimeConfig.public.siteUrl}/company/${state.companyInfo.id}`
     }
 })
 useJsonld(() => ({
@@ -188,7 +188,7 @@ useJsonld(() => ({
     logo: company.value.logo,
     description: company.value.description,
     identifier: company.value.id,
-    url: `${runTimeConfig.public.origin}/company/${company.value.id}`,
+    url: `${runTimeConfig.public.siteUrl}/company/${company.value.id}`,
     address: getLocationText(),
     location: getLocationText(),
     image: company.value.banner,
