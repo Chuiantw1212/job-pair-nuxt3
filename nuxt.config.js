@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
 const axios = require('axios')
+const apiBase = 'https://job-pair-taiwan-dev.de.r.appspot.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
@@ -46,8 +47,8 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'http://localhost:8080',
-            origin: 'http://localhost:3000',
+            apiBase,
+            origin: 'https://job-pair-taiwan-dev.web.app',
             LIFF_ID: '1660783051-vP4Ojz2r',
             axiosTimeout: 30000,
         }
@@ -83,7 +84,7 @@ export default defineNuxtConfig({
         // provide dynamic URLs to be included
         urls: async () => {
             const axiosInstance = axios.create({
-                baseURL: config.public.apiBase,
+                baseURL: apiBase,
                 timeout: 20 * 60 * 1000,
             })
             const [jobIdsResponse, companyIdsResponse] = await Promise.all([
