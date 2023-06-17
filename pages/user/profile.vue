@@ -121,9 +121,8 @@
     </div>
 </template>
 <script setup>
-import { useRouter, } from 'vue-router'
-import { reactive, onMounted, watch, } from 'vue'
-const { $validate, $sweet, $meta } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
@@ -142,8 +141,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `個人檔案 - 會員中心 - ${$meta.title}`,
-    ogTitle: () => `個人檔案 - 會員中心 - ${$meta.title}`,
+    title: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.title}`,
+    ogTitle: () => `個人檔案 - 會員中心 - ${runTimeConfig.public.title}`,
 })
 watch(() => repoAuth.state.user, (newValue, oldValue) => {
     if (newValue && !oldValue) {

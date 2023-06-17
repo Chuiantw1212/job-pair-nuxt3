@@ -49,7 +49,8 @@
 </template>
 <script setup>
 import { getAuth, } from "firebase/auth"
-const { $sweet, $meta } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
@@ -63,8 +64,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `帳戶管理 - 招募中心 - ${$meta.title}`,
-    ogTitle: () => `帳戶管理 - 招募中心 - ${$meta.title}`,
+    title: () => `帳戶管理 - 招募中心 - ${runTimeConfig.public.title}`,
+    ogTitle: () => `帳戶管理 - 招募中心 - ${runTimeConfig.public.title}`,
 })
 watch(() => repoAuth.state.user, (newValue) => {
     if (!newValue) {

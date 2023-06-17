@@ -112,8 +112,8 @@
 <script setup>
 import defaultBanner from '~/assets/company/img_banner_default.png'
 import defaultLogo from '~/assets/company/company.webp'
-const { $uuid4, $requestSelector, $optionText, $Glide, $meta } = useNuxtApp()
-const runTime = useRuntimeConfig()
+const { $uuid4, $requestSelector, $optionText, $Glide, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
 const repoCompany = useRepoCompany()
@@ -151,11 +151,11 @@ const jobItems = ref([])
 const organizationId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTime.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
+const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
-    title: () => `${state.companyInfo.name} - ${$meta.title}`,
-    ogTitle: () => `${state.companyInfo.name} - ${$meta.title}`,
+    title: () => `${state.companyInfo.name} - ${runTimeConfig.public.title}`,
+    ogTitle: () => `${state.companyInfo.name} - ${runTimeConfig.public.title}`,
     description: () => {
         // 避免500錯誤影響SEO
         if (state.companyInfo?.description) {
@@ -177,7 +177,7 @@ useSeoMeta({
         return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
-        return `${runTime.public.origin}/company/${state.companyInfo.id}`
+        return `${runTimeConfig.public.origin}/company/${state.companyInfo.id}`
     }
 })
 useJsonld(() => ({
@@ -188,7 +188,7 @@ useJsonld(() => ({
     logo: company.value.logo,
     description: company.value.description,
     identifier: company.value.id,
-    url: `${runTime.public.origin}/company/${company.value.id}`,
+    url: `${runTimeConfig.public.origin}/company/${company.value.id}`,
     address: getLocationText(),
     location: getLocationText(),
     image: company.value.banner,

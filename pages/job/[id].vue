@@ -179,8 +179,8 @@
 </template>
 <script setup>
 import placeholderImage from '~/assets/company/company.webp'
-const runTime = useRuntimeConfig()
-const { $emitter, $sweet, $filter, $meta, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
+const { $emitter, $sweet, $filter, } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoJob = useRepoJob()
@@ -244,7 +244,7 @@ const browserConfig = computed({
     }
 })
 // hooks
-const { data: job } = await useFetch(`${runTime.public.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 const currentInstance = getCurrentInstance()
 const { descriptionRef, skillsRef } = currentInstance.refs
@@ -254,10 +254,10 @@ if (descriptionRef) {
 if (skillsRef) {
     skillsRef.setData(job.skills)
 }
-const { data: location } = await useFetch(`${runTime.public.apiBase}/select/location`, { initialCache: false })
+const { data: location } = await useFetch(`${runTimeConfig.public.apiBase}/select/location`, { initialCache: false })
 useSeoMeta({
-    title: () => `${state.job.name} - ${state.job.organizationName} - ${$meta.title}`,
-    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - ${$meta.title}`,
+    title: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.title}`,
+    ogTitle: () => `${state.job.name} - ${state.job.organizationName} - ${runTimeConfig.public.title}`,
     description: () => {
         const regex = /(<([^>]+)>)/ig
         if (state.job.description) {
@@ -273,7 +273,7 @@ useSeoMeta({
         }
     },
     ogUrl: () => {
-        return `${runTime.public.origin}/job/${state.job.identifier}`
+        return `${runTimeConfig.public.origin}/job/${state.job.identifier}`
     }
 })
 useJsonld(() => {
@@ -294,7 +294,7 @@ useJsonld(() => {
         '@type': 'JobPosting',
         title: job.value.name,
         description: job.value.description,
-        url: `${runTime.public.origin}/job/${job.value.identifier}`,
+        url: `${runTimeConfig.public.origin}/job/${job.value.identifier}`,
         image: job.value.image,
         identifier: job.value.identifier,
         applicantLocationRequirements: {

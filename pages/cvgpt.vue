@@ -126,9 +126,9 @@ const state = reactive({
     }
 })
 // hooks
-const { $meta } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 useSeoMeta({
-    title: () => `履歷模板 - ${$meta.title}`,
+    title: () => `履歷模板 - ${runTimeConfig.public.title}`,
 })
 // methods
 async function copyToMemory(key) {

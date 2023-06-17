@@ -104,7 +104,7 @@ export default {
 </script>
 <script setup>
 const { $emitter, $liff } = useNuxtApp()
-const runTime = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const router = useRouter()
@@ -114,11 +114,11 @@ const state = reactive({
     affiliate: [],
     jobProvider: [],
 })
-const { data: companyList } = await useFetch(`${runTime.public.apiBase}/company/affiliate`, { initialCache: false })
+const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
 useSeoMeta({
     ogUrl: () => {
-        return `${runTime.public.origin}/admin`
+        return `${runTimeConfig.public.origin}/admin`
     }
 })
 onMounted(async () => {
@@ -146,7 +146,7 @@ async function startLiff() {
     // 调用 console 方法输出日志
     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
         try {
-            await $liff.init({ liffId: runTime.public.LIFF_ID })
+            await $liff.init({ liffId: runTimeConfig.public.LIFF_ID })
         } catch (error) {
             console.log(error.message || error);
         }

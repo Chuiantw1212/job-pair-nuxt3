@@ -112,12 +112,11 @@
 </template>
 <script setup>
 const device = useDevice()
-const runTime = useRuntimeConfig()
-const { $meta } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 useSeoMeta({
-    title: () => `關於Job Pair - ${$meta.title}`,
+    title: () => `關於Job Pair - ${runTimeConfig.public.title}`,
     ogUrl: () => {
-        return `${runTime.public.origin}/about`
+        return `${runTimeConfig.public.origin}/about`
     }
 })
 </script>

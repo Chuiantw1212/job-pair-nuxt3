@@ -274,8 +274,8 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, } from 'vue'
-const { $time, $meta } = useNuxtApp()
+const { $time, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
@@ -288,8 +288,8 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
-    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+    title: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.title}`,
+    ogTitle: () => `職涯諮詢 - 會員中心 - ${runTimeConfig.public.title}`,
 })
 onMounted(async () => {
     // console.log('??');

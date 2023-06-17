@@ -16,9 +16,9 @@
     </div>
 </template>
 <script setup>
-const { $liff, $meta, } = useNuxtApp()
+const { $liff, } = useNuxtApp()
 const repoSelect = useRepoSelect()
-const config = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 onMounted(async () => {
     await Promise.all([
         repoSelect.getSelectByQuery(),
@@ -28,10 +28,10 @@ onMounted(async () => {
     ])
 })
 useSeoMeta({
-    title: () => $meta.title,
-    ogTitle: () => $meta.title,
-    description: () => $meta.description,
-    ogDescription: () => $meta.description,
+    title: () => runTimeConfig.public.title,
+    ogTitle: () => runTimeConfig.public.title,
+    description: () => runTimeConfig.public.description,
+    ogDescription: () => runTimeConfig.public.description,
 })
 useSchemaOrg([
     defineOrganization({

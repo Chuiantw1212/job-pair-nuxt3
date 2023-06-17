@@ -2,10 +2,8 @@
     <NuxtPage></NuxtPage>
 </template>
 <script setup>
-const { $emitter } = useNuxtApp()
-const repoAuth = useRepoAuth()
-const { $meta } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 useSeoMeta({
-    title: () => `企業專區 - ${$meta.title}`,
+    title: () => `企業專區 - ${runTimeConfig.public.title}`,
 })
 </script>
