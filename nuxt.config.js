@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
+const axios = require('axios')
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
@@ -55,6 +56,7 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        'nuxt-simple-sitemap',
     ],
     vite: {
         define: {
@@ -75,9 +77,39 @@ export default defineNuxtConfig({
             gzip: true,
             brotli: true,
         },
-        // https://content.nuxtjs.org/guide/recipes/sitemap/
-        prerender: {
-            routes: ['/sitemap.xml']
-        }
+    },
+    // https://github.com/harlan-zw/nuxt-simple-sitemap
+    sitemap: {
+        // provide dynamic URLs to be included
+        urls: async () => {
+            const axiosInstance = axios.create({
+                baseURL: config.public.apiBase,
+                timeout: 20 * 60 * 1000,
+            })
+            const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+                axiosInstance({
+                    method: 'get',
+                    url: '/job/sitemap',
+                }),
+                axiosInstance({
+                    method: 'get',
+                    url: '/company/sitemap',
+                }),
+            ])
+            const urls = []
+            jobIdsResponse.data.forEach((item) => {
+                urls.push({
+                    url: `/job/${item.identifier}`,
+                    lastmod: item.datePosted,
+                })
+            })
+            companyIdsResponse.data.forEach((item) => {
+                urls.push({
+                    url: `/company/${item.id}`,
+                    lastmod: item.updatedDate,
+                })
+            })
+            return urls
+        },
     },
 })
