@@ -86,7 +86,6 @@ export default defineNuxtConfig({
             brotli: true,
         },
     },
-    // https://github.com/harlan-zw/nuxt-simple-sitemap
     sitemap: {
         exclude: [
             '/questions/**',
