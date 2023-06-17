@@ -2,9 +2,8 @@
     <LazyOrganismCompanyProfile></LazyOrganismCompanyProfile>
 </template>
 <script setup>
-const { $meta } = useNuxtApp()
-useSeoMeta({
-    title: () => `企業檔案 - 招募中心 - ${$meta.title}`,
-    ogTitle: () => `企業檔案 - 招募中心 - ${$meta.title}`
+const runTimeConfig = useRuntimeConfig()
+useHead({
+    title: '企業檔案 - 管理中心'
 })
 </script>

@@ -21,14 +21,13 @@
 const repoEvent = useRepoEvent()
 const router = useRouter()
 const repoAuth = useRepoAuth()
-const { $meta } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const state = reactive({
     isSigned: false,
 })
 // hooks
-useSeoMeta({
-    title: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
-    ogTitle: () => `註冊完成 - 註冊流程 - ${$meta.title}`,
+useHead({
+    title: '註冊完成 - 註冊流程'
 })
 onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')

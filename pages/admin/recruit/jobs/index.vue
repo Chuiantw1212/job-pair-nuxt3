@@ -113,7 +113,6 @@
     </div>
 </template>
 <script setup>
-const currentInstance = getCurrentInstance()
 const emit = defineEmits(['update:modelValue'])
 function getDefaultFilter() {
     const defualtFilter = {
@@ -173,7 +172,8 @@ const state = reactive({
     selectedJobs: [],
     batchOption: ''
 })
-const { $sweet, $meta } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -181,9 +181,8 @@ const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 // hooks
-useSeoMeta({
-    title: () => `職缺管理 - 招募中心 - ${$meta.title}`,
-    ogTitle: () => `職缺管理 - 招募中心 - ${$meta.title}`,
+useHead({
+    title: '職缺管理 - 招募中心'
 })
 onMounted(() => {
     initialize()

@@ -112,13 +112,8 @@
 </template>
 <script setup>
 const device = useDevice()
-const runTime = useRuntimeConfig()
-const { $meta } = useNuxtApp()
-useSeoMeta({
-    title: () => `關於Job Pair - ${$meta.title}`,
-    ogUrl: () => {
-        return `${runTime.public.origin}/about`
-    }
+useHead({
+    title: '關於我們'
 })
 </script>
 <style lang="scss">

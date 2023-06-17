@@ -69,7 +69,7 @@ export default {
 </script>
 <script setup>
 const { $Glide, $emitter, $requestSelector, $liff } = useNuxtApp()
-const runTime = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const repoAuth = useRepoAuth()
@@ -81,13 +81,8 @@ const state = reactive({
     profile: null,
     linkToken: null,
 })
-const { data: companyList } = await useFetch(`${runTime.public.apiBase}/company/affiliate`, { initialCache: false })
+const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useSeoMeta({
-    ogUrl: () => {
-        return `${runTime.public.origin}`
-    }
-})
 onMounted(async () => {
     if (process.client) {
         // initialGlide()

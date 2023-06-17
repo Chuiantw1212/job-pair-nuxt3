@@ -1,5 +1,8 @@
 <template>
     <div id="app" class="app w-100">
+        <SeoKit />
+        <!-- <OgImageScreenshot /> -->
+        <!-- <OgImageStatic /> -->
         <LazyOrganismHeader />
         <div class="main">
             <slot>
@@ -13,9 +16,9 @@
     </div>
 </template>
 <script setup>
-const { $liff, $meta, } = useNuxtApp()
+const { $liff, } = useNuxtApp()
 const repoSelect = useRepoSelect()
-const config = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 onMounted(async () => {
     await Promise.all([
         repoSelect.getSelectByQuery(),
@@ -24,12 +27,23 @@ onMounted(async () => {
         repoSelect.getQuestions(),
     ])
 })
-useSeoMeta({
-    title: () => $meta.title,
-    ogTitle: () => $meta.title,
-    description: () => $meta.description,
-    ogDescription: () => $meta.description,
-})
+// useSeoMeta({
+//     title: () => runTimeConfig.public.siteName,
+//     ogTitle: () => runTimeConfig.public.siteName,
+//     description: () => runTimeConfig.public.siteDescription,
+//     ogDescription: () => runTimeConfig.public.siteDescription,
+// })
+useSchemaOrg([
+    defineOrganization({
+        name: 'Job Pair',
+        logo: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/logo.png',
+        sameAs: [
+            'https://www.facebook.com/jobpairtw/'
+        ]
+    }),
+    // defineWebSite({/* ... */}),
+    // defineWebPage(),
+])
 async function startLiff() {
     // 调用 console 方法输出日志
     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
