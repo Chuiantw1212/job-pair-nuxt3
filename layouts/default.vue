@@ -20,19 +20,15 @@ const { $liff, } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const runTimeConfig = useRuntimeConfig()
 onMounted(async () => {
-    await Promise.all([
-        repoSelect.getSelectByQuery(),
-        repoSelect.getLocation(),
-        repoSelect.getIndustryCategory(),
-        repoSelect.getQuestions(),
-    ])
+    if (process.client) {
+        await Promise.all([
+            repoSelect.getSelectByQuery(),
+            repoSelect.getLocation(),
+            repoSelect.getIndustryCategory(),
+            repoSelect.getQuestions(),
+        ])
+    }
 })
-// useSeoMeta({
-//     title: () => runTimeConfig.public.siteName,
-//     ogTitle: () => runTimeConfig.public.siteName,
-//     description: () => runTimeConfig.public.siteDescription,
-//     ogDescription: () => runTimeConfig.public.siteDescription,
-// })
 useSchemaOrg([
     defineOrganization({
         name: 'Job Pair',
@@ -41,8 +37,6 @@ useSchemaOrg([
             'https://www.facebook.com/jobpairtw/'
         ]
     }),
-    // defineWebSite({/* ... */}),
-    // defineWebPage(),
 ])
 async function startLiff() {
     // 调用 console 方法输出日志
