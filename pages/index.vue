@@ -2,7 +2,7 @@
     <div class="admin">
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png" alt="title">
-            <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg" alt="title">
+            <img class="admin__title admin__title--desktop" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" alt="title">
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
@@ -137,7 +137,7 @@ function routeToQuestions() {
 <style lang="scss" scoped>
 .admin {
     .admin__bannerGroup {
-        background-image: url('@/assets/index/banner.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/banner.png');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -201,7 +201,7 @@ function routeToQuestions() {
     }
 
     .admin__definition {
-        background-image: url('@/assets/index/bg_home.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/bg_home.png');
         padding: 80px 30px;
 
         .definition__title {
