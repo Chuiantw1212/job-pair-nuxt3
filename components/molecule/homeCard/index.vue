@@ -1,11 +1,11 @@
 <template>
     <div class="homeCard">
         <template v-if="device.state.isLarge">
-            <img src="./Group899.svg">
+            <img src="./Group899.svg" alt="cardBackground">
             <div class="homeCard__jobPairDesc">
                 {{ jobPairDesc }}
             </div>
-            <img class="homeCard__crown" src="./Group.svg">
+            <img class="homeCard__crown" src="./Group.svg" alt="jobPairSelected">
             <div class="homeCard__title">
                 {{ title }}
             </div>
@@ -14,14 +14,14 @@
             </div>
         </template>
         <template v-else>
-            <img src="./Group898.svg">
+            <img src="./Group898.svg" alt="cardBackground">
             <div class="homeCard__jobPair">
                 Job Pair
             </div>
             <div class="homeCard__jobPairDesc">
                 {{ jobPairDesc }}
             </div>
-            <img class="homeCard__crown" src="./Group.svg">
+            <img class="homeCard__crown" src="./Group.svg" alt="jobPairSelected">
             <div class="homeCard__title">
                 {{ title }}
             </div>
@@ -54,7 +54,8 @@ const props = defineProps({
 <style lang="scss" scoped>
 .homeCard {
     position: relative;
-    width: fit-content;
+    width: 277px;
+    height: 202px;
 
     .homeCard__jobPair {
         position: absolute;
@@ -139,6 +140,9 @@ const props = defineProps({
 
 @media screen and (min-width:992px) {
     .homeCard {
+        width: 868px;
+        height: 170px;
+
         .homeCard__jobPairDesc {
             position: absolute;
             top: 58px;

@@ -1,8 +1,8 @@
 <template>
     <div class="admin">
         <div class="admin__bannerGroup">
-            <img class="admin__title" src="@/assets/index/title.png">
-            <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg">
+            <img class="admin__title" src="@/assets/index/title.png" alt="title">
+            <img class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.svg" alt="title">
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
