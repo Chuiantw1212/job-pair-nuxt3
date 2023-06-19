@@ -276,7 +276,7 @@ function routeToQuestions() {
     .admin {
 
         .admin__bannerGroup {
-            background-image: url('@/assets/index/img1.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img1.png');
             background-size: contain;
             min-height: 50vw;
 
@@ -375,7 +375,7 @@ function routeToQuestions() {
         }
 
         .admin__definition {
-            background-image: url('@/assets/index/img2.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png');
             height: 634px;
             position: relative;
             background-size: cover;

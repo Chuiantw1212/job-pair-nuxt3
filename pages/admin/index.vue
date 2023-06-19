@@ -24,7 +24,7 @@
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
             <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="~/assets/admin/index/img2.png" alt="issue2" />
+                <img class="section__image section__image--2" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png" alt="issue2" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
