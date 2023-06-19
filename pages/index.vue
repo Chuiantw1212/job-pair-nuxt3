@@ -2,7 +2,8 @@
     <div class="admin">
         <div class="admin__bannerGroup">
             <img class="admin__title" src="@/assets/index/title.png" alt="title">
-            <img class="admin__title admin__title--desktop" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" alt="title">
+            <img class="admin__title admin__title--desktop"
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" alt="title">
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
@@ -103,10 +104,6 @@ onMounted(async () => {
         jobProvider.sort(() => .5 - Math.random());
         state.jobProvider = jobProvider
     }
-})
-useSeoMeta({
-    title: 'Job Pair人力銀行-找對的人發揮長久價值，專業媒合平台輕鬆高效找工作',
-    ogTitle: 'Job Pair人力銀行-找對的人發揮長久價值，專業媒合平台輕鬆高效找工作'
 })
 // methods
 function routeToQuestions() {
