@@ -33,7 +33,7 @@ const state = reactive({
 onMounted(() => {
     $emitter.on("showCompanyModal", showModal)
     $emitter.on("hideCompanyModal", hideModal)
-    state.bsModal = new $bootstrap.Modal(document.getElementById("companyModal"), {
+    state.bsModal = new window.bootstrap.Modal(document.getElementById("companyModal"), {
         keyboard: false,
         backdrop: "static"
     })

@@ -42,7 +42,7 @@ const props = defineProps({
 })
 onMounted(() => {
     $requestSelector(`#deleteModal`, (modelElement) => {
-        state.bsModal = new $bootstrap.Modal(modelElement, {
+        state.bsModal = new window.bootstrap.Modal(modelElement, {
             keyboard: false,
             backdrop: "static",
         })

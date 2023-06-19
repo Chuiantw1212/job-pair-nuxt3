@@ -59,7 +59,7 @@ onMounted(() => {
     $emitter.on("showSwitchModal", showModal)
     $emitter.on("hideSwitchModal", hideModal)
     if (process.client) {
-        state.bsModal = new $bootstrap.Modal(document.getElementById("switchModal"), {
+        state.bsModal = new window.bootstrap.Modal(document.getElementById("switchModal"), {
             keyboard: false,
             backdrop: "static",
         })

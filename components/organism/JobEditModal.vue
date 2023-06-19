@@ -225,7 +225,7 @@ const props = defineProps({
 })
 onMounted(() => {
     $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
-        const bsModal = new $bootstrap.Modal(element, {
+        const bsModal = new window.bootstrap.Modal(element, {
             keyboard: false,
         })
         element.addEventListener('show.bs.modal', () => {

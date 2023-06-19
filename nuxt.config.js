@@ -1,10 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
+const axios = require('axios')
+const apiBase = 'https://job-pair-taiwan-dev.de.r.appspot.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
     app: {
         head: {
+            // should match runtime vars
+            titleTemplate: '%pageTitle %titleSeparator %siteName',
             meta: [
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
@@ -33,8 +37,11 @@ export default defineNuxtConfig({
                 // Flatpickr
                 { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css", type: "text/css", media: "screen" },
                 // Bootstrap
-                { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css", rel: "stylesheet", integrity: "sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi", crossorigin: "anonymous" },
+                { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", rel: "stylesheet", },
             ],
+            script: [
+                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', }
+            ]
         },
     },
     css: [
@@ -45,8 +52,12 @@ export default defineNuxtConfig({
         public: {
             VITE_APP_ECPAY_AMOUNT: 5,
             VITE_APP_FIREBASE_ENV: 'development',
-            apiBase: 'https://job-pair-taiwan-dev.de.r.appspot.com',
-            origin: 'https://job-pair-taiwan-dev.web.app',
+            apiBase, // deprecated
+            // SEO
+            siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://job-pair-taiwan-dev.web.app',
+            siteName: 'Job Pair人力銀行',
+            siteDescription: 'Job Pair 是專業的媒合平台，專注於助您找到與能力、價值觀相符的工作機會，實現長期價值發揮。透過我們高效的適配功能，輕鬆探索理想職位。立即加入 Job Pair，啟動您的職業生涯。',
+            language: 'zh-TW', // prefer more explicit language codes like `en-AU` over `en`
             LIFF_ID: '1660783051-vP4Ojz2r',
             axiosTimeout: 30000,
         }
@@ -55,6 +66,9 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+    ],
+    extends: [
+        'nuxt-seo-kit'
     ],
     vite: {
         define: {
@@ -75,9 +89,47 @@ export default defineNuxtConfig({
             gzip: true,
             brotli: true,
         },
-        // https://content.nuxtjs.org/guide/recipes/sitemap/
-        prerender: {
-            routes: ['/sitemap.xml']
-        }
+    },
+    sitemap: {
+        exclude: [
+            '/questions/**',
+            '/admin/**',
+            '/user/**'
+        ],
+        // provide dynamic URLs to be included
+        urls: async () => {
+            const axiosInstance = axios.create({
+                baseURL: apiBase,
+                timeout: 20 * 60 * 1000,
+            })
+            const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+                axiosInstance({
+                    method: 'get',
+                    url: '/job/sitemap',
+                }),
+                axiosInstance({
+                    method: 'get',
+                    url: '/company/sitemap',
+                }),
+            ])
+            const urls = []
+            jobIdsResponse.data.forEach((item) => {
+                urls.push({
+                    url: `/job/${item.identifier}`,
+                    lastmod: item.datePosted,
+                })
+            })
+            companyIdsResponse.data.forEach((item) => {
+                urls.push({
+                    url: `/company/${item.id}`,
+                    lastmod: item.updatedDate,
+                    changefreq: 'monthly'
+                })
+            })
+            return urls
+        },
+    },
+    linkChecker: {
+        failOn404: true,
     },
 })

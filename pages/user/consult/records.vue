@@ -274,8 +274,8 @@
     </div>
 </template>
 <script setup>
-import { reactive, onMounted, } from 'vue'
-const { $time, $meta } = useNuxtApp()
+const { $time, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
@@ -287,12 +287,10 @@ const state = reactive({
     activeTab: 'life'
 })
 // hooks
-useSeoMeta({
-    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
-    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+useHead({
+    title: '職涯諮詢 - 會員中心'
 })
 onMounted(async () => {
-    // console.log('??');
     const consultantsRes = await repoConsult.getConsultants()
     const consultants = consultantsRes.data
     let allFeedbacks = []

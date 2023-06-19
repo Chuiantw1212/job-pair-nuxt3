@@ -62,7 +62,7 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         $requestSelector(`#jobModal${state.id}`, (modelElement) => {
-            state.bsModal = new $bootstrap.Modal(modelElement, {
+            state.bsModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
             })
             modelElement.addEventListener("shown.bs.modal", async () => {

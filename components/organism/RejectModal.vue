@@ -59,7 +59,7 @@ onMounted(() => {
         if (!editableElement) {
             return
         }
-        state.editModal = new $bootstrap.Modal(editableElement, {
+        state.editModal = new window.bootstrap.Modal(editableElement, {
             keyboard: false,
             backdrop: "static",
         })

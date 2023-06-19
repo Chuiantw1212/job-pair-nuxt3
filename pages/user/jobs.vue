@@ -330,7 +330,8 @@
     </div>
 </template>
 <script setup>
-const { $filter, $rank, $meta } = useNuxtApp()
+const { $filter, $rank, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const repoSelect = useRepoSelect()
@@ -350,9 +351,8 @@ const state = reactive({
     },
 })
 // hooks
-useSeoMeta({
-    title: () => `求職狀態 - 會員中心 - ${$meta.title}`,
-    ogTitle: () => `求職狀態 - 會員中心 - ${$meta.title}`,
+useHead({
+    title: '求職狀態 - 會員中心'
 })
 onMounted(() => {
     initialize()

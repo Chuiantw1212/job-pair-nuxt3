@@ -67,7 +67,7 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         $requestSelector(`#invitation${state.id}`, (modelElement) => {
-            state.bsModal = new $bootstrap.Modal(modelElement, {
+            state.bsModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })

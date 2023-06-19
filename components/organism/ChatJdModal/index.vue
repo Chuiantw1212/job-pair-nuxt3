@@ -176,7 +176,7 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         $requestSelector(`#chatModal${state.id}`, (modelElement) => {
-            state.chatModal = new $bootstrap.Modal(modelElement, {
+            state.chatModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })
