@@ -73,7 +73,7 @@ onMounted(() => {
     })
     if (process.client) {
         const menuToggle = document.getElementById("navbarSupportedContent")
-        state.bsCollapse = new $bootstrap.Collapse(menuToggle, {
+        state.bsCollapse = new window.bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
         toggleClickOutside(true)

@@ -145,10 +145,10 @@ function resetCopiedTooltip() {
 }
 function initialilzeTooltip() {
     $requestSelector(`#tooltip${state.id}`, (element) => {
-        state.shareButtonToolTip = new $bootstrap.Tooltip(element)
+        state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
     })
     $requestSelector(`#copied${state.id}`, (element) => {
-        state.copiedTooltip = new $bootstrap.Tooltip(element)
+        state.copiedTooltip = new window.bootstrap.Tooltip(element)
     })
 }
 async function handleUnsavedJob() {

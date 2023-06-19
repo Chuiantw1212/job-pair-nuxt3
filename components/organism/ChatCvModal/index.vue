@@ -96,7 +96,7 @@ onMounted(() => {
         state.id = $uuid4()
         state.beforeChatGpt = props.modelValue
         $requestSelector(`#chatModal${state.id}`, (modelElement) => {
-            state.chatModal = new $bootstrap.Modal(modelElement, {
+            state.chatModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })

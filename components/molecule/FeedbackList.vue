@@ -80,7 +80,7 @@ onMounted(() => {
         state.id = $uuid4()
         $requestSelector('#feedbackModal', (element) => {
             if (!state.bsModal) {
-                state.bsModal = new $bootstrap.Modal(element, {
+                state.bsModal = new window.bootstrap.Modal(element, {
                     keyboard: false,
                 })
             }
