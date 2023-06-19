@@ -103,7 +103,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, $liff } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
@@ -137,33 +137,33 @@ onMounted(async () => {
         // await startLiff()
     }
 })
-async function startLiff() {
-    // 调用 console 方法输出日志
-    if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
-        try {
-            await $liff.init({ liffId: runTimeConfig.public.LIFF_ID })
-        } catch (error) {
-            console.log(error.message || error);
-        }
-        const profile = await $liff.getProfile()
-        console.log({
-            profile
-        });
-        state.profile = profile
-        // const getProfileExample = {
-        //     "userId": "U4af4980629...",
-        //     "displayName": "Brown",
-        //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
-        //     "statusMessage": "Hello, LINE!"
-        // }
-        if (profile) {
-            const { userId = '' } = profile
-            console.log({
-                userId
-            });
-        }
-    }
-}
+// async function startLiff() {
+//     // 调用 console 方法输出日志
+//     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
+//         try {
+//             await $liff.init({ liffId: runTimeConfig.public.LIFF_ID })
+//         } catch (error) {
+//             console.log(error.message || error);
+//         }
+//         const profile = await $liff.getProfile()
+//         console.log({
+//             profile
+//         });
+//         state.profile = profile
+//         // const getProfileExample = {
+//         //     "userId": "U4af4980629...",
+//         //     "displayName": "Brown",
+//         //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+//         //     "statusMessage": "Hello, LINE!"
+//         // }
+//         if (profile) {
+//             const { userId = '' } = profile
+//             console.log({
+//                 userId
+//             });
+//         }
+//     }
+// }
 function openAdminModal() {
     const { user } = repoAuth.state
     if (user && user.type === 'admin') {

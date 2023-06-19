@@ -16,7 +16,7 @@
     </div>
 </template>
 <script setup>
-const { $liff, } = useNuxtApp()
+// const { $liff, } = useNuxtApp()
 const repoSelect = useRepoSelect()
 const runTimeConfig = useRuntimeConfig()
 onMounted(async () => {
@@ -38,34 +38,34 @@ useSchemaOrg([
         ]
     }),
 ])
-async function startLiff() {
-    // 调用 console 方法输出日志
-    if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
-        try {
-            await $liff.init({ liffId: config.public.LIFF_ID })
-        } catch (error) {
-            console.log(error.message || error);
-        }
-        const profile = await $liff.getProfile()
-        console.log({
-            profile
-        });
-        state.profile = profile
-        window.open(`https://line.me/R/oaMEssage/@428awwlj/?測試訊息`)
-        // const getProfileExample = {
-        //     "userId": "U4af4980629...",
-        //     "displayName": "Brown",
-        //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
-        //     "statusMessage": "Hello, LINE!"
-        // }
-        if (profile) {
-            const { userId = '' } = profile
-            console.log({
-                userId
-            });
-        }
-    }
-}
+// async function startLiff() {
+//     // 调用 console 方法输出日志
+//     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
+//         try {
+//             await $liff.init({ liffId: config.public.LIFF_ID })
+//         } catch (error) {
+//             console.log(error.message || error);
+//         }
+//         const profile = await $liff.getProfile()
+//         console.log({
+//             profile
+//         });
+//         state.profile = profile
+//         window.open(`https://line.me/R/oaMEssage/@428awwlj/?測試訊息`)
+//         // const getProfileExample = {
+//         //     "userId": "U4af4980629...",
+//         //     "displayName": "Brown",
+//         //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+//         //     "statusMessage": "Hello, LINE!"
+//         // }
+//         if (profile) {
+//             const { userId = '' } = profile
+//             console.log({
+//                 userId
+//             });
+//         }
+//     }
+// }
 </script>
 <style lang="scss">
 .app {
