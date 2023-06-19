@@ -104,6 +104,10 @@ onMounted(async () => {
         state.jobProvider = jobProvider
     }
 })
+useSeoMeta({
+    title: 'Job Pair人力銀行-找對的人發揮長久價值，專業媒合平台輕鬆高效找工作',
+    ogTitle: 'Job Pair人力銀行-找對的人發揮長久價值，專業媒合平台輕鬆高效找工作'
+})
 // methods
 function routeToQuestions() {
     const { user } = repoAuth.state
