@@ -42,26 +42,20 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                "heading",
-                "|",
-                'fontSize',
-                "|",
+                'heading',
+                '|',
                 'bold',
                 'italic',
                 'link',
                 'bulletedList',
                 'numberedList',
                 '|',
-                'outdent',
-                'indent',
-                '|',
-                'blockQuote',
-                'insertTable',
+                // 'imageUpload',
                 'mediaEmbed',
                 'undo',
                 'redo',
                 '|',
-                'removeFormat'
+                'removeFormat',
             ]
         }
     },
@@ -138,23 +132,9 @@ async function initializeCKEditor() {
     // 使用CDN
     const editorConfig = {
         initialData: localValue.value || '<p></p>',
-        toolbar: [
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            '|',
-            // 'imageUpload',
-            'mediaEmbed',
-            'undo',
-            'redo',
-            '|',
-            'removeFormat'
-        ],
+        toolbar: props.toolbar,
         placeholder: props.placeholder,
+        // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
         ui: {
             poweredBy: {
                 position: 'inside',
