@@ -86,4 +86,9 @@ body {
     --ck-z-default: 100;
     --ck-z-modal: calc(var(--ck-z-default) + 900);
 }
+
+// https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
+.ck.ck-balloon-panel.ck-powered-by-balloon {
+    --ck-powered-by-border-color: #d3d3d3;
+}
 </style>

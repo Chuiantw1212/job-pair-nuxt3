@@ -1,10 +1,10 @@
 <template>
     <div v-if="state.isVisible" class="bubble">
-        <img class="bubble__monica" src="./img_bubble_girl.svg">
+        <img class="bubble__monica" src="./img_bubble_girl.svg" alt="monica">
         <button class="bubble__cancel" aria-label="cancel" @click="state.isVisible = false">
-            <img src="./Icon.svg">
+            <img src="./Icon.svg" alt="cancel">
         </button>
-        <img src="./Group.svg">
+        <img src="./Group.svg" alt="background">
         <div class="bubble__text">
             繼續完成個人檔案<br>
             來獲得適合您的職缺！
