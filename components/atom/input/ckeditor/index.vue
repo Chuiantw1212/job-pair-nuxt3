@@ -135,15 +135,31 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor.js`)
     // 使用CDN
     const editorConfig = {
-        toolbar: props.toolbar,
+        initialData: '<p></p>',
+        toolbar: [
+            'heading',
+            '|',
+            'link',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'undo',
+            'redo',
+            '|',
+            'removeFormat'
+        ],
         placeholder: props.placeholder
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
+    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/dist/bundle.js`)
     const ClassicEditor = importedEditor || window.ClassicEditor
-    const editor = await ClassicEditor.create(editorRef.value, editorConfig)
+    console.log({
+        ClassicEditor
+    });
+    const element = document.querySelector(`#editor_${state.id}`)
+    const editor = await ClassicEditor.create(element, editorConfig)
     editor.ui.view.editable.element.style.maxHeight = props.style.height
     // Set Height
     editor.editing.view.change(writer => {
