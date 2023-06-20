@@ -134,7 +134,7 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
+    const { default: importedEditor } = await import("~/public/ckeditor.js")
     // 使用CDN
     const editorConfig = {
         toolbar: props.toolbar,
