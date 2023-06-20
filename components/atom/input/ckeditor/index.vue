@@ -141,6 +141,8 @@ async function initializeCKEditor() {
         toolbar: [
             'heading',
             '|',
+            'bold',
+            'italic',
             'link',
             'bulletedList',
             'numberedList',
@@ -152,7 +154,14 @@ async function initializeCKEditor() {
             '|',
             'removeFormat'
         ],
-        placeholder: props.placeholder
+        placeholder: props.placeholder,
+        ui: {
+            poweredBy: {
+                position: 'inside',
+                // side: 'left',
+                label: 'Job Pair'
+            }
+        }
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/dist/bundle.js`)
