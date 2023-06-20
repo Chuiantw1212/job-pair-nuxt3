@@ -137,7 +137,7 @@ async function initializeCKEditor() {
     }
     // 使用CDN
     const editorConfig = {
-        initialData: '<p></p>',
+        initialData: localValue.value || '<p></p>',
         toolbar: [
             'heading',
             '|',
@@ -145,6 +145,8 @@ async function initializeCKEditor() {
             'bulletedList',
             'numberedList',
             '|',
+            // 'imageUpload',
+            'mediaEmbed',
             'undo',
             'redo',
             '|',
