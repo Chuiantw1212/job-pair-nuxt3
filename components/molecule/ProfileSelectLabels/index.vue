@@ -4,11 +4,11 @@
             <div v-for="(item, index) in localValue" :key="index">
                 <div v-if="$optionText(item, items)" class="item__badge" @click.stop="removeSelf(index)">
                     <span class="badge__span">{{ $optionText(item, items) }}</span>
-                    <img class="badge__image" src="./Icon_delete_g.svg" />
+                    <img class="badge__image" src="./Icon_delete_g.svg" alt="delete" />
                 </div>
                 <div v-else class="item__badge" @click.stop="removeSelf(index)">
                     <span class="badge__span">{{ item, items }}</span>
-                    <img class="badge__image" src="./Icon_delete_g.svg" />
+                    <img class="badge__image" src="./Icon_delete_g.svg" alt="delete" />
                 </div>
             </div>
         </template>
