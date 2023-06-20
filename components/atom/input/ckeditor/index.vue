@@ -26,6 +26,7 @@ export default {
 <script setup>
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const editorRef = ref(null)
 const state = reactive({
@@ -134,7 +135,7 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    const { default: importedEditor } = await import("~/public/ckeditor.js")
+    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor.js`)
     // 使用CDN
     const editorConfig = {
         toolbar: props.toolbar,
