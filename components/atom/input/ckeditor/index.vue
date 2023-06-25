@@ -146,9 +146,6 @@ async function initializeCKEditor() {
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/dist/bundle.js`)
     const ClassicEditor = importedEditor || window.ClassicEditor
-    console.log({
-        ClassicEditor
-    });
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
     editor.ui.view.editable.element.style.maxHeight = props.style.height
