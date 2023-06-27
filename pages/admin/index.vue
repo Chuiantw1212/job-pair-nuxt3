@@ -24,7 +24,7 @@
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
             <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="~/assets/admin/index/img2.png" alt="issue2" />
+                <img class="section__image section__image--2" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png" alt="issue2" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
@@ -103,8 +103,8 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, $liff } = useNuxtApp()
-const runTime = useRuntimeConfig()
+const { $emitter, } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()
 const router = useRouter()
@@ -114,13 +114,8 @@ const state = reactive({
     affiliate: [],
     jobProvider: [],
 })
-const { data: companyList } = await useFetch(`${runTime.public.apiBase}/company/affiliate`, { initialCache: false })
+const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
-useSeoMeta({
-    ogUrl: () => {
-        return `${runTime.public.origin}/admin`
-    }
-})
 onMounted(async () => {
     if (process.client) {
         const response = await repoJob.getJobByQuery({
@@ -142,33 +137,33 @@ onMounted(async () => {
         // await startLiff()
     }
 })
-async function startLiff() {
-    // 调用 console 方法输出日志
-    if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
-        try {
-            await $liff.init({ liffId: runTime.public.LIFF_ID })
-        } catch (error) {
-            console.log(error.message || error);
-        }
-        const profile = await $liff.getProfile()
-        console.log({
-            profile
-        });
-        state.profile = profile
-        // const getProfileExample = {
-        //     "userId": "U4af4980629...",
-        //     "displayName": "Brown",
-        //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
-        //     "statusMessage": "Hello, LINE!"
-        // }
-        if (profile) {
-            const { userId = '' } = profile
-            console.log({
-                userId
-            });
-        }
-    }
-}
+// async function startLiff() {
+//     // 调用 console 方法输出日志
+//     if ($liff && process.env.VITE_APP_FIREBASE_ENV !== 'production') {
+//         try {
+//             await $liff.init({ liffId: runTimeConfig.public.LIFF_ID })
+//         } catch (error) {
+//             console.log(error.message || error);
+//         }
+//         const profile = await $liff.getProfile()
+//         console.log({
+//             profile
+//         });
+//         state.profile = profile
+//         // const getProfileExample = {
+//         //     "userId": "U4af4980629...",
+//         //     "displayName": "Brown",
+//         //     "pictureUrl": "https://profile.line-scdn.net/abcdefghijklmn",
+//         //     "statusMessage": "Hello, LINE!"
+//         // }
+//         if (profile) {
+//             const { userId = '' } = profile
+//             console.log({
+//                 userId
+//             });
+//         }
+//     }
+// }
 function openAdminModal() {
     const { user } = repoAuth.state
     if (user && user.type === 'admin') {

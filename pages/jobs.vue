@@ -152,7 +152,7 @@
     </div>
 </template>
 <script setup>
-const { $requestSelectorAll, $sweet, $meta } = useNuxtApp()
+const { $requestSelectorAll, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -191,9 +191,8 @@ const state = reactive({
     },
 })
 // hooks
-useSeoMeta({
-    title: () => `職缺探索 - ${$meta.title}`,
-    ogTitle: () => `職缺探索 - ${$meta.title}`,
+useHead({
+    title: '職缺探索'
 })
 watch(() => repoAuth.state.user, (user) => {
     // set filter
@@ -202,7 +201,6 @@ watch(() => repoAuth.state.user, (user) => {
     }
     // get jobs
     const firstJob = state.jobList[0]
-    console.log('watch', firstJob);
     if (!firstJob?.similarity) {
         initializeSearch()
     }

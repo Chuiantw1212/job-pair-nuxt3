@@ -174,9 +174,9 @@
     </div>
 </template>
 <script setup>
-const { $time, $optionText, $rank, $sweet, $meta } = useNuxtApp()
+const { $time, $optionText, $rank, $sweet, } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
-const runTime = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 const repoCompany = useRepoCompany()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
@@ -245,9 +245,8 @@ const props = defineProps({
     }
 })
 // hooks
-useSeoMeta({
-    title: () => `應徵管理 - 招募中心 - ${$meta.title}`,
-    ogTitle: () => `應徵管理 - 招募中心 - ${$meta.title}`,
+useHead({
+    title: '應徵管理 - 招募中心'
 })
 onMounted(async () => {
     const { id } = route.params

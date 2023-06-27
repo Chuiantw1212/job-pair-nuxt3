@@ -34,7 +34,7 @@ onMounted(() => {
     $emitter.on("showUserModal", showModal)
     $emitter.on("hideUserModal", hideModal)
     if (process.client) {
-        state.bsModal = new $bootstrap.Modal(document.getElementById("userModal"), {
+        state.bsModal = new window.bootstrap.Modal(document.getElementById("userModal"), {
             keyboard: false,
             backdrop: "static"
         })

@@ -134,7 +134,7 @@ const props = defineProps({
 })
 onMounted(() => {
     $requestSelector('#filterModal', (element) => {
-        const bsModal = new $bootstrap.Modal(element, {
+        const bsModal = new window.bootstrap.Modal(element, {
             keyboard: false,
         })
         state.bsModal = bsModal

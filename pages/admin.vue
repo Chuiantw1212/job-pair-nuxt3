@@ -2,6 +2,7 @@
     <NuxtPage></NuxtPage>
 </template>
 <script setup>
-const { $emitter } = useNuxtApp()
-const repoAuth = useRepoAuth()
+useHead({
+    title: '企業專區'
+})
 </script>

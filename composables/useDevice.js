@@ -22,6 +22,8 @@ export default defineStore('device', () => {
     }
     function checkIsNativeWeb() {
         const u = navigator.userAgent
+        // console.log(navigator.userAgentData)
+        // const { brands = [], mobile = false, platform = '' } = navigator.userAgentData
         const ua = navigator.userAgent.toLowerCase()
         const result = { //偵測移動端瀏覽器版本信息
             trident: u.indexOf('Trident') > -1, //IE 核心

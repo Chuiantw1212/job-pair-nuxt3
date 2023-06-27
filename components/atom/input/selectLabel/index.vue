@@ -3,7 +3,7 @@
         <template v-for="(item, index) in modelValue" :key="index">
             <div v-if="$optionText(item, items)" class="item__badge" @click="removeSelf(index)">
                 <span>{{ $optionText(item, items) }}</span>
-                <img class="badge__image" src="./Icon_delete_g.svg" />
+                <img class="badge__image" src="./Icon_delete_g.svg" alt="delete" />
             </div>
         </template>
     </div>

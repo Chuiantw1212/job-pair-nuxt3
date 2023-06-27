@@ -18,7 +18,8 @@
                 <!-- 手機縮圖列表 -->
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
-                    <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" :to="{ name: 'jobs' }">
+                    <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" aria-label="route to jobs"
+                        :to="{ name: 'jobs' }">
                         <svg class="icons__Group__image" width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path class="image__fill image__fill--jobs"
@@ -26,7 +27,8 @@
                                 fill="#484848" stroke="#484848" stroke-width=".7" />
                         </svg>
                     </NuxtLink>
-                    <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" :to="{ name: 'user-profile' }">
+                    <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" aria-label="route to user proflie"
+                        :to="{ name: 'user-profile' }">
                         <svg class="icons__Group__image" width="18" height="18" viewBox="0 0 18 18" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#xl40irzjfa)">
@@ -73,7 +75,7 @@ onMounted(() => {
     })
     if (process.client) {
         const menuToggle = document.getElementById("navbarSupportedContent")
-        state.bsCollapse = new $bootstrap.Collapse(menuToggle, {
+        state.bsCollapse = new window.bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
         toggleClickOutside(true)

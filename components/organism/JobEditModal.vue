@@ -111,13 +111,13 @@
                             </LazyAtomInputRadio>
                         </div>
                         <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled"
-                            required :toolbar="state.toolbar" ref="description" class="mt-4">
+                            required ref="description" class="mt-4">
                             <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
                                 :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
                             </LazyOrganismChatCvModal> -->
                         </LazyAtomInputCkeditor>
                         <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
-                            :removePlatformLink="true" :toolbar="state.toolbar" ref="skills" class="mt-4">
+                            :removePlatformLink="true" ref="skills" class="mt-4">
                             <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills"
                                 :chatRequest="handleChatSkills" @update:modelValue="setSkills($event)">
                             </LazyOrganismChatCvModal> -->
@@ -186,28 +186,6 @@ const state = reactive({
         employmentType: false,
     },
     bsModal: null,
-    toolbar: [
-        "heading",
-        "|",
-        'fontSize',
-        "|",
-        'bold',
-        'italic',
-        // 'link', // 正規表示式出來前，一律拿掉職缺超連結
-        'bulletedList',
-        'numberedList',
-        '|',
-        'outdent',
-        'indent',
-        '|',
-        'blockQuote',
-        'insertTable',
-        'mediaEmbed',
-        'undo',
-        'redo',
-        '|',
-        'removeFormat'
-    ]
 })
 const props = defineProps({
     modelValue: {
@@ -225,7 +203,7 @@ const props = defineProps({
 })
 onMounted(() => {
     $requestSelector(`#modal_${props.modelValue.identifier}`, (element) => {
-        const bsModal = new $bootstrap.Modal(element, {
+        const bsModal = new window.bootstrap.Modal(element, {
             keyboard: false,
         })
         element.addEventListener('show.bs.modal', () => {

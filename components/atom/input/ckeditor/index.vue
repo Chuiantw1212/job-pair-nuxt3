@@ -26,6 +26,7 @@ export default {
 <script setup>
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const emit = defineEmits(['update:modelValue', 'blur'])
 const editorRef = ref(null)
 const state = reactive({
@@ -41,26 +42,20 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                "heading",
-                "|",
-                'fontSize',
-                "|",
+                'heading',
+                '|',
                 'bold',
                 'italic',
                 'link',
                 'bulletedList',
                 'numberedList',
                 '|',
-                'outdent',
-                'indent',
-                '|',
-                'blockQuote',
-                'insertTable',
+                // 'imageUpload',
                 'mediaEmbed',
                 'undo',
                 'redo',
                 '|',
-                'removeFormat'
+                'removeFormat',
             ]
         }
     },
@@ -134,15 +129,25 @@ async function initializeCKEditor() {
     if (!process.client) {
         return
     }
-    const { default: importedEditor } = await import("~/assets/ckeditor5/build/ckeditor.js")
     // 使用CDN
     const editorConfig = {
+        initialData: localValue.value || '<p></p>',
         toolbar: props.toolbar,
-        placeholder: props.placeholder
+        placeholder: props.placeholder,
+        // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
+        ui: {
+            poweredBy: {
+                position: 'inside',
+                // side: 'left',
+                label: 'Job Pair'
+            }
+        }
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
+    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/dist/bundle.js`)
     const ClassicEditor = importedEditor || window.ClassicEditor
-    const editor = await ClassicEditor.create(editorRef.value, editorConfig)
+    const element = document.querySelector(`#editor_${state.id}`)
+    const editor = await ClassicEditor.create(element, editorConfig)
     editor.ui.view.editable.element.style.maxHeight = props.style.height
     // Set Height
     editor.editing.view.change(writer => {

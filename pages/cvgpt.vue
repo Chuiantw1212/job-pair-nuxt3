@@ -125,6 +125,11 @@ const state = reactive({
         q7: `你能提供例子我應如何回答“A面試問題”嗎？`,
     }
 })
+// hooks
+useHead({
+    title: '履歷模板'
+})
+// methods
 async function copyToMemory(key) {
     const text = state.template[key]
     await navigator.clipboard.writeText(text)

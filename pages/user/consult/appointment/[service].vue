@@ -73,13 +73,13 @@
     </div>
 </template>
 <script setup>
-const { $validate, $sweet, $meta } = useNuxtApp()
+const { $validate, } = useNuxtApp()
 const router = useRouter()
 const route = useRoute()
 const repoConsult = useRepoConsult()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
-const config = useRuntimeConfig()
+const runTimeConfig = useRuntimeConfig()
 const state = reactive({
     activeTab: 'recommend',
     consultants: [],
@@ -115,9 +115,8 @@ const state = reactive({
     },
 })
 // hooks
-useSeoMeta({
-    title: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
-    ogTitle: () => `職涯諮詢 - 會員中心 - ${$meta.title}`,
+useHead({
+    title: '職涯諮詢 - 會員中心'
 })
 onMounted(async () => {
     const service = route.params.service || 'life'
@@ -176,7 +175,7 @@ async function submitAppointment() {
         return
     }
     state.appointmentForm.userId = repoAuth.state.user.id
-    const VITE_APP_ECPAY_AMOUNT = `${config.public.VITE_APP_ECPAY_AMOUNT}`
+    const VITE_APP_ECPAY_AMOUNT = `${runTimeConfig.public.VITE_APP_ECPAY_AMOUNT}`
     state.appointmentForm.amount = VITE_APP_ECPAY_AMOUNT // IMPORTANT
     if (repoAuth.state?.user?.email === 'chuiantw1212@gmail.com') {
         state.appointmentForm.amount = 5

@@ -167,14 +167,14 @@ onMounted(() => {
         state.id = $uuid4()
         // 編輯用modal
         $requestSelector(`#schedule${state.id}`, (editableElement) => {
-            state.editModal = new $bootstrap.Modal(editableElement, {
+            state.editModal = new window.bootstrap.Modal(editableElement, {
                 keyboard: false,
                 backdrop: "static",
             })
         })
         // 預覽用modal
         $requestSelector(`#preview${state.id}`, (previewElement) => {
-            state.previewModal = new $bootstrap.Modal(previewElement, {
+            state.previewModal = new window.bootstrap.Modal(previewElement, {
                 keyboard: false,
                 backdrop: "static",
             })
