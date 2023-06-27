@@ -2,7 +2,7 @@
 const random = Math.random()
 const axios = require('axios')
 const apiBase = 'https://job-pair-taiwan-prd.de.r.appspot.com'
-const siteUrl = 'https://job-pair-taiwan-prd.web.app'
+const siteUrl = 'https://job-pair.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
