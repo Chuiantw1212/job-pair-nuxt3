@@ -5,7 +5,7 @@
             一鍵優化
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
@@ -154,7 +154,7 @@ async function handleOptimization() {
     border-radius: 10px;
 
     .modal-header {
-        border: none;
+        // border: none;
         position: relative;
         text-align: center;
 
@@ -187,7 +187,7 @@ async function handleOptimization() {
     }
 
     .modal-footer {
-        border: none;
+        // border: none;
         padding-bottom: 37px;
 
         .footer__buttonGroup {
