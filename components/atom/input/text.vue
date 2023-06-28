@@ -34,6 +34,12 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    types: {
+        type: Array,
+        default: function () {
+            return ['english', 'mandarin', 'number', 'marks']
+        }
+    },
     width: {
         type: [String, Number],
         default: "1",
