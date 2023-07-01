@@ -34,6 +34,42 @@
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
+            <div class="accountManagement__card mt-4">
+                <h4>錢包餘額</h4>
+                <div class="balance__inputGroup">
+                    <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
+                    <LazyAtomBtnSimple class="inputGroup__btn" type="button">關閉彈窗</LazyAtomBtnSimple>
+                </div>
+                <table class="table ballance__table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div class="accountManagement__card mt-3">
             <h4>人資聊天室</h4>
             <section class="accountManagement__chat">
@@ -61,6 +97,7 @@ const state = reactive({
     newPass: null,
     newPassAgain: null,
     chatIcon: null,
+    balance: 0,
 })
 // hooks
 useHead({
@@ -149,7 +186,7 @@ async function submitProfile() {
 .accountManagement {
     .accountManagement__card {
         background-color: #fafafa;
-        padding: 45px 64px;
+        padding: 23px 40px;
         border-radius: 10px;
 
         .card__headerGroup {
@@ -177,6 +214,26 @@ async function submitProfile() {
             }
         }
 
+    }
+
+    .balance__inputGroup {
+        display: flex;
+        gap: 5px;
+
+        .inputGroup__input {
+            width: 131px;
+            // height: 50px;
+        }
+
+        .inputGroup__btn {
+            width: 112px;
+            height: 42px;
+            border-radius: 10px;
+        }
+    }
+
+    .ballance__table {
+        margin-top: 52px;
     }
 
     .accountManagement__chat {
