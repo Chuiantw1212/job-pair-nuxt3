@@ -72,7 +72,6 @@ const state = reactive({
         }
     },
     resume: null,
-    renderKey: Math.random(),
 })
 const props = defineProps({
     modelValue: {
