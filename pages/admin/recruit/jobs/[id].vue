@@ -3,9 +3,9 @@
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">
                 職缺狀態
-                <span class="header__wallet">錢包餘額：0點
+                <!-- <span class="header__wallet">錢包餘額：0點
                     <img class="wallet__balance" src="@/assets/admin/Frame.png" alt="account balance">
-                </span>
+                </span> -->
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
