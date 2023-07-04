@@ -67,6 +67,7 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        '@nuxt/image',
     ],
     extends: [
         'nuxt-seo-kit'
