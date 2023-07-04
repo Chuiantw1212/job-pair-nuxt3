@@ -134,4 +134,10 @@ export default defineNuxtConfig({
     linkChecker: {
         failOn404: true,
     },
+    // https://image.nuxtjs.org/configuration
+    image: {
+        // Options
+        format: ['webp'],
+        dir: 'assets'
+    }
 })
