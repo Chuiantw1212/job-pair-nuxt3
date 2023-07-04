@@ -92,7 +92,7 @@
                         50點 <span class="largeText__hightlight">省下 5％ 的費用</span>
                     </div>
                     <div class="textGroup__smallText">
-                        NT$ <span class="smallText__hightlight">4,700</span>
+                        NT$ <span class="smallText__hightlight">4,700</span><del class="smallText__priceOff">$5,000</del>
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                         100點 <span class="largeText__hightlight">省下 10％ 的費用</span>
                     </div>
                     <div class="textGroup__smallText">
-                        NT$ <span class="smallText__hightlight">9,000</span>
+                        NT$ <span class="smallText__hightlight">9,000</span><del class="smallText__priceOff">$10,000</del>
                     </div>
                 </div>
             </div>
@@ -178,6 +178,15 @@
             </ul>
             <LazyAtomBtnSimple class="btnSimple--outline--success card__btn">去看看</LazyAtomBtnSimple>
         </div>
+        <div class="topup__other">
+            不確定哪個方案適合您？請與我們聯繫<br />
+            <a class="other__email" href="mailto:support@job-pair.com">
+                support@job-pair.com
+            </a>
+            <div class="other__gurantee">
+                7天內退款保證（僅適用於首次訂閱）
+            </div>
+        </div>
     </div>
 </template>
 <style lang=scss>
@@ -194,7 +203,7 @@
         letter-spacing: normal;
         text-align: center;
         color: #fff;
-        min-height: 152px;
+        // min-height: 152px;
         padding: 40px 20px;
     }
 
@@ -261,6 +270,18 @@
                         text-align: left;
                         color: #333;
                     }
+
+                    .smallText__priceOff {
+                        font-size: 13px;
+                        font-weight: normal;
+                        font-stretch: normal;
+                        font-style: normal;
+                        line-height: 1.62;
+                        letter-spacing: normal;
+                        text-align: left;
+                        color: #7a7a7a;
+                        margin-left: 5.5px;
+                    }
                 }
             }
         }
@@ -273,6 +294,35 @@
 
         .card__btn {
             margin-top: 20px;
+        }
+
+    }
+
+    .topup__other {
+        font-size: 17px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+
+        .other__email {
+            color: #5ea88e;
+        }
+
+        .other__gurantee {
+            font-size: 14px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #333;
+            margin-top: 11px;
         }
     }
 }

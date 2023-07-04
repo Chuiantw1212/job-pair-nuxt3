@@ -140,14 +140,6 @@ function routeToQuestions() {
         position: relative;
         min-height: 100vw;
 
-        .admin__banner {
-            position: absolute;
-            display: block;
-            width: 100%;
-            top: 0;
-            left: 0;
-        }
-
         .admin__title {
             width: 280px;
             position: absolute;
