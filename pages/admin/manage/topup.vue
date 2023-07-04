@@ -8,7 +8,156 @@
             <br />
             每點 $100，往後儲值最低購買10點 $1000，用多少付多少！
         </div>
-        <div class="topup__card">
+        <div class="topup__tableGroup">
+            <div class="tableGroup__item tableGroup__header">
+                <div class="header__plan">
+                    方案
+                </div>
+                <div class="header__calculation">
+                    計費方式
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    刊登筆數
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    人才搜尋
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    招募課程
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    面談技巧
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    品牌0到1
+                </div>
+            </div>
+            <div class="tableGroup__item tableGroup__item--plan">
+                <img class="item__icon" src="@/assets/admin/topup/851.png" />
+                <div class="item__name">
+                    免費
+                    <div class="item__desc">
+                        免費刊登
+                    </div>
+                </div>
+                <div class="item__calculation">
+                    免費刊登 <br /> 1 筆職缺
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    1筆
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/cross.svg" alt="cross" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/cross.svg" alt="cross" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/cross.svg" alt="cross" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/cross.svg" alt="cross" />
+                </div>
+            </div>
+            <div class="tableGroup__item tableGroup__item--plan">
+                <img class="item__icon" src="@/assets/admin/topup/881.png" />
+                <div class="item__name">
+                    10點
+                </div>
+                <div class="item__calculation">
+                    免費刊登 <br /> 1 筆職缺
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    1筆
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+            </div>
+            <div class="tableGroup__item tableGroup__item--plan">
+                <img class="item__icon" src="@/assets/admin/topup/841.png" />
+                <div class="item__name">
+                    50點
+                </div>
+                <div class="item__calculation">
+                    免費刊登 <br /> 1 筆職缺
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    1筆
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+            </div>
+            <div class="tableGroup__item tableGroup__item--plan">
+                <img class="item__icon" src="@/assets/admin/topup/881.png" />
+                <div class="item__name">
+                    100點
+                </div>
+                <div class="item__calculation">
+                    免費刊登 <br /> 1 筆職缺
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    1筆
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+                <hr class="item__hr" />
+                <div class="item__value">
+                    <img src="@/assets/admin/topup/check.svg" alt="check" />
+                </div>
+            </div>
+        </div>
+        <div class="topup__card d-lg-none">
             <div class="card__header">
                 <img src="@/assets/admin/topup/851.png" />
                 <div class="header__textGroup">
@@ -28,16 +177,10 @@
                         刊登筆數1筆
                     </div>
                 </li>
-                <!-- <li class="list__item">
-                    <div>
-                        <img src="@/assets/admin/topup/Vector.svg" />
-                        品牌0到1
-                    </div>
-                </li> -->
             </ul>
             <LazyAtomBtnSimple class="btnSimple--outline--success card__btn">去看看</LazyAtomBtnSimple>
         </div>
-        <div class="topup__card">
+        <div class="topup__card d-lg-none">
             <div class="card__header">
                 <img src="@/assets/admin/topup/885.png" />
                 <div class="header__textGroup">
@@ -84,7 +227,7 @@
             </ul>
             <LazyAtomBtnSimple class="btnSimple--outline--success card__btn">去看看</LazyAtomBtnSimple>
         </div>
-        <div class="topup__card">
+        <div class="topup__card d-lg-none">
             <div class="card__header">
                 <img src="@/assets/admin/topup/841.png" />
                 <div class="header__textGroup">
@@ -131,7 +274,7 @@
             </ul>
             <LazyAtomBtnSimple class="btnSimple--outline--success card__btn">去看看</LazyAtomBtnSimple>
         </div>
-        <div class="topup__card">
+        <div class="topup__card d-lg-none">
             <div class="card__header">
                 <img src="@/assets/admin/topup/881.png" />
                 <div class="header__textGroup">
@@ -203,7 +346,6 @@
         letter-spacing: normal;
         text-align: center;
         color: #fff;
-        // min-height: 152px;
         padding: 40px 20px;
     }
 
@@ -323,6 +465,121 @@
             text-align: center;
             color: #333;
             margin-top: 11px;
+        }
+    }
+}
+
+@media screen and (min-width:992px) {
+    .topup {
+        .topup__section2 {
+            max-width: 743px;
+            margin: 30px auto auto auto;
+        }
+
+        .topup__tableGroup {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            justify-content: space-between;
+
+
+            .tableGroup__item {
+                padding: 0 28px;
+                text-align: center;
+                border-radius: 10px;
+                background-color: #e1ebf0;
+
+                .item__hr {
+                    // margin-top: 70px;
+                }
+
+                .item__value {
+                    // margin-top: 70px;
+                    text-align: center;
+                    font-size: 22px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #000;
+                    white-space: nowrap;
+                    min-height: 173px;
+                    line-height: 173px;
+                }
+            }
+
+            .tableGroup__item--plan {
+                flex-grow: 1;
+                padding: 80px 28px;
+                background-color: white;
+
+                .item__icon {
+                    width: 96px;
+                    height: 96px;
+                    display: block;
+                    margin: auto;
+                }
+
+                .item__name {
+                    font-size: 50px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #333;
+                    margin-top: 100px;
+                    min-height: 112px;
+                }
+
+                .item__desc {
+                    margin-top: 10px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #333;
+                }
+
+                .item__calculation {
+                    font-size: 22px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #000;
+                    margin-top: 164px;
+                }
+            }
+
+            .tableGroup__header {
+                font-size: 22px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: center;
+                color: #000;
+
+                .header__plan {
+                    margin-top: 227px;
+                }
+
+                .header__calculation {
+                    margin-top: 291px;
+                    min-height: 66px;
+                }
+
+            }
         }
     }
 }
