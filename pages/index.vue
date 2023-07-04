@@ -1,7 +1,7 @@
 <template>
     <div class="admin">
         <div class="admin__bannerGroup">
-            <nuxt-img format="webp" class="admin__title" src="@/assets/index/title.png" />
+            <nuxt-img format="webp" class="admin__title" src="index/title.png" />
             <nuxt-img format="webp" class="admin__title admin__title--desktop"
                 src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" />
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
@@ -9,9 +9,9 @@
         <div class="admin__cardGroup">
             <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
             <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="@/assets/admin/index/bg2.svg" alt="decoration" />
+                src="admin/index/bg2.svg" alt="decoration" />
             <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="@/assets/admin/index/bg3.svg" alt="decoration" />
+                src="admin/index/bg3.svg" alt="decoration" />
             <div class="cardGroup__body">
                 <div v-if="device.state.isLarge" class="body__title">
                     <div class="title__others">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="admin__definition">
-            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.png"
+            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.png"
                 alt="background" />
             <div class="definition__textGroup">
                 <div class="definition__title">
