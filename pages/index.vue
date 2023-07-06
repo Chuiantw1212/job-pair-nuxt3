@@ -1,17 +1,20 @@
 <template>
     <div class="admin">
         <div class="admin__bannerGroup">
-            <img class="admin__title" src="@/assets/index/title.png" alt="title">
-            <img class="admin__title admin__title--desktop"
-                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" alt="title">
+            <nuxt-img format="webp" class="admin__title"
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title@3x.webp" preload loading="lazy"
+                alt="title" />
+            <nuxt-img format="webp" class="admin__title admin__title--desktop"
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.webp" preload
+                loading="lazy" alt="title" />
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
             <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-            <img v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="@/assets/admin/index/bg2.svg" alt="decoration">
-            <img v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="@/assets/admin/index/bg3.svg" alt="decoration">
+            <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
+                src="admin/index/bg2.svg" alt="decoration" />
+            <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
+                src="admin/index/bg3.svg" alt="decoration" />
             <div class="cardGroup__body">
                 <div v-if="device.state.isLarge" class="body__title">
                     <div class="title__others">
@@ -30,7 +33,8 @@
             </div>
         </div>
         <div class="admin__definition">
-            <img v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.png" alt="background">
+            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.webp"
+                alt="background" preload loading="lazy" />
             <div class="definition__textGroup">
                 <div class="definition__title">
                     什麼是適配度？
@@ -47,7 +51,7 @@
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
                         :href="item?.url?.default" target="_blank" aria-label="more about this company">
-                        <img class="anchor__image" alt="logo" :src="item.logo" />
+                        <nuxt-img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
                         <span class="anchor__name">{{ item.name }}</span>
                     </a>
                 </div>
@@ -56,7 +60,8 @@
             <div class="partner__bodyGroup">
                 <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
                     :to="`/company/${item.organizationId}`" aria-label="more about this company">
-                    <img onerror="this.style.display='none'" class="anchor__image" alt="logo" :src="item.image" />
+                    <nuxt-img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                        :src="item.image" />
                     <span class="anchor__name">{{ item.organizationName }}</span>
                 </NuxtLink>
             </div>
@@ -134,7 +139,7 @@ function routeToQuestions() {
 <style lang="scss" scoped>
 .admin {
     .admin__bannerGroup {
-        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/banner.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/banner@3x.webp');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -198,7 +203,7 @@ function routeToQuestions() {
     }
 
     .admin__definition {
-        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/bg_home.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/bg_home.webp');
         padding: 80px 30px;
 
         .definition__title {
@@ -273,7 +278,7 @@ function routeToQuestions() {
     .admin {
 
         .admin__bannerGroup {
-            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img1.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img1.webp');
             background-size: contain;
             min-height: 50vw;
 
@@ -372,7 +377,7 @@ function routeToQuestions() {
         }
 
         .admin__definition {
-            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.webp');
             height: 634px;
             position: relative;
             background-size: cover;
