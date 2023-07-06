@@ -3,7 +3,9 @@
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
             <div class="form__header">
                 職缺狀態
-                <!-- <span class="header__wallet">錢包餘額：45點</span> -->
+                <!-- <span class="header__wallet">錢包餘額：0點
+                    <img class="wallet__balance" src="@/assets/admin/Frame.png" alt="account balance">
+                </span> -->
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
@@ -444,6 +446,9 @@ async function handleSave() {
     .form__header {
         font-size: 18px;
         font-weight: bold;
+        display: flex;
+        gap: 10px;
+
 
         .header__wallet {
             font-size: 18px;
@@ -454,6 +459,15 @@ async function handleSave() {
             letter-spacing: normal;
             text-align: left;
             color: #5ea88e;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .wallet__balance {
+                width: 22px;
+                height: 20px;
+
+            }
         }
     }
 

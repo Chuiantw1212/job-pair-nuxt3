@@ -34,6 +34,92 @@
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
+            <div class="accountManagement__card mt-4">
+                <h4>錢包餘額</h4>
+                <div class="balance__inputGroup">
+                    <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
+                    <LazyAtomBtnSimple class="inputGroup__btn" type="button">我要儲值</LazyAtomBtnSimple>
+                </div>
+                <div class="card__header">使用紀錄</div>
+                <table class="table  table-striped ballance__table">
+                    <thead>
+                        <tr>
+                            <th scope="col">職缺名稱</th>
+                            <th scope="col">開啟職缺期間</th>
+                            <th scope="col">天數</th>
+                            <th scope="col">點數</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <div class="table__cell">
+                                    Java工程師
+                                </div>
+                            </th>
+                            <td>
+                                <div class="table__cell">
+                                    2023/01/04 ~ 2023/02/10
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    2 週 3 日，共 17 天
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    17 點
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <div class="table__cell">
+                                    Java工程師
+                                </div>
+                            </th>
+                            <td>
+                                <div class="table__cell">
+                                    2023/01/04 ~ 2023/02/10
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    2 週 3 日，共 17 天
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    17 點
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <div class="table__cell">
+                                    Java工程師
+                                </div>
+                            </th>
+                            <td>
+                                <div class="table__cell">
+                                    2023/01/04 ~ 2023/02/10
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    2 週 3 日，共 17 天
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table__cell">
+                                    17 點
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <!-- <div class="accountManagement__card mt-3">
             <h4>人資聊天室</h4>
             <section class="accountManagement__chat">
@@ -41,9 +127,9 @@
                 <div class="chat__image" ref="svgContainer" v-html="chatIcon"></div>
             </section>
         </div> -->
-            <div class="d-flex justify-content-center">
+            <!-- <div class="d-flex justify-content-center">
                 <button class="form__confirm" @click.prevent="submitProfile()">儲存</button>
-            </div>
+            </div> -->
         </template>
     </div>
 </template>
@@ -61,6 +147,7 @@ const state = reactive({
     newPass: null,
     newPassAgain: null,
     chatIcon: null,
+    balance: 0,
 })
 // hooks
 useHead({
@@ -149,12 +236,17 @@ async function submitProfile() {
 .accountManagement {
     .accountManagement__card {
         background-color: #fafafa;
-        padding: 45px 64px;
+        padding: 23px 40px;
         border-radius: 10px;
 
         .card__headerGroup {
             display: flex;
             gap: 8px;
+        }
+
+        .card__header {
+            margin-top: 52px;
+            font-weight: bold;
         }
     }
 
@@ -179,10 +271,28 @@ async function submitProfile() {
 
     }
 
-    .accountManagement__chat {
-        .chat__image {
-            width: 35px;
-            height: 35px;
+    .balance__inputGroup {
+        display: flex;
+        gap: 5px;
+
+        .inputGroup__input {
+            width: 131px;
+        }
+
+        .inputGroup__btn {
+            width: 112px;
+            height: 42px;
+            border-radius: 10px;
+        }
+    }
+
+    .ballance__table {
+        border-top: 1px solid #d3d3d3;
+        margin-top: 8px;
+        font-weight: normal;
+
+        .table__cell {
+            padding: 24px 0;
         }
     }
 

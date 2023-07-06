@@ -67,6 +67,8 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        // 還不夠成熟但裝著備而不用的套件
+        '@nuxt/image',
     ],
     extends: [
         'nuxt-seo-kit'
@@ -133,4 +135,10 @@ export default defineNuxtConfig({
     linkChecker: {
         failOn404: true,
     },
+    // https://image.nuxtjs.org/configuration
+    image: {
+        // Options
+        format: ['webp'],
+        dir: 'assets'
+    }
 })
