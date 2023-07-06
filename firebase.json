@@ -17,6 +17,10 @@
         "source": "**/*",
         "headers": [
           {
+            "key": "Cache-Control",
+            "value": "max-age=7200"
+          },
+          {
             "key": "X-Frame-Options",
             "value": "SAMEORIGIN"
           },
@@ -39,6 +43,15 @@
           {
             "key": "Access-Control-Allow-Methods",
             "value": "*"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|webp|svg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=7200"
           }
         ]
       }
