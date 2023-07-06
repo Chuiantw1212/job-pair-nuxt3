@@ -2,7 +2,7 @@
     <div class="admin">
         <div class="admin__bannerGroup">
             <nuxt-img format="webp" class="admin__title"
-                src="index/title.webp" preload loading="lazy"
+                src="index/title@3x.webp" preload loading="lazy"
                 alt="title" />
             <nuxt-img format="webp" class="admin__title admin__title--desktop"
                 src="index/title_desktop.webp" preload
@@ -12,9 +12,9 @@
         <div class="admin__cardGroup">
             <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
             <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="admin/index/bg2.webp" alt="decoration" />
+                src="index/bg2.webp" alt="decoration" />
             <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="admin/index/bg3.webp" alt="decoration" />
+                src="index/bg3.webp" alt="decoration" />
             <div class="cardGroup__body">
                 <div v-if="device.state.isLarge" class="body__title">
                     <div class="title__others">
@@ -139,7 +139,7 @@ function routeToQuestions() {
 <style lang="scss" scoped>
 .admin {
     .admin__bannerGroup {
-        background-image: url('index/banner@3x.webp');
+        background-image: url('@/assets/index/banner@3x.webp');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -203,7 +203,7 @@ function routeToQuestions() {
     }
 
     .admin__definition {
-        background-image: url('index/bg_home.webp');
+        background-image: url('@/assets/index/bg_home.webp');
         padding: 80px 30px;
 
         .definition__title {
@@ -278,7 +278,7 @@ function routeToQuestions() {
     .admin {
 
         .admin__bannerGroup {
-            background-image: url('index/img1.webp');
+            background-image: url('@/assets/index/img1.webp');
             background-size: contain;
             min-height: 50vw;
 
@@ -377,7 +377,7 @@ function routeToQuestions() {
         }
 
         .admin__definition {
-            background-image: url('index/img2.webp');
+            background-image: url('@/assets/index/img2.webp');
             height: 634px;
             position: relative;
             background-size: cover;
