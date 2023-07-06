@@ -21,7 +21,6 @@ export default defineNuxtConfig({
                 { property: 'og:image:alt', content: 'banner' },
                 // Social Media
                 { property: 'fb:app_id', content: '411339927562100' },
-                { name: 'robots', content: 'all' },
             ],
             // SEO 相關放在 layout.vue
             htmlAttrs: {
