@@ -100,7 +100,7 @@ watch(() => localValue.value, () => {
 // methods
 function setErrorMessage(message = '') {
     state.message = message
-    this.isValid = !message
+    state.isValid = !message
 }
 function handleValidate() {
     setErrorMessage()
@@ -111,7 +111,7 @@ function handleValidate() {
     }
     // custom validation
     if (props.validate) {
-        const message = this.validate(inputValue)
+        const message = props.validate(inputValue)
         if (message) {
             setErrorMessage(message)
         }
@@ -188,7 +188,7 @@ function validateDefaultRegex() {
             break;
         }
     }
-    if (regex & regex.test(inputValue)) {
+    if (regex?.test(inputValue)) {
         return regexMessage
     }
 }
