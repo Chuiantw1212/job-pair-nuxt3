@@ -2,11 +2,11 @@
     <div class="admin">
         <div class="admin__bannerGroup">
             <nuxt-img format="webp" class="admin__title"
-                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title.webp" preload
-                loading="lazy" />
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title.webp" preload loading="lazy"
+                alt="title" />
             <nuxt-img format="webp" class="admin__title admin__title--desktop"
                 src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.webp" preload
-                loading="lazy" />
+                loading="lazy" alt="title" />
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
@@ -34,7 +34,7 @@
         </div>
         <div class="admin__definition">
             <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.webp"
-                alt="background" preload loading="lazy"/>
+                alt="background" preload loading="lazy" />
             <div class="definition__textGroup">
                 <div class="definition__title">
                     什麼是適配度？
