@@ -1,20 +1,17 @@
 <template>
     <div class="admin">
         <div class="admin__bannerGroup">
-            <nuxt-img format="webp" class="admin__title"
-                src="index/title@3x.webp" preload loading="lazy"
-                alt="title" />
-            <nuxt-img format="webp" class="admin__title admin__title--desktop"
-                src="index/title_desktop.webp" preload
+            <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
+            <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
                 loading="lazy" alt="title" />
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
             <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-            <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="index/bg2.webp" alt="decoration" />
-            <nuxt-img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="index/bg3.webp" alt="decoration" />
+            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
+                src="@/assets/index/bg2.webp" alt="decoration" />
+            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
+                src="@/assets/index/bg3.webp" alt="decoration" />
             <div class="cardGroup__body">
                 <div v-if="device.state.isLarge" class="body__title">
                     <div class="title__others">
@@ -33,8 +30,8 @@
             </div>
         </div>
         <div class="admin__definition">
-            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.webp"
-                alt="background" preload loading="lazy" />
+            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp" alt="background"
+                preload loading="lazy" />
             <div class="definition__textGroup">
                 <div class="definition__title">
                     什麼是適配度？
@@ -51,7 +48,7 @@
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
                         :href="item?.url?.default" target="_blank" aria-label="more about this company">
-                        <nuxt-img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
+                        <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
                         <span class="anchor__name">{{ item.name }}</span>
                     </a>
                 </div>
@@ -60,7 +57,7 @@
             <div class="partner__bodyGroup">
                 <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
                     :to="`/company/${item.organizationId}`" aria-label="more about this company">
-                    <nuxt-img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                    <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
                         :src="item.image" />
                     <span class="anchor__name">{{ item.organizationName }}</span>
                 </NuxtLink>

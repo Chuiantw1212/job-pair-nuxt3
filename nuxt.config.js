@@ -67,6 +67,7 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        // 還不夠成熟但裝著備而不用的套件
         '@nuxt/image',
     ],
     extends: [
