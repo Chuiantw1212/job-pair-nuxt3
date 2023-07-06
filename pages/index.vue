@@ -1,9 +1,12 @@
 <template>
     <div class="admin">
         <div class="admin__bannerGroup">
-            <nuxt-img format="webp" class="admin__title" src="index/title.png" />
+            <nuxt-img format="webp" class="admin__title"
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title.webp" preload
+                loading="lazy" />
             <nuxt-img format="webp" class="admin__title admin__title--desktop"
-                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.svg" />
+                src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/title_desktop.webp" preload
+                loading="lazy" />
             <button class="admin__button" @click="routeToQuestions()">開始配對</button>
         </div>
         <div class="admin__cardGroup">
@@ -30,8 +33,8 @@
             </div>
         </div>
         <div class="admin__definition">
-            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.png"
-                alt="background" />
+            <nuxt-img format="webp" v-if="device.state.isLarge" class="definition__round" src="index/round.webp"
+                alt="background" preload loading="lazy"/>
             <div class="definition__textGroup">
                 <div class="definition__title">
                     什麼是適配度？
@@ -136,7 +139,7 @@ function routeToQuestions() {
 <style lang="scss" scoped>
 .admin {
     .admin__bannerGroup {
-        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/banner.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/banner@3x.webp');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -200,7 +203,7 @@ function routeToQuestions() {
     }
 
     .admin__definition {
-        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/bg_home.png');
+        background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/bg_home.webp');
         padding: 80px 30px;
 
         .definition__title {
@@ -275,7 +278,7 @@ function routeToQuestions() {
     .admin {
 
         .admin__bannerGroup {
-            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img1.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img1.webp');
             background-size: contain;
             min-height: 50vw;
 
@@ -374,7 +377,7 @@ function routeToQuestions() {
         }
 
         .admin__definition {
-            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png');
+            background-image: url('https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.webp');
             height: 634px;
             position: relative;
             background-size: cover;
