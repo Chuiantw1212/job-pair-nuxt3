@@ -14,18 +14,25 @@
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
                         <ul class=body__list>
-                            <li v-for="(item, chatItemIndex) in  state.chatItems" :key="chatItemIndex" class="list__item"
-                                :class="{ 'list__item--user': item.role === 'user' }">
-                                <div class="item__content">
-                                    <img class="content__image" alt="monica" src="./monica.webp">
-                                    <div class="content__textGroup">
-                                        <div v-for="(message, messageItemIndex) in item.messages"
-                                            :key="`${chatItemIndex}${messageItemIndex}`" class="textGroup__line">
-                                            {{ message }}
+                            <template v-for="(item, chatItemIndex) in  state.chatItems">
+                                <li v-if="chatItemIndex <= state.chatItemIndex" :key="chatItemIndex" class="list__item"
+                                    :class="{ 'list__item--user': item.role === 'user' }">
+                                    <div class="item__content">
+                                        <!-- <svg width="80" height="80" data-jdenticon-value="icon value"></svg> -->
+                                        <div v-if="item.role === 'user'" v-html="state.userIdenticon"
+                                            class="content__image">
+
+                                        </div>
+                                        <img v-else class="content__image" alt="monica" src="./monica.webp">
+                                        <div class="content__textGroup">
+                                            <div v-for="(message, messageItemIndex) in item.messages"
+                                                :key="`${chatItemIndex}${messageItemIndex}`" class="textGroup__line">
+                                                {{ message }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            </template>
                         </ul>
                     </div>
                     <div class="modal-footer">
@@ -34,7 +41,7 @@
                             <LazyAtomInputText class="buttonGroup__input" placeholder="請輸入">
 
                             </LazyAtomInputText>
-                            <button class="buttonGroup__submit">送出</button>
+                            <button class="buttonGroup__submit" @click="gotoNextItem()">送出</button>
                         </div>
                     </div>
                 </div>
@@ -43,6 +50,7 @@
     </div>
 </template>
 <script setup>
+import { nextTick } from 'vue'
 const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
@@ -52,6 +60,8 @@ const state = reactive({
     form: {
         jobName: '行銷企劃專員',
     },
+    userIdenticon: '',
+    chatItemIndex: 0,
     chatItems: [
         {
             role: 'system',
@@ -161,9 +171,18 @@ onMounted(() => {
                 backdrop: "static",
             })
         })
+        const svgString = window.jdenticon.toSvg("value", 50);
+        state.userIdenticon = svgString
     }
 })
 // methods
+function gotoNextItem() {
+    state.chatItemIndex += 2
+    nextTick(() => {
+        const divEle = currentInstance.refs.modalBodyRef
+        divEle.scrollTop = divEle.scrollHeight;
+    })
+}
 function handleConfirm() {
     const updatedJob = Object.assign({}, props.job, {
         name: state.form.jobName,
@@ -284,6 +303,7 @@ async function handleSubmit() {
                 .item__content {
                     display: flex;
                     gap: 20px;
+                    // align-items: center;
 
                     .content__image {
                         width: 50px;
@@ -297,11 +317,19 @@ async function handleSubmit() {
                         gap: 20px;
 
                         .textGroup__line {
-                            padding: 15px 35px;
+                            padding: 12px 40px;
                             background-color: #f5f5f5;
                             border-radius: 10px 10px 10px 0px;
                             overflow: hidden;
                             width: fit-content;
+                            font-size: 16px;
+                            font-weight: normal;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: normal;
+                            letter-spacing: normal;
+                            text-align: left;
+                            color: #333;
                         }
                     }
                 }
