@@ -6,28 +6,46 @@
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
+                <div class="modal-content"> 
                     <div class="modal-header">
                         <h4 class="modal-title">JD生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <ul class=body__list>
-                            <li class="list__item">
-                                <div class="item__content">
-                                    <img class="content__image" alt="monica" src="./monica.webp">
-                                    <div class="content__textGroup">
-                                        <div class="textGroup__line">
-                                            您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！
-                                        </div>
-                                        <div class="textGroup__line">
-                                            此職務隸屬於特定部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「無」。（1/6）
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                        <!--  -->
+                        <LazyAtomInputText v-model="state.form.jobName" name="職務名稱" required></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.department" name="所屬部門"></LazyAtomInputText>
+                        <!--  -->
+                        <AtomInputSelect v-model="state.form.manager" name="管理責任"></AtomInputSelect>
+                        <LazyAtomInputText v-model="state.form.primary[0]" name="主要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.primary[1]" name="主要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.secondary[0]" name="次要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.secondary[1]" name="次要工作"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.goal" name="具體目標"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.value" name="價值體現"></LazyAtomInputText>
+                        <AtomInputSelect v-model="state.form.personality[0]" itemValue="text" :items="state.question1"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[1]" itemValue="text" :items="state.question2"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[2]" itemValue="text" :items="state.question3"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <AtomInputSelect v-model="state.form.personality[3]" itemValue="text" :items="state.question4"
+                            name="特質期望">
+                        </AtomInputSelect>
+                        <LazyAtomInputText v-model="state.form.educationLevel" name="學歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.experienceLevel" name="資歷要求"></LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.form.skillLevel" name="技能要求"></LazyAtomInputText>
+                        <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.description" ref="description" name="職責簡介"
+                            :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.skills" ref="skills"
+                            name="職務說明第三段" :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
@@ -255,6 +273,8 @@ async function handleSubmit() {
     .modal-body {
         padding: 0 50px 30px 50px;
 
+        // display: flex;
+        // flex-wrap: nowrap;
         .modal__btn {
             margin: auto auto auto auto;
             width: 226px;
@@ -263,38 +283,6 @@ async function handleSubmit() {
         .chatGptModal__before {
             border: 1px solid black;
             border-radius: 8px;
-        }
-
-        .body__list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-
-            .list__item {
-                .item__content {
-                    display: flex;
-                    gap: 20px;
-
-                    .content__image {
-                        width: 50px;
-                        height: 50px;
-
-                    }
-
-                    .content__textGroup {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 20px;
-
-                        .textGroup__line {
-                            padding: 15px 35px;
-                            background-color: #f5f5f5;
-                            border-radius: 10px 10px 10px 0px;
-                            overflow: hidden;
-                        }
-                    }
-                }
-            }
         }
     }
 
