@@ -14,15 +14,14 @@
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
                         <ul class=body__list>
-                            <li class="list__item">
+                            <li v-for="(item, chatItemIndex) in  state.chatItems" :key="chatItemIndex" class="list__item"
+                                :class="{ 'list__item--user': item.role === 'user' }">
                                 <div class="item__content">
                                     <img class="content__image" alt="monica" src="./monica.webp">
                                     <div class="content__textGroup">
-                                        <div class="textGroup__line">
-                                            您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！
-                                        </div>
-                                        <div class="textGroup__line">
-                                            此職務隸屬於特定部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「無」。（1/6）
+                                        <div v-for="(message, messageItemIndex) in item.messages"
+                                            :key="`${chatItemIndex}${messageItemIndex}`" class="textGroup__line">
+                                            {{ message }}
                                         </div>
                                     </div>
                                 </div>
@@ -31,10 +30,11 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
-                            </LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
-                            </LazyAtomBtnSimple>
+                            <button class="buttonGroup__btn">略過此題</button>
+                            <LazyAtomInputText class="buttonGroup__input" placeholder="請輸入">
+
+                            </LazyAtomInputText>
+                            <button class="buttonGroup__submit">送出</button>
                         </div>
                     </div>
                 </div>
@@ -43,92 +43,90 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
+const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
     chatModal: null,
-    glideInstance: null,
-    glideIndex: 0,
-    resume: null,
-    duration: "",
-    schedules: [],
     form: {
         jobName: '行銷企劃專員',
-        department: '行銷推廣部',
-        goal: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
-        value: '需要有豐富的創意和創新思維，能夠提供新穎且有吸引力的行銷方案和活動，以吸引目標客戶的關注並脫穎而出',
-        educationLevel: '大學',
-        experienceLevel: '兩年以上',
-        skillLevel: '懂Youtube以及抖音的行銷後台',
-        manager: true,
-        primary: [
-            '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
-            '規劃與執行公司對內、外的行銷活動（如：展覽、促銷活動）',
-            '熟悉社群媒體經營，撰寫文案、各媒體及新聞稿等相關事務',
-            '行銷製作物規劃與執行、品牌行銷管理（如：產品型錄、簡介、贈品等銷售工具）'
-        ],
-        secondary: ['跨部門溝通協調、創意發想', '其他主管交辦事項'],
-        personality: ['堅定，目標導向', '冒險，自我挑戰', '追求成就', '企圖心高'],
     },
-    question1: [
+    chatItems: [
         {
-            text: '堅定，目標導向',
+            role: 'system',
+            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於特定部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「無」。（1/6）'],
+            responseUI: {
+                type: 'text',
+            }
         },
         {
-            text: '說服，擅長表達',
+            role: 'user',
+            messages: ['無'],
         },
         {
-            text: '和善，合作導向',
+            role: 'system',
+            messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請回覆「無」。(2/6)'],
+            responseUI: {
+                type: 'text',
+            }
         },
         {
-            text: '仔細，善於思考',
-        }
+            role: 'user',
+            messages: ['無'],
+        },
+        {
+            role: 'system',
+            messages: ['接下來請仔細思考這份工作最主要的工作項目有哪些？(3/6)'],
+            responseUI: {
+                type: 'text',
+            }
+        },
+        {
+            role: 'user',
+            messages: ['設計畫面、與RD部門溝通'],
+        },
+        {
+            role: 'system',
+            messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
+            responseUI: {
+                type: 'text',
+            }
+        },
+        {
+            role: 'user',
+            messages: ['做UX用戶研究'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作最主要或短期內要完成的目標是什麼？例如：三個月後專案能順利上線、每個月拜訪幾位客戶、與同事合作維持店舖營運、能獨立運作完成客戶要求...等？(5/6)'],
+            responseUI: {
+                type: 'text',
+            }
+        },
+        {
+            role: 'user',
+            messages: ['三個月後專案能順利上線'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作的內涵價值較符合以下哪種人：1. 創造價值的人 2. 傳遞價值的人 3. 支持與維護價值的人 4. 制定與優化價值的人(6/6)'],
+            responseUI: {
+                type: 'text',
+            }
+        },
+        {
+            role: 'user',
+            messages: ['創造價值的人'],
+        },
+        {
+            role: 'system',
+            messages: ['太棒了！現在為您生成職務說明書'],
+            responseUI: {
+                type: 'text',
+            }
+        },
     ],
-    question2: [
-        {
-            text: '冒險，自我挑戰',
-        },
-        {
-            text: '開朗，與人交流',
-        },
-        {
-            text: '穩健，支持他人',
-        },
-        {
-            text: '嚴謹，自我要求',
-        }
-    ],
-    question3: [
-        {
-            text: '追求成就',
-        },
-        {
-            text: '追求舞台',
-        },
-        {
-            text: '追求穩定',
-        },
-        {
-            text: '追求正確',
-        }
-    ],
-    question4: [
-        {
-            text: '企圖心高',
-        },
-        {
-            text: '創造力強',
-        },
-        {
-            text: '配合度高',
-        },
-        {
-            text: '準確性高',
-        }
-    ],
-    beforeChatGpt: '',
     newJob: {
         description: '',
         skills: '',
@@ -236,13 +234,20 @@ async function handleSubmit() {
     border-radius: 10px;
 
     .modal-header {
-        border: none;
         position: relative;
-        text-align: center;
+        padding-left: 40px;
 
         .modal-title {
             width: 100%;
             font-weight: bold;
+            font-size: 22px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.3;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000;
         }
 
         .btn-close {
@@ -253,7 +258,7 @@ async function handleSubmit() {
     }
 
     .modal-body {
-        padding: 0 50px 30px 50px;
+        padding: 40px 40px;
 
         .modal__btn {
             margin: auto auto auto auto;
@@ -267,10 +272,15 @@ async function handleSubmit() {
 
         .body__list {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             margin: 0;
             padding: 0;
 
             .list__item {
+                max-width: calc(100% - 70px);
+
                 .item__content {
                     display: flex;
                     gap: 20px;
@@ -291,7 +301,25 @@ async function handleSubmit() {
                             background-color: #f5f5f5;
                             border-radius: 10px 10px 10px 0px;
                             overflow: hidden;
+                            width: fit-content;
                         }
+                    }
+                }
+            }
+
+            .list__item--user {
+                align-self: flex-end;
+
+                .item__content {
+                    flex-direction: row-reverse;
+
+                    .content__textGroup {
+                        .textGroup__line {
+                            border-radius: 10px 10px 0px 10px;
+                            color: #fff;
+                            background-color: #5ea88e;
+                        }
+
                     }
                 }
             }
@@ -299,21 +327,34 @@ async function handleSubmit() {
     }
 
     .modal-footer {
-        border: none;
-        padding-bottom: 37px;
 
         .footer__buttonGroup {
             display: flex;
             gap: 16px;
             margin: auto;
             flex-direction: column-reverse;
-
-            .footer__button {
-                width: 120px;
-            }
+            width: 100%;
 
             .buttonGroup__btn {
-                width: 226px;
+                background-color: inherit;
+                border: 0px;
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #5ea88e;
+                white-space: nowrap;
+            }
+
+            .buttonGroup__input {
+                width: 100%;
+            }
+
+            .buttonGroup__submit {
+                white-space: nowrap;
             }
         }
     }
