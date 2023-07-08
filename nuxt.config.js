@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
 const axios = require('axios')
-const apiBase = 'https://job-pair-taiwan-dev.de.r.appspot.com'
-const siteUrl = 'https://job-pair-taiwan-dev.web.app'
+const apiBase = 'http://localhost:8080'
+const siteUrl = 'http://localhost:3000'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
@@ -41,7 +41,8 @@ export default defineNuxtConfig({
                 { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", rel: "stylesheet", },
             ],
             script: [
-                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', }
+                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', },
+                { src: 'https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js', integrity: "sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M", crossorigin: "anonymous" },
             ]
         },
     },

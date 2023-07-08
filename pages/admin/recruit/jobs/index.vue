@@ -416,6 +416,7 @@ async function addJobDraft() {
             left: 0;
             position: sticky;
             z-index: 100;
+            // border-right: 1px solid #d3d3d3;
         }
 
         .jobManagement__table__sticky--second {
@@ -434,7 +435,7 @@ async function addJobDraft() {
             position: sticky;
             top: 0;
             background-color: white;
-            z-index: 10;
+            z-index: 110;
         }
 
         .table__row {
