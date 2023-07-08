@@ -34,12 +34,21 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <div class="footer__buttonGroup">
-                            <button class="buttonGroup__btn">略過此題</button>
-                            <LazyAtomInputText class="buttonGroup__input" placeholder="請輸入">
-
-                            </LazyAtomInputText>
-                            <button class="buttonGroup__submit" @click="gotoNextItem()">送出</button>
+                        <div class="footer__content">
+                            <button class="content__btn" @click="gotoNextItem('無')">略過此題</button>
+                            <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
+                                <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
+                                    class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
+                                    {{ item }}
+                                </LazyAtomBtnSimple>
+                            </div>
+                            <template v-else-if="getMessageUI().type === 'text'">
+                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入"
+                                    @keyup.enter="gotoNextItem()">
+                                </LazyAtomInputText>
+                                <button class="content__submit" @click="gotoNextItem()">送出</button>
+                            </template>
+                            <button @click="handleSubmit()">直接送出</button>
                         </div>
                     </div>
                 </div>
@@ -51,6 +60,7 @@
 import { nextTick } from 'vue'
 const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
+const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
@@ -59,11 +69,12 @@ const state = reactive({
         jobName: '行銷企劃專員',
     },
     userIdenticon: '',
+    chatReply: '',
     chatItemIndex: 0,
     chatItems: [
         {
             role: 'system',
-            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於特定部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「無」。（1/6）'],
+            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於任何部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「略過此題」。（1/6）'],
             responseUI: {
                 type: 'text',
             }
@@ -74,7 +85,7 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請回覆「無」。(2/6)'],
+            messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請「略過此題」。(2/6)'],
             responseUI: {
                 type: 'text',
             }
@@ -121,24 +132,7 @@ const state = reactive({
             messages: ['這份工作的內涵價值較符合以下哪種人：1. 創造價值的人 2. 傳遞價值的人 3. 支持與維護價值的人 4. 制定與優化價值的人(6/6)'],
             responseUI: {
                 type: 'button',
-                options: [
-                    {
-                        text: '1. 創造價值的人',
-                        value: '創造價值的人'
-                    },
-                    {
-                        text: '2. 傳遞價值的人',
-                        value: '傳遞價值的人'
-                    },
-                    {
-                        text: '3. 支持與維護價值的人',
-                        value: '支持與維護價值的人'
-                    },
-                    {
-                        text: '4. 制定與優化價值的人',
-                        value: '制定與優化價值的人',
-                    }
-                ],
+                options: ['創造價值的人', '傳遞價值的人', '支持與維護價值的人', '制定與優化價值的人'],
             }
         },
         {
@@ -187,14 +181,24 @@ onMounted(() => {
                 backdrop: "static",
             })
         })
-        const svgString = window.jdenticon.toSvg("value", 50);
+        const userIdentity = repoAuth.state?.user?.email || 'default'
+        const svgString = window.jdenticon.toSvg(userIdentity, 50);
         state.userIdenticon = svgString
     }
 })
 // methods
-function gotoNextItem() {
+function getMessageUI() {
+    const relatedItem = state.chatItems[state.chatItemIndex]
+    return relatedItem.responseUI
+}
+function gotoNextItem(selectedItem = '') {
+    // set reply
+    const relatedItem = state.chatItems[state.chatItemIndex + 1]
+    relatedItem.messages[0] = state.chatReply || selectedItem
+    state.chatReply = ''
+    // show reply
     state.chatItemIndex += 2
-    if (state.chatItemIndex >= chatItems.length + 1) {
+    if (state.chatItemIndex >= state.chatItems.length + 1) {
         // submit items
         handleSubmit()
         return
@@ -236,16 +240,35 @@ function handleClose() {
 }
 const modalBodyRef = ref(null)
 async function handleSubmit() {
-    // $sweet.loader(true, {
-    //     title: '泡杯咖啡再回來',
-    //     text: '「如果還沒好，那就再來一杯」',
-    // })
-    // const res = await repoChat.postChatJdGenerate(state.form)
-    // if (res.status !== 200) {
-    //     return
-    // }
-    // $sweet.loader(false)
-    // const { data } = res
+    state.chatModal.hide()
+    $sweet.loader(true, {
+        title: '泡杯咖啡再回來',
+        text: '「如果還沒好，那就再來一杯」',
+    })
+    const minimizedData = state.chatItems.map(item => {
+        return {
+            role: item.role,
+            messages: item.messages
+        }
+    })
+    const res = await repoChat.postChatJdGenerate({
+        // jobName: state.form.jobName,
+        chatItems: minimizedData
+    })
+    if (res.status !== 200) {
+        return
+    }
+    $sweet.loader(false)
+    const { data } = res
+    state.newJob.description = data
+    const updatedJob = Object.assign({}, props.job, {
+        // name: state.form.jobName,
+        ...state.newJob
+    })
+    console.log({
+        updatedJob
+    });
+    emit('update:modelValue', updatedJob)
     // const { description = '', skills = '' } = data
     // state.newJob.description = description
     // const descriptionEditor = currentInstance.refs.description
@@ -377,14 +400,14 @@ async function handleSubmit() {
 
     .modal-footer {
 
-        .footer__buttonGroup {
+        .footer__content {
             display: flex;
             gap: 16px;
             margin: auto;
             flex-direction: column-reverse;
             width: 100%;
 
-            .buttonGroup__btn {
+            .content__btn {
                 background-color: inherit;
                 border: 0px;
                 font-size: 16px;
@@ -398,12 +421,23 @@ async function handleSubmit() {
                 white-space: nowrap;
             }
 
-            .buttonGroup__input {
+            .content__input {
                 width: 100%;
             }
 
-            .buttonGroup__submit {
+            .content__submit {
                 white-space: nowrap;
+            }
+
+            .content__btnGroup {
+                width: 100%;
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+
+                .btnGroup__btn {
+                    width: fit-content;
+                }
             }
         }
     }
@@ -415,7 +449,7 @@ async function handleSubmit() {
         .modal-footer {
 
 
-            .footer__buttonGroup {
+            .footer__content {
                 flex-direction: row;
             }
         }

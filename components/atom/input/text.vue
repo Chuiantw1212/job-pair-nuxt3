@@ -6,7 +6,8 @@
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)" />
+                :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)"
+                @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
@@ -19,7 +20,7 @@ export default {
 </script>
 <script setup>
 const { $uuid4, } = useNuxtApp()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'keyup.enter'])
 const state = reactive({
     key: null,
     message: '',
