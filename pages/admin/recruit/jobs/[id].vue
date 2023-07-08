@@ -110,12 +110,16 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
+                <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJdModal>
                 <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
                     :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
                 </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
+                <LazyOrganismChatJobSkillModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJobSkillModal>
                 <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
                 </LazyOrganismChatCvModal> -->

@@ -187,18 +187,6 @@ watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
 // methods
-function setJobBenefits(value) {
-    currentInstance.refs.jobBenefitsRef.setData(value)
-}
-function setDescription(value) {
-    currentInstance.refs.descriptionRef.setData(value)
-}
-async function handleChatRequest(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
-}
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
     return labels.join(" ,")

@@ -29,26 +29,19 @@ export default defineStore('chat', () => {
         })
         return response
     }
-    async function postChatJobDescription(data) {
-        const { content = '' } = data
-        const dataBlob = new Blob([content])
-        if (dataBlob.size >= 2000) {
-            await $sweet.alert('內容限制約700字元。')
-            return
-        }
+    async function postChatJobSkillGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobDescription`,
+            url: `/chat/jobSkills/generate`,
             data,
             timeout: 180000,
-            maxBodyLength: 2,
         })
         return response
     }
     return {
         postChatProfile,
-        postChatJobDescription,
         postChatIntro,
         postChatJdGenerate,
+        postChatJobSkillGenerate,
     }
 })
