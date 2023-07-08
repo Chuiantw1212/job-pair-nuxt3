@@ -1,14 +1,14 @@
 <template>
     <div class="chatGptModal">
         <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-1" src="./Frame.svg" alt="icon">
-            JD生成
+            <img class="me-2" src="./Frame.svg" alt="icon">
+            AI 智能生成
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">JD生成</h4>
+                        <h4 class="modal-title">AI 智能生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
@@ -232,7 +232,11 @@ function handleConfirm() {
     state.chatModal.hide()
 }
 async function openModal() {
-    state.form.jobName = props.job?.name
+    if (!props.modelValue?.name) {
+        $sweet.alert('職缺名稱為使用AI生成的必要條件！')
+        return
+    }
+    state.form.jobName = props.modelValue?.name
     state.chatModal.show()
 }
 function handleClose() {
@@ -252,7 +256,7 @@ async function handleSubmit() {
         }
     })
     const res = await repoChat.postChatJdGenerate({
-        // jobName: state.form.jobName,
+        jobName: state.form.jobName,
         chatItems: minimizedData
     })
     if (res.status !== 200) {
@@ -261,7 +265,7 @@ async function handleSubmit() {
     $sweet.loader(false)
     const { data } = res
     state.newJob.description = data
-    const updatedJob = Object.assign({}, props.job, {
+    const updatedJob = Object.assign({}, props.modelValue, {
         // name: state.form.jobName,
         ...state.newJob
     })
@@ -288,7 +292,7 @@ async function handleSubmit() {
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    width: 115px;
+    // width: 115px;
     height: 40px;
     margin-left: 8px;
 }

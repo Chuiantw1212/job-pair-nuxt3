@@ -118,6 +118,8 @@
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
+                <LazyOrganismChatJobSkillModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJobSkillModal>
                 <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
                     @update:modelValue="setSkills($event)">
                 </LazyOrganismChatCvModal> -->

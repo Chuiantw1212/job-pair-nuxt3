@@ -1,58 +1,54 @@
 <template>
     <div class="chatGptModal">
         <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-1" src="./Frame.svg" alt="icon">
-            JD生成
+            <img class="me-2" src="./Frame.svg" alt="icon">
+            AI 智能生成
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content"> 
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">JD生成</h4>
+                        <h4 class="modal-title">AI 智能生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <!--  -->
-                        <LazyAtomInputText v-model="state.form.jobName" name="職務名稱" required></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.department" name="所屬部門"></LazyAtomInputText>
-                        <!--  -->
-                        <AtomInputSelect v-model="state.form.manager" name="管理責任"></AtomInputSelect>
-                        <LazyAtomInputText v-model="state.form.primary[0]" name="主要工作"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.primary[1]" name="主要工作"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.secondary[0]" name="次要工作"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.secondary[1]" name="次要工作"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.goal" name="具體目標"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.value" name="價值體現"></LazyAtomInputText>
-                        <AtomInputSelect v-model="state.form.personality[0]" itemValue="text" :items="state.question1"
-                            name="特質期望">
-                        </AtomInputSelect>
-                        <AtomInputSelect v-model="state.form.personality[1]" itemValue="text" :items="state.question2"
-                            name="特質期望">
-                        </AtomInputSelect>
-                        <AtomInputSelect v-model="state.form.personality[2]" itemValue="text" :items="state.question3"
-                            name="特質期望">
-                        </AtomInputSelect>
-                        <AtomInputSelect v-model="state.form.personality[3]" itemValue="text" :items="state.question4"
-                            name="特質期望">
-                        </AtomInputSelect>
-                        <LazyAtomInputText v-model="state.form.educationLevel" name="學歷要求"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.experienceLevel" name="資歷要求"></LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.form.skillLevel" name="技能要求"></LazyAtomInputText>
-                        <LazyAtomBtnSimple class="modal__btn" @click="handleSubmit()">開始生成</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.description" ref="description" name="職責簡介"
-                            :style="{ 'height': '324px' }">
-                        </LazyAtomInputCkeditor>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.newJob.skills" ref="skills"
-                            name="職務說明第三段" :style="{ 'height': '324px' }">
-                        </LazyAtomInputCkeditor>
+                        <ul class=body__list>
+                            <template v-for="(item, chatItemIndex) in  state.chatItems">
+                                <li v-if="chatItemIndex <= state.chatItemIndex" :key="chatItemIndex" class="list__item"
+                                    :class="{ 'list__item--user': item.role === 'user' }">
+                                    <div class="item__content">
+                                        <div v-if="item.role === 'user'" v-html="state.userIdenticon"
+                                            class="content__image">
+                                        </div>
+                                        <img v-else class="content__image" alt="monica" src="./monica.webp">
+                                        <div class="content__textGroup">
+                                            <div v-for="(message, messageItemIndex) in item.messages"
+                                                :key="`${chatItemIndex}${messageItemIndex}`" class="textGroup__line">
+                                                {{ message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
                     </div>
                     <div class="modal-footer">
-                        <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
-                            </LazyAtomBtnSimple>
-                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
-                            </LazyAtomBtnSimple>
+                        <div class="footer__content">
+                            <button class="content__btn" @click="gotoNextItem('無')">略過此題</button>
+                            <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
+                                <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
+                                    class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
+                                    {{ item }}
+                                </LazyAtomBtnSimple>
+                            </div>
+                            <template v-else-if="getMessageUI().type === 'text'">
+                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入"
+                                    @keyup.enter="gotoNextItem()">
+                                </LazyAtomInputText>
+                                <button class="content__submit" @click="gotoNextItem()">送出</button>
+                            </template>
+                            <button @click="handleSubmit()">直接送出</button>
                         </div>
                     </div>
                 </div>
@@ -61,92 +57,110 @@
     </div>
 </template>
 <script setup>
-const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
+import { nextTick } from 'vue'
+const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
+const repoAuth = useRepoAuth()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
     chatModal: null,
-    glideInstance: null,
-    glideIndex: 0,
-    resume: null,
-    duration: "",
-    schedules: [],
     form: {
         jobName: '行銷企劃專員',
-        department: '行銷推廣部',
-        goal: '建立和推廣品牌形象，增加目標市場對品牌的認識和關注',
-        value: '需要有豐富的創意和創新思維，能夠提供新穎且有吸引力的行銷方案和活動，以吸引目標客戶的關注並脫穎而出',
-        educationLevel: '大學',
-        experienceLevel: '兩年以上',
-        skillLevel: '懂Youtube以及抖音的行銷後台',
-        manager: true,
-        primary: [
-            '經營公司、現有品牌、產品整體形象，並負責相關行銷企劃案',
-            '規劃與執行公司對內、外的行銷活動（如：展覽、促銷活動）',
-            '熟悉社群媒體經營，撰寫文案、各媒體及新聞稿等相關事務',
-            '行銷製作物規劃與執行、品牌行銷管理（如：產品型錄、簡介、贈品等銷售工具）'
-        ],
-        secondary: ['跨部門溝通協調、創意發想', '其他主管交辦事項'],
-        personality: ['堅定，目標導向', '冒險，自我挑戰', '追求成就', '企圖心高'],
     },
-    question1: [
+    userIdenticon: '',
+    chatReply: '',
+    chatItemIndex: 0,
+    chatItems: [
         {
-            text: '堅定，目標導向',
+            role: 'system',
+            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請回覆「無」。（背景題1/3）'],
+            responseUI: {
+                type: 'text',
+            }
         },
         {
-            text: '說服，擅長表達',
+            role: 'user',
+            messages: ['無'],
         },
         {
-            text: '和善，合作導向',
+            role: 'system',
+            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請回覆「無」。（背景題2/3）'],
+            responseUI: {
+                type: 'text',
+            }
         },
         {
-            text: '仔細，善於思考',
-        }
+            role: 'user',
+            messages: ['無'],
+        },
+        {
+            role: 'system',
+            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請回覆「無」。（背景題3/3）'],
+            responseUI: {
+                type: 'text',
+            }
+        },
+        {
+            role: 'user',
+            messages: ['無'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質1/4)'],
+            responseUI: {
+                type: 'button',
+                options: ['堅定，目標導向', '說服，擅長表達', '和善，合作導向', '仔細，善於思考'],
+            }
+        },
+        {
+            role: 'user',
+            messages: ['堅定，目標導向'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質2/4)'],
+            responseUI: {
+                type: 'button',
+                options: ['冒險，自我挑戰', '開朗，與人交流', '穩健，支持他人', '嚴謹，自我要求'],
+            }
+        },
+        {
+            role: 'user',
+            messages: ['開朗，與人交流'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質3/4)'],
+            responseUI: {
+                type: 'button',
+                options: ['追求成就', '追求舞台', '追求穩定', '追求正確'],
+            }
+        },
+        {
+            role: 'user',
+            messages: ['追求成就'],
+        },
+        {
+            role: 'system',
+            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質4/4)'],
+            responseUI: {
+                type: 'button',
+                options: ['企圖心高', '創造力強', '配合度高', '準確性高'],
+            }
+        },
+        {
+            role: 'user',
+            messages: ['企圖心高'],
+        },
+        {
+            role: 'system',
+            messages: ['太棒了！現在為您生成職務說明書'],
+            responseUI: {
+                type: 'text',
+            }
+        },
     ],
-    question2: [
-        {
-            text: '冒險，自我挑戰',
-        },
-        {
-            text: '開朗，與人交流',
-        },
-        {
-            text: '穩健，支持他人',
-        },
-        {
-            text: '嚴謹，自我要求',
-        }
-    ],
-    question3: [
-        {
-            text: '追求成就',
-        },
-        {
-            text: '追求舞台',
-        },
-        {
-            text: '追求穩定',
-        },
-        {
-            text: '追求正確',
-        }
-    ],
-    question4: [
-        {
-            text: '企圖心高',
-        },
-        {
-            text: '創造力強',
-        },
-        {
-            text: '配合度高',
-        },
-        {
-            text: '準確性高',
-        }
-    ],
-    beforeChatGpt: '',
     newJob: {
         description: '',
         skills: '',
@@ -181,9 +195,33 @@ onMounted(() => {
                 backdrop: "static",
             })
         })
+        const userIdentity = repoAuth.state?.user?.email || 'default'
+        const svgString = window.jdenticon.toSvg(userIdentity, 50);
+        state.userIdenticon = svgString
     }
 })
 // methods
+function getMessageUI() {
+    const relatedItem = state.chatItems[state.chatItemIndex]
+    return relatedItem.responseUI
+}
+function gotoNextItem(selectedItem = '') {
+    // set reply
+    const relatedItem = state.chatItems[state.chatItemIndex + 1]
+    relatedItem.messages[0] = state.chatReply || selectedItem
+    state.chatReply = ''
+    // show reply
+    state.chatItemIndex += 2
+    if (state.chatItemIndex >= state.chatItems.length + 1) {
+        // submit items
+        handleSubmit()
+        return
+    }
+    nextTick(() => {
+        const divEle = currentInstance.refs.modalBodyRef
+        divEle.scrollTop = divEle.scrollHeight;
+    })
+}
 function handleConfirm() {
     const updatedJob = Object.assign({}, props.job, {
         name: state.form.jobName,
@@ -208,7 +246,12 @@ function handleConfirm() {
     state.chatModal.hide()
 }
 async function openModal() {
-    state.form.jobName = props.job?.name
+    console.log(props.modelValue);
+    if (!props.modelValue?.name) {
+        $sweet.alert('職缺名稱為使用AI生成的必要條件！')
+        return
+    }
+    state.form.jobName = props.modelValue?.name
     state.chatModal.show()
 }
 function handleClose() {
@@ -216,36 +259,55 @@ function handleClose() {
 }
 const modalBodyRef = ref(null)
 async function handleSubmit() {
+    state.chatModal.hide()
     $sweet.loader(true, {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
     })
-    const res = await repoChat.postChatJdGenerate(state.form)
+    const minimizedData = state.chatItems.map(item => {
+        return {
+            role: item.role,
+            messages: item.messages
+        }
+    })
+    const res = await repoChat.postChatJobSkillGenerate({
+        jobName: state.form.jobName,
+        chatItems: minimizedData
+    })
     if (res.status !== 200) {
         return
     }
     $sweet.loader(false)
     const { data } = res
-    const { description = '', skills = '' } = data
-    state.newJob.description = description
-    const descriptionEditor = currentInstance.refs.description
-    if (descriptionEditor) {
-        descriptionEditor.setData(description)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
-    }
-    state.newJob.skills = skills
-    const listEditor = currentInstance.refs.skills
-    if (listEditor) {
-        listEditor.setData(skills)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', listEditor);
-    }
+    state.newJob.skills = data
+    const updatedJob = Object.assign({}, props.modelValue, {
+        // name: state.form.jobName,
+        ...state.newJob
+    })
+    console.log({
+        updatedJob
+    });
+    emit('update:modelValue', updatedJob)
+    // const { description = '', skills = '' } = data
+    // state.newJob.description = description
+    // const descriptionEditor = currentInstance.refs.description
+    // if (descriptionEditor) {
+    //     descriptionEditor.setData(description)
+    // } else {
+    //     console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
+    // }
+    // state.newJob.skills = skills
+    // const listEditor = currentInstance.refs.skills
+    // if (listEditor) {
+    //     listEditor.setData(skills)
+    // } else {
+    //     console.log('Error trying to setInvitationTemplate: ', listEditor);
+    // }
 }
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    width: 115px;
+    // width: 115px;
     height: 40px;
     margin-left: 8px;
 }
@@ -254,13 +316,20 @@ async function handleSubmit() {
     border-radius: 10px;
 
     .modal-header {
-        border: none;
         position: relative;
-        text-align: center;
+        padding-left: 40px;
 
         .modal-title {
             width: 100%;
             font-weight: bold;
+            font-size: 22px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.3;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000;
         }
 
         .btn-close {
@@ -271,10 +340,8 @@ async function handleSubmit() {
     }
 
     .modal-body {
-        padding: 0 50px 30px 50px;
+        padding: 40px 40px;
 
-        // display: flex;
-        // flex-wrap: nowrap;
         .modal__btn {
             margin: auto auto auto auto;
             width: 226px;
@@ -284,24 +351,112 @@ async function handleSubmit() {
             border: 1px solid black;
             border-radius: 8px;
         }
+
+        .body__list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+
+            .list__item {
+                max-width: calc(100% - 70px);
+
+                .item__content {
+                    display: flex;
+                    gap: 20px;
+                    // align-items: center;
+
+                    .content__image {
+                        width: 50px;
+                        height: 50px;
+
+                    }
+
+                    .content__textGroup {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 20px;
+
+                        .textGroup__line {
+                            padding: 12px 40px;
+                            background-color: #f5f5f5;
+                            border-radius: 10px 10px 10px 0px;
+                            overflow: hidden;
+                            width: fit-content;
+                            font-size: 16px;
+                            font-weight: normal;
+                            font-stretch: normal;
+                            font-style: normal;
+                            line-height: normal;
+                            letter-spacing: normal;
+                            text-align: left;
+                            color: #333;
+                        }
+                    }
+                }
+            }
+
+            .list__item--user {
+                align-self: flex-end;
+
+                .item__content {
+                    flex-direction: row-reverse;
+
+                    .content__textGroup {
+                        .textGroup__line {
+                            border-radius: 10px 10px 0px 10px;
+                            color: #fff;
+                            background-color: #5ea88e;
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     .modal-footer {
-        border: none;
-        padding-bottom: 37px;
 
-        .footer__buttonGroup {
+        .footer__content {
             display: flex;
             gap: 16px;
             margin: auto;
             flex-direction: column-reverse;
+            width: 100%;
 
-            .footer__button {
-                width: 120px;
+            .content__btn {
+                background-color: inherit;
+                border: 0px;
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #5ea88e;
+                white-space: nowrap;
             }
 
-            .buttonGroup__btn {
-                width: 226px;
+            .content__input {
+                width: 100%;
+            }
+
+            .content__submit {
+                white-space: nowrap;
+            }
+
+            .content__btnGroup {
+                width: 100%;
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+
+                .btnGroup__btn {
+                    width: fit-content;
+                }
             }
         }
     }
@@ -313,7 +468,7 @@ async function handleSubmit() {
         .modal-footer {
 
 
-            .footer__buttonGroup {
+            .footer__content {
                 flex-direction: row;
             }
         }
