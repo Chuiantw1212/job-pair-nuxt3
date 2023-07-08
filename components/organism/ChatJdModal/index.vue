@@ -48,7 +48,7 @@
                                 </LazyAtomInputText>
                                 <button class="content__submit" @click="gotoNextItem()">送出</button>
                             </template>
-                            <button @click="handleSubmit()">直接送出</button>
+                            <!-- <button @click="handleSubmit()">直接送出</button> -->
                         </div>
                     </div>
                 </div>
@@ -65,9 +65,6 @@ const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const state = reactive({
     id: null,
     chatModal: null,
-    form: {
-        jobName: '行銷企劃專員',
-    },
     userIdenticon: '',
     chatReply: '',
     chatItemIndex: 0,
@@ -81,7 +78,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['無'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -92,7 +89,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['無'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -103,7 +100,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['設計畫面、與RD部門溝通'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -114,7 +111,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['做UX用戶研究'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -125,7 +122,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['三個月後專案能順利上線'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -137,7 +134,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['創造價值的人'],
+            messages: [''],
         },
         {
             role: 'system',
@@ -147,10 +144,6 @@ const state = reactive({
             }
         },
     ],
-    newJob: {
-        description: '',
-        skills: '',
-    }
 })
 const props = defineProps({
     modelValue: {
@@ -163,15 +156,18 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    job: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    }
 })
 const currentInstance = getCurrentInstance()
 // hooks
+const localValue = computed({
+    get() {
+        const value = props.modelValue ?? {}
+        return value
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
 onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
@@ -193,12 +189,12 @@ function getMessageUI() {
 }
 function gotoNextItem(selectedItem = '') {
     // set reply
-    const relatedItem = state.chatItems[state.chatItemIndex + 1]
+    const relatedItem = state.chatItems[state.chatItemIndex - 1]
     relatedItem.messages[0] = state.chatReply || selectedItem
     state.chatReply = ''
     // show reply
     state.chatItemIndex += 2
-    if (state.chatItemIndex >= state.chatItems.length + 1) {
+    if (state.chatItemIndex >= state.chatItems.length) {
         // submit items
         handleSubmit()
         return
@@ -208,35 +204,11 @@ function gotoNextItem(selectedItem = '') {
         divEle.scrollTop = divEle.scrollHeight;
     })
 }
-function handleConfirm() {
-    const updatedJob = Object.assign({}, props.job, {
-        name: state.form.jobName,
-        ...state.newJob
-    })
-    console.log({
-        updatedJob
-    });
-    emit('update:modelValue', updatedJob)
-    const descEditor = currentInstance.refs.description
-    if (descEditor) {
-        descEditor.setData('')
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', descEditor);
-    }
-    const skillsEditor = currentInstance.refs.skills
-    if (skillsEditor) {
-        skillsEditor.setData('')
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', skillsEditor);
-    }
-    state.chatModal.hide()
-}
 async function openModal() {
     if (!props.modelValue?.name) {
         $sweet.alert('職缺名稱為使用AI生成的必要條件！')
         return
     }
-    state.form.jobName = props.modelValue?.name
     state.chatModal.show()
 }
 function handleClose() {
@@ -256,7 +228,7 @@ async function handleSubmit() {
         }
     })
     const res = await repoChat.postChatJdGenerate({
-        jobName: state.form.jobName,
+        jobName: localValue.value.name,
         chatItems: minimizedData
     })
     if (res.status !== 200) {
@@ -264,30 +236,8 @@ async function handleSubmit() {
     }
     $sweet.loader(false)
     const { data } = res
-    state.newJob.description = data
-    const updatedJob = Object.assign({}, props.modelValue, {
-        // name: state.form.jobName,
-        ...state.newJob
-    })
-    console.log({
-        updatedJob
-    });
-    emit('update:modelValue', updatedJob)
-    // const { description = '', skills = '' } = data
-    // state.newJob.description = description
-    // const descriptionEditor = currentInstance.refs.description
-    // if (descriptionEditor) {
-    //     descriptionEditor.setData(description)
-    // } else {
-    //     console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
-    // }
-    // state.newJob.skills = skills
-    // const listEditor = currentInstance.refs.skills
-    // if (listEditor) {
-    //     listEditor.setData(skills)
-    // } else {
-    //     console.log('Error trying to setInvitationTemplate: ', listEditor);
-    // }
+    localValue.value.description = data
+    emit('update:modelValue', localValue.value)
 }
 </script>
 <style lang="scss" scoped>
