@@ -18,10 +18,8 @@
                                 <li v-if="chatItemIndex <= state.chatItemIndex" :key="chatItemIndex" class="list__item"
                                     :class="{ 'list__item--user': item.role === 'user' }">
                                     <div class="item__content">
-                                        <!-- <svg width="80" height="80" data-jdenticon-value="icon value"></svg> -->
                                         <div v-if="item.role === 'user'" v-html="state.userIdenticon"
                                             class="content__image">
-
                                         </div>
                                         <img v-else class="content__image" alt="monica" src="./monica.webp">
                                         <div class="content__textGroup">
@@ -122,7 +120,25 @@ const state = reactive({
             role: 'system',
             messages: ['這份工作的內涵價值較符合以下哪種人：1. 創造價值的人 2. 傳遞價值的人 3. 支持與維護價值的人 4. 制定與優化價值的人(6/6)'],
             responseUI: {
-                type: 'text',
+                type: 'button',
+                options: [
+                    {
+                        text: '1. 創造價值的人',
+                        value: '創造價值的人'
+                    },
+                    {
+                        text: '2. 傳遞價值的人',
+                        value: '傳遞價值的人'
+                    },
+                    {
+                        text: '3. 支持與維護價值的人',
+                        value: '支持與維護價值的人'
+                    },
+                    {
+                        text: '4. 制定與優化價值的人',
+                        value: '制定與優化價值的人',
+                    }
+                ],
             }
         },
         {
@@ -178,6 +194,11 @@ onMounted(() => {
 // methods
 function gotoNextItem() {
     state.chatItemIndex += 2
+    if (state.chatItemIndex >= chatItems.length + 1) {
+        // submit items
+        handleSubmit()
+        return
+    }
     nextTick(() => {
         const divEle = currentInstance.refs.modalBodyRef
         divEle.scrollTop = divEle.scrollHeight;
@@ -215,31 +236,31 @@ function handleClose() {
 }
 const modalBodyRef = ref(null)
 async function handleSubmit() {
-    $sweet.loader(true, {
-        title: '泡杯咖啡再回來',
-        text: '「如果還沒好，那就再來一杯」',
-    })
-    const res = await repoChat.postChatJdGenerate(state.form)
-    if (res.status !== 200) {
-        return
-    }
-    $sweet.loader(false)
-    const { data } = res
-    const { description = '', skills = '' } = data
-    state.newJob.description = description
-    const descriptionEditor = currentInstance.refs.description
-    if (descriptionEditor) {
-        descriptionEditor.setData(description)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
-    }
-    state.newJob.skills = skills
-    const listEditor = currentInstance.refs.skills
-    if (listEditor) {
-        listEditor.setData(skills)
-    } else {
-        console.log('Error trying to setInvitationTemplate: ', listEditor);
-    }
+    // $sweet.loader(true, {
+    //     title: '泡杯咖啡再回來',
+    //     text: '「如果還沒好，那就再來一杯」',
+    // })
+    // const res = await repoChat.postChatJdGenerate(state.form)
+    // if (res.status !== 200) {
+    //     return
+    // }
+    // $sweet.loader(false)
+    // const { data } = res
+    // const { description = '', skills = '' } = data
+    // state.newJob.description = description
+    // const descriptionEditor = currentInstance.refs.description
+    // if (descriptionEditor) {
+    //     descriptionEditor.setData(description)
+    // } else {
+    //     console.log('Error trying to setInvitationTemplate: ', descriptionEditor);
+    // }
+    // state.newJob.skills = skills
+    // const listEditor = currentInstance.refs.skills
+    // if (listEditor) {
+    //     listEditor.setData(skills)
+    // } else {
+    //     console.log('Error trying to setInvitationTemplate: ', listEditor);
+    // }
 }
 </script>
 <style lang="scss" scoped>
