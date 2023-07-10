@@ -43,8 +43,7 @@
                                 </LazyAtomBtnSimple>
                             </div>
                             <template v-else-if="getMessageUI().type === 'text'">
-                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入"
-                                    @keyup.enter="gotoNextItem()">
+                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入">
                                 </LazyAtomInputText>
                                 <button class="content__submit" @click="gotoNextItem()">送出</button>
                             </template>
@@ -212,6 +211,13 @@ async function openModal() {
     state.chatModal.show()
 }
 function handleClose() {
+    state.chatReply = ''
+    state.chatItemIndex = 0
+    state.chatItems.forEach(item => {
+        if (item.role === 'user') {
+            item.messages = ['']
+        }
+    })
     state.chatModal.hide()
 }
 const modalBodyRef = ref(null)
