@@ -189,7 +189,7 @@ function getMessageUI() {
 }
 function gotoNextItem(selectedItem = '') {
     // set reply
-    const relatedItem = state.chatItems[state.chatItemIndex - 1]
+    const relatedItem = state.chatItems[state.chatItemIndex + 1]
     relatedItem.messages[0] = state.chatReply || selectedItem
     state.chatReply = ''
     // show reply
