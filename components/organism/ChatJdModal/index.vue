@@ -35,7 +35,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__content">
-                            <button class="content__btn" @click="gotoNextItem('無')">略過此題</button>
+                            <button v-if="getMessageUI().hasSkip" class="content__btn"
+                                @click="gotoNextItem('無')">略過此題</button>
+                            <button v-else class="content__btn content__btn--disabled" :disabled="true">略過此題</button>
                             <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
                                 <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
                                     class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
@@ -74,6 +76,7 @@ const state = reactive({
             messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於任何部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「略過此題」。（1/6）'],
             responseUI: {
                 type: 'text',
+                hasSkip: true,
             }
         },
         {
@@ -85,6 +88,7 @@ const state = reactive({
             messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請「略過此題」。(2/6)'],
             responseUI: {
                 type: 'text',
+                hasSkip: true,
             }
         },
         {
@@ -181,10 +185,16 @@ function getMessageUI() {
     if (relatedItem) {
         return relatedItem.responseUI
     } else {
-        return { type: '', options: [] }
+        return { type: '', options: [], }
     }
 }
 function gotoNextItem(selectedItem = '') {
+    if (!getMessageUI().hasSkip) {
+        if (!String(state.chatReply)) {
+            $sweet.alert('此題為必填')
+            return
+        }
+    }
     // set reply
     const relatedItem = state.chatItems[state.chatItemIndex + 1]
     relatedItem.messages[0] = state.chatReply || selectedItem
@@ -376,6 +386,11 @@ async function handleSubmit() {
                 text-align: left;
                 color: #5ea88e;
                 white-space: nowrap;
+                cursor: pointer;
+            }
+
+            .content__btn--disabled {
+                color: #d3d3d3;
             }
 
             .content__input {
