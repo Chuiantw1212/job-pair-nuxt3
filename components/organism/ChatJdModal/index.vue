@@ -45,9 +45,10 @@
                             <template v-else-if="getMessageUI().type === 'text'">
                                 <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入">
                                 </LazyAtomInputText>
-                                <button class="content__submit" @click="gotoNextItem()">送出</button>
+                                <button class="content__submit" @click="gotoNextItem()">
+                                    <img src="./Send.webp">
+                                </button>
                             </template>
-                            <!-- <button @click="handleSubmit()">直接送出</button> -->
                         </div>
                     </div>
                 </div>
@@ -135,13 +136,6 @@ const state = reactive({
             role: 'user',
             messages: [''],
         },
-        {
-            role: 'system',
-            messages: ['太棒了！現在為您生成職務說明書'],
-            responseUI: {
-                type: 'text',
-            }
-        },
     ],
 })
 const props = defineProps({
@@ -184,7 +178,11 @@ onMounted(() => {
 // methods
 function getMessageUI() {
     const relatedItem = state.chatItems[state.chatItemIndex]
-    return relatedItem.responseUI
+    if (relatedItem) {
+        return relatedItem.responseUI
+    } else {
+        return { type: '', options: [] }
+    }
 }
 function gotoNextItem(selectedItem = '') {
     // set reply
@@ -224,8 +222,8 @@ const modalBodyRef = ref(null)
 async function handleSubmit() {
     state.chatModal.hide()
     $sweet.loader(true, {
-        title: '泡杯咖啡再回來',
-        text: '「如果還沒好，那就再來一杯」',
+        title: '現在為您生成職務說明書',
+        html: '太棒了！泡杯咖啡再回來<br \>「如果還沒好，那就再來一杯」',
     })
     const minimizedData = state.chatItems.map(item => {
         return {
@@ -307,7 +305,6 @@ async function handleSubmit() {
                 .item__content {
                     display: flex;
                     gap: 20px;
-                    // align-items: center;
 
                     .content__image {
                         width: 50px;
@@ -387,6 +384,8 @@ async function handleSubmit() {
 
             .content__submit {
                 white-space: nowrap;
+                background-color: inherit;
+                border: none;
             }
 
             .content__btnGroup {
