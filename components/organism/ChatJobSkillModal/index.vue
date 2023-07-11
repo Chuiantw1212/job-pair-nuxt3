@@ -35,7 +35,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__content">
-                            <button class="content__btn" @click="gotoNextItem('無')">略過此題</button>
+                            <button v-if="getMessageUI().hasSkip" class="content__btn"
+                                @click="gotoNextItem('無')">略過此題</button>
+                            <button v-else class="content__btn content__btn--disabled" :disabled="true">略過此題</button>
                             <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
                                 <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
                                     class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
@@ -51,7 +53,7 @@
                             </template>
                         </div>
                     </div>
-                </div>｀
+                </div>
             </div>
         </div>
     </div>
@@ -74,6 +76,7 @@ const state = reactive({
             messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請回覆「無」。（背景題1/3）'],
             responseUI: {
                 type: 'text',
+                hasSkip: true,
             }
         },
         {
@@ -82,9 +85,10 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請回覆「無」。（背景題2/3）'],
+            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題2/3）'],
             responseUI: {
                 type: 'text',
+                hasSkip: true,
             }
         },
         {
@@ -93,9 +97,10 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請回覆「無」。（背景題3/3）'],
+            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題3/3）'],
             responseUI: {
                 type: 'text',
+                hasSkip: true,
             }
         },
         {
@@ -208,10 +213,16 @@ function getMessageUI() {
     if (relatedItem) {
         return relatedItem.responseUI
     } else {
-        return { type: '', options: [] }
+        return { type: '', options: [], }
     }
 }
 function gotoNextItem(selectedItem = '') {
+    if (!getMessageUI().hasSkip) {
+        if (!String(state.chatReply)) {
+            $sweet.alert('此題為必填')
+            return
+        }
+    }
     // set reply
     const relatedItem = state.chatItems[state.chatItemIndex + 1]
     relatedItem.messages[0] = state.chatReply || selectedItem
@@ -396,6 +407,11 @@ async function handleSubmit() {
                 text-align: left;
                 color: #5ea88e;
                 white-space: nowrap;
+                cursor: pointer;
+            }
+
+            .content__btn--disabled {
+                color: #d3d3d3;
             }
 
             .content__input {
