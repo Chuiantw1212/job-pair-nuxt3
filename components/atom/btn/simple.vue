@@ -66,8 +66,8 @@ onMounted(() => {
 // IMPORTANT: 直接由外部套用樣式
 .btnSimple--outline--success {
     background-color: white;
-    color: #29b0ab;
-    border: 1px solid #29b0ab;
+    color: #5ea88e;
+    border: solid 1px #5ea88e;
 
     &:hover {
         background-color: white;
