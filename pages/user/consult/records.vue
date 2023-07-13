@@ -86,7 +86,7 @@
         <div v-if="device.state.isLarge" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />
+                    <img class="header__image" src="~/assets/consult/img1@2x.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">理想生活探索</div>
                     <div class="header__sub">解決你的生活焦慮</div>
                 </div>

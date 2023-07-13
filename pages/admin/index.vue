@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="container__footer">
-            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3.webp">
+            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3@2x.webp">
             趕快加入 搶人才
             <button class="companyHome__btn footer__button" @click="openAdminModal()">免費加入</button>
         </div>
