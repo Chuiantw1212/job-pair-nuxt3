@@ -23,7 +23,7 @@ export default defineStore('chat', () => {
     async function postChatJdGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobDescription/generate`,
+            url: `/chat/job/description/generate`,
             data,
             timeout: 180000,
         })
@@ -32,16 +32,45 @@ export default defineStore('chat', () => {
     async function postChatJobSkillGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobSkills/generate`,
+            url: `/chat/job/skill/generate`,
             data,
             timeout: 180000,
         })
         return response
+    }
+    async function postChatJobContent(type, data) {
+        switch (type) {
+            case 'description': {
+                const response = await jobPairApi.request({
+                    method: 'post',
+                    url: `/chat/job/description/optimize`,
+                    data,
+                    timeout: 180000,
+                })
+                return response
+            }
+            case 'skills': {
+                const response = await jobPairApi.request({
+                    method: 'post',
+                    url: `/chat/job/skill/optimize`,
+                    data,
+                    timeout: 180000,
+                })
+                return response
+            }
+            default: {
+                if (process.client) {
+                    alert('postChatJobContent type exception')
+                    return
+                }
+            }
+        }
     }
     return {
         postChatProfile,
         postChatIntro,
         postChatJdGenerate,
         postChatJobSkillGenerate,
+        postChatJobContent,
     }
 })

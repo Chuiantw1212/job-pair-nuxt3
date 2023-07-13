@@ -110,19 +110,19 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatJdOptimizeModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
+                    :field="'description'" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJdOptimizeModal>
+                <LazyOrganismChatJdModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatJdModal>
-                <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
-                    :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
-                <LazyOrganismChatJobSkillModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatJdOptimizeModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
+                    :field="'skills'" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJdOptimizeModal>
+                <LazyOrganismChatJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatJobSkillModal>
-                <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
-                    @update:modelValue="setSkills($event)">
-                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -182,6 +182,7 @@ const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const device = useDevice()
 const repoCompany = useRepoCompany()
+const repoChat = useRepoChat()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
@@ -274,6 +275,14 @@ async function crawlFromLink() {
     setSkills(newJob.skills)
 }
 const instance = getCurrentInstance()
+function checkHasDescription() {
+    const { description = '' } = state.job
+    return description && description !== '<p></p>'
+}
+function checkHasSkills() {
+    const { skills = '' } = state.job
+    return skills && skills !== '<p></p>'
+}
 async function checkWalletBallance(value) {
     if (value !== 'active') {
         return
