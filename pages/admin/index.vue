@@ -14,7 +14,7 @@
             <img class="d-none d-lg-block section__decoration section__decoration--2"
                 src="@/assets/admin/index/Group459.webp" alt="decoration">
             <div class="section__card section__card--left">
-                <img class="section__image section__image--1" src="@/assets/admin/index/img1.webp" alt="issue1"
+                <img class="section__image section__image--1" src="@/assets/admin/index/img1@2x.webp" alt="issue1"
                     format="webp" />
                 <h3 class="card__header">
                     <span class="header__decoration">
