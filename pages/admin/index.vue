@@ -1,8 +1,8 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <img v-if="device.state.isLarge" class="banner__image" src="~/assets/admin/index/img_banner2.png" alt="banner">
-            <img v-else class="banner__image" src="~/assets/admin/index/img_banner_phone@2x.png" alt="banner">
+            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner">
+            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">
                 免費加入
             </button>
@@ -10,11 +10,12 @@
         <div class="container__section">
             <h2 class="section__header">大缺工時代，人難找嗎？</h2>
             <img class="d-none d-lg-block section__decoration section__decoration--1"
-                src="~/assets/admin/index/MaskGroup.png" alt="decoration">
+                src="@/assets/admin/index/Maskgroup.webp" alt="decoration">
             <img class="d-none d-lg-block section__decoration section__decoration--2"
-                src="~/assets/admin/index/Group459.png" alt="decoration">
+                src="@/assets/admin/index/Group459.webp" alt="decoration">
             <div class="section__card section__card--left">
-                <img class="section__image section__image--1" src="~/assets/admin/index/img1@2x.png" alt="issue1" />
+                <img class="section__image section__image--1" src="@/assets/admin/index/img1.webp" alt="issue1"
+                    format="webp" />
                 <h3 class="card__header">
                     <span class="header__decoration">
                         不花錢買廣告
@@ -24,14 +25,14 @@
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
             <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/index/img2.png" alt="issue2" />
+                <img class="section__image section__image--2" src="@/assets/admin/index/img2.webp" alt="issue2" format="webp" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
                 <div class="card__body">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</div>
             </div>
             <div class="section__card section__card--left">
-                <img class="section__image section__image--3" src="~/assets/admin/index/img3.png" alt="issue3" />
+                <img class="section__image section__image--3" src="@/assets/admin/index/img3.webp" alt="issue3" format="webp" />
                 <h3 class="card__header">
                     好不容易徵到人，<span class="header__decoration">怎麼又離職了</span>？
                 </h3>
@@ -43,7 +44,7 @@
             <div class="section__body">
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image header__image--1" src="~/assets/admin/index/img4@2x.png"
+                        <img class="header__image header__image--1" src="@/assets/admin/index/img4@2x.webp" format="webp"
                             alt="advantage1" />
                         <div class="header__text">提升招聘效能</div>
                     </div>
@@ -52,7 +53,7 @@
                 </div>
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image header__image--2" src="~/assets/admin/index/img5@2x.png"
+                        <img class="header__image header__image--2" src="@/assets/admin/index/img5@2x.webp" format="webp"
                             alt="advantage2" />
                         <div class="header__text">精準找到合適人選</div>
                     </div>
@@ -62,7 +63,7 @@
                 </div>
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
-                        <img class="header__image header__image--3" src="~/assets/admin/index/img6@2x.png"
+                        <img class="header__image header__image--3" src="@/assets/admin/index/img6@2x.webp" format="webp"
                             alt="advantage3" />
                         <div class="header__text">節省成本</div>
                     </div>
@@ -91,7 +92,7 @@
             </div>
         </div>
         <div class="container__footer">
-            <img class="footer__image d-lg-none" alt="hurry" src="~/assets/admin/index/bg3.png">
+            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3@2x.webp">
             趕快加入 搶人才
             <button class="companyHome__btn footer__button" @click="openAdminModal()">免費加入</button>
         </div>
@@ -542,7 +543,7 @@ function openAdminModal() {
         }
 
         .container__section--blue {
-            background-image: url('~/assets/admin/index/bg1.png');
+            background-image: url('@/assets/admin/index/bg1.webp');
         }
 
         .container__footer {
@@ -556,7 +557,7 @@ function openAdminModal() {
             letter-spacing: normal;
             text-align: center;
             color: #332b00;
-            background-image: url('~/assets/admin/index/bg2.png');
+            background-image: url('@/assets/admin/index/bg2@2x.webp');
             background-repeat: no-repeat;
             background-size: contain;
             background-position: bottom;
