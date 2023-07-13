@@ -1,8 +1,10 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner">
-            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner">
+            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner"
+                loading="lazy">
+            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner"
+                loading="lazy">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">
                 免費加入
             </button>
@@ -10,12 +12,12 @@
         <div class="container__section">
             <h2 class="section__header">大缺工時代，人難找嗎？</h2>
             <img class="d-none d-lg-block section__decoration section__decoration--1"
-                src="@/assets/admin/index/Maskgroup.webp" alt="decoration">
+                src="@/assets/admin/index/Maskgroup.webp" alt="decoration" loading="lazy">
             <img class="d-none d-lg-block section__decoration section__decoration--2"
-                src="@/assets/admin/index/Group459.webp" alt="decoration">
+                src="@/assets/admin/index/Group459.webp" alt="decoration" loading="lazy">
             <div class="section__card section__card--left">
                 <img class="section__image section__image--1" src="@/assets/admin/index/img1@2x.webp" alt="issue1"
-                    format="webp" />
+                    format="webp" loading="lazy" />
                 <h3 class="card__header">
                     <span class="header__decoration">
                         不花錢買廣告
@@ -25,14 +27,16 @@
                 <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
             </div>
             <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="@/assets/admin/index/img2.webp" alt="issue2" format="webp" />
+                <img class="section__image section__image--2" src="@/assets/admin/index/img2.webp" alt="issue2"
+                    format="webp" loading="lazy" />
                 <h3 class="card__header">
                     要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
                 </h3>
                 <div class="card__body">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</div>
             </div>
             <div class="section__card section__card--left">
-                <img class="section__image section__image--3" src="@/assets/admin/index/img3.webp" alt="issue3" format="webp" />
+                <img class="section__image section__image--3" src="@/assets/admin/index/img3.webp" alt="issue3"
+                    format="webp" loading="lazy" />
                 <h3 class="card__header">
                     好不容易徵到人，<span class="header__decoration">怎麼又離職了</span>？
                 </h3>
@@ -45,7 +49,7 @@
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
                         <img class="header__image header__image--1" src="@/assets/admin/index/img4@2x.webp" format="webp"
-                            alt="advantage1" />
+                            alt="advantage1" loading="lazy" />
                         <div class="header__text">提升招聘效能</div>
                     </div>
                     <div class="card__body">人們傾向相信自己意願的選擇；透過求職偏好的篩選，所選出的職缺，不是依據公司大小、品牌知名度，而是個人的需求，強化人選投遞的意願。<br><br>
@@ -54,7 +58,7 @@
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
                         <img class="header__image header__image--2" src="@/assets/admin/index/img5@2x.webp" format="webp"
-                            alt="advantage2" />
+                            alt="advantage2" loading="lazy" />
                         <div class="header__text">精準找到合適人選</div>
                     </div>
                     <div class="card__body">
@@ -64,7 +68,7 @@
                 <div class="section__card mt-4">
                     <div class="card__headerGroup">
                         <img class="header__image header__image--3" src="@/assets/admin/index/img6@2x.webp" format="webp"
-                            alt="advantage3" />
+                            alt="advantage3" loading="lazy" />
                         <div class="header__text">節省成本</div>
                     </div>
                     <div class="card__body">
@@ -80,19 +84,19 @@
             <div class="affiliate__body">
                 <a v-for="(item, index) in state.affiliate" class="body__imageWrap" :key="index" :href="item?.url?.default"
                     target="_blank" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.logo" />
+                    <img class="body__image" alt="logo" :src="item.logo" loading="lazy" />
                 </a>
             </div>
             <h2 class="affiliate__header mt-5">我們的合作對象</h2>
             <div class="affiliate__body">
                 <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
                     :to="`/company/${item.id}`" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.image" />
+                    <img class="body__image" alt="logo" :src="item.image" loading="lazy" />
                 </NuxtLink>
             </div>
         </div>
         <div class="container__footer">
-            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3@2x.webp">
+            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3@2x.webp" loading="lazy">
             趕快加入 搶人才
             <button class="companyHome__btn footer__button" @click="openAdminModal()">免費加入</button>
         </div>
