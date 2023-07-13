@@ -6,14 +6,13 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "build": "nuxt build",
-    "postbuild": "cd .output/server && rimraf node_modules && npm install",
     "predeploy": "firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
     "analyze": "npx nuxi analyze"
   },
   "engines": {
-    "node": ">=16"
+    "node": "16"
   },
   "devDependencies": {
     "@nuxt/image": "^1.0.0-rc.1",
