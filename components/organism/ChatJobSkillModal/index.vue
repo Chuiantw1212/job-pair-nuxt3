@@ -5,7 +5,7 @@
             AI 智能生成
         </LazyAtomBtnSimple>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-fullscreen-lg-down modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">AI 智能生成</h4>
@@ -41,7 +41,12 @@
                             <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
                                 <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
                                     class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
-                                    {{ item }}
+                                    <template v-if="device.state.isLarge">
+                                        {{ item }}
+                                    </template>
+                                    <template v-else>
+                                        {{ index + 1 }}.
+                                    </template>
                                 </LazyAtomBtnSimple>
                             </div>
                             <template v-else-if="getMessageUI().type === 'text'">
@@ -63,7 +68,8 @@ import { nextTick } from 'vue'
 const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
 const repoAuth = useRepoAuth()
-const emit = defineEmits(['applied', 'update:modelValue', 'request'])
+const emit = defineEmits(['applied', 'update:modelValue',])
+const device = useDevice()
 const state = reactive({
     id: null,
     chatModal: null,
@@ -73,7 +79,7 @@ const state = reactive({
     chatItems: [
         {
             role: 'system',
-            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請回覆「無」。（背景題1/3）'],
+            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請「略過此題」。（背景題1/3）'],
             responseUI: {
                 type: 'text',
             }
@@ -84,7 +90,7 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題2/3）'],
+            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請「略過此題」。（背景題2/3）'],
             responseUI: {
                 type: 'text',
             }
@@ -95,7 +101,7 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題3/3）'],
+            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請「略過此題」。（背景題3/3）'],
             responseUI: {
                 type: 'text',
             }
@@ -272,179 +278,5 @@ async function handleSubmit() {
 }
 </script>
 <style lang="scss" scoped>
-.chatGptModal__btn {
-    height: 40px;
-    margin-left: 8px;
-}
-
-.modal-content {
-    border-radius: 10px;
-
-    .modal-header {
-        position: relative;
-        padding-left: 40px;
-
-        .modal-title {
-            width: 100%;
-            font-weight: bold;
-            font-size: 22px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.3;
-            letter-spacing: normal;
-            text-align: left;
-            color: #000;
-        }
-
-        .btn-close {
-            position: absolute;
-            right: 24px;
-            top: 24px;
-        }
-    }
-
-    .modal-body {
-        padding: 40px 40px;
-
-        .modal__btn {
-            margin: auto auto auto auto;
-            width: 226px;
-        }
-
-        .chatGptModal__before {
-            border: 1px solid black;
-            border-radius: 8px;
-        }
-
-        .body__list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-
-            .list__item {
-                max-width: calc(100% - 70px);
-
-                .item__content {
-                    display: flex;
-                    gap: 20px;
-                    // align-items: center;
-
-                    .content__image {
-                        width: 50px;
-                        height: 50px;
-
-                    }
-
-                    .content__textGroup {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 20px;
-
-                        .textGroup__line {
-                            padding: 12px 40px;
-                            background-color: #f5f5f5;
-                            border-radius: 10px 10px 10px 0px;
-                            overflow: hidden;
-                            width: fit-content;
-                            font-size: 16px;
-                            font-weight: normal;
-                            font-stretch: normal;
-                            font-style: normal;
-                            line-height: normal;
-                            letter-spacing: normal;
-                            text-align: left;
-                            color: #333;
-                        }
-                    }
-                }
-            }
-
-            .list__item--user {
-                align-self: flex-end;
-
-                .item__content {
-                    flex-direction: row-reverse;
-
-                    .content__textGroup {
-                        .textGroup__line {
-                            border-radius: 10px 10px 0px 10px;
-                            color: #fff;
-                            background-color: #5ea88e;
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    .modal-footer {
-
-        .footer__content {
-            display: flex;
-            gap: 16px;
-            margin: auto;
-            flex-direction: column-reverse;
-            width: 100%;
-
-            .content__btn {
-                background-color: inherit;
-                border: 0px;
-                font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: normal;
-                letter-spacing: normal;
-                text-align: left;
-                color: #5ea88e;
-                white-space: nowrap;
-                cursor: pointer;
-            }
-
-            .content__btn--disabled {
-                color: #d3d3d3;
-            }
-
-            .content__input {
-                width: 100%;
-            }
-
-            .content__submit {
-                white-space: nowrap;
-                background-color: inherit;
-                border: none;
-
-            }
-
-            .content__btnGroup {
-                width: 100%;
-                display: flex;
-                gap: 20px;
-                justify-content: center;
-
-                .btnGroup__btn {
-                    width: fit-content;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (min-width:992px) {
-
-    .modal-content {
-        .modal-footer {
-
-
-            .footer__content {
-                flex-direction: row;
-            }
-        }
-    }
-}
+@import './index.scss'
 </style>
