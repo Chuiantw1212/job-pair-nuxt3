@@ -156,13 +156,6 @@ const state = reactive({
             role: 'user',
             messages: [''],
         },
-        {
-            role: 'system',
-            messages: ['太棒了！現在為您生成職務說明書'],
-            responseUI: {
-                type: 'text',
-            }
-        },
     ],
 })
 const props = defineProps({
