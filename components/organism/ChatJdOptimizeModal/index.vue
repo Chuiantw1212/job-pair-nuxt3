@@ -125,9 +125,6 @@ async function openBeforeModal(config = {}) {
     const { isReset = false } = config
     if (isReset) {
         const beforeValue = props.modelValue[props.field]
-        console.log({
-            beforeValue
-        });
         state.beforeChatGpt = beforeValue
         const beforeChatGpt = currentInstance.refs.beforeChatGpt
         if (beforeChatGpt) {

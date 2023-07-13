@@ -35,9 +35,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__content">
-                            <button v-if="getMessageUI().hasSkip" class="content__btn"
-                                @click="gotoNextItem('無')">略過此題</button>
-                            <button v-else class="content__btn content__btn--disabled" :disabled="true">略過此題</button>
+                            <button v-if="getMessageUI().isRequired" class="content__btn content__btn--disabled"
+                                :disabled="true">略過此題</button>
+                            <button v-else class="content__btn" @click="gotoNextItem('無')">略過此題</button>
                             <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
                                 <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
                                     class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
@@ -76,7 +76,6 @@ const state = reactive({
             messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於任何部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「略過此題」。（1/6）'],
             responseUI: {
                 type: 'text',
-                hasSkip: true,
             }
         },
         {
@@ -88,7 +87,6 @@ const state = reactive({
             messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請「略過此題」。(2/6)'],
             responseUI: {
                 type: 'text',
-                hasSkip: true,
             }
         },
         {
@@ -100,6 +98,7 @@ const state = reactive({
             messages: ['接下來請仔細思考這份工作最主要的工作項目有哪些？(3/6)'],
             responseUI: {
                 type: 'text',
+                isRequired: true,
             }
         },
         {
@@ -111,6 +110,7 @@ const state = reactive({
             messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
             responseUI: {
                 type: 'text',
+                isRequired: true,
             }
         },
         {
@@ -122,6 +122,7 @@ const state = reactive({
             messages: ['這份工作最主要或短期內要完成的目標是什麼？例如：三個月後專案能順利上線、每個月拜訪幾位客戶、與同事合作維持店舖營運、能獨立運作完成客戶要求...等？(5/6)'],
             responseUI: {
                 type: 'text',
+                isRequired: true,
             }
         },
         {
@@ -134,6 +135,7 @@ const state = reactive({
             responseUI: {
                 type: 'button',
                 options: ['創造價值的人', '傳遞價值的人', '支持與維護價值的人', '制定與優化價值的人'],
+                isRequired: true,
             }
         },
         {
@@ -189,7 +191,9 @@ function getMessageUI() {
     }
 }
 function gotoNextItem(selectedItem = '') {
-    if (!getMessageUI().hasSkip) {
+    const messageUI = getMessageUI()
+    const { isRequired, type = '' } = messageUI
+    if (isRequired && type === 'text') {
         if (!String(state.chatReply)) {
             $sweet.alert('此題為必填')
             return

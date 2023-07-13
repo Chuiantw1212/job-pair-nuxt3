@@ -39,7 +39,6 @@ export default defineStore('chat', () => {
         return response
     }
     async function postChatJobContent(type, data) {
-        console.log(type, data);
         switch (type) {
             case 'description': {
                 const response = await jobPairApi.request({

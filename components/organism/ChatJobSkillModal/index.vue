@@ -35,9 +35,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="footer__content">
-                            <button v-if="getMessageUI().hasSkip" class="content__btn"
-                                @click="gotoNextItem('無')">略過此題</button>
-                            <button v-else class="content__btn content__btn--disabled" :disabled="true">略過此題</button>
+                            <button v-if="getMessageUI().isRequired" class="content__btn content__btn--disabled"
+                                :disabled="true">略過此題</button>
+                            <button v-else class="content__btn" @click="gotoNextItem('無')">略過此題</button>
                             <div v-if="getMessageUI().type === 'button'" class="content__btnGroup">
                                 <LazyAtomBtnSimple v-for="(item, index) in getMessageUI().options"
                                     class="btnSimple--outline--success btnGroup__btn" @click="gotoNextItem(item)">
@@ -76,7 +76,6 @@ const state = reactive({
             messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請回覆「無」。（背景題1/3）'],
             responseUI: {
                 type: 'text',
-                hasSkip: true,
             }
         },
         {
@@ -88,7 +87,6 @@ const state = reactive({
             messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題2/3）'],
             responseUI: {
                 type: 'text',
-                hasSkip: true,
             }
         },
         {
@@ -100,7 +98,6 @@ const state = reactive({
             messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請回覆「略過此題」。（背景題3/3）'],
             responseUI: {
                 type: 'text',
-                hasSkip: true,
             }
         },
         {
@@ -113,6 +110,7 @@ const state = reactive({
             responseUI: {
                 type: 'button',
                 options: ['堅定，目標導向', '說服，擅長表達', '和善，合作導向', '仔細，善於思考'],
+                isRequired: true,
             }
         },
         {
@@ -125,6 +123,7 @@ const state = reactive({
             responseUI: {
                 type: 'button',
                 options: ['冒險，自我挑戰', '開朗，與人交流', '穩健，支持他人', '嚴謹，自我要求'],
+                isRequired: true,
             }
         },
         {
@@ -137,6 +136,7 @@ const state = reactive({
             responseUI: {
                 type: 'button',
                 options: ['追求成就', '追求舞台', '追求穩定', '追求正確'],
+                isRequired: true,
             }
         },
         {
@@ -149,6 +149,7 @@ const state = reactive({
             responseUI: {
                 type: 'button',
                 options: ['企圖心高', '創造力強', '配合度高', '準確性高'],
+                isRequired: true,
             }
         },
         {
@@ -217,7 +218,9 @@ function getMessageUI() {
     }
 }
 function gotoNextItem(selectedItem = '') {
-    if (!getMessageUI().hasSkip) {
+    const messageUI = getMessageUI()
+    const { isRequired, type = '' } = messageUI
+    if (isRequired && type === 'text') {
         if (!String(state.chatReply)) {
             $sweet.alert('此題為必填')
             return
