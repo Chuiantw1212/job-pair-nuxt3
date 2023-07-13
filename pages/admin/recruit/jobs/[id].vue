@@ -110,11 +110,11 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatJdOptimizeModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job.description"
+                    :chatRequest="optimizeJobDescription" @update:modelValue="setDescription($event)">
+                </LazyOrganismChatJdOptimizeModal>
+                <LazyOrganismChatJdModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatJdModal>
-                <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
-                    :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
@@ -182,6 +182,7 @@ const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const device = useDevice()
 const repoCompany = useRepoCompany()
+const repoChat = useRepoChat()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
@@ -274,6 +275,22 @@ async function crawlFromLink() {
     setSkills(newJob.skills)
 }
 const instance = getCurrentInstance()
+async function checkHasDescription() {
+    const { description = '' } = state.job
+    return description && description !== '<p></p>'
+}
+async function optimizeJobDescription(value) {
+    const res = await repoChat.postChatJdOptimize({
+        content: value,
+    })
+    return res
+}
+async function handleChatSkills(value) {
+    const res = await repoChat.postChatJobDescription({
+        content: value,
+    })
+    return res
+}
 async function checkWalletBallance(value) {
     if (value !== 'active') {
         return

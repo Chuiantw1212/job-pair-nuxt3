@@ -23,7 +23,7 @@ export default defineStore('chat', () => {
     async function postChatJdGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobDescription/generate`,
+            url: `/chat/job/description/generate`,
             data,
             timeout: 180000,
         })
@@ -32,7 +32,16 @@ export default defineStore('chat', () => {
     async function postChatJobSkillGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobSkills/generate`,
+            url: `/chat/job/skill/generate`,
+            data,
+            timeout: 180000,
+        })
+        return response
+    } 
+    async function postChatJdOptimize(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/chat/job/description/optimize`,
             data,
             timeout: 180000,
         })
@@ -43,5 +52,6 @@ export default defineStore('chat', () => {
         postChatIntro,
         postChatJdGenerate,
         postChatJobSkillGenerate,
+        postChatJdOptimize,
     }
 })

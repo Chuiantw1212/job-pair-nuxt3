@@ -1,31 +1,61 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
+        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
             <img class="me-1" src="./Frame.svg" alt="icon">
             一鍵優化
         </LazyAtomBtnSimple>
-        <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
+        <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            @click="handleClose()"></button>
+                            @click="hideBeforeModal()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" :name="`${name}修改前`" class="mt-3" :toolbar="[]"
-                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" class="mt-3" :toolbar="[]" ref="beforeChatGpt"
+                            :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
-                        <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
-                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
+                        <!-- <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple> -->
+                        <!-- <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" :name="`${name}修改後`"
                             ref="afterChatGpt" :style="{ 'height': '324px' }">
-                        </LazyAtomInputCkeditor>
-                        <!-- </div> -->
+                        </LazyAtomInputCkeditor> -->
                     </div>
                     <div class="modal-footer">
                         <div class="footer__buttonGroup">
-                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleClose()">取消
+                            <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple>
+                            <!-- <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="hideBeforeModal()">取消
+                            </LazyAtomBtnSimple>
+                            <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
+                            </LazyAtomBtnSimple> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" :id="`afterChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">一鍵優化</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="hideBeforeModal()"></button>
+                    </div>
+                    <div class="modal-body" ref="modalBodyRef">
+                        <!-- <LazyAtomInputCkeditor v-model="state.beforeChatGpt" class="mt-3" :toolbar="[]" ref="beforeChatGpt"
+                            :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
+                        <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div> -->
+                        <!-- <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple> -->
+                        <LazyAtomInputCkeditor class="mt-3" v-model="state.afterChatGpt" ref="afterChatGpt"
+                            :style="{ 'height': '324px' }">
+                        </LazyAtomInputCkeditor>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="footer__buttonGroup">
+                            <!-- <LazyAtomBtnSimple class="modal__btn" @click="handleOptimization()">開始優化</LazyAtomBtnSimple> -->
+                            <LazyAtomBtnSimple class="buttonGroup__btn" outline @click="handleLastStep()">上一步
                             </LazyAtomBtnSimple>
                             <LazyAtomBtnSimple class="buttonGroup__btn" @click="handleConfirm()">修改後套用內文
                             </LazyAtomBtnSimple>
@@ -46,11 +76,13 @@
 const { $bootstrap, $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
+const repoChat = useRepoChat()
 const emit = defineEmits(['applied', 'update:modelValue', 'request'])
 const router = useRouter()
 const state = reactive({
     id: null,
-    chatModal: null,
+    beforeChatModal: null,
+    afterChatModal: null,
     glideInstance: null,
     glideIndex: 0,
     resume: null,
@@ -95,8 +127,14 @@ onMounted(() => {
     if (process.client) {
         state.id = $uuid4()
         state.beforeChatGpt = props.modelValue
-        $requestSelector(`#chatModal${state.id}`, (modelElement) => {
-            state.chatModal = new window.bootstrap.Modal(modelElement, {
+        $requestSelector(`#beforeChatModal${state.id}`, (modelElement) => {
+            state.beforeChatModal = new window.bootstrap.Modal(modelElement, {
+                keyboard: false,
+                backdrop: "static",
+            })
+        })
+        $requestSelector(`#afterChatModal${state.id}`, (modelElement) => {
+            state.afterChatModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
                 backdrop: "static",
             })
@@ -113,18 +151,36 @@ function handleConfirm() {
     } else {
         console.log('Error trying to setInvitationTemplate: ', ckEditor);
     }
-    state.chatModal.hide()
+    hideBeforeModal()
+    hideAfterModal()
 }
-async function openModal() {
-    state.chatModal.show()
+function handleLastStep() {
+    openBeforeModal()
+    hideAfterModal()
 }
-function handleClose() {
-    const ckEditor = currentInstance.refs.beforeChatGpt
-    ckEditor.setData(props.modelValue)
-    state.chatModal.hide()
+async function openBeforeModal(config = {}) {
+    const { isReset = false } = config
+    state.beforeChatModal.show()
+    if (isReset) {
+        state.beforeChatGpt = props.modelValue
+        const beforeChatGpt = currentInstance.refs.beforeChatGpt
+        if (beforeChatGpt) {
+            beforeChatGpt.setData(props.modelValue)
+        }
+    }
+}
+async function openAfterModal() {
+    state.afterChatModal.show()
+}
+function hideBeforeModal() {
+    state.beforeChatModal.hide()
+}
+function hideAfterModal() {
+    state.afterChatModal.hide()
 }
 const modalBodyRef = ref(null)
 async function handleOptimization() {
+    hideBeforeModal()
     $sweet.loader(true, {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
@@ -134,6 +190,7 @@ async function handleOptimization() {
         return
     }
     $sweet.loader(false)
+    openAfterModal()
     state.afterChatGpt = res.data
     const ckEditor = currentInstance.refs.afterChatGpt
     if (ckEditor) {
@@ -145,7 +202,6 @@ async function handleOptimization() {
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    width: 115px;
     height: 40px;
     margin-left: 8px;
 }
@@ -161,6 +217,14 @@ async function handleOptimization() {
         .modal-title {
             width: 100%;
             font-weight: bold;
+            font-size: 22px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.3;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000;
         }
 
         .btn-close {
@@ -187,7 +251,7 @@ async function handleOptimization() {
     }
 
     .modal-footer {
-        // border: none;
+        border: none;
         padding-bottom: 37px;
 
         .footer__buttonGroup {

@@ -256,7 +256,6 @@ async function handleSubmit() {
 </script>
 <style lang="scss" scoped>
 .chatGptModal__btn {
-    // width: 115px;
     height: 40px;
     margin-left: 8px;
 }
