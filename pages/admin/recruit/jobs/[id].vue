@@ -9,8 +9,6 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-            </LazyOrganismChatJdModal> -->
             <!-- <div class="form__quick">
                 <h1 class="quick__header">快速建檔</h1>
                 <div class="quick__desc">
@@ -110,17 +108,17 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <LazyOrganismChatJdOptimizeModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
+                <LazyOrganismChatOptimizeJdModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
                     :field="'description'" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatJdOptimizeModal>
-                <LazyOrganismChatJdModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatJdModal>
+                </LazyOrganismChatOptimizeJdModal>
+                <LazyOrganismChatJobDescriptionModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatJobDescriptionModal>
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
-                <LazyOrganismChatJdOptimizeModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
+                <LazyOrganismChatOptimizeJdModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
                     :field="'skills'" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatJdOptimizeModal>
+                </LazyOrganismChatOptimizeJdModal>
                 <LazyOrganismChatJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatJobSkillModal>
             </LazyAtomInputCkeditor>

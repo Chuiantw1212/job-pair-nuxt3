@@ -239,10 +239,6 @@ async function getUserResume(item = {}) {
     const buffer = res.data
     return buffer
 }
-async function handleChatRequest(value) {
-    const res = await repoChat.postChatProfile(value)
-    return res
-}
 function setDescription(value) {
     instance.refs.description.setData(value)
 }

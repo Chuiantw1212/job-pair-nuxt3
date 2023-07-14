@@ -2,19 +2,19 @@ import { defineStore } from 'pinia'
 export default defineStore('chat', () => {
     const { $sweet, } = useNuxtApp()
     const jobPairApi = useJobPairApi()
-    async function postChatProfile(data) {
+    async function postChatIntroOptimize(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/profile`,
+            url: `/chat/intro/optimize`,
             data,
             timeout: 180000,
         })
         return response
     }
-    async function postChatIntro(data) {
+    async function postChatIntroGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/intro`,
+            url: `/chat/intro/generate`,
             data,
             timeout: 180000,
         })
@@ -67,8 +67,8 @@ export default defineStore('chat', () => {
         }
     }
     return {
-        postChatProfile,
-        postChatIntro,
+        postChatIntroOptimize,
+        postChatIntroGenerate,
         postChatJdGenerate,
         postChatJobSkillGenerate,
         postChatJobContent,
