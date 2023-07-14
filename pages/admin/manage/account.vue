@@ -34,7 +34,7 @@
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
-            <div class="accountManagement__card mt-4">
+            <!-- <div class="accountManagement__card mt-4">
                 <h4>錢包餘額</h4>
                 <div class="balance__inputGroup">
                     <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
@@ -119,7 +119,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <!-- <div class="accountManagement__card mt-3">
             <h4>人資聊天室</h4>
             <section class="accountManagement__chat">
