@@ -119,8 +119,8 @@
                 <LazyOrganismChatOptimizeJdModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
                     :field="'skills'" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatOptimizeJdModal>
-                <LazyOrganismChatJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatJobSkillModal>
+                <LazyOrganismChatGenerateJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatGenerateJobSkillModal>
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
