@@ -20,7 +20,7 @@ export default defineStore('chat', () => {
         })
         return response
     }
-    async function postChatJdGenerate(data) {
+    async function postJobDescriptionGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
             url: `/chat/job/description/generate`,
@@ -69,7 +69,7 @@ export default defineStore('chat', () => {
     return {
         postChatIntroOptimize,
         postChatIntroGenerate,
-        postChatJdGenerate,
+        postJobDescriptionGenerate,
         postChatJobSkillGenerate,
         postChatJobContent,
     }

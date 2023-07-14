@@ -251,7 +251,7 @@ async function handleSubmit() {
             messages: item.messages
         }
     })
-    const res = await repoChat.postChatJdGenerate({
+    const res = await repoChat.postJobDescriptionGenerate({
         jobName: localValue.value.name,
         chatItems: minimizedData
     })
