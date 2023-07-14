@@ -40,8 +40,8 @@
                 :accept="'.pdf'" :max="3" :required="device.state.isLarge" :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
-                :required="state.profileBasic.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true"
-                ref="description">
+                :required="state.profileBroadcast.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。"
+                ref="description"> 
                 <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()" v-model="state.profileBasic.description"
                     name="個人簡歷" @update:modelValue="setDescription($event)">
                 </LazyOrganismChatOptimizeIntroModal>
