@@ -108,17 +108,17 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <LazyOrganismChatOptimizeJdModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
+                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
                     :field="'description'" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatOptimizeJdModal>
-                <LazyOrganismChatJobDescriptionModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatJobDescriptionModal>
+                </LazyOrganismChatOptimizeJobContentModal>
+                <LazyOrganismChatGenerateJobDescriptionModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatGenerateJobDescriptionModal>
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
-                <LazyOrganismChatOptimizeJdModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
+                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
                     :field="'skills'" @update:modelValue="setUpdatedJob($event)">
-                </LazyOrganismChatOptimizeJdModal>
+                </LazyOrganismChatOptimizeJobContentModal>
                 <LazyOrganismChatGenerateJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatGenerateJobSkillModal>
             </LazyAtomInputCkeditor>
