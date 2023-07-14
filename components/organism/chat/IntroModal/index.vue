@@ -36,7 +36,7 @@
     </div>
 </template>
 <script setup>
-const { $uuid4, $sweet, $requestSelector, $filter } = useNuxtApp()
+const { $bootstrap, $uuid4, $sweet, $requestSelector, $filter } = useNuxtApp()
 const repoChat = useRepoChat()
 const repoSelect = useRepoSelect()
 const emit = defineEmits(['update:modelValue',])
@@ -110,7 +110,7 @@ async function handleConfirm() {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
     })
-    const res = await repoChat.postChatIntro(form)
+    const res = await repoChat.postChatIntroGenerate(form)
     if (res.status !== 200) {
         return
     }

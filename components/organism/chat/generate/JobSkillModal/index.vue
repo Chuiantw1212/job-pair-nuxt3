@@ -278,5 +278,5 @@ async function handleSubmit() {
 }
 </script>
 <style lang="scss" scoped>
-@import './index.scss'
+@import '../generate.scss'
 </style>
