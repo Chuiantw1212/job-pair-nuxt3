@@ -1,9 +1,9 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
-            <img class="me-1" src="./Frame.svg" alt="icon">
+        <button class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
+            <img src="./Frame.svg">
             一鍵優化
-        </LazyAtomBtnSimple>
+        </button>
         <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">

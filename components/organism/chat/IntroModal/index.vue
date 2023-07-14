@@ -137,7 +137,7 @@ function handleClose() {
     color: #70a68f;
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    margin-left: 16px;
+    margin-left: 15px;
 }
 
 .modal-content {

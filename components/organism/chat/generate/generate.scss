@@ -1,6 +1,20 @@
 .chatGptModal__btn {
-    height: 40px;
-    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+    color: #70a68f;
+    background-color: black;
+    border: none;
+    margin-left: 15px;
+    border: 1px solid #70a68f;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .modal-dialog {

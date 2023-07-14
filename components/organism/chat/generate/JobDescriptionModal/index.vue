@@ -1,9 +1,9 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-2" src="./Frame.svg" alt="icon">
+        <button class="chatGptModal__btn" @click="openModal()">
+            <img src="./Frame.svg">
             AI 智能生成
-        </LazyAtomBtnSimple>
+        </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-fullscreen-lg-down modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
