@@ -52,10 +52,18 @@ const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
+const router = useRouter()
 const state = reactive({
     appliedList: [],
 })
 // hooks
+watch(() => route, (newRoute) => {
+    if (newRoute.name === 'admin-recruit') {
+        router.push({
+            name: 'admin-recruit-jobs'
+        })
+    }
+}, { immediate: true })
 watch(() => repoAuth.state.company, (company) => {
     initialize()
 }, { immediate: true })
