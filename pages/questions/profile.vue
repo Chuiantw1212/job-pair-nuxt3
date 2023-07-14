@@ -19,9 +19,9 @@
             <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="mt-3" :required="true" :toolbar="[]"
                 placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。或是使用 簡歷產生器 快速生成，之後也可在個人檔案重新編輯唷！" :hasBtn="true"
                 ref="description">
-                <LazyOrganismIntroModal :occupationalCategory="modelValue.occupationalCategory"
+                <LazyOrganismChatIntroModal :occupationalCategory="modelValue.occupationalCategory"
                     @update:modelValue="setDescription($event)">
-                </LazyOrganismIntroModal>
+                </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
         </div>
         <div class="profile__footer">
