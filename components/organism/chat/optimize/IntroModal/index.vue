@@ -96,8 +96,7 @@ onMounted(() => {
 })
 // methods
 function handleConfirm() {
-    const updateValue = Object.assign({}, props.modelValue)
-    emit('update:modelValue', updateValue)
+    emit('update:modelValue', state.afterChatGpt)
     state.afterChatGpt = ''
     const ckEditor = currentInstance.refs.afterChatGpt
     if (ckEditor) {
