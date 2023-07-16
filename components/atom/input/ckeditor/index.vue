@@ -169,7 +169,7 @@ async function initializeCKEditor() {
     if (!props.modelValue) {
         localValue.value = '<p></p>'
     }
-    editor.model.document.on('change:data', () => {
+    editor.model?.document?.on('change:data', () => {
         let newValue = editor.getData()
         localValue.value = newValue
     })
