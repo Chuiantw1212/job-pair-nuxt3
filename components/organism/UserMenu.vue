@@ -41,6 +41,11 @@
                 }">企業專區</NuxtLink>
             </li>
             <li class="nav-item" @click="emit('collapse')">
+                <NuxtLink class="navItem__button" :to="{
+                    name: 'jobs'
+                }">職缺探索</NuxtLink>
+            </li>
+            <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
             <li class="nav-item">
