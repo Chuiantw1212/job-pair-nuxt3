@@ -93,7 +93,7 @@
     </div>
 </template>
 <script setup>
-import defaultBanner from '~/assets/company/img_banner_default.png'
+import defaultBanner from '~/assets/company/img_banner_default.webp'
 import defaultLogo from '~/assets/company/company.webp'
 const { $uuid4, $requestSelector, $optionText, $Glide, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
