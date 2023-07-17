@@ -2,13 +2,13 @@
     <div class="chatGptModal">
         <button class="chatGptModal__btn" @click="openModal()">
             <img src="./Frame.svg">
-            AI 智能生成
+            AI智能生成
         </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-fullscreen-lg-down modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">AI 智能生成</h4>
+                        <h4 class="modal-title">AI智能生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>

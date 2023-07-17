@@ -1,6 +1,12 @@
 <template>
     <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
+            <LazyAtomQuickImport v-if="state.job.isNew" @click="crawlFromLink($event)"
+                :placeholder="'範例：https://www.104.com.tw/job/*'">
+                在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
+                <br>
+                範例：https://www.104.com.tw/job/*
+            </LazyAtomQuickImport>
             <div class="form__header">
                 職缺狀態
                 <!-- <span class="header__wallet">錢包餘額：0點
@@ -9,19 +15,6 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <!-- <div class="form__quick">
-                <h1 class="quick__header">快速建檔</h1>
-                <div class="quick__desc">
-                    範例：https://www.104.com.tw/job/*
-                </div>
-                <div class="quick__inputGroup">
-                    <label class="inputGroup__label">
-                        <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="https://www.104.com.tw/job/*" />
-                    </label>
-                    <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
-                </div>
-            </div> -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -111,7 +104,8 @@
                 <LazyOrganismChatOptimizeJobContentModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
                     :field="'description'" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatOptimizeJobContentModal>
-                <LazyOrganismChatGenerateJobDescriptionModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatGenerateJobDescriptionModal v-else v-model="state.job"
+                    @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatGenerateJobDescriptionModal>
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
@@ -119,7 +113,8 @@
                 <LazyOrganismChatOptimizeJobContentModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
                     :field="'skills'" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatOptimizeJobContentModal>
-                <LazyOrganismChatGenerateJobSkillModal v-else v-model="state.job" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatGenerateJobSkillModal v-else v-model="state.job"
+                    @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatGenerateJobSkillModal>
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
@@ -180,11 +175,9 @@ const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const device = useDevice()
 const repoCompany = useRepoCompany()
-const repoChat = useRepoChat()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
-    crawlerUrl: 'https://www.104.com.tw/job/7pwjw?jobsource=jolist_d_relevance',
     filterOpen: {
         occupationalCategory: false,
         employmentType: false,
@@ -212,8 +205,7 @@ watch(() => repoSelect.jobCategoryMap, () => {
     }
 }, { deep: true })
 // methods
-async function crawlFromLink() {
-    const crawlerUrl = state.crawlerUrl
+async function crawlFromLink(crawlerUrl = '') {
     $sweet.loader(true)
     const jobRes = await repoJob.getJobCrawlResult({
         url: crawlerUrl
@@ -233,20 +225,34 @@ async function crawlFromLink() {
         addressArea, // 縣市
         addressRegion, // 縣市+行政區
         addressDetail,
+        jobType = 1,
+        manageResp = '',
     } = jobDetail
     // convert type
-    const typeMap = {
+    const salaryTypeMap = {
+        60: 'yearly',
         50: 'monthly',
         10: '' // 面議
     }
-    const test = repoSelect.state.selectByQueryRes
-    const newJobSalaryType = typeMap[salaryType] || 'monthly'
+    const newJobSalaryType = salaryTypeMap[salaryType] || 'monthly'
     // compose new job
     const { locationRes = {}, selectByQueryRes = {} } = repoSelect.state
-    const salaryTypeItems = selectByQueryRes.salaryType
+    const { salaryType: salaryTypeItems, } = selectByQueryRes
+    // 職務職級
+    let responsibilitiesValue = ''
+    if (manageResp) {
+        responsibilitiesValue = 'manager'
+    }
+    // 雇用性質
+    const jobTypeMap = {
+        1: 'fullTime',
+        2: 'partTime',
+    }
+    const employmentTypeValue = jobTypeMap[jobType] || 'fullTime'
     const targetSalaryType = salaryTypeItems.find(item => {
         return item.value === newJobSalaryType
     })
+    // 地址
     const formattedAddressRegion = addressArea.replace('臺', '台')
     const level1Items = locationRes.taiwan
     const targetRegion = level1Items.find(item => {
@@ -257,16 +263,21 @@ async function crawlFromLink() {
     const targetLocality = level2Items.find(item => {
         return item.text === formatLocality
     })
+    // Compose result
+    const minSalary = targetSalaryType.min ?? 0
     const newJob = {
         name: jobName,
         description: jobDescription,
         salaryType: targetSalaryType.value,
-        salaryMin: Math.max(salaryMin, targetSalaryType.min),
-        salaryMax: Math.max(salaryMax, targetSalaryType.min),
+        salaryMin: Math.max(salaryMin, minSalary),
+        salaryMax: Math.max(salaryMax, minSalary),
         addressRegion: targetRegion?.value || null, // 縣市
         addressLocality: targetLocality?.value || null, // 行政區
         streetAddress: addressDetail, // 詳細地址
         skills: other,
+        employmentType: [employmentTypeValue],
+        responsibilities: responsibilitiesValue,
+        jobLocationType: 'onSite',
     }
     state.job = newJob
     setDescription(newJob.description)
