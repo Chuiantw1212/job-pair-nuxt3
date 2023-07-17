@@ -7,10 +7,12 @@
     letter-spacing: normal;
     text-align: center;
     color: #70a68f;
-    background-color: black;
+    background-color: unset;
     border: none;
     margin-left: 15px;
-    border: 1px solid #70a68f;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 
     &:hover {
         text-decoration: underline;

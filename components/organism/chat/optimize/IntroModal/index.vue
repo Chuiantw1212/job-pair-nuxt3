@@ -65,9 +65,9 @@ const state = reactive({
 })
 const props = defineProps({
     modelValue: {
-        type: Object,
+        type: String,
         default: function () {
-            return {}
+            return ''
         }
     },
     name: {

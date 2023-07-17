@@ -1,14 +1,14 @@
 <template>
     <div class="chatGptModal">
         <button class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
-            <!-- <img src="./Frame.svg"> -->
-            AI文字精靈
+            <img src="./Frame.svg">
+            AI 內容優化
         </button>
         <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">AI文字精靈</h4>
+                        <h4 class="modal-title">AI 內容優化</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="hideBeforeModal()"></button>
                     </div>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="modal fade" :id="`afterChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">一鍵優化</h4>
