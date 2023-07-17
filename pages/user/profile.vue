@@ -40,11 +40,14 @@
                 :accept="'.pdf'" :max="3" :required="device.state.isLarge" :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
-                :required="state.profileBasic.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true"
-                ref="description">
-                <LazyOrganismChatCvModal v-model="state.profileBasic.description" name="個人簡歷"
-                    :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal>
+                :required="state.profileBroadcast.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。"
+                ref="description"> 
+                <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()" v-model="state.profileBasic.description"
+                    name="個人簡歷" @update:modelValue="setDescription($event)">
+                </LazyOrganismChatOptimizeIntroModal>
+                <LazyOrganismChatIntroModal v-else :occupationalCategory="state.profileBasic.occupationalCategory"
+                    @update:modelValue="setDescription($event)">
+                </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
@@ -209,6 +212,10 @@ function initialize() {
     }
     state.profileBroadcast = profileBroadcast
 }
+function checkHasDescription() {
+    const { description = '' } = state.profileBasic
+    return description && description !== '<p></p>'
+}
 async function getUserCertificate(item = {}) {
     const { name = '', url = '', } = item
     console.log(item);
@@ -235,10 +242,6 @@ async function getUserResume(item = {}) {
     }
     const buffer = res.data
     return buffer
-}
-async function handleChatRequest(value) {
-    const res = await repoChat.postChatProfile(value)
-    return res
 }
 function setDescription(value) {
     instance.refs.description.setData(value)

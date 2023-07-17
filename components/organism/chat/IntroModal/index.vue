@@ -110,7 +110,7 @@ async function handleConfirm() {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
     })
-    const res = await repoChat.postChatIntro(form)
+    const res = await repoChat.postChatIntroGenerate(form)
     if (res.status !== 200) {
         return
     }
@@ -137,7 +137,7 @@ function handleClose() {
     color: #70a68f;
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    margin-left: 16px;
+    margin-left: 15px;
 }
 
 .modal-content {

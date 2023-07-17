@@ -3,19 +3,19 @@
         <template v-if="repoAuth.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" to="/admin/recruit/jobs">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit">
                         招募中心
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" to="/admin/manage/company">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage">
                         管理中心
                     </NuxtLink>
                 </li>
             </template>
             <template v-else>
                 <li class="nav-item">
-                    <NuxtLink class="navItem__button" to="/admin/register">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/register">
                         企業註冊
                     </NuxtLink>
                 </li>
@@ -66,6 +66,11 @@ function showModal() {
         &:hover {
             color: #21cc90;
         }
+    }
+
+    // 重要不可刪除
+    .navItem__button--active {
+        color: #21cc90;
     }
 
     .navItem__button--disabled {

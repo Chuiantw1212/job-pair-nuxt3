@@ -30,8 +30,8 @@
             </div>
         </div>
         <div class="admin__definition">
-            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp" alt="background"
-                preload loading="lazy" />
+            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp"
+                alt="background" preload loading="lazy" />
             <div class="definition__textGroup">
                 <div class="definition__title">
                     什麼是適配度？
@@ -71,7 +71,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, $requestSelector, } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()

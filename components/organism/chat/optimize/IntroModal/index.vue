@@ -1,9 +1,9 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
-            <img class="me-1" src="./Frame.svg" alt="icon">
+        <button class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
+            <img src="./Frame.svg">
             一鍵優化
-        </LazyAtomBtnSimple>
+        </button>
         <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -65,19 +65,15 @@ const state = reactive({
 })
 const props = defineProps({
     modelValue: {
-        type: Object,
+        type: String,
         default: function () {
-            return {}
+            return ''
         }
     },
     name: {
         type: String,
         default: ''
     },
-    field: {
-        type: String,
-        default: '',
-    }
 })
 const currentInstance = getCurrentInstance()
 // hooks
@@ -100,9 +96,7 @@ onMounted(() => {
 })
 // methods
 function handleConfirm() {
-    const updatedJob = Object.assign({}, props.modelValue)
-    updatedJob[props.field] = state.afterChatGpt
-    emit('update:modelValue', updatedJob)
+    emit('update:modelValue', state.afterChatGpt)
     state.afterChatGpt = ''
     const ckEditor = currentInstance.refs.afterChatGpt
     if (ckEditor) {
@@ -118,13 +112,9 @@ function handleLastStep() {
     hideAfterModal()
 }
 async function openBeforeModal(config = {}) {
-    if (!props.modelValue?.name) {
-        $sweet.alert('職缺名稱為使用AI生成的必要條件！')
-        return
-    }
     const { isReset = false } = config
     if (isReset) {
-        const beforeValue = props.modelValue[props.field]
+        const beforeValue = props.modelValue
         state.beforeChatGpt = beforeValue
         const beforeChatGpt = currentInstance.refs.beforeChatGpt
         if (beforeChatGpt) {
@@ -150,9 +140,8 @@ async function handleOptimization() {
         title: '泡杯咖啡再回來',
         text: '「如果還沒好，那就再來一杯」',
     })
-    const res = await repoChat.postChatJobContent(props.field, {
-        content: props.modelValue[props.field],
-        jobName: props.modelValue.name
+    const res = await repoChat.postChatIntroOptimize({
+        content: state.beforeChatGpt,
     })
     if (res.status !== 200) {
         return
@@ -170,72 +159,5 @@ async function handleOptimization() {
 }
 </script>
 <style lang="scss" scoped>
-.chatGptModal__btn {
-    height: 40px;
-    margin-left: 8px;
-}
-
-.modal-content {
-    border-radius: 10px;
-
-    .modal-header {
-        position: relative;
-        text-align: center;
-
-        .modal-title {
-            width: 100%;
-            font-weight: bold;
-            font-size: 22px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.3;
-            letter-spacing: normal;
-            text-align: left;
-            color: #000;
-        }
-
-        .btn-close {
-            position: absolute;
-            right: 24px;
-            top: 24px;
-        }
-    }
-
-    .modal-body {
-        padding: 0 50px 30px 50px;
-
-        .modal__btn {
-            margin: auto auto auto auto;
-            width: 226px;
-        }
-    }
-
-    .modal-footer {
-        border: none;
-        padding-bottom: 37px;
-
-        .footer__buttonGroup {
-            display: flex;
-            gap: 16px;
-            margin: auto;
-            flex-direction: column-reverse;
-
-            .buttonGroup__btn {
-                width: 226px;
-            }
-        }
-    }
-}
-
-@media screen and (min-width:992px) {
-
-    .modal-content {
-        .modal-footer {
-            .footer__buttonGroup {
-                flex-direction: row;
-            }
-        }
-    }
-}
+@import '../optimize.scss'
 </style>

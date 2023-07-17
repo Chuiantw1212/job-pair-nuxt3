@@ -1,14 +1,14 @@
 <template>
     <div class="chatGptModal">
-        <LazyAtomBtnSimple class="chatGptModal__btn" @click="openModal()">
-            <img class="me-2" src="./Frame.svg" alt="icon">
-            AI 智能生成
-        </LazyAtomBtnSimple>
+        <button class="chatGptModal__btn" @click="openModal()">
+            <img src="./Frame.svg">
+            AI智能生成
+        </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
             <div class="modal-dialog modal-fullscreen-lg-down modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">AI 智能生成</h4>
+                        <h4 class="modal-title">AI智能生成</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             @click="handleClose()"></button>
                     </div>
@@ -68,7 +68,7 @@ import { nextTick } from 'vue'
 const { $uuid4, $sweet, $requestSelector, } = useNuxtApp()
 const repoChat = useRepoChat()
 const repoAuth = useRepoAuth()
-const emit = defineEmits(['applied', 'update:modelValue',])
+const emit = defineEmits(['applied', 'update:modelValue'])
 const device = useDevice()
 const state = reactive({
     id: null,
@@ -79,7 +79,7 @@ const state = reactive({
     chatItems: [
         {
             role: 'system',
-            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成條件要求。放心只有 7 題！', '要勝任這份工作，有學歷上的要求嗎？有的話請回覆，沒有的話請「略過此題」。（背景題1/3）'],
+            messages: ['您好！我是你的AI 小助理，我將根據您的輸入生成職責簡介。放心只有 6 題！', '此職務隸屬於任何部門嗎？若有請填寫部門名稱，如果涉及多部門請填寫所屬主要部門；若無請回覆「略過此題」。（1/6）'],
             responseUI: {
                 type: 'text',
             }
@@ -90,7 +90,7 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有哪些必備技能嗎？有的話請回覆，沒有的話請「略過此題」。（背景題2/3）'],
+            messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請「略過此題」。(2/6)'],
             responseUI: {
                 type: 'text',
             }
@@ -101,21 +101,9 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['要勝任這份工作，有其他必需條件嗎？有的話請回覆，沒有的話請「略過此題」。（背景題3/3）'],
+            messages: ['接下來請仔細思考這份工作最主要的工作項目有哪些？(3/6)'],
             responseUI: {
                 type: 'text',
-            }
-        },
-        {
-            role: 'user',
-            messages: [''],
-        },
-        {
-            role: 'system',
-            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質1/4)'],
-            responseUI: {
-                type: 'button',
-                options: ['堅定，目標導向', '說服，擅長表達', '和善，合作導向', '仔細，善於思考'],
                 isRequired: true,
             }
         },
@@ -125,10 +113,9 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質2/4)'],
+            messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
             responseUI: {
-                type: 'button',
-                options: ['冒險，自我挑戰', '開朗，與人交流', '穩健，支持他人', '嚴謹，自我要求'],
+                type: 'text',
                 isRequired: true,
             }
         },
@@ -138,10 +125,9 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質3/4)'],
+            messages: ['這份工作最主要或短期內要完成的目標是什麼？例如：三個月後專案能順利上線、每個月拜訪幾位客戶、與同事合作維持店舖營運、能獨立運作完成客戶要求...等？(5/6)'],
             responseUI: {
-                type: 'button',
-                options: ['追求成就', '追求舞台', '追求穩定', '追求正確'],
+                type: 'text',
                 isRequired: true,
             }
         },
@@ -151,10 +137,10 @@ const state = reactive({
         },
         {
             role: 'system',
-            messages: ['這份工作更適合哪種特質的人？(單選)(個人特質4/4)'],
+            messages: ['這份工作的內涵價值較符合以下哪種人：1. 創造價值的人 2. 傳遞價值的人 3. 支持與維護價值的人 4. 制定與優化價值的人(6/6)'],
             responseUI: {
                 type: 'button',
-                options: ['企圖心高', '創造力強', '配合度高', '準確性高'],
+                options: ['創造價值的人', '傳遞價值的人', '支持與維護價值的人', '制定與優化價值的人'],
                 isRequired: true,
             }
         },
@@ -175,12 +161,6 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    job: {
-        type: Object,
-        default: function () {
-            return {}
-        }
-    }
 })
 const currentInstance = getCurrentInstance()
 // hooks
@@ -249,13 +229,20 @@ async function openModal() {
     state.chatModal.show()
 }
 function handleClose() {
+    state.chatReply = ''
+    state.chatItemIndex = 0
+    state.chatItems.forEach(item => {
+        if (item.role === 'user') {
+            item.messages = ['']
+        }
+    })
     state.chatModal.hide()
 }
 const modalBodyRef = ref(null)
 async function handleSubmit() {
     state.chatModal.hide()
     $sweet.loader(true, {
-        title: '現在為您生成條件要求',
+        title: '現在為您生成職務說明書',
         html: '太棒了！泡杯咖啡再回來<br \>「如果還沒好，那就再來一杯」',
     })
     const minimizedData = state.chatItems.map(item => {
@@ -264,7 +251,7 @@ async function handleSubmit() {
             messages: item.messages
         }
     })
-    const res = await repoChat.postChatJobSkillGenerate({
+    const res = await repoChat.postJobDescriptionGenerate({
         jobName: localValue.value.name,
         chatItems: minimizedData
     })
@@ -273,10 +260,10 @@ async function handleSubmit() {
     }
     $sweet.loader(false)
     const { data } = res
-    localValue.value.skills = data
+    localValue.value.description = data
     emit('update:modelValue', localValue.value)
 }
 </script>
 <style lang="scss" scoped>
-@import './index.scss'
+@import '../generate.scss'
 </style>
