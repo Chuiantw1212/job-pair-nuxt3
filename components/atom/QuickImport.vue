@@ -9,7 +9,7 @@
             <label class="inputGroup__label">
                 <input v-model="state.crawlerUrl" class="inputGroup__url" :placeholder="props.placeholder" />
             </label>
-            <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
+            <button class="inputGroup__button" @click="crawlUrlFromPlatform()">一鍵帶入</button>
         </div>
     </div>
 </template>
@@ -24,7 +24,7 @@ const props = defineProps({
         default: 'www.104.com.tw/companyInfo/*, www.yourator.co/companies/*'
     }
 })
-function crawlCompanyFromPlatform() {
+function crawlUrlFromPlatform() {
     emit('click', state.crawlerUrl)
 }
 </script>
