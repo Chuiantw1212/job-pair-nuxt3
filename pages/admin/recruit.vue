@@ -196,10 +196,9 @@ async function initialize() {
                     color: white;
                     border-radius: 50%;
                     display: block;
-                    line-height: 20px;
                     font-size: 16px;
                     margin-left: 8px;
-                    line-height: 1;
+                    line-height: 20px;
                     text-align: center;
                 }
             }
