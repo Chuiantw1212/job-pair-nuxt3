@@ -14,6 +14,7 @@
     </div>
 </template>
 <script setup>
+const { $sweet, } = useNuxtApp()
 const emit = defineEmits(['click'])
 const state = reactive({
     crawlerUrl: ''
@@ -25,6 +26,10 @@ const props = defineProps({
     }
 })
 function crawlUrlFromPlatform() {
+    if (!String(state.crawlerUrl)) {
+        $sweet.alert('格式不符')
+        return
+    }
     emit('click', state.crawlerUrl)
 }
 </script>
