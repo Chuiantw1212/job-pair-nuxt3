@@ -12,7 +12,8 @@
         </div>
         <div class="panel__footer">
             <template v-if="checkPanelDisplay()">
-                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
+                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()"
+                    :disabled="checkIsAdmin()">
                     <img class="store__icon" src="./heart.svg" alt="save" />儲存
                 </LazyAtomBtnSimple>
                 <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
@@ -124,13 +125,22 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
         state.application = matchedJob
     }
 }, { immediate: true, deep: true })
+
 // methods
+const instance = getCurrentInstance()
 function showLoginModal() {
     $emitter.emit("showUserModal")
 }
+function checkIsAdmin() {
+    // 登入使用者與匿名造訪者都開放點按
+    const { user } = repoAuth.state
+    const isAdmin = user?.id && user?.type === 'admin'
+    return isAdmin
+}
 function getRankedSimilarity() {
     const { user } = repoAuth.state
-    let score = user?.id ? 0 : '？'
+    const isValidUser = user?.id && user?.type === 'employee'
+    let score = isValidUser ? 0 : '？'
     if (props.modelValue?.similarity) {
         score = $rank(props.modelValue.similarity)
     }
