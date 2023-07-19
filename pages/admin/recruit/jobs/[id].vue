@@ -93,7 +93,8 @@
             </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
-                    name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
+                    name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled"
+                    :placeholder="'請選擇'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度" class="ms-3"
                     v-model="state.job.proficiency" :items="repoSelect.state.selectByQueryRes.proficiency">
@@ -375,6 +376,9 @@ async function setJob() {
     }
     if (!job.responsibilities) {
         job.responsibilities = ''
+    }
+    if (!job.language) {
+        job.language = ''
     }
     state.job = job
 }
