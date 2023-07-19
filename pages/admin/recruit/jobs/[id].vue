@@ -1,7 +1,7 @@
 <template>
     <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
-            <LazyAtomQuickImport v-if="state.job.isNew" @click="crawlFromLink($event)"
+            <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
                 :placeholder="'範例：https://www.104.com.tw/job/*'">
                 在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
                 <br>
