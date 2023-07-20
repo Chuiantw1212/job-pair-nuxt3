@@ -38,10 +38,11 @@ export default defineNuxtConfig({
                 // Flatpickr
                 { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css", type: "text/css", media: "screen" },
                 // Bootstrap
-                { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", rel: "stylesheet", },
+                { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", type: "text/css", },
             ],
             script: [
-                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', }
+                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', defer: true },
+                { src: 'https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js', integrity: "sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M", crossorigin: "anonymous", defer: true },
             ]
         },
     },
@@ -66,6 +67,8 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        // 還不夠成熟但裝著備而不用的套件
+        '@nuxt/image',
     ],
     extends: [
         'nuxt-seo-kit'
@@ -132,4 +135,10 @@ export default defineNuxtConfig({
     linkChecker: {
         failOn404: true,
     },
+    // 目前沒有作用 https://image.nuxtjs.org/configuration
+    image: {
+        // Options
+        format: ['webp'],
+        dir: 'assets'
+    }
 })

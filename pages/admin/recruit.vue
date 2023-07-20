@@ -52,10 +52,18 @@ const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
+const router = useRouter()
 const state = reactive({
     appliedList: [],
 })
 // hooks
+watch(() => route, (newRoute) => {
+    if (newRoute.name === 'admin-recruit') {
+        router.push({
+            name: 'admin-recruit-jobs'
+        })
+    }
+}, { immediate: true })
 watch(() => repoAuth.state.company, (company) => {
     initialize()
 }, { immediate: true })
@@ -188,10 +196,9 @@ async function initialize() {
                     color: white;
                     border-radius: 50%;
                     display: block;
-                    line-height: 20px;
                     font-size: 16px;
                     margin-left: 8px;
-                    line-height: 1;
+                    line-height: 20px;
                     text-align: center;
                 }
             }

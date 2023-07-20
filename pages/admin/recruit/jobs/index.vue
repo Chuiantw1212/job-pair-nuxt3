@@ -314,8 +314,9 @@ async function addJobDraft() {
     // 插入並打開第一個品項
     $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
-    state.jobList.unshift(res.data)
-    const { identifier = '' } = res.data
+    const postedJob = res.data
+    state.jobList.unshift(postedJob)
+    const { identifier = '' } = postedJob
     router.push(`jobs/${identifier}`)
     $sweet.loader(false)
 }
@@ -416,6 +417,7 @@ async function addJobDraft() {
             left: 0;
             position: sticky;
             z-index: 100;
+            // border-right: 1px solid #d3d3d3;
         }
 
         .jobManagement__table__sticky--second {
@@ -434,7 +436,7 @@ async function addJobDraft() {
             position: sticky;
             top: 0;
             background-color: white;
-            z-index: 10;
+            z-index: 110;
         }
 
         .table__row {

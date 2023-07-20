@@ -54,6 +54,10 @@ const state = reactive({
     statusText: '請確認網路連線狀況',
     event: {},
 })
+useSeoMeta({
+    title: () => `${state.event.name}`,
+    ogTitle: () => `${state.event.name}`,
+})
 onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')
     if (eventItemString) {

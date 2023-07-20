@@ -2,53 +2,75 @@ import { defineStore } from 'pinia'
 export default defineStore('chat', () => {
     const { $sweet, } = useNuxtApp()
     const jobPairApi = useJobPairApi()
-    async function postChatProfile(data) {
+    async function postChatIntroOptimize(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/profile`,
+            url: `/chat/intro/optimize`,
             data,
             timeout: 180000,
         })
         return response
     }
-    async function postChatIntro(data) {
+    async function postChatIntroGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/intro`,
+            url: `/chat/intro/generate`,
             data,
             timeout: 180000,
         })
         return response
     }
-    async function postChatJdGenerate(data) {
+    async function postJobDescriptionGenerate(data) {
         const response = await jobPairApi.request({
             method: 'post',
-            url: `/chat/jobDescription/generate`,
+            url: `/chat/job/description/generate`,
             data,
             timeout: 180000,
         })
         return response
     }
-    async function postChatJobDescription(data) {
-        const { content = '' } = data
-        const dataBlob = new Blob([content])
-        if (dataBlob.size >= 2000) {
-            await $sweet.alert('內容限制約700字元。')
-            return
+    async function postChatJobSkillGenerate(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/chat/job/skill/generate`,
+            data,
+            timeout: 180000,
+        })
+        return response
+    }
+    async function postChatJobContent(type, data) {
+        switch (type) {
+            case 'description': {
+                const response = await jobPairApi.request({
+                    method: 'post',
+                    url: `/chat/job/description/optimize`,
+                    data,
+                    timeout: 180000,
+                })
+                return response
+            }
+            case 'skills': {
+                const response = await jobPairApi.request({
+                    method: 'post',
+                    url: `/chat/job/skill/optimize`,
+                    data,
+                    timeout: 180000,
+                })
+                return response
+            }
+            default: {
+                if (process.client) {
+                    alert('postChatJobContent type exception')
+                    return
+                }
+            }
         }
-        const response = await jobPairApi.request({
-            method: 'post',
-            url: `/chat/jobDescription`,
-            data,
-            timeout: 180000,
-            maxBodyLength: 2,
-        })
-        return response
     }
     return {
-        postChatProfile,
-        postChatJobDescription,
-        postChatIntro,
-        postChatJdGenerate,
+        postChatIntroOptimize,
+        postChatIntroGenerate,
+        postJobDescriptionGenerate,
+        postChatJobSkillGenerate,
+        postChatJobContent,
     }
 })
