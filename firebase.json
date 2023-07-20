@@ -43,7 +43,7 @@
         ]
       },
       {
-        "source": "**/*.@(css|js|webp|svg)",
+        "source": "**/*.@(js|webp|svg)",
         "headers": [
           {
             "key": "Cache-Control",
