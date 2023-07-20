@@ -287,7 +287,6 @@ function getLocationText() {
     .company__banner {
         width: fit-content;
         max-width: 100%;
-        height: fit-content;
         display: block;
         min-height: 96px;
     }
