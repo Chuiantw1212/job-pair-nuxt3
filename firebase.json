@@ -43,11 +43,20 @@
         ]
       },
       {
-        "source": "**/*.@(js|webp|svg)",
+        "source": "/service-worker.js",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=31536000"
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(css|js|webp|svg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
           }
         ]
       }
