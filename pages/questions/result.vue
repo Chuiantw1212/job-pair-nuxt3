@@ -33,7 +33,7 @@ onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')
     if (eventItemString) {
         const eventItem = JSON.parse(eventItemString)
-        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.eventId = eventItem.eventId
         repoEvent.state.contributor = eventItem.contributor
     }
 })
