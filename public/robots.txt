@@ -3,5 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /questions/
 Disallow: /user/
-
 Sitemap: https://job-pair.com/sitemap.xml
