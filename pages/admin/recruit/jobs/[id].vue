@@ -154,7 +154,8 @@
         </div>
         <div class="recruitJob__footer">
             <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
-            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">儲存並預覽職缺
+            </AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
         <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
@@ -266,6 +267,7 @@ async function crawlFromLink(crawlerUrl = '') {
     })
     // Compose result
     const minSalary = targetSalaryType.min ?? 0
+    const identifier = state.job?.identifier ?? null
     const newJob = {
         name: jobName,
         description: jobDescription,
@@ -279,6 +281,7 @@ async function crawlFromLink(crawlerUrl = '') {
         employmentType: [employmentTypeValue],
         responsibilities: responsibilitiesValue,
         jobLocationType: 'onSite',
+        identifier,
     }
     state.job = newJob
     setDescription(newJob.description)
