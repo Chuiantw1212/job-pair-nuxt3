@@ -277,7 +277,8 @@ useSeoMeta({
     }
 })
 useJsonld(() => {
-    const validThroughDate = new Date(job.value.datePosted)
+    const { datePosted = new Date().toISOString() } = job.value
+    const validThroughDate = new Date(datePosted)
     validThroughDate.setDate(validThroughDate.getDate() + 7)
     const locationValue = location.value
     const addressRegionItems = locationValue[job.value.addressRegion]
@@ -301,7 +302,7 @@ useJsonld(() => {
             "@type": "Country",
             "name": "Anywhere"
         },
-        datePosted: job.value.datePosted,
+        datePosted,
         validThrough: validThroughDate.toISOString(),
         employmentType: job.value.employmentType,
         hiringOrganization: {
