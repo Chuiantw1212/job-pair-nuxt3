@@ -36,7 +36,6 @@ npm run dev
 | --  bootstrap              | Bootstrap                                      |
 | --  ckeditor5-custom-build | Rich Text Editor                               |
 | --  flatpickr              | 基於原生JS的輕量套件                           |
-| --  Minidenticons          | 生成隨機聊天室的頭像用 (Deprecated)            |
 | --  nouislider             | 基於原生JS的輕量套件                           |
 | --  sweetalert2            | 基於原生JS的輕量套件                           |
 | --  sass                   | scss preprocessor                              |
@@ -46,21 +45,44 @@ npm run dev
 2. 安裝 firebase-tools (https://www.npmjs.com/package/firebase-tools)
 3. 切換到正確的分支
 4. 避免Windows權限問題 (https://github.com/firebase/firebase-tools/issues/1627)
-### 常用Firebase指令
-```
-firebase projects:list
-firebase use
-```
-### 發布用指令
-```
-npm run build
-npm run deploy
-```
-
-### 刪除node_moduels
-```
-rmdir  .\node_modules\
-```
 
 ### Firebase相關
 配置標頭 (https://firebase.google.com/docs/hosting/full-config#headers)
+
+### 建立GCP + NGINX 配置
+1. 檢視現有VPC Networks
+```
+gcloud compute networks list
+```
+
+2. 建立一個新的Hybrid Connectivity -> Cloud Router
+```
+gcloud compute routers create asia-east1 \
+  --network=default \
+  --region=asia-east1
+```
+
+3. 保留靜態 VPC Networks -> IP Addresses
+這個固態IP預定要給公司的單獨頁面使用，故命名為ORIGIN_IP_NAME為organization
+```
+gcloud compute addresses create ORIGIN_IP_NAME --region=asia-east1
+```
+
+4. 建立Cloud NAT gateway
+```
+gcloud compute routers nats create asia-east1-organization \
+  --router=asia-east1 \
+  --region=asia-east1 \
+  --nat-all-subnet-ip-ranges \
+  --nat-external-ip-pool=organization
+```
+
+5. Create the VPC connector
+```
+gcloud services enable vpcaccess.googleapis.com
+
+gcloud compute networks vpc-access connectors create asia-east1-connector \
+    --network default \
+    --region asia-east1 \
+    --range 10.8.0.0/28
+```

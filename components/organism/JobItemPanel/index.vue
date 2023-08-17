@@ -115,7 +115,6 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
 }, { immediate: true, deep: true })
 
 // methods
-const instance = getCurrentInstance()
 function showLoginModal() {
     $emitter.emit("showUserModal")
 }

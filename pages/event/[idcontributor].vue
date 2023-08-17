@@ -45,14 +45,19 @@ const { $filter, $emitter, $sweet, } = useNuxtApp()
 const repoEvent = useRepoEvent()
 const repoAuth = useRepoAuth()
 const route = useRoute()
+const chunks = route.params.idcontributor.split('&&')
+const eventId = chunks[0]
+const contributor = chunks[1]
+const runTimeConfig = useRuntimeConfig()
+// For seo purposes
+const { data: event } = await useFetch(`${runTimeConfig.public.apiBase}/event/${eventId}`,)
 const state = reactive({
-    record: {
-        signUpDate: null
-    },
     signUpDate: null,
     isFailed: false,
     statusText: '請確認網路連線狀況',
-    event: {},
+    event,
+    eventId,
+    contributor,
 })
 useSeoMeta({
     title: () => `${state.event.name}`,
@@ -62,7 +67,7 @@ onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')
     if (eventItemString) {
         const eventItem = JSON.parse(eventItemString)
-        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.eventId = eventItem.eventId
         repoEvent.state.contributor = eventItem.contributor
     }
 })
@@ -73,13 +78,14 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
             const chunks = route.params.idcontributor.split('&&')
             const eventId = chunks[0]
             const contributor = chunks[1]
+            // 給未註冊過的用戶註冊事件使用
             repoEvent.state.eventId = eventId
             repoEvent.state.contributor = contributor
+            // 給未註冊過的用戶註冊事件使用
             sessionStorage.setItem('event', JSON.stringify({
-                id: eventId,
+                eventId,
                 contributor,
             }))
-            getEventInformation(eventId)
             if (newValue?.id && oldValue === null) {
                 signUp(eventId)
             }
@@ -91,15 +97,6 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
         })
     }
 }, { immediate: true })
-async function getEventInformation(eventId) {
-    const res = await repoEvent.getEvent({
-        id: eventId
-    })
-    if (res.status !== 200) {
-        return
-    }
-    state.event = res.data
-}
 function requestSelector(selectorString, callback,) {
     let localCount = 0
     function step() {
