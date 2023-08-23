@@ -174,6 +174,17 @@ const state = reactive({
 watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
+onMounted(async () => {
+    // 防求職者誤入
+    const { user = {} } = repoAuth.state
+    const isEmployee = user && user.type === 'employee'
+    if (isEmployee) {
+        await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
+        router.push({
+            name: 'index'
+        })
+    }
+})
 // methods
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
@@ -226,7 +237,7 @@ async function initializeCompanyInfo() {
         return
     }
     const companyRes = await repoAdmin.getAdminCompany()
-    $sweet.loader(false)
+    // $sweet.loader(false)
     if (companyRes.status !== 200) {
         return
     }

@@ -202,7 +202,6 @@ const props = defineProps({
 })
 // methods
 async function handleFirebaseError(error) {
-    console.trace(error);
     // 顯示錯誤訊息
     const { code = '', message = '', email = '', } = error
     switch (code) {
