@@ -300,14 +300,14 @@ async function checkWalletBallance(value) {
     if (value !== 'active') {
         return
     }
-    const res = await repoCompany.getCompanyWalletBalance()
-    if (res.status !== 200) {
-        return
-    }
-    const noBallanceModal = instance.refs.noBallanceModal
-    if (!res.data || res.data.balance === 0 && noBallanceModal) {
-        noBallanceModal.openModal()
-    }
+    // const res = await repoCompany.getCompanyWalletBalance()
+    // if (res.status !== 200) {
+    //     return
+    // }
+    // const noBallanceModal = instance.refs.noBallanceModal
+    // if (!res.data || res.data.balance === 0 && noBallanceModal) {
+    //     noBallanceModal.openModal()
+    // }
 }
 function setUpdatedJob(value) {
     const { name = '', description = '', skills = '' } = value
@@ -322,11 +322,13 @@ function setSkills(value) {
     instance.refs.skills.setData(value)
 }
 async function handlePreview() {
-    await saveJob()
-    const job = state.job
-    const { origin } = window.location
-    const url = `${origin}/job/${job.identifier}`
-    window.open(url)
+    const isSuccess = await saveJob()
+    if (isSuccess) {
+        const job = state.job
+        const { origin } = window.location
+        const url = `${origin}/job/${job.identifier}`
+        window.open(url)
+    }
 }
 async function showAlert() {
     const alertResult = await $sweet.warning('一經刪除，無法還原')
@@ -424,7 +426,7 @@ async function saveJob() {
         const result = await $validate(jobItem)
         job.completeness = result.completeness
         if (!result.isValid) {
-            return
+            return false
         }
     } else {
         const result = await $validate(jobItem, {
