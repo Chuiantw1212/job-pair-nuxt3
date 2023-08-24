@@ -2,6 +2,7 @@
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup() {
+    const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
     const state = reactive({
@@ -37,6 +38,9 @@ export default function setup() {
     watch(() => state.filter, () => {
         initializeSearch()
     }, { deep: true })
+    watch(() => route.name, () => {
+        state.observer.disconnect()
+    })
     // methods
     function debounce(func, delay = 800) {
         return (...args) => {
