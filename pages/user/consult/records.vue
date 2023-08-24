@@ -84,7 +84,7 @@
             </template>
         </LazyMoleculeConsultCard>
         <div v-if="device.state.isLarge" class="consult__themeDesktop">
-            <!-- <div class="themeDesktop__card">
+            <div class="themeDesktop__card">
                 <div class="card__header">
                     <img class="header__image" src="~/assets/consult/img1.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">理想生活探索</div>
@@ -115,27 +115,24 @@
                         </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
-            </div> -->
+            </div>
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <!-- <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" /> -->
-                    <div class="header__header">盤點線索探索職業方向</div>
-                    <!-- <div class="header__sub">釐清你的職業方向</div> -->
+                    <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" />
+                    <div class="header__header">職業偏好探索</div>
+                    <div class="header__sub">釐清你的職業方向</div>
                 </div>
                 <div class="card__body">
                     <div class="body__title">關於</div>
                     <div class="body__desc">
-                        美國 O-NET 系統把職業分成 1,000 多種，但大部分的人講得出來的職業，大概只有 5-6
-                        種，在那麼稀少的選項當中要找到適合的工作，是非常困難的。但只要我們對職業的眼界打開了，就很容易找到適合自己的路，並在對的賽道長期累積。
-                        職涯諮詢由專業的諮詢師團隊生涯設計師提供服務，帶你盤點性格/適合的組織/工作型態/工作價值觀/動機並找出共通點，綜合評估您過往經驗後制定長期行動方案，讓你的求職之路更加精準有效率！
+                        職涯偏好探索，目的是探索合適的工作，需從「價值觀」與「個性」兩個層面做自我分析。價值觀就是個人的信念、人生意義、道德觀念等組合，對應工作就是企業對文化、理念、願景的實踐；個性則是評估自己在什麼樣的工作環境、工作內容與什麼樣的主管合作，能更勝任愉快。所以，評估適合的工作發展，兩者缺一不可。
                     </div>
                     <div class="body__title">
-                        透過諮詢你將獲得
+                        適合想解決
                     </div>
                     <ul class="body__desc">
-                        <li>更精準的職缺配對</li>
-                        <li>專業的盤點與梳理</li>
-                        <li>完整的諮詢報吿書</li>
+                        <li>適合的工作是什麼？有哪些方向？特徵？線索？</li>
+                        <li>轉職沒頭緒，先後順序要注意什麼？如何取捨？（地點？薪資？未來性？）</li>
                     </ul>
                 </div>
                 <div class="card__footer">
@@ -149,7 +146,7 @@
                     </NuxtLink>
                 </div>
             </div>
-            <!-- <div class="themeDesktop__card">
+            <div class="themeDesktop__card">
                 <div class="card__header">
                     <img class="header__image" src="~/assets/consult/img3.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">履歷與面試輔導</div>
@@ -178,7 +175,7 @@
                         </LazyAtomBtnSimple>
                     </NuxtLink>
                 </div>
-            </div> -->
+            </div>
         </div>
         <LazyMoleculeConsultCard v-else class="consult__themeMobile">
             <template v-slot:header>
@@ -188,35 +185,76 @@
             <template v-slot:body>
                 <ul v-if="repoSelect.state.selectByQueryRes && repoSelect.state.selectByQueryRes.consultService"
                     class="themeMobile__list">
-                    <!-- <li v-for="(service, index) in repoSelect.state.selectByQueryRes.consultService" :key="index"
+                    <li v-for="(service, index) in repoSelect.state.selectByQueryRes.consultService" :key="index"
                         class="themeMobile__list__item">
                         <div class="themeMobile__list__item__content"
                             :class="{ 'themeMobile__list__item__content--active': state.activeTab === service.value }"
                             @click="setActiveTab(service)">{{ service.text }}
                         </div>
-                    </li> -->
+                    </li>
                 </ul>
                 <div class="themeMobile__main">
-                    <template v-if="state.activeTab === 'career'">
+                    <template v-if="state.activeTab === 'life'">
                         <div class="main__headerGroup">
-                            <!-- <img class="headerGroup__image" src="~/assets/consult/img2.webp"
-                                onerror="this.style.display = 'none'" /> -->
-                            <h2 class="headerGroup__header">盤點線索探索職業方向</h2>
-                            <!-- <div class="headerGroup__desc">釐清你的職業方向</div> -->
+                            <img class="headerGroup__image" src="~/assets/consult/img1.webp"
+                                onerror="this.style.display = 'none'" />
+                            <h2 class="headerGroup__header">理想生活探索</h2>
+                            <div class="headerGroup__desc">解決你的生活焦慮</div>
                         </div>
                         <div class="main__body">
                             <div class="body__header">關於</div>
                             <div class="body__text">
-                                美國 O-NET 系統把職業分成 1,000 多種，但大部分的人講得出來的職業，大概只有 5-6
-                                種，在那麼稀少的選項當中要找到適合的工作，是非常困難的。但只要我們對職業的眼界打開了，就很容易找到適合自己的路，並在對的賽道長期累積。
-                                職涯諮詢由專業的諮詢師團隊生涯設計師提供服務，帶你盤點性格/適合的組織/工作型態/工作價值觀/動機並找出共通點，綜合評估您過往經驗後制定長期行動方案，讓你的求職之路更加精準有效率！
+                                理想生活探索是透過專業引導，釐清個人內在的「價值觀」，並將內在需求與外在行動對焦，制訂相對應的行動，有意識的創造個人的理想生活。<br>
+                                本服務也有助於個人面對工作選擇或其他生涯抉擇時，下一個真正貼近個人內在需求的決策。
                             </div>
-                            <div class="body__header">你將獲得</div>
+                            <div class="body__header">適合想解決</div>
                             <div class="body__text">
                                 <ul class="main__body__list">
-                                    <li>更精準的職缺配對</li>
-                                    <li>專業的盤點與梳理</li>
-                                    <li>完整的諮詢報吿書</li>
+                                    <li>工作/生活沒有不好，想要尋求更好該從哪著手？</li>
+                                    <li>人生沒有目標方向，想要探索自我的人生意義。</li>
+                                    <li>想探索自己的興趣與熱忱，並制定相關的行動。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-if="state.activeTab === 'career'">
+                        <div class="main__headerGroup">
+                            <img class="headerGroup__image" src="~/assets/consult/img2.webp"
+                                onerror="this.style.display = 'none'" />
+                            <h2 class="headerGroup__header">職業偏好探索</h2>
+                            <div class="headerGroup__desc">釐清你的職業方向</div>
+                        </div>
+                        <div class="main__body">
+                            <div class="body__header">關於</div>
+                            <div class="body__text">
+                                職涯偏好探索，目的是探索合適的工作，需從「價值觀」與「個性」兩個層面做自我分析。價值觀就是個人的信念、人生意義、道德觀念等組合，對應工作就是企業對文化、理念、願景的實踐；個性則是評估自己在什麼樣的工作環境、工作內容與什麼樣的主管合作，能更勝任愉快。所以，評估適合的工作發展，兩者缺一不可。
+                            </div>
+                            <div class="body__header">適合想解決</div>
+                            <div class="body__text">
+                                <ul class="main__body__list">
+                                    <li>適合的工作是什麼？有哪些方向？特徵？線索？</li>
+                                    <li>轉職沒頭緒，先後順序要注意什麼？如何取捨？（地點？薪資？未來性？）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-if="state.activeTab === 'interview'">
+                        <div class="main__headerGroup">
+                            <img class="headerGroup__image" src="~/assets/consult/img3.webp"
+                                onerror="this.style.display = 'none'" />
+                            <h2 class="headerGroup__header">履歷與面試輔導</h2>
+                            <div class="headerGroup__desc">補足你的求職技巧</div>
+                        </div>
+                        <div class="main__body">
+                            <div class="body__header">關於</div>
+                            <div class="body__text">
+                                提供履歷與面試輔導的生涯設計師，除了來自不同產業的經驗，同時具備生涯設計的思維；不只從個人角度出發，還能從就業市場的角度，提供更全面的情報，為更好的職涯做準備。
+                            </div>
+                            <div class="body__header">適合想解決</div>
+                            <div class="body__text">
+                                <ul class="main__body__list">
+                                    <li>履歷該如何編修，提高面試機會？</li>
+                                    <li>面試該如何應對，表達恰到好處？</li>
                                 </ul>
                             </div>
                         </div>
@@ -246,7 +284,7 @@ const state = reactive({
     records: [],
     consultants: [],
     feedbacks: [],
-    activeTab: 'career'
+    activeTab: 'life'
 })
 // hooks
 useHead({
