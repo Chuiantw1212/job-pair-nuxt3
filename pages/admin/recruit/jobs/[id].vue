@@ -354,8 +354,9 @@ async function setJob() {
     }
     const job = jobResponse.data
     // 給定預設值
+    const { company = {}, preference = {} } = repoAuth.state
     if (!job.preference) {
-        job.preference = {}
+        job.preference = preference
     }
     if (!job.salaryType) {
         job.salaryType = "monthly"
@@ -371,7 +372,6 @@ async function setJob() {
         job.jobLocationType = "onSite"
     }
     if (!job.industry) {
-        const { company } = repoAuth.state
         const { industry = [] } = company
         job.industry = industry
     }
