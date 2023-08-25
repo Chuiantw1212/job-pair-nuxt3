@@ -265,9 +265,11 @@ async function crawlFromLink(crawlerUrl = '') {
     const targetLocality = level2Items.find(item => {
         return item.text === formatLocality
     })
-    // Compose result
-    const minSalary = targetSalaryType.min ?? 0
+    // 保留舊資料的值
     const identifier = state.job?.identifier ?? null
+    const preference = state.job.preference
+    // 給定新資料預設值
+    const minSalary = targetSalaryType.min ?? 0
     const newJob = {
         name: jobName,
         description: jobDescription,
@@ -282,6 +284,7 @@ async function crawlFromLink(crawlerUrl = '') {
         responsibilities: responsibilitiesValue,
         jobLocationType: 'onSite',
         identifier,
+        preference,
     }
     state.job = newJob
     setDescription(newJob.description)
