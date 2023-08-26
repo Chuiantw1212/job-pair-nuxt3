@@ -36,12 +36,9 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <LazyAtomInputUploader v-model="state.profileBasic.resumes" class="mt-3" name="履歷" :size="5242880"
-                :accept="'.pdf'" :max="3" :required="device.state.isLarge" :getFileBuffer="getUserResume">
-            </LazyAtomInputUploader>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
                 :required="state.profileBroadcast.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。"
-                ref="description"> 
+                ref="description">
                 <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()" v-model="state.profileBasic.description"
                     name="個人簡歷" @update:modelValue="setDescription($event)">
                 </LazyOrganismChatOptimizeIntroModal>
@@ -56,7 +53,10 @@
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
             class="profile__information profile__doc mt-3">
-            <div class="profile__languageGroup">
+            <LazyAtomInputUploader v-model="state.profileBasic.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+                :getFileBuffer="getUserResume">
+            </LazyAtomInputUploader>
+            <div class="profile__languageGroup  mt-3">
                 <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                     v-model="state.profileAdvanced.language" name="語言能力" placeholder="選擇語言"
                     :items="repoSelect.state.selectByQueryRes.language">
@@ -175,7 +175,6 @@ function initialize() {
         email,
         telephone,
         occupationalCategory,
-        resumes,
         description,
     }
     state.profileBasic = profileBasic
@@ -187,6 +186,7 @@ function initialize() {
         certificates = [],
     } = profile
     const profileAdvanced = {
+        resumes,
         language,
         proficiency,
         certificates,
@@ -273,11 +273,6 @@ async function handleSubmitBasic() {
     if (!result.isValid) {
         return
     }
-    // 更新履歷pdf
-    $sweet.loader(true)
-    const validResumes = state.profileBasic.resumes.filter((item) => item.url)
-    const reseumeResponse = await repoUser.putUserResumes(validResumes)
-    state.profileBasic.resumes = reseumeResponse.data
     // 更新個人資料
     await repoUser.patchUserProfile(state.profileBasic)
     const patchedUser = Object.assign({}, repoAuth.state.user, state.profileBasic)
@@ -290,6 +285,11 @@ async function handleSubmitAdvanced() {
     if (!result.isValid) {
         return
     }
+    // 更新履歷pdf
+    $sweet.loader(true)
+    const validResumes = state.profileAdvanced.resumes.filter((item) => item.url)
+    const reseumeResponse = await repoUser.putUserResumes(validResumes)
+    state.profileAdvanced.resumes = reseumeResponse.data
     // 更新Blobs
     const validPorfolio = state.profileAdvanced.portfolio.filter((item) => {
         const { name = "", url = "" } = item
