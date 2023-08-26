@@ -77,15 +77,18 @@
                 </LazyAtomBtnSimple>
             </div>
         </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送" class="mt-3">
-            <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profileBroadcast.isActive" name="目前求職狀態">
-                <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
-            </LazyAtomInputCheckSingle>
+        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
+            class="profile__broadcast mt-3">
+            <div class="broadcast__subGroup">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive" name="訂閱適合工作">
+                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
+                </LazyAtomInputCheckSingle>
+                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0" v-model="state.profileBroadcast.isSubscribed"
+                    name="EDM訂閱">
+                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
+                </LazyAtomInputCheckSingle>
+            </div>
             <hr />
-            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.isSubscribed"
-                name="EDM訂閱">
-                <span class="isActive__desc">我願意收到EDM</span>
-            </LazyAtomInputCheckSingle>
             <LazyAtomInputCalendar name="生日" v-model="state.profileBroadcast.birthDate" class="mt-3"
                 :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate">
             </LazyAtomInputCalendar>
@@ -329,6 +332,22 @@ async function handleSubmitBroadcast() {
         }
     }
 
+    .profile__broadcast {
+        .broadcast__subGroup {
+            display: flex;
+            flex-direction: column;
+
+            .subGroup__item {
+                flex-grow: 0.5;
+
+                .isActive__desc {
+                    line-height: 1;
+                    white-space: pre-wrap;
+                }
+            }
+        }
+    }
+
     .profile__hint {
         background-color: #d8e4eb;
         padding: 40px 24px;
@@ -348,18 +367,6 @@ async function handleSubmitBroadcast() {
         }
     }
 
-    .profile__information {
-
-        .information__isActive {
-            .isActive__desc {
-                line-height: 1;
-                white-space: pre-wrap;
-            }
-        }
-
-
-    }
-
     .profile__management {
         margin-top: 20px;
         display: flex;
@@ -374,10 +381,6 @@ async function handleSubmitBroadcast() {
     .profile__languageGroup {
         display: flex;
         flex-direction: column;
-
-        .languageGroup__proficiency {
-            // margin-top: 8px;
-        }
     }
 
 
@@ -406,6 +409,12 @@ async function handleSubmitBroadcast() {
 
             .basic__contact {
                 width: 100%;
+            }
+        }
+
+        .profile__broadcast {
+            .broadcast__subGroup {
+                flex-direction: row;
             }
         }
 
