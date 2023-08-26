@@ -89,15 +89,16 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
+                    <LazyAtomInputSearch v-model="state.searchLike" @search="jobScroller.initializeSearch()"
+                        placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
             </div>
             <div class="body__filter">
                 <div class="d-none d-lg-block filter__total">
-                    <template v-if="state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{ state.count
+                    <template v-if="state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{ jobScroller.state.count
                     }}個職缺</template>
-                    <template v-else>符合您篩選條件的共{{ state.count }}個職缺</template>
+                    <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
                 </div>
                 <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
                     <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
@@ -130,8 +131,9 @@
                             v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
-                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItems`" class="main__list__item jobItem">
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="index" :ref="`jobItems`"
+                        class="main__list__item jobItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -158,8 +160,9 @@ const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const router = useRouter()
+const jobScroller = useJobScroller()
 const state = reactive({
-    jobList: [],
+    // jobList: [],
     jobRecommendList: [],
     total: 0,
     isFilterOpen: false,
@@ -200,30 +203,18 @@ watch(() => repoAuth.state.user, (user) => {
         state.filter = getDefaultFilter()
     }
     // get jobs
-    const firstJob = state.jobList[0]
+    const firstJob = jobScroller.state.jobList[0]
     if (!firstJob?.similarity) {
-        initializeSearch()
+        jobScroller.initializeSearch()
     }
 }, { immediate: true })
 watch(() => state.filter, () => {
-    initializeSearch()
+    jobScroller.initializeSearch()
 }, { deep: true })
-watch(() => state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length === oldValue.length || !process.client) {
-        return
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob()
     }
-    if (!state.observer) {
-        state.observer = new IntersectionObserver(loadJobItemBatch, {
-            rootMargin: "0px",
-            threshold: 0,
-        })
-    }
-    $requestSelectorAll(`.jobItem`, (elements) => {
-        const target = elements[elements.length - 1]
-        if (target) {
-            state.observer.observe(target)
-        }
-    })
 })
 // methods
 function getFilterValues() {
@@ -350,14 +341,14 @@ function getDefaultFilter() {
     }
     return defualtFilter
 }
-async function loadJobItemBatch(entries, observer) {
-    const triggeredEntry = entries[0]
-    if (triggeredEntry.isIntersecting) {
-        observer.disconnect()
-        state.pagination.pageOffset += state.pagination.pageLimit
-        await concatJobsFromServer()
-    }
-}
+// async function loadJobItemBatch(entries, observer) {
+//     const triggeredEntry = entries[0]
+//     if (triggeredEntry.isIntersecting) {
+//         observer.disconnect()
+//         state.pagination.pageOffset += state.pagination.pageLimit
+//         await concatJobsFromServer()
+//     }
+// }
 async function setPageOrderBy(key) {
     state.pagination.pageOrderBy = key
     if (key === 'similarity') {
@@ -365,14 +356,14 @@ async function setPageOrderBy(key) {
     } else {
         state.pagination.pageLimit = 5
     }
-    await initializeSearch({
+    await jobScoller.initializeSearch({
         immediate: true,
         isLoading: true
     })
 }
 function resetFilter() {
-    state.jobList = []
-    state.pagination = {
+    jobScroller.state.jobList = []
+    jobScroller.state.pagination = {
         pageOrderBy: "datePosted",
         pageLimit: 5,
         pageOffset: 0,
@@ -393,52 +384,52 @@ function debounce(func, delay = 800) {
         }, delay)
     }
 }
-async function initializeSearch(config = {}) {
-    const wait = config.immediate ? 0 : 800
-    debounce(async () => {
-        state.jobList = [] // important
-        state.pagination.pageOffset = 0
-        await concatJobsFromServer(config)
-    }, wait)()
-}
-async function concatJobsFromServer(config = {}) {
-    const { isLoading = false } = config
-    const requestConfig = Object.assign({}, state.pagination, state.filter, {
-        searchLike: state.searchLike,
-    })
-    const { user } = repoAuth.state
-    if (user?.id) {
-        requestConfig.userId = user.id
-    }
-    // try {
-    //     $sweet.loader(isLoading)
-    // } catch (error) {
-    //     // console.trace(error);
-    // }
-    const response = await repoJob.getJobByQuery(requestConfig)
-    if (response.status !== 200) {
-        $sweet.alert('伺服器塞車了')
-        return
-    }
-    const { count = 0, items = [] } = response.data
-    state.count = count
-    const recommendJobs = filterRecommendedJobs()
-    state.jobRecommendList = recommendJobs
-    // 一般排序與適配讀排序時避免重複出現職缺
-    const recommendJobIds = recommendJobs.map(item => item.identifier)
-    let notDuplicatedJobs = items
-    if (state.pagination.pageOrderBy !== 'salaryValue') {
-        notDuplicatedJobs = items.filter(item => {
-            return !recommendJobIds.includes(item.identifier)
-        })
-    }
-    state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    // try {
-    //     $sweet.loader(false)
-    // } catch (error) {
-    //     // console.trace(error);
-    // }
-}
+// async function initializeSearch(config = {}) {
+//     const wait = config.immediate ? 0 : 800
+//     debounce(async () => {
+//         state.jobList = [] // important
+//         state.pagination.pageOffset = 0
+//         await concatJobsFromServer(config)
+//     }, wait)()
+// }
+// async function concatJobsFromServer(config = {}) {
+//     const { isLoading = false } = config
+//     const requestConfig = Object.assign({}, state.pagination, state.filter, {
+//         searchLike: state.searchLike,
+//     })
+//     const { user } = repoAuth.state
+//     if (user?.id) {
+//         requestConfig.userId = user.id
+//     }
+//     // try {
+//     //     $sweet.loader(isLoading)
+//     // } catch (error) {
+//     //     // console.trace(error);
+//     // }
+//     const response = await repoJob.getJobByQuery(requestConfig)
+//     if (response.status !== 200) {
+//         $sweet.alert('伺服器塞車了')
+//         return
+//     }
+//     const { count = 0, items = [] } = response.data
+//     state.count = count
+//     const recommendJobs = filterRecommendedJobs()
+//     state.jobRecommendList = recommendJobs
+//     // 一般排序與適配讀排序時避免重複出現職缺
+//     const recommendJobIds = recommendJobs.map(item => item.identifier)
+//     let notDuplicatedJobs = items
+//     if (state.pagination.pageOrderBy !== 'salaryValue') {
+//         notDuplicatedJobs = items.filter(item => {
+//             return !recommendJobIds.includes(item.identifier)
+//         })
+//     }
+//     state.jobList = [...state.jobList, ...notDuplicatedJobs]
+//     // try {
+//     //     $sweet.loader(false)
+//     // } catch (error) {
+//     //     // console.trace(error);
+//     // }
+// }
 </script>
 <style lang="scss" scoped>
 .jobs {

@@ -362,10 +362,9 @@ watch(() => state.job, (newValue) => {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
-const jobItems = ref([])
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
-        jobScroller.observeLastJob(jobItems)
+        jobScroller.observeLastJob()
     }
     const { user } = repoAuth.state
     if (user && user.id) {

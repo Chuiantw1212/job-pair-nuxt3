@@ -2,6 +2,7 @@
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup() {
+    const { $requestSelectorAll, $sweet } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
@@ -59,6 +60,7 @@ export default function setup() {
         })()
     }
     async function concatJobsFromServer(config = {}) {
+        const { isLoading = false } = config
         const { user } = repoAuth.state
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
             searchLike: state.searchLike,
@@ -69,6 +71,7 @@ export default function setup() {
         }
         const response = await repoJob.getJobByQuery(fianalConfig)
         if (response.status !== 200) {
+            $sweet.alert('伺服器塞車了')
             return
         }
         const { count = 0, items = [] } = response.data
@@ -76,21 +79,19 @@ export default function setup() {
         // 避免重複出現職缺
         state.jobList = [...state.jobList, ...items]
     }
-    function observeLastJob(jobItemRefs) {
+    function observeLastJob(selectorString = '.jobItem') {
         if (!process.client) {
             return
         }
-        if (!state.observer && process.client) {
+        if (!state.observer) {
             state.observer = new IntersectionObserver(loadJobItemBatch, {
                 rootMargin: "0px",
                 threshold: 0,
             })
         }
-        nextTick(() => {
-            const wrappers = jobItemRefs.value
-            const targetComponent = wrappers[wrappers.length - 1]
-            if (targetComponent) {
-                const target = targetComponent.$el
+        $requestSelectorAll(selectorString, (elements) => {
+            const target = elements[elements.length - 1]
+            if (target) {
                 state.observer.observe(target)
             }
         })
