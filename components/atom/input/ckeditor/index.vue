@@ -27,7 +27,7 @@ export default {
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
-const emit = defineEmits(['update:modelValue', 'blur'])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus'])
 const editorRef = ref(null)
 const state = reactive({
     ckeditorInstance: null,
@@ -148,8 +148,8 @@ async function initializeCKEditor() {
     const ClassicEditor = importedEditor || window.ClassicEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
-    editor.ui.view.editable.element.style.maxHeight = props.style.height
     // Set Height
+    editor.ui.view.editable.element.style.maxHeight = props.style.height
     editor.editing.view.change(writer => {
         for (let attr in props.style) {
             const value = props.style[attr]
@@ -157,15 +157,21 @@ async function initializeCKEditor() {
         }
 
     })
+    // set view events
+    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+        if (isFocused) {
+            emit('focus', evt)
+        } else {
+            emit('blur', evt)
+        }
+    })
+    // set data
     if (localValue.value) {
         editor.setData(localValue.value)
     }
     if (props.disabled) {
         editor.enableReadOnlyMode(`editor_${state.id}`)
     }
-    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-        emit('blur', evt)
-    })
     if (!props.modelValue) {
         localValue.value = '<p></p>'
     }
@@ -197,27 +203,30 @@ defineExpose({
     display: flex;
     align-items: center;
 }
-</style>
-<style lang="scss">
+
 .ckeditor--edit {
     border: 1px solid #d3d3d3;
     border-radius: 10px;
     overflow: hidden;
 }
 
-.ck-editor__editable_inline {
+.ckeditor :deep(.ck-editor__editable_inline) {
     min-height: 11em;
 }
 
-.ck-toolbar {
+.ckeditor :deep(.ck-toolbar) {
     border: none !important;
 }
 
-.ck-editor__editable {
+.ckeditor :deep(.ck-editor__editable) {
     border: none !important;
 }
 
-.ck-read-only {
+.ckeditor :deep(.ck-read-only) {
     border: 1px solid #d3d3d3;
+}
+
+.ckeditor :deep(.ck-sticky-panel__content) {
+    border-bottom: 1px solid #ccced1;
 }
 </style>
