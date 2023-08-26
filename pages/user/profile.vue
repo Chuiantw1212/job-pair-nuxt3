@@ -119,7 +119,7 @@
 
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
-            <div class="profile__management mt-3">
+            <div class="profile__management">
                 <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
             </div>
             <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
@@ -368,7 +368,6 @@ async function handleSubmitBroadcast() {
     }
 
     .profile__management {
-        margin-top: 20px;
         display: flex;
         font-size: 18px;
         font-weight: bold;
