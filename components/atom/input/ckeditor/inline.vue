@@ -11,7 +11,7 @@
             </span>
         </div>
         <input v-show="false" :value="checkValue()" :data-required="required" :data-name="name">
-        <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
+        <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }" @click="emit('click', $event)">
             <div :id="`editor_${state.id}`" ref="editorRef">
 
             </div>
@@ -27,7 +27,7 @@ export default {
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
-const emit = defineEmits(['update:modelValue', 'blur', 'focus'])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'click'])
 const editorRef = ref(null)
 const state = reactive({
     ckeditorInstance: null,

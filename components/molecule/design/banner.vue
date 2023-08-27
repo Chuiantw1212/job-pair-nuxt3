@@ -1,9 +1,9 @@
 <template>
-    <div class="banner">
+    <div class="banner" ref="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp">
         <LazyAtomControllable v-model="state.controllable" @mousemove="handlePosition($event)">
             <LazyAtomInputCkeditorInline v-model="state.content" class="editorGroup__editor" @focus="handleFocus()"
-                @blur="handleBlur()">
+                @click="handleFocus()" @blur="handleBlur()">
             </LazyAtomInputCkeditorInline>
         </LazyAtomControllable>
     </div>
@@ -16,23 +16,19 @@ const state = reactive({
     controllable: {
         isFocused: false,
         position: {
-            top: '10%',
-            left: '10%',
+            top: '0%',
+            left: '0%',
         }
     }
 })
-onMounted(async () => {
-    // const { default: EditorJS } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/editorjs.mjs`)
-    // console.log(EditorJS);
-    // const editor = new EditorJS({
-    //     holder: 'editorjs'
-    // });
-    // // const editor = new EditorJS();
-    // console.log(importedEditor);
-})
 // methods
+const currentInstance = getCurrentInstance()
 function handlePosition(event) {
-    console.log(event);
+    const { movementX, movementY, offsetLeft, offsetTop, } = event
+    state.controllable.position = {
+        left: `${movementX + offsetLeft}px`,
+        top: `${movementY + offsetTop}px`,
+    }
 }
 function handleFocus() {
     state.controllable.isFocused = true

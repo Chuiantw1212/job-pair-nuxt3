@@ -1,19 +1,15 @@
 <template>
-    <div class="controllable" ref="controllable" :style="{ top: modelValue.position.top }">
-        {{ state.isDragged }}
+    <div class="controllable" ref="controllable" :style="{ top: modelValue.position.top, left: modelValue.position.left }">
         <div class="controllable__content">
             <!-- Movable edge -->
-            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
-                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--top">
+            <div v-show="state.isFocused" @mousedown="setDraggable()" class=" controllable__edge controllable__edge--top">
             </div>
-            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
-                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--right">
+            <div v-show="state.isFocused" @mousedown="setDraggable()" class=" controllable__edge controllable__edge--right">
             </div>
-            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
-                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--bottom">
+            <div v-show="state.isFocused" @mousedown="setDraggable()"
+                class=" controllable__edge controllable__edge--bottom">
             </div>
-            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
-                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--left">
+            <div v-show="state.isFocused" @mousedown="setDraggable()" class=" controllable__edge controllable__edge--left">
             </div>
             <!-- Resize corner -->
             <div v-show="state.isFocused" class="controllable__square controllable__square--ne"></div>
@@ -29,6 +25,9 @@
                 <!-- <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"> -->
             </slot>
         </div>
+        <!-- {{ state.isDragged }} -->
+        <!-- {{ state.isFocused }} -->
+        <!-- {{ modelValue.position }} -->
     </div>
 </template>
 <script setup>
@@ -53,9 +52,11 @@ const props = defineProps({
 })
 onMounted(() => {
     toggleClickOutside(true)
+    toggleReleaseDraggable(true)
 })
 onBeforeUnmount(() => {
     toggleClickOutside(false)
+    toggleReleaseDraggable(false)
 })
 watch(() => props.modelValue, (newStatus) => {
     if (newStatus.isFocused) {
@@ -63,19 +64,44 @@ watch(() => props.modelValue, (newStatus) => {
     }
 }, { deep: true })
 // methods
+const instance = getCurrentInstance()
 function setDraggable() {
     state.isDragged = true
+    toggleMouseMove(true)
 }
 function releaseDraggable() {
     state.isDragged = false
+    toggleMouseMove(false)
 }
 function moveControllable(event) {
-    console.log(event);
-    const { clientX, clientY } = event
-    emit('mousemove', {
-        clientX,
-        clientY
-    })
+    const area = instance.refs.controllable
+    const { movementX, movementY, } = event
+    const { offsetLeft, offsetTop, } = area
+    if (state.isDragged) {
+        emit('mousemove', {
+            movementX,
+            movementY,
+            offsetLeft,
+            offsetTop,
+            left: movementX + offsetLeft,
+            top: movementY + offsetTop
+        })
+    }
+}
+// toggles
+function toggleReleaseDraggable(isOn) {
+    if (isOn) {
+        document.addEventListener("mouseup", releaseDraggable)
+    } else {
+        document.removeEventListener("mouseup", releaseDraggable)
+    }
+}
+function toggleMouseMove(isOn) {
+    if (isOn) {
+        document.addEventListener('mousemove', moveControllable)
+    } else {
+        document.removeEventListener('mousemove', moveControllable)
+    }
 }
 function toggleClickOutside(isOn) {
     if (isOn) {
@@ -84,8 +110,6 @@ function toggleClickOutside(isOn) {
         document.removeEventListener("click", handleClickoutSide)
     }
 }
-// 
-const instance = getCurrentInstance()
 function handleClickoutSide(event) {
     const area = instance.refs.controllable
     if (!area.contains(event.target)) {

@@ -1,7 +1,6 @@
 <template>
     <div class="container design">
-        <div class="design__panel">
-            <!-- <AtomBtnSimple class="category__goback">上一頁</AtomBtnSimple> -->
+        <div v-show="false" class="design__panel">
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -80,7 +79,6 @@ const state = reactive({
         background-color: white;
         z-index: 10;
         width: 560px;
-        // padding: 20px 20px 0 20px;
 
         .category__goback {
             width: 115px;
