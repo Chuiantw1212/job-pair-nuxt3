@@ -11,7 +11,8 @@
             </span>
         </div>
         <input v-show="false" :value="checkValue()" :data-required="required" :data-name="name">
-        <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }" @click="emit('click', $event)">
+        <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview, 'ckeditor--focused': state.isFocused }"
+            @click="emit('click', $event)">
             <div :id="`editor_${state.id}`" ref="editorRef">
 
             </div>
@@ -32,6 +33,7 @@ const editorRef = ref(null)
 const state = reactive({
     ckeditorInstance: null,
     id: null,
+    isFocused: false,
 })
 const props = defineProps({
     modelValue: {
@@ -48,8 +50,8 @@ const props = defineProps({
                 // 'heading',
                 // '|',
                 'fontSize',
-                // '|',
-                // 'bold',
+                '|',
+                'bold',
                 // 'italic',
                 'fontColor',
                 // '|',
@@ -184,8 +186,10 @@ async function initializeCKEditor() {
     editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
         if (isFocused) {
             emit('focus', evt)
+            state.isFocused = true
         } else {
             emit('blur', evt)
+            state.isFocused = false
         }
     })
     // set data
@@ -227,10 +231,20 @@ defineExpose({
     align-items: center;
 }
 
+.ckeditor :deep(.ck-editor__top) {
+    // display: none;
+    visibility: hidden;
+}
+
+
+.ckeditor--focused {
+    :deep(.ck-editor__top) {
+        visibility: visible;
+    }
+}
+
 .ckeditor--edit {
-    border: 1px solid #d3d3d3;
-    border-radius: 10px;
-    // overflow: hidden;
+    border: none;
 }
 
 .ckeditor :deep(.ck-editor__editable_inline) {

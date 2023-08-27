@@ -1,5 +1,5 @@
 <template>
-    <div class="controllable" ref="controllable" :style="{ top: modelValue.position.top, left: modelValue.position.left }">
+    <div class="controllable" ref="controllable" :style="getStyle()">
         <div class="controllable__content">
             <!-- Movable edge -->
             <div v-show="state.isFocused" @mousedown="setDraggable()" class=" controllable__edge controllable__edge--top">
@@ -21,9 +21,7 @@
             <div v-show="state.isFocused" class="controllable__square controllable__square--e"></div>
             <div v-show="state.isFocused" class="controllable__square controllable__square--s"></div>
             <div v-show="state.isFocused" class="controllable__square controllable__square--w"></div>
-            <slot>
-                <!-- <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"> -->
-            </slot>
+            <slot></slot>
         </div>
         <!-- {{ state.isDragged }} -->
         <!-- {{ state.isFocused }} -->
@@ -64,6 +62,17 @@ watch(() => props.modelValue, (newStatus) => {
     }
 }, { deep: true })
 // methods
+function getStyle() {
+    const { position = {}, size = {} } = props.modelValue
+    const { top, left } = position
+    const { width, height, } = size
+    return {
+        top,
+        left,
+        width,
+        height,
+    }
+}
 const instance = getCurrentInstance()
 function setDraggable() {
     state.isDragged = true
@@ -78,13 +87,15 @@ function moveControllable(event) {
     const { movementX, movementY, } = event
     const { offsetLeft, offsetTop, } = area
     if (state.isDragged) {
+        const left = Math.max(0, movementX + offsetLeft)
+        const top = Math.max(0, movementY + offsetTop)
         emit('mousemove', {
             movementX,
             movementY,
             offsetLeft,
             offsetTop,
-            left: movementX + offsetLeft,
-            top: movementY + offsetTop
+            left,
+            top
         })
     }
 }
