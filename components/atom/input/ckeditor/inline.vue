@@ -137,6 +137,25 @@ async function initializeCKEditor() {
     // 使用CDN
     const editorConfig = {
         initialData: localValue.value || '<p></p>',
+        fontSize: {
+            options: [
+                8,
+                9,
+                10,
+                11,
+                12,
+                'default',
+                14,
+                18,
+                24,
+                30,
+                36,
+                48,
+                60,
+                72,
+                96,
+            ]
+        },
         toolbar: props.toolbar,
         placeholder: props.placeholder,
         // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
@@ -212,7 +231,7 @@ defineExpose({
 .ckeditor--edit {
     border: 1px solid #d3d3d3;
     border-radius: 10px;
-    overflow: hidden;
+    // overflow: hidden;
 }
 
 .ckeditor :deep(.ck-editor__editable_inline) {
@@ -225,7 +244,8 @@ defineExpose({
 
 .ckeditor :deep(.ck-editor__editable) {
     border: none !important;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0) !important;
+    min-width: 600px;
 }
 
 .ckeditor :deep(.ck-read-only) {
@@ -234,5 +254,9 @@ defineExpose({
 
 .ckeditor :deep(.ck-sticky-panel__content) {
     border-bottom: 1px solid #ccced1;
+}
+
+.ckeditor :deep(.ck-button__label) {
+    font-size: 13px !important;
 }
 </style>

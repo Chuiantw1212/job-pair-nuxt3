@@ -1,17 +1,11 @@
 <template>
     <div class="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp">
-        
-        <!-- <rect x="50" y="20" width="150" height="150" style="fill:blue;stroke:pink;stroke-width:5;opacity:0.5" /> -->
-        <LazyAtomControllable v-model="state.isFocused">
+        <LazyAtomControllable v-model="state.controllable">
             <LazyAtomInputCkeditorInline v-model="state.content" class="editorGroup__editor" @focus="handleFocus()"
                 @blur="handleBlur()">
             </LazyAtomInputCkeditorInline>
         </LazyAtomControllable>
-        <!-- <div class="banner__controllable" :class="{ 'banner__controllable--focused': state.isFocused }">
-            <div class="controllable__editable">
-            </div>
-        </div> -->
     </div>
 </template>
 <script setup>
@@ -19,6 +13,13 @@ const runTimeConfig = useRuntimeConfig()
 const state = reactive({
     content: '',
     isFocused: false,
+    controllable: {
+        isFocused: false,
+        position: {
+            top: '10%',
+            left: '10%',
+        }
+    }
 })
 onMounted(async () => {
     // const { default: EditorJS } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/editorjs.mjs`)
@@ -31,10 +32,10 @@ onMounted(async () => {
 })
 // methods
 function handleFocus() {
-    state.isFocused = true
+    state.controllable.isFocused = true
 }
 function handleBlur() {
-    state.isFocused = false
+    state.controllable.isFocused = false
 }
 </script>
 <stylte lang="scss" scoped>

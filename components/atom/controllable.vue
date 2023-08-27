@@ -1,18 +1,25 @@
 <template>
-    <div class="controllable" @focus="test()" ref="controllable">
-        <!-- Movable edge -->
-        <div v-show="state.isFocused" class="controllable__edge controllable__edge--top"></div>
-        <div v-show="state.isFocused" class="controllable__edge controllable__edge--right"></div>
-        <div v-show="state.isFocused" class="controllable__edge controllable__edge--bottom"></div>
-        <div v-show="state.isFocused" class="controllable__edge controllable__edge--left"></div>
-        <!-- Resize corner -->
-        <div v-show="state.isFocused" class="controllable__corner controllable__corner--ne"></div>
-        <div v-show="state.isFocused" class="controllable__corner controllable__corner--nw"></div>
-        <div v-show="state.isFocused" class="controllable__corner controllable__corner--se"></div>
-        <div v-show="state.isFocused" class="controllable__corner controllable__corner--sw"></div>
-        <slot>
-            <!-- <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"> -->
-        </slot>
+    <div class="controllable" @focus="test()" ref="controllable" :style="{ top: modelValue.position.top }">
+        <div class="controllable__content">
+            <!-- Movable edge -->
+            <div v-show="state.isFocused" class="controllable__edge controllable__edge--top"></div>
+            <div v-show="state.isFocused" class="controllable__edge controllable__edge--right"></div>
+            <div v-show="state.isFocused" class="controllable__edge controllable__edge--bottom"></div>
+            <div v-show="state.isFocused" class="controllable__edge controllable__edge--left"></div>
+            <!-- Resize corner -->
+            <div v-show="state.isFocused" class="controllable__square controllable__square--ne"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--nw"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--se"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--sw"></div>
+            <!-- Resize Edge -->
+            <div v-show="state.isFocused" class="controllable__square controllable__square--n"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--e"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--s"></div>
+            <div v-show="state.isFocused" class="controllable__square controllable__square--w"></div>
+            <slot>
+                <!-- <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"> -->
+            </slot>
+        </div>
     </div>
 </template>
 <script setup>
@@ -21,8 +28,16 @@ const state = reactive({
 })
 const props = defineProps({
     modelValue: { // isFocused
-        type: Boolean,
-        default: false
+        type: Object,
+        default: function () {
+            return {
+                isFocused: false,
+                position: {
+                    top: '10%',
+                    left: '10%',
+                }
+            }
+        }
     }
 })
 onMounted(() => {
@@ -31,11 +46,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
     toggleClickOutside(false)
 })
-watch(() => props.modelValue, (newValue) => {
-    if (newValue) {
+watch(() => props.modelValue, (newStatus) => {
+    if (newStatus.isFocused) {
         state.isFocused = true
     }
-})
+}, { deep: true })
 // let localValue = computed({
 //     get() {
 //         const value = props.modelValue ?? ''
@@ -71,7 +86,11 @@ function handleClickoutSide(event) {
 </script>
 <style lang="scss" scoped>
 .controllable {
-    position: relative;
+    position: absolute;
+
+    .controllable__content {
+        position: relative;
+    }
 
     .controllable__edge {
         position: absolute;
@@ -104,7 +123,7 @@ function handleClickoutSide(event) {
         left: -6px;
     }
 
-    .controllable__corner {
+    .controllable__square {
         height: 10px;
         width: 10px;
         background-color: red;
@@ -112,28 +131,52 @@ function handleClickoutSide(event) {
         z-index: 2;
     }
 
-    .controllable__corner--ne {
+    .controllable__square--ne {
         right: -8px;
         top: -8px;
         cursor: ne-resize;
     }
 
-    .controllable__corner--nw {
+    .controllable__square--nw {
         left: -8px;
         top: -8px;
         cursor: nw-resize;
     }
 
-    .controllable__corner--se {
+    .controllable__square--se {
         right: -8px;
         bottom: -8px;
         cursor: se-resize;
     }
 
-    .controllable__corner--sw {
+    .controllable__square--sw {
         left: -8px;
         bottom: -8px;
         cursor: nw-resize;
+    }
+
+    .controllable__square--n {
+        left: calc(50% - 4px);
+        top: -8px;
+        cursor: n-resize;
+    }
+
+    .controllable__square--e {
+        right: -8px;
+        top: calc(50% - 4px);
+        cursor: e-resize;
+    }
+
+    .controllable__square--s {
+        bottom: -8px;
+        left: calc(50% - 4px);
+        cursor: s-resize;
+    }
+
+    .controllable__square--w {
+        top: calc(50% - 4px);
+        left: -8px;
+        cursor: w-resize;
     }
 
 }

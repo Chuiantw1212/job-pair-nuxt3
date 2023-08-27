@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="body__preview">
-                <MoleculeDesignBanner class="preview__item"></MoleculeDesignBanner>
+                <MoleculeDesignBanner></MoleculeDesignBanner>
                 <!-- <img class="preview__image"
                     src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png"> -->
                 <div class="preview__template">
@@ -148,10 +148,11 @@ const state = reactive({
         .body__preview {
             width: 70%;
             padding: 20px;
+            // position: relative;
 
             .preview__item {
-
-                width: 100%;
+                // width: 100%;
+                // position: absolute;
             }
 
             .preview__template {
