@@ -1,48 +1,48 @@
 <template>
-    <div class="design">
-        <div class="design__body">
-            <div class="body__category">
-                <!-- <AtomBtnSimple class="category__goback">上一頁</AtomBtnSimple> -->
-                <div class="category__color">
-                    <div class="color__titleGroup">
-                        <div class="titleGroup__title">
-                            主色調
-                        </div>
-                        <div class="titleGroup__desc">
-                            可調整按鈕以及大標題顏色
-                        </div>
+    <div class="container design">
+        <div class="design__panel">
+            <!-- <AtomBtnSimple class="category__goback">上一頁</AtomBtnSimple> -->
+            <div class="category__color">
+                <div class="color__titleGroup">
+                    <div class="titleGroup__title">
+                        主色調
                     </div>
-                    <LazyAtomInputColor v-model="state.color"></LazyAtomInputColor>
-                </div>
-                <hr class="category__line">
-                <div class="category__blocks">
-                    <div class="blocks__title">
-                        選擇布局
+                    <div class="titleGroup__desc">
+                        可調整按鈕以及大標題顏色
                     </div>
-                    <ul class="blocks__list">
-                        <li class="list__item">
-                            <img class="item__imaage"
-                                src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
-                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                        </li>
-                        <li class="list__item">
-                            <img class="item__imaage"
-                                src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
-                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                        </li>
-                        <li class="list__item">
-                            <img class="item__imaage"
-                                src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
-                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                        </li>
-                        <li class="list__item">
-                            <img class="item__imaage"
-                                src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
-                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                        </li>
-                    </ul>
                 </div>
+                <LazyAtomInputColor v-model="state.color"></LazyAtomInputColor>
             </div>
+            <hr class="category__line">
+            <div class="category__blocks">
+                <div class="blocks__title">
+                    選擇布局
+                </div>
+                <ul class="blocks__list">
+                    <li class="list__item">
+                        <img class="item__imaage"
+                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                    <li class="list__item">
+                        <img class="item__imaage"
+                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                    <li class="list__item">
+                        <img class="item__imaage"
+                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                    <li class="list__item">
+                        <img class="item__imaage"
+                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="design__body">
             <div class="body__preview">
                 <MoleculeDesignBanner></MoleculeDesignBanner>
                 <!-- <img class="preview__image"
@@ -71,82 +71,89 @@ const state = reactive({
 .design {
     background-color: white;
 
-    .design__body {
-        display: flex;
+    .design__panel {
+        position: fixed;
+        left: 0;
+        width: 200px;
+        border-right: solid 1px #d3d3d3;
+        height: 100%;
+        background-color: white;
+        z-index: 10;
+        width: 560px;
+        // padding: 20px 20px 0 20px;
 
-        .body__category {
-            width: 30%;
-            border-right: solid 1px #d3d3d3;
-            height: 100%;
-            // padding: 20px 20px 0 20px;
+        .category__goback {
+            width: 115px;
+            height: 40px;
+        }
 
-            .category__goback {
-                width: 115px;
-                height: 40px;
-            }
+        .category__color {
+            display: flex;
+            justify-content: space-between;
+            // margin-top: 30px;
+            padding: 20px 20px 20px 20px;
 
-            .category__color {
-                display: flex;
-                justify-content: space-between;
-                // margin-top: 30px;
-                padding: 20px 20px 20px 20px;
-
-                .color__titleGroup {
-                    .titleGroup__title {
-                        font-size: 20px;
-                        font-weight: bold;
-                    }
-
-                    .titleGroup__desc {
-                        font-size: 16px;
-                        font-weight: normal;
-                    }
-                }
-            }
-
-            .category__line {
-                margin: 0;
-            }
-
-            .category__blocks {
-                font-size: 20px;
-                font-weight: bold;
-                padding: 20px 0px 0px 0px;
-
-                .blocks__title {
-                    padding: 0px 20px;
+            .color__titleGroup {
+                .titleGroup__title {
+                    font-size: 20px;
+                    font-weight: bold;
                 }
 
-                .blocks__list {
-                    list-style: none;
-                    padding: 0px;
-                    margin-top: 20px;
-                    margin-bottom: 0px;
-                    max-height: calc(100vh - 225px);
-                    overflow-y: auto;
-                    padding: 0px 20px;
-
-                    .list__item {
-                        border-top: solid 1px #d3d3d3;
-                        font-size: 16px;
-                        font-weight: normal;
-                        padding: 20px 0px;
-
-                        .item__imaage {
-                            display: block;
-                            max-width: 100%;
-                        }
-
-                        .item__desc {
-                            margin-top: 10px;
-                        }
-                    }
+                .titleGroup__desc {
+                    font-size: 16px;
+                    font-weight: normal;
                 }
             }
         }
 
+        .category__line {
+            margin: 0;
+        }
+
+        .category__blocks {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 20px 0px 0px 0px;
+
+            .blocks__title {
+                padding: 0px 20px;
+            }
+
+            .blocks__list {
+                list-style: none;
+                padding: 0px;
+                margin-top: 20px;
+                margin-bottom: 0px;
+                max-height: calc(100vh - 225px);
+                overflow-y: auto;
+                padding: 0px 20px;
+
+                .list__item {
+                    border-top: solid 1px #d3d3d3;
+                    font-size: 16px;
+                    font-weight: normal;
+                    padding: 20px 0px;
+
+                    .item__imaage {
+                        display: block;
+                        max-width: 100%;
+                    }
+
+                    .item__desc {
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+    }
+
+    .design__body {
+        // display: flex;
+
+
         .body__preview {
-            width: 70%;
+            width: 1320px;
+            // min-width: 900px;
             padding: 20px;
             // position: relative;
 

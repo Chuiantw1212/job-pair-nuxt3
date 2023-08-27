@@ -1,11 +1,20 @@
 <template>
-    <div class="controllable" @focus="test()" ref="controllable" :style="{ top: modelValue.position.top }">
+    <div class="controllable" ref="controllable" :style="{ top: modelValue.position.top }">
+        {{ state.isDragged }}
         <div class="controllable__content">
             <!-- Movable edge -->
-            <div v-show="state.isFocused" class="controllable__edge controllable__edge--top"></div>
-            <div v-show="state.isFocused" class="controllable__edge controllable__edge--right"></div>
-            <div v-show="state.isFocused" class="controllable__edge controllable__edge--bottom"></div>
-            <div v-show="state.isFocused" class="controllable__edge controllable__edge--left"></div>
+            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
+                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--top">
+            </div>
+            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
+                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--right">
+            </div>
+            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
+                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--bottom">
+            </div>
+            <div v-show="state.isFocused" @mousedown="setDraggable()" @mouseup="releaseDraggable()"
+                @mousemove="moveControllable($event)" class="controllable__edge controllable__edge--left">
+            </div>
             <!-- Resize corner -->
             <div v-show="state.isFocused" class="controllable__square controllable__square--ne"></div>
             <div v-show="state.isFocused" class="controllable__square controllable__square--nw"></div>
@@ -23,8 +32,10 @@
     </div>
 </template>
 <script setup>
+const emit = defineEmits(['mousemove'])
 const state = reactive({
     isFocused: false,
+    isDragged: false,
 })
 const props = defineProps({
     modelValue: { // isFocused
@@ -51,22 +62,20 @@ watch(() => props.modelValue, (newStatus) => {
         state.isFocused = true
     }
 }, { deep: true })
-// let localValue = computed({
-//     get() {
-//         const value = props.modelValue ?? ''
-//         const ckeditorInstance = state.ckeditorInstance
-//         if (value && ckeditorInstance) {
-//             ckeditorInstance.setData(newValue)
-//         }
-//         return value  // important
-//     },
-//     set(newValue) {
-//         emit('update:modelValue', newValue)
-//     }
-// })
 // methods
-function test() {
-
+function setDraggable() {
+    state.isDragged = true
+}
+function releaseDraggable() {
+    state.isDragged = false
+}
+function moveControllable(event) {
+    console.log(event);
+    const { clientX, clientY } = event
+    emit('mousemove', {
+        clientX,
+        clientY
+    })
 }
 function toggleClickOutside(isOn) {
     if (isOn) {

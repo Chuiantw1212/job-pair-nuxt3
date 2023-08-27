@@ -562,6 +562,7 @@ async function initialize() {
 </script>
 <style lang="scss" scoped>
 .jobView {
+    padding: 0;
     padding-top: calc(46px);
 
     .jobView__tabs {

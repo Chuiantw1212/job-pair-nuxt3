@@ -42,25 +42,24 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                'undo',
-                'redo',
-                '|',
-                'heading',
-                '|',
+                // 'undo',
+                // 'redo',
+                // '|',
+                // 'heading',
+                // '|',
                 'fontSize',
-                '|',
-                'bold',
-                'italic',
+                // '|',
+                // 'bold',
+                // 'italic',
                 'fontColor',
-                '|',
-                'link',
-                // 'imageUpload',
-                'mediaEmbed',
-                '|',
-                'bulletedList',
-                'numberedList',
-                '|',
-                'removeFormat'
+                // '|',
+                // 'link',
+                // 'mediaEmbed',
+                // '|',
+                // 'bulletedList',
+                // 'numberedList',
+                // '|',
+                // 'removeFormat'
             ]
         }
     },
@@ -245,7 +244,7 @@ defineExpose({
 .ckeditor :deep(.ck-editor__editable) {
     border: none !important;
     background-color: rgba(0, 0, 0, 0) !important;
-    min-width: 600px;
+    // min-width: 360px;
 }
 
 .ckeditor :deep(.ck-read-only) {
