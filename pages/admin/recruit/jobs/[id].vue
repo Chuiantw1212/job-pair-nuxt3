@@ -292,7 +292,8 @@ async function crawlFromLink(crawlerUrl = '') {
         organizationId,
         organizationName,
         image,
-        jobBenefitFlags
+        jobBenefitFlags,
+        status: 'draft',
     }
     state.job = newJob
     setDescription(newJob.description)
