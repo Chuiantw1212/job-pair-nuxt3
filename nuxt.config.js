@@ -95,7 +95,10 @@ export default defineNuxtConfig({
         },
         // https://nitro.unjs.io/deploy/providers/firebase#using-2nd-generation-firebase-functions
         firebase: {
-            gen: 2
+            gen: 2,
+            httpsOptions: {
+                region: 'asia-east1',
+            },
             // ...
         }
     },
