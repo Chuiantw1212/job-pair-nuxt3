@@ -29,7 +29,12 @@ const state = reactive({
 // methods
 const currentInstance = getCurrentInstance()
 function handlePosition(event) {
-    const { left, top } = event
+    const { left, top, offsetWidth, offsetHeight, } = event
+    const area = currentInstance.refs.banner
+    const { clientHeight, clientWidth } = area
+    console.log(currentInstance.refs);
+    const boundLeft = Math.min(left + offsetWidth, clientWidth)
+    const boundHeight = Math.min(top + offsetHeight, clientHeight)
     state.controllable.position = {
         left: `${left}px`,
         top: `${top}px`,

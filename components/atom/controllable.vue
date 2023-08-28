@@ -29,6 +29,8 @@
     </div>
 </template>
 <script setup>
+import { log } from 'firebase-functions/logger';
+
 const emit = defineEmits(['mousemove'])
 const state = reactive({
     isFocused: false,
@@ -85,15 +87,18 @@ function releaseDraggable() {
 function moveControllable(event) {
     const area = instance.refs.controllable
     const { movementX, movementY, } = event
-    const { offsetLeft, offsetTop, } = area
+    const { offsetLeft, offsetTop, offsetWidth, offsetHeight, } = area
+    console.log(offsetWidth, offsetHeight,);
     if (state.isDragged) {
         const left = Math.max(0, movementX + offsetLeft)
         const top = Math.max(0, movementY + offsetTop)
         emit('mousemove', {
-            movementX,
-            movementY,
-            offsetLeft,
-            offsetTop,
+            // movementX,
+            // movementY,
+            // offsetLeft,
+            // offsetTop,
+            offsetWidth,
+            offsetHeight,
             left,
             top
         })
