@@ -268,6 +268,10 @@ async function crawlFromLink(crawlerUrl = '') {
     // 保留舊資料的值
     const identifier = state.job?.identifier ?? null
     const preference = state.job.preference
+    const organizationId = state.job?.organizationId ?? null
+    const organizationName = state.job?.organizationName ?? null
+    const image = state.job?.image ?? null
+    const jobBenefitFlags = state.job?.jobBenefitFlags ?? {}
     // 給定新資料預設值
     const minSalary = targetSalaryType.min ?? 0
     const newJob = {
@@ -285,6 +289,10 @@ async function crawlFromLink(crawlerUrl = '') {
         jobLocationType: 'onSite',
         identifier,
         preference,
+        organizationId,
+        organizationName,
+        image,
+        jobBenefitFlags
     }
     state.job = newJob
     setDescription(newJob.description)
