@@ -19,7 +19,9 @@
             <table class="table jobManagement__table">
                 <thead class="jobManagement__table__head">
                     <tr>
-                        <th class="jobManagement__table__sticky">職缺狀態</th>
+                        <th class="jobManagement__table__sticky">
+                            職缺狀態
+                        </th>
                         <th class="text-center">
                             <div>
                                 職缺名稱
@@ -413,7 +415,7 @@ async function addJobDraft() {
         }
 
         .jobManagement__table__sticky {
-            background-color: white;
+            background-color: mintcream;
             left: 0;
             position: sticky;
             z-index: 100;
@@ -435,7 +437,7 @@ async function addJobDraft() {
             color: #999;
             position: sticky;
             top: 0;
-            background-color: white;
+            background-color: ivory;
             z-index: 110;
         }
 
