@@ -9,11 +9,11 @@
                 <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
-                    <div class="basic__body__header">{{ job.name }}</div>
+                    <div class="basic__body__header">{{ job?.name }}</div>
                     <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
-                        {{ job.organizationName }}
+                        {{ job?.organizationName }}
                     </NuxtLink>
                     <div class="basic__body__badgeGroup">
                         <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
@@ -34,14 +34,14 @@
                             工作性質
                         </span>
                         <span class="item__body">
-                            <template v-for="(item, index) in job.employmentType">
+                            <template v-for="(item, index) in job?.employmentType">
                                 {{
                                     $filter.optionText(item,
                                         repoSelect.state.selectByQueryRes?.employmentType)
                                 }} ·
                             </template>
                             {{
-                                $filter.optionText(job.responsibilities,
+                                $filter.optionText(job?.responsibilities,
                                     repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>
                     </div>
@@ -57,7 +57,7 @@
                         </span>
                         <span class="item__body">
                             {{
-                                $filter.optionText(job.jobLocationType,
+                                $filter.optionText(job?.jobLocationType,
                                     repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </span>
@@ -73,7 +73,7 @@
                             </a>
                         </span>
                     </div>
-                    <div v-if="job.remark" class="features__item">
+                    <div v-if="job?.remark" class="features__item">
                         <span class="item__header">
                             備註
                         </span>
@@ -88,7 +88,7 @@
                             職務類型
                         </span>
                         <div class="item__body item__body--badgeGroup">
-                            <span v-for="(category, index ) in job.occupationalCategory" :key="index" class="body__badge">{{
+                            <span v-for="(category, index ) in job?.occupationalCategory" :key="index" class="body__badge">{{
                                 getCategoryText(category) }}</span>
                         </div>
                     </div>
@@ -96,15 +96,15 @@
                         <span class="item__header">
                             更新日期
                         </span>
-                        <span class="item__body">{{ $time(job.datePosted) }}</span>
+                        <span class="item__body">{{ $time(job?.datePosted) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             語言要求
                         </span>
-                        <span class="item__body">{{ $optionText(job.language,
+                        <span class="item__body">{{ $optionText(job?.language,
                             repoSelect.state.selectByQueryRes?.language)
-                        }} {{ $optionText(job.proficiency,
+                        }} {{ $optionText(job?.proficiency,
     repoSelect.state.selectByQueryRes?.proficiency)
 }}</span>
                     </div>

@@ -9,7 +9,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center" ref="modalBody">
-
+                    <!-- {{localValue}} -->
+                    <LazyOrganismJobViewBody v-model="localValue" class="container"></LazyOrganismJobViewBody>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <LazyAtomBtnSimple>
@@ -19,14 +20,14 @@
             </div>
         </div>
     </div>
-    <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺
+    <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>預覽職缺
     </AtomBtnSimple>
     <!-- <a class="modal__link">
         程度說明
     </a> -->
 </template>
 <script setup>
-const emit = defineEmits(['applied'])
+const emit = defineEmits(['applied', 'update:modelValue'])
 const { $bootstrap, $uuid4, $emitter, $sweet, $requestSelector } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -53,6 +54,14 @@ const props = defineProps({
     disabled: {
         type: Boolean,
         default: false
+    }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
     }
 })
 // hooks
@@ -95,7 +104,6 @@ function setApplication() {
 }
 function handlePreview() {
     state.bsModal.show()
-    // const {} = 
 }
 function handleApply() {
     const { user } = repoAuth.state
