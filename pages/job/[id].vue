@@ -28,34 +28,13 @@
 </template>
 <script setup>
 const runTimeConfig = useRuntimeConfig()
-const { $filter, } = useNuxtApp()
+const { $emitter, $sweet, $filter, } = useNuxtApp()
 const route = useRoute()
 const repoAuth = useRepoAuth()
 const jobScroller = useJobScroller()
 const device = useDevice()
 const state = reactive({
     job: null,
-    company: null,
-    applyFlow: null,
-    tabItems: [
-        {
-            text: "職缺內容",
-            value: "#jobView__basic",
-        },
-        {
-            text: "職責介紹",
-            value: "#jobView__description",
-        },
-        {
-            text: "條件要求",
-            value: "#jobView__requirement",
-        },
-        {
-            text: "類似職缺",
-            value: "#companyWelfare",
-        },
-    ],
-    mapHeight: '',
     adRenderKey: Math.random(),
     // pagination
     pagination: {
@@ -180,6 +159,17 @@ useJsonld(() => {
     }
     return jsonld
 })
+onMounted(() => {
+    if (process.client) {
+        window.addEventListener('scroll', detectScroll)
+    }
+})
+onBeforeUnmount(() => {
+    if (process.client) {
+        window.removeEventListener('scroll', detectScroll)
+    }
+})
+const jobItems = ref([])
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
         jobScroller.observeLastJob(jobItems)
@@ -194,7 +184,26 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
         $emitter.emit("showUserModal")
     }
 }, { immediate: true })
+watch(() => state.job, (newValue) => {
+    if (newValue) {
+        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
+    }
+})
 // methods
+function detectScroll() {
+    const { user } = repoAuth.state
+    if (user && user.id) {
+        return
+    }
+    debounce(() => {
+        const offsetHeight = document.body.offsetHeight
+        const { innerHeight, pageYOffset } = window
+        if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
+            jobScroller.state.isModalShown = true
+            $emitter.emit("showUserModal")
+        }
+    })()
+}
 function getAdVisibility() {
     if (process.client) {
         return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user

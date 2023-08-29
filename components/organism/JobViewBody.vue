@@ -218,13 +218,11 @@ const job = computed({
 onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
-        window.addEventListener('scroll', detectScroll)
     }
 })
 onBeforeUnmount(() => {
     if (process.client) {
         window.removeEventListener("resize", setMapHeight)
-        window.removeEventListener('scroll', detectScroll)
     }
 })
 watch(() => repoAuth.state.user, () => {
@@ -236,50 +234,7 @@ watch(() => repoAuth.state.user, () => {
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
-watch(() => job, (newValue) => {
-    if (newValue) {
-        jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
-    }
-},)
-// const jobItems = ref([])
-// watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
-//     if (newValue.length !== oldValue.length) {
-//         jobScroller.observeLastJob(jobItems)
-//     }
-//     const { user } = repoAuth.state
-//     if (user && user.id) {
-//         return
-//     }
-//     const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
-//     if (!user && showRegisterModal) {
-//         jobScroller.state.isModalShown = true
-//         $emitter.emit("showUserModal")
-//     }
-// })
 // methos
-function detectScroll() {
-    const { user } = repoAuth.state
-    if (user && user.id) {
-        return
-    }
-    debounce(() => {
-        const offsetHeight = document.body.offsetHeight
-        const { innerHeight, pageYOffset } = window
-        if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
-            jobScroller.state.isModalShown = true
-            $emitter.emit("showUserModal")
-        }
-    })()
-}
-function debounce(func, delay = 800) {
-    return (...args) => {
-        clearTimeout(state.debounceTimer)
-        state.debounceTimer = setTimeout(() => {
-            state.debounceTimer = undefined
-            func.apply(this, args)
-        }, delay)
-    }
-}
 async function showIncompleteAlert() {
     const res = await $sweet.info('前往完成個人檔案', {
         title: '未上傳履歷',
@@ -415,7 +370,7 @@ async function initialize() {
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(jobWithModel.organizationId)
     const company = companyResponse.data
-    job.value = jobWithModel
+    job.value = jobWithModel // IMPORTANT：Will Trigger Job List
     state.company = company
 }
 </script>
