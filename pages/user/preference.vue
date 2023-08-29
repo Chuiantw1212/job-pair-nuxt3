@@ -41,7 +41,6 @@
 </template>
 <script setup>
 const { $sweet, $date, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()

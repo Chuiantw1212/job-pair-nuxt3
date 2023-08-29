@@ -24,7 +24,7 @@
             </LazyAtomInputCkeditor>
         </div>
         <div class="profile__footer">
-            <LazyAtomBtnSimple @click="handleClickNext()">下一步
+            <LazyAtomBtnSimple @click="handleClickNext()">完成註冊
             </LazyAtomBtnSimple>
         </div>
     </div>
@@ -54,6 +54,9 @@ const state = reactive({
 useHead({
     title: '個人資料 - 註冊流程'
 })
+onMounted(() => {
+    scrollTo(0, 0)
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -74,6 +77,28 @@ async function setDescription(data) {
         descriptionRef.setData(data)
     }
 }
+async function handleClickNext() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    // 註冊新用戶
+    const submitted = await handleSubmit()
+    if (!submitted) {
+        return
+    }
+    // 爬出用戶並更新圖片
+    // 註冊活動事件
+    if (repoEvent.state.contributor && repoEvent.state.eventId) {
+        await repoEvent.postEventRegistration({
+            eventId: repoEvent.state.eventId,
+            contributor: repoEvent.state.contributor
+        })
+    }
+    router.push({
+        name: 'questions-result'
+    })
+}
 async function handleSubmit() {
     const user = Object.assign({}, repoAuth.state.user, props.modelValue)
     $sweet.loader(true)
@@ -93,25 +118,6 @@ async function handleSubmit() {
     // 刪除暫存資料
     localStorage.removeItem("user")
     return userData
-}
-async function handleClickNext() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const submitted = await handleSubmit()
-    if (!submitted) {
-        return
-    }
-    if (repoEvent.state.contributor && repoEvent.state.eventId) {
-        await repoEvent.postEventRegistration({
-            eventId: repoEvent.state.eventId,
-            contributor: repoEvent.state.contributor
-        })
-    }
-    router.push({
-        name: 'questions-result'
-    })
 }
 </script>
 <style lang="scss" scoped>
