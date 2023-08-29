@@ -30,15 +30,15 @@
             </div>
         </div>
         <div class="admin__definition">
-            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp" alt="background"
-                preload loading="lazy" />
+            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp"
+                alt="background" preload loading="lazy" />
             <div class="definition__textGroup">
                 <div class="definition__title">
-                    什麼是適配度？
+                    如何配對適合的工作？
                 </div>
                 <hr class="definition__hr">
                 <div class="definition__desc">
-                    求職偏好歸納了求職者在判斷一份工作是否適合自己的關鍵因素，搭配企業端用人偏好的資訊，能夠協助您精準配對適合的公司與職缺。
+                    勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@ export default {
 }
 </script>
 <script setup>
-const { $emitter, $requestSelector, } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const device = useDevice()

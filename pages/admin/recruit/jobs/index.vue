@@ -314,8 +314,9 @@ async function addJobDraft() {
     // 插入並打開第一個品項
     $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
-    state.jobList.unshift(res.data)
-    const { identifier = '' } = res.data
+    const postedJob = res.data
+    state.jobList.unshift(postedJob)
+    const { identifier = '' } = postedJob
     router.push(`jobs/${identifier}`)
     $sweet.loader(false)
 }

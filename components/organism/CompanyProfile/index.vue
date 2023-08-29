@@ -2,22 +2,12 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <div v-if="state.isNewCompay" class="profile__quick">
-                <h1 class="quick__header">快速建檔</h1>
-                <div class="quick__desc">
-                    在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
-                    <br>
-                    範例：www.104.com.tw/companyInfo/*,
-                    www.yourator.co/companies/*
-                </div>
-                <div class="quick__inputGroup">
-                    <label class="inputGroup__label">
-                        <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
-                    </label>
-                    <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
-                </div>
-            </div>
+            <LazyAtomQuickImport v-if="state.isNewCompay" @click="crawlCompanyFromPlatform($event)">
+                在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
+                <br>
+                範例：www.104.com.tw/companyInfo/*,
+                www.yourator.co/companies/*
+            </LazyAtomQuickImport>
             <div class="profile__body">
                 <div class="body__basicInfo">
                     <h2 class="basicInfo__header">基本資料</h2>
@@ -144,17 +134,15 @@ export default {
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')
-const { $validate, $sweet, $requestSelector, $filter } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
-const repoChat = useRepoChat()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
 const state = reactive({
-    crawlerUrl: "",
     isNewCompay: false,
     companyInfo: {
         image: null,
@@ -186,6 +174,17 @@ const state = reactive({
 watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
+onMounted(async () => {
+    // 防求職者誤入
+    const { user = {} } = repoAuth.state
+    const isEmployee = user && user.type === 'employee'
+    if (isEmployee) {
+        await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
+        router.push({
+            name: 'index'
+        })
+    }
+})
 // methods
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
@@ -238,7 +237,7 @@ async function initializeCompanyInfo() {
         return
     }
     const companyRes = await repoAdmin.getAdminCompany()
-    $sweet.loader(false)
+    // $sweet.loader(false)
     if (companyRes.status !== 200) {
         return
     }
@@ -266,10 +265,10 @@ async function initializeCompanyInfo() {
     }
     setWelfareFlags()
 }
-async function crawlCompanyFromPlatform() {
+async function crawlCompanyFromPlatform(crawlerUrl = '') {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
     const targetPlatform = whiteList.find(url => {
-        return state.crawlerUrl.includes(url)
+        return crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
         $sweet.alert('網址有誤')
@@ -279,7 +278,7 @@ async function crawlCompanyFromPlatform() {
     state.companyInfo = getDefaultCompany(state.companyInfo.id)
     $sweet.loader(true)
     const response = await repoCompany.getCompanyByCrawler({
-        url: state.crawlerUrl,
+        url: crawlerUrl,
     })
     if (response.status !== 200) {
         return
@@ -579,53 +578,6 @@ async function saveCompanyInfo(config) {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
     border-radius: 10px;
-
-    .profile__quick {
-        background-color: #fee997;
-        padding: 24px 32px;
-        border-radius: 5px;
-        margin-bottom: 45px;
-
-        .quick__header {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .quick__desc {
-            font-size: 12px;
-            margin-bottom: 16px;
-        }
-
-        .quick__inputGroup {
-            display: flex;
-            gap: 8px;
-
-            .inputGroup__label {
-                padding: 12px 16px;
-                width: 100%;
-                background-color: white;
-                border-radius: 10px;
-
-                .inputGroup__url {
-                    width: 100%;
-                    border: none;
-
-                    &:focus {
-                        outline: none;
-                    }
-                }
-            }
-
-            .inputGroup__button {
-                padding: 12px 16px;
-                background-color: #29b0ab;
-                color: white;
-                border-radius: 10px;
-                white-space: nowrap;
-                border: none;
-            }
-        }
-    }
 
     .profile__body {
         display: flex;

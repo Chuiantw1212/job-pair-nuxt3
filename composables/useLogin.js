@@ -65,9 +65,6 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
-        console.log({
-            basicInfo
-        });
         if (!basicInfo) {
             await $sweet.alert('查無使用者資料')
             return
@@ -199,7 +196,7 @@ export default function setup() {
                 }
                 const questionKeys = questionsRes.map(item => item.key)
                 const unAnsweredIndex = questionKeys.findIndex((key) => {
-                    const isAnswered = tempUser.preference.hasOwn(key)
+                    const isAnswered = tempUser.preference.hasOwnProperty(key)
                     return !isAnswered
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
@@ -210,7 +207,7 @@ export default function setup() {
                 }
                 else if (!categorySelected) {
                     router.push({
-                        name: 'questions-result'
+                        name: 'questions-profile'
                     })
                 }
             }

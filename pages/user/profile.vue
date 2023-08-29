@@ -36,15 +36,15 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <LazyAtomInputUploader v-model="state.profileBasic.resumes" class="mt-3" name="履歷" :size="5242880"
-                :accept="'.pdf'" :max="3" :required="device.state.isLarge" :getFileBuffer="getUserResume">
-            </LazyAtomInputUploader>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
-                :required="state.profileBasic.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" :hasBtn="true"
+                :required="state.profileBroadcast.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。"
                 ref="description">
-                <LazyOrganismChatCvModal v-model="state.profileBasic.description" name="個人簡歷"
-                    :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal>
+                <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()" v-model="state.profileBasic.description"
+                    name="個人簡歷" @update:modelValue="setDescription($event)">
+                </LazyOrganismChatOptimizeIntroModal>
+                <LazyOrganismChatIntroModal v-else :occupationalCategory="state.profileBasic.occupationalCategory"
+                    @update:modelValue="setDescription($event)">
+                </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
@@ -53,7 +53,10 @@
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
             class="profile__information profile__doc mt-3">
-            <div class="profile__languageGroup">
+            <LazyAtomInputUploader v-model="state.profileBasic.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+                :getFileBuffer="getUserResume">
+            </LazyAtomInputUploader>
+            <div class="profile__languageGroup  mt-3">
                 <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                     v-model="state.profileAdvanced.language" name="語言能力" placeholder="選擇語言"
                     :items="repoSelect.state.selectByQueryRes.language">
@@ -74,15 +77,18 @@
                 </LazyAtomBtnSimple>
             </div>
         </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送" class="mt-3">
-            <LazyAtomInputCheckSingle class="information__isActive" v-model="state.profileBroadcast.isActive" name="目前求職狀態">
-                <span class="isActive__desc">若有適合的職缺，我願意讓企業主主動寄信給我</span>
-            </LazyAtomInputCheckSingle>
+        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
+            class="profile__broadcast mt-3">
+            <div class="broadcast__subGroup">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive" name="訂閱適合工作">
+                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
+                </LazyAtomInputCheckSingle>
+                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0" v-model="state.profileBroadcast.isSubscribed"
+                    name="EDM訂閱">
+                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
+                </LazyAtomInputCheckSingle>
+            </div>
             <hr />
-            <LazyAtomInputCheckSingle class="information__isActive mt-3" v-model="state.profileBroadcast.isSubscribed"
-                name="EDM訂閱">
-                <span class="isActive__desc">我願意收到EDM</span>
-            </LazyAtomInputCheckSingle>
             <LazyAtomInputCalendar name="生日" v-model="state.profileBroadcast.birthDate" class="mt-3"
                 :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate">
             </LazyAtomInputCalendar>
@@ -113,7 +119,7 @@
 
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
-            <div class="profile__management mt-3">
+            <div class="profile__management">
                 <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
             </div>
             <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
@@ -172,7 +178,6 @@ function initialize() {
         email,
         telephone,
         occupationalCategory,
-        resumes,
         description,
     }
     state.profileBasic = profileBasic
@@ -184,6 +189,7 @@ function initialize() {
         certificates = [],
     } = profile
     const profileAdvanced = {
+        resumes,
         language,
         proficiency,
         certificates,
@@ -208,6 +214,10 @@ function initialize() {
         educationCategory
     }
     state.profileBroadcast = profileBroadcast
+}
+function checkHasDescription() {
+    const { description = '' } = state.profileBasic
+    return description && description !== '<p></p>'
 }
 async function getUserCertificate(item = {}) {
     const { name = '', url = '', } = item
@@ -235,10 +245,6 @@ async function getUserResume(item = {}) {
     }
     const buffer = res.data
     return buffer
-}
-async function handleChatRequest(value) {
-    const res = await repoChat.postChatProfile(value)
-    return res
 }
 function setDescription(value) {
     instance.refs.description.setData(value)
@@ -270,11 +276,6 @@ async function handleSubmitBasic() {
     if (!result.isValid) {
         return
     }
-    // 更新履歷pdf
-    $sweet.loader(true)
-    const validResumes = state.profileBasic.resumes.filter((item) => item.url)
-    const reseumeResponse = await repoUser.putUserResumes(validResumes)
-    state.profileBasic.resumes = reseumeResponse.data
     // 更新個人資料
     await repoUser.patchUserProfile(state.profileBasic)
     const patchedUser = Object.assign({}, repoAuth.state.user, state.profileBasic)
@@ -287,6 +288,11 @@ async function handleSubmitAdvanced() {
     if (!result.isValid) {
         return
     }
+    // 更新履歷pdf
+    $sweet.loader(true)
+    const validResumes = state.profileAdvanced.resumes.filter((item) => item.url)
+    const reseumeResponse = await repoUser.putUserResumes(validResumes)
+    state.profileAdvanced.resumes = reseumeResponse.data
     // 更新Blobs
     const validPorfolio = state.profileAdvanced.portfolio.filter((item) => {
         const { name = "", url = "" } = item
@@ -326,6 +332,22 @@ async function handleSubmitBroadcast() {
         }
     }
 
+    .profile__broadcast {
+        .broadcast__subGroup {
+            display: flex;
+            flex-direction: column;
+
+            .subGroup__item {
+                flex-grow: 0.5;
+
+                .isActive__desc {
+                    line-height: 1;
+                    white-space: pre-wrap;
+                }
+            }
+        }
+    }
+
     .profile__hint {
         background-color: #d8e4eb;
         padding: 40px 24px;
@@ -345,20 +367,7 @@ async function handleSubmitBroadcast() {
         }
     }
 
-    .profile__information {
-
-        .information__isActive {
-            .isActive__desc {
-                line-height: 1;
-                white-space: pre-wrap;
-            }
-        }
-
-
-    }
-
     .profile__management {
-        margin-top: 20px;
         display: flex;
         font-size: 18px;
         font-weight: bold;
@@ -371,10 +380,6 @@ async function handleSubmitBroadcast() {
     .profile__languageGroup {
         display: flex;
         flex-direction: column;
-
-        .languageGroup__proficiency {
-            // margin-top: 8px;
-        }
     }
 
 
@@ -403,6 +408,12 @@ async function handleSubmitBroadcast() {
 
             .basic__contact {
                 width: 100%;
+            }
+        }
+
+        .profile__broadcast {
+            .broadcast__subGroup {
+                flex-direction: row;
             }
         }
 

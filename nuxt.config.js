@@ -136,7 +136,7 @@ export default defineNuxtConfig({
     linkChecker: {
         failOn404: true,
     },
-    // https://image.nuxtjs.org/configuration
+    // 目前沒有作用 https://image.nuxtjs.org/configuration
     image: {
         // Options
         format: ['webp'],

@@ -4,6 +4,8 @@
     </div>
 </template>
 <script setup>
+const { $validate, $sweet, } = useNuxtApp()
+const router = useRouter()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 watch(() => repoAuth.state.user, async (newValue) => {
@@ -11,19 +13,14 @@ watch(() => repoAuth.state.user, async (newValue) => {
         return
     }
     // 這個畫面要判斷是否是已經註冊的admin
-    const isRegisteredUser = newValue && newValue.id
-    if (isRegisteredUser) {
-        return
-    }
-    if (!newValue) {
-        // user not firbase.currentUser yet
-        return
-    }
-    const postRes = await repoAdmin.postAdmin(newValue)
-    if (postRes.data.id) {
-        const addedUser = postRes.data
-        addedUser.type = 'admin'
-        repoAuth.setUser(addedUser)
+    const isRegistered = newValue && newValue.id
+    if (!isRegistered) {
+        const postRes = await repoAdmin.postAdmin(newValue)
+        if (postRes.data.id) {
+            const addedUser = postRes.data
+            addedUser.type = 'admin'
+            repoAuth.setUser(addedUser)
+        }
     }
 }, { immediate: true })
 </script>
