@@ -156,14 +156,13 @@
 <script setup>
 import placeholderImage from '~/assets/company/company.webp'
 const emit = defineEmits(['update:modelValue'])
-const { $emitter, $sweet, $filter, } = useNuxtApp()
+const { $sweet, $filter, } = useNuxtApp()
 const router = useRouter()
 const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoCompany = useRepoCompany()
-const jobScroller = useJobScroller()
 const device = useDevice()
 const state = reactive({
     job: null,

@@ -197,12 +197,21 @@ function detectScroll() {
     }
     debounce(() => {
         const offsetHeight = document.body.offsetHeight
-        const { innerHeight, pageYOffset } = window
-        if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
+        const { innerHeight, scrollY } = window
+        if (innerHeight + scrollY >= offsetHeight && !jobScroller.state.isModalShown) {
             jobScroller.state.isModalShown = true
             $emitter.emit("showUserModal")
         }
     })()
+}
+function debounce(func, delay = 800) {
+    return (...args) => {
+        clearTimeout(state.debounceTimer)
+        state.debounceTimer = setTimeout(() => {
+            state.debounceTimer = undefined
+            func.apply(this, args)
+        }, delay)
+    }
 }
 function getAdVisibility() {
     if (process.client) {
