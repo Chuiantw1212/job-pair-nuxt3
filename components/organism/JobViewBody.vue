@@ -1,19 +1,19 @@
 <template>
-    <div>
-        <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs>
-        <section id="jobView__basic" class="jobView__section mt-3">
-            <div class="jobView__card jobView__basic">
+    <div class="jobView__body">
+        <LazyAtomTabs class="d-lg-none body__tabs" :items="state.tabItems"></LazyAtomTabs>
+        <section id="body__basic" class="body__section mt-3">
+            <div class="body__card body__basic">
                 <div v-if="state.company?.logo" class="d-none d-lg-block basic__logo"
                     :style="{ backgroundImage: `url(${state.company?.logo})` }">
                 </div>
                 <div v-else class="d-none d-lg-block basic__logo" :style="{ backgroundImage: `url(${placeholderImage})` }">
                 </div>
                 <div class="basic__body">
-                    <div class="basic__body__header">{{ state.job?.name }}</div>
+                    <div class="basic__body__header">{{ job.name }}</div>
                     <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
-                        {{ state.job?.organizationName }}
+                        {{ job.organizationName }}
                     </NuxtLink>
                     <div class="basic__body__badgeGroup">
                         <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
@@ -21,27 +21,27 @@
                         </div>
                     </div>
                 </div>
-                <LazyOrganismJobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
+                <LazyOrganismJobItemPanel v-model="job" class="basic__footer" :showShareButton="true"
                     :jobDetailsException="true">
                 </LazyOrganismJobItemPanel>
             </div>
         </section>
-        <div class="row jobView__body">
+        <div class="row body__body">
             <div class="mobileGrid__right" :class="{ 'col-4': device.state.isLarge }">
-                <div class="jobView__card jobView__features mt-3">
+                <div class="body__card body__features mt-3">
                     <div class="features__item">
                         <span class="item__header">
                             工作性質
                         </span>
                         <span class="item__body">
-                            <template v-for="(item, index) in state.job?.employmentType">
+                            <template v-for="(item, index) in job.employmentType">
                                 {{
                                     $filter.optionText(item,
                                         repoSelect.state.selectByQueryRes?.employmentType)
                                 }} ·
                             </template>
                             {{
-                                $filter.optionText(state.job?.responsibilities,
+                                $filter.optionText(job.responsibilities,
                                     repoSelect.state.selectByQueryRes?.responsibilities)
                             }}</span>
                     </div>
@@ -49,7 +49,7 @@
                         <span class="item__header">
                             薪資
                         </span>
-                        <span class="item__body">{{ $filter.salary(state.job) }}</span>
+                        <span class="item__body">{{ $filter.salary(job) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
@@ -57,7 +57,7 @@
                         </span>
                         <span class="item__body">
                             {{
-                                $filter.optionText(state.job?.jobLocationType,
+                                $filter.optionText(job.jobLocationType,
                                     repoSelect.state.selectByQueryRes?.jobLocationType)
                             }}
                         </span>
@@ -73,13 +73,13 @@
                             </a>
                         </span>
                     </div>
-                    <div v-if="state.job?.remark" class="features__item">
+                    <div v-if="job.remark" class="features__item">
                         <span class="item__header">
                             備註
                         </span>
                         <span class="item__body">
                             {{
-                                state.job?.remark
+                                job.remark
                             }}
                         </span>
                     </div>
@@ -88,23 +88,23 @@
                             職務類型
                         </span>
                         <div class="item__body item__body--badgeGroup">
-                            <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
-                                class="body__badge">{{ getCategoryText(category) }}</span>
+                            <span v-for="(category, index ) in job.occupationalCategory" :key="index" class="body__badge">{{
+                                getCategoryText(category) }}</span>
                         </div>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             更新日期
                         </span>
-                        <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
+                        <span class="item__body">{{ $time(job.datePosted) }}</span>
                     </div>
                     <div class="features__item">
                         <span class="item__header">
                             語言要求
                         </span>
-                        <span class="item__body">{{ $optionText(state.job?.language,
+                        <span class="item__body">{{ $optionText(job.language,
                             repoSelect.state.selectByQueryRes?.language)
-                        }} {{ $optionText(state.job?.proficiency,
+                        }} {{ $optionText(job.proficiency,
     repoSelect.state.selectByQueryRes?.proficiency)
 }}</span>
                     </div>
@@ -113,39 +113,38 @@
                             :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
                         <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
-                        <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
+                        <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="job"
                             @applied="state.applyFlow = $event">
                             立即應徵
                         </LazyOrganismJobModal>
                         <LazyAtomBtnSimple v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                     </div>
                 </div>
-                <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
+                <div v-if="getJobAddress()" class="d-none d-lg-block body__map mt-3" :ref="'map'">
                     <iframe title="google map" class="map__iframe" :style="{ 'height': state.mapHeight }" loading="lazy"
-                        allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(state.job)"
+                        allowfullscreen referrerpolicy="no-referrer-when-downgrade" :src="getGoogleMapSrc(job)"
                         @load="setMapHeight()">
                     </iframe>
                 </div>
             </div>
             <div class="mobileGrid__left" :class="{ 'col-8': device.state.isLarge }">
-                <section id="jobView__description" class="jobView__section jobView__description mt-3">
-                    <div class="jobView__card">
+                <section id="body__description" class="body__section body__description mt-3">
+                    <div class="body__card">
                         <div class="card__header">職責介紹</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.description" :toolbar="[]" disabled
+                            <LazyAtomInputCkeditor v-if="job" v-model="job.description" :toolbar="[]" disabled
                                 ref="descriptionRef">
                             </LazyAtomInputCkeditor>
                         </div>
                     </div>
                 </section>
-                <section id="jobView__requirement" class="jobView__section jobView__requirement mt-3">
-                    <div class="jobView__card">
+                <section id="body__requirement" class="body__section body__requirement mt-3">
+                    <div class="body__card">
                         <div class="card__header">條件要求</div>
                         <div class="card__body">
                             <!-- 呈現影片不可拿掉 -->
-                            <LazyAtomInputCkeditor v-if="state.job" v-model="state.job.skills" :toolbar="[]" disabled
-                                ref="skillsRef">
+                            <LazyAtomInputCkeditor v-if="job" v-model="job.skills" :toolbar="[]" disabled ref="skillsRef">
                             </LazyAtomInputCkeditor>
                         </div>
                     </div>
@@ -155,6 +154,17 @@
     </div>
 </template>
 <script setup>
+import placeholderImage from '~/assets/company/company.webp'
+const emit = defineEmits(['update:modelValue'])
+const { $emitter, $sweet, $filter, } = useNuxtApp()
+const router = useRouter()
+const repoJob = useRepoJob()
+const repoJobApplication = useRepoJobApplication()
+const repoAuth = useRepoAuth()
+const repoSelect = useRepoSelect()
+const repoCompany = useRepoCompany()
+const jobScroller = useJobScroller()
+const device = useDevice()
 const state = reactive({
     job: null,
     company: null,
@@ -162,15 +172,15 @@ const state = reactive({
     tabItems: [
         {
             text: "職缺內容",
-            value: "#jobView__basic",
+            value: "#body__basic",
         },
         {
             text: "職責介紹",
-            value: "#jobView__description",
+            value: "#body__description",
         },
         {
             text: "條件要求",
-            value: "#jobView__requirement",
+            value: "#body__requirement",
         },
         {
             text: "類似職缺",
@@ -185,24 +195,8 @@ const state = reactive({
         pageLimit: 5,
         pageOffset: 0,
     },
-    jobList: [],
     observer: null,
     debounceTimer: null,
-})
-const browserConfig = computed({
-    get() {
-        if (process.client) {
-            const configString = localStorage.getItem('jobPair')
-            const config = JSON.parse(configString) || { ads: {} }
-            return config
-        }
-    },
-    set(newValue) {
-        if (process.client) {
-            const configString = JSON.stringify(newValue)
-            localStorage.setItem('jobPair', configString)
-        }
-    }
 })
 const props = defineProps({
     modelValue: {
@@ -210,6 +204,14 @@ const props = defineProps({
         default: function () {
             return {}
         }
+    }
+})
+const job = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
     }
 })
 // methods
@@ -226,39 +228,35 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => repoAuth.state.user, () => {
-    if (state.job && !state.job.similarity) {
+    const job = props.modelValue
+    if (job && !job.similarity) {
         initialize()
     }
 }, { immediate: true })
 watch(() => repoJobApplication.state.userJobs, () => {
     setApplyFlow()
 }, { immediate: true, deep: true, })
-watch(() => state.job, (newValue) => {
+watch(() => job, (newValue) => {
     if (newValue) {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
-const jobItems = ref([])
-watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length !== oldValue.length) {
-        jobScroller.observeLastJob(jobItems)
-    }
-    const { user } = repoAuth.state
-    if (user && user.id) {
-        return
-    }
-    const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
-    if (!user && showRegisterModal) {
-        jobScroller.state.isModalShown = true
-        $emitter.emit("showUserModal")
-    }
-})
+// const jobItems = ref([])
+// watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+//     if (newValue.length !== oldValue.length) {
+//         jobScroller.observeLastJob(jobItems)
+//     }
+//     const { user } = repoAuth.state
+//     if (user && user.id) {
+//         return
+//     }
+//     const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
+//     if (!user && showRegisterModal) {
+//         jobScroller.state.isModalShown = true
+//         $emitter.emit("showUserModal")
+//     }
+// })
 // methos
-function getAdVisibility() {
-    if (process.client) {
-        return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
-    }
-}
 function detectScroll() {
     const { user } = repoAuth.state
     if (user && user.id) {
@@ -316,11 +314,11 @@ function checkInfoIncomplete() {
 }
 function checkJobCategory() {
     const { user } = repoAuth.state
-    if (!user || !state.job || !user.occupationalCategory) {
+    if (!user || !job || !user.occupationalCategory) {
         return
     }
     const { occupationalCategory = [] } = user
-    const jobCategory = state.job.occupationalCategory
+    const jobCategory = job.occupationalCategory
     const isMismatched = occupationalCategory.every(category => {
         return !jobCategory.includes(category)
     })
@@ -331,24 +329,12 @@ function setApplyFlow() {
     if (!jobKeys.length) {
         return
     }
-    const matchedJob = repoJobApplication.state.userJobs[jobId.value]
+
+    const jobId = job.identifier
+    const matchedJob = repoJobApplication.state.userJobs[jobId]
     if (matchedJob) {
         state.applyFlow = matchedJob.applyFlow
     }
-}
-function hideAd() {
-    if (!process.client) {
-        return
-    }
-    if (browserConfig.value.ads) {
-        browserConfig.value.ads.jobDetails = false
-    } else {
-        browserConfig.ads = {
-            jobDetails: false
-        }
-    }
-    browserConfig.value = Object.assign({}, browserConfig.value)
-    state.adRenderKey = Math.random()
 }
 function getCategoryText(category = "") {
     if (!category || !repoSelect.state.selectByQueryRes) {
@@ -367,10 +353,10 @@ function setMapHeight() {
     state.mapHeight = `${width}px`
 }
 function getGoogleMapSrc() {
-    if (!state.job || !state.company) {
+    if (!job.value || !state.company) {
         return
     }
-    const streetAddress = state.job.streetAddress ?? state.company.streetAddress
+    const streetAddress = job.value.streetAddress ?? state.company.streetAddress
     if (!streetAddress) {
         return
     }
@@ -392,12 +378,12 @@ function getGoogleMapSrc() {
 }
 function getJobAddress() {
     const { locationRes } = repoSelect.state
-    if (!state.job || !state.company || !locationRes) {
+    if (!job.value || !state.company || !locationRes) {
         return false
     }
-    const addressRegion = state.job.addressRegion ?? state.company.addressRegion
-    const addressLocality = state.job.addressLocality ?? state.company.addressLocality
-    const streetAddress = state.job.streetAddress ?? state.company.streetAddress
+    const addressRegion = job.value.addressRegion ?? state.company.addressRegion
+    const addressLocality = job.value.addressLocality ?? state.company.addressLocality
+    const streetAddress = job.value.streetAddress ?? state.company.streetAddress
     if (!addressRegion || !addressLocality || !streetAddress) {
         return false
     }
@@ -410,12 +396,9 @@ function checkVisibility() {
     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
 }
 async function initialize() {
-    if (!jobId.value) {
-        state.job = {}
-        return
-    }
+    const jobId = job.value.identifier
     const config = {
-        jobId: jobId.value,
+        jobId,
     }
     const { user = { id: '', type: '' } } = repoAuth.state
     if (user && user.id && user.type === 'employee') {
@@ -428,11 +411,255 @@ async function initialize() {
         })
         return
     }
-    const job = jobResponse.data
+    const jobWithModel = jobResponse.data
     // 再取得公司資料
-    const companyResponse = await repoCompany.getCompanyById(job.organizationId)
+    const companyResponse = await repoCompany.getCompanyById(jobWithModel.organizationId)
     const company = companyResponse.data
-    state.job = job
+    job.value = jobWithModel
     state.company = company
 }
 </script>
+<style lang="scss" scoped>
+.jobView__body {
+
+    .body__tabs {
+        position: fixed;
+        top: 61px;
+        width: 100%;
+        z-index: 1030;
+    }
+
+    .body__section {
+        scroll-margin-top: calc(58px + 46px);
+    }
+
+    .body__card {
+        padding: 20px;
+        background-color: #fff;
+
+        .card__header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+
+    .body__basic {
+        .basic__body__header {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 1.2;
+            min-height: 28px;
+        }
+
+        .basic__body__subHeader {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #5ea88e;
+            min-height: 40px;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            .subHeader__logo {
+                width: 40px;
+                height: 40px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                margin-right: 8px;
+                border-radius: 100px;
+            }
+        }
+
+        .basic__body__badgeGroup {
+            display: flex;
+            gap: 18px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+
+            .badgeGroup__badge {
+                padding: 8px;
+                border-radius: 5px;
+                border: solid 1px #d3d3d3;
+
+            }
+        }
+    }
+
+    .body__features {
+        .features__item {
+            display: flex;
+            align-items: center;
+
+            .item__header {
+                font-size: 16px;
+                font-weight: bold;
+                min-width: 4em;
+                display: inline-block;
+            }
+
+            .item__body {
+                margin-left: 10px;
+                font-size: 16px;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+
+                .body__badge {
+                    padding: 8px;
+                    border-radius: 5px;
+                    border: solid 1px #d3d3d3;
+                    font-size: 14px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #333;
+                }
+
+                .item__body__map {
+                    cursor: pointer;
+                    display: block;
+                    margin-left: 8px;
+
+                    .body__map__icon {
+                        width: 26px;
+                        height: 26px;
+                    }
+                }
+            }
+
+            .item__body--badgeGroup {
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            &:not(:first-child) {
+                margin-top: 15px;
+            }
+        }
+    }
+
+
+}
+
+@media screen and (min-width: 992px) {
+    .jobView__body {
+
+        .body__card {
+            border-radius: 10px;
+            border: solid 1px #d3d3d3;
+            background-color: #fff;
+            padding: 20px;
+
+            .card__header {
+                font-size: 20px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #333;
+
+            }
+
+            .card__body {
+                font-size: 18px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #333;
+            }
+        }
+
+        .body__basic {
+            position: relative;
+            display: flex;
+            gap: 30px;
+            min-height: 217px;
+
+            .basic__body__header {
+                font-size: 28px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #5ea88e;
+            }
+
+            .basic__body__subHeader {
+                font-size: 20px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #5ea88e;
+            }
+
+            .basic__body__badgeGroup {
+                display: flex;
+                gap: 10px;
+
+                .badgeGroup__badge {
+                    padding: 8px;
+                    border-radius: 5px;
+                    border: solid 1px #d3d3d3;
+                    font-size: 14px;
+
+                }
+            }
+
+            .basic__logo {
+                width: 80px;
+                height: 80px;
+                color: #5ea88e;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .basic__footer {
+                margin-right: 120px;
+                margin-left: auto;
+            }
+        }
+
+        .body__map {
+            .map__iframe {
+                min-height: 360px;
+                width: 100%;
+                border-radius: 10px;
+            }
+        }
+
+        .body__features {
+            font-weight: normal;
+            line-height: 0;
+        }
+
+
+
+        .body__body {
+            flex-direction: row-reverse;
+        }
+
+    }
+}
+</style>

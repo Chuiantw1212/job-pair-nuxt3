@@ -1,6 +1,6 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isLarge }">
-        <LazyOrganismJobModal v-model="state.job"></LazyOrganismJobModal>
+        <LazyOrganismJobViewBody v-model="state.job"></LazyOrganismJobViewBody>
         <section v-if="getAdVisibility()" class="jobView__ad" :key="state.adRenderKey">
             <div class="ad__card">
                 <NuxtLink class="ad__card__link" to="/user/consult/records">
@@ -27,16 +27,10 @@
     </div>
 </template>
 <script setup>
-import placeholderImage from '~/assets/company/company.webp'
 const runTimeConfig = useRuntimeConfig()
-const { $emitter, $sweet, $filter, } = useNuxtApp()
-const router = useRouter()
+const { $filter, } = useNuxtApp()
 const route = useRoute()
-const repoJob = useRepoJob()
-const repoJobApplication = useRepoJobApplication()
 const repoAuth = useRepoAuth()
-const repoSelect = useRepoSelect()
-const repoCompany = useRepoCompany()
 const jobScroller = useJobScroller()
 const device = useDevice()
 const state = reactive({
@@ -73,6 +67,7 @@ const state = reactive({
     observer: null,
     debounceTimer: null,
 })
+// hooks
 const jobId = computed(() => {
     const id = route.params.id
     return id
@@ -92,7 +87,6 @@ const browserConfig = computed({
         }
     }
 })
-// hooks
 const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 state.job = job
 const currentInstance = getCurrentInstance()
@@ -186,359 +180,30 @@ useJsonld(() => {
     }
     return jsonld
 })
-// onMounted(() => {
-//     if (process.client) {
-//         window.addEventListener("resize", setMapHeight)
-//         window.addEventListener('scroll', detectScroll)
-//     }
-// })
-// onBeforeUnmount(() => {
-//     if (process.client) {
-//         window.removeEventListener("resize", setMapHeight)
-//         window.removeEventListener('scroll', detectScroll)
-//     }
-// })
-// watch(() => repoAuth.state.user, () => {
-//     if (state.job && !state.job.similarity) {
-//         initialize()
-//     }
-// }, { immediate: true })
-// watch(() => repoJobApplication.state.userJobs, () => {
-//     setApplyFlow()
-// }, { immediate: true, deep: true, })
-// watch(() => state.job, (newValue) => {
-//     if (newValue) {
-//         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
-//     }
-// },)
-// const jobItems = ref([])
-// watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
-//     if (newValue.length !== oldValue.length) {
-//         jobScroller.observeLastJob(jobItems)
-//     }
-//     const { user } = repoAuth.state
-//     if (user && user.id) {
-//         return
-//     }
-//     const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
-//     if (!user && showRegisterModal) {
-//         jobScroller.state.isModalShown = true
-//         $emitter.emit("showUserModal")
-//     }
-// })
-// // methos
-// function getAdVisibility() {
-//     if (process.client) {
-//         return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
-//     }
-// }
-// function detectScroll() {
-//     const { user } = repoAuth.state
-//     if (user && user.id) {
-//         return
-//     }
-//     debounce(() => {
-//         const offsetHeight = document.body.offsetHeight
-//         const { innerHeight, pageYOffset } = window
-//         if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
-//             jobScroller.state.isModalShown = true
-//             $emitter.emit("showUserModal")
-//         }
-//     })()
-// }
-// function debounce(func, delay = 800) {
-//     return (...args) => {
-//         clearTimeout(state.debounceTimer)
-//         state.debounceTimer = setTimeout(() => {
-//             state.debounceTimer = undefined
-//             func.apply(this, args)
-//         }, delay)
-//     }
-// }
-// async function showIncompleteAlert() {
-//     const res = await $sweet.info('前往完成個人檔案', {
-//         title: '未上傳履歷',
-//     })
-//     if (res.value) {
-//         router.push({
-//             name: 'user-profile'
-//         })
-//     }
-// }
-// function getEncodedMapLink() {
-//     const baseUrl = "https://www.google.com/maps/dir/?api=1"
-//     const fullAddress = getJobAddress()
-//     const encoded = encodeURI(fullAddress)
-//     const query = `&destination=${encoded}`
-//     return `${baseUrl}${query}`
-// }
-// function checkInfoIncomplete() {
-//     const { user } = repoAuth.state
-//     if (user) {
-//         // 一般欄位
-//         const requiredFieds = ['name', 'email']
-//         const incompleteFields = requiredFieds.filter(field => {
-//             return !user[field] || !String(user[field]).trim()
-//         })
-//         const hasIncomplete = incompleteFields.length !== 0
-//         // 履歷欄位
-//         const { resumes = [] } = user
-//         const noResumes = resumes.length === 0
-//         return hasIncomplete || noResumes
-//     }
-// }
-// function checkJobCategory() {
-//     const { user } = repoAuth.state
-//     if (!user || !state.job || !user.occupationalCategory) {
-//         return
-//     }
-//     const { occupationalCategory = [] } = user
-//     const jobCategory = state.job.occupationalCategory
-//     const isMismatched = occupationalCategory.every(category => {
-//         return !jobCategory.includes(category)
-//     })
-//     return isMismatched
-// }
-// function setApplyFlow() {
-//     const jobKeys = Object.keys(repoJobApplication.state.userJobs)
-//     if (!jobKeys.length) {
-//         return
-//     }
-//     const matchedJob = repoJobApplication.state.userJobs[jobId.value]
-//     if (matchedJob) {
-//         state.applyFlow = matchedJob.applyFlow
-//     }
-// }
-// function hideAd() {
-//     if (!process.client) {
-//         return
-//     }
-//     if (browserConfig.value.ads) {
-//         browserConfig.value.ads.jobDetails = false
-//     } else {
-//         browserConfig.ads = {
-//             jobDetails: false
-//         }
-//     }
-//     browserConfig.value = Object.assign({}, browserConfig.value)
-//     state.adRenderKey = Math.random()
-// }
-// function getCategoryText(category = "") {
-//     if (!category || !repoSelect.state.selectByQueryRes) {
-//         return
-//     }
-//     const text = $filter.optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
-//     return text
-// }
-// const map = ref(null)
-// function setMapHeight() {
-//     if (!map.value) {
-//         return
-//     }
-//     const DomRect = map.value.getBoundingClientRect()
-//     const { width = 0 } = DomRect
-//     state.mapHeight = `${width}px`
-// }
-// function getGoogleMapSrc() {
-//     if (!state.job || !state.company) {
-//         return
-//     }
-//     const streetAddress = state.job.streetAddress ?? state.company.streetAddress
-//     if (!streetAddress) {
-//         return
-//     }
-//     const baseUrl = "https://www.google.com/maps/embed/v1/place"
-//     const key = `?key=AIzaSyC8nz4h8U9CHPBCtmgZAzGRj3sFS_E8VOY`
-//     const addressMap = {
-//         ' Sec.': 'Section',
-//     }
-//     let correctedAddress = streetAddress
-//     for (let key in addressMap) {
-//         const corrected = addressMap[key]
-//         correctedAddress = correctedAddress.replaceAll(key, corrected)
-//     }
-//     const region = `&region=TW`
-//     const language = `&language=en`
-//     const query = `&q=${correctedAddress}`
-//     const srcString = `${baseUrl}${key}${region}${language}${query}`
-//     return srcString
-// }
-// function getJobAddress() {
-//     const { locationRes } = repoSelect.state
-//     if (!state.job || !state.company || !locationRes) {
-//         return false
-//     }
-//     const addressRegion = state.job.addressRegion ?? state.company.addressRegion
-//     const addressLocality = state.job.addressLocality ?? state.company.addressLocality
-//     const streetAddress = state.job.streetAddress ?? state.company.streetAddress
-//     if (!addressRegion || !addressLocality || !streetAddress) {
-//         return false
-//     }
-//     const text1 = $filter.optionText(addressRegion, repoSelect.state.locationRes.taiwan)
-//     const text2 = $filter.optionText(addressLocality, repoSelect.state.locationRes[addressRegion])
-//     const text3 = streetAddress
-//     return `${text1}${text2}${text3}`
-// }
-// function checkVisibility() {
-//     return [null, '', 'saved', 'invited'].includes(state.applyFlow)
-// }
-// async function initialize() {
-//     if (!jobId.value) {
-//         state.job = {}
-//         return
-//     }
-//     const config = {
-//         jobId: jobId.value,
-//     }
-//     const { user = { id: '', type: '' } } = repoAuth.state
-//     if (user && user.id && user.type === 'employee') {
-//         config.userId = user.id
-//     }
-//     const jobResponse = await repoJob.getJobById(config)
-//     if (!jobResponse.data) {
-//         router.replace({
-//             name: 'jobs'
-//         })
-//         return
-//     }
-//     const job = jobResponse.data
-//     // 再取得公司資料
-//     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
-//     const company = companyResponse.data
-//     state.job = job
-//     state.company = company
-// }
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (newValue.length !== oldValue.length) {
+        jobScroller.observeLastJob(jobItems)
+    }
+    const { user } = repoAuth.state
+    if (user && user.id) {
+        return
+    }
+    const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
+    if (!user && showRegisterModal) {
+        jobScroller.state.isModalShown = true
+        $emitter.emit("showUserModal")
+    }
+}, { immediate: true })
+// methods
+function getAdVisibility() {
+    if (process.client) {
+        return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
+    }
+}
 </script>
 <style lang="scss" scoped>
 .jobView {
     padding-top: calc(46px);
-
-    .jobView__tabs {
-        position: fixed;
-        top: 61px;
-        width: 100%;
-        z-index: 1030;
-    }
-
-    .jobView__section {
-        scroll-margin-top: calc(58px + 46px);
-    }
-
-    .jobView__card {
-        padding: 20px;
-        background-color: #fff;
-
-        .card__header {
-            font-size: 18px;
-            font-weight: bold;
-        }
-    }
-
-    .jobView__basic {
-        .basic__body__header {
-            font-size: 22px;
-            font-weight: bold;
-            line-height: 1.2;
-            min-height: 28px;
-        }
-
-        .basic__body__subHeader {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-            text-decoration: none;
-            color: #5ea88e;
-            min-height: 40px;
-
-            &:hover {
-                text-decoration: underline;
-            }
-
-            .subHeader__logo {
-                width: 40px;
-                height: 40px;
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                margin-right: 8px;
-                border-radius: 100px;
-            }
-        }
-
-        .basic__body__badgeGroup {
-            display: flex;
-            gap: 18px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-
-            .badgeGroup__badge {
-                padding: 8px;
-                border-radius: 5px;
-                border: solid 1px #d3d3d3;
-
-            }
-        }
-    }
-
-    .jobView__features {
-        .features__item {
-            display: flex;
-            align-items: center;
-
-            .item__header {
-                font-size: 16px;
-                font-weight: bold;
-                min-width: 4em;
-                display: inline-block;
-            }
-
-            .item__body {
-                margin-left: 10px;
-                font-size: 16px;
-                line-height: 1;
-                display: flex;
-                align-items: center;
-
-                .body__badge {
-                    padding: 8px;
-                    border-radius: 5px;
-                    border: solid 1px #d3d3d3;
-                    font-size: 14px;
-                    font-weight: normal;
-                    font-stretch: normal;
-                    font-style: normal;
-                    line-height: 1;
-                    letter-spacing: normal;
-                    text-align: left;
-                    color: #333;
-                }
-
-                .item__body__map {
-                    cursor: pointer;
-                    display: block;
-                    margin-left: 8px;
-
-                    .body__map__icon {
-                        width: 26px;
-                        height: 26px;
-                    }
-                }
-            }
-
-            .item__body--badgeGroup {
-                display: inline-flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            &:not(:first-child) {
-                margin-top: 15px;
-            }
-        }
-    }
 
     .jobView__ad {
         padding: 10px 15px;
@@ -613,107 +278,6 @@ useJsonld(() => {
         padding-top: 0px;
         padding-bottom: 20px;
 
-        .jobView__card {
-            border-radius: 10px;
-            border: solid 1px #d3d3d3;
-            background-color: #fff;
-            padding: 20px;
-
-            .card__header {
-                font-size: 20px;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                text-align: left;
-                color: #333;
-
-            }
-
-            .card__body {
-                font-size: 18px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                text-align: left;
-                color: #333;
-            }
-        }
-
-        .jobView__basic {
-            position: relative;
-            display: flex;
-            gap: 30px;
-            min-height: 217px;
-            // justify-content: space-between;
-
-            .basic__body__header {
-                font-size: 28px;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                text-align: left;
-                color: #5ea88e;
-            }
-
-            .basic__body__subHeader {
-                font-size: 20px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                text-align: left;
-                color: #5ea88e;
-            }
-
-            .basic__body__badgeGroup {
-                display: flex;
-                gap: 10px;
-                // margin-top: 20px;
-
-                .badgeGroup__badge {
-                    padding: 8px;
-                    border-radius: 5px;
-                    border: solid 1px #d3d3d3;
-                    font-size: 14px;
-
-                }
-            }
-
-            .basic__logo {
-                width: 80px;
-                height: 80px;
-                color: #5ea88e;
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
-
-            .basic__footer {
-                margin-right: 120px;
-                margin-left: auto;
-            }
-        }
-
-        .jobView__map {
-            .map__iframe {
-                min-height: 360px;
-                width: 100%;
-                border-radius: 10px;
-            }
-        }
-
-        .jobView__features {
-            font-weight: normal;
-            line-height: 0;
-        }
-
         .jobView__ad {
             margin-top: 20px;
             padding: 0;
@@ -764,10 +328,6 @@ useJsonld(() => {
                     height: 160px;
                 }
             }
-        }
-
-        .jobView__body {
-            flex-direction: row-reverse;
         }
 
         .jobView__similarJobs {
