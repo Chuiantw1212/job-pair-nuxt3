@@ -154,8 +154,9 @@
         </div>
         <div class="recruitJob__footer">
             <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
-            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">儲存並預覽職缺
-            </AtomBtnSimple>
+            <!-- <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">儲存並預覽職缺
+            </AtomBtnSimple> -->
+            <LazyOrganismPreviewModal></LazyOrganismPreviewModal>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
         <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
