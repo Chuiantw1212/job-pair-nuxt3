@@ -457,6 +457,7 @@ async function concatJobsFromServer(config = {}) {
                 gap: 0 16px;
 
                 .filterSalary__item {
+
                     .item__inputGroup {
                         display: flex;
                         align-items: center;

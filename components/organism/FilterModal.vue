@@ -75,16 +75,14 @@
                                 :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
                             </LazyAtomInputSelectLabel>
                             <div>
-                                <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap"
-                                    :key="categoryKey">
+                                <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
                                     <LazyAtomInputSelectLabel v-model="localValue.industry" :items="items">
                                     </LazyAtomInputSelectLabel>
                                 </template>
                             </div>
                             <div class="section__header">薪資類型</div>
                             <ul class="section__salaryType">
-                                <li v-for="(item, index) in getSalaryTypeItems()" :key="index"
-                                    class="filterSalary__item">
+                                <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
                                     <label class="item__inputGroup">
                                         <input type="radio" v-model="localValue.salaryType" :value="item.value" />
                                         <span class="item__text">{{ item.text }}</span>
@@ -200,8 +198,11 @@ function closeModal() {
             display: flex;
             flex-wrap: wrap;
             gap: 0 16px;
+            margin-top: 8px;
 
             .filterSalary__item {
+                line-height: 1;
+
                 .item__inputGroup {
                     display: flex;
                     align-items: center;
