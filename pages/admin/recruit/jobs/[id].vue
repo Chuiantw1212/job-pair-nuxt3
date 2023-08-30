@@ -230,6 +230,12 @@ async function crawlFromLink(crawlerUrl = '') {
         jobType = 1,
         manageResp = '',
     } = jobDetail
+    // 檢核必要正確性
+    const identifier = state.job?.identifier
+    if (!identifier) {
+        alert('資料已永久毀損')
+        return
+    }
     // convert type
     const salaryTypeMap = {
         60: 'yearly',
@@ -265,16 +271,11 @@ async function crawlFromLink(crawlerUrl = '') {
     const targetLocality = level2Items.find(item => {
         return item.text === formatLocality
     })
-    // 保留舊資料的值
-    const identifier = state.job?.identifier ?? null
-    const preference = state.job.preference
-    const organizationId = state.job?.organizationId ?? null
-    const organizationName = state.job?.organizationName ?? null
-    const image = state.job?.image ?? null
-    const jobBenefitFlags = state.job?.jobBenefitFlags ?? {}
     // 給定新資料預設值
+    const { company = {}, } = repoAuth.state
     const minSalary = targetSalaryType.min ?? 0
     const newJob = {
+        identifier,
         name: jobName,
         description: jobDescription,
         salaryType: targetSalaryType.value,
@@ -287,12 +288,12 @@ async function crawlFromLink(crawlerUrl = '') {
         employmentType: [employmentTypeValue],
         responsibilities: responsibilitiesValue,
         jobLocationType: 'onSite',
-        identifier,
-        preference,
-        organizationId,
-        organizationName,
-        image,
-        jobBenefitFlags,
+        // 保留舊資料的值
+        preference: state.job.preference ?? company.preference,
+        organizationId: state.job?.organizationId ?? company.id,
+        organizationName: state.job?.organizationName ?? company.name,
+        image: state.job?.image ?? company.logo,
+        jobBenefitFlags: state.job?.jobBenefitFlags ?? company.jobBenefitFlags,
         status: 'draft',
     }
     state.job = newJob
