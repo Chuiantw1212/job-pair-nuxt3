@@ -405,7 +405,7 @@ async function concatJobsFromServer(config = {}) {
     const { isLoading = false } = config
     const requestConfig = Object.assign({}, state.pagination, state.filter, {
         searchLike: state.searchLike,
-        status: 'active',
+        status: ['active'],
     })
     const { user } = repoAuth.state
     if (user?.id) {
