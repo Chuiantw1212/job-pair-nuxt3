@@ -86,7 +86,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['營業部'],
+            messages: [],
             key: 'department',
         },
         {
@@ -98,7 +98,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['無'],
+            messages: [],
             key: 'employees',
         },
         {
@@ -111,7 +111,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['建立客戶與公司連絡窗口。 案前工作配合與參與。 各項行政業務相關計價作業。 建設業行政相關或客戶服務。 建設業總務相關或客戶服務。'],
+            messages: [],
             key: 'majorJobs',
         },
         {
@@ -119,12 +119,11 @@ const state = reactive({
             messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
             responseUI: {
                 type: 'text',
-                isRequired: true,
             }
         },
         {
             role: 'user',
-            messages: ['主管交辦事項。'],
+            messages: [],
             key: 'minorJobs',
         },
         {
@@ -136,7 +135,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['維護客戶與內部作業順暢。'],
+            messages: [],
             key: 'majorGoals',
         },
         {
@@ -150,7 +149,7 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: ['支持與維護價值的人'],
+            messages: [],
             key: 'value',
         },
     ],
@@ -212,13 +211,13 @@ function gotoNextItem(selectedItem = '') {
     }
     // set reply
     const relatedItem = state.chatItems[state.chatItemIndex + 1]
-    // relatedItem.messages[0] = state.chatReply || selectedItem
-    const placeholder = state.chatItems[state.chatItemIndex + 2]?.messages[0]
-    if (placeholder) {
-        state.chatReply = placeholder
-    } else {
-        state.chatReply = ''
-    }
+    relatedItem.messages[0] = state.chatReply || selectedItem
+    // const placeholder = state.chatItems[state.chatItemIndex + 2]?.messages[0]
+    // if (placeholder) {
+    //     state.chatReply = placeholder
+    // } else {
+    //     state.chatReply = ''
+    // }
     // show reply
     state.chatItemIndex += 2
     if (state.chatItemIndex >= state.chatItems.length) {
