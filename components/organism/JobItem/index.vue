@@ -44,7 +44,7 @@
                         <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
                         {{ $filter.salary(modelValue) }}
                     </div>
-                    <div class="d-none d-lg-flex main__labelGroup__label">
+                    <div v-if="modelValue.jobLocationType !== 'onSite'" class="d-none d-lg-flex main__labelGroup__label">
                         <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
                         <span>{{ $optionText(modelValue.jobLocationType,
                             repoSelect.state.selectByQueryRes?.jobLocationType)
