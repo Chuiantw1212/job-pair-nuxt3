@@ -11,9 +11,6 @@
     "scan": "npx unlighthouse --site localhost:3000",
     "analyze": "npx nuxi analyze"
   },
-  "engines": {
-    "node": ">=18"
-  },
   "devDependencies": {
     "@nuxt/image": "^1.0.0-rc.1",
     "firebase-admin": "^11.5.0",
