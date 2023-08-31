@@ -1,7 +1,8 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
-export default function setup() {
+export default function setup(setUpConfig) {
+    const { cache = false } = setUpConfig
     const { $requestSelectorAll, $sweet } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
@@ -20,10 +21,9 @@ export default function setup() {
         observer: null,
         count: 0,
         debounceTimer: null,
-        isModalShown: false
     })
     // hooks
-    watch(() => state.filter, () => {
+    watch(() => state.filter, (newValue) => {
         initializeSearch()
     }, { deep: true })
     watch(() => route.name, () => {
@@ -31,6 +31,9 @@ export default function setup() {
     })
     // methods
     function getDefaultFilter() {
+        if (cache && repoJob.state.cache.jobList.length) {
+            return repoJob.state.cache.filter
+        }
         const defualtFilter = {
             // 篩選企業條件
             industry: [],
@@ -69,7 +72,7 @@ export default function setup() {
         })()
     }
     async function concatJobsFromServer(config = {}) {
-        const { isLoading = false } = config
+        const { isLoading = false, } = config
         const { user } = repoAuth.state
         // console.log(fianalConfig);
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
@@ -85,9 +88,15 @@ export default function setup() {
             return
         }
         const { count = 0, items = [] } = response.data
+        const jobList = [...state.jobList, ...items]
+        state.jobList = jobList
         state.count = count
         // 避免重複出現職缺
-        state.jobList = [...state.jobList, ...items]
+        if (cache) {
+            repoJob.state.cache.jobList = jobList
+            repoJob.state.cache.count = count
+            repoJob.state.cache.filter = state.filter
+        }
     }
     function observeLastJob(selectorString = '.jobItem') {
         if (!process.client) {

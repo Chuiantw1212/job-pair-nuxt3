@@ -4,6 +4,12 @@ export default defineStore('job', () => {
     const jobPairApi = useJobPairApi()
     const state = reactive({
         jobRecommendedRes: null,
+        // 職缺探索Job Caches
+        cache: {
+            jobList: [],
+            count: 0,
+            filter: {},
+        }
     })
     async function getJobApplicantResume(data) {
         const { jobId, applicantId, fileName } = data

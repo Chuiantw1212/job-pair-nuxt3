@@ -162,7 +162,9 @@ const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const router = useRouter()
-const jobScroller = useJobScroller()
+const jobScroller = useJobScroller({
+    cache: true
+})
 const state = reactive({
     jobRecommendList: [],
     total: 0,
@@ -183,6 +185,10 @@ useHead({
 })
 watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
+        return
+    }
+    if (repoJob.state.cache.jobList.length) {
+        jobScroller.state.jobList = repoJob.state.cache.jobList
         return
     }
     // set filter
@@ -313,7 +319,7 @@ async function setPageOrderBy(key) {
     }
     await jobScroller.initializeSearch({
         immediate: true,
-        isLoading: true
+        isLoading: true,
     })
 }
 function resetFilter() {
