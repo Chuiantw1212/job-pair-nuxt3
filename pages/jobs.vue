@@ -98,7 +98,8 @@
             </div>
             <div class="body__filter">
                 <div class="d-none d-lg-block filter__total">
-                    <template v-if="state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{ jobScroller.state.count
+                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{
+                        jobScroller.state.count
                     }}個職缺</template>
                     <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
                 </div>
@@ -110,17 +111,17 @@
                 </div>
                 <div class="body__filter__sort">
                     <button class="sort__button sort__button--date"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'datePosted' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'datePosted' }"
                         @click="setPageOrderBy('datePosted')">
                         最新
                     </button>
                     <button class="sort__button sort__button--salary"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'salaryValue' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'salaryValue' }"
                         @click="setPageOrderBy('salaryValue')">
                         薪資排序
                     </button>
                     <button class="sort__button sort__button--similarity"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'similarity' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'similarity' }"
                         @click="setPageOrderBy('similarity')">
                         適配度排序
                     </button>
@@ -128,7 +129,7 @@
             </div>
             <div class="jobs__main">
                 <ul class="main__list">
-                    <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
+                    <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
                         <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
                             v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
@@ -156,7 +157,6 @@
     </div>
 </template>
 <script setup>
-const { $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -167,13 +167,6 @@ const state = reactive({
     jobRecommendList: [],
     total: 0,
     isFilterOpen: false,
-    // pagination
-    pagination: {
-        pageOrderBy: "datePosted",
-        pageLimit: 5,
-        pageOffset: 0,
-    },
-    count: 0,
     searchLike: "",
     filterOpen: {
         division: false,
@@ -183,7 +176,6 @@ const state = reactive({
         employmentType: false,
         industry: false,
     },
-    observer: null,
 })
 // hooks
 useHead({
@@ -313,20 +305,20 @@ function filterRecommendedJobs() {
     return topTwo
 }
 async function setPageOrderBy(key) {
-    state.pagination.pageOrderBy = key
+    jobScroller.state.pagination.pageOrderBy = key
     if (key === 'similarity') {
-        state.pagination.pageLimit = 300
+        jobScroller.state.pagination.pageLimit = 300
     } else {
-        state.pagination.pageLimit = 5
+        jobScroller.state.pagination.pageLimit = 5
     }
-    await jobScoller.initializeSearch({
+    await jobScroller.initializeSearch({
         immediate: true,
         isLoading: true
     })
 }
 function resetFilter() {
     jobScroller.state.jobList = []
-    jobScroller.state.pagination = {
+    jobScroller.jobScroller.state.pagination = {
         pageOrderBy: "datePosted",
         pageLimit: 5,
         pageOffset: 0,
