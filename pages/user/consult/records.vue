@@ -1,6 +1,89 @@
 <template>
     <div class="consult">
         <img class="consult__banner" src="~/assets/consult/img_banner.png" />
+        <div v-if="device.state.isLarge" class="consult__themeDesktop">
+            <div class="themeDesktop__card">
+                <div class="card__header">
+                    <!-- <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" /> -->
+                    <div class="header__header">{{ state.careerCard.title }}</div>
+                    <!-- <div class="header__sub">釐清你的職業方向</div> -->
+                </div>
+                <div class="card__body">
+                    <div class="body__title">關於</div>
+                    <div class="body__desc">
+                        {{ state.careerCard.desc }}
+                    </div>
+                    <div class="body__title">
+                        適合想解決
+                    </div>
+                    <ul class="body__desc">
+                        <li v-for="(item, index) in state.careerCard.list" :key="index">{{ item }}</li>
+                    </ul>
+                </div>
+                <div class="card__footer">
+                    <div class="footer__price">
+                        NT.2000 - 1小時
+                    </div>
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
+                        <LazyAtomBtnSimple class="footer__link__button">
+                            立即預約
+                        </LazyAtomBtnSimple>
+                    </NuxtLink>
+                </div>
+            </div>
+        </div>
+        <LazyMoleculeConsultCard v-else class="consult__themeMobile">
+            <template v-slot:header>
+                <img class="me-1" src="~/assets/consult/icon_Heart.svg">
+                諮詢主題類型
+            </template>
+            <template v-slot:body>
+                <!-- <ul v-if="repoSelect.state.selectByQueryRes && repoSelect.state.selectByQueryRes.consultService"
+                    class="themeMobile__list">
+                    <li v-for="(service, index) in repoSelect.state.selectByQueryRes.consultService" :key="index"
+                        class="themeMobile__list__item">
+                        <div class="themeMobile__list__item__content"
+                            :class="{ 'themeMobile__list__item__content--active': state.activeTab === service.value }"
+                            @click="setActiveTab(service)">{{ service.text }}
+                        </div>
+                    </li>
+                </ul> -->
+                <div class="themeMobile__main">
+                    <template v-if="state.activeTab === 'career'">
+                        <div class="main__headerGroup">
+                            <!-- <img class="headerGroup__image" src="~/assets/consult/img2.webp"
+                                onerror="this.style.display = 'none'" /> -->
+                            <h2 class="headerGroup__header">盤點線索探索職業方向</h2>
+                            <!-- <div class="headerGroup__desc">釐清你的職業方向</div> -->
+                        </div>
+                        <div class="main__body">
+                            <div class="body__header">關於</div>
+                            <div class="body__text">
+                                美國 O-NET 系統把職業分成 1,000 多種，但大部分的人講得出來的職業，大概只有 5-6
+                                種，在那麼稀少的選項當中要找到適合的工作，是非常困難的。但只要我們對職業的眼界打開了，就很容易找到適合自己的路，並在對的賽道長期累積。
+                                職涯諮詢由專業的諮詢師團隊生涯設計師提供服務，帶你盤點性格/適合的組織/工作型態/工作價值觀/動機並找出共通點，綜合評估您過往經驗後制定長期行動方案，讓你的求職之路更加精準有效率！
+                            </div>
+                            <div class="body__header">適合想解決</div>
+                            <div class="body__text">
+                                <ul class="main__body__list">
+                                    <li>適合的工作是什麼？有哪些方向？特徵？線索？</li>
+                                    <li>轉職沒頭緒，先後順序要注意什麼？如何取捨？（地點？薪資？未來性？）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="themeMobile__footer">
+                    <div class="footer__price">NT.2000 - 1小時</div>
+                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/${state.activeTab}`">
+                        <LazyAtomBtnSimple class="footer__link">
+                            立即預約
+                        </LazyAtomBtnSimple>
+                    </NuxtLink>
+                </div>
+            </template>
+        </LazyMoleculeConsultCard>
+        <LazyMoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></LazyMoleculeFeedbackList>
         <LazyMoleculeConsultCard class="consult__record mt-2">
             <template v-slot:header>
                 <img class="me-1" src="~/assets/consult/icon_record.svg">
@@ -83,89 +166,6 @@
                 </div>
             </template>
         </LazyMoleculeConsultCard>
-        <div v-if="device.state.isLarge" class="consult__themeDesktop">
-            <div class="themeDesktop__card">
-                <div class="card__header">
-                    <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" />
-                    <div class="header__header">{{ state.careerCard.title }}</div>
-                    <!-- <div class="header__sub">釐清你的職業方向</div> -->
-                </div>
-                <div class="card__body">
-                    <div class="body__title">關於</div>
-                    <div class="body__desc">
-                        {{ state.careerCard.desc }}
-                    </div>
-                    <div class="body__title">
-                        適合想解決
-                    </div>
-                    <ul class="body__desc">
-                        <li v-for="(item, index) in state.careerCard.list" :key="index">{{ item }}</li>
-                    </ul>
-                </div>
-                <div class="card__footer">
-                    <div class="footer__price">
-                        NT.2000 - 1小時
-                    </div>
-                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
-                        <LazyAtomBtnSimple class="footer__link__button">
-                            立即預約
-                        </LazyAtomBtnSimple>
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
-        <LazyMoleculeConsultCard v-else class="consult__themeMobile">
-            <template v-slot:header>
-                <img class="me-1" src="~/assets/consult/icon_Heart.svg">
-                諮詢主題類型
-            </template>
-            <template v-slot:body>
-                <!-- <ul v-if="repoSelect.state.selectByQueryRes && repoSelect.state.selectByQueryRes.consultService"
-                    class="themeMobile__list">
-                    <li v-for="(service, index) in repoSelect.state.selectByQueryRes.consultService" :key="index"
-                        class="themeMobile__list__item">
-                        <div class="themeMobile__list__item__content"
-                            :class="{ 'themeMobile__list__item__content--active': state.activeTab === service.value }"
-                            @click="setActiveTab(service)">{{ service.text }}
-                        </div>
-                    </li>
-                </ul> -->
-                <div class="themeMobile__main">
-                    <template v-if="state.activeTab === 'career'">
-                        <div class="main__headerGroup">
-                            <img class="headerGroup__image" src="~/assets/consult/img2.webp"
-                                onerror="this.style.display = 'none'" />
-                            <h2 class="headerGroup__header">盤點線索探索職業方向</h2>
-                            <!-- <div class="headerGroup__desc">釐清你的職業方向</div> -->
-                        </div>
-                        <div class="main__body">
-                            <div class="body__header">關於</div>
-                            <div class="body__text">
-                                美國 O-NET 系統把職業分成 1,000 多種，但大部分的人講得出來的職業，大概只有 5-6
-                                種，在那麼稀少的選項當中要找到適合的工作，是非常困難的。但只要我們對職業的眼界打開了，就很容易找到適合自己的路，並在對的賽道長期累積。
-                                職涯諮詢由專業的諮詢師團隊生涯設計師提供服務，帶你盤點性格/適合的組織/工作型態/工作價值觀/動機並找出共通點，綜合評估您過往經驗後制定長期行動方案，讓你的求職之路更加精準有效率！
-                            </div>
-                            <div class="body__header">適合想解決</div>
-                            <div class="body__text">
-                                <ul class="main__body__list">
-                                    <li>適合的工作是什麼？有哪些方向？特徵？線索？</li>
-                                    <li>轉職沒頭緒，先後順序要注意什麼？如何取捨？（地點？薪資？未來性？）</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-                <div class="themeMobile__footer">
-                    <div class="footer__price">NT.2000 - 1小時</div>
-                    <NuxtLink class="footer__link" :to="`/user/consult/appointment/${state.activeTab}`">
-                        <LazyAtomBtnSimple class="footer__link">
-                            立即預約
-                        </LazyAtomBtnSimple>
-                    </NuxtLink>
-                </div>
-            </template>
-        </LazyMoleculeConsultCard>
-        <LazyMoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></LazyMoleculeFeedbackList>
     </div>
 </template>
 <script setup>
