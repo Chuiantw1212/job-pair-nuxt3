@@ -1,88 +1,6 @@
 <template>
     <div class="consult">
         <img class="consult__banner" src="~/assets/consult/img_banner.png" />
-        <LazyMoleculeConsultCard class="consult__record mt-2">
-            <template v-slot:header>
-                <img class="me-1" src="~/assets/consult/icon_record.svg">
-                預約紀錄
-            </template>
-            <template v-slot:body>
-                <div class="record__content">
-                    <div v-if="state.records.length" class="content__tableWrapper">
-                        <table class="table table-striped record__table">
-                            <thead>
-                                <tr class="table__row">
-                                    <th>
-                                        <div class="row__cell--first">
-                                            安排時段
-                                        </div>
-                                    </th>
-                                    <th>預約服務</th>
-                                    <th>生涯設計師</th>
-                                    <th>
-                                        建立預約時間
-                                    </th>
-                                    <th>付款狀態</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in state.records" :key="index" class="table__row">
-                                    <td>
-                                        <div v-if="item.time.start" class="row__cell row__cell--first">
-                                            {{ $time(item.time.start) }}
-                                        </div>
-                                        <div v-else class="row__cell row__cell--first">
-                                            安排中
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="row__cell">
-                                            {{ getServiceText(item.service) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="row__cell">
-                                            {{ getConsultantName(item.consultantId) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="row__cell">
-                                            {{ $time(item.date) }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div v-if="item.status === 'scheduled'"
-                                            class="row__cell row__cell--last row__cell--paid">
-                                            預約完成
-                                        </div>
-                                        <div v-if="item.status === 'paid'"
-                                            class="row__cell row__cell--last row__cell--paid">
-                                            付款完成
-                                        </div>
-                                        <div v-if="item.status === 'unpaid'"
-                                            class="row__cell row__cell--last row__cell--unpaid">
-                                            <template v-if="item.RtnCode">
-                                                付款失敗
-                                            </template>
-                                            <template v-else>
-                                                未付款
-                                            </template>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div v-if="!state.records.length" class="content__noRecord">
-                        <img class="noRecord__icon" src="~/assets/consult/icon5.svg" />
-                        <div class="noRecord__textGroup">
-                            <div class="noRecord__line1">還沒有預約記錄</div>
-                            <div class="noRecord__line2">讓以下生涯設計師陪你找定位、解決問題吧</div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </LazyMoleculeConsultCard>
         <div v-if="device.state.isLarge" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
@@ -166,6 +84,88 @@
             </template>
         </LazyMoleculeConsultCard>
         <LazyMoleculeFeedbackList v-model="state.feedbacks" class="mt-2"></LazyMoleculeFeedbackList>
+        <LazyMoleculeConsultCard class="consult__record mt-2">
+            <template v-slot:header>
+                <img class="me-1" src="~/assets/consult/icon_record.svg">
+                預約紀錄
+            </template>
+            <template v-slot:body>
+                <div class="record__content">
+                    <div v-if="state.records.length" class="content__tableWrapper">
+                        <table class="table table-striped record__table">
+                            <thead>
+                                <tr class="table__row">
+                                    <th>
+                                        <div class="row__cell--first">
+                                            安排時段
+                                        </div>
+                                    </th>
+                                    <th>預約服務</th>
+                                    <th>生涯設計師</th>
+                                    <th>
+                                        建立預約時間
+                                    </th>
+                                    <th>付款狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in state.records" :key="index" class="table__row">
+                                    <td>
+                                        <div v-if="item.time.start" class="row__cell row__cell--first">
+                                            {{ $time(item.time.start) }}
+                                        </div>
+                                        <div v-else class="row__cell row__cell--first">
+                                            安排中
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row__cell">
+                                            {{ getServiceText(item.service) }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row__cell">
+                                            {{ getConsultantName(item.consultantId) }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row__cell">
+                                            {{ $time(item.date) }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div v-if="item.status === 'scheduled'"
+                                            class="row__cell row__cell--last row__cell--paid">
+                                            預約完成
+                                        </div>
+                                        <div v-if="item.status === 'paid'"
+                                            class="row__cell row__cell--last row__cell--paid">
+                                            付款完成
+                                        </div>
+                                        <div v-if="item.status === 'unpaid'"
+                                            class="row__cell row__cell--last row__cell--unpaid">
+                                            <template v-if="item.RtnCode">
+                                                付款失敗
+                                            </template>
+                                            <template v-else>
+                                                未付款
+                                            </template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div v-if="!state.records.length" class="content__noRecord">
+                        <img class="noRecord__icon" src="~/assets/consult/icon5.svg" />
+                        <div class="noRecord__textGroup">
+                            <div class="noRecord__line1">還沒有預約記錄</div>
+                            <div class="noRecord__line2">讓以下生涯設計師陪你找定位、解決問題吧</div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </LazyMoleculeConsultCard>
     </div>
 </template>
 <script setup>

@@ -236,20 +236,26 @@ async function initializeCompanyInfo() {
     if (!user || !user.id || state.companyInfo.id) {
         return
     }
-    const companyRes = await repoAdmin.getAdminCompany()
-    // $sweet.loader(false)
-    if (companyRes.status !== 200) {
-        return
-    }
-    if (companyRes.data === false) {
-        // 尚未註冊導回註冊畫面
-        router.replace(`/admin/register`)
-        state.isNewCompay = true
-    }
+    // Load from store
     let companyInfo = getDefaultCompany()
-    if (companyRes.data) {
-        companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+    if (repoAuth.state.company) {
+        companyInfo = JSON.parse(JSON.stringify(repoAuth.state.company))
+    } else {
+        const companyRes = await repoAdmin.getAdminCompany()
+        // $sweet.loader(false)
+        if (companyRes.status !== 200) {
+            return
+        }
+        if (companyRes.data === false) {
+            // 尚未註冊導回註冊畫面
+            router.replace(`/admin/register`)
+            state.isNewCompay = true
+        }
+        if (companyRes.data) {
+            companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+        }
     }
+    // Set company to local
     state.companyInfo = companyInfo
     state.companyLogo = companyInfo.logo
     state.companyBanner = companyInfo.banner

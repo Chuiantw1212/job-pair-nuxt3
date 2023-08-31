@@ -148,7 +148,7 @@
                 </ul>
             </div>
         </div>
-        <LazyOrganismMonica></LazyOrganismMonica>
+        <!-- <LazyOrganismMonica></LazyOrganismMonica> -->
     </div>
 </template>
 <script setup>
@@ -191,6 +191,9 @@ const state = reactive({
     },
 })
 // hooks
+definePageMeta({
+    keepalive: true
+})
 useHead({
     title: '職缺探索'
 })
