@@ -5,13 +5,13 @@
                 <ul class="menu__content">
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                            :to="`/admin/manage/company`">
+                            :to="{ name: 'admin-manage-company' }">
                             <div class="menu__item__text">企業檔案</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                            :to="`/admin/manage/account`">
+                            :to="{ name: 'admin-manage-account' }">
                             <div class="menu__item__text">帳戶管理</div>
                         </NuxtLink>
                     </li>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="dashboard__view" :class="{ col: device.state.isLarge }">
-            <NuxtPage></NuxtPage>
+            <NuxtPage />
         </div>
     </div>
 </template>

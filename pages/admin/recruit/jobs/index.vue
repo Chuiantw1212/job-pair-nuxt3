@@ -2,18 +2,18 @@
     <div class="container jobManagement">
         <!-- 職缺管理 -->
         <div class="jobManagement__addItem">
-            <LazyAtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</LazyAtomBtnSimple>
+            <AtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</AtomBtnSimple>
             <label class="addItem__searchGroup">
                 <i class="fas fa-search searchGroup__icon"></i>
                 <input v-model="state.searchLike" class="searchGroup__input" placeholder="輸入職缺名稱" />
             </label>
-            <LazyOrganismFilterModal v-model="state.filter" @reset="resetFilter()"></LazyOrganismFilterModal>
+            <OrganismFilterModal v-model="state.filter" @reset="resetFilter()"></OrganismFilterModal>
         </div>
         <div class="jobManagement__fields">
             <span>欄位顯示</span>
-            <LazyAtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
+            <AtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
                 @update:modelValue="saveFieldsPreference()">
-            </LazyAtomInputCheckMultiple>
+            </AtomInputCheckMultiple>
         </div>
         <div class="fixTableHead">
             <table class="table jobManagement__table">
@@ -44,9 +44,9 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <LazyAtomInputSwitch v-model="job.status"
+                            <AtomInputSwitch v-model="job.status"
                                 @update:modelValue="checkJobStatus($event, job, index)">
-                            </LazyAtomInputSwitch>
+                            </AtomInputSwitch>
                         </td>
                         <td>
                             <NuxtLink class="table__jobName" :to="`jobs/${job.identifier}`">
