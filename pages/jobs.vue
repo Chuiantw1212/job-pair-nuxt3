@@ -447,6 +447,7 @@ function debounce(func, delay = 800) {
                 gap: 0 16px;
 
                 .filterSalary__item {
+
                     .item__inputGroup {
                         display: flex;
                         align-items: center;
