@@ -167,7 +167,6 @@ const state = reactive({
     jobRecommendList: [],
     total: 0,
     isFilterOpen: false,
-    debounceTimer: null,
     // pagination
     pagination: {
         pageOrderBy: "datePosted",
@@ -175,8 +174,6 @@ const state = reactive({
         pageOffset: 0,
     },
     count: 0,
-    // filters
-    filter: jobScroller.getDefaultFilter(),
     searchLike: "",
     filterOpen: {
         division: false,
@@ -187,21 +184,18 @@ const state = reactive({
         industry: false,
     },
     observer: null,
-    salaryTypeText: {
-        yearly: "年薪",
-        monthly: "月薪",
-        daily: "日薪",
-        hourly: "時薪",
-    },
 })
 // hooks
 useHead({
     title: '職缺探索'
 })
 watch(() => repoAuth.state.user, (user) => {
+    if (!process.client) {
+        return
+    }
     // set filter
     if (user?.id) {
-        state.filter = jobScroller.getDefaultFilter()
+        jobScroller.state.filter = jobScroller.getDefaultFilter()
     }
     // get jobs
     const firstJob = jobScroller.state.jobList[0]
@@ -209,9 +203,6 @@ watch(() => repoAuth.state.user, (user) => {
         jobScroller.initializeSearch()
     }
 }, { immediate: true })
-watch(() => state.filter, () => {
-    jobScroller.initializeSearch()
-}, { deep: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
         jobScroller.observeLastJob()
@@ -219,7 +210,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
 })
 // methods
 function getFilterValues() {
-    const values = Object.values(state.filter)
+    const values = Object.values(jobScroller.state.filter)
     const validValues = values.filter(value => {
         if (Array.isArray(value)) {
             return value.length !== 0
@@ -345,7 +336,7 @@ function resetFilter() {
         top: 0,
         behavior: 'auto'
     })
-    state.filter = jobScroller.getDefaultFilter()
+    jobScroller.state.filter = jobScroller.getDefaultFilter()
 }
 </script>
 <style lang="scss" scoped>
