@@ -191,6 +191,9 @@ const state = reactive({
     },
 })
 // hooks
+definePageMeta({
+    keepalive: true
+})
 useHead({
     title: '職缺探索'
 })
