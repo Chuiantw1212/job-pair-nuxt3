@@ -5,66 +5,68 @@
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.occupationalCategory"
+                        :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
+                        :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
+                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.occupationalCategory" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
                 </div>
                 <template v-if="repoSelect.state.locationRes">
                     <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <LazyAtomInputCheckMultiple v-model="state.filter.addressRegion"
+                        <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.addressRegion"
                             :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
                         </LazyAtomInputCheckMultiple>
                     </LazyAtomInputSelectContainer>
-                    <LazyAtomInputSelectLabel v-model="state.filter.addressRegion"
+                    <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.addressRegion"
                         :items="repoSelect.state.locationRes.taiwan" class="mt-2">
                     </LazyAtomInputSelectLabel>
                 </template>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.jobLocationType"
+                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.jobLocationType"
                         :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.jobLocationType"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.employmentType"
+                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.employmentType"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.employmentType"
                     :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.responsibilities"
+                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.responsibilities"
                         :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.responsibilities"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.responsibilities"
                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.jobBenefits"
+                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.jobBenefits"
                         :items="repoSelect.state.selectByQueryRes.jobBenefits" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.jobBenefits"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobBenefits"
                     :items="repoSelect.state.selectByQueryRes.jobBenefits" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
-                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.industry"
+                        :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                        :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items">
+                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.industry" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
                 </div>
@@ -72,15 +74,15 @@
                 <ul class="section__salaryType">
                     <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
                         <label class="item__inputGroup">
-                            <input type="radio" v-model="state.filter.salaryType" :value="item.value" />
+                            <input type="radio" v-model="jobScroller.state.filter.salaryType" :value="item.value" />
                             <span class="item__text">{{ item.text }}</span>
                         </label>
                     </li>
                 </ul>
                 <div class="section__salaryRange">
-                    <LazyAtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
+                    <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
                     </LazyAtomInputMoney>
-                    <LazyAtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
+                    <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
                     </LazyAtomInputMoney>
                 </div>
                 <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
@@ -154,7 +156,7 @@
     </div>
 </template>
 <script setup>
-const { $requestSelectorAll, $sweet, } = useNuxtApp()
+const { $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
@@ -162,7 +164,6 @@ const repoJob = useRepoJob()
 const router = useRouter()
 const jobScroller = useJobScroller()
 const state = reactive({
-    // jobList: [],
     jobRecommendList: [],
     total: 0,
     isFilterOpen: false,
@@ -175,7 +176,7 @@ const state = reactive({
     },
     count: 0,
     // filters
-    filter: getDefaultFilter(),
+    filter: jobScroller.getDefaultFilter(),
     searchLike: "",
     filterOpen: {
         division: false,
@@ -200,7 +201,7 @@ useHead({
 watch(() => repoAuth.state.user, (user) => {
     // set filter
     if (user?.id) {
-        state.filter = getDefaultFilter()
+        state.filter = jobScroller.getDefaultFilter()
     }
     // get jobs
     const firstJob = jobScroller.state.jobList[0]
@@ -320,35 +321,6 @@ function filterRecommendedJobs() {
     const topTwo = filteredResult.slice(0, 2)
     return topTwo
 }
-function getDefaultFilter() {
-    const defualtFilter = {
-        // 篩選企業條件
-        industry: [],
-        jobBenefits: [],
-        // 篩選職缺
-        addressRegion: [],
-        responsibilities: [],
-        employmentType: [],
-        jobLocationType: [],
-        occupationalCategory: [],
-        salaryType: "",
-        salaryMin: null,
-        salaryMax: null,
-    }
-    const { user } = repoAuth.state
-    if (user && user.occupationalCategory) {
-        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
-    }
-    return defualtFilter
-}
-// async function loadJobItemBatch(entries, observer) {
-//     const triggeredEntry = entries[0]
-//     if (triggeredEntry.isIntersecting) {
-//         observer.disconnect()
-//         state.pagination.pageOffset += state.pagination.pageLimit
-//         await concatJobsFromServer()
-//     }
-// }
 async function setPageOrderBy(key) {
     state.pagination.pageOrderBy = key
     if (key === 'similarity') {
@@ -373,63 +345,8 @@ function resetFilter() {
         top: 0,
         behavior: 'auto'
     })
-    state.filter = getDefaultFilter()
+    state.filter = jobScroller.getDefaultFilter()
 }
-function debounce(func, delay = 800) {
-    return (...args) => {
-        clearTimeout(state.debounceTimer)
-        state.debounceTimer = setTimeout(() => {
-            state.debounceTimer = undefined
-            func.apply(this, args)
-        }, delay)
-    }
-}
-// async function initializeSearch(config = {}) {
-//     const wait = config.immediate ? 0 : 800
-//     debounce(async () => {
-//         state.jobList = [] // important
-//         state.pagination.pageOffset = 0
-//         await concatJobsFromServer(config)
-//     }, wait)()
-// }
-// async function concatJobsFromServer(config = {}) {
-//     const { isLoading = false } = config
-//     const requestConfig = Object.assign({}, state.pagination, state.filter, {
-//         searchLike: state.searchLike,
-//     })
-//     const { user } = repoAuth.state
-//     if (user?.id) {
-//         requestConfig.userId = user.id
-//     }
-//     // try {
-//     //     $sweet.loader(isLoading)
-//     // } catch (error) {
-//     //     // console.trace(error);
-//     // }
-//     const response = await repoJob.getJobByQuery(requestConfig)
-//     if (response.status !== 200) {
-//         $sweet.alert('伺服器塞車了')
-//         return
-//     }
-//     const { count = 0, items = [] } = response.data
-//     state.count = count
-//     const recommendJobs = filterRecommendedJobs()
-//     state.jobRecommendList = recommendJobs
-//     // 一般排序與適配讀排序時避免重複出現職缺
-//     const recommendJobIds = recommendJobs.map(item => item.identifier)
-//     let notDuplicatedJobs = items
-//     if (state.pagination.pageOrderBy !== 'salaryValue') {
-//         notDuplicatedJobs = items.filter(item => {
-//             return !recommendJobIds.includes(item.identifier)
-//         })
-//     }
-//     state.jobList = [...state.jobList, ...notDuplicatedJobs]
-//     // try {
-//     //     $sweet.loader(false)
-//     // } catch (error) {
-//     //     // console.trace(error);
-//     // }
-// }
 </script>
 <style lang="scss" scoped>
 .jobs {

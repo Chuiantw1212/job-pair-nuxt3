@@ -15,20 +15,7 @@ export default function setup() {
             pageOffset: 0,
         },
         // filters
-        filter: {
-            // 篩選企業條件
-            industry: [],
-            jobBenefits: [],
-            // 篩選職缺
-            addressRegion: [],
-            responsibilities: [],
-            employmentType: [],
-            jobLocationType: [],
-            occupationalCategory: [],
-            salaryMin: null,
-            salaryMax: null,
-            organizationId: null,
-        },
+        filter: getDefaultFilter(),
         searchLike: "",
         observer: null,
         count: 0,
@@ -43,6 +30,28 @@ export default function setup() {
         state.observer.disconnect()
     })
     // methods
+    function getDefaultFilter() {
+        const defualtFilter = {
+            // 篩選企業條件
+            industry: [],
+            jobBenefits: [],
+            // 篩選職缺
+            addressRegion: [],
+            responsibilities: [],
+            employmentType: [],
+            jobLocationType: [],
+            occupationalCategory: [],
+            salaryType: "",
+            salaryMin: null,
+            salaryMax: null,
+            organizationId: null,
+        }
+        const { user } = repoAuth.state
+        if (user && user.occupationalCategory) {
+            defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
+        }
+        return defualtFilter
+    }
     function debounce(func, delay = 800) {
         return (...args) => {
             clearTimeout(state.debounceTimer)
@@ -62,6 +71,7 @@ export default function setup() {
     async function concatJobsFromServer(config = {}) {
         const { isLoading = false } = config
         const { user } = repoAuth.state
+        // console.log(fianalConfig);
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
             searchLike: state.searchLike,
         }, config)
@@ -107,6 +117,7 @@ export default function setup() {
     return {
         state,
         observeLastJob,
-        initializeSearch
+        initializeSearch,
+        getDefaultFilter
     }
 }
