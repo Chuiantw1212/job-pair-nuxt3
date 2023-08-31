@@ -148,7 +148,7 @@
                 </ul>
             </div>
         </div>
-        <LazyOrganismMonica></LazyOrganismMonica>
+        <!-- <LazyOrganismMonica></LazyOrganismMonica> -->
     </div>
 </template>
 <script setup>
