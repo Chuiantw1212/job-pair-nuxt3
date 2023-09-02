@@ -130,8 +130,9 @@
             <div class="jobs__main">
                 <ul class="main__list">
                     <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
-                        <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
-                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
+                        <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
+                            v-model="jobScroller.state.jobRecommendList[index]" :key="index" class="main__list__item"
+                            :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
                     <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
@@ -163,10 +164,10 @@ const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const router = useRouter()
 const jobScroller = useJobScroller({
-    cache: true
+    cache: true,
+    recommend: true,
 })
 const state = reactive({
-    jobRecommendList: [],
     total: 0,
     isFilterOpen: false,
     searchLike: "",
@@ -192,6 +193,7 @@ watch(() => repoAuth.state.user, (user) => {
     }
     if (repoJob.state.cache.jobList.length) {
         jobScroller.state.jobList = repoJob.state.cache.jobList
+        jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
         return
     }
     // set filter

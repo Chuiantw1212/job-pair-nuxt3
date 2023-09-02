@@ -9,6 +9,7 @@ export default function setup(setUpConfig) {
     const repoJob = useRepoJob()
     const state = reactive({
         jobList: [],
+        jobRecommendList: [],
         // pagination
         pagination: {
             pageOrderBy: "datePosted",
@@ -97,14 +98,27 @@ export default function setup(setUpConfig) {
             return
         }
         const { count = 0, items = [] } = response.data
-        const jobList = [...state.jobList, ...items]
-        state.jobList = jobList
+        // Filter recommended jobs
+        const recommendJobs = filterRecommendedJobs()
+        state.jobRecommendList = recommendJobs
+        // 一般排序與適配讀排序時避免重複出現職缺
+        const recommendJobIds = recommendJobs.map(item => item.identifier)
+        let notDuplicatedJobs = []
+        if (state.pagination.pageOrderBy !== 'salaryValue') {
+            notDuplicatedJobs = items.filter(item => {
+                return !recommendJobIds.includes(item.identifier)
+            })
+        }
+        // set jobList
+        const newJobList = [...state.jobList, ...notDuplicatedJobs]
+        state.jobList = newJobList
         state.count = count
         // 避免重複出現職缺
         if (cache) {
-            repoJob.state.cache.jobList = jobList
+            repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.count = count
             repoJob.state.cache.filter = state.filter
+            repoJob.state.cache.jobRecommendList = recommendJobs
         }
     }
     function observeLastJob(selectorString = '.jobItem') {
@@ -131,6 +145,85 @@ export default function setup(setUpConfig) {
             state.pagination.pageOffset += state.pagination.pageLimit
             await concatJobsFromServer()
         }
+    }
+    function filterRecommendedJobs() {
+        if (!repoJob.state.jobRecommendedRes) {
+            return []
+        }
+        const recommendJobs = repoJob.state.jobRecommendedRes
+        const { addressRegion = [], occupationalCategory = [], jobLocationType = [],
+            responsibilities = [], employmentType = [], jobBenefits = [],
+            industry = [], salaryMin = 0, salaryMax = 0, salaryType = '' } = state.filter
+        let filteredResult = recommendJobs
+        if (addressRegion.length) {
+            filteredResult = filteredResult.filter(item => {
+                return addressRegion.includes(item.addressRegion)
+            })
+        }
+        if (occupationalCategory.length) {
+            filteredResult = filteredResult.filter(item => {
+                return item.occupationalCategory.some(category2Item => {
+                    return occupationalCategory.includes(category2Item)
+                })
+            })
+        }
+        if (jobLocationType.length) {
+            filteredResult = filteredResult.filter(item => {
+                return jobLocationType.includes(item.onSite)
+            })
+        }
+        if (responsibilities.length) {
+            filteredResult = filteredResult.filter(item => {
+                return responsibilities.includes(item.manager)
+            })
+        }
+        if (employmentType.length) {
+            filteredResult = filteredResult.filter(item => {
+                return employmentType.includes(item.employmentType)
+            })
+        }
+        if (responsibilities.length) {
+            filteredResult = filteredResult.filter(item => {
+                return responsibilities.includes(item.responsibilities)
+            })
+        }
+        if (jobBenefits.length) {
+            filteredResult = filteredResult.filter(item => {
+                return jobBenefits.some(benefitFlag => {
+                    return item.welfareFlags[benefitFlag]
+                })
+            })
+        }
+        if (industry.length) {
+            filteredResult = filteredResult.filter(item => {
+                return industry.includes(item.industry)
+            })
+        }
+        if (salaryType) {
+            filteredResult = filteredResult.filter(item => {
+                return item.salaryType === salaryType
+            })
+        }
+        if (salaryMax) {
+            filteredResult = filteredResult.filter(item => {
+                return Number(item.salaryMax) > Number(salaryMax)
+            })
+        }
+        if (salaryMin) {
+            filteredResult = filteredResult.filter(item => {
+                return Number(item.salaryMin) > Number(salaryMin)
+            })
+        }
+        if (state.searchLike) {
+            filteredResult = filteredResult.filter(item => {
+                const searchableFields = ['description', 'skills', 'name', 'organizationName']
+                return searchableFields.some(field => {
+                    return String(item[field]).includes(state.searchLike)
+                })
+            })
+        }
+        const topTwo = filteredResult.slice(0, 2)
+        return topTwo
     }
     return {
         state,

@@ -7,6 +7,7 @@ export default defineStore('job', () => {
         // 職缺探索Job Caches
         cache: {
             jobList: [],
+            jobRecommendList: [],
             count: 0,
             filter: {},
         }
