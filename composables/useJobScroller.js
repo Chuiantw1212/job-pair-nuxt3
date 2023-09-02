@@ -11,11 +11,7 @@ export default function setup(setUpConfig = {}) {
         jobList: [],
         jobRecommendList: [],
         // pagination
-        pagination: {
-            pageOrderBy: "datePosted",
-            pageLimit: 5,
-            pageOffset: 0,
-        },
+        pagination: getPagination(),
         // filters
         filter: getDefaultFilter(),
         searchLike: "",
@@ -31,6 +27,17 @@ export default function setup(setUpConfig = {}) {
         state.observer.disconnect()
     })
     // methods
+    function getPagination() {
+        if (isCache) {
+            return repoJob.state.cache.pagination
+        } else {
+            return {
+                pageOrderBy: "datePosted",
+                pageLimit: 5,
+                pageOffset: 0,
+            }
+        }
+    }
     function getCachedCount() {
         if (isCache) {
             return repoJob.state.cache.count
@@ -117,6 +124,7 @@ export default function setup(setUpConfig = {}) {
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
             repoJob.state.cache.count = count
             repoJob.state.cache.filter = state.filter
+            repoJob.state.cache.pagination = state.pagination
         }
     }
     function observeLastJob(selectorString = '.jobItem') {

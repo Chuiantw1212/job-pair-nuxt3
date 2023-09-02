@@ -10,6 +10,11 @@ export default defineStore('job', () => {
             jobRecommendList: [],
             count: 0,
             filter: {},
+            pagination: {
+                pageOrderBy: "datePosted",
+                pageLimit: 5,
+                pageOffset: 0,
+            }
         }
     })
     async function getJobApplicantResume(data) {
