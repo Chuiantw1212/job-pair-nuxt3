@@ -1,8 +1,8 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
-export default function setup(setUpConfig) {
-    const { cache = false } = setUpConfig
+export default function setup(setUpConfig = {}) {
+    const { isCache = false, isRecommend = false } = setUpConfig
     const { $requestSelectorAll, $sweet } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
@@ -17,10 +17,10 @@ export default function setup(setUpConfig) {
             pageOffset: 0,
         },
         // filters
-        filter: getDefaultFilter({ cache }),
+        filter: getDefaultFilter(),
         searchLike: "",
         observer: null,
-        count: getCachedCount({ cache }),
+        count: getCachedCount(),
         debounceTimer: null,
     })
     // hooks
@@ -31,17 +31,15 @@ export default function setup(setUpConfig) {
         state.observer.disconnect()
     })
     // methods
-    function getCachedCount(payload = {}) {
-        const { cache = false } = payload
-        if (cache) {
+    function getCachedCount() {
+        if (isCache) {
             return repoJob.state.cache.count
         } else {
             return 0
         }
     }
-    function getDefaultFilter(payload = {}) {
-        const { cache = false } = payload
-        if (cache && repoJob.state.cache.jobList.length) {
+    function getDefaultFilter() {
+        if (isCache && repoJob.state.cache.jobList.length) {
             return repoJob.state.cache.filter
         }
         const defualtFilter = {
@@ -74,12 +72,10 @@ export default function setup(setUpConfig) {
             }, delay)
         }
     }
-    async function initializeSearch(config = {}) {
-        debounce(async () => {
-            state.jobList = []
-            state.pagination.pageOffset = 0
-            await concatJobsFromServer(config)
-        })()
+    function initializeSearch(config = {}) {
+        state.jobList = []
+        state.pagination.pageOffset = 0
+        concatJobsFromServer(config)
     }
     async function concatJobsFromServer(config = {}) {
         const { isLoading = false, } = config
@@ -98,27 +94,29 @@ export default function setup(setUpConfig) {
             return
         }
         const { count = 0, items = [] } = response.data
-        // Filter recommended jobs
-        const recommendJobs = filterRecommendedJobs()
-        state.jobRecommendList = recommendJobs
-        // 一般排序與適配讀排序時避免重複出現職缺
-        const recommendJobIds = recommendJobs.map(item => item.identifier)
-        let notDuplicatedJobs = []
-        if (state.pagination.pageOrderBy !== 'salaryValue') {
-            notDuplicatedJobs = items.filter(item => {
-                return !recommendJobIds.includes(item.identifier)
-            })
-        }
         // set jobList
+        let notDuplicatedJobs = items
+        if (isRecommend) {
+            // Filter recommended jobs
+            const recommendJobs = filterRecommendedJobs()
+            state.jobRecommendList = recommendJobs
+            // 一般排序與適配讀排序時避免重複出現職缺
+            const recommendJobIds = recommendJobs.map(item => item.identifier)
+            if (state.pagination.pageOrderBy !== 'salaryValue') {
+                notDuplicatedJobs = items.filter(item => {
+                    return !recommendJobIds.includes(item.identifier)
+                })
+            }
+        }
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
         state.count = count
         // 避免重複出現職缺
-        if (cache) {
+        if (isCache) {
             repoJob.state.cache.jobList = newJobList
+            repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
             repoJob.state.cache.count = count
             repoJob.state.cache.filter = state.filter
-            repoJob.state.cache.jobRecommendList = recommendJobs
         }
     }
     function observeLastJob(selectorString = '.jobItem') {

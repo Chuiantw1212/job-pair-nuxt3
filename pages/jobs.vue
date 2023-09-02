@@ -91,7 +91,7 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="jobScroller.initializeSearch()"
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="handleSearch()"
                         placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
@@ -164,11 +164,10 @@ const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const router = useRouter()
 const jobScroller = useJobScroller({
-    cache: true,
-    recommend: true,
+    isCache: true,
+    isRecommend: true,
 })
 const state = reactive({
-    total: 0,
     isFilterOpen: false,
     searchLike: "",
     filterOpen: {
@@ -212,6 +211,9 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function handleSearch() {
+    jobScroller.initializeSearch()
+}
 function getFilterValues() {
     const values = Object.values(jobScroller.state.filter)
     const validValues = values.filter(value => {
@@ -235,85 +237,6 @@ function getSalaryTypeItems() {
         },
         ...items
     ]
-}
-function filterRecommendedJobs() {
-    if (!repoJob.state.jobRecommendedRes) {
-        return []
-    }
-    const recommendJobs = repoJob.state.jobRecommendedRes
-    const { addressRegion = [], occupationalCategory = [], jobLocationType = [],
-        responsibilities = [], employmentType = [], jobBenefits = [],
-        industry = [], salaryMin = 0, salaryMax = 0, salaryType = '' } = state.filter
-    let filteredResult = recommendJobs
-    if (addressRegion.length) {
-        filteredResult = filteredResult.filter(item => {
-            return addressRegion.includes(item.addressRegion)
-        })
-    }
-    if (occupationalCategory.length) {
-        filteredResult = filteredResult.filter(item => {
-            return item.occupationalCategory.some(category2Item => {
-                return occupationalCategory.includes(category2Item)
-            })
-        })
-    }
-    if (jobLocationType.length) {
-        filteredResult = filteredResult.filter(item => {
-            return jobLocationType.includes(item.onSite)
-        })
-    }
-    if (responsibilities.length) {
-        filteredResult = filteredResult.filter(item => {
-            return responsibilities.includes(item.manager)
-        })
-    }
-    if (employmentType.length) {
-        filteredResult = filteredResult.filter(item => {
-            return employmentType.includes(item.employmentType)
-        })
-    }
-    if (responsibilities.length) {
-        filteredResult = filteredResult.filter(item => {
-            return responsibilities.includes(item.responsibilities)
-        })
-    }
-    if (jobBenefits.length) {
-        filteredResult = filteredResult.filter(item => {
-            return jobBenefits.some(benefitFlag => {
-                return item.welfareFlags[benefitFlag]
-            })
-        })
-    }
-    if (industry.length) {
-        filteredResult = filteredResult.filter(item => {
-            return industry.includes(item.industry)
-        })
-    }
-    if (salaryType) {
-        filteredResult = filteredResult.filter(item => {
-            return item.salaryType === salaryType
-        })
-    }
-    if (salaryMax) {
-        filteredResult = filteredResult.filter(item => {
-            return Number(item.salaryMax) > Number(salaryMax)
-        })
-    }
-    if (salaryMin) {
-        filteredResult = filteredResult.filter(item => {
-            return Number(item.salaryMin) > Number(salaryMin)
-        })
-    }
-    if (state.searchLike) {
-        filteredResult = filteredResult.filter(item => {
-            const searchableFields = ['description', 'skills', 'name', 'organizationName']
-            return searchableFields.some(field => {
-                return String(item[field]).includes(state.searchLike)
-            })
-        })
-    }
-    const topTwo = filteredResult.slice(0, 2)
-    return topTwo
 }
 async function setPageOrderBy(key) {
     jobScroller.state.pagination.pageOrderBy = key
@@ -492,6 +415,7 @@ function resetFilter() {
         flex-direction: row;
         gap: 16px;
         padding-top: 20px;
+        padding-bottom: 20px;
 
         .jobs__filter {
             .filter__list {
