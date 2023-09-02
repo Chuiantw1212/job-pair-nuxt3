@@ -45,7 +45,8 @@ export default function setup(setUpConfig = {}) {
             return 0
         }
     }
-    function getDefaultFilter() {
+    function getDefaultFilter(config = {}) {
+        const { isCache = setUpConfig.isCache } = config
         if (isCache && repoJob.state.cache.jobList.length) {
             return repoJob.state.cache.filter
         }
@@ -80,14 +81,16 @@ export default function setup(setUpConfig = {}) {
         }
     }
     function initializeSearch(config = {}) {
+        console.trace('initializeSearch', config)
+        const { isLoading = false, } = config
         state.jobList = []
         state.pagination.pageOffset = 0
         concatJobsFromServer(config)
     }
     async function concatJobsFromServer(config = {}) {
-        const { isLoading = false, } = config
+        // console.trace(config);
+        const { isLoading = false, isCache = setUpConfig.isCache } = config
         const { user } = repoAuth.state
-        // console.log(fianalConfig);
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
             searchLike: state.searchLike,
         }, config)
@@ -119,8 +122,8 @@ export default function setup(setUpConfig = {}) {
         state.jobList = newJobList
         state.count = count
         // 避免重複出現職缺
+        repoJob.state.cache.isDone = isCache
         if (isCache) {
-            repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
             repoJob.state.cache.count = count
             repoJob.state.cache.filter = state.filter
@@ -131,13 +134,10 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        if (!state.observer) {
-            state.observer = new IntersectionObserver(loadJobItemBatch, {
-                rootMargin: "0px",
-                threshold: 0,
-            })
-        }
         $requestSelectorAll(selectorString, (elements) => {
+            if (!state.observer) {
+                state.observer = new IntersectionObserver(loadJobItemBatch)
+            }
             const target = elements[elements.length - 1]
             if (target) {
                 state.observer.observe(target)
@@ -146,6 +146,7 @@ export default function setup(setUpConfig = {}) {
     }
     async function loadJobItemBatch(entries, observer) {
         const triggeredEntry = entries[0]
+        console.log(triggeredEntry);
         if (triggeredEntry.isIntersecting) {
             observer.disconnect()
             state.pagination.pageOffset += state.pagination.pageLimit

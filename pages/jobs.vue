@@ -1,6 +1,6 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isLarge }">
-        <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
+        <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event" @change="test()"
             class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
@@ -190,27 +190,46 @@ watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
         return
     }
-    if (repoJob.state.cache.jobList.length) {
+    if (repoJob.state.cache.isDone) {
         jobScroller.state.jobList = repoJob.state.cache.jobList
         jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
         return
     }
-    // set filter
     if (user?.id) {
+        console.log('logged in', repoJob.state.cache.jobList.length);
         jobScroller.state.filter = jobScroller.getDefaultFilter()
+        // jobScroller.initializeSearch()
+
+    } else {
+        console.log('not logged in yet');
+        jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: false })
+        // jobScroller.initializeSearch({ isCache: false })
     }
-    // get jobs
-    const firstJob = jobScroller.state.jobList[0]
-    if (!firstJob?.similarity) {
-        jobScroller.initializeSearch()
-    }
+    // // set filter
+    // if (user?.id) {
+    //     jobScroller.state.filter = jobScroller.getDefaultFilter()
+    // }
+    // // get jobs
+    // const firstJob = jobScroller.state.jobList[0]
+    // if (!firstJob?.similarity) {
+    //     jobScroller.initializeSearch()
+    // }
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
-        jobScroller.observeLastJob()
+        console.log('watch(() => jobScroller.state.jobList', newValue.length);
+        if (newValue.length) {
+            jobScroller.observeLastJob()
+        }
     }
 })
+// watch(() => jobScroller.state.filter, (newValue) => {
+//     initializeSearch()
+// }, { deep: true })
 // methods
+function test() {
+    console.log('test');
+}
 function handleSearch() {
     jobScroller.initializeSearch()
 }
@@ -252,6 +271,7 @@ async function setPageOrderBy(key) {
 }
 function resetFilter() {
     jobScroller.state.jobList = []
+    jobScroller.state.count = 0
     jobScroller.state.pagination = {
         pageOrderBy: "datePosted",
         pageLimit: 5,
