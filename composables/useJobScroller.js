@@ -20,14 +20,28 @@ export default function setup(setUpConfig = {}) {
         debounceTimer: null,
     })
     // hooks
-    watch(() => state.filter, (newValue) => {
-        initializeSearch()
-    }, { deep: true })
     watch(() => route.name, () => {
         state.observer.disconnect()
     })
     // methods
-    function getPagination() {
+    function resetJobState() {
+        state.jobList = []
+        state.jobRecommendList = []
+        state.pagination = getPagination({
+            isReset: true
+        })
+        state.filter = getDefaultFilter({
+            isReset: true
+        })
+        state.searchLike = ""
+        state.count = 0
+        if (state.observer) {
+            state.observer.disconnect()
+        }
+        repoJob.resetCache()
+    }
+    function getPagination(config = {}) {
+        const { isCache = setUpConfig.isCache, isReset = false } = config
         if (isCache) {
             return repoJob.state.cache.pagination
         } else {
@@ -46,8 +60,8 @@ export default function setup(setUpConfig = {}) {
         }
     }
     function getDefaultFilter(config = {}) {
-        const { isCache = setUpConfig.isCache } = config
-        if (isCache && repoJob.state.cache.jobList.length) {
+        const { isCache = setUpConfig.isCache, isReset = false } = config
+        if (isCache && repoJob.state.cache.jobList.length && !isReset) {
             return repoJob.state.cache.filter
         }
         const defualtFilter = {
@@ -71,24 +85,12 @@ export default function setup(setUpConfig = {}) {
         }
         return defualtFilter
     }
-    function debounce(func, delay = 800) {
-        return (...args) => {
-            clearTimeout(state.debounceTimer)
-            state.debounceTimer = setTimeout(() => {
-                state.debounceTimer = undefined
-                func.apply(this, args)
-            }, delay)
-        }
-    }
     function initializeSearch(config = {}) {
-        console.trace('initializeSearch', config)
-        const { isLoading = false, } = config
         state.jobList = []
         state.pagination.pageOffset = 0
         concatJobsFromServer(config)
     }
     async function concatJobsFromServer(config = {}) {
-        // console.trace(config);
         const { isLoading = false, isCache = setUpConfig.isCache } = config
         const { user } = repoAuth.state
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
@@ -102,6 +104,10 @@ export default function setup(setUpConfig = {}) {
         if (response.status !== 200) {
             $sweet.alert('伺服器塞車了')
             return
+        }
+        if (state.observer) {
+            state.observer.disconnect()
+            state.observer = null
         }
         const { count = 0, items = [] } = response.data
         // set jobList
@@ -121,9 +127,10 @@ export default function setup(setUpConfig = {}) {
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
         state.count = count
-        // 避免重複出現職缺
+        // Cache mechanism
         repoJob.state.cache.isDone = isCache
         if (isCache) {
+            repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
             repoJob.state.cache.count = count
             repoJob.state.cache.filter = state.filter
@@ -136,7 +143,7 @@ export default function setup(setUpConfig = {}) {
         }
         $requestSelectorAll(selectorString, (elements) => {
             if (!state.observer) {
-                state.observer = new IntersectionObserver(loadJobItemBatch)
+                state.observer = new IntersectionObserver(loadNextFrameJobs)
             }
             const target = elements[elements.length - 1]
             if (target) {
@@ -144,9 +151,8 @@ export default function setup(setUpConfig = {}) {
             }
         })
     }
-    async function loadJobItemBatch(entries, observer) {
+    async function loadNextFrameJobs(entries, observer) {
         const triggeredEntry = entries[0]
-        console.log(triggeredEntry);
         if (triggeredEntry.isIntersecting) {
             observer.disconnect()
             state.pagination.pageOffset += state.pagination.pageLimit
@@ -236,6 +242,7 @@ export default function setup(setUpConfig = {}) {
         state,
         observeLastJob,
         initializeSearch,
-        getDefaultFilter
+        getDefaultFilter,
+        resetJobState,
     }
 }

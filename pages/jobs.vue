@@ -1,6 +1,6 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isLarge }">
-        <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event" @change="test()"
+        <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
             class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
@@ -136,8 +136,7 @@
                         </LazyOrganismJobItem>
                     </template>
                     <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" :ref="`jobItems`"
-                        class="main__list__item jobItem">
+                        v-model="jobScroller.state.jobList[index]" :key="index" class="main__list__item jobListItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -186,6 +185,14 @@ definePageMeta({
 useHead({
     title: '職缺探索'
 })
+onMounted(() => {
+    if (repoJob.state.cache.isDone) {
+        // Do not mess with front end cache
+        return
+    }
+    // 造成第一個query會打兩次
+    jobScroller.initializeSearch({ isCache: false })
+})
 watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
         return
@@ -195,41 +202,30 @@ watch(() => repoAuth.state.user, (user) => {
         jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
         return
     }
-    if (user?.id) {
-        console.log('logged in', repoJob.state.cache.jobList.length);
-        jobScroller.state.filter = jobScroller.getDefaultFilter()
-        // jobScroller.initializeSearch()
-
-    } else {
-        console.log('not logged in yet');
-        jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: false })
-        // jobScroller.initializeSearch({ isCache: false })
+    // 附加occupationalCateogry
+    jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: true })
+}, { immediate: true }) // IMPORTANT: 這個immediate必須要設定
+watch(() => jobScroller.state.filter, (newValue) => {
+    if (!process.client) {
+        return
     }
-    // // set filter
-    // if (user?.id) {
-    //     jobScroller.state.filter = jobScroller.getDefaultFilter()
-    // }
-    // // get jobs
-    // const firstJob = jobScroller.state.jobList[0]
-    // if (!firstJob?.similarity) {
-    //     jobScroller.initializeSearch()
-    // }
-}, { immediate: true })
+    if (repoAuth.state.user?.id) {
+        jobScroller.initializeSearch()
+    } else {
+        jobScroller.initializeSearch({ isCache: false })
+    }
+}, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (!process.client) {
+        return
+    }
     if (newValue.length !== oldValue.length) {
-        console.log('watch(() => jobScroller.state.jobList', newValue.length);
         if (newValue.length) {
-            jobScroller.observeLastJob()
+            jobScroller.observeLastJob('.jobListItem')
         }
     }
-})
-// watch(() => jobScroller.state.filter, (newValue) => {
-//     initializeSearch()
-// }, { deep: true })
+}, { immediate: true })
 // methods
-function test() {
-    console.log('test');
-}
 function handleSearch() {
     jobScroller.initializeSearch()
 }
@@ -270,19 +266,11 @@ async function setPageOrderBy(key) {
     })
 }
 function resetFilter() {
-    jobScroller.state.jobList = []
-    jobScroller.state.count = 0
-    jobScroller.state.pagination = {
-        pageOrderBy: "datePosted",
-        pageLimit: 5,
-        pageOffset: 0,
-    }
-    state.searchLike = ""
+    jobScroller.resetJobState()
     window.scroll({
         top: 0,
         behavior: 'auto'
     })
-    jobScroller.state.filter = jobScroller.getDefaultFilter()
 }
 </script>
 <style lang="scss" scoped>

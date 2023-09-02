@@ -362,6 +362,9 @@ watch(() => state.job, (newValue) => {
         jobScroller.state.filter.occupationalCategory = newValue.occupationalCategory // Will trigger job search
     }
 },)
+watch(() => jobScroller.state.filter, () => {
+    jobScroller.initializeSearch()
+}, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
         jobScroller.observeLastJob()
