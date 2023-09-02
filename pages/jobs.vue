@@ -180,6 +180,9 @@ const state = reactive({
     },
 })
 // hooks
+definePageMeta({
+    keepalive: true
+})
 useHead({
     title: '職缺探索'
 })
@@ -324,7 +327,7 @@ async function setPageOrderBy(key) {
 }
 function resetFilter() {
     jobScroller.state.jobList = []
-    jobScroller.jobScroller.state.pagination = {
+    jobScroller.state.pagination = {
         pageOrderBy: "datePosted",
         pageLimit: 5,
         pageOffset: 0,

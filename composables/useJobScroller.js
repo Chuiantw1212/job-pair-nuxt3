@@ -16,7 +16,7 @@ export default function setup(setUpConfig) {
             pageOffset: 0,
         },
         // filters
-        filter: getDefaultFilter(),
+        filter: getDefaultFilter({ cache }),
         searchLike: "",
         observer: null,
         count: 0,
@@ -30,7 +30,8 @@ export default function setup(setUpConfig) {
         state.observer.disconnect()
     })
     // methods
-    function getDefaultFilter() {
+    function getDefaultFilter(payload = {}) {
+        const { cache = false } = payload
         if (cache && repoJob.state.cache.jobList.length) {
             return repoJob.state.cache.filter
         }
