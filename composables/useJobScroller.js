@@ -19,7 +19,7 @@ export default function setup(setUpConfig) {
         filter: getDefaultFilter({ cache }),
         searchLike: "",
         observer: null,
-        count: 0,
+        count: getCachedCount({ cache }),
         debounceTimer: null,
     })
     // hooks
@@ -30,6 +30,14 @@ export default function setup(setUpConfig) {
         state.observer.disconnect()
     })
     // methods
+    function getCachedCount(payload = {}) {
+        const { cache = false } = payload
+        if (cache) {
+            return repoJob.state.cache.count
+        } else {
+            return 0
+        }
+    }
     function getDefaultFilter(payload = {}) {
         const { cache = false } = payload
         if (cache && repoJob.state.cache.jobList.length) {
