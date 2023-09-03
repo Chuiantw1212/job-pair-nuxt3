@@ -49,11 +49,11 @@ const props = defineProps({
     }
 })
 onMounted(() => {
-    toggleClickOutside(true)
+    toggleMouseDownOutside(true)
     toggleReleaseDraggable(true)
 })
 onBeforeUnmount(() => {
-    toggleClickOutside(false)
+    toggleMouseDownOutside(false)
     toggleReleaseDraggable(false)
 })
 watch(() => props.modelValue, (newStatus) => {
@@ -86,15 +86,10 @@ function moveControllable(event) {
     const area = instance.refs.controllable
     const { movementX, movementY, } = event
     const { offsetLeft, offsetTop, offsetWidth, offsetHeight, } = area
-    console.log(offsetWidth, offsetHeight,);
     if (state.isDragged) {
         const left = Math.max(0, movementX + offsetLeft)
         const top = Math.max(0, movementY + offsetTop)
         emit('mousemove', {
-            // movementX,
-            // movementY,
-            // offsetLeft,
-            // offsetTop,
             offsetWidth,
             offsetHeight,
             left,
@@ -117,14 +112,14 @@ function toggleMouseMove(isOn) {
         document.removeEventListener('mousemove', moveControllable)
     }
 }
-function toggleClickOutside(isOn) {
+function toggleMouseDownOutside(isOn) {
     if (isOn) {
-        document.addEventListener("click", handleClickoutSide)
+        document.addEventListener("mousedown", handlePressDownOutSide)
     } else {
-        document.removeEventListener("click", handleClickoutSide)
+        document.removeEventListener("mousedown", handlePressDownOutSide)
     }
 }
-function handleClickoutSide(event) {
+function handlePressDownOutSide(event) {
     const area = instance.refs.controllable
     if (!area.contains(event.target)) {
         state.isFocused = false

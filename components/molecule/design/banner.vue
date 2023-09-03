@@ -2,7 +2,6 @@
     <div class="banner" ref="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
-        {{ state.controllable.isFocused }}
         <LazyAtomControllable v-model="state.controllable" @mousemove="handlePosition($event)">
             <LazyAtomInputCkeditorInline v-model="state.content" class="editorGroup__editor" @focus="handleFocus()"
                 @click="handleFocus()" @blur="handleBlur()">

@@ -191,10 +191,6 @@ async function initializeCKEditor() {
             emit('focus', evt)
             state.isFocused = true
         }
-        // if (!isFocused) {
-        //     emit('blur', evt)
-        //     state.isFocused = false
-        // }
     })
     // set data
     if (localValue.value) {
@@ -222,24 +218,15 @@ function toggleClickWithin(isOn) {
 const currentInstance = getCurrentInstance()
 
 function handleClickWithin(event) {
-
     const element = currentInstance.refs.editorArea
     const { target } = event
-    console.log('element', element);
-    console.log('target', target);
     if (element.contains(target)) {
-        console.log('handleClickWithin', true);
         emit('focus', event)
         state.isFocused = true
     } else {
-        console.log('handleClickWithin', false);
         emit('blur', event)
         state.isFocused = false
     }
-    // else {
-    //     emit('blur', event)
-    //     state.isFocused = false
-    // }
 }
 // public method do not delete
 async function setData(newValue) {
