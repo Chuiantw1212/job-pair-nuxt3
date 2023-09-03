@@ -25,15 +25,11 @@
 </template>
 <script setup>
 const device = useDevice()
-const route = useRoute()
-const router = useRouter()
-watch(() => route, (newRoute) => {
-    if (newRoute.name === 'admin-manage') {
-        router.push({
-            name: 'admin-manage-company'
-        })
-    }
-}, { immediate: true })
+definePageMeta({
+    redirect: () => {
+        return { name: 'admin-manage-company' }
+    },
+})
 </script>
 <style lang="scss" scoped>
 .dashboard {

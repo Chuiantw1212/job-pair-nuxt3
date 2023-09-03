@@ -41,15 +41,12 @@ const { $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const device = useDevice()
 const route = useRoute()
-const router = useRouter()
 // hooks
-watch(() => route, (newRoute) => {
-    if (newRoute.name === 'user') {
-        router.replace({
-            name: 'user-profile'
-        })
-    }
-}, { immediate: true })
+definePageMeta({
+    redirect: () => {
+        return { name: 'user-profile' }
+    },
+})
 watch(() => repoAuth.state.user, () => {
     const { user } = repoAuth.state
     if (!user?.id) {
