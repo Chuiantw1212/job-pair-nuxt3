@@ -45,7 +45,7 @@ const router = useRouter()
 // hooks
 watch(() => route, (newRoute) => {
     if (newRoute.name === 'user') {
-        router.push({
+        router.replace({
             name: 'user-profile'
         })
     }

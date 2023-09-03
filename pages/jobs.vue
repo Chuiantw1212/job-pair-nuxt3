@@ -5,9 +5,9 @@
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.occupationalCategory"
-                        :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
-                        :isLarge="device.state.isLarge" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-if="state.filterOpen.occupationalCategory"
+                        v-model="jobScroller.state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
@@ -18,8 +18,9 @@
                 </div>
                 <template v-if="repoSelect.state.locationRes">
                     <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.addressRegion"
-                            :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
+                        <LazyAtomInputCheckMultiple v-if="state.filterOpen.division"
+                            v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
+                            class="m-3" :flexDirection="'row'">
                         </LazyAtomInputCheckMultiple>
                     </LazyAtomInputSelectContainer>
                     <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.addressRegion"
@@ -27,7 +28,8 @@
                     </LazyAtomInputSelectLabel>
                 </template>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.jobLocationType"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobLocationType"
+                        v-model="jobScroller.state.filter.jobLocationType"
                         :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
@@ -35,7 +37,8 @@
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.employmentType"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.employmentType"
+                        v-model="jobScroller.state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
@@ -43,7 +46,8 @@
                     :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.responsibilities"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.responsibilities"
+                        v-model="jobScroller.state.filter.responsibilities"
                         :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
@@ -51,7 +55,8 @@
                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <LazyAtomInputCheckMultiple v-model="jobScroller.state.filter.jobBenefits"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobBenefits"
+                        v-model="jobScroller.state.filter.jobBenefits"
                         :items="repoSelect.state.selectByQueryRes.jobBenefits" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
@@ -59,7 +64,7 @@
                     :items="repoSelect.state.selectByQueryRes.jobBenefits" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.industry"
+                    <LazyMoleculeFilterCategory v-if="state.filterOpen.industry" v-model="jobScroller.state.filter.industry"
                         :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
                         :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
