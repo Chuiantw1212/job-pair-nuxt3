@@ -136,12 +136,13 @@
                 <ul class="main__list">
                     <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
                         <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
-                            v-model="jobScroller.state.jobRecommendList[index]" :key="index" class="main__list__item"
-                            :recommend="true">
+                            v-model="jobScroller.state.jobRecommendList[index]" :key="`recommend${index}`"
+                            class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
                     <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" class="main__list__item jobListItem">
+                        v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
+                        class="main__list__item jobListItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
