@@ -13,7 +13,7 @@
     "analyze": "npx nuxi analyze"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "devDependencies": {
     "@nuxt/image": "^1.0.0-rc.1",

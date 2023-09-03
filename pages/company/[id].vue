@@ -129,7 +129,6 @@ const state = reactive({
     resizeTimer: null,
     renderKey: Math.random()
 })
-const jobItems = ref([])
 // hooks
 const organizationId = computed(() => {
     return route.params.id
@@ -194,7 +193,7 @@ watch(() => repoAuth.state.user, (newValue) => {
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
-        jobScroller.observeLastJob(jobItems)
+        jobScroller.observeLastJob()
     }
 })
 // methods

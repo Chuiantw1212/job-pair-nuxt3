@@ -53,7 +53,7 @@
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
             class="profile__information profile__doc mt-3">
-            <LazyAtomInputUploader v-model="state.profileBasic.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
+            <LazyAtomInputUploader v-model="state.profileAdvanced.resumes" name="履歷" :size="5242880" :accept="'.pdf'" :max="3"
                 :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
             <div class="profile__languageGroup  mt-3">

@@ -86,18 +86,20 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'department',
         },
         {
             role: 'system',
             messages: ['這份工作是否需要管理他人呢？有的話請告訴我會管理的「人數」，沒有的話請「略過此題」。(2/6)'],
             responseUI: {
                 type: 'text',
-            }
+            },
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'employees',
         },
         {
             role: 'system',
@@ -109,31 +111,32 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'majorJobs',
         },
         {
             role: 'system',
             messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
             responseUI: {
                 type: 'text',
-                isRequired: true,
             }
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'minorJobs',
         },
         {
             role: 'system',
             messages: ['這份工作最主要或短期內要完成的目標是什麼？例如：三個月後專案能順利上線、每個月拜訪幾位客戶、與同事合作維持店舖營運、能獨立運作完成客戶要求...等？(5/6)'],
             responseUI: {
                 type: 'text',
-                isRequired: true,
             }
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'majorGoals',
         },
         {
             role: 'system',
@@ -146,7 +149,8 @@ const state = reactive({
         },
         {
             role: 'user',
-            messages: [''],
+            messages: [],
+            key: 'value',
         },
     ],
 })
@@ -208,11 +212,15 @@ function gotoNextItem(selectedItem = '') {
     // set reply
     const relatedItem = state.chatItems[state.chatItemIndex + 1]
     relatedItem.messages[0] = state.chatReply || selectedItem
-    state.chatReply = ''
+    // const placeholder = state.chatItems[state.chatItemIndex + 2]?.messages[0]
+    // if (placeholder) {
+    //     state.chatReply = placeholder
+    // } else {
+    //     state.chatReply = ''
+    // }
     // show reply
     state.chatItemIndex += 2
     if (state.chatItemIndex >= state.chatItems.length) {
-        // submit items
         handleSubmit()
         return
     }
@@ -248,7 +256,8 @@ async function handleSubmit() {
     const minimizedData = state.chatItems.map(item => {
         return {
             role: item.role,
-            messages: item.messages
+            messages: item.messages,
+            key: item.key
         }
     })
     const res = await repoChat.postJobDescriptionGenerate({

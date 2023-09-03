@@ -6,7 +6,7 @@
                     :items="getActiveJobs()" :itemValue="'identifier'" :itemText="'name'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" v-model="state.searchForm.workLocation"
-                    name="地點(預設為總公司地點)" :items="getOrderedLocations()">
+                    name="地點" :items="getOrderedLocations()">
                 </LazyAtomInputSelect>
                 <LazyAtomInputNumber v-model="state.searchForm.similairy" name="適配度門檻" :max="100" :min="0">
                 </LazyAtomInputNumber>
@@ -156,9 +156,6 @@ watch(() => repoAuth.state.company, (companyInfo) => {
     const items = getActiveJobs()
     if (items && items.length) {
         state.searchForm.jobIdentifier = items[0].identifier
-    }
-    if (companyInfo && companyInfo.addressRegion) {
-        state.searchForm.workLocation = companyInfo.addressRegion
     }
 }, { immediate: true })
 // methods

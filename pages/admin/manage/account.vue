@@ -154,11 +154,11 @@ useHead({
     title: '帳戶管理 - 招募中心'
 })
 watch(() => repoAuth.state.user, (newValue) => {
-    if (!newValue) {
+    if (!process.client || !newValue) {
         return
     }
     state.tempUser = JSON.parse(JSON.stringify(newValue))
-    if (!state.tempUser.chatName) {
+    if (!state.tempUser?.chatName) {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
     }
@@ -170,7 +170,7 @@ async function logout() {
     let user = null
     try {
         const auth = getAuth()
-        user = auth().currentUser
+        user = auth.currentUser
     } finally {
         if (!user) {
             router.push({

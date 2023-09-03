@@ -231,7 +231,7 @@ defineExpose({
     border: 1px solid #d3d3d3;
 }
 
-.ckeditor :deep(.ck-sticky-panel__content) {
+.ckeditor--edit :deep(.ck-sticky-panel__content) {
     border-bottom: 1px solid #ccced1;
 }
 </style>
