@@ -29,8 +29,6 @@
     </div>
 </template>
 <script setup>
-import { log } from 'firebase-functions/logger';
-
 const emit = defineEmits(['mousemove'])
 const state = reactive({
     isFocused: false,
