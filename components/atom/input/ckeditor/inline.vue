@@ -11,7 +11,8 @@
             </span>
         </div>
         <input v-show="false" :value="checkValue()" :data-required="required" :data-name="name">
-        <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview, 'ckeditor--focused': state.isFocused }"
+        <div ref="editorArea" class="ckeditor"
+            :class="{ 'ckeditor--edit': !disabled || preview, 'ckeditor--focused': state.isFocused }"
             @click="emit('click', $event)">
             <div :id="`editor_${state.id}`" ref="editorRef">
 
@@ -117,12 +118,14 @@ let localValue = computed({
 onMounted(async () => {
     state.id = $uuid4()
     initializeCKEditor()
+    toggleClickWithin(true)
 })
 onBeforeUnmount(() => {
     const ckeditorInstance = state.ckeditorInstance
     if (ckeditorInstance) {
         ckeditorInstance.destroy()
     }
+    toggleClickWithin(false)
 })
 // methods
 function checkValue() {
@@ -187,10 +190,11 @@ async function initializeCKEditor() {
         if (isFocused) {
             emit('focus', evt)
             state.isFocused = true
-        } else {
-            emit('blur', evt)
-            state.isFocused = false
         }
+        // if (!isFocused) {
+        //     emit('blur', evt)
+        //     state.isFocused = false
+        // }
     })
     // set data
     if (localValue.value) {
@@ -207,6 +211,35 @@ async function initializeCKEditor() {
         localValue.value = newValue
     })
     state.ckeditorInstance = markRaw(editor)
+}
+function toggleClickWithin(isOn) {
+    if (isOn) {
+        document.addEventListener('mousedown', handleClickWithin)
+    } else {
+        document.removeEventListener('mousedown', handleClickWithin)
+    }
+}
+const currentInstance = getCurrentInstance()
+
+function handleClickWithin(event) {
+
+    const element = currentInstance.refs.editorArea
+    const { target } = event
+    console.log('element', element);
+    console.log('target', target);
+    if (element.contains(target)) {
+        console.log('handleClickWithin', true);
+        emit('focus', event)
+        state.isFocused = true
+    } else {
+        console.log('handleClickWithin', false);
+        emit('blur', event)
+        state.isFocused = false
+    }
+    // else {
+    //     emit('blur', event)
+    //     state.isFocused = false
+    // }
 }
 // public method do not delete
 async function setData(newValue) {

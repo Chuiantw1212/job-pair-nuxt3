@@ -70,6 +70,15 @@ const state = reactive({
 .design {
     background-color: white;
 
+    * {
+        -webkit-user-select: none;
+        /* Safari */
+        -ms-user-select: none;
+        /* IE 10 and IE 11 */
+        user-select: none;
+        /* Standard syntax */
+    }
+
     .design__panel {
         position: fixed;
         left: 0;

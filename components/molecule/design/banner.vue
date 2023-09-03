@@ -1,9 +1,9 @@
 <template>
     <div class="banner" ref="banner">
-        <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp">
-        <!-- 標題 -->
+        <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
+            draggable="false">
+        {{ state.controllable.isFocused }}
         <LazyAtomControllable v-model="state.controllable" @mousemove="handlePosition($event)">
-            <!-- Title -->
             <LazyAtomInputCkeditorInline v-model="state.content" class="editorGroup__editor" @focus="handleFocus()"
                 @click="handleFocus()" @blur="handleBlur()">
             </LazyAtomInputCkeditorInline>
@@ -29,15 +29,14 @@ const state = reactive({
 // methods
 const currentInstance = getCurrentInstance()
 function handlePosition(event) {
-    const { left, top, offsetWidth, offsetHeight, } = event
+    const { left = 0, top = 0, offsetWidth, offsetHeight, } = event
     const area = currentInstance.refs.banner
     const { clientHeight, clientWidth } = area
-    console.log(currentInstance.refs);
-    const boundLeft = Math.min(left + offsetWidth, clientWidth)
-    const boundHeight = Math.min(top + offsetHeight, clientHeight)
+    const boundLeft = Math.min(left, clientWidth - offsetWidth)
+    const boundHeight = Math.min(top, clientHeight - offsetHeight)
     state.controllable.position = {
-        left: `${left}px`,
-        top: `${top}px`,
+        left: `${boundLeft}px`,
+        top: `${boundHeight}px`,
     }
 }
 function handleFocus() {
@@ -57,21 +56,17 @@ function handleBlur() {
 
     .banner__controllable {
         width: 200px;
-        // min-height: 400px;
         position: absolute;
         top: 0;
         border: 1px dashed rgba(0, 0, 0, 0);
-        // border: 1px dashed black;
         position: absolute;
         top: 0px;
         padding: 2px;
         background-color: #1a73e8;
-
-        .controllable__editable {}
     }
 
-    .banner__controllable--focused {
-        border: 1px dashed black;
-    }
+    // .banner__controllable--focused {
+    //     border: 1px dashed black;
+    // }
 }
 </stylte>
