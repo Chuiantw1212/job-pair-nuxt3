@@ -179,17 +179,13 @@
 </template>
 <script setup>
 import placeholderImage from '~/assets/company/company.webp'
-const runTimeConfig = useRuntimeConfig()
-const { $emitter, $sweet, $filter, } = useNuxtApp()
-const router = useRouter()
 const route = useRoute()
-const repoJob = useRepoJob()
-const repoJobApplication = useRepoJobApplication()
-const repoAuth = useRepoAuth()
-const repoSelect = useRepoSelect()
-const repoCompany = useRepoCompany()
-const jobScroller = useJobScroller()
-const device = useDevice()
+const jobId = computed(() => {
+    const id = route.params.id
+    return id
+})
+const runTimeConfig = useRuntimeConfig()
+const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 const state = reactive({
     job: null,
     company: null,
@@ -224,10 +220,18 @@ const state = reactive({
     observer: null,
     debounceTimer: null,
 })
-const jobId = computed(() => {
-    const id = route.params.id
-    return id
+state.job = job
+const jobScroller = useJobScroller({
+    ignoreJobs: [job.value.identifier]
 })
+const { $emitter, $sweet, $filter, } = useNuxtApp()
+const router = useRouter()
+const repoJob = useRepoJob()
+const repoJobApplication = useRepoJobApplication()
+const repoAuth = useRepoAuth()
+const repoSelect = useRepoSelect()
+const repoCompany = useRepoCompany()
+const device = useDevice()
 const browserConfig = computed({
     get() {
         if (process.client) {
@@ -244,8 +248,6 @@ const browserConfig = computed({
     }
 })
 // hooks
-const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
-state.job = job
 const currentInstance = getCurrentInstance()
 const { descriptionRef, skillsRef } = currentInstance.refs
 if (descriptionRef) {
@@ -392,8 +394,8 @@ function detectScroll() {
     }
     debounce(() => {
         const offsetHeight = document.body.offsetHeight
-        const { innerHeight, pageYOffset } = window
-        if (innerHeight + pageYOffset >= offsetHeight && !jobScroller.state.isModalShown) {
+        const { innerHeight, scrollY } = window
+        if (innerHeight + scrollY >= offsetHeight && !jobScroller.state.isModalShown) {
             jobScroller.state.isModalShown = true
             $emitter.emit("showUserModal")
         }
