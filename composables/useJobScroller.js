@@ -3,11 +3,12 @@
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup(setUpConfig = {}) {
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
-    const { $requestSelectorAll, $sweet } = useNuxtApp()
+    const { $sweet } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
     const state = reactive({
+        routeName: route.name,
         jobList: [],
         jobRecommendList: [],
         // pagination
@@ -19,11 +20,12 @@ export default function setup(setUpConfig = {}) {
         count: getCachedCount(),
         debounceTimer: null,
     })
-    // hooks
-    watch(() => route.name, () => {
-        state.observer.disconnect()
-    })
     // methods
+    function disconnectObserver() {
+        if (state.observe) {
+            state.observer.disconnect()
+        }
+    }
     function resetJobState() {
         state.jobList = []
         state.jobRecommendList = []
@@ -105,10 +107,6 @@ export default function setup(setUpConfig = {}) {
             $sweet.alert('伺服器塞車了')
             return
         }
-        if (state.observer) {
-            state.observer.disconnect()
-            state.observer = null
-        }
         const { count = 0, items = [] } = response.data
         // set jobList
         let notDuplicatedJobs = items
@@ -132,8 +130,8 @@ export default function setup(setUpConfig = {}) {
         state.jobList = newJobList
         state.count = count
         // Cache mechanism
-        repoJob.state.cache.isDone = isCache
         if (isCache) {
+            repoJob.state.cache.isDone = isCache
             repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
             repoJob.state.cache.count = count
@@ -145,12 +143,17 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        $requestSelectorAll(selectorString, (elements) => {
+        nextTick(() => {
+            const elements = document.querySelectorAll(selectorString)
             if (!state.observer) {
-                state.observer = new IntersectionObserver(loadNextFrameJobs)
+                state.observer = new IntersectionObserver(loadNextFrameJobs, {
+                    rootMargin: "0px",
+                    threshold: 1, // important cant be zero
+                })
             }
             const target = elements[elements.length - 1]
             if (target) {
+                state.observer.disconnect()
                 state.observer.observe(target)
             }
         })
@@ -160,7 +163,9 @@ export default function setup(setUpConfig = {}) {
         if (triggeredEntry.isIntersecting) {
             observer.disconnect()
             state.pagination.pageOffset += state.pagination.pageLimit
-            await concatJobsFromServer()
+            await concatJobsFromServer({
+                isCache: setUpConfig.isCache
+            })
         }
     }
     function filterRecommendedJobs() {
@@ -248,5 +253,6 @@ export default function setup(setUpConfig = {}) {
         initializeSearch,
         getDefaultFilter,
         resetJobState,
+        disconnectObserver
     }
 }
