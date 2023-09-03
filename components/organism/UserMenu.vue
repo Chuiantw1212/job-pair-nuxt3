@@ -8,7 +8,7 @@
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
                         會員中心
                     </NuxtLink>
                 </li>

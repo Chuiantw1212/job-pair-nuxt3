@@ -4,7 +4,7 @@
         <div v-if="device.state.isLarge" class="consult__themeDesktop">
             <div class="themeDesktop__card">
                 <div class="card__header">
-                    <!-- <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" /> -->
+                    <img class="header__image" src="~/assets/consult/img2.webp" onerror="this.style.display = 'none'" />
                     <div class="header__header">{{ state.careerCard.title }}</div>
                     <!-- <div class="header__sub">釐清你的職業方向</div> -->
                 </div>
@@ -51,8 +51,8 @@
                 <div class="themeMobile__main">
                     <template v-if="state.activeTab === 'career'">
                         <div class="main__headerGroup">
-                            <!-- <img class="headerGroup__image" src="~/assets/consult/img2.webp"
-                                onerror="this.style.display = 'none'" /> -->
+                            <img class="headerGroup__image" src="~/assets/consult/img2.webp"
+                                onerror="this.style.display = 'none'" />
                             <h2 class="headerGroup__header">盤點線索探索職業方向</h2>
                             <!-- <div class="headerGroup__desc">釐清你的職業方向</div> -->
                         </div>
