@@ -122,7 +122,7 @@ function getCategoryTextGroup() {
     return texts.join("、")
 }
 function getCategoryText(category = "") {
-    if (!category) {
+    if (!category || !repoSelect.state.selectByQueryRes) {
         return
     }
     const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)

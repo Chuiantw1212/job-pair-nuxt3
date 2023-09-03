@@ -107,6 +107,7 @@ export default function setup() {
             router.replace({
                 name: 'index'
             })
+            repoAuth.state.isSigningInProgress = false
             return
         }
         /**

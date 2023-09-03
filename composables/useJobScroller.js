@@ -2,7 +2,7 @@
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup(setUpConfig = {}) {
-    const { isCache = false, isRecommend = false } = setUpConfig
+    const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
     const { $requestSelectorAll, $sweet } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
@@ -20,14 +20,28 @@ export default function setup(setUpConfig = {}) {
         debounceTimer: null,
     })
     // hooks
-    watch(() => state.filter, (newValue) => {
-        initializeSearch()
-    }, { deep: true })
     watch(() => route.name, () => {
         state.observer.disconnect()
     })
     // methods
-    function getPagination() {
+    function resetJobState() {
+        state.jobList = []
+        state.jobRecommendList = []
+        state.pagination = getPagination({
+            isReset: true
+        })
+        state.filter = getDefaultFilter({
+            isReset: true
+        })
+        state.searchLike = ""
+        state.count = 0
+        if (state.observer) {
+            state.observer.disconnect()
+        }
+        repoJob.resetCache()
+    }
+    function getPagination(config = {}) {
+        const { isCache = setUpConfig.isCache, isReset = false } = config
         if (isCache) {
             return repoJob.state.cache.pagination
         } else {
@@ -45,8 +59,9 @@ export default function setup(setUpConfig = {}) {
             return 0
         }
     }
-    function getDefaultFilter() {
-        if (isCache && repoJob.state.cache.jobList.length) {
+    function getDefaultFilter(config = {}) {
+        const { isCache = setUpConfig.isCache, isReset = false } = config
+        if (isCache && repoJob.state.cache.jobList.length && !isReset) {
             return repoJob.state.cache.filter
         }
         const defualtFilter = {
@@ -70,24 +85,14 @@ export default function setup(setUpConfig = {}) {
         }
         return defualtFilter
     }
-    function debounce(func, delay = 800) {
-        return (...args) => {
-            clearTimeout(state.debounceTimer)
-            state.debounceTimer = setTimeout(() => {
-                state.debounceTimer = undefined
-                func.apply(this, args)
-            }, delay)
-        }
-    }
     function initializeSearch(config = {}) {
         state.jobList = []
         state.pagination.pageOffset = 0
         concatJobsFromServer(config)
     }
     async function concatJobsFromServer(config = {}) {
-        const { isLoading = false, } = config
+        const { isLoading = false, isCache = setUpConfig.isCache } = config
         const { user } = repoAuth.state
-        // console.log(fianalConfig);
         const fianalConfig = Object.assign({}, state.pagination, state.filter, {
             searchLike: state.searchLike,
         }, config)
@@ -100,14 +105,22 @@ export default function setup(setUpConfig = {}) {
             $sweet.alert('伺服器塞車了')
             return
         }
+        if (state.observer) {
+            state.observer.disconnect()
+            state.observer = null
+        }
         const { count = 0, items = [] } = response.data
         // set jobList
         let notDuplicatedJobs = items
+        if (ignoreJobs.length) {
+            notDuplicatedJobs = notDuplicatedJobs.filter(item => {
+                return !ignoreJobs.includes(item.identifier)
+            })
+        }
         if (isRecommend) {
             // Filter recommended jobs
             const recommendJobs = filterRecommendedJobs()
             state.jobRecommendList = recommendJobs
-            // 一般排序與適配讀排序時避免重複出現職缺
             const recommendJobIds = recommendJobs.map(item => item.identifier)
             if (state.pagination.pageOrderBy !== 'salaryValue') {
                 notDuplicatedJobs = items.filter(item => {
@@ -118,7 +131,8 @@ export default function setup(setUpConfig = {}) {
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
         state.count = count
-        // 避免重複出現職缺
+        // Cache mechanism
+        repoJob.state.cache.isDone = isCache
         if (isCache) {
             repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
@@ -131,20 +145,17 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        if (!state.observer) {
-            state.observer = new IntersectionObserver(loadJobItemBatch, {
-                rootMargin: "0px",
-                threshold: 0,
-            })
-        }
         $requestSelectorAll(selectorString, (elements) => {
+            if (!state.observer) {
+                state.observer = new IntersectionObserver(loadNextFrameJobs)
+            }
             const target = elements[elements.length - 1]
             if (target) {
                 state.observer.observe(target)
             }
         })
     }
-    async function loadJobItemBatch(entries, observer) {
+    async function loadNextFrameJobs(entries, observer) {
         const triggeredEntry = entries[0]
         if (triggeredEntry.isIntersecting) {
             observer.disconnect()
@@ -235,6 +246,7 @@ export default function setup(setUpConfig = {}) {
         state,
         observeLastJob,
         initializeSearch,
-        getDefaultFilter
+        getDefaultFilter,
+        resetJobState,
     }
 }

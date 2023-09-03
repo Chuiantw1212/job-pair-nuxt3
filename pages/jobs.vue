@@ -136,8 +136,7 @@
                         </LazyOrganismJobItem>
                     </template>
                     <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" :ref="`jobItems`"
-                        class="main__list__item jobItem">
+                        v-model="jobScroller.state.jobList[index]" :key="index" class="main__list__item jobListItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -186,30 +185,46 @@ definePageMeta({
 useHead({
     title: '職缺探索'
 })
+onMounted(() => {
+    if (repoJob.state.cache.isDone) {
+        // Do not mess with front end cache
+        return
+    }
+    // 造成第一個query會打兩次
+    jobScroller.initializeSearch({ isCache: false })
+})
 watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
         return
     }
-    if (repoJob.state.cache.jobList.length) {
+    if (repoJob.state.cache.isDone) {
         jobScroller.state.jobList = repoJob.state.cache.jobList
         jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
         return
     }
-    // set filter
-    if (user?.id) {
-        jobScroller.state.filter = jobScroller.getDefaultFilter()
+    // 附加occupationalCateogry
+    jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: true })
+}, { immediate: true }) // IMPORTANT: 這個immediate必須要設定
+watch(() => jobScroller.state.filter, (newValue) => {
+    if (!process.client) {
+        return
     }
-    // get jobs
-    const firstJob = jobScroller.state.jobList[0]
-    if (!firstJob?.similarity) {
+    if (repoAuth.state.user?.id) {
         jobScroller.initializeSearch()
+    } else {
+        jobScroller.initializeSearch({ isCache: false })
+    }
+}, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (!process.client) {
+        return
+    }
+    if (newValue.length !== oldValue.length) {
+        if (newValue.length) {
+            jobScroller.observeLastJob('.jobListItem')
+        }
     }
 }, { immediate: true })
-watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length !== oldValue.length) {
-        jobScroller.observeLastJob()
-    }
-})
 // methods
 function handleSearch() {
     jobScroller.initializeSearch()
@@ -251,18 +266,11 @@ async function setPageOrderBy(key) {
     })
 }
 function resetFilter() {
-    jobScroller.state.jobList = []
-    jobScroller.state.pagination = {
-        pageOrderBy: "datePosted",
-        pageLimit: 5,
-        pageOffset: 0,
-    }
-    state.searchLike = ""
+    jobScroller.resetJobState()
     window.scroll({
         top: 0,
         behavior: 'auto'
     })
-    jobScroller.state.filter = jobScroller.getDefaultFilter()
 }
 </script>
 <style lang="scss" scoped>
