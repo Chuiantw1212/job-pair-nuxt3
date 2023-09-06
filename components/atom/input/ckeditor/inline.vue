@@ -18,6 +18,7 @@
 
             </div>
         </div>
+        <!-- {{ props.style }} -->
     </div>
 </template>
 <script>
@@ -99,7 +100,7 @@ const props = defineProps({
         default: function () {
             return {}
         }
-    }
+    },
 })
 let localValue = computed({
     get() {
@@ -126,6 +127,12 @@ onBeforeUnmount(() => {
         ckeditorInstance.destroy()
     }
     toggleClickWithin(false)
+})
+watch(() => props.style, (style = {}) => {
+    if (state.ckeditorInstance) {
+        state.ckeditorInstance.ui.view.editable.element.style.height = `${props.style.height - 37.7}px`
+    }
+    // state.ckeditorInstance.ui.view.editable.element.style.maxHeight = props.style.height
 })
 // methods
 function checkValue() {
