@@ -93,7 +93,9 @@ function handleBlur(type) {
 
     .banner__preview {
         position: absolute;
-        top: 70px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
         width: 100%;
 

@@ -1,6 +1,6 @@
 <template>
     <div class="container design">
-        <div v-show="false" class="design__panel">
+        <div class="design__panel">
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -19,23 +19,23 @@
                 </div>
                 <ul class="blocks__list">
                     <li class="list__item">
-                        <img class="item__imaage"
-                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <img class="item__imaage" src="@/assets/admin/design/Top 1.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage"
-                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <img class="item__imaage" src="@/assets/admin/design/Top 2.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage"
-                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <img class="item__imaage" src="@/assets/admin/design/Model 4.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage"
-                            src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png">
+                        <img class="item__imaage" src="@/assets/admin/design/Frame 967.webp">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                    <li class="list__item">
+                        <img class="item__imaage" src="@/assets/admin/design/Model 3.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                 </ul>
