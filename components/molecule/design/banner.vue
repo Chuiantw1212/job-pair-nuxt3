@@ -2,7 +2,7 @@
     <div class="banner" ref="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
-        <LazyAtomControllable v-model="state.controllable" @move="handlePosition($event)" @resize="handleResize($event)"
+        <LazyAtomControllable v-model="state.controllable" @move="handlePosition($event)"
             ref="title">
             <LazyAtomInputCkeditorInline v-model="state.content" :style="state.editorStyle" class="editorGroup__editor"
                 @focus="handleFocus()" @click="handleFocus()" @blur="handleBlur()">
@@ -41,29 +41,6 @@ function handlePosition(event) {
     state.controllable.position = {
         left: boundLeft,
         top: boundHeight
-    }
-}
-function handleResize(event) {
-    const { left = 0, top = 0, offsetWidth, offsetHeight, clientX, clientY, offsetLeft, offsetTop, height } = event
-    const area = currentInstance.refs.banner
-    const { clientTop, clientLeft, clientHeight, clientWidth, } = area
-    // console.log(area)
-    const boundHeight = clientY - area.offsetTop
-    console.log('boundHeight', boundHeight)
-    // const sizeWidth = clientX - clientLeft
-    // const sizeHeight = clientY - clientTop
-    // console.log(positionLeft, positionTop);
-    // state.editorStyle.height = boundHeight
-    state.controllable.position = {
-        top: offsetLeft,
-        left: offsetTop,
-    }
-    // console.log(height);
-    state.controllable.size = {
-        height: boundHeight
-    }
-    state.editorStyle = {
-        height: boundHeight
     }
 }
 function handleFocus() {
