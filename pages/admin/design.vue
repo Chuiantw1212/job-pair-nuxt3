@@ -159,7 +159,7 @@ const state = reactive({
 
 
         .body__preview {
-            width: 1320px;
+            // width: 1320px;
             // min-width: 900px;
             padding: 20px;
             // position: relative;

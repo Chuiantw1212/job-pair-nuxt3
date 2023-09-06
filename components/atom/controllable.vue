@@ -1,6 +1,5 @@
 <template>
     <div class="controllable" ref="controllable" :style="getStyle()">
-        <!-- {{ modelValue.size.height }} -->
         <div class="controllable__content">
             <!-- Movable edge -->
             <div v-show="state.isFocused" @mousedown="setDraggable()" class=" controllable__edge controllable__edge--top">
@@ -60,17 +59,25 @@ const props = defineProps({
                 }
             }
         }
+    },
+    disabled: {
+        type: Boolean,
+        default: false
     }
 })
 onMounted(() => {
+    // if (!props.disabled) {
     toggleMouseDownOutside(true)
     toggleReleaseDraggable(true)
     toggleReleaseResizable(true)
+    // }
 })
 onBeforeUnmount(() => {
+    // if (!props.disabled) {
     toggleMouseDownOutside(false)
     toggleReleaseDraggable(false)
     toggleReleaseResizable(false)
+    // }
 })
 watch(() => props.modelValue, (newStatus) => {
     if (newStatus.isFocused) {

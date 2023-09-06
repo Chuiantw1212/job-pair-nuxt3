@@ -65,13 +65,24 @@ onMounted(() => {
 
 // IMPORTANT: 直接由外部套用樣式
 .btnSimple--outline--success {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0);
     color: #5ea88e;
     border: solid 1px #5ea88e;
 
     &:hover {
-        background-color: white;
+        background-color: rgba(0, 0, 0, 0);
         color: #21cc90;
+    }
+}
+
+.btnSimple--outline--light {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border: solid 1px white;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0);
+        color: white;
     }
 }
 
