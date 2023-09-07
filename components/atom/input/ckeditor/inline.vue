@@ -46,8 +46,8 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                'undo',
-                'redo',
+                // 'undo',
+                // 'redo',
                 // '|',
                 // 'heading',
                 // '|',
@@ -60,7 +60,7 @@ const props = defineProps({
                 // 'link',
                 // 'mediaEmbed',
                 // '|',
-                'alignment',
+                // 'alignment',
                 // 'bulletedList',
                 // 'numberedList',
                 // '|',
@@ -177,7 +177,15 @@ async function initializeCKEditor() {
                 // side: 'left',
                 label: 'Job Pair'
             }
-        }
+        },
+        allow: [
+            {
+                name: /.*/,
+                attributes: true,
+                classes: true,
+                styles: true
+            }
+        ],
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)

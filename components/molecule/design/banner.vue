@@ -2,21 +2,27 @@
     <div class="banner" ref="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
+        <!-- <LazyAtomControllable class="banner__title" v-model="state.controllable['title']"
+            @move="handlePosition($event, 'title')" ref="title">
+        </LazyAtomControllable> -->
         <div class="banner__preview">
+            <LazyAtomInputCkeditorInline v-model="state.controllable.title.html" class="editorGroup__editor"
+                @focus="handleFocus('title')" @click="handleFocus('title')" @blur="handleBlur('title')">
+            </LazyAtomInputCkeditorInline>
             <!-- 要可以變顏色、所以一定要用editor -->
-            <LazyAtomInputCkeditorInline v-model="state.controllable.title.html" class="editorGroup__editor" @focus="handleFocus('title')"
-                @click="handleFocus('title')" @blur="handleBlur('title')">
+            <LazyAtomInputCkeditorInline v-model="state.controllable.desc.html" class="editorGroup__editor"
+                @focus="handleFocus('desc')" @click="handleFocus('desc')" @blur="handleBlur('desc')">
             </LazyAtomInputCkeditorInline>
             <!-- <div v-html="state.controllable.title.html" class="preview__item">
 
             </div> -->
 
-            <div v-html="state.controllable.desc.html" class="preview__item">
+            <!-- <div v-html="state.controllable.desc.html" class="preview__item">
 
-            </div>
-            <div class="preview__item">
-                <AtomBtnSimple class="item__btn btnSimple--outline--light">查看所有職缺</AtomBtnSimple>
-            </div>
+            </div> -->
+            <!-- <div class="preview__item"> -->
+            <!-- <AtomBtnSimple class="preview__btn btnSimple--outline--light">查看所有職缺</AtomBtnSimple> -->
+            <!-- </div> -->
         </div>
 
         <!-- <LazyAtomControllable class="banner__title" v-model="state.controllable['title']"
@@ -97,19 +103,26 @@ function handleBlur(type) {
     position: relative;
 
     .banner__preview {
+        width: fit-content;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        text-align: center;
+        // text-align: center;
+        // display: flex;
+        // flex-direction: column;
 
-        .preview__item {
-
-            .item__btn {
-                margin: auto;
-                width: 200px;
-            }
+        .editorGroup__editor {
+            width: fit-content;
+            margin: auto;
         }
+
+        .preview__btn {
+            margin: auto;
+            width: fit-content;
+        }
+
+        .preview__item {}
     }
 
     .banner__image {
