@@ -46,8 +46,8 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                // 'undo',
-                // 'redo',
+                'undo',
+                'redo',
                 // '|',
                 // 'heading',
                 // '|',
@@ -60,6 +60,7 @@ const props = defineProps({
                 // 'link',
                 // 'mediaEmbed',
                 // '|',
+                'alignment',
                 // 'bulletedList',
                 // 'numberedList',
                 // '|',
@@ -180,7 +181,9 @@ async function initializeCKEditor() {
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)
-    const ClassicEditor = importedEditor || window.ClassicEditor
+    console.log('window', window)
+    console.log('default', importedEditor)
+    const ClassicEditor = importedEditor || window.CKEDITOR.InlineEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
     // Set Height
@@ -258,45 +261,45 @@ defineExpose({
     align-items: center;
 }
 
-.ckeditor :deep(.ck-editor__top) {
-    // display: none;
-    visibility: hidden;
-}
+// .ckeditor :deep(.ck-editor__top) {
+//     // display: none;
+//     visibility: hidden;
+// }
 
 
-.ckeditor--focused {
-    :deep(.ck-editor__top) {
-        visibility: visible;
-    }
-}
+// .ckeditor--focused {
+//     :deep(.ck-editor__top) {
+//         visibility: visible;
+//     }
+// }
 
-.ckeditor--edit {
-    border: none;
-}
+// .ckeditor--edit {
+//     border: none;
+// }
 
-.ckeditor :deep(.ck-editor__editable_inline) {
-    min-height: 11em;
-}
+// .ckeditor :deep(.ck-editor__editable_inline) {
+//     min-height: 11em;
+// }
 
-.ckeditor :deep(.ck-toolbar) {
-    border: none !important;
-}
+// .ckeditor :deep(.ck-toolbar) {
+//     border: none !important;
+// }
 
-.ckeditor :deep(.ck-editor__editable) {
-    border: none !important;
-    background-color: rgba(0, 0, 0, 0) !important;
-    // min-width: 360px;
-}
+// .ckeditor :deep(.ck-editor__editable) {
+//     border: none !important;
+//     background-color: rgba(0, 0, 0, 0) !important;
+//     // min-width: 360px;
+// }
 
-.ckeditor :deep(.ck-read-only) {
-    border: 1px solid #d3d3d3;
-}
+// .ckeditor :deep(.ck-read-only) {
+//     border: 1px solid #d3d3d3;
+// }
 
-.ckeditor :deep(.ck-sticky-panel__content) {
-    border-bottom: 1px solid #ccced1;
-}
+// .ckeditor :deep(.ck-sticky-panel__content) {
+//     border-bottom: 1px solid #ccced1;
+// }
 
-.ckeditor :deep(.ck-button__label) {
-    font-size: 13px !important;
-}
+// .ckeditor :deep(.ck-button__label) {
+//     font-size: 13px !important;
+// }
 </style>

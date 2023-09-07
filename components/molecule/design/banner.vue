@@ -3,9 +3,14 @@
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
         <div class="banner__preview">
-            <div v-html="state.controllable.title.html" class="preview__item">
+            <!-- 要可以變顏色、所以一定要用editor -->
+            <LazyAtomInputCkeditorInline v-model="state.controllable.title.html" class="editorGroup__editor" @focus="handleFocus('title')"
+                @click="handleFocus('title')" @blur="handleBlur('title')">
+            </LazyAtomInputCkeditorInline>
+            <!-- <div v-html="state.controllable.title.html" class="preview__item">
 
-            </div>
+            </div> -->
+
             <div v-html="state.controllable.desc.html" class="preview__item">
 
             </div>
@@ -97,10 +102,8 @@ function handleBlur(type) {
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
-        width: 100%;
 
         .preview__item {
-            width: 100%;
 
             .item__btn {
                 margin: auto;
