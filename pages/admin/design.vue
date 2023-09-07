@@ -1,6 +1,6 @@
 <template>
     <div class="container design">
-        <div class="design__panel">
+        <div v-if="false" class="design__panel">
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -19,23 +19,23 @@
                 </div>
                 <ul class="blocks__list">
                     <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Top 1.webp">
+                        <img class="item__imaage" src="@/assets/admin/design/Top1.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Top 2.webp">
+                        <img class="item__imaage" src="@/assets/admin/design/Top2.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Model 4.webp">
+                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Frame 967.webp">
+                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Model 3.webp">
+                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                 </ul>
