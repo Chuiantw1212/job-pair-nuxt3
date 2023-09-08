@@ -1,3 +1,7 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.ck.ck-list__item .ck-button {
+    font-size: 13px !important;
+}

@@ -49,6 +49,7 @@ export default defineNuxtConfig({
     css: [
         '@glidejs/glide/dist/css/glide.core.min.css',
         '@glidejs/glide/dist/css/glide.theme.min.css',
+        '@/assets/global.css',
     ],
     runtimeConfig: {
         public: {

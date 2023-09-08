@@ -42,14 +42,13 @@
             </div>
         </div>
         <div class="design__body">
-            <div class="body__preview">
-                <MoleculeDesignBanner></MoleculeDesignBanner>
-                <!-- <img class="preview__image"
-                    src="https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png"> -->
-                <div class="preview__template">
-                    請先點擊區域，再選擇模板
-                </div>
+            <!-- <div class="body__preview"> -->
+            <MoleculeDesignBanner></MoleculeDesignBanner>
+            <MoleculeDesignOrganizationDesc></MoleculeDesignOrganizationDesc>
+            <div class="preview__template">
+                請先點擊區域，再選擇模板
             </div>
+            <!-- </div> -->
         </div>
         <div class="design__footer">
             <div class="footer__desc">
@@ -69,6 +68,7 @@ const state = reactive({
 <style lang="scss" scoped>
 .design {
     background-color: white;
+    padding: 0;
 
     * {
         -webkit-user-select: none;
@@ -161,7 +161,7 @@ const state = reactive({
         .body__preview {
             // width: 1320px;
             // min-width: 900px;
-            padding: 20px;
+            // padding: 20px;
             // position: relative;
 
             .preview__item {
@@ -169,16 +169,17 @@ const state = reactive({
                 // position: absolute;
             }
 
-            .preview__template {
-                border: dashed 1px #5ea88e;
-                background-color: rgba(94, 168, 142, 0.1);
-                max-width: 100%;
-                height: 313px;
-                margin-top: 20px;
-                font-size: 20px;
-                line-height: 313px;
-                text-align: center;
-            }
+        }
+
+        .preview__template {
+            border: dashed 1px #5ea88e;
+            background-color: rgba(94, 168, 142, 0.1);
+            max-width: 100%;
+            height: 313px;
+            margin-top: 20px;
+            font-size: 20px;
+            line-height: 313px;
+            text-align: center;
         }
     }
 

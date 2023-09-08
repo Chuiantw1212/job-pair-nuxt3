@@ -147,6 +147,7 @@ async function initializeCKEditor() {
         return
     }
     // 使用CDN
+    console.log(props.toolbar);
     const editorConfig = {
         initialData: localValue.value || '<p></p>',
         fontSize: {
@@ -269,28 +270,12 @@ defineExpose({
     align-items: center;
 }
 
-// .ckeditor :deep(.ck-editor__top) {
-//     // display: none;
-//     visibility: hidden;
-// }
-
-
-// .ckeditor--focused {
-//     :deep(.ck-editor__top) {
-//         visibility: visible;
-//     }
-// }
-
 // .ckeditor--edit {
 //     border: none;
 // }
 
 // .ckeditor :deep(.ck-editor__editable_inline) {
 //     min-height: 11em;
-// }
-
-// .ckeditor :deep(.ck-toolbar) {
-//     border: none !important;
 // }
 
 // .ckeditor :deep(.ck-editor__editable) {
@@ -307,7 +292,11 @@ defineExpose({
 //     border-bottom: 1px solid #ccced1;
 // }
 
-// .ckeditor :deep(.ck-button__label) {
+// .ckeditor :deep(.ck .ck-button__label) {
 //     font-size: 13px !important;
 // }
+
+.ckeditor :deep(.ck-content) {
+    // padding: 0;
+}
 </style>

@@ -62,20 +62,6 @@ const state = reactive({
             html: '<p><span style="color:hsl(0,0%,100%);font-size:30px;">快來配對屬於自己的職缺</span></p>'
         }
     },
-    // controllable: {
-    //     isFocused: false,
-    //     position: {
-    //         left: 0,
-    //         top: 0,
-    //     },
-    // },
-    // controllable2: {
-    //     isFocused: false,
-    //     position: {
-    //         left: 0,
-    //         top: 0,
-    //     },
-    // },
 })
 const currentInstance = getCurrentInstance()
 // methods
