@@ -45,6 +45,7 @@
             <!-- <div class="body__preview"> -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
             <MoleculeDesignOrganizationDesc></MoleculeDesignOrganizationDesc>
+            <MoleculeDesignOrganizationBg></MoleculeDesignOrganizationBg>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>

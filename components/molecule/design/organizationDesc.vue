@@ -31,12 +31,6 @@
                 <LazyAtomInputCkeditorInline v-model="controllable.card3Desc.html" class="card__desc"
                     :toolbar="state.toolbar">
                 </LazyAtomInputCkeditorInline>
-                <!-- <div class="card__title">
-                    履歷與面試輔導
-                </div>
-                <div class="card__desc">
-                    提供履歷與面試輔導的生涯設計師，除了來自不同產業的經驗，同時具備生涯設計的思維；不只從個人角度出發，還能從就業市場的角度，提供更全面的情報，為更好的職涯做準備。
-                </div> -->
             </div>
         </div>
     </div>
