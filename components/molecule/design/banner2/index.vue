@@ -12,7 +12,7 @@
             </AtomBtnSimple>
         </div>
         <div class="banner__imageWrap">
-            <img src="./Image.webp">
+            <img class="imageWrap__image" src="./Image.webp">
         </div>
     </div>
 </template>
@@ -24,7 +24,7 @@ export default {
 <script setup>
 const controllable = reactive({
     title: {
-        html: '<p><span style="font-size:60px;"><strong>找工作就像談戀愛</strong></span></p>'
+        html: '<p><span style="font-size:36px;"><strong>找工作就像談戀愛</strong></span></p>'
     },
     desc: {
         html: '<p><span style="font-size:18px;">快來配對屬於自己的職缺</span></p>'
@@ -37,7 +37,8 @@ const controllable = reactive({
     justify-content: space-evenly;
     background-color: #e5e5e5;
     align-items: center;
-    padding: 96px 0px;
+    padding: 96px 12px;
+    flex-direction: column;
 
     .banner__body {
         .body__btn {
@@ -49,6 +50,22 @@ const controllable = reactive({
     .banner__imageWrap {
         border-radius: 20px;
         overflow: hidden;
+        margin-top: 30px;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .banner {
+        flex-direction: row;
+
+        .banner__imageWrap {
+            margin-top: 0px;
+
+            .imageWrap__image {
+                // display: block;
+            }
+        }
     }
 }
 </style>
