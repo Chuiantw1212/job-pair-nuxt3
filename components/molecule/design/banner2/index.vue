@@ -58,13 +58,11 @@ const controllable = reactive({
 @media screen and (min-width: 992px) {
     .banner {
         flex-direction: row;
+        justify-content: space-evenly;
 
         .banner__imageWrap {
             margin-top: 0px;
-
-            .imageWrap__image {
-                // display: block;
-            }
+            width: fit-content;
         }
     }
 }
