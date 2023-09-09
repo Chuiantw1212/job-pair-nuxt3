@@ -44,6 +44,7 @@
         <div class="design__body">
             <!-- <div class="body__preview"> -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
+            <MoleculeDesignThreeColumns></MoleculeDesignThreeColumns>
             <MoleculeDesignDescription></MoleculeDesignDescription>
             <MoleculeDesignBackground></MoleculeDesignBackground>
             <MoleculeDesignBanner2></MoleculeDesignBanner2>

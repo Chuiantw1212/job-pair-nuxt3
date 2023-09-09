@@ -147,7 +147,6 @@ async function initializeCKEditor() {
         return
     }
     // 使用CDN
-    console.log(props.toolbar);
     const editorConfig = {
         initialData: localValue.value || '<p></p>',
         fontSize: {
@@ -190,8 +189,8 @@ async function initializeCKEditor() {
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)
-    console.log('window', window)
-    console.log('default', importedEditor)
+    // console.log('window', window)
+    // console.log('default', importedEditor)
     const ClassicEditor = importedEditor || window.CKEDITOR.InlineEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)

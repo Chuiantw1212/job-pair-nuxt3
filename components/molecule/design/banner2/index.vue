@@ -1,8 +1,6 @@
 <template>
     <div class="banner">
         <div class="banner__body">
-            <!-- <LazyAtomInputCkeditorInline v-model="controllable.welcome.html">
-            </LazyAtomInputCkeditorInline> -->
             <LazyAtomInputCkeditorInline v-model="controllable.title.html">
             </LazyAtomInputCkeditorInline>
             <LazyAtomInputCkeditorInline v-model="controllable.desc.html">
