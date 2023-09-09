@@ -3,8 +3,7 @@
         <h2 class="banner__title">公司服務介紹</h2>
         <div class="banner2__body">
             <div class="body__card">
-                <img class="card__image" src="@/assets/admin/design/organizationDesc/img4@2x.webp" format="webp"
-                    loading="lazy" />
+                <img class="card__image" src="./img4@2x.webp" format="webp" loading="lazy" />
                 <LazyAtomInputCkeditorInline v-model="controllable.card1Title.html" :toolbar="state.toolbar"
                     class="card__title">
                 </LazyAtomInputCkeditorInline>
@@ -13,8 +12,7 @@
                 </LazyAtomInputCkeditorInline>
             </div>
             <div class="body__card">
-                <img class="card__image" src="@/assets/admin/design/organizationDesc/img5@2x.webp" format="webp"
-                    loading="lazy" />
+                <img class="card__image" src="./img5@2x.webp" format="webp" loading="lazy" />
                 <LazyAtomInputCkeditorInline v-model="controllable.card2Title.html" :toolbar="state.toolbar"
                     class="card__title">
                 </LazyAtomInputCkeditorInline>
@@ -23,8 +21,7 @@
                 </LazyAtomInputCkeditorInline>
             </div>
             <div class="body__card">
-                <img class="card__image" src="@/assets/admin/design/organizationDesc/img6@2x.webp" format="webp"
-                    loading="lazy" />
+                <img class="card__image" src="./img6@2x.webp" format="webp" loading="lazy" />
                 <LazyAtomInputCkeditorInline v-model="controllable.card3Title.html" :toolbar="state.toolbar"
                     class="card__title">
                 </LazyAtomInputCkeditorInline>
@@ -35,6 +32,11 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'designDescription',
+}
+</script>
 <script setup>
 const controllable = reactive({
     // Card1
