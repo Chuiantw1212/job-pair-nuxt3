@@ -40,7 +40,7 @@ const state = reactive({
     ]
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bullet {
     display: flex;
     align-items: center;

@@ -51,7 +51,7 @@ function removeSelf(index) {
     localValue.value.splice(index, 1)
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .inputSelectLabel {
     display: flex;
     flex-wrap: wrap;

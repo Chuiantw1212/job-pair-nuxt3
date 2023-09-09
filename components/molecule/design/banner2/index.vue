@@ -29,7 +29,7 @@ const controllable = reactive({
     }
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .banner {
     display: flex;
     justify-content: space-evenly;

@@ -67,7 +67,7 @@ useSchemaOrg([
 //     }
 // }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .app {
     // https://web.dev/font-display/
     font-display: swap;

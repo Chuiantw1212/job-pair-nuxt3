@@ -44,7 +44,7 @@ const state = reactive({
     ]
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .columns {
     display: flex;
     align-items: center;

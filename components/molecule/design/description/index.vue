@@ -75,7 +75,7 @@ const state = reactive({
     ]
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .banner2 {
     background-color: rgba(42, 169, 132, 0.1);
     padding: 20px 0px;

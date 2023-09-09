@@ -81,7 +81,7 @@ defineExpose({
     openModal
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .noBallanceModal {
     .noBallanceModal__button {
         background-color: inherit;

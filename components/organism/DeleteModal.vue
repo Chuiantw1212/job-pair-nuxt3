@@ -109,7 +109,7 @@ async function showSecondConfirm() {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .deleteModal {
     .deleteModal__button {
         background-color: inherit;

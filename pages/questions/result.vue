@@ -75,7 +75,7 @@ async function routeToJobs() {
     })
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .questions__result {
     display: flex;
     flex-direction: column;

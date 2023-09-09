@@ -254,7 +254,7 @@ function getLocationText() {
     return `${text1}${text2}${streetAddress}`
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .company {
     .company__section {
         scroll-margin-top: 58px;

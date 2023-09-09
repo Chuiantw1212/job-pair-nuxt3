@@ -116,7 +116,7 @@ useHead({
     title: '關於我們'
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .about {
     background-color: #edf3f6;
     padding-bottom: 20px;
