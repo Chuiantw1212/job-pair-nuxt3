@@ -44,8 +44,9 @@
         <div class="design__body">
             <!-- <div class="body__preview"> -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
-            <MoleculeDesignOrganizationDesc></MoleculeDesignOrganizationDesc>
-            <MoleculeDesignOrganizationBg></MoleculeDesignOrganizationBg>
+            <MoleculeDesignDescription></MoleculeDesignDescription>
+            <MoleculeDesignBackground></MoleculeDesignBackground>
+            <MoleculeDesignBanner2></MoleculeDesignBanner2>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>

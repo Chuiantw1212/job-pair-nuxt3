@@ -40,7 +40,6 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .btnSimple {
-    width: 100%; // important
     line-height: 1.3;
     border-radius: 5px;
     background-color: #5ea88e;
