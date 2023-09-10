@@ -5,42 +5,75 @@
                 <ul class="glide__slides">
                     <li class="glide__slide">
                         <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-model="controllable.card1Title.html" :toolbar="state.toolbar"
+                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
                                 class="card__title">
                             </LazyAtomInputCkeditorInline>
                             <hr class="content__hr">
                             <div class="content__body">
                                 <div class="body__left">
                                     <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-model="controllable.card1Desc1.html"
-                                        :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                                 <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-model="controllable.card1Desc2.html"
-                                        :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                             </div>
                         </div>
-
                     </li>
-                    <li class="glide__slide">1</li>
-                    <li class="glide__slide">2</li>
+                    <li class="glide__slide">
+                        <div class="slide__content">
+                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
+                                class="card__title">
+                            </LazyAtomInputCkeditorInline>
+                            <hr class="content__hr">
+                            <div class="content__body">
+                                <div class="body__left">
+                                    <img src="./default.webp">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
+                                    </LazyAtomInputCkeditorInline>
+                                </div>
+                                <div class="body__right">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
+                                    </LazyAtomInputCkeditorInline>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="glide__slide">
+                        <div class="slide__content">
+                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
+                                class="card__title">
+                            </LazyAtomInputCkeditorInline>
+                            <hr class="content__hr">
+                            <div class="content__body">
+                                <div class="body__left">
+                                    <img src="./default.webp">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
+                                    </LazyAtomInputCkeditorInline>
+                                </div>
+                                <div class="body__right">
+                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
+                                    </LazyAtomInputCkeditorInline>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
-            <div class="glide__arrows" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
-                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+            <div class="glide__bullets" data-glide-el="controls[nav]">
+                <button class="glide__bullet" data-glide-dir="=0"></button>
+                <button class="glide__bullet" data-glide-dir="=1"></button>
+                <button class="glide__bullet" data-glide-dir="=2"></button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
 const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
-const controllable = reactive({
-    // Card1
-    card1Title: {
+const slide1 = reactive({
+    title: {
         isFocused: false,
         position: {
             left: 0,
@@ -48,10 +81,42 @@ const controllable = reactive({
         },
         html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
     },
-    card1Desc1: {
-        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="font-size:18px;">Owener, Softia, UK</span></p>'
+    imgDesc: {
+        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
     },
-    card1Desc2: {
+    desc: {
+        html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
+    },
+})
+const slide2 = reactive({
+    title: {
+        isFocused: false,
+        position: {
+            left: 0,
+            top: 0,
+        },
+        html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+    },
+    imgDesc: {
+        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
+    },
+    desc: {
+        html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
+    },
+})
+const slide3 = reactive({
+    title: {
+        isFocused: false,
+        position: {
+            left: 0,
+            top: 0,
+        },
+        html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+    },
+    imgDesc: {
+        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
+    },
+    desc: {
         html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
     },
 })
@@ -62,6 +127,8 @@ const state = reactive({
         'fontSize',
         '|',
         'bold',
+        'fontColor',
+        '|',
         'alignment',
     ]
 
@@ -70,22 +137,13 @@ onMounted(() => {
     state.id = $uuid4()
     if (process.client) {
         $requestSelector(`#slide-${state.id}`, (element) => {
-            // if (!state.bsModal) {
-            //     state.bsModal = new window.bootstrap.Modal(element, {
-            //         keyboard: false,
-            //     })
-            // }
             const glideInstance = new $Glide.Default(element, {
                 gap: 10,
-                // rewind: true,
                 bound: true,
             })
             glideInstance.mount({
                 Controls: $Glide.Controls,
             })
-            // glideInstance.mount({
-            //     type: 'carousel',
-            // })
             state.glideInstance = glideInstance
         })
     }
@@ -96,18 +154,6 @@ onMounted(() => {
     background-color: #2aa984;
     color: white;
     padding: 50px 100px;
-
-    .content__title {
-        // font-size: 36px;
-        // font-weight: 600;
-        // font-stretch: normal;
-        // font-style: normal;
-        // line-height: normal;
-        // letter-spacing: normal;
-        // text-align: left;
-        // color: #fff;
-        // text-align: center;
-    }
 
     .content__hr {
         width: 56px;
@@ -121,6 +167,7 @@ onMounted(() => {
         flex-grow: 1;
         flex-basis: 0;
         margin-top: 50px;
+        flex-direction: column;
 
         .body__left {
             width: 50%;
@@ -130,7 +177,19 @@ onMounted(() => {
         }
 
         .body__right {
-            width: 50%;
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .slide__content {
+        .content__body {
+            flex-direction: row;
+
+            .body__right {
+                width: 50%;
+            }
         }
     }
 }
