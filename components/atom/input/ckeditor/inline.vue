@@ -189,8 +189,6 @@ async function initializeCKEditor() {
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)
-    // console.log('window', window)
-    // console.log('default', importedEditor)
     const ClassicEditor = importedEditor?.InlineEditor || window.CKEDITOR.InlineEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
