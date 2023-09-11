@@ -188,6 +188,9 @@ const state = reactive({
     }
 
     .design__footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
         font-size: 20px;
         display: flex;
         justify-content: flex-end;
@@ -195,6 +198,8 @@ const state = reactive({
         padding: 20px 50px;
         border-top: solid 1px #d3d3d3;
         align-items: center;
+        background-color: white;
+        width: 100vw;
 
         .footer__desc {
             font-size: 20px;
