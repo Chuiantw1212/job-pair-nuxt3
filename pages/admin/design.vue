@@ -42,7 +42,6 @@
             </div>
         </div>
         <div class="design__body">
-            <!-- <div class="body__preview"> -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
             <MoleculeDesignSlide></MoleculeDesignSlide>
             <MoleculeDesignTwoColumns></MoleculeDesignTwoColumns>
@@ -52,7 +51,6 @@
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>
-            <!-- </div> -->
         </div>
         <div class="design__footer">
             <div class="footer__desc">
@@ -65,9 +63,123 @@
     </div>
 </template>
 <script setup>
+const repoOrganizationDesign = useRepoOrganizationDesign()
+const repoCompany = useRepoCompany()
+const repoAuth = useRepoAuth()
 const state = reactive({
     color: '#5EA88E',
+    templates: [
+        {
+            name: '',
+        },
+        {
+            name: ''
+        },
+        {
+            name: ''
+        },
+        {
+            name: ''
+        }
+    ]
 })
+// hooks
+// watch(() => repoAuth.state.user, () => {
+//     initializeCompanyInfo()
+// }, { immediate: true })
+onMounted(async () => {
+    // 防求職者誤入
+    const { user = {} } = repoAuth.state
+    const isEmployee = user && user.type === 'employee'
+    if (isEmployee) {
+        await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
+        router.push({
+            name: 'index'
+        })
+    }
+})
+// methods
+async function initializeCompanyInfo() {
+    // 生成本地端company資料
+    const { user } = repoAuth.state
+    if (!user || !user.id || state.companyInfo.id) {
+        return
+    }
+    // Load from store
+    let companyInfo = getDefaultCompany()
+    if (repoAuth.state.company) {
+        companyInfo = JSON.parse(JSON.stringify(repoAuth.state.company))
+    } else {
+        const companyRes = await repoAdmin.getAdminCompany()
+        // $sweet.loader(false)
+        if (companyRes.status !== 200) {
+            return
+        }
+        if (companyRes.data === false) {
+            // 尚未註冊導回註冊畫面
+            router.replace(`/admin/register`)
+            state.isNewCompay = true
+        }
+        if (companyRes.data) {
+            companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+        }
+    }
+    // Set company to local
+    state.companyInfo = companyInfo
+    state.companyLogo = companyInfo.logo
+    state.companyBanner = companyInfo.banner
+    state.companyImages = companyInfo.images ?? []
+
+    const descriptionRef = currentInstance.refs.descriptionRef
+    const jobBenefitsRef = currentInstance.refs.jobBenefitsRef
+    if (descriptionRef) {
+        descriptionRef.setData(state.companyInfo.description)
+    }
+    if (jobBenefitsRef) {
+        jobBenefitsRef.setData(state.companyInfo.jobBenefits)
+    }
+    setWelfareFlags()
+}
+function getDefaultCompany(id = '') {
+    const companyInfo = {
+        id,
+        jobBenefits: '',
+        description: "",
+        jobBenefitFlags: {
+            learning: false,
+            bonus: false,
+            time: false,
+            activity: false,
+            subsidy: false,
+            facility: false,
+            blacklist: false,
+        },
+        preference: {
+            culture: [],
+        },
+        url: {
+            default: ''
+        },
+        remark: ''
+    }
+    return companyInfo
+}
+function setWelfareFlags() {
+    if (!state.companyInfo) {
+        return
+    }
+    const { jobBenefits = "" } = state.companyInfo
+    let welfareCopy = JSON.parse(JSON.stringify(jobBenefits))
+    state.benefitFlags.forEach((welfareType) => {
+        const labels = jobBenefitsConfig[welfareType]
+        state.jobBenefits[welfareType] = labels.filter((keyword) => {
+            return welfareCopy.includes(keyword)
+        })
+        state.jobBenefits[welfareType].forEach((label) => {
+            welfareCopy = welfareCopy.replaceAll(label, "")
+        })
+    })
+}
 </script>
 <style lang="scss" scoped>
 .design {
