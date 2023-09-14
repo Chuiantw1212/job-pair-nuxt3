@@ -5,3 +5,11 @@
 .ck.ck-list__item .ck-button {
     font-size: 13px !important;
 }
+
+.ck.ck-balloon-panel.ck-balloon-panel_toolbar_west.ck-toolbar-container {
+    z-index: 1050 !important;
+}
+
+.ck.ck-button__label {
+    font-size: 13px !important;
+}

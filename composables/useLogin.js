@@ -146,7 +146,7 @@ export default function setup() {
                 $emitter.emit("setMenuType", 'admin')
                 // 有取得公司資料代表已完成註冊人資
                 const organizationId = company.id
-                if (organizationId) {
+                if (organizationId && repoCompany.getCompanyJobs) {
                     const jobsResponse = await repoCompany.getCompanyJobs({
                         organizationId,
                         status: ['active'],

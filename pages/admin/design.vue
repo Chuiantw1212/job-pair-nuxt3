@@ -42,12 +42,16 @@
             </div>
         </div>
         <div class="design__body">
+            <MoleculeDesignThreeRows></MoleculeDesignThreeRows>
+            <!-- Banner -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
+            <MoleculeDesignBanner2></MoleculeDesignBanner2>
+            <!-- Introduction -->
             <MoleculeDesignSlide></MoleculeDesignSlide>
+            <!-- 公司福利 -->
             <MoleculeDesignTwoColumns></MoleculeDesignTwoColumns>
             <MoleculeDesignDescription></MoleculeDesignDescription>
             <MoleculeDesignBackground></MoleculeDesignBackground>
-            <MoleculeDesignBanner2></MoleculeDesignBanner2>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>
@@ -56,16 +60,16 @@
             <div class="footer__desc">
                 目前的方案可使用五個區域
             </div>
-            <AtomBtnSimple class="footer_btn">存為草稿</AtomBtnSimple>
-            <AtomBtnSimple class="footer_btn">發布頁面</AtomBtnSimple>
+            <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
+            <AtomBtnSimple class="footer_btn" @click="openSeoDialog()">發布頁面</AtomBtnSimple>
             <AtomBtnSimple class="footer_btn">預覽頁面</AtomBtnSimple>
         </div>
     </div>
 </template>
 <script setup>
 const repoOrganizationDesign = useRepoOrganizationDesign()
-const repoCompany = useRepoCompany()
-const repoAuth = useRepoAuth()
+// const repoCompany = useRepoCompany()
+// const repoAuth = useRepoAuth()
 const state = reactive({
     color: '#5EA88E',
     templates: [
@@ -88,17 +92,23 @@ const state = reactive({
 //     initializeCompanyInfo()
 // }, { immediate: true })
 onMounted(async () => {
-    // 防求職者誤入
-    const { user = {} } = repoAuth.state
-    const isEmployee = user && user.type === 'employee'
-    if (isEmployee) {
-        await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
-        router.push({
-            name: 'index'
-        })
-    }
+    // // 防求職者誤入
+    // const { user = {} } = repoAuth.state
+    // const isEmployee = user && user.type === 'employee'
+    // if (isEmployee) {
+    //     await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
+    //     router.push({
+    //         name: 'index'
+    //     })
+    // }
 })
 // methods
+async function saveDraft() {
+
+}
+async function openSeoDialog() {
+    const response = await repoOrganizationDesign.postOrganizationDesign()
+}
 async function initializeCompanyInfo() {
     // 生成本地端company資料
     const { user } = repoAuth.state
@@ -183,8 +193,8 @@ function setWelfareFlags() {
 </script>
 <style lang="scss" scoped>
 .design {
-    background-color: white;
-    padding: 0;
+    // background-color: white;
+    padding: 50px 0;
 
     * {
         -webkit-user-select: none;
