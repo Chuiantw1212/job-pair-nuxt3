@@ -42,6 +42,7 @@
             </div>
         </div>
         <div class="design__body">
+            <MoleculeDesignDescription2></MoleculeDesignDescription2>
             <MoleculeDesignThreeRows></MoleculeDesignThreeRows>
             <!-- Banner -->
             <MoleculeDesignBanner></MoleculeDesignBanner>

@@ -2,7 +2,8 @@
 import { left } from '@popperjs/core';
 <template>
     <div class="rowGroup">
-        <LazyAtomInputCkeditorInline v-model="controllable.title.html" :toolbar="state.titleToolbar">
+        <LazyAtomInputCkeditorInline v-model="controllable.title.html" :toolbar="state.titleToolbar"
+            class="rowGroup__title">
         </LazyAtomInputCkeditorInline>
         <div class="rowGroup__item">
             <img class="item__img" src="./image1.webp">
@@ -65,6 +66,10 @@ const state = reactive({
     flex-direction: column;
     gap: 100px;
     background-color: rgba(42, 169, 132, 0.1);
+
+    .rowGroup__title {
+        width: 100%;
+    }
 
     .rowGroup__item {
         padding: 30px 100px;
