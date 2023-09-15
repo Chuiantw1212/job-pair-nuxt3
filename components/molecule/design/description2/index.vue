@@ -85,6 +85,7 @@ const state = reactive({
     display: flex;
     flex-direction: column;
     background-color: white;
+    align-items: center;
 
     .description__textGroup {}
 }
@@ -93,9 +94,10 @@ const state = reactive({
     .description {
         flex-direction: row;
         gap: 100px;
-        padding: 50px 0px;
 
         .description__textGroup {
+            padding: 50px;
+
             .textGroup__footer {
                 margin-top: 30px;
                 display: flex;

@@ -47,6 +47,7 @@ const state = reactive({
     padding: 50px 0px;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 
     .organizationBg__body {
 
