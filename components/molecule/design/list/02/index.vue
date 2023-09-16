@@ -2,40 +2,46 @@
 import { left } from '@popperjs/core';
 <template>
     <div class="rowGroup">
-        <LazyAtomInputCkeditorInline v-model="controllable.title.html" :toolbar="state.titleToolbar"
-            class="rowGroup__title">
+        <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+            :toolbar="state.titleToolbar" class="rowGroup__title">
         </LazyAtomInputCkeditorInline>
         <div class="rowGroup__item">
             <img class="item__img" src="./image1.webp">
-            <LazyAtomInputCkeditorInline v-model="controllable.item1.html" :toolbar="state.itemToolbar">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[0].html">
             </LazyAtomInputCkeditorInline>
         </div>
         <div class="rowGroup__item">
             <img class="item__img" src="./image2.webp">
-            <LazyAtomInputCkeditorInline v-model="controllable.item2.html" :toolbar="state.itemToolbar">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[1].html">
             </LazyAtomInputCkeditorInline>
         </div>
         <div class="rowGroup__item">
             <img class="item__img" src="./image3.webp">
-            <LazyAtomInputCkeditorInline v-model="controllable.item3.html" :toolbar="state.itemToolbar">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[2].html">
             </LazyAtomInputCkeditorInline>
         </div>
     </div>
 </template>
 <script setup>
-const controllable = reactive({
-    title: {
-        html: '<p style="text-align:center;"><span style="font-size:36px;"><strong>標題</strong></span></p>'
-    },
-    item1: {
-        html: '<p><span style="font-size:30px;"><strong>不花錢買廣告，很難被看見？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司</span></p>'
-    },
-    item2: {
-        html: '<p><span style="font-size:30px;"><strong>要怎麼提升招聘效能，減少時間成本呢？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</span></p>'
-    },
-    item3: {
-        html: '<p><span style="font-size:30px;"><strong>好不容易徵到人，怎麼又離職了？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">讓用人單位自行決定用人偏好，降低到職後因文化、合作與溝通模式的落差而產生流動率。</span></p>'
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: Object,
+        default: function () {
+            return {
+                name: 'LIST02',
+            }
+        }
     }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+
 })
 const state = reactive({
     titleToolbar: [
@@ -46,16 +52,6 @@ const state = reactive({
         '|',
         'alignment',
     ],
-    itemToolbar: [
-        'fontSize',
-        '|',
-        'bold',
-        'fontColor',
-        '|',
-        'alignment',
-        'bulletedList',
-        'numberedList',
-    ]
 })
 </script>
 <style lang="scss" scoped>
