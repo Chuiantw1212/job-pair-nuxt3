@@ -5,18 +5,21 @@
                 <ul class="glide__slides">
                     <li class="glide__slide">
                         <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
+                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                v-model="localValue.controllable.items[0].title.html" :toolbar="state.titleToolbar"
                                 class="card__title">
                             </LazyAtomInputCkeditorInline>
                             <hr class="content__hr">
                             <div class="content__body">
                                 <div class="body__left">
                                     <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[0].image.html" :toolbar="state.titleToolbar">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                                 <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[0].desc.html">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                             </div>
@@ -24,18 +27,21 @@
                     </li>
                     <li class="glide__slide">
                         <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
+                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                v-model="localValue.controllable.items[1].title.html" :toolbar="state.titleToolbar"
                                 class="card__title">
                             </LazyAtomInputCkeditorInline>
                             <hr class="content__hr">
                             <div class="content__body">
                                 <div class="body__left">
                                     <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[1].image.html" :toolbar="state.titleToolbar">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                                 <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[1].desc.html">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                             </div>
@@ -43,18 +49,21 @@
                     </li>
                     <li class="glide__slide">
                         <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-model="slide1.title.html" :toolbar="state.toolbar"
+                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                v-model="localValue.controllable.items[2].title.html" :toolbar="state.titleToolbar"
                                 class="card__title">
                             </LazyAtomInputCkeditorInline>
                             <hr class="content__hr">
                             <div class="content__body">
                                 <div class="body__left">
                                     <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.imgDesc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[2].image.html" :toolbar="state.titleToolbar">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                                 <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-model="slide1.desc.html" :toolbar="state.toolbar">
+                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        v-model="localValue.controllable.items[2].desc.html">
                                     </LazyAtomInputCkeditorInline>
                                 </div>
                             </div>
@@ -72,58 +81,30 @@
 </template>
 <script setup>
 const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
-const slide1 = reactive({
-    title: {
-        isFocused: false,
-        position: {
-            left: 0,
-            top: 0,
-        },
-        html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
-    },
-    imgDesc: {
-        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
-    },
-    desc: {
-        html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
-    },
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: Object,
+        default: function () {
+            return {
+                name: 'SLIDE01',
+            }
+        }
+    }
 })
-const slide2 = reactive({
-    title: {
-        isFocused: false,
-        position: {
-            left: 0,
-            top: 0,
-        },
-        html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+const localValue = computed({
+    get() {
+        return props.modelValue
     },
-    imgDesc: {
-        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
-    },
-    desc: {
-        html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
-    },
-})
-const slide3 = reactive({
-    title: {
-        isFocused: false,
-        position: {
-            left: 0,
-            top: 0,
-        },
-        html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
-    },
-    imgDesc: {
-        html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>'
-    },
-    desc: {
-        html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
-    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+
 })
 const state = reactive({
     id: null,
     glideInstance: null,
-    toolbar: [
+    titleToolbar: [
         'fontSize',
         '|',
         'bold',
