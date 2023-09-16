@@ -18,25 +18,37 @@
                     選擇布局
                 </div>
                 <ul class="blocks__list">
-                    <li id="drag1" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li id="BANNER01" class="list__item" draggable="true" @dragstart="drag($event)">
                         <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li id="drag2" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li id="BANNER02" class="list__item" draggable="true" @dragstart="drag($event)">
                         <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                        <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
                     </li>
-                    <li id="drag3" class="list__item" draggable="true" @dragstart="drag($event)">
-                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                    </li>
-                    <li id="drag4" class="list__item" draggable="true" @dragstart="drag($event)">
-                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                    </li>
-                    <li id="drag5" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li id="HYBRID01" class="list__item" draggable="true" @dragstart="drag($event)">
                         <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                    </li>
+                    <li id="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
+                        <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
+                    </li>
+                    <li id="ARTICLE01" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
+                        <div class="item__desc">適合公司介紹，大標、內文</div>
+                    </li>
+                    <li id="LIST01" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
+                        <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
+                    </li>
+                    <li id="LIST02" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
+                        <div class="item__desc">條列式</div>
+                    </li>
+                    <li id="SLIDE01" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
+                        <div class="item__desc">投影片</div>
                     </li>
                 </ul>
             </div>
@@ -330,6 +342,7 @@ const backup = reactive({
     .design__panel {
         position: fixed;
         left: 0;
+        top: 0;
         width: 200px;
         border-right: solid 1px #d3d3d3;
         height: 100%;
