@@ -3,13 +3,13 @@
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
         <div class="banner__preview">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable.title.html"
-                v-model="localValue.controllable.title.html" class="editorGroup__editor" @focus="handleFocus('title')"
-                @click="handleFocus('title')" @blur="handleBlur('title')">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+                class="editorGroup__editor" @focus="handleFocus('title')" @click="handleFocus('title')"
+                @blur="handleBlur('title')">
             </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable.desc.html"
-                v-model="localValue.controllable.desc.html" class="editorGroup__editor" @focus="handleFocus('desc')"
-                @click="handleFocus('desc')" @blur="handleBlur('desc')">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
+                class="editorGroup__editor" @focus="handleFocus('desc')" @click="handleFocus('desc')"
+                @blur="handleBlur('desc')">
             </LazyAtomInputCkeditorInline>
 
         </div>
@@ -69,7 +69,7 @@ function handleBlur(type) {
     position: relative;
 
     .banner__preview {
-        width: fit-content;
+        width: 100%;
         position: absolute;
         top: 50%;
         left: 50%;
