@@ -2,66 +2,47 @@
     <div class="banner" ref="banner">
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
-        <!-- <LazyAtomControllable class="banner__title" v-model="state.controllable['title']"
-            @move="handlePosition($event, 'title')" ref="title">
-        </LazyAtomControllable> -->
         <div class="banner__preview">
-            <LazyAtomInputCkeditorInline v-model="state.controllable.title.html" class="editorGroup__editor"
-                @focus="handleFocus('title')" @click="handleFocus('title')" @blur="handleBlur('title')">
-            </LazyAtomInputCkeditorInline>
-            <!-- 要可以變顏色、所以一定要用editor -->
-            <LazyAtomInputCkeditorInline v-model="state.controllable.desc.html" class="editorGroup__editor"
-                @focus="handleFocus('desc')" @click="handleFocus('desc')" @blur="handleBlur('desc')">
-            </LazyAtomInputCkeditorInline>
-            <!-- <div v-html="state.controllable.title.html" class="preview__item">
-
-            </div> -->
-
-            <!-- <div v-html="state.controllable.desc.html" class="preview__item">
-
-            </div> -->
-            <!-- <div class="preview__item"> -->
-            <!-- <AtomBtnSimple class="preview__btn btnSimple--outline--light">查看所有職缺</AtomBtnSimple> -->
-            <!-- </div> -->
-        </div>
-
-        <!-- <LazyAtomControllable class="banner__title" v-model="state.controllable['title']"
-            @move="handlePosition($event, 'title')" ref="title">
-            <LazyAtomInputCkeditorInline v-model="state.content" class="editorGroup__editor" @focus="handleFocus('title')"
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable.title.html"
+                v-model="localValue.controllable.title.html" class="editorGroup__editor" @focus="handleFocus('title')"
                 @click="handleFocus('title')" @blur="handleBlur('title')">
             </LazyAtomInputCkeditorInline>
-        </LazyAtomControllable> -->
-        <!-- <LazyAtomControllable class="banner__desc" v-model="state.controllable['desc']"
-                @move="handlePosition($event, 'desc')" disabled ref="desc">
-                <LazyAtomInputCkeditorInline v-model="state.description" class="editorGroup__editor"
-                    @focus="handleFocus('desc')" @click="handleFocus('desc')" @blur="handleBlur('desc')">
-                </LazyAtomInputCkeditorInline>
-            </LazyAtomControllable> -->
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable.desc.html"
+                v-model="localValue.controllable.desc.html" class="editorGroup__editor" @focus="handleFocus('desc')"
+                @click="handleFocus('desc')" @blur="handleBlur('desc')">
+            </LazyAtomInputCkeditorInline>
+
+        </div>
     </div>
 </template>
 <script setup>
-const state = reactive({
-    controllable: {
-        title: {
-            isFocused: false,
-            position: {
-                left: 0,
-                top: 0,
-            },
-            html: '<p><span style="color:hsl(0,0%,100%);font-size:72px;"><strong>找工作就像談戀愛</strong></span></p>'
-            // size: {
-            //     width: '100%'
-            // }
-        },
-        desc: {
-            isFocused: false,
-            position: {
-                left: 0,
-                top: 0,
-            },
-            html: '<p><span style="color:hsl(0,0%,100%);font-size:30px;">快來配對屬於自己的職缺</span></p>'
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: Object,
+        default: function () {
+            return {
+                name: 'BANNER01',
+                controllable: {
+                    title: {
+                        html: ''
+                    },
+                    desc: {
+                        html: ''
+                    }
+                }
+            }
         }
+    }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
     },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+
 })
 const currentInstance = getCurrentInstance()
 // methods
@@ -77,7 +58,6 @@ function handlePosition(event, type) {
     }
 }
 function handleFocus(type) {
-    console.log(type);
     state.controllable[type].isFocused = true
 }
 function handleBlur(type) {

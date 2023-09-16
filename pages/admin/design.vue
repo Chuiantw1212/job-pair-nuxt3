@@ -42,19 +42,27 @@
             </div>
         </div>
         <div class="design__body">
-            <!-- Banner式 -->
-            <MoleculeDesignBanner01></MoleculeDesignBanner01>
-            <MoleculeDesignBanner02></MoleculeDesignBanner02>
-            <!-- 圖文混合 -->
-            <MoleculeDesignHybrid01></MoleculeDesignHybrid01>
-            <MoleculeDesignHybrid02></MoleculeDesignHybrid02>
-            <!-- 短文 -->
-            <MoleculeDesignArticle01></MoleculeDesignArticle01>
-            <!-- 條列式 -->
-            <MoleculeDesignList01></MoleculeDesignList01>
-            <MoleculeDesignList02></MoleculeDesignList02>
-            <!-- 投影片式 -->
-            <MoleculeDesignSlide01></MoleculeDesignSlide01>
+            <template v-for="(item, index) in state.templates" :key="index">
+                <!-- Banner式 -->
+                <MoleculeDesignBanner01 v-if="item.name === 'BANNER01'" v-model="state.templates[index]">
+                </MoleculeDesignBanner01>
+                <MoleculeDesignBanner02 v-if="item.name === 'BANNER02'" v-model="state.templates[index]">
+                </MoleculeDesignBanner02>
+                <!-- 圖文混合 -->
+                <MoleculeDesignHybrid01 v-if="item.name === 'HYBRID01'" v-model="state.templates[index]">
+                </MoleculeDesignHybrid01>
+                <MoleculeDesignHybrid02 v-if="item.name === 'HYBRID02'" v-model="state.templates[index]">
+                </MoleculeDesignHybrid02>
+                <!-- 短文 -->
+                <MoleculeDesignArticle01 v-if="item.name === 'ARTICLE01'" v-model="state.templates[index]">
+                </MoleculeDesignArticle01>
+                <!-- 條列式 -->
+                <MoleculeDesignList01 v-if="item.name === 'LIST01'" v-model="state.templates[index]"></MoleculeDesignList01>
+                <MoleculeDesignList02 v-if="item.name === 'LIST02'" v-model="state.templates[index]"></MoleculeDesignList02>
+                <!-- 投影片式 -->
+                <MoleculeDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="state.templates[index]">
+                </MoleculeDesignSlide01>
+            </template>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>
@@ -77,16 +85,36 @@ const state = reactive({
     color: '#5EA88E',
     templates: [
         {
-            name: 'description2',
+            name: 'BANNER01',
+            controllable: {
+                title: {
+                    html: '<p><span style="color:hsl(0,0%,100%);font-size:72px;"><strong>找工作就像談戀愛</strong></span></p>'
+                },
+                desc: {
+                    html: '<p><span style="color:hsl(0,0%,100%);font-size:30px;">快來配對屬於自己的職缺</span></p>'
+                }
+            }
         },
         {
-            name: 'threeRows',
+            name: 'BANNER02',
         },
         {
-            name: ''
+            name: 'HYBRID01'
         },
         {
-            name: ''
+            name: 'HYBRID02'
+        },
+        {
+            name: 'ARTICLE01'
+        },
+        {
+            name: 'LIST01'
+        },
+        {
+            name: 'LIST02'
+        },
+        {
+            name: 'SLIDE01'
         }
     ]
 })
