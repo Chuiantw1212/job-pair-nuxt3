@@ -46,6 +46,14 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
+watch(() => localValue.value, (newValue) => {
+    if (!newValue.controllable) {
         const defaultValue = {
             name: 'LIST02',
             controllable: {
@@ -65,15 +73,10 @@ const localValue = computed({
                 ]
             }
         }
-        const mergedItem = Object.assign(defaultValue, props.modelValue)
-        return mergedItem
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
+        const mergedItem = Object.assign(defaultValue, newValue)
+        localValue.value = mergedItem
     }
-})
-
-
+}, { immediate: true })
 </script>
 <style lang="scss" scoped>
 .rowGroup {

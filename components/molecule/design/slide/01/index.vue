@@ -82,6 +82,19 @@
 <script setup>
 const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    id: null,
+    glideInstance: null,
+    titleToolbar: [
+        'fontSize',
+        '|',
+        'bold',
+        'fontColor',
+        '|',
+        'alignment',
+    ]
+
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -92,8 +105,31 @@ const props = defineProps({
         }
     }
 })
+onMounted(() => {
+    state.id = $uuid4()
+    if (process.client) {
+        $requestSelector(`#slide-${state.id}`, (element) => {
+            const glideInstance = new $Glide.Default(element, {
+                gap: 10,
+                bound: true,
+            })
+            glideInstance.mount({
+                Controls: $Glide.Controls,
+            })
+            state.glideInstance = glideInstance
+        })
+    }
+})
 const localValue = computed({
     get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
+watch(() => localValue.value, (newValue) => {
+    if (!newValue.controllable) {
         const defaultValue = {
             name: 'SLIDE01',
             controllable: {
@@ -134,42 +170,11 @@ const localValue = computed({
                 ]
             }
         }
-        const mergedItem = Object.assign(defaultValue, props.modelValue)
-        return mergedItem
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
+        const mergedItem = Object.assign(defaultValue, newValue)
+        localValue.value = mergedItem
     }
+}, { immediate: true })
 
-})
-const state = reactive({
-    id: null,
-    glideInstance: null,
-    titleToolbar: [
-        'fontSize',
-        '|',
-        'bold',
-        'fontColor',
-        '|',
-        'alignment',
-    ]
-
-})
-onMounted(() => {
-    state.id = $uuid4()
-    if (process.client) {
-        $requestSelector(`#slide-${state.id}`, (element) => {
-            const glideInstance = new $Glide.Default(element, {
-                gap: 10,
-                bound: true,
-            })
-            glideInstance.mount({
-                Controls: $Glide.Controls,
-            })
-            state.glideInstance = glideInstance
-        })
-    }
-})
 </script>
 <style lang="scss" scoped>
 .slide__content {
