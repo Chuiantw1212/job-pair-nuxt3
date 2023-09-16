@@ -20,6 +20,16 @@ export default {
 </script>
 <script setup>
 const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    titleToolbar: [
+        'fontSize',
+        '|',
+        'bold',
+        'fontColor',
+        '|',
+        'alignment',
+    ]
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -32,6 +42,15 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+
+})
+watch(() => localValue.value, (newValue) => {
+    if (!newValue.controllable) {
         const defaultValue = {
             name: 'HYBRID02',
             controllable: {
@@ -43,24 +62,10 @@ const localValue = computed({
                 },
             }
         }
-        const mergedItem = Object.assign(defaultValue, props.modelValue)
-        return mergedItem
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
+        const mergedItem = Object.assign(defaultValue, newValue)
+        localValue.value = mergedItem
     }
-
-})
-const state = reactive({
-    titleToolbar: [
-        'fontSize',
-        '|',
-        'bold',
-        'fontColor',
-        '|',
-        'alignment',
-    ]
-})
+}, { immediate: true })
 </script>
 <style lang="scss" scoped>
 .organizationBg {
