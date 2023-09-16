@@ -130,7 +130,6 @@ function drop(ev) {
         name: data,
         // controllable: {} // 指定Name就好，controllable結構給comopnent決定
     })
-    // ev.target.appendChild(document.getElementById(data));
 }
 function allowDrop(ev) {
     ev.preventDefault();
