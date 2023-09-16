@@ -1,6 +1,8 @@
 <template>
     <div class="banner2">
-        <h2 class="banner__title">公司服務介紹</h2>
+        <!-- <h2 class="banner__title">公司服務介紹</h2> -->
+        <LazyAtomInputCkeditorInline v-model="controllable.title.html" :toolbar="state.toolbar" class="banner__title">
+        </LazyAtomInputCkeditorInline>
         <div class="banner2__body">
             <div class="body__card">
                 <img class="card__image" src="./img4@2x.webp" format="webp" loading="lazy" />
@@ -39,6 +41,9 @@ export default {
 </script>
 <script setup>
 const controllable = reactive({
+    title: {
+        html: '<p>公司服務介紹</p>'
+    },
     // Card1
     card1Title: {
         isFocused: false,

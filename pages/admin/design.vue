@@ -42,16 +42,17 @@
             </div>
         </div>
         <div class="design__body">
-            <MoleculeDesignDescription2></MoleculeDesignDescription2>
-            <MoleculeDesignThreeRows></MoleculeDesignThreeRows>
+            <!-- WIP -->
             <!-- Banner -->
             <MoleculeDesignBanner></MoleculeDesignBanner>
             <MoleculeDesignBanner2></MoleculeDesignBanner2>
             <!-- Introduction -->
+            <MoleculeDesignProducts></MoleculeDesignProducts>
+            <MoleculeDesignDescription2></MoleculeDesignDescription2>
+            <MoleculeDesignThreeRows></MoleculeDesignThreeRows>
             <MoleculeDesignSlide></MoleculeDesignSlide>
             <!-- 公司福利 -->
             <MoleculeDesignTwoColumns></MoleculeDesignTwoColumns>
-            <MoleculeDesignDescription></MoleculeDesignDescription>
             <MoleculeDesignBackground></MoleculeDesignBackground>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
@@ -75,10 +76,10 @@ const state = reactive({
     color: '#5EA88E',
     templates: [
         {
-            name: '',
+            name: 'description2',
         },
         {
-            name: ''
+            name: 'threeRows',
         },
         {
             name: ''
