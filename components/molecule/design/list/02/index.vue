@@ -24,6 +24,16 @@ import { left } from '@popperjs/core';
 </template>
 <script setup>
 const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    titleToolbar: [
+        'fontSize',
+        '|',
+        'bold',
+        'fontColor',
+        '|',
+        'alignment',
+    ],
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -36,22 +46,32 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
-        return props.modelValue
+        const defaultValue = {
+            name: 'LIST02',
+            controllable: {
+                title: {
+                    html: '<p style="text-align:center;"><span style="font-size:36px;"><strong>標題</strong></span></p>'
+                },
+                items: [
+                    {
+                        html: '<p><span style="font-size:30px;"><strong>不花錢買廣告，很難被看見？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司</span></p>'
+                    },
+                    {
+                        html: '<p><span style="font-size:30px;"><strong>要怎麼提升招聘效能，減少時間成本呢？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</span></p>'
+                    },
+                    {
+                        html: '<p><span style="font-size:30px;"><strong>好不容易徵到人，怎麼又離職了？</strong></span><br><span style="color:hsl( 0, 0%, 20% );font-size:18px;">讓用人單位自行決定用人偏好，降低到職後因文化、合作與溝通模式的落差而產生流動率。</span></p>'
+                    }
+                ]
+            }
+        }
+        const mergedItem = Object.assign(defaultValue, props.modelValue)
+        return mergedItem
     },
     set(newValue) {
         emit('update:modelValue', newValue)
     }
 
-})
-const state = reactive({
-    titleToolbar: [
-        'fontSize',
-        '|',
-        'bold',
-        'fontColor',
-        '|',
-        'alignment',
-    ],
 })
 </script>
 <style lang="scss" scoped>
