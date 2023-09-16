@@ -22,6 +22,7 @@ export default {
 }
 </script>
 <script setup>
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
     modelValue: {
         type: Object,

@@ -58,10 +58,10 @@ function handlePosition(event, type) {
     }
 }
 function handleFocus(type) {
-    state.controllable[type].isFocused = true
+    // state.controllable[type].isFocused = true
 }
 function handleBlur(type) {
-    state.controllable[type].isFocused = false
+    // state.controllable[type].isFocused = false
 }
 </script>
 <stylte lang="scss" scoped>

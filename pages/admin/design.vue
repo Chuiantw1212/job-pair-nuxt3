@@ -107,10 +107,44 @@ const state = reactive({
             }
         },
         {
-            name: 'HYBRID01'
+            name: 'HYBRID01',
+            controllable: {
+                title: {
+                    html: '<p><span style="font-size:36px;"><strong>公司介紹</strong></span></p>'
+                },
+                desc: {
+                    html: '<p><span style="font-size:18px;">關於Job Pair</span><br><span style="font-size:18px;">Job Pair 是一家致力於打造更友善、更有效率的人才媒合市場的公司。</span></p><p><span style="font-size:18px;">Job Pair 的創辦人 Sandy 擁有 8 年科技業獵頭經驗，累計超過萬人的履歷面談。2015年，她開始提供一對一職涯諮詢的服務，並解決了超過千人的職涯問題。多年來，Sandy 一直從不同的角度思考「如何找到適合的工作」，發現人才媒合市場需要更多考量軟性需求的功能。這些軟性需求包括企業文化、工作環境、人際交流與溝通模式等。</span></p><p><span style="font-size:18px;">因此，我們打造了一個新型態的媒合型人力銀行，不論求職者或企業都能夠先以雙方的軟性需求進行第一步演算，提供團隊適配度給雙方參考。跳脫了僅能以地區、薪資、職務類別、產業等硬性需求評估職缺，或者以性別、年齡、學歷等表象資訊評估求職者。</span></p><p><span style="font-size:18px;">Job Pair 為你從適合的角度切入，打造長遠的合作關係。</span></p>'
+                },
+                item1Title: {
+                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">性別友善</span></p>'
+                },
+                item1Desc: {
+                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>有</strong></span></p>'
+                },
+                item2Title: {
+                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">城市</span></p>'
+                },
+                item2Desc: {
+                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>台北市</strong></span></p>'
+                },
+                item3Title: {
+                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">資本額</span></p>'
+                },
+                item3Desc: {
+                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>1,000,000</strong></span></p>'
+                },
+            }
         },
         {
-            name: 'HYBRID02'
+            name: 'HYBRID02',
+            controllable: {
+                title: {
+                    html: '<p style="text-align:center;"><span style="font-size:36px;"><strong>公司背景介紹</strong></span></p>'
+                },
+                desc: {
+                    html: `<p style="text-align:justify;">關於Job Pair Job&nbsp;<br>Pair 是一家致力於打造更友善、更有效率的人才媒合市場的公司。&nbsp;</p><p style="text-align:justify;">Job Pair 的創辦人 Sandy 擁有 8 年科技業獵頭經驗，累計超過萬人的履歷面談。2015年，她開始提供一對一職涯諮詢的服務，並解決了超過千人的職涯問題。多年來，Sandy 一直從不同的角度思考「如何找到適合的工作」，發現人才媒合市場需要更多考量軟性需求的功能。這些軟性需求包括企業文化、工作環境、人際交流與溝通模式等。&nbsp;</p><p style="text-align:justify;">因此，我們打造了一個新型態的媒合型人力銀行，不論求職者或企業都能夠先以雙方的軟性需求進行第一步演算，提供團隊適配度給雙方參考。跳脫了僅能以地區、薪資、職務類別、產業等硬性需求評估職缺，或者以性別、年齡、學歷等表象資訊評估求職者。</p><p style="text-align:justify;">&nbsp;Job Pair 為你從適合的角度切入，打造長遠的合作關係。</p>`
+                },
+            }
         },
         {
             name: 'ARTICLE01'
