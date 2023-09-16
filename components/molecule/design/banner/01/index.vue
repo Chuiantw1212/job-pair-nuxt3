@@ -4,12 +4,12 @@
             draggable="false">
         <div class="banner__preview">
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                class="editorGroup__editor" @focus="handleFocus('title')" @click="handleFocus('title')"
-                @blur="handleBlur('title')">
+                :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('title')"
+                @click="handleFocus('title')" @blur="handleBlur('title')">
             </LazyAtomInputCkeditorInline>
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                class="editorGroup__editor" @focus="handleFocus('desc')" @click="handleFocus('desc')"
-                @blur="handleBlur('desc')">
+                :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('desc')"
+                @click="handleFocus('desc')" @blur="handleBlur('desc')">
             </LazyAtomInputCkeditorInline>
 
         </div>
@@ -17,6 +17,16 @@
 </template>
 <script setup>
 const emit = defineEmits(['update:modelValue'])
+const state = reactive({
+    bannerToolbar: [
+        'fontSize',
+        '|',
+        'bold',
+        'fontColor',
+        // '|',
+        // 'alignment',
+    ],
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -37,7 +47,19 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
-        return props.modelValue
+        const defaultValue = {
+            name: 'BANNER01',
+            controllable: {
+                title: {
+                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);font-size:72px;"><strong>找工作就像談戀愛</strong></span></p>'
+                },
+                desc: {
+                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);font-size:30px;">快來配對屬於自己的職缺</span></p>'
+                }
+            }
+        }
+        const mergedItem = Object.assign(defaultValue, props.modelValue)
+        return mergedItem
     },
     set(newValue) {
         emit('update:modelValue', newValue)

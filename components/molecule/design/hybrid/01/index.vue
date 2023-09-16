@@ -6,33 +6,33 @@
         <div class="description__textGroup">
             <!-- <h2></h2> -->
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                :toolbar="state.toolbar">
+                :toolbar="state.titleToolbar">
             </LazyAtomInputCkeditorInline>
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
             </LazyAtomInputCkeditorInline>
             <div class="textGroup__footer">
                 <div>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[0].title.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[0].title.html" :toolbar="state.titleToolbar">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[0].desc.html" :toolbar="state.toolbar">
-                    </LazyAtomInputCkeditorInline>
-                </div>
-                <div>
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[1].title.html" :toolbar="state.toolbar">
-                    </LazyAtomInputCkeditorInline>
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[1].desc.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[0].desc.html" :toolbar="state.titleToolbar">
                     </LazyAtomInputCkeditorInline>
                 </div>
                 <div>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[2].title.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[1].title.html" :toolbar="state.titleToolbar">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[2].desc.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[1].desc.html" :toolbar="state.titleToolbar">
+                    </LazyAtomInputCkeditorInline>
+                </div>
+                <div>
+                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                        v-model="localValue.controllable.items[2].title.html" :toolbar="state.titleToolbar">
+                    </LazyAtomInputCkeditorInline>
+                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                        v-model="localValue.controllable.items[2].desc.html" :toolbar="state.titleToolbar">
                     </LazyAtomInputCkeditorInline>
                 </div>
             </div>
@@ -61,7 +61,7 @@ const localValue = computed({
 
 })
 const state = reactive({
-    toolbar: [
+    titleToolbar: [
         'fontSize',
         '|',
         'bold',
