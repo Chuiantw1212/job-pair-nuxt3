@@ -1,47 +1,45 @@
 <template>
     <div class="columns" :style="{ 'background-image': `url(${image})` }">
-        <!-- <h2>公司福利</h2> -->
         <div class="columns__body">
-            <LazyAtomInputCkeditorInline v-model="controllable.title.html">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+                :toolbar="state.titleToolbar">
             </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-model="controllable.desc.html" :toolbar="state.toolbar">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
             </LazyAtomInputCkeditorInline>
         </div>
-        <!-- <img src="./Group.webp" /> -->
     </div>
 </template>
 <script setup>
 import image from './Group.webp'
-const controllable = reactive({
-    title: {
-        html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:36px;"><strong>公司福利</strong></span></p>'
-    },
-    desc: {
-        html: '<ul><li><span style="font-size:24px;">彈性自由的工作環境</span></li><li><span style="font-size:24px;">優於勞基法的休假制度</span></li><li><span style="font-size:24px;">每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span style="font-size:24px;">三節禮金</span></li></ul>'
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: Object,
+        default: function () {
+            return {
+                name: 'ARTICLE01',
+            }
+        }
     }
 })
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+
+})
 const state = reactive({
-    toolbar: [
-        // 'undo',
-        // 'redo',
-        // '|',
-        // 'heading',
-        // '|',
+    titleToolbar: [
         'fontSize',
         '|',
         'bold',
-        // 'italic',
         'fontColor',
-        // '|',
-        // 'link',
-        // 'mediaEmbed',
         '|',
-        // 'alignment',
-        'bulletedList',
-        'numberedList',
-        // '|',
-        // 'removeFormat'
-    ]
+        'alignment',
+    ],
 })
 </script>
 <style lang="scss" scoped>

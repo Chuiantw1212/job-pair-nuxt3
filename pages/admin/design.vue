@@ -115,24 +115,32 @@ const state = reactive({
                 desc: {
                     html: '<p><span style="font-size:18px;">關於Job Pair</span><br><span style="font-size:18px;">Job Pair 是一家致力於打造更友善、更有效率的人才媒合市場的公司。</span></p><p><span style="font-size:18px;">Job Pair 的創辦人 Sandy 擁有 8 年科技業獵頭經驗，累計超過萬人的履歷面談。2015年，她開始提供一對一職涯諮詢的服務，並解決了超過千人的職涯問題。多年來，Sandy 一直從不同的角度思考「如何找到適合的工作」，發現人才媒合市場需要更多考量軟性需求的功能。這些軟性需求包括企業文化、工作環境、人際交流與溝通模式等。</span></p><p><span style="font-size:18px;">因此，我們打造了一個新型態的媒合型人力銀行，不論求職者或企業都能夠先以雙方的軟性需求進行第一步演算，提供團隊適配度給雙方參考。跳脫了僅能以地區、薪資、職務類別、產業等硬性需求評估職缺，或者以性別、年齡、學歷等表象資訊評估求職者。</span></p><p><span style="font-size:18px;">Job Pair 為你從適合的角度切入，打造長遠的合作關係。</span></p>'
                 },
-                item1Title: {
-                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">性別友善</span></p>'
-                },
-                item1Desc: {
-                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>有</strong></span></p>'
-                },
-                item2Title: {
-                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">城市</span></p>'
-                },
-                item2Desc: {
-                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>台北市</strong></span></p>'
-                },
-                item3Title: {
-                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">資本額</span></p>'
-                },
-                item3Desc: {
-                    html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>1,000,000</strong></span></p>'
-                },
+                items: [
+                    {
+                        title: {
+                            html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">性別友善</span></p>'
+                        },
+                        desc: {
+                            html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>有</strong></span></p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">城市</span></p>'
+                        },
+                        desc: {
+                            html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>台北市</strong></span></p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:24px;">資本額</span></p>'
+                        },
+                        desc: {
+                            html: '<p><span style="color:hsl( 205, 36%, 18% );font-size:48px;"><strong>1,000,000</strong></span></p>'
+                        }
+                    },
+                ]
             }
         },
         {
@@ -147,10 +155,49 @@ const state = reactive({
             }
         },
         {
-            name: 'ARTICLE01'
+            name: 'ARTICLE01',
+            controllable: {
+                title: {
+                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:36px;"><strong>公司福利</strong></span></p>'
+                },
+                desc: {
+                    html: '<ul><li><span style="font-size:24px;">彈性自由的工作環境</span></li><li><span style="font-size:24px;">優於勞基法的休假制度</span></li><li><span style="font-size:24px;">每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span style="font-size:24px;">三節禮金</span></li></ul>'
+                }
+            }
         },
         {
-            name: 'LIST01'
+            name: 'LIST01',
+            controllable: {
+                title: {
+                    html: '<p>公司服務介紹</p>'
+                },
+                items: [
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:24px;"><strong>解決生活焦慮</strong></span></p>'
+                        },
+                        desc: {
+                            html: '<p style="text-align:justify;">理想生活探索是透過專業引導，釐清個人內在的「價值觀」，並將內在需求與外在行動對焦，制訂相對應的行動，有意識的創造個人的理想生活。</p><p style="text-align:justify;">本服務也有助於個人面對工作選擇或其他生涯抉擇時，下一個真正貼近個人內在需求的決策。</p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:24px;"><strong>釐清職業方向</strong></span></p>',
+                        },
+                        desc: {
+                            html: '<p style="text-align:justify;">職涯偏好探索，目的是探索合適的工作，需從「價值觀」與「個性」兩個層面做自我分析。</p><p style="text-align:justify;">價值觀就是個人的信念、人生意義、道德觀念等組合，對應工作就是企業對文化、理念、願景的實踐；個性則是評估自己在什麼樣的工作環境、工作內容與什麼樣的主管合作，能更勝任愉快。</p><p style="text-align:justify;">所以，評估適合的工作發展，兩者缺一不可。</p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:24px;"><strong>履歷與面試輔導</strong></span></p>'
+                        },
+                        desc: {
+                            html: '<p style="text-align:justify;">提供履歷與面試輔導的生涯設計師，除了來自不同產業的經驗，同時具備生涯設計的思維；不只從個人角度出發，還能從就業市場的角度，提供更全面的情報，為更好的職涯做準備。</p>'
+                        }
+                    }
+                ]
+            }
         },
         {
             name: 'LIST02'

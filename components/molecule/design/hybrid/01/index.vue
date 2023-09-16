@@ -13,26 +13,26 @@
             <div class="textGroup__footer">
                 <div>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item1Title.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[0].title.html" :toolbar="state.toolbar">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item1Desc.html" :toolbar="state.toolbar">
-                    </LazyAtomInputCkeditorInline>
-                </div>
-                <div>
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item2Title.html" :toolbar="state.toolbar">
-                    </LazyAtomInputCkeditorInline>
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item2Desc.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[0].desc.html" :toolbar="state.toolbar">
                     </LazyAtomInputCkeditorInline>
                 </div>
                 <div>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item3Title.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[1].title.html" :toolbar="state.toolbar">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.item3Desc.html" :toolbar="state.toolbar">
+                        v-model="localValue.controllable.items[1].desc.html" :toolbar="state.toolbar">
+                    </LazyAtomInputCkeditorInline>
+                </div>
+                <div>
+                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                        v-model="localValue.controllable.items[2].title.html" :toolbar="state.toolbar">
+                    </LazyAtomInputCkeditorInline>
+                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                        v-model="localValue.controllable.items[2].desc.html" :toolbar="state.toolbar">
                     </LazyAtomInputCkeditorInline>
                 </div>
             </div>

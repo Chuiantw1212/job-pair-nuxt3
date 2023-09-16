@@ -2,10 +2,10 @@
     <div class="organizationBg">
         <div class="organizationBg__body">
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                :toolbar="state.toolbar" class="body__title">
+                :toolbar="state.titleToolbar" class="body__title">
             </LazyAtomInputCkeditorInline>
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                :toolbar="state.toolbar" class="body__desc">
+                class="body__desc">
             </LazyAtomInputCkeditorInline>
         </div>
         <div class="organizationBg__imageWrap">
@@ -40,10 +40,12 @@ const localValue = computed({
 
 })
 const state = reactive({
-    toolbar: [
+    titleToolbar: [
         'fontSize',
         '|',
         'bold',
+        'fontColor',
+        '|',
         'alignment',
     ]
 })
