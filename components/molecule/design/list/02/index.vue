@@ -71,8 +71,9 @@ const localValue = computed({
     set(newValue) {
         emit('update:modelValue', newValue)
     }
-
 })
+
+
 </script>
 <style lang="scss" scoped>
 .rowGroup {
