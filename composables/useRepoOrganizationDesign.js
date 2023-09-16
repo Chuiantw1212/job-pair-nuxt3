@@ -4,7 +4,7 @@ export default defineStore('company', () => {
     // const state = reactive({
     //     companyJobsRes: null,
     // })
-    async function postOrganizationDesign(data) {
+    async function postItem(data) {
         const response = await jobPairApi.request({
             method: 'post',
             url: `/organization/design`,
@@ -12,8 +12,16 @@ export default defineStore('company', () => {
         })
         return response
     }
+    async function getItem() {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/organization/design`,
+        })
+        return response
+    }
     return {
         // state,
-        postOrganizationDesign,
+        postItem,
+        getItem
     }
 })
