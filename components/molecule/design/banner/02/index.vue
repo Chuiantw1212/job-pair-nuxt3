@@ -1,11 +1,9 @@
 <template>
     <div class="banner">
         <div class="banner__body">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable.title.html"
-                v-model="localValue.controllable.title.html">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html">
             </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable.title.html"
-                v-model="localValue.controllable.desc.html">
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
             </LazyAtomInputCkeditorInline>
             <AtomBtnSimple class="body__btn">
                 查看所有職缺
@@ -29,21 +27,25 @@ const props = defineProps({
         default: function () {
             return {
                 name: 'BANNER02',
-                controllable: {
-                    title: {
-                        html: ''
-                    },
-                    desc: {
-                        html: ''
-                    }
-                }
             }
         }
     }
 })
 const localValue = computed({
     get() {
-        return props.modelValue
+        const defaultValue = {
+            name: 'BANNER02',
+            controllable: {
+                title: {
+                    html: '<p><span style="font-size:36px;"><strong>找工作就像談戀愛</strong></span></p>'
+                },
+                desc: {
+                    html: '<p><span style="font-size:18px;">快來配對屬於自己的職缺</span></p>'
+                }
+            }
+        }
+        const mergedItem = Object.assign(defaultValue, props.modelValue)
+        return mergedItem
     },
     set(newValue) {
         emit('update:modelValue', newValue)

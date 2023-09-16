@@ -27,12 +27,12 @@
                         <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
                     </li>
                     <li id="HYBRID01" class="list__item" draggable="true" @dragstart="drag($event)">
-                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                    </li>
-                    <li id="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)">
                         <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                         <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
+                    </li>
+                    <li id="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
+                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                     <li id="ARTICLE01" class="list__item" draggable="true" @dragstart="drag($event)">
                         <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
