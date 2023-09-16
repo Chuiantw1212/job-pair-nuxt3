@@ -24,7 +24,19 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
-        return props.modelValue
+        const defaultValue = {
+            name: 'ARTICLE01',
+            controllable: {
+                title: {
+                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:36px;"><strong>公司福利</strong></span></p>'
+                },
+                desc: {
+                    html: '<ul><li><span style="font-size:24px;">彈性自由的工作環境</span></li><li><span style="font-size:24px;">優於勞基法的休假制度</span></li><li><span style="font-size:24px;">每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span style="font-size:24px;">三節禮金</span></li></ul>'
+                }
+            }
+        }
+        const mergedItem = Object.assign(defaultValue, props.modelValue)
+        return mergedItem
     },
     set(newValue) {
         emit('update:modelValue', newValue)
@@ -50,6 +62,7 @@ const state = reactive({
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: contain;
+    background-color: white;
 }
 
 
