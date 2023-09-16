@@ -97,6 +97,14 @@ const state = reactive({
         },
         {
             name: 'BANNER02',
+            controllable: {
+                title: {
+                    html: '<p><span style="font-size:36px;"><strong>找工作就像談戀愛</strong></span></p>'
+                },
+                desc: {
+                    html: '<p><span style="font-size:18px;">快來配對屬於自己的職缺</span></p>'
+                }
+            }
         },
         {
             name: 'HYBRID01'
