@@ -1,6 +1,6 @@
 <template>
     <div class="container design">
-        <div v-if="false" class="design__panel">
+        <div class="design__panel">
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -18,24 +18,24 @@
                     選擇布局
                 </div>
                 <ul class="blocks__list">
-                    <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Top1.webp">
+                    <li id="drag1" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Top2.webp">
+                    <li id="drag2" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp">
+                    <li id="drag3" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp">
+                    <li id="drag4" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li class="list__item">
-                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp">
+                    <li id="drag5" class="list__item" draggable="true" @dragstart="drag($event)">
+                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
                 </ul>
@@ -66,8 +66,8 @@
                 <MoleculeDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignSlide01>
             </template>
-            <div class="preview__template">
-                請先點擊區域，再選擇模板
+            <div id="div1" class="preview__template" @drop="drop($event)" @dragover="allowDrop($event)">
+                請拖曳布局至此
             </div>
         </div>
         <div class="design__footer">
@@ -85,19 +85,50 @@ const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $validate, $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const state = reactive({
-    organizationDesign: {}
+    organizationDesign: {
+        color: '#21cc90',
+        templates: []
+    }
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (!newValue) {
         return
     }
-    const response = await repoOrganizationDesign.getItem()
-    const { data = {} } = response
-    state.organizationDesign = data
+    initializeDesign()
 }, { immediate: true })
 // methods
+async function initializeDesign() {
+    const response = await repoOrganizationDesign.getItem()
+    const { data = {} } = response
+    const organizationDesign = Object.assign(state.organizationDesign, data)
+    if (organizationDesign.identifier) {
+        state.organizationDesign = organizationDesign
+    } else {
+        await repoOrganizationDesign.postItem(state.organizationDesign)
+    }
+}
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+async function saveDraft() {
+    $sweet.loader(true)
+    const response = await repoOrganizationDesign.putItem(state.organizationDesign)
+    $sweet.loader(false)
+}
 async function openSeoDialog() {
     $sweet.loader(true)
+    // const defaultDesign = {
+    //     color: '#5ea88e',
+    //     templates: []
+    // }
     const response = await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }

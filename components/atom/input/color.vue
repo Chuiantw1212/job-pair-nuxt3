@@ -16,7 +16,7 @@ const state = reactive({
 const props = defineProps({
     modelValue: {
         type: String,
-        default: '#5EA88E',
+        default: '',
     },
 })
 const localValue = computed({
@@ -27,6 +27,11 @@ const localValue = computed({
         emit('update:modelValue', newValue)
     }
 })
+watch(() => localValue.value, (newValue) => {
+    if (newValue && state.pickr) {
+        state.pickr.setColor(newValue)
+    }
+}, { immediate: true })
 onMounted(() => {
     /**
      * 元件API
@@ -49,9 +54,12 @@ onMounted(() => {
     pickr.on('save', (color, instance) => {
         const HEXA = color.toHEXA().toString()
         localValue.value = HEXA
-        pickr.hide()
+        state.pickr.hide()
     })
     state.pickr = pickr
+    pickr.on('init', () => {
+        state.pickr.setColor(localValue.value)
+    })
 })
 function showPicker() {
     state.pickr.show()
