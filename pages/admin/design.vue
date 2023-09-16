@@ -42,18 +42,19 @@
             </div>
         </div>
         <div class="design__body">
-            <!-- WIP -->
-            <!-- Banner -->
-            <MoleculeDesignBanner></MoleculeDesignBanner>
-            <MoleculeDesignBanner2></MoleculeDesignBanner2>
-            <!-- Introduction -->
-            <MoleculeDesignProducts></MoleculeDesignProducts>
-            <MoleculeDesignDescription2></MoleculeDesignDescription2>
-            <MoleculeDesignThreeRows></MoleculeDesignThreeRows>
-            <MoleculeDesignSlide></MoleculeDesignSlide>
-            <!-- 公司福利 -->
-            <MoleculeDesignTwoColumns></MoleculeDesignTwoColumns>
-            <MoleculeDesignBackground></MoleculeDesignBackground>
+            <!-- Banner式 -->
+            <MoleculeDesignBanner01></MoleculeDesignBanner01>
+            <MoleculeDesignBanner02></MoleculeDesignBanner02>
+            <!-- 圖文混合 -->
+            <MoleculeDesignHybrid01></MoleculeDesignHybrid01>
+            <MoleculeDesignHybrid02></MoleculeDesignHybrid02>
+            <!-- 短文 -->
+            <MoleculeDesignArticle01></MoleculeDesignArticle01>
+            <!-- 條列式 -->
+            <MoleculeDesignList01></MoleculeDesignList01>
+            <MoleculeDesignList02></MoleculeDesignList02>
+            <!-- 投影片式 -->
+            <MoleculeDesignSlide01></MoleculeDesignSlide01>
             <div class="preview__template">
                 請先點擊區域，再選擇模板
             </div>
