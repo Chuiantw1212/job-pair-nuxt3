@@ -173,7 +173,7 @@ async function initializeCKEditor() {
         // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
         ui: {
             poweredBy: {
-                position: 'inside',
+                position: 'border',
                 // side: 'left',
                 label: 'Job Pair'
             }

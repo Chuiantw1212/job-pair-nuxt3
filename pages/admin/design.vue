@@ -219,7 +219,12 @@ const state = reactive({
             }
         },
         {
-            name: 'SLIDE01'
+            name: 'SLIDE01',
+            controllable: {
+                items: [
+                    
+                ]
+            }
         }
     ]
 })
