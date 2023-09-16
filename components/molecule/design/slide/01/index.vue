@@ -94,7 +94,48 @@ const props = defineProps({
 })
 const localValue = computed({
     get() {
-        return props.modelValue
+        const defaultValue = {
+            name: 'SLIDE01',
+            controllable: {
+                items: [
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                        },
+                        image: {
+                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                        },
+                        desc: {
+                            html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                        },
+                        image: {
+                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                        },
+                        desc: {
+                            html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
+                        }
+                    },
+                    {
+                        title: {
+                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                        },
+                        image: {
+                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                        },
+                        desc: {
+                            html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
+                        }
+                    }
+                ]
+            }
+        }
+        const mergedItem = Object.assign(defaultValue, props.modelValue)
+        return mergedItem
     },
     set(newValue) {
         emit('update:modelValue', newValue)
