@@ -18,35 +18,43 @@
                     選擇布局
                 </div>
                 <ul class="blocks__list">
-                    <li id="BANNER01" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="BANNER01" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li id="BANNER02" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="BANNER02" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
                     </li>
-                    <li id="HYBRID01" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="HYBRID01" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                         <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
                     </li>
-                    <li id="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li id="ARTICLE01" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="ARTICLE01" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
                         <div class="item__desc">適合公司介紹，大標、內文</div>
                     </li>
-                    <li id="LIST01" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="LIST01" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
                         <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                     </li>
-                    <li id="LIST02" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="LIST02" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
                         <div class="item__desc">條列式</div>
                     </li>
-                    <li id="SLIDE01" class="list__item" draggable="true" @dragstart="drag($event)">
+                    <li data-name="SLIDE01" class="list__item" draggable="true" @dragstart="drag($event)"
+                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
                         <div class="item__desc">投影片</div>
                     </li>
@@ -78,7 +86,8 @@
                 <MoleculeDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignSlide01>
             </template>
-            <div id="div1" class="preview__template" @drop="drop($event)" @dragover="allowDrop($event)">
+            <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                @drop="drop($event)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
         </div>
@@ -97,6 +106,7 @@ const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $validate, $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const state = reactive({
+    draggingTemplate: '',
     organizationDesign: {
         color: '#21cc90',
         templates: []
@@ -109,6 +119,9 @@ watch(() => repoAuth.state.user, async (newValue) => {
     initializeDesign()
 }, { immediate: true })
 // methods
+function setTemplateName(ev) {
+    state.draggingTemplate = ev.target.dataset.name
+}
 async function initializeDesign() {
     const response = await repoOrganizationDesign.getItem()
     const { data = {} } = response
@@ -120,14 +133,13 @@ async function initializeDesign() {
     }
 }
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    state.draggingTemplate = ev.target.dataset.name
+    // toggleDragOver(true)
 }
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    console.log(data);
     state.organizationDesign.templates.push({
-        name: data,
+        name: state.draggingTemplate,
         // controllable: {} // 指定Name就好，controllable結構給comopnent決定
     })
 }
@@ -414,6 +426,10 @@ const backup = reactive({
                     .item__desc {
                         margin-top: 10px;
                     }
+
+                    &:hover {
+                        outline: 2px dashed #d60b00;
+                    }
                 }
             }
         }
@@ -421,20 +437,6 @@ const backup = reactive({
 
     .design__body {
         // display: flex;
-
-
-        .body__preview {
-            // width: 1320px;
-            // min-width: 900px;
-            // padding: 20px;
-            // position: relative;
-
-            .preview__item {
-                // width: 100%;
-                // position: absolute;
-            }
-
-        }
 
         .preview__template {
             border: dashed 1px #5ea88e;
@@ -445,6 +447,10 @@ const backup = reactive({
             font-size: 20px;
             line-height: 313px;
             text-align: center;
+        }
+
+        .preview__template--outline {
+            border-color: #d60b00;
         }
     }
 
