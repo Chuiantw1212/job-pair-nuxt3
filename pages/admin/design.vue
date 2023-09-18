@@ -96,7 +96,7 @@
                 目前的方案可使用五個區域
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <AtomBtnSimple class="footer_btn" @click="openSeoDialog()">發布頁面</AtomBtnSimple>
+            <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple>
             <AtomBtnSimple class="footer_btn">預覽頁面</AtomBtnSimple>
         </div>
     </div>
@@ -109,7 +109,8 @@ const state = reactive({
     draggingTemplate: '',
     organizationDesign: {
         color: '#21cc90',
-        templates: []
+        templates: [],
+        status: 'draft', // status: ['active', 'draft', 'closed']
     }
 })
 watch(() => repoAuth.state.user, async (newValue) => {
@@ -147,12 +148,14 @@ async function saveDraft() {
     const response = await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }
-async function openSeoDialog() {
+async function publishDesign() {
+    // open seo dialog
     $sweet.loader(true)
     // const defaultDesign = {
     //     color: '#5ea88e',
     //     templates: []
     // }
+    state.organizationDesign = 'active'
     const response = await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }
