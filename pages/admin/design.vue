@@ -62,30 +62,31 @@
             </div>
         </div>
         <div class="design__body">
-            <template v-for="(item, index) in state.organizationDesign.templates" :key="index">
-                <!-- Banner式 -->
+            <MoleculeDesignBody v-model="state.organizationDesign.templates"></MoleculeDesignBody>
+            <!-- <template v-for="(item, index) in state.organizationDesign.templates" :key="index">
+        
                 <MoleculeDesignBanner01 v-if="item.name === 'BANNER01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignBanner01>
                 <MoleculeDesignBanner02 v-if="item.name === 'BANNER02'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignBanner02>
-                <!-- 圖文混合 -->
+         
                 <MoleculeDesignHybrid01 v-if="item.name === 'HYBRID01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignHybrid01>
                 <MoleculeDesignHybrid02 v-if="item.name === 'HYBRID02'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignHybrid02>
-                <!-- 短文 -->
+       
                 <MoleculeDesignArticle01 v-if="item.name === 'ARTICLE01'"
                     v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignArticle01>
-                <!-- 條列式 -->
+           
                 <MoleculeDesignList01 v-if="item.name === 'LIST01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignList01>
                 <MoleculeDesignList02 v-if="item.name === 'LIST02'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignList02>
-                <!-- 投影片式 -->
+             
                 <MoleculeDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="state.organizationDesign.templates[index]">
                 </MoleculeDesignSlide01>
-            </template>
+            </template> -->
             <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
                 @drop="drop($event)" @dragover="allowDrop($event)">
                 請拖曳布局至此
@@ -155,7 +156,7 @@ async function publishDesign() {
     //     color: '#5ea88e',
     //     templates: []
     // }
-    state.organizationDesign = 'active'
+    state.organizationDesign.status = 'active'
     const response = await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }
