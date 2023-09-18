@@ -18,43 +18,43 @@
                     選擇布局
                 </div>
                 <ul class="blocks__list">
-                    <li data-name="BANNER01" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="BANNER01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li data-name="BANNER02" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
                     </li>
-                    <li data-name="HYBRID01" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                         <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
                     </li>
-                    <li data-name="HYBRID02" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="HYBRID02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li data-name="ARTICLE01" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="ARTICLE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
                         <div class="item__desc">適合公司介紹，大標、內文</div>
                     </li>
-                    <li data-name="LIST01" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="LIST01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
                         <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                     </li>
-                    <li data-name="LIST02" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="LIST02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
                         <div class="item__desc">條列式</div>
                     </li>
-                    <li data-name="SLIDE01" class="list__item" draggable="true" @dragstart="drag($event)"
-                        @mouseenter="setTemplateName($event)" @mouseleave="state.draggingTemplate = ''">
+                    <li data-name="SLIDE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
                         <div class="item__desc">投影片</div>
                     </li>
@@ -131,10 +131,6 @@ async function initializeDesign() {
     } else {
         await repoOrganizationDesign.postItem(state.organizationDesign)
     }
-}
-function drag(ev) {
-    state.draggingTemplate = ev.target.dataset.name
-    // toggleDragOver(true)
 }
 function drop(ev) {
     ev.preventDefault();
@@ -417,6 +413,7 @@ const backup = reactive({
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
+                    cursor: grab;
 
                     .item__imaage {
                         display: block;
@@ -430,6 +427,10 @@ const backup = reactive({
                     &:hover {
                         outline: 2px dashed #d60b00;
                     }
+                }
+
+                .list__item--selected {
+                    cursor: grabbing;
                 }
             }
         }
