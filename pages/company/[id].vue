@@ -1,78 +1,83 @@
 <template>
     <div class="company" :class="{ container: device.state.isLarge }">
-        <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-        <section id="company__info" class="company__section mt-3">
-            <div :key="state.renderKey" class="company__bannerGroup">
-                <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
-            </div>
-            <div class="company__card company__basic">
-                <div class="basic__basicGroup1">
-                    <div v-if="state.companyInfo?.logo" class="basic__logo"
-                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
-                    </div>
-                    <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
-                    </div>
-                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
+        <MoleculeDesignBody v-if="state.companyInfo.templates" v-model="state.companyInfo.templates" readonly>
+
+        </MoleculeDesignBody>
+        <div v-else class="company__free">
+            <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
+            <section id="company__info" class="company__section mt-3">
+                <div :key="state.renderKey" class="company__bannerGroup">
+                    <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
                 </div>
-                <div class="d-none d-lg-flex basic__basicGroup2">
-                    <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                        <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
-                        {{ state.companyInfo?.numberOfEmployees }}
+                <div class="company__card company__basic">
+                    <div class="basic__basicGroup1">
+                        <div v-if="state.companyInfo?.logo" class="basic__logo"
+                            :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                        </div>
+                        <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                        </div>
+                        <div class="basic__header">{{ state.companyInfo?.name }}</div>
                     </div>
-                    <div class="basicGroup__item">
-                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
-                        {{ getLocationText() }}
-                    </div>
-                    <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                        <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
-                        資本額 {{ getCapical(state.companyInfo?.capital) }}
-                    </div>
-                </div>
-            </div>
-            <div class="d-lg-none company__card company__features">
-                <div class="features__item">
-                    <span class="item__header">地點</span>
-                    <span class="item__body">{{ getLocationText() }}</span>
-                </div>
-                <div class="features__item">
-                    <span class="item__header">產業類別</span>
-                    <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-                        $optionText(value, repoSelect.industryItems)
-                    }}</span>
-                </div>
-            </div>
-        </section>
-        <div class="company__body">
-            <div class="body__textGroup">
-                <div class="company__card company__intro">
-                    <div class="card__header">公司介紹</div>
-                    <div class="card__body">
-                        <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
+                    <div class="d-none d-lg-flex basic__basicGroup2">
+                        <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
+                            <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
+                            {{ state.companyInfo?.numberOfEmployees }}
+                        </div>
+                        <div class="basicGroup__item">
+                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                            {{ getLocationText() }}
+                        </div>
+                        <div v-if="state.companyInfo?.capital" class="basicGroup__item">
+                            <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
+                            資本額 {{ getCapical(state.companyInfo?.capital) }}
+                        </div>
                     </div>
                 </div>
-                <div class="company__card company__welfare">
-                    <div class="card__header">公司福利</div>
-                    <div class="card__body">
-                        <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
+                <div class="d-lg-none company__card company__features">
+                    <div class="features__item">
+                        <span class="item__header">地點</span>
+                        <span class="item__body">{{ getLocationText() }}</span>
+                    </div>
+                    <div class="features__item">
+                        <span class="item__header">產業類別</span>
+                        <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
+                            $optionText(value, repoSelect.industryItems)
+                        }}</span>
                     </div>
                 </div>
-            </div>
-            <div v-show="state.companyInfo?.images" class="company__env">
-                <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
-                <div class="glide" :class="`glide${state.id}`">
-                    <div class="glide__track" data-glide-el="track">
-                        <ul class="glide__slides">
-                            <template v-for="(image, index) in state.companyInfo?.images" :key="index">
-                                <li class="glide__slide">
-                                    <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
-                                        aria-label="換圖片">
-                                        <img class="env__glideImage" :style="{
-                                            'background-image': `url(${image.url})`,
-                                        }" />
-                                    </button>
-                                </li>
-                            </template>
-                        </ul>
+            </section>
+            <div class="company__body">
+                <div class="body__textGroup">
+                    <div class="company__card company__intro">
+                        <div class="card__header">公司介紹</div>
+                        <div class="card__body">
+                            <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
+                        </div>
+                    </div>
+                    <div class="company__card company__welfare">
+                        <div class="card__header">公司福利</div>
+                        <div class="card__body">
+                            <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="state.companyInfo?.images" class="company__env">
+                    <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
+                    <div class="glide" :class="`glide${state.id}`">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <template v-for="(image, index) in state.companyInfo?.images" :key="index">
+                                    <li class="glide__slide">
+                                        <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
+                                            aria-label="換圖片">
+                                            <img class="env__glideImage" :style="{
+                                                'background-image': `url(${image.url})`,
+                                            }" />
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,15 +3,24 @@
         <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
             draggable="false">
         <div class="banner__preview">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('title')"
-                @click="handleFocus('title')" @blur="handleBlur('title')">
-            </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('desc')"
-                @click="handleFocus('desc')" @blur="handleBlur('desc')">
-            </LazyAtomInputCkeditorInline>
+            <template v-if="readonly">
+                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline">
 
+                </div>
+                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline">
+
+                </div>
+            </template>
+            <template v-else>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+                    :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('title')"
+                    @click="handleFocus('title')" @blur="handleBlur('title')">
+                </LazyAtomInputCkeditorInline>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
+                    :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('desc')"
+                    @click="handleFocus('desc')" @blur="handleBlur('desc')">
+                </LazyAtomInputCkeditorInline>
+            </template>
         </div>
     </div>
 </template>
@@ -35,6 +44,10 @@ const props = defineProps({
                 name: 'BANNER01',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 const localValue = computed({
