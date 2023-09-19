@@ -1,10 +1,18 @@
 <template>
     <div class="banner">
         <div class="banner__body">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html">
-            </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
-            </LazyAtomInputCkeditorInline>
+            <template v-if="readonly">
+                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline">
+                </div>
+                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline">
+                </div>
+            </template>
+            <template v-else>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html">
+                </LazyAtomInputCkeditorInline>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
+                </LazyAtomInputCkeditorInline>
+            </template>
             <AtomBtnSimple class="body__btn">
                 查看所有職缺
             </AtomBtnSimple>
