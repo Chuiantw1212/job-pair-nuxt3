@@ -1,12 +1,20 @@
 <template>
     <div class="organizationBg">
         <div class="organizationBg__body">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                :toolbar="state.titleToolbar" class="body__title">
-            </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                class="body__desc">
-            </LazyAtomInputCkeditorInline>
+            <template v-if="readonly">
+                <div style="{'max-width:540px'}">
+                    <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
+                    <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline body__desc"></div>
+                </div>
+            </template>
+            <template v-else>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+                    :toolbar="state.titleToolbar">
+                </LazyAtomInputCkeditorInline>
+                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
+                    class="body__desc">
+                </LazyAtomInputCkeditorInline>
+            </template>
         </div>
         <div class="organizationBg__imageWrap">
             <img class="imageWrap__image" src="./screen.png" draggable="false">
@@ -38,6 +46,10 @@ const props = defineProps({
                 name: 'HYBRID02',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 const localValue = computed({

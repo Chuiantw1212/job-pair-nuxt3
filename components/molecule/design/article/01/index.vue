@@ -30,6 +30,10 @@ const props = defineProps({
                 name: 'ARTICLE01',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 const localValue = computed({

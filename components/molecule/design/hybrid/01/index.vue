@@ -54,6 +54,10 @@ const props = defineProps({
                 name: 'HYBRID01',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 const localValue = computed({

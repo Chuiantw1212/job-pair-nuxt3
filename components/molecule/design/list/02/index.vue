@@ -42,6 +42,10 @@ const props = defineProps({
                 name: 'LIST02',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 const localValue = computed({
