@@ -3,70 +3,45 @@
         <div :id="`slide-${state.id}`" class="glide">
             <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
-                    <li class="glide__slide">
+                    <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
                         <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                v-model="localValue.controllable.items[0].title.html" :toolbar="state.titleToolbar"
-                                class="card__title">
-                            </LazyAtomInputCkeditorInline>
-                            <hr class="content__hr">
-                            <div class="content__body">
-                                <div class="body__left">
-                                    <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[0].image.html" :toolbar="state.titleToolbar">
-                                    </LazyAtomInputCkeditorInline>
+                            <template v-if="readonly">
+                                <div v-html="slide.title.html" class="ck ck-editor__editable_inline">
                                 </div>
-                                <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[0].desc.html">
-                                    </LazyAtomInputCkeditorInline>
+                                <hr class="content__hr">
+                                <div class="content__body">
+                                    <div class="body__left">
+                                        <img src="./default.webp">
+                                        <div v-html="slide.image.html" class="ck ck-editor__editable_inline">
+                                        </div>
+                                    </div>
+                                    <div class="body__right">
+                                        <div v-html="slide.desc.html" class="ck ck-editor__editable_inline">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="glide__slide">
-                        <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                v-model="localValue.controllable.items[1].title.html" :toolbar="state.titleToolbar"
-                                class="card__title">
-                            </LazyAtomInputCkeditorInline>
-                            <hr class="content__hr">
-                            <div class="content__body">
-                                <div class="body__left">
-                                    <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[1].image.html" :toolbar="state.titleToolbar">
-                                    </LazyAtomInputCkeditorInline>
+                            </template>
+                            <template v-else>
+                                <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                    v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar"
+                                    class="card__title">
+                                </LazyAtomInputCkeditorInline>
+                                <hr class="content__hr">
+                                <div class="content__body">
+                                    <div class="body__left">
+                                        <img src="./default.webp">
+                                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                            v-model="localValue.controllable.items[index].image.html"
+                                            :toolbar="state.titleToolbar">
+                                        </LazyAtomInputCkeditorInline>
+                                    </div>
+                                    <div class="body__right">
+                                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                            v-model="localValue.controllable.items[index].desc.html">
+                                        </LazyAtomInputCkeditorInline>
+                                    </div>
                                 </div>
-                                <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[1].desc.html">
-                                    </LazyAtomInputCkeditorInline>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="glide__slide">
-                        <div class="slide__content">
-                            <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                v-model="localValue.controllable.items[2].title.html" :toolbar="state.titleToolbar"
-                                class="card__title">
-                            </LazyAtomInputCkeditorInline>
-                            <hr class="content__hr">
-                            <div class="content__body">
-                                <div class="body__left">
-                                    <img src="./default.webp">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[2].image.html" :toolbar="state.titleToolbar">
-                                    </LazyAtomInputCkeditorInline>
-                                </div>
-                                <div class="body__right">
-                                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                        v-model="localValue.controllable.items[2].desc.html">
-                                    </LazyAtomInputCkeditorInline>
-                                </div>
-                            </div>
+                            </template>
                         </div>
                     </li>
                 </ul>
@@ -103,6 +78,10 @@ const props = defineProps({
                 name: 'SLIDE01',
             }
         }
+    },
+    readonly: {
+        type: Boolean,
+        default: false
     }
 })
 onMounted(() => {
