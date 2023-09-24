@@ -1,6 +1,6 @@
 <template>
     <div class="container design">
-        <div class="design__panel">
+        <div v-if="false" class="design__panel">
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
