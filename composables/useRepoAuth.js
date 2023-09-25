@@ -6,19 +6,19 @@ export default defineStore('auth', () => {
     const state = reactive({
         user: null,
         company: null,
-        isLogginIn: false,
+        isSigningInProgress: false,
     })
     async function postSignin(data) {
-        if (state.isLogginIn) {
+        if (state.isSigningInProgress) {
             return
         }
-        state.isLogginIn = true
+        state.isSigningInProgress = true
         const response = await jobPairApi.request({
             method: 'post',
             url: `/auth/signIn`,
             data,
         })
-        state.isLogginIn = false
+        // state.isSigningInProgress = false
         return response
     }
     async function postVerificationEmail(data) {
@@ -54,6 +54,7 @@ export default defineStore('auth', () => {
     function setUser(user) {
         // 在多數程式碼，一旦user非null就視為登入，故這邊不可更動
         state.user = user
+        state.isSigningInProgress = false
     }
     function setCompany(company) {
         state.company = company

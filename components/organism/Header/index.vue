@@ -67,7 +67,7 @@ const state = reactive({
 })
 const router = useRouter()
 const route = useRoute()
-const { $emitter, $bootstrap } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 // Lifecycles
 onMounted(() => {
     $emitter.on("setMenuType", (menuType) => {
@@ -115,13 +115,20 @@ function collapseNavbar() {
     }
 }
 function routeByMenuType() {
+    let routeName = null
     if (state.menuType === 'admin') {
-        router.push({
-            name: 'admin'
-        })
+        routeName = 'admin'
     } else {
+        routeName = 'index'
         router.push({
             name: 'index'
+        })
+    }
+    if (route.name === routeName) {
+        location.reload()
+    } else {
+        router.push({
+            name: routeName
         })
     }
 }

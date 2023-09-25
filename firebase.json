@@ -1,6 +1,7 @@
 {
   "functions": {
-    "source": ".output/server"
+    "source": ".output/server",
+    "runtime": "nodejs16"
   },
   "hosting": {
     "site": "job-pair-taiwan-prd",

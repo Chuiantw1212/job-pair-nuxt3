@@ -144,7 +144,7 @@ async function initializeCKEditor() {
         }
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
-    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/dist/bundle.js`)
+    const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)
     const ClassicEditor = importedEditor || window.ClassicEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
@@ -197,27 +197,30 @@ defineExpose({
     display: flex;
     align-items: center;
 }
-</style>
-<style lang="scss">
+
 .ckeditor--edit {
     border: 1px solid #d3d3d3;
     border-radius: 10px;
     overflow: hidden;
 }
 
-.ck-editor__editable_inline {
+.ckeditor :deep(.ck-editor__editable_inline) {
     min-height: 11em;
 }
 
-.ck-toolbar {
+.ckeditor :deep(.ck-toolbar) {
     border: none !important;
 }
 
-.ck-editor__editable {
+.ckeditor :deep(.ck-editor__editable) {
     border: none !important;
 }
 
-.ck-read-only {
+.ckeditor :deep(.ck-read-only) {
     border: 1px solid #d3d3d3;
+}
+
+.ckeditor--edit :deep(.ck-sticky-panel__content) {
+    border-bottom: 1px solid #ccced1;
 }
 </style>

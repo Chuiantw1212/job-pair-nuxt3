@@ -65,9 +65,6 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
-        console.log({
-            basicInfo
-        });
         if (!basicInfo) {
             await $sweet.alert('查無使用者資料')
             return
@@ -110,6 +107,7 @@ export default function setup() {
             router.replace({
                 name: 'index'
             })
+            repoAuth.state.isSigningInProgress = false
             return
         }
         /**
@@ -210,7 +208,7 @@ export default function setup() {
                 }
                 else if (!categorySelected) {
                     router.push({
-                        name: 'questions-result'
+                        name: 'questions-profile'
                     })
                 }
             }
