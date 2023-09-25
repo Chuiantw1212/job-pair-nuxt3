@@ -1,6 +1,6 @@
 <template>
     <div class="banner">
-        <div class="banner__body">
+        <div v-if="localValue.controllable" class="banner__body">
             <template v-if="readonly">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline">
                 </div>
@@ -8,9 +8,9 @@
                 </div>
             </template>
             <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html">
                 </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html">
                 </LazyAtomInputCkeditorInline>
             </template>
             <AtomBtnSimple class="body__btn">

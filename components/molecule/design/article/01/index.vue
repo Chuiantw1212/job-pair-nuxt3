@@ -1,15 +1,14 @@
 <template>
     <div class="columns" :style="{ 'background-image': `url(${image})` }">
         <div class="columns__body">
-            <template v-if="readonly">
+            <template v-if="readonly && localValue.controllable">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
                 <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline"></div>
             </template>
-            <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                    :toolbar="state.titleToolbar">
+            <template v-else-if="localValue.controllable">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html">
                 </LazyAtomInputCkeditorInline>
             </template>
         </div>

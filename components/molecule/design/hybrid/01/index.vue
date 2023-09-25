@@ -3,7 +3,7 @@
         <div class="description__imageGroup">
             <img src="./Image.webp">
         </div>
-        <div class="description__textGroup">
+        <div v-if="localValue.controllable" class="description__textGroup">
             <template v-if="readonly">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
                 <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline"></div>
@@ -15,18 +15,17 @@
                 </div>
             </template>
             <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                    :toolbar="state.titleToolbar">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html">
                 </LazyAtomInputCkeditorInline>
                 <div class="textGroup__footer">
                     <div v-for="(item, index) in localValue.controllable.items" :key="`item${index}`">
-                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                            v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
+                        <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
+                            :toolbar="state.titleToolbar">
                         </LazyAtomInputCkeditorInline>
-                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                            v-model="localValue.controllable.items[index].desc.html" :toolbar="state.titleToolbar">
+                        <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html"
+                            :toolbar="state.titleToolbar">
                         </LazyAtomInputCkeditorInline>
                     </div>
                 </div>

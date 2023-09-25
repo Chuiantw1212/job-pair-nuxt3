@@ -1,5 +1,5 @@
 <template>
-    <div class="banner2">
+    <div v-if="localValue.controllable" class="banner2">
         <template v-if="readonly">
             <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline banner__title"></div>
             <div class="banner2__body">
@@ -11,18 +11,16 @@
             </div>
         </template>
         <template v-else>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                :toolbar="state.titleToolbar" class="banner__title">
+            <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
+                class="banner__title">
             </LazyAtomInputCkeditorInline>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
                     <img class="card__image" src="./img4@2x.webp" format="webp" loading="lazy" />
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar"
-                        class="card__title">
+                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
+                        :toolbar="state.titleToolbar" class="card__title">
                     </LazyAtomInputCkeditorInline>
-                    <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                        v-model="localValue.controllable.items[index].desc.html">
+                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html">
                     </LazyAtomInputCkeditorInline>
                 </div>
             </div>
