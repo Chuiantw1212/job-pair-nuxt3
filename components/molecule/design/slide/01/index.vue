@@ -68,7 +68,6 @@ const state = reactive({
         '|',
         'alignment',
     ]
-
 })
 const props = defineProps({
     modelValue: {

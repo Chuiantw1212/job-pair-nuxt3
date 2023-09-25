@@ -1,6 +1,7 @@
 <template>
     <div class="container design">
-        <div class="design__panel">
+        <div class="design__panel" :class="{ 'design__panel--isOpen': state.isOpen }">
+            <button class="panel__btn" @click="slidePanel()">開合</button>
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -63,30 +64,6 @@
         </div>
         <div class="design__body">
             <MoleculeDesignBody v-model="state.organizationDesign.templates"></MoleculeDesignBody>
-            <!-- <template v-for="(item, index) in state.organizationDesign.templates" :key="index">
-        
-                <MoleculeDesignBanner01 v-if="item.name === 'BANNER01'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignBanner01>
-                <MoleculeDesignBanner02 v-if="item.name === 'BANNER02'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignBanner02>
-         
-                <MoleculeDesignHybrid01 v-if="item.name === 'HYBRID01'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignHybrid01>
-                <MoleculeDesignHybrid02 v-if="item.name === 'HYBRID02'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignHybrid02>
-       
-                <MoleculeDesignArticle01 v-if="item.name === 'ARTICLE01'"
-                    v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignArticle01>
-           
-                <MoleculeDesignList01 v-if="item.name === 'LIST01'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignList01>
-                <MoleculeDesignList02 v-if="item.name === 'LIST02'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignList02>
-             
-                <MoleculeDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="state.organizationDesign.templates[index]">
-                </MoleculeDesignSlide01>
-            </template> -->
             <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
                 @drop="drop($event)" @dragover="allowDrop($event)">
                 請拖曳布局至此
@@ -98,7 +75,7 @@
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
             <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple>
-            <AtomBtnSimple class="footer_btn">預覽頁面</AtomBtnSimple>
+            <!-- <AtomBtnSimple class="footer_btn" @click="previewDesign()">預覽頁面</AtomBtnSimple> -->
         </div>
     </div>
 </template>
@@ -112,7 +89,8 @@ const state = reactive({
         color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
-    }
+    },
+    isOpen: true,
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (!newValue) {
@@ -121,6 +99,12 @@ watch(() => repoAuth.state.user, async (newValue) => {
     initializeDesign()
 }, { immediate: true })
 // methods
+function slidePanel() {
+    state.isOpen = !state.isOpen
+}
+function previewDesign() {
+
+}
 function setTemplateName(ev) {
     state.draggingTemplate = ev.target.dataset.name
 }
@@ -358,13 +342,23 @@ const backup = reactive({
     .design__panel {
         position: fixed;
         left: 0;
-        top: 0;
+        top: 61px;
         width: 200px;
         border-right: solid 1px #d3d3d3;
         height: 100%;
         background-color: white;
-        z-index: 10;
+        z-index: 1060;
         width: 560px;
+        transform: translateX(-100%);
+        transition: all 0.3s;
+
+        .panel__btn {
+            background-color: white;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(100%, -50%);
+        }
 
         .category__goback {
             width: 115px;
@@ -438,6 +432,10 @@ const backup = reactive({
                 }
             }
         }
+    }
+
+    .design__panel--isOpen {
+        transform: translateX(0%);
     }
 
     .design__body {
