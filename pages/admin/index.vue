@@ -1,10 +1,8 @@
 <template>
     <div class="companyHome">
         <div class="container__banner">
-            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner"
-                loading="lazy">
-            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner"
-                loading="lazy">
+            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner">
+            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner">
             <button class="companyHome__btn banner__button" @click="openAdminModal()">
                 免費加入
             </button>
