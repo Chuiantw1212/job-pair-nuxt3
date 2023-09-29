@@ -71,7 +71,7 @@
         </div>
         <div class="design__footer">
             <div class="footer__desc">
-                目前的方案可使用五個區域
+                需升級後才能發佈唷！
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
             <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple>
@@ -90,7 +90,7 @@ const state = reactive({
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
     },
-    isOpen: true,
+    isOpen: false,
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (!newValue) {
@@ -464,15 +464,15 @@ const backup = reactive({
         font-size: 20px;
         display: flex;
         justify-content: flex-end;
-        gap: 30px;
-        padding: 20px 50px;
+        gap: 10px;
+        padding: 20px;
         border-top: solid 1px #d3d3d3;
         align-items: center;
         background-color: white;
         width: 100vw;
 
         .footer__desc {
-            font-size: 20px;
+            font-size: 14px;
             font-weight: normal;
             font-stretch: normal;
             font-style: normal;
@@ -483,10 +483,42 @@ const backup = reactive({
         }
 
         .footer_btn {
-            width: 140px;
-            height: 60px;
+            font-size: 14px;
+            // width: 140px;
+            // height: 60px;
         }
     }
 
+}
+
+@media screen and (min-width:992px) {
+
+    .design {
+        .design__footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            font-size: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 30px;
+            padding: 0;
+            border-top: solid 1px #d3d3d3;
+            align-items: center;
+            background-color: white;
+            width: 100vw;
+
+            .footer__desc {
+                font-size: 20px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #d60b00;
+            }
+        }
+    }
 }
 </style>
