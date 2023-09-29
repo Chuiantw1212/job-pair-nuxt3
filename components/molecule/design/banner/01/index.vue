@@ -20,8 +20,8 @@
                     :toolbar="state.bannerToolbar" class="editorGroup__editor preview__desc" @focus="handleFocus('desc')"
                     @click="handleFocus('desc')" @blur="handleBlur('desc')">
                 </LazyAtomInputCkeditorInline>
+                <MoleculeDesignBtn class="btnSimple--outline--light preview__btn">查看所有職缺</MoleculeDesignBtn>
             </template>
-            <AtomBtnSimple class="btnSimple--outline--light preview__btn">查看所有職缺</AtomBtnSimple>
         </div>
     </div>
 </template>
@@ -69,6 +69,9 @@ watch(() => localValue.value, (newValue) => {
                 },
                 desc: {
                     html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
+                },
+                btn: {
+
                 }
             }
         }

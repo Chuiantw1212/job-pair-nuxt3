@@ -350,7 +350,7 @@ const backup = reactive({
         height: 100%;
         background-color: white;
         z-index: 1060;
-        width: 560px;
+        width: 360px;
         transform: translateX(-100%);
         transition: all 0.3s;
 
