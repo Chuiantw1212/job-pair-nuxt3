@@ -2,11 +2,15 @@
     <button :id="id" class="btnDesign" :class="{ 'btnDesign--disabled': disabled, 'btnDesign--editing': state.isEditing }"
         :disabled="disabled" ref="simple" @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="btnDesign__toolbar" ref="toolbar">
-            <img src="./Frame.svg">
+            <LazyAtomInputColor v-if="localValue" v-model="localValue.color" class="btnDesign__colorPickr">
+            </LazyAtomInputColor>
+            <!-- <img src="./Frame.svg"> -->
             <img src="./Frame2.svg">
         </div>
         <slot></slot>
     </button>
+    <!-- <div> -->
+    <!-- </div> -->
 </template>
 <script>
 export default {
@@ -14,10 +18,19 @@ export default {
 }
 </script>
 <script setup>
+const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     isEditing: false
 })
 const props = defineProps({
+    modelValue: {
+        type: Object,
+        defualt: function () {
+            return {
+                color: ""
+            }
+        }
+    },
     id: {
         type: String
     },
@@ -34,12 +47,20 @@ const props = defineProps({
         default: false
     }
 })
-const instance = getCurrentInstance()
-onMounted(() => {
-    if (props.color && props.outline) {
-        instance.refs.simple.classList.add(`btnDesign--outline--${props.color}`)
-    }
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit("update:modelValue", newValue)
+    },
 })
+const instance = getCurrentInstance()
+// onMounted(() => {
+//     if (props.color && props.outline) {
+//         instance.refs.simple.classList.add(`btnDesign--outline--${props.color}`)
+//     }
+// })
 function startEditing() {
     console.log('start');
     state.isEditing = true
@@ -79,14 +100,20 @@ function completeEditing(event) {
 
     .btnDesign__toolbar {
         position: absolute;
-        left: 0;
+        left: 50%;
         top: 0;
-        transform: translateY(calc(-100%));
+        transform: translate(-50%, calc(-100%));
         padding: 10px;
         display: none;
         gap: 10px;
         border-radius: 10px;
         background-color: #252f3d;
+    }
+
+    .btnDesign__colorPickr {
+        background-color: white;
+        // position: absolute;
+        // display: none;
     }
 }
 

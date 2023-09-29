@@ -20,7 +20,8 @@
                     :toolbar="state.bannerToolbar" class="editorGroup__editor preview__desc" @focus="handleFocus('desc')"
                     @click="handleFocus('desc')" @blur="handleBlur('desc')">
                 </LazyAtomInputCkeditorInline>
-                <MoleculeDesignBtn class="btnSimple--outline--light preview__btn">查看所有職缺</MoleculeDesignBtn>
+                <MoleculeDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
+                    查看所有職缺</MoleculeDesignBtn>
             </template>
         </div>
     </div>
@@ -71,7 +72,7 @@ watch(() => localValue.value, (newValue) => {
                     html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
                 },
                 btn: {
-
+                    color: '#21cc90',
                 }
             }
         }
@@ -127,7 +128,6 @@ function handleBlur(type) {
             width: fit-content;
             font-size: 14px;
             padding: 10px 20px;
-            // display: none;
         }
 
         .preview__title {
