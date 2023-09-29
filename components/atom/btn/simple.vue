@@ -1,6 +1,5 @@
 <template>
-    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled, 'btnSimple--sm': size === 'sm' }"
-        :disabled="disabled" ref="simple">
+    <button :id="id" class="btnSimple" :class="{ 'btnSimple--disabled': disabled, }" :disabled="disabled" ref="simple">
         <slot></slot>
     </button>
 </template>
@@ -21,10 +20,6 @@ const props = defineProps({
     color: {
         type: String,
         default: 'success',
-    },
-    size: {
-        type: String,
-        default: 'medium'
     },
     outline: {
         type: Boolean,
@@ -103,12 +98,5 @@ onMounted(() => {
     &:hover {
         background-color: #d3d3d3;
     }
-}
-
-.btnSimple--sm {
-    width: fit-content;
-    margin: 0;
-    padding: 4px 8px;
-    font-size: 16px;
 }
 </style>

@@ -4,23 +4,24 @@
             draggable="false">
         <div class="banner__preview">
             <template v-if="readonly">
-                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline">
+                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
 
                 </div>
-                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline">
+                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline preview__desc">
 
                 </div>
             </template>
             <template v-else>
                 <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                    :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('title')"
+                    :toolbar="state.bannerToolbar" class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
                     @click="handleFocus('title')" @blur="handleBlur('title')">
                 </LazyAtomInputCkeditorInline>
                 <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                    :toolbar="state.bannerToolbar" class="editorGroup__editor" @focus="handleFocus('desc')"
+                    :toolbar="state.bannerToolbar" class="editorGroup__editor preview__desc" @focus="handleFocus('desc')"
                     @click="handleFocus('desc')" @blur="handleBlur('desc')">
                 </LazyAtomInputCkeditorInline>
             </template>
+            <AtomBtnSimple class="btnSimple--outline--light preview__btn">查看所有職缺</AtomBtnSimple>
         </div>
     </div>
 </template>
@@ -28,8 +29,8 @@
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     bannerToolbar: [
-        'fontSize',
-        '|',
+        // 'fontSize',
+        // '|',
         'bold',
         'fontColor',
         // '|',
@@ -64,10 +65,10 @@ watch(() => localValue.value, (newValue) => {
             name: 'BANNER01',
             controllable: {
                 title: {
-                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);font-size:72px;"><strong>找工作就像談戀愛</strong></span></p>'
+                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);"><strong>找工作就像談戀愛</strong></span></p>'
                 },
                 desc: {
-                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);font-size:30px;">快來配對屬於自己的職缺</span></p>'
+                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
                 }
             }
         }
@@ -99,6 +100,7 @@ function handleBlur(type) {
 <stylte lang="scss" scoped>
 .banner {
     position: relative;
+    // padding: 35px 0px;
 
     .banner__preview {
         width: 100%;
@@ -106,6 +108,7 @@ function handleBlur(type) {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
         // text-align: center;
         // display: flex;
         // flex-direction: column;
@@ -117,10 +120,22 @@ function handleBlur(type) {
 
         .preview__btn {
             margin: auto;
+            margin-top: 20px;
             width: fit-content;
+            font-size: 14px;
+            padding: 10px 20px;
+            // display: none;
         }
 
-        .preview__item {}
+        .preview__title {
+            font-size: 12px;
+            transform: scale(2);
+        }
+
+        .preview__desc {
+            font-size: 7px;
+            transform: scale(2);
+        }
     }
 
     .banner__image {
@@ -138,5 +153,25 @@ function handleBlur(type) {
         background-color: #1a73e8;
     }
 
+}
+
+@media screen and (min-width:992px) {
+    .banner {
+        .banner__preview {
+            .preview__title {
+                font-size: 45px;
+                transform: scale(2);
+            }
+
+            .preview__desc {
+                font-size: 13px;
+                transform: scale(2);
+            }
+
+            .preview__btn {
+                display: block;
+            }
+        }
+    }
 }
 </stylte>

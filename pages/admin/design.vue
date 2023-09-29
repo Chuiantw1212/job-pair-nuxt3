@@ -328,7 +328,7 @@ const backup = reactive({
 <style lang="scss" scoped>
 .design {
     // background-color: white;
-    padding: 50px 0;
+    padding: 20px;
 
     * {
         -webkit-user-select: none;
