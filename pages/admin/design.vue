@@ -1,7 +1,9 @@
 <template>
     <div class="container design">
         <div class="design__panel" :class="{ 'design__panel--isOpen': state.isOpen }">
-            <button class="panel__btn" @click="slidePanel()">開合</button>
+            <button class="panel__btn" @click="slidePanel()">
+                <img src="@/assets/admin/design/Frame1037.svg">
+            </button>
             <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
@@ -353,11 +355,13 @@ const backup = reactive({
         transition: all 0.3s;
 
         .panel__btn {
-            background-color: white;
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
             position: absolute;
             right: 0;
             top: 50%;
             transform: translate(100%, -50%);
+            padding: 0;
         }
 
         .category__goback {
