@@ -1,5 +1,7 @@
 <template>
-    <div class="columns" :style="{ 'background-image': `url(${image})` }">
+    <!-- <div class="columns" :style="{ 'background-image': `url(${image})` }">
+    </div> -->
+    <MoleculeDesignImg v-model="localValue.controllable.img" class="columns">
         <div class="columns__body">
             <template v-if="readonly && localValue.controllable">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
@@ -12,7 +14,7 @@
                 </LazyAtomInputCkeditorInline>
             </template>
         </div>
-    </div>
+    </MoleculeDesignImg>
 </template>
 <script setup>
 import image from './Group.webp'
@@ -59,6 +61,9 @@ watch(() => localValue.value, (newValue) => {
                 },
                 desc: {
                     html: '<ul><li><span style="font-size:24px;">彈性自由的工作環境</span></li><li><span style="font-size:24px;">優於勞基法的休假制度</span></li><li><span style="font-size:24px;">每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span style="font-size:24px;">三節禮金</span></li></ul>'
+                },
+                img: {
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp'
                 }
             }
         }

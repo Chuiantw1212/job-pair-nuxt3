@@ -2,7 +2,7 @@
     <div class="slide">
         <div :id="`slide-${state.id}`" class="glide">
             <div class="glide__track" data-glide-el="track">
-                <ul class="glide__slides">
+                <ul v-if="localValue.controllable" class="glide__slides">
                     <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
                         <div class="slide__content">
                             <template v-if="readonly">
@@ -22,21 +22,20 @@
                                 </div>
                             </template>
                             <template v-else>
-                                <LazyAtomInputCkeditorInline v-if="localValue.controllable"
-                                    v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar"
-                                    class="card__title">
+                                <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
+                                    :toolbar="state.titleToolbar" class="card__title">
                                 </LazyAtomInputCkeditorInline>
                                 <hr class="content__hr">
                                 <div class="content__body">
                                     <div class="body__left">
                                         <img src="./default.webp">
-                                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        <LazyAtomInputCkeditorInline
                                             v-model="localValue.controllable.items[index].image.html"
                                             :toolbar="state.titleToolbar">
                                         </LazyAtomInputCkeditorInline>
                                     </div>
                                     <div class="body__right">
-                                        <LazyAtomInputCkeditorInline v-if="localValue.controllable"
+                                        <LazyAtomInputCkeditorInline
                                             v-model="localValue.controllable.items[index].desc.html">
                                         </LazyAtomInputCkeditorInline>
                                     </div>
@@ -61,8 +60,8 @@ const state = reactive({
     id: null,
     glideInstance: null,
     titleToolbar: [
-        'fontSize',
-        '|',
+        // 'fontSize',
+        // '|',
         'bold',
         'fontColor',
         '|',
@@ -114,7 +113,7 @@ watch(() => localValue.value, (newValue) => {
                 items: [
                     {
                         title: {
-                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                            html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
                             html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
@@ -125,7 +124,7 @@ watch(() => localValue.value, (newValue) => {
                     },
                     {
                         title: {
-                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                            html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
                             html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
@@ -136,7 +135,7 @@ watch(() => localValue.value, (newValue) => {
                     },
                     {
                         title: {
-                            html: '<p style="text-align:center;"><span style="font-size:36px;">聽聽大家怎麼說</span></p>'
+                            html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
                             html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',

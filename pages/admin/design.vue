@@ -4,7 +4,7 @@
             <button class="panel__btn" @click="slidePanel()">
                 <img src="@/assets/admin/design/Frame1037.svg">
             </button>
-            <div class="category__color">
+            <!-- <div class="category__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
                         主色調
@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <LazyAtomInputColor v-model="state.organizationDesign.color"></LazyAtomInputColor>
-            </div>
+            </div> -->
             <hr class="category__line">
             <div class="category__blocks">
                 <div class="blocks__title">

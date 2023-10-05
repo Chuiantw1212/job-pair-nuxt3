@@ -1,5 +1,4 @@
 
-import { left } from '@popperjs/core';
 <template>
     <div class="rowGroup">
         <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"

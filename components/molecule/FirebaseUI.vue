@@ -74,10 +74,17 @@
                                         placeholder="電子郵件信箱" @update:modelValue="clearErrorMessage()" required>
                                     </LazyAtomInputEmail>
                                 </div>
-                                <div v-if="state.isShowPasswordLogin || state.isShowPasswordRegister"
+                                <div v-if="state.isShowPasswordLogin"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼"
+                                        @update:modelValue="clearErrorMessage()" required>
+                                    </LazyAtomInputPass>
+                                </div>
+                                <div v-if="state.isShowPasswordRegister"
+                                    class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
+                                    data-upgraded=",MaterialTextfield">
+                                    <LazyAtomInputPass v-model="state.form.password" name="設定密碼" placeholder="密碼"
                                         @update:modelValue="clearErrorMessage()" required>
                                     </LazyAtomInputPass>
                                 </div>

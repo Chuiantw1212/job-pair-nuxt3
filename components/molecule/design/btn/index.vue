@@ -62,15 +62,9 @@ const instance = getCurrentInstance()
 //     }
 // })
 function startEditing() {
-    console.log('start');
     state.isEditing = true
 }
-function completeEditing(event) {
-    // const toolbar = instance.refs.toolbar
-    // const target = event.target
-    // if (target.contains(toolbar)) {
-    //     return
-    // }
+function completeEditing() {
     state.isEditing = false
 }
 </script>
