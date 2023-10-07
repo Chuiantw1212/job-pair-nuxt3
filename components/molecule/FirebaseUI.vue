@@ -74,14 +74,15 @@
                                         placeholder="電子郵件信箱" @update:modelValue="clearErrorMessage()" required>
                                     </LazyAtomInputEmail>
                                 </div>
-                                <div v-if="state.isShowPasswordLogin"
+                                <div v-if="state.isPassLogin"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼"
                                         @update:modelValue="clearErrorMessage()" required>
                                     </LazyAtomInputPass>
+                                    <div>忘記密碼</div>
                                 </div>
-                                <div v-if="state.isShowPasswordRegister"
+                                <div v-if="state.isPassRegister"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputPass v-model="state.form.password" name="設定密碼" placeholder="密碼"
@@ -100,10 +101,10 @@
                                 <button
                                     class="firebaseui-id-secondary-link firebaseui-button mdl-button mdl-js-button mdl-button--primary"
                                     data-upgraded=",MaterialButton" @click="cancelEmail()">取消</button>
-                                <button v-if="state.isShowPasswordLogin" type="submit"
+                                <button v-if="state.isPassLogin" type="submit"
                                     class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                                     data-upgraded=",MaterialButton" @click="loginAndRegister()">登錄</button>
-                                <button v-else-if="state.isShowPasswordRegister" type="submit"
+                                <button v-else-if="state.isPassRegister" type="submit"
                                     class="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
                                     data-upgraded=",MaterialButton" @click="signupUser()">註冊</button>
                                 <button v-else type="submit"
@@ -186,8 +187,8 @@ const state = reactive({
         name: '',
     },
     dialogName: 'default',
-    isShowPasswordLogin: false,
-    isShowPasswordRegister: false,
+    isPassLogin: false,
+    isPassRegister: false,
     isShowFederatedLinking: false,
     pendingCredential: null,
     errorMessage: '',
@@ -363,10 +364,10 @@ async function checkEmailRegistered() {
     const emailProviderId = EmailAuthProvider.PROVIDER_ID
     if (providers.includes(emailProviderId)) {
         // 顯示密碼
-        state.isShowPasswordLogin = true
+        state.isPassLogin = true
     } else {
         // 註冊用戶
-        state.isShowPasswordRegister = true
+        state.isPassRegister = true
     }
 }
 function clearForm() {
