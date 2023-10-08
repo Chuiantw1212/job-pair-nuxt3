@@ -7,7 +7,6 @@
                         <button type="button" class="btn-close" @click="hideModal()"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- <div id="manualLogin"></div> -->
                         <h3 class="body__header">求職者登入註冊</h3>
                         <div v-if="!device.state.isNativeWeb" class="body__subheader">
                             <div>
@@ -49,49 +48,6 @@ function hideModal() {
 function showModal() {
     state.bsModal.show()
     state.isContentVisible = true
-    // renderFirebaseUI()
-}
-async function renderFirebaseUI() {
-    let ui = $firebaseuiAuth.AuthUI.getInstance("manualLogin")
-    const firebaseAuth = getAuth()
-    if (!ui) {
-        ui = new $firebaseuiAuth.AuthUI(firebaseAuth, "manualLogin")
-    }
-    const isPendingRedirect = ui.isPendingRedirect()
-    if (isPendingRedirect) {
-        $sweet.loader(true)
-    }
-    // 不同裝置給予不同登入方式
-    const signInOptions = [
-        {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
-        }
-    ]
-    if (device.state.isNativeWeb) {
-        signInOptions.push({
-            provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        })
-        signInOptions.push({
-            provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-            scopes: ["public_profile", "email"]
-        })
-    }
-    const element = document.querySelector("#user-auth-container")
-    ui = ui.start(element, {
-        callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                loginComposable.handleAuthResult(authResult, "employee")
-                return false
-            }
-        },
-        signInFlow: 'popup',
-        signInOptions,
-        tosUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf",
-        privacyPolicyUrl:
-            "https://storage.googleapis.com/job-pair-taiwan-prd.appspot.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
-    })
 }
 </script>
 <style lang="scss" scoped>

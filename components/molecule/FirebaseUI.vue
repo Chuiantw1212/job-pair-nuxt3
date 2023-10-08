@@ -1,9 +1,9 @@
 <template>
     <div class="firebase">
-        <div v-show="loginComposable.state.isSent" class="body__emailSent">
+        <div v-if="loginComposable.state.isSent" class="body__emailSent">
             <h1 class="emailSent__header">驗證信已寄出</h1>
             <div class="emailSent__desc">
-                <div>請至{{ loginComposable.state.basicInfo.email }}收註冊信開始配對工作</div>
+                <div>請至{{ loginComposable.state.basicInfo.email }}收驗證信開始配對工作</div>
                 <div>( 若無請至垃圾信箱查找 )</div>
             </div>
             <div class="emailSent__footer">
@@ -12,11 +12,29 @@
                 }}
                 </LazyAtomBtnSimple>
                 <LazyAtomBtnSimple v-else class="emailSent__resend" @click="loginComposable.sendEmailLink(props.type)">
-                    重新寄送驗證信
+                    再次寄送驗證信
                 </LazyAtomBtnSimple>
             </div>
         </div>
-        <div v-show="!loginComposable.state.isSent" id="company-auth-container">
+        <div v-else-if="loginComposable.state.isReset" class="body__emailSent">
+            <h1 class="emailSent__header">信件已寄出</h1>
+            <div class="emailSent__desc">
+                <div>請至{{ state.form.email }}收信重設密碼</div>
+                <div>( 若無請至垃圾信箱查找 )</div>
+            </div>
+            <div class="emailSent__footer">
+                <LazyAtomBtnSimple v-if="loginComposable.state.countdownInterval" class="emailSent__resend" disabled>{{
+                    loginComposable.state.cdVisible
+                }}</LazyAtomBtnSimple>
+                <LazyAtomBtnSimple v-else class="emailSent__resend" @click="handleForgotPassword()">
+                    再次寄送密碼重設信件
+                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimple class="emailSent__resend" @click="loginComposable.state.isReset = false">
+                    使用新密碼登入帳戶
+                </LazyAtomBtnSimple>
+            </div>
+        </div>
+        <div v-else id="company-auth-container">
             <div style="" id="user-auth-container" data-v-19384ea0="">
                 <div v-if="state.dialogName === 'default'"
                     class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
@@ -80,7 +98,9 @@
                                     <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼"
                                         @update:modelValue="clearErrorMessage()" required>
                                     </LazyAtomInputPass>
-                                    <div>忘記密碼</div>
+                                    <button class="firebaseui-link firebaseui-tos-link firebase__password"
+                                        @click="handleForgotPassword()">忘記密碼
+                                    </button>
                                 </div>
                                 <div v-if="state.isPassRegister"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
@@ -146,10 +166,12 @@
                         </div>
                         <div class="firebaseui-card-footer">
                             <ul class="firebaseui-tos-list firebaseui-tos">
-                                <li class="firebaseui-inline-list-item"><a :href="state.termOfUse"
+                                <li class="firebaseui-inline-list-item"><a
+                                        href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf"
                                         class="firebaseui-link firebaseui-tos-link" target="_blank">服務條款</a>
                                 </li>
-                                <li class="firebaseui-inline-list-item"><a :href="state.privacyPolicy"
+                                <li class="firebaseui-inline-list-item"><a
+                                        href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf"
                                         class="firebaseui-link firebaseui-pp-link" target="_blank">隱私權聲明</a>
                                 </li>
                             </ul>
@@ -161,7 +183,7 @@
     </div>
 </template>
 <script setup>
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth"
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithPopup, sendPasswordResetEmail } from "firebase/auth"
 import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider } from "firebase/auth";
 const { $validate, } = useNuxtApp()
 const loginComposable = useLogin()
@@ -188,12 +210,11 @@ const state = reactive({
     },
     dialogName: 'default',
     isPassLogin: false,
+    isReset: false,
     isPassRegister: false,
     isShowFederatedLinking: false,
     pendingCredential: null,
     errorMessage: '',
-    termOfUse: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf',
-    privacyPolicy: 'https://storage.googleapis.com/public.prd.job-pair.com/meta/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E7%AE%A1%E7%90%86%E6%94%BF%E7%AD%96%20v2.pdf',
 })
 const props = defineProps({
     type: {
@@ -209,8 +230,26 @@ const props = defineProps({
     }
 })
 // methods
+async function handleForgotPassword() {
+    try {
+        // https://firebase.google.com/docs/auth/web/manage-users#web-modular-api_9
+        const auth = getAuth()
+        // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#sendpasswordresetemail
+        await sendPasswordResetEmail(auth, state.form.email)
+        loginComposable.state.isReset = true
+    } catch (error) {
+        const { code = '', message = '', email = '', } = error
+        const messageMap = {
+            'auth/invalid-email': '電子郵件地址異常',
+            'auth/invalid-continue-uri': '連結異常，請通知管理員',
+            'auth/unauthorized-continue-uri': '連結權限異常，請通知管理員',
+            'auth/user-not-found': '找不到該使用者',
+        }
+        state.errorMessage = messageMap[code] || message
+    }
+}
 async function handleFirebaseError(error) {
-    // 顯示錯誤訊息
+    // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#fetchsigninmethodsforemail
     const { code = '', message = '', email = '', } = error
     switch (code) {
         case 'auth/email-already-in-use':
@@ -224,7 +263,6 @@ async function handleFirebaseError(error) {
             break;
         }
         default: {
-            // 參考自FirebaseUI的錯誤訊息翻譯
             const messageMap = {
                 'auth/email-already-in-use': '已有其他帳戶使用這個電子郵件地址',
                 'auth/too-many-requests': '您輸入錯誤密碼的次數過多，請於幾分鐘後再試一次。',
@@ -378,6 +416,18 @@ function clearForm() {
 }
 </script>
 <style lang="scss" scoped>
+.firebase {
+    .firebase__password {
+        text-align: right;
+        font-size: 12px;
+        margin-top: 4px;
+        cursor: pointer;
+        float: right;
+        border: none;
+        background-color: inherit;
+    }
+}
+
 .body__emailSent {
     text-align: center;
     padding: 20px 0 0 0;
@@ -396,6 +446,9 @@ function clearForm() {
     .emailSent__footer {
         display: flex;
         justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
 
         .emailSent__resend {
             width: 226px;
