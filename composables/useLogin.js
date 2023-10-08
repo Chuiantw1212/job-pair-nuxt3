@@ -15,6 +15,7 @@ export default function setup() {
     const state = reactive({
         ui: null,
         isSent: false,
+        isReset: false,
         authResult: null,
         countdownInterval: null,
         cdDefault: 120,
@@ -271,7 +272,6 @@ export default function setup() {
                 state.countdownInterval = null
             }
         }, 1000)
-        console.log('sendEmailLink',);
         state.isSent = true
     }
     return {
