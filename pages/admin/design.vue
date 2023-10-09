@@ -114,7 +114,7 @@ async function initializeDesign() {
     const response = await repoOrganizationDesign.getItem()
     const { data = {} } = response
     const organizationDesign = Object.assign(state.organizationDesign, data)
-    if (organizationDesign.identifier) {
+    if (organizationDesign.id) {
         state.organizationDesign = organizationDesign
     } else {
         await repoOrganizationDesign.postItem(state.organizationDesign)

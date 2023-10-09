@@ -1,7 +1,9 @@
 <template>
     <div class="banner" ref="banner">
-        <img class="banner__image" src="https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp"
-            draggable="false">
+        <div class="banner__image"
+            :style="{ 'background-image': `url(https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp)` }">
+
+        </div>
         <div class="banner__preview">
             <template v-if="readonly">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
@@ -11,14 +13,14 @@
 
                 </div>
             </template>
-            <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                    :toolbar="state.bannerToolbar" class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
-                    @click="handleFocus('title')" @blur="handleBlur('title')">
+            <template v-else-if="localValue.controllable">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
+                    class="editorGroup__editor  preview__title" @focus="handleFocus('title')" @click="handleFocus('title')"
+                    @blur="handleBlur('title')">
                 </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                    :toolbar="state.bannerToolbar" class="editorGroup__editor preview__desc" @focus="handleFocus('desc')"
-                    @click="handleFocus('desc')" @blur="handleBlur('desc')">
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" :toolbar="state.bannerToolbar"
+                    class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
+                    @blur="handleBlur('desc')">
                 </LazyAtomInputCkeditorInline>
                 <MoleculeDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
                     查看所有職缺</MoleculeDesignBtn>
@@ -143,6 +145,9 @@ function handleBlur(type) {
 
     .banner__image {
         width: 100%;
+        min-height: 360px;
+        background-size: cover;
+        background-position: center;
     }
 
     .banner__controllable {
