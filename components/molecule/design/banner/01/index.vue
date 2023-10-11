@@ -22,8 +22,8 @@
                     class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
                     @blur="handleBlur('desc')">
                 </LazyAtomInputCkeditorInline>
-                <MoleculeDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
-                    查看所有職缺</MoleculeDesignBtn>
+                <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
+                    查看所有職缺</AtomDesignBtn>
             </template>
         </div>
     </div>

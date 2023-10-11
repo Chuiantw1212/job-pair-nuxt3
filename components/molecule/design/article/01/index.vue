@@ -1,7 +1,5 @@
 <template>
-    <!-- <div class="columns" :style="{ 'background-image': `url(${image})` }">
-    </div> -->
-    <MoleculeDesignImg v-model="localValue.controllable.img" class="columns">
+    <AtomDesignBackground v-model="localValue.controllable.img" class="columns">
         <div class="columns__body">
             <template v-if="readonly && localValue.controllable">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
@@ -14,7 +12,7 @@
                 </LazyAtomInputCkeditorInline>
             </template>
         </div>
-    </MoleculeDesignImg>
+    </AtomDesignBackground>
 </template>
 <script setup>
 import image from './Group.webp'
