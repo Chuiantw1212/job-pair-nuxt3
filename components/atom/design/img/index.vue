@@ -1,9 +1,8 @@
 <template>
-    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }"
-        :style="{ 'background-image': `url(${props.modelValue.url})` }" @mouseenter="startEditing()"
+    <div class="imgEditor" :class="{ 'imgEditor--editing': state.isEditing }" @mouseenter="startEditing()"
         @mouseleave="completeEditing($event)">
-        <div class="img__toolbar" ref="toolbar">
-            <button class="toolbar__btn">
+        <div class="imgEditor__toolbar" ref="toolbar">
+            <button class="toolbar__btn" @click="setImageEmpty()">
                 <img src="./Trash.svg">
             </button>
             <label class="toolbar__btn">
@@ -17,7 +16,7 @@
                 <img src="./size.svg">
             </button>
         </div>
-        <slot></slot>
+        <img class="imgEditor__img" :src="localValue.url">
     </div>
 </template>
 <script setup>
@@ -42,7 +41,19 @@ const props = defineProps({
         default: 1048576
     },
 })
+// hooks
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
+})
 // methods
+function setImageEmpty() {
+    localValue.value.url = ''
+}
 function startEditing() {
     state.isEditing = true
 }
@@ -83,14 +94,14 @@ async function handleFiles(event) {
 }
 </script>
 <style lang="scss" scoped>
-.backgroud {
+.imgEditor {
     position: relative;
 
     &:hover {
         outline: solid 5px #252f3d;
     }
 
-    .img__toolbar {
+    .imgEditor__toolbar {
         position: absolute;
         left: 50%;
         top: 0;
@@ -108,13 +119,30 @@ async function handleFiles(event) {
             cursor: pointer;
         }
     }
+
+    .imgEditor__img {
+        width: 115px;
+        display: block;
+        margin: auto;
+        height: auto;
+        min-height: 115px;
+    }
 }
 
-.backgroud--editing {
+.imgEditor--editing {
     outline: solid 5px #252f3d;
 
-    .img__toolbar {
+    .imgEditor__toolbar {
         display: flex;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .imgEditor {
+        .imgEditor__img {
+            width: 100px;
+            min-height: 100px;
+        }
     }
 }
 </style>

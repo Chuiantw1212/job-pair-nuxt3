@@ -16,7 +16,7 @@
             </LazyAtomInputCkeditorInline>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
-                    <AtomDesignBackground v-model="localValue.controllable.items[index].img"></AtomDesignBackground>
+                    <AtomDesignImg v-model="localValue.controllable.items[index].img"></AtomDesignImg>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
                         :toolbar="state.titleToolbar" class="card__title">
                     </LazyAtomInputCkeditorInline>
