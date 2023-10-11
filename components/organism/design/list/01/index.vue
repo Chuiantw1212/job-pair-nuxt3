@@ -35,6 +35,7 @@ export default {
 }
 </script>
 <script setup>
+const { $sweet } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
@@ -143,9 +144,11 @@ async function uploadAsset(image = {}, index = 0) {
         asset: image,
     })
     if (res.status === 200) {
-        nextTick(() => {
+        $sweet.loader(true)
+        setTimeout(() => {
+            $sweet.loader(false)
             localValue.value.controllable.items[index].img.url = res.data
-        })
+        }, 300)
     }
 }
 </script>
