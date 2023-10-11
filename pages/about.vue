@@ -157,7 +157,6 @@ useHead({
             font-style: normal;
             line-height: 1.7;
             letter-spacing: normal;
-            // text-align: center;
             color: #333;
         }
 

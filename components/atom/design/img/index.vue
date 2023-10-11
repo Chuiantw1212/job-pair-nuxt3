@@ -9,12 +9,12 @@
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
             </label>
-            <button class="toolbar__btn">
+            <!-- <button class="toolbar__btn">
                 <img src="./Frame.svg">
             </button>
             <button class="toolbar__btn">
                 <img src="./size.svg">
-            </button>
+            </button> -->
         </div>
         <img class="imgEditor__img" :src="localValue.url">
     </div>

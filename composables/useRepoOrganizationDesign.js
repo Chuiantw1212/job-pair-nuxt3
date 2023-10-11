@@ -1,9 +1,14 @@
 import { defineStore } from 'pinia'
 export default defineStore('company', () => {
     const jobPairApi = useJobPairApi()
-    // const state = reactive({
-    //     companyJobsRes: null,
-    // })
+    async function putAsset(data) {
+        const response = await jobPairApi.request({
+            method: 'put',
+            url: `/organization/design/asset`,
+            data
+        })
+        return response
+    }
     async function postItem(data) {
         const response = await jobPairApi.request({
             method: 'post',
@@ -32,5 +37,6 @@ export default defineStore('company', () => {
         postItem,
         getItem,
         putItem,
+        putAsset,
     }
 })

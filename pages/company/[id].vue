@@ -1,8 +1,8 @@
 <template>
     <div class="company" :class="{ container: device.state.isLarge }">
-        <MoleculeDesignBody v-if="state.companyInfo.templates" v-model="state.companyInfo.templates" readonly>
+        <OrganismDesignBody v-if="state.companyInfo.templates" v-model="state.companyInfo.templates" readonly>
 
-        </MoleculeDesignBody>
+        </OrganismDesignBody>
         <div v-else class="company__free">
             <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
             <section id="company__info" class="company__section mt-3">

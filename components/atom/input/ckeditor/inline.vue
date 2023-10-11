@@ -18,7 +18,6 @@
 
             </div>
         </div>
-        <!-- {{ props.style }} -->
     </div>
 </template>
 <script>

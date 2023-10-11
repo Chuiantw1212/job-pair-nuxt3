@@ -16,7 +16,8 @@
             </LazyAtomInputCkeditorInline>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
-                    <AtomDesignImg v-model="localValue.controllable.items[index].img"></AtomDesignImg>
+                    <AtomDesignImg :modelValue="localValue.controllable.items[index].img"
+                        @update:modelValue="uploadAsset($event, index)"></AtomDesignImg>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
                         :toolbar="state.titleToolbar" class="card__title">
                     </LazyAtomInputCkeditorInline>
@@ -34,6 +35,7 @@ export default {
 }
 </script>
 <script setup>
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     titleToolbar: [
@@ -133,6 +135,19 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
+// methods
+async function uploadAsset(image = {}, index = 0) {
+    image.name = `img${index + 1}`
+    const res = await repoOrganizationDesign.putAsset({
+        templateName: 'LIST01',
+        asset: image,
+    })
+    if (res.status === 200) {
+        nextTick(() => {
+            localValue.value.controllable.items[index].img.url = res.data
+        })
+    }
+}
 </script>
 <style lang="scss" scoped>
 .banner2 {

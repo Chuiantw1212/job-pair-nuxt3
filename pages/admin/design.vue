@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="design__body">
-            <MoleculeDesignBody v-model="state.organizationDesign.templates"></MoleculeDesignBody>
+            <OrganismDesignBody v-model="state.organizationDesign.templates"></OrganismDesignBody>
             <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
                 @drop="drop($event)" @dragover="allowDrop($event)">
                 請拖曳布局至此
