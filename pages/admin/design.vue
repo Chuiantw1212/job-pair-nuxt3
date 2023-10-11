@@ -1,5 +1,5 @@
 <template>
-    <div class="container design">
+    <div class="design" :class="{ container: device.state.isLarge }">
         <div class="design__panel" :class="{ 'design__panel--isOpen': state.isOpen }">
             <button class="panel__btn" @click="slidePanel()">
                 <img src="@/assets/admin/design/Frame1037.svg">
@@ -26,11 +26,11 @@
                         <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                     </li>
-                    <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                    <!-- <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
                         @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
                         <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
-                    </li>
+                    </li> -->
                     <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
                         @mouseleave="state.draggingTemplate = ''">
                         <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
@@ -85,6 +85,7 @@
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $validate, $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
+const device = useDevice()
 const state = reactive({
     draggingTemplate: '',
     organizationDesign: {
@@ -330,7 +331,7 @@ const backup = reactive({
 <style lang="scss" scoped>
 .design {
     // background-color: white;
-    padding: 20px;
+    // padding: 20px;
 
     * {
         -webkit-user-select: none;

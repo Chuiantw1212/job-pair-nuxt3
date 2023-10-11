@@ -85,6 +85,7 @@ async function handleFiles(event) {
 <style lang="scss" scoped>
 .backgroud {
     position: relative;
+    background-position: center;
 
     &:hover {
         outline: solid 5px #252f3d;
@@ -100,6 +101,7 @@ async function handleFiles(event) {
         gap: 10px;
         border-radius: 10px;
         background-color: #252f3d;
+        z-index: 1050;
 
         .toolbar__btn {
             background-color: inherit;

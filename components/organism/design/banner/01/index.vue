@@ -1,9 +1,39 @@
 <template>
     <div class="banner" ref="banner">
-        <div class="banner__image"
-            :style="{ 'background-image': `url(https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp)` }">
 
+        <template v-if="readonly">
+            <div class="banner__image" :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
+                <div class="banner__preview">
+                    <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
+
+                    </div>
+                    <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline preview__desc">
+
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template v-else-if="localValue.controllable">
+            <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.bg"
+                @update:modelValue="uploadAsset($event, index)">
+                <div class="banner__preview">
+                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
+                        class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
+                        @click="handleFocus('title')" @blur="handleBlur('title')">
+                    </LazyAtomInputCkeditorInline>
+                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" :toolbar="state.bannerToolbar"
+                        class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
+                        @blur="handleBlur('desc')">
+                    </LazyAtomInputCkeditorInline>
+                    <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
+                        查看所有職缺</AtomDesignBtn>
+                </div>
+            </AtomDesignBackground>
+        </template>
+        <!-- <div v-if="readonly" class="banner__image"
+            :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
         </div>
+        <AtomDesignBackground v-else :modelValue="localValue.controllable.bg"></AtomDesignBackground>
         <div class="banner__preview">
             <template v-if="readonly">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
@@ -25,10 +55,12 @@
                 <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
                     查看所有職缺</AtomDesignBtn>
             </template>
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup>
+const repoOrganizationDesign = useRepoOrganizationDesign()
+const { $sweet } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     bannerToolbar: [
@@ -75,6 +107,9 @@ watch(() => localValue.value, (newValue) => {
                 },
                 btn: {
                     color: '#21cc90',
+                },
+                bg: {
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp'
                 }
             }
         }
@@ -101,6 +136,21 @@ function handleFocus(type) {
 }
 function handleBlur(type) {
     // state.controllable[type].isFocused = false
+}
+// methods
+async function uploadAsset(image = {}, index = 0) {
+    image.name = `bg${index + 1}`
+    const res = await repoOrganizationDesign.putAsset({
+        templateName: 'BANNER01',
+        asset: image,
+    })
+    if (res.status === 200) {
+        $sweet.loader(true)
+        setTimeout(() => {
+            $sweet.loader(false)
+            localValue.value.controllable.bg.url = res.data
+        }, 300)
+    }
 }
 </script>
 <stylte lang="scss" scoped>

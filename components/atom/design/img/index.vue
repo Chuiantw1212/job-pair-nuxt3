@@ -16,7 +16,8 @@
                 <img src="./size.svg">
             </button> -->
         </div>
-        <img class="imgEditor__img" :src="localValue.url">
+        <slot></slot>
+        <!-- <img class="imgEditor__img" :src="localValue.url"> -->
     </div>
 </template>
 <script setup>
@@ -120,13 +121,13 @@ async function handleFiles(event) {
         }
     }
 
-    .imgEditor__img {
-        width: 115px;
-        display: block;
-        margin: auto;
-        height: auto;
-        min-height: 115px;
-    }
+    // .imgEditor__img {
+    //     // width: 115px;
+    //     display: block;
+    //     margin: auto;
+    //     height: auto;
+    //     min-height: 115px;
+    // }
 }
 
 .imgEditor--editing {
@@ -134,15 +135,6 @@ async function handleFiles(event) {
 
     .imgEditor__toolbar {
         display: flex;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .imgEditor {
-        .imgEditor__img {
-            width: 100px;
-            min-height: 100px;
-        }
     }
 }
 </style>

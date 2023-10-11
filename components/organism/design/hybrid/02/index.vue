@@ -1,5 +1,14 @@
 <template>
     <div class="organizationBg">
+        <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
+            :toolbar="state.titleToolbar">
+        </LazyAtomInputCkeditorInline>
+        <div class="organizationBg__imageWrap">
+            <AtomDesignImg :modelValue="localValue.controllable.img" @update:modelValue="uploadAsset($event, index)">
+                <img :src="localValue.controllable.img.url">
+            </AtomDesignImg>
+            <!-- <img class="imageWrap__image" src="./HYBRID02.png" draggable="false"> -->
+        </div>
         <div class="organizationBg__body">
             <template v-if="readonly">
                 <div style="{'max-width:540px'}">
@@ -8,16 +17,10 @@
                 </div>
             </template>
             <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-                    :toolbar="state.titleToolbar">
-                </LazyAtomInputCkeditorInline>
                 <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
                     class="body__desc">
                 </LazyAtomInputCkeditorInline>
             </template>
-        </div>
-        <div class="organizationBg__imageWrap">
-            <img class="imageWrap__image" src="./screen.png" draggable="false">
         </div>
     </div>
 </template>
