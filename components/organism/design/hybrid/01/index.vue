@@ -1,12 +1,8 @@
 <template>
     <div class="description">
-        <!-- <template > -->
         <LazyAtomInputCkeditorInline v-if="localValue.controllable" class="description__title d-lg-none"
             v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
         </LazyAtomInputCkeditorInline>
-        <!-- </template> -->
-        <!-- <div class="description__imageGroup"> -->
-        <!-- <img src="./HYBRID01.webp"> -->
         <div class="description__imageWrap">
             <AtomDesignImg v-if="localValue.controllable" :modelValue="localValue.controllable.img"
                 @update:modelValue="uploadAsset($event, index)">
@@ -15,7 +11,7 @@
         </div>
         <div class="description__body">
             <ul v-if="localValue.controllable" class="body__textGroup">
-                <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`">
+                <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`" class="textGroup__item">
                     <LazyAtomInputCkeditorInline class="textGroup__title"
                         v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
                     </LazyAtomInputCkeditorInline>
@@ -24,23 +20,11 @@
                     </LazyAtomInputCkeditorInline>
                 </li>
             </ul>
-            <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html">
+            <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
             </LazyAtomInputCkeditorInline>
-        </div>
-        <!-- </div> -->
-        <div v-if="localValue.controllable" class="body__textGroup">
-            <template v-if="readonly">
-                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
-                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline"></div>
-                <div class="textGroup__footer">
-                    <div v-for="(item, index) in localValue.controllable.items" :key="`item${index}`">
-                        <div v-html="item.title.html" class="ck ck-editor__editable_inline"></div>
-                        <div v-html="item.desc.html" class="ck ck-editor__editable_inline"></div>
-                    </div>
-                </div>
-            </template>
-            <template v-else>
-            </template>
+            <LazyAtomInputCkeditorInline v-if="localValue.controllable" class="body__title d-none d-lg-block"
+                v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
+            </LazyAtomInputCkeditorInline>
         </div>
     </div>
 </template>
@@ -50,12 +34,8 @@ const { $sweet } = useNuxtApp()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     titleToolbar: [
-        // 'fontSize',
-        // '|',
         'bold',
         'fontColor',
-        // '|',
-        // 'alignment',
     ],
 })
 const props = defineProps({
@@ -149,25 +129,20 @@ async function uploadAsset(image = {}, index = 0) {
     flex-direction: column;
     background-color: white;
     align-items: center;
+    padding: 20px;
 
-    .description__body {
-        padding: 0px 20px;
+    .description__title {
+        font-size: 18px;
     }
 
     .description__imageWrap {
         margin-top: 20px;
-        padding: 0px 20px;
 
         .imageWrap__image {
             width: 100%;
-            // display: block;
         }
     }
 
-    .description__title {
-        font-size: 18px;
-        margin: 20px 0;
-    }
 
     .body__textGroup {
         width: 100%;
@@ -205,21 +180,59 @@ async function uploadAsset(image = {}, index = 0) {
 @media screen and (min-width: 992px) {
     .description {
         flex-direction: row;
-        gap: 100px;
+        justify-content: center;
+        gap: 20px;
+        padding: 0 20px;
 
         .description__imageWrap {
-            .imageWrap__image {
-                width: 445px;
-            }
+            width: 100%;
+            max-width: 445px;
+            padding: 0px;
         }
 
-        .body__textGroup {
-            padding: 50px;
+        .description__body {
+            width: 100%;
+            padding: 0px;
+            display: flex;
+            flex-direction: column-reverse;
 
-            .textGroup__footer {
+            .body__title {
+                font-size: 36px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #1e3240;
+            }
+
+            .body__desc {
                 margin-top: 30px;
-                display: flex;
+                font-size: 18px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+            }
+
+            .body__textGroup {
+                flex-direction: row;
                 justify-content: space-between;
+                margin-top: 30px;
+
+                .textGroup__item {
+                    width: 100%;
+                }
+
+                .textGroup__title {
+                    width: 100%;
+                }
+
+                .textGroup__desc {
+                    width: 100%;
+                }
             }
         }
     }
