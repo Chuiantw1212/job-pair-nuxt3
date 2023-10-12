@@ -1,27 +1,31 @@
 <template>
     <div class="organizationBg">
-        <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.title.html"
-            :toolbar="state.titleToolbar">
-        </LazyAtomInputCkeditorInline>
-        <div class="organizationBg__imageWrap">
-            <AtomDesignImg :modelValue="localValue.controllable.img" @update:modelValue="uploadAsset($event, index)">
-                <img :src="localValue.controllable.img.url">
-            </AtomDesignImg>
-            <!-- <img class="imageWrap__image" src="./HYBRID02.png" draggable="false"> -->
-        </div>
-        <div class="organizationBg__body">
-            <template v-if="readonly">
-                <div style="{'max-width:540px'}">
-                    <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
-                    <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline body__desc"></div>
-                </div>
-            </template>
-            <template v-else>
-                <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.desc.html"
-                    class="body__desc">
+        <template v-if="readonly">
+
+
+        </template>
+        <template v-else-if="localValue.controllable">
+            <div class="organizationBg__imageWrap">
+                <AtomDesignImg :modelValue="localValue.controllable.img" @update:modelValue="uploadAsset($event, index)">
+                    <img class="imageWrap__image" :src="localValue.controllable.img.url">
+                </AtomDesignImg>
+            </div>
+            <div class="organizationBg__body">
+                <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
+                    :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
-            </template>
-        </div>
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" class="body__desc">
+                </LazyAtomInputCkeditorInline>
+            </div>
+        </template>
+        <!-- <template v-if="readonly">
+            <div style="{'max-width:540px'}">
+                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
+                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline body__desc"></div>
+            </div>
+        </template> -->
+        <!-- <template v-else> -->
+        <!-- </template> -->
     </div>
 </template>
 <script>
@@ -33,12 +37,8 @@ export default {
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     titleToolbar: [
-        'fontSize',
-        '|',
         'bold',
         'fontColor',
-        '|',
-        'alignment',
     ]
 })
 const props = defineProps({
@@ -70,11 +70,14 @@ watch(() => localValue.value, (newValue) => {
             name: 'HYBRID02',
             controllable: {
                 title: {
-                    html: '<p style="text-align:center;"><span style="font-size:36px;"><strong>公司背景介紹</strong></span></p>'
+                    html: '<p style="text-align:center;"><span><strong>公司背景介紹</strong></span></p>'
                 },
                 desc: {
                     html: `<p style="text-align:justify;">關於Job Pair Job&nbsp;<br>Pair 是一家致力於打造更友善、更有效率的人才媒合市場的公司。&nbsp;</p><p style="text-align:justify;">Job Pair 的創辦人 Sandy 擁有 8 年科技業獵頭經驗，累計超過萬人的履歷面談。2015年，她開始提供一對一職涯諮詢的服務，並解決了超過千人的職涯問題。多年來，Sandy 一直從不同的角度思考「如何找到適合的工作」，發現人才媒合市場需要更多考量軟性需求的功能。這些軟性需求包括企業文化、工作環境、人際交流與溝通模式等。&nbsp;</p><p style="text-align:justify;">因此，我們打造了一個新型態的媒合型人力銀行，不論求職者或企業都能夠先以雙方的軟性需求進行第一步演算，提供團隊適配度給雙方參考。跳脫了僅能以地區、薪資、職務類別、產業等硬性需求評估職缺，或者以性別、年齡、學歷等表象資訊評估求職者。</p><p style="text-align:justify;">&nbsp;Job Pair 為你從適合的角度切入，打造長遠的合作關係。</p>`
                 },
+                img: {
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/HYBRID02.png'
+                }
             }
         }
         const mergedItem = Object.assign(defaultValue, newValue)
@@ -86,7 +89,7 @@ watch(() => localValue.value, (newValue) => {
 .organizationBg {
     display: flex;
     justify-content: space-evenly;
-    padding: 50px 0px;
+    padding: 20px;
     align-items: center;
     flex-direction: column;
     background-color: white;
@@ -94,36 +97,34 @@ watch(() => localValue.value, (newValue) => {
     .organizationBg__body {
 
         .body__title {
-            font-size: 36px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: bold;
             font-stretch: normal;
             font-style: normal;
-            line-height: normal;
+            line-height: 1.5;
             letter-spacing: normal;
-            text-align: left;
-            color: #1e3240;
+            margin-top: 20px;
         }
 
         .body__desc {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: normal;
             font-stretch: normal;
             font-style: normal;
-            line-height: normal;
+            line-height: 1.7;
             letter-spacing: normal;
-            text-align: left;
-            color: #878787;
-            max-width: 540px;
+            margin-top: 20px;
         }
     }
 
     .organizationBg__imageWrap {
         border-radius: 20px;
         overflow: hidden;
-        margin-top: 20px;
+        width: 100%;
 
         .imageWrap__image {
             display: block;
+            width: 100%;
         }
     }
 }
