@@ -330,8 +330,7 @@ const backup = reactive({
 </script>
 <style lang="scss" scoped>
 .design {
-    // background-color: white;
-    // padding: 20px;
+    padding-top: 20px;
 
     * {
         -webkit-user-select: none;
@@ -373,7 +372,6 @@ const backup = reactive({
         .category__color {
             display: flex;
             justify-content: space-between;
-            // margin-top: 30px;
             padding: 20px 20px 20px 20px;
 
             .color__titleGroup {
@@ -444,7 +442,6 @@ const backup = reactive({
     }
 
     .design__body {
-        // display: flex;
 
         .preview__template {
             border: dashed 1px #5ea88e;
@@ -489,8 +486,6 @@ const backup = reactive({
 
         .footer_btn {
             font-size: 14px;
-            // width: 140px;
-            // height: 60px;
         }
     }
 

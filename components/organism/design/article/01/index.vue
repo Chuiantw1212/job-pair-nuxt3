@@ -1,30 +1,26 @@
 <template>
-    <AtomDesignBackground v-model="localValue.controllable.img" class="columns">
-        <div class="columns__body">
-            <template v-if="readonly && localValue.controllable">
-                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
-                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline"></div>
+    <div class="columns">
+        <AtomDesignBackground class="columns__body" v-if="localValue.controllable" v-model="localValue.controllable.img">
+            <template v-if="readonly">
+                <div v-html="localValue.controllable.title.html" class="body__title"></div>
+                <div v-html="localValue.controllable.desc.html" class="body__desc"></div>
             </template>
-            <template v-else-if="localValue.controllable">
-                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
+            <template v-else>
+                <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
+                    :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html">
+                <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
                 </LazyAtomInputCkeditorInline>
             </template>
-        </div>
-    </AtomDesignBackground>
+        </AtomDesignBackground>
+    </div>
 </template>
 <script setup>
-import image from './Group.webp'
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     titleToolbar: [
-        'fontSize',
-        '|',
         'bold',
         'fontColor',
-        '|',
-        'alignment',
     ],
 })
 const props = defineProps({
@@ -55,10 +51,10 @@ watch(() => localValue.value, (newValue) => {
             name: 'ARTICLE01',
             controllable: {
                 title: {
-                    html: '<p><span style="color:hsl( 163, 60%, 41% );font-size:36px;"><strong>公司福利</strong></span></p>'
+                    html: '<p><span><strong>公司福利</strong></span></p>'
                 },
                 desc: {
-                    html: '<ul><li><span style="font-size:24px;">彈性自由的工作環境</span></li><li><span style="font-size:24px;">優於勞基法的休假制度</span></li><li><span style="font-size:24px;">每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span style="font-size:24px;">三節禮金</span></li></ul>'
+                    html: '<ul><li><span>彈性自由的工作環境</span></li><li><span>優於勞基法的休假制度</span></li><li><span>每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span>三節禮金</span></li></ul>'
                 },
                 img: {
                     url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp'
@@ -72,13 +68,36 @@ watch(() => localValue.value, (newValue) => {
 </script>
 <style lang="scss" scoped>
 .columns {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    background-repeat: no-repeat;
-    background-position: bottom right;
-    background-size: contain;
-    background-color: white;
+
+    .columns__body {
+        background-repeat: no-repeat;
+        background-position: bottom right;
+        background-size: contain;
+        background-color: white;
+        align-items: center;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .body__title {
+            font-size: 20px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+        }
+
+        .body__desc {
+            font-size: 24px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.42;
+            letter-spacing: normal;
+        }
+    }
 }
 
 
@@ -91,7 +110,27 @@ watch(() => localValue.value, (newValue) => {
         .columns__body {
             display: flex;
             align-items: center;
+            flex-direction: row;
+            justify-content: center;
             gap: 100px;
+
+            .body__title {
+                font-size: 36px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+            }
+
+            .body__desc {
+                font-size: 24px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.42;
+                letter-spacing: normal;
+            }
         }
     }
 }
