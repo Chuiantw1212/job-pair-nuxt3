@@ -3,14 +3,13 @@
         <LazyAtomInputCkeditorInline v-if="localValue.controllable" class="description__title d-lg-none"
             v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
         </LazyAtomInputCkeditorInline>
-        <div class="description__imageWrap">
-            <AtomDesignImg v-if="localValue.controllable" :modelValue="localValue.controllable.img"
-                @update:modelValue="uploadAsset($event, index)">
+        <div v-if="localValue.controllable" class="description__imageWrap">
+            <AtomDesignImg :modelValue="localValue.controllable.img" @update:modelValue="uploadAsset($event, index)">
                 <img class="imageWrap__image" :src="localValue.controllable.img.url">
             </AtomDesignImg>
         </div>
-        <div class="description__body">
-            <ul v-if="localValue.controllable" class="body__textGroup">
+        <div v-if="localValue.controllable" class="description__body">
+            <ul class="body__textGroup">
                 <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`" class="textGroup__item">
                     <LazyAtomInputCkeditorInline class="textGroup__title"
                         v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
@@ -133,6 +132,7 @@ async function uploadAsset(image = {}, index = 0) {
 
     .description__title {
         font-size: 18px;
+        width: fit-content;
     }
 
     .description__imageWrap {
