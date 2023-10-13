@@ -17,7 +17,9 @@
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
                     <AtomDesignImg :modelValue="localValue.controllable.items[index].img"
-                        @update:modelValue="uploadAsset($event, index)"></AtomDesignImg>
+                        @update:modelValue="uploadAsset($event, index)">
+                        <img class="card__image" :src="item.img.url">
+                    </AtomDesignImg>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
                         :toolbar="state.titleToolbar" class="card__title">
                     </LazyAtomInputCkeditorInline>
@@ -159,6 +161,7 @@ async function uploadAsset(image = {}, index = 0) {
     .banner__title {
         width: 100%;
         font-size: 18px;
+        padding: 20px 0;
     }
 
     .banner2__body {
@@ -169,25 +172,28 @@ async function uploadAsset(image = {}, index = 0) {
         .body__card {
             flex-grow: 1;
             flex-basis: 0;
-            padding: 50px 20px;
+            padding: 20px;
 
             box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
             background-color: #fff;
             display: flex;
             flex-direction: column;
 
+            .card__image {
+                width: 115px;
+                display: block;
+                height: auto;
+                margin: 0 auto;
+                min-height: 115px;
+            }
+
             .card__title {
-                margin-top: 20px;
+                // margin-top: 20px;
+                padding: 20px 0;
             }
 
             .card__desc {
                 font-size: 16px;
-            }
-
-            .card__image {
-                width: 100px;
-                height: auto;
-                margin: 0 auto;
             }
         }
     }
