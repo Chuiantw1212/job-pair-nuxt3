@@ -174,7 +174,7 @@ async function uploadAsset(image = {}, index = 0) {
             flex-basis: 0;
             padding: 20px;
 
-            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px 0 rgba(133, 106, 106, 0.1);
             background-color: #fff;
             display: flex;
             flex-direction: column;
@@ -210,6 +210,7 @@ async function uploadAsset(image = {}, index = 0) {
 
             .body__card {
                 border-radius: 10px;
+                padding: 50px 20px;
 
                 .card__title {
                     font-size: 24px;
