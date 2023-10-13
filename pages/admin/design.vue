@@ -1,10 +1,62 @@
 <template>
     <div class="design" :class="{ container: device.state.isLarge }">
         <div class="design__panel" :class="{ 'design__panel--isOpen': state.isOpen }">
-            <button class="panel__btn" @click="slidePanel()">
-                <img src="@/assets/admin/design/Frame1037.svg">
-            </button>
-            <!-- <div class="category__color">
+            <div class="panel__background" @click="slidePanel()">
+
+            </div>
+            <div class="panel__content">
+                <div class="content__blocks">
+                    <div class="blocks__title">
+                        選擇布局
+                    </div>
+                    <ul class="blocks__list">
+                        <li data-name="BANNER01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
+                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                        </li>
+                        <!-- <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
+                            <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
+                        </li> -->
+                        <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
+                            <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
+                        </li>
+                        <li data-name="HYBRID02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
+                            <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
+                        </li>
+                        <li data-name="ARTICLE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
+                            <div class="item__desc">適合公司介紹，大標、內文</div>
+                        </li>
+                        <li data-name="LIST01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
+                            <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
+                        </li>
+                        <li data-name="LIST02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
+                            <div class="item__desc">條列式</div>
+                        </li>
+                        <li data-name="SLIDE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
+                            <div class="item__desc">投影片</div>
+                        </li>
+                    </ul>
+                </div>
+                <button class="content__btn" @click="slidePanel()">
+                    <img src="@/assets/admin/design/Frame1037.svg">
+                </button>
+            </div>
+            <!-- <div class="content__color">
                 <div class="color__titleGroup">
                     <div class="titleGroup__title">
                         主色調
@@ -15,54 +67,6 @@
                 </div>
                 <LazyAtomInputColor v-model="state.organizationDesign.color"></LazyAtomInputColor>
             </div> -->
-            <hr class="category__line">
-            <div class="category__blocks">
-                <div class="blocks__title">
-                    選擇布局
-                </div>
-                <ul class="blocks__list">
-                    <li data-name="BANNER01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                    </li>
-                    <!-- <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
-                    </li> -->
-                    <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
-                        <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
-                    </li>
-                    <li data-name="HYBRID02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
-                        <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
-                    </li>
-                    <li data-name="ARTICLE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
-                        <div class="item__desc">適合公司介紹，大標、內文</div>
-                    </li>
-                    <li data-name="LIST01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
-                        <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
-                    </li>
-                    <li data-name="LIST02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
-                        <div class="item__desc">條列式</div>
-                    </li>
-                    <li data-name="SLIDE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                        @mouseleave="state.draggingTemplate = ''">
-                        <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
-                        <div class="item__desc">投影片</div>
-                    </li>
-                </ul>
-            </div>
         </div>
         <div class="design__body">
             <OrganismDesignBody v-model="state.organizationDesign.templates"></OrganismDesignBody>
@@ -96,6 +100,7 @@ const state = reactive({
     isOpen: false,
 })
 watch(() => repoAuth.state.user, async (newValue) => {
+    // 
     if (!newValue) {
         return
     }
@@ -343,74 +348,66 @@ const backup = reactive({
 
     .design__panel {
         position: fixed;
+        top: 0;
         left: 0;
-        top: 61px;
-        width: 200px;
-        border-right: solid 1px #d3d3d3;
-        height: 100%;
-        background-color: white;
-        z-index: 1060;
-        width: 360px;
-        transform: translateX(-100%);
-        transition: all 0.3s;
+        width: 100vw;
+        z-index: 1050;
 
-        .panel__btn {
-            background-color: rgba(0, 0, 0, 0);
-            border: none;
+        .panel__background {
+            background-color: rgba(0, 0, 0, 0.3);
             position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translate(100%, -50%);
-            padding: 0;
+            top: 0;
+            left: 0;
+            max-width: 100vw;
+            height: 100vh;
+            width: 100vw;
+            z-index: 1050;
+            transition: all 0.3s;
+            opacity: 0;
+            cursor: pointer;
         }
 
-        .category__goback {
-            width: 115px;
-            height: 40px;
-        }
+        .panel__content {
+            position: fixed;
+            left: 0;
+            // top: 61px;
+            width: 100%;
+            z-index: 1060;
+            border-right: solid 1px #d3d3d3;
+            height: 100%;
+            background-color: white;
+            width: calc(100% - 52px);
+            transform: translateX(-100%);
+            transition: all 0.3s;
 
-        .category__color {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 20px 20px 20px;
-
-            .color__titleGroup {
-                .titleGroup__title {
-                    font-size: 20px;
-                    font-weight: bold;
-                }
-
-                .titleGroup__desc {
-                    font-size: 16px;
-                    font-weight: normal;
-                }
+            .content__btn {
+                background-color: rgba(0, 0, 0, 0);
+                border: none;
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translate(100%, -50%);
+                padding: 0;
             }
         }
 
-        .category__line {
-            margin: 0;
-        }
-
-        .category__blocks {
+        .content__blocks {
             font-size: 20px;
             font-weight: bold;
-            padding: 20px 0px 0px 0px;
-
-            .blocks__title {
-                padding: 0px 20px;
-            }
+            padding: 20px;
 
             .blocks__list {
                 list-style: none;
                 padding: 0px;
                 margin-top: 20px;
                 margin-bottom: 0px;
-                max-height: calc(100vh - 225px);
+                max-height: calc(100vh - 70px);
                 overflow-y: auto;
-                padding: 0px 20px;
+                padding: 2px;
+                border-top: solid 1px #d3d3d3;
 
                 .list__item {
-                    border-top: solid 1px #d3d3d3;
+                    border-bottom: solid 1px #d3d3d3;
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
@@ -438,7 +435,13 @@ const backup = reactive({
     }
 
     .design__panel--isOpen {
-        transform: translateX(0%);
+        .panel__background {
+            opacity: 1;
+        }
+
+        .panel__content {
+            transform: translateX(0%);
+        }
     }
 
     .design__body {
@@ -494,6 +497,11 @@ const backup = reactive({
 @media screen and (min-width:992px) {
 
     .design {
+
+        .design__panel {
+            width: 360px;
+        }
+
         .design__footer {
             position: fixed;
             bottom: 0;
