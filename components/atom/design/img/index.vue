@@ -17,7 +17,6 @@
             </button> -->
         </div>
         <slot></slot>
-        <!-- <img class="imgEditor__img" :src="localValue.url"> -->
     </div>
 </template>
 <script setup>
@@ -123,11 +122,7 @@ async function handleFiles(event) {
     }
 
     // .imgEditor__img {
-    //     // width: 115px;
-    //     display: block;
-    //     margin: auto;
-    //     height: auto;
-    //     min-height: 115px;
+
     // }
 }
 

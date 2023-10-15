@@ -1,7 +1,8 @@
 <template>
     <div class="design" :class="{ container: device.state.isLarge }">
-        <div class="design__panel" :class="{ 'design__panel--isOpen': state.isOpen }">
-            <div class="panel__background" @click="slidePanel()">
+        <div class="design__panel"
+            :class="{ 'design__panel--isOpen': state.isOpen, 'design__panel--isHidden': !state.isOpen }">
+            <div class="panel__background  d-lg-none" @click="slidePanel()">
 
             </div>
             <div class="panel__content">
@@ -444,6 +445,12 @@ const backup = reactive({
         }
     }
 
+    .design__panel--isHidden {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
     .design__body {
 
         .preview__template {
@@ -499,7 +506,10 @@ const backup = reactive({
     .design {
 
         .design__panel {
-            width: 360px;
+            .panel__content {
+                width: 360px;
+
+            }
         }
 
         .design__footer {
