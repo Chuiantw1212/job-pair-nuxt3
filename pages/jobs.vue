@@ -5,66 +5,73 @@
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
                     class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                    <LazyMoleculeFilterCategory v-if="state.filterOpen.occupationalCategory"
+                        v-model="jobScroller.state.filter.occupationalCategory" :items="repoSelect.jobCategory"
                         :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="state.filter.occupationalCategory" :items="items">
+                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.occupationalCategory" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
                 </div>
                 <template v-if="repoSelect.state.locationRes">
                     <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <LazyAtomInputCheckMultiple v-model="state.filter.addressRegion"
-                            :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
+                        <LazyAtomInputCheckMultiple v-if="state.filterOpen.division"
+                            v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
+                            class="m-3" :flexDirection="'row'">
                         </LazyAtomInputCheckMultiple>
                     </LazyAtomInputSelectContainer>
-                    <LazyAtomInputSelectLabel v-model="state.filter.addressRegion"
+                    <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.addressRegion"
                         :items="repoSelect.state.locationRes.taiwan" class="mt-2">
                     </LazyAtomInputSelectLabel>
                 </template>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.jobLocationType"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobLocationType"
+                        v-model="jobScroller.state.filter.jobLocationType"
                         :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.jobLocationType"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.employmentType"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.employmentType"
+                        v-model="jobScroller.state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.employmentType"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.employmentType"
                     :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.responsibilities"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.responsibilities"
+                        v-model="jobScroller.state.filter.responsibilities"
                         :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.responsibilities"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.responsibilities"
                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <LazyAtomInputCheckMultiple v-model="state.filter.jobBenefits"
+                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobBenefits"
+                        v-model="jobScroller.state.filter.jobBenefits"
                         :items="repoSelect.state.selectByQueryRes.jobBenefits" class="m-3">
                     </LazyAtomInputCheckMultiple>
                 </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="state.filter.jobBenefits"
+                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobBenefits"
                     :items="repoSelect.state.selectByQueryRes.jobBenefits" class="mt-2">
                 </LazyAtomInputSelectLabel>
                 <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" class="mb-2">
-                    <LazyMoleculeFilterCategory v-model="state.filter.industry" :items="repoSelect.industryItems"
-                        :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                    <LazyMoleculeFilterCategory v-if="state.filterOpen.industry" v-model="jobScroller.state.filter.industry"
+                        :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                        :isLarge="device.state.isLarge" :showSelectAll="true">
                     </LazyMoleculeFilterCategory>
                 </LazyAtomInputSelectContainer>
                 <div>
                     <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="state.filter.industry" :items="items">
+                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.industry" :items="items">
                         </LazyAtomInputSelectLabel>
                     </template>
                 </div>
@@ -72,15 +79,15 @@
                 <ul class="section__salaryType">
                     <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
                         <label class="item__inputGroup">
-                            <input type="radio" v-model="state.filter.salaryType" :value="item.value" />
+                            <input type="radio" v-model="jobScroller.state.filter.salaryType" :value="item.value" />
                             <span class="item__text">{{ item.text }}</span>
                         </label>
                     </li>
                 </ul>
                 <div class="section__salaryRange">
-                    <LazyAtomInputMoney v-model="state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
+                    <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
                     </LazyAtomInputMoney>
-                    <LazyAtomInputMoney v-model="state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
+                    <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
                     </LazyAtomInputMoney>
                 </div>
                 <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
@@ -89,15 +96,17 @@
         <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
             <div class="jobs__panel">
                 <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="state.searchLike" @search="initializeSearch()" placeholder="搜尋技能、公司＆職缺">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="handleSearch()"
+                        placeholder="搜尋技能、公司＆職缺">
                     </LazyAtomInputSearch>
                 </div>
             </div>
             <div class="body__filter">
                 <div class="d-none d-lg-block filter__total">
-                    <template v-if="state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{ state.count
+                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{
+                        jobScroller.state.count
                     }}個職缺</template>
-                    <template v-else>符合您篩選條件的共{{ state.count }}個職缺</template>
+                    <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
                 </div>
                 <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
                     <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
@@ -107,17 +116,17 @@
                 </div>
                 <div class="body__filter__sort">
                     <button class="sort__button sort__button--date"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'datePosted' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'datePosted' }"
                         @click="setPageOrderBy('datePosted')">
                         最新
                     </button>
                     <button class="sort__button sort__button--salary"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'salaryValue' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'salaryValue' }"
                         @click="setPageOrderBy('salaryValue')">
                         薪資排序
                     </button>
                     <button class="sort__button sort__button--similarity"
-                        :class="{ 'sort__button--active': state.pagination.pageOrderBy === 'similarity' }"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'similarity' }"
                         @click="setPageOrderBy('similarity')">
                         適配度排序
                     </button>
@@ -125,13 +134,15 @@
             </div>
             <div class="jobs__main">
                 <ul class="main__list">
-                    <template v-if="state.pagination.pageOrderBy !== 'salaryValue'">
-                        <LazyOrganismJobItem v-for="(job, index) in state.jobRecommendList"
-                            v-model="state.jobRecommendList[index]" :key="index" class="main__list__item" :recommend="true">
+                    <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
+                        <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
+                            v-model="jobScroller.state.jobRecommendList[index]" :key="`recommend${index}`"
+                            class="main__list__item" :recommend="true">
                         </LazyOrganismJobItem>
                     </template>
-                    <LazyOrganismJobItem v-for="(job, index) in state.jobList" v-model="state.jobList[index]" :key="index"
-                        :ref="`jobItems`" class="main__list__item jobItem">
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
+                        class="main__list__item jobListItem">
                     </LazyOrganismJobItem>
                     <li class="main__list__item">
                         <div class="item__last">
@@ -148,31 +159,21 @@
                 </ul>
             </div>
         </div>
-        <LazyOrganismMonica></LazyOrganismMonica>
+        <!-- <LazyOrganismMonica></LazyOrganismMonica> -->
     </div>
 </template>
 <script setup>
-const { $requestSelectorAll, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const repoJob = useRepoJob()
 const router = useRouter()
+const jobScroller = useJobScroller({
+    isCache: true,
+    isRecommend: true,
+})
 const state = reactive({
-    jobList: [],
-    jobRecommendList: [],
-    total: 0,
     isFilterOpen: false,
-    debounceTimer: null,
-    // pagination
-    pagination: {
-        pageOrderBy: "datePosted",
-        pageLimit: 5,
-        pageOffset: 0,
-    },
-    count: 0,
-    // filters
-    filter: getDefaultFilter(),
     searchLike: "",
     filterOpen: {
         division: false,
@@ -182,52 +183,60 @@ const state = reactive({
         employmentType: false,
         industry: false,
     },
-    observer: null,
-    salaryTypeText: {
-        yearly: "年薪",
-        monthly: "月薪",
-        daily: "日薪",
-        hourly: "時薪",
-    },
 })
 // hooks
+definePageMeta({
+    keepalive: true
+})
 useHead({
     title: '職缺探索'
 })
-watch(() => repoAuth.state.user, (user) => {
-    // set filter
-    if (user?.id) {
-        state.filter = getDefaultFilter()
-    }
-    // get jobs
-    const firstJob = state.jobList[0]
-    if (!firstJob?.similarity) {
-        initializeSearch()
-    }
-}, { immediate: true })
-watch(() => state.filter, () => {
-    initializeSearch()
-}, { deep: true })
-watch(() => state.jobList, (newValue = [], oldValue = []) => {
-    if (newValue.length === oldValue.length || !process.client) {
+onMounted(() => {
+    if (repoJob.state.cache.isDone) {
+        // Do not mess with front end cache
         return
     }
-    if (!state.observer) {
-        state.observer = new IntersectionObserver(loadJobItemBatch, {
-            rootMargin: "0px",
-            threshold: 0,
-        })
-    }
-    $requestSelectorAll(`.jobItem`, (elements) => {
-        const target = elements[elements.length - 1]
-        if (target) {
-            state.observer.observe(target)
-        }
-    })
+    // 造成第一個query會打兩次
+    jobScroller.initializeSearch({ isCache: false })
 })
+watch(() => repoAuth.state.user, (user) => {
+    if (!process.client) {
+        return
+    }
+    if (repoJob.state.cache.isDone) {
+        jobScroller.state.jobList = repoJob.state.cache.jobList
+        jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
+        return
+    }
+    // 附加occupationalCateogry
+    jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: true })
+}, { immediate: true }) // IMPORTANT: 這個immediate必須要設定
+watch(() => jobScroller.state.filter, (newValue) => {
+    if (!process.client) {
+        return
+    }
+    if (repoAuth.state.user?.id) {
+        jobScroller.initializeSearch()
+    } else {
+        jobScroller.initializeSearch({ isCache: false })
+    }
+}, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
+watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    if (!process.client) {
+        return
+    }
+    if (newValue.length !== oldValue.length) {
+        if (newValue.length) {
+            jobScroller.observeLastJob('.jobListItem')
+        }
+    }
+}, { immediate: true })
 // methods
+function handleSearch() {
+    jobScroller.initializeSearch()
+}
 function getFilterValues() {
-    const values = Object.values(state.filter)
+    const values = Object.values(jobScroller.state.filter)
     const validValues = values.filter(value => {
         if (Array.isArray(value)) {
             return value.length !== 0
@@ -250,195 +259,24 @@ function getSalaryTypeItems() {
         ...items
     ]
 }
-function filterRecommendedJobs() {
-    if (!repoJob.state.jobRecommendedRes) {
-        return []
-    }
-    const recommendJobs = repoJob.state.jobRecommendedRes
-    const { addressRegion = [], occupationalCategory = [], jobLocationType = [],
-        responsibilities = [], employmentType = [], jobBenefits = [],
-        industry = [], salaryMin = 0, salaryMax = 0, salaryType = '' } = state.filter
-    let filteredResult = recommendJobs
-    if (addressRegion.length) {
-        filteredResult = filteredResult.filter(item => {
-            return addressRegion.includes(item.addressRegion)
-        })
-    }
-    if (occupationalCategory.length) {
-        filteredResult = filteredResult.filter(item => {
-            return item.occupationalCategory.some(category2Item => {
-                return occupationalCategory.includes(category2Item)
-            })
-        })
-    }
-    if (jobLocationType.length) {
-        filteredResult = filteredResult.filter(item => {
-            return jobLocationType.includes(item.onSite)
-        })
-    }
-    if (responsibilities.length) {
-        filteredResult = filteredResult.filter(item => {
-            return responsibilities.includes(item.manager)
-        })
-    }
-    if (employmentType.length) {
-        filteredResult = filteredResult.filter(item => {
-            return employmentType.includes(item.employmentType)
-        })
-    }
-    if (responsibilities.length) {
-        filteredResult = filteredResult.filter(item => {
-            return responsibilities.includes(item.responsibilities)
-        })
-    }
-    if (jobBenefits.length) {
-        filteredResult = filteredResult.filter(item => {
-            return jobBenefits.some(benefitFlag => {
-                return item.welfareFlags[benefitFlag]
-            })
-        })
-    }
-    if (industry.length) {
-        filteredResult = filteredResult.filter(item => {
-            return industry.includes(item.industry)
-        })
-    }
-    if (salaryType) {
-        filteredResult = filteredResult.filter(item => {
-            return item.salaryType === salaryType
-        })
-    }
-    if (salaryMax) {
-        filteredResult = filteredResult.filter(item => {
-            return Number(item.salaryMax) > Number(salaryMax)
-        })
-    }
-    if (salaryMin) {
-        filteredResult = filteredResult.filter(item => {
-            return Number(item.salaryMin) > Number(salaryMin)
-        })
-    }
-    if (state.searchLike) {
-        filteredResult = filteredResult.filter(item => {
-            const searchableFields = ['description', 'skills', 'name', 'organizationName']
-            return searchableFields.some(field => {
-                return String(item[field]).includes(state.searchLike)
-            })
-        })
-    }
-    const topTwo = filteredResult.slice(0, 2)
-    return topTwo
-}
-function getDefaultFilter() {
-    const defualtFilter = {
-        // 篩選企業條件
-        industry: [],
-        jobBenefits: [],
-        // 篩選職缺
-        addressRegion: [],
-        responsibilities: [],
-        employmentType: [],
-        jobLocationType: [],
-        occupationalCategory: [],
-        salaryType: "",
-        salaryMin: null,
-        salaryMax: null,
-    }
-    const { user } = repoAuth.state
-    if (user && user.occupationalCategory) {
-        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
-    }
-    return defualtFilter
-}
-async function loadJobItemBatch(entries, observer) {
-    const triggeredEntry = entries[0]
-    if (triggeredEntry.isIntersecting) {
-        observer.disconnect()
-        state.pagination.pageOffset += state.pagination.pageLimit
-        await concatJobsFromServer()
-    }
-}
 async function setPageOrderBy(key) {
-    state.pagination.pageOrderBy = key
+    jobScroller.state.pagination.pageOrderBy = key
     if (key === 'similarity') {
-        state.pagination.pageLimit = 300
+        jobScroller.state.pagination.pageLimit = 300
     } else {
-        state.pagination.pageLimit = 5
+        jobScroller.state.pagination.pageLimit = 5
     }
-    await initializeSearch({
+    await jobScroller.initializeSearch({
         immediate: true,
-        isLoading: true
+        isLoading: true,
     })
 }
 function resetFilter() {
-    state.jobList = []
-    state.pagination = {
-        pageOrderBy: "datePosted",
-        pageLimit: 5,
-        pageOffset: 0,
-    }
-    state.searchLike = ""
+    jobScroller.resetJobState()
     window.scroll({
         top: 0,
         behavior: 'auto'
     })
-    state.filter = getDefaultFilter()
-}
-function debounce(func, delay = 800) {
-    return (...args) => {
-        clearTimeout(state.debounceTimer)
-        state.debounceTimer = setTimeout(() => {
-            state.debounceTimer = undefined
-            func.apply(this, args)
-        }, delay)
-    }
-}
-async function initializeSearch(config = {}) {
-    const wait = config.immediate ? 0 : 800
-    debounce(async () => {
-        state.jobList = [] // important
-        state.pagination.pageOffset = 0
-        await concatJobsFromServer(config)
-    }, wait)()
-}
-async function concatJobsFromServer(config = {}) {
-    const { isLoading = false } = config
-    const requestConfig = Object.assign({}, state.pagination, state.filter, {
-        searchLike: state.searchLike,
-        // status: 'active',
-    })
-    const { user } = repoAuth.state
-    if (user?.id) {
-        requestConfig.userId = user.id
-    }
-    // try {
-    //     $sweet.loader(isLoading)
-    // } catch (error) {
-    //     // console.trace(error);
-    // }
-    const response = await repoJob.getJobByQuery(requestConfig)
-    if (response.status !== 200) {
-        $sweet.alert('伺服器塞車了')
-        return
-    }
-    const { count = 0, items = [] } = response.data
-    state.count = count
-    const recommendJobs = filterRecommendedJobs()
-    state.jobRecommendList = recommendJobs
-    // 一般排序與適配讀排序時避免重複出現職缺
-    const recommendJobIds = recommendJobs.map(item => item.identifier)
-    let notDuplicatedJobs = items
-    if (state.pagination.pageOrderBy !== 'salaryValue') {
-        notDuplicatedJobs = items.filter(item => {
-            return !recommendJobIds.includes(item.identifier)
-        })
-    }
-    state.jobList = [...state.jobList, ...notDuplicatedJobs]
-    // try {
-    //     $sweet.loader(false)
-    // } catch (error) {
-    //     // console.trace(error);
-    // }
 }
 </script>
 <style lang="scss" scoped>
@@ -457,6 +295,7 @@ async function concatJobsFromServer(config = {}) {
                 gap: 0 16px;
 
                 .filterSalary__item {
+
                     .item__inputGroup {
                         display: flex;
                         align-items: center;
@@ -590,6 +429,7 @@ async function concatJobsFromServer(config = {}) {
         flex-direction: row;
         gap: 16px;
         padding-top: 20px;
+        padding-bottom: 20px;
 
         .jobs__filter {
             .filter__list {
