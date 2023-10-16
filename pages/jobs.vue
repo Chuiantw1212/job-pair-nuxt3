@@ -225,6 +225,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (!process.client) {
         return
     }
+    console.log('watch jobList');
     if (newValue.length !== oldValue.length) {
         if (newValue.length) {
             jobScroller.observeLastJob('.jobListItem')

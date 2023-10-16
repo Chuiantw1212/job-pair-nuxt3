@@ -44,8 +44,7 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <AtomInputSwitch v-model="job.status"
-                                @update:modelValue="checkJobStatus($event, job, index)">
+                            <AtomInputSwitch v-model="job.status" @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
                         </td>
                         <td>
@@ -274,6 +273,9 @@ async function initialize(payload = {}) {
         orderBy: 'datePosted',
         searchLike
     })
+    if (!repoCompany?.getCompanyJobs) {
+        return
+    }
     const jobsResponse = await repoCompany.getCompanyJobs(config)
     if (jobsResponse.status !== 200) {
         return
