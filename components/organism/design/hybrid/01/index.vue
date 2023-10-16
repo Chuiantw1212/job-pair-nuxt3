@@ -161,7 +161,6 @@ async function uploadAsset(image = {}, index = 0) {
     }
 
     .description__imageWrap {
-        margin-top: 20px;
 
         .imageWrap__image {
             width: 100%;
@@ -213,6 +212,7 @@ async function uploadAsset(image = {}, index = 0) {
             width: 100%;
             max-width: 445px;
             padding: 0px;
+            margin-top: 20px;
         }
 
         .description__body {

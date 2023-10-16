@@ -1,18 +1,20 @@
 <template>
-    <div class="columns">
-        <AtomDesignBackground class="columns__body" v-if="localValue.controllable" v-model="localValue.controllable.img">
-            <template v-if="readonly">
+    <div v-if="localValue.controllable" class="columns">
+        <template v-if="readonly">
+            <div class="columns__body" :style="{ 'background-image': `url(${localValue.controllable.img.url})` }">
                 <div v-html="localValue.controllable.title.html" class="body__title"></div>
                 <div v-html="localValue.controllable.desc.html" class="body__desc"></div>
-            </template>
-            <template v-else>
+            </div>
+        </template>
+        <template v-else>
+            <AtomDesignBackground class="columns__body" v-model="localValue.controllable.img">
                 <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
                     :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
                 <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
                 </LazyAtomInputCkeditorInline>
-            </template>
-        </AtomDesignBackground>
+            </AtomDesignBackground>
+        </template>
     </div>
 </template>
 <script setup>
