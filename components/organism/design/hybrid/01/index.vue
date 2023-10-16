@@ -1,30 +1,55 @@
 <template>
-    <div class="description">
-        <LazyAtomInputCkeditorInline v-if="localValue.controllable" class="description__title d-lg-none"
-            v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
-        </LazyAtomInputCkeditorInline>
-        <div v-if="localValue.controllable" class="description__imageWrap">
-            <AtomDesignImg :modelValue="localValue.controllable.img" @update:modelValue="uploadAsset($event, index)">
+    <div v-if="localValue.controllable" class="description">
+        <template v-if="readonly">
+            <div class="description__title d-lg-none" v-html="localValue.controllable.title.html">
+
+            </div>
+            <div class="description__imageWrap">
+                <img class="imageWrap__image" :src="localValue.controllable.img.url">
+            </div>
+            <div class="description__body">
+                <ul class="body__textGroup">
+                    <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`"
+                        class="textGroup__item">
+                        <div class="textGroup__title" v-html="localValue.controllable.items[index].title.html">
+                        </div>
+                        <div class="textGroup__desc" v-html="localValue.controllable.items[index].desc.html">
+                        </div>
+                    </li>
+                </ul>
+                <div class="body__desc" v-html="localValue.controllable.desc.html">
+                </div>
+                <div class="body__title d-none d-lg-block" v-html="localValue.controllable.title.html">
+                </div>
+            </div>
+        </template>
+        <template v-else>
+            <LazyAtomInputCkeditorInline class="description__title d-lg-none" v-model="localValue.controllable.title.html"
+                :toolbar="state.titleToolbar">
+            </LazyAtomInputCkeditorInline>
+            <AtomDesignImg class="description__imageWrap" :modelValue="localValue.controllable.img"
+                @update:modelValue="uploadAsset($event, index)">
                 <img class="imageWrap__image" :src="localValue.controllable.img.url">
             </AtomDesignImg>
-        </div>
-        <div v-if="localValue.controllable" class="description__body">
-            <ul class="body__textGroup">
-                <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`" class="textGroup__item">
-                    <LazyAtomInputCkeditorInline class="textGroup__title"
-                        v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
-                    </LazyAtomInputCkeditorInline>
-                    <LazyAtomInputCkeditorInline class="textGroup__desc"
-                        v-model="localValue.controllable.items[index].desc.html" :toolbar="state.titleToolbar">
-                    </LazyAtomInputCkeditorInline>
-                </li>
-            </ul>
-            <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
-            </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" class="body__title d-none d-lg-block"
-                v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
-            </LazyAtomInputCkeditorInline>
-        </div>
+            <div class="description__body">
+                <ul class="body__textGroup">
+                    <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`"
+                        class="textGroup__item">
+                        <LazyAtomInputCkeditorInline class="textGroup__title"
+                            v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
+                        </LazyAtomInputCkeditorInline>
+                        <LazyAtomInputCkeditorInline class="textGroup__desc"
+                            v-model="localValue.controllable.items[index].desc.html" :toolbar="state.titleToolbar">
+                        </LazyAtomInputCkeditorInline>
+                    </li>
+                </ul>
+                <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
+                </LazyAtomInputCkeditorInline>
+                <LazyAtomInputCkeditorInline class="body__title d-none d-lg-block"
+                    v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
+                </LazyAtomInputCkeditorInline>
+            </div>
+        </template>
     </div>
 </template>
 <script setup>
