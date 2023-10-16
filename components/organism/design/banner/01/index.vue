@@ -4,10 +4,10 @@
         <template v-if="readonly">
             <div class="banner__image" :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
                 <div class="banner__preview">
-                    <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
+                    <div v-html="localValue.controllable.title.html" class="preview__title">
 
                     </div>
-                    <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline preview__desc">
+                    <div v-html="localValue.controllable.desc.html" class="preview__desc">
 
                     </div>
                 </div>
@@ -156,7 +156,6 @@ async function uploadAsset(image = {}, index = 0) {
 <stylte lang="scss" scoped>
 .banner {
     position: relative;
-    // padding: 35px 0px;
 
     .banner__preview {
         width: 100%;
@@ -164,10 +163,6 @@ async function uploadAsset(image = {}, index = 0) {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-
-        // text-align: center;
-        // display: flex;
-        // flex-direction: column;
 
         .editorGroup__editor {
             width: fit-content;
@@ -183,13 +178,20 @@ async function uploadAsset(image = {}, index = 0) {
         }
 
         .preview__title {
-            font-size: 12px;
-            transform: scale(2);
+            font-size: 30px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
         }
 
         .preview__desc {
-            font-size: 7px;
-            transform: scale(2);
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            margin-top: 20px;
         }
     }
 
@@ -217,13 +219,21 @@ async function uploadAsset(image = {}, index = 0) {
     .banner {
         .banner__preview {
             .preview__title {
-                font-size: 45px;
-                transform: scale(2);
+                font-size: 90px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.2;
+                letter-spacing: normal;
             }
 
             .preview__desc {
-                font-size: 13px;
-                transform: scale(2);
+                font-size: 26px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
             }
 
             .preview__btn {
