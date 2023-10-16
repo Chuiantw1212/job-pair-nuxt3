@@ -147,7 +147,6 @@ export default function setup(setUpConfig = {}) {
             const elements = document.querySelectorAll(selectorString)
             if (!state.observer) {
                 state.observer = new IntersectionObserver(loadNextFrameJobs, {
-                    rootMargin: "0px",
                     threshold: 1, // important cant be zero
                 })
             }
