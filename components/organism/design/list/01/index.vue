@@ -1,12 +1,14 @@
 <template>
     <div v-if="localValue.controllable" class="banner2">
         <template v-if="readonly">
-            <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline banner__title"></div>
+            <div v-html="localValue.controllable.title.html" class="banner__title"></div>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
-                    <img class="imageWrap__image" :src="item.image.url" format="webp" loading="lazy" />
-                    <div v-html="item.title.html" class="ck ck-editor__editable_inline card__title"></div>
-                    <div v-html="item.desc.html" class="ck ck-editor__editable_inline card__desc"></div>
+                    <div class="card__imageWrap">
+                        <img class="imageWrap__image" :src="item.img.url" format="webp" loading="lazy" />
+                    </div>
+                    <div v-html="item.title.html" class="card__title"></div>
+                    <div v-html="item.desc.html" class="card__desc"></div>
                 </div>
             </div>
         </template>

@@ -1,19 +1,24 @@
 
 <template>
     <div v-if="localValue.controllable" class="rowGroup">
-        <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
-            class="rowGroup__title">
-        </LazyAtomInputCkeditorInline>
-        <div v-for="(item, index) in localValue.controllable.items" :key="index" class="rowGroup__item">
-            <AtomDesignImg class="item__imgWrap" :modelValue="localValue.controllable.items[index].img"
-                @update:modelValue="uploadAsset($event, index)">
-                <img class="imgWrap__img" :src="item.img.url">
-            </AtomDesignImg>
-            <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html">
+        <template v-if="readonly">
+
+        </template>
+        <template v-else>
+            <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
+                class="rowGroup__title">
             </LazyAtomInputCkeditorInline>
-            <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html">
-            </LazyAtomInputCkeditorInline>
-        </div>
+            <div v-for="(item, index) in localValue.controllable.items" :key="index" class="rowGroup__item">
+                <AtomDesignImg class="item__imgWrap" :modelValue="localValue.controllable.items[index].img"
+                    @update:modelValue="uploadAsset($event, index)">
+                    <img class="imgWrap__img" :src="item.img.url">
+                </AtomDesignImg>
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html" class="item__title">
+                </LazyAtomInputCkeditorInline>
+                <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html" class="item__desc">
+                </LazyAtomInputCkeditorInline>
+            </div>
+        </template>
         <!-- <div class="rowGroup__item">
             <img class="item__imgWrap" src="./image2.webp">
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[1].html">
@@ -165,15 +170,49 @@ async function uploadAsset(image = {}, index = 0) {
 
 @media screen and (min-width: 992px) {
     .rowGroup {
-        // flex-direction: row;
-        // justify-content: space-evenly;
-        // background-size: contain;
+        gap: 105px;
 
-        // .columns__body {
-        //     display: flex;
-        //     align-items: center;
-        //     gap: 100px;
-        // }
+        .rowGroup__title {
+            font-size: 36px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+        }
+
+        .rowGroup__item {
+            padding: 30px 100px;
+
+            .item__imgWrap {
+                position: absolute;
+                left: 0;
+                top: 0;
+                transform: translate(-50%, calc(-50%));
+
+                .imgWrap__img {
+                    max-width: 160px;
+                }
+            }
+
+            .item__title {
+                font-size: 32px;
+                font-weight: bold;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+            }
+
+            .item__desc {
+                font-size: 19px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+            }
+        }
     }
 }
 </style>
