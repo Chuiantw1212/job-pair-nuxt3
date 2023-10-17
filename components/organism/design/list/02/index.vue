@@ -9,9 +9,9 @@
                 class="rowGroup__title">
             </LazyAtomInputCkeditorInline>
             <div v-for="(item, index) in localValue.controllable.items" :key="index" class="rowGroup__item">
-                <AtomDesignImg class="item__imgWrap" :modelValue="localValue.controllable.items[index].img"
+                <AtomDesignImg class="item__imgWrap" :modelValue="localValue.controllable.items[index].image"
                     @update:modelValue="uploadAsset($event, index)">
-                    <img class="imgWrap__img" :src="item.img.url">
+                    <img class="imgWrap__img" :src="item.image.url">
                 </AtomDesignImg>
                 <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html" class="item__title">
                 </LazyAtomInputCkeditorInline>
@@ -79,7 +79,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p><span style="color:hsl( 0, 0%, 20% );">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_1.webp'
                         }
                     },
@@ -90,7 +90,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p><span style="color:hsl( 0, 0%, 20% );">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_2.webp'
                         }
                     },
@@ -101,7 +101,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p><span style="color:hsl( 0, 0%, 20% );">讓用人單位自行決定用人偏好，降低到職後因文化、合作與溝通模式的落差而產生流動率。</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_3.webp'
                         }
                     }
@@ -123,7 +123,7 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            localValue.value.controllable.items[index].img.url = res.data
+            localValue.value.controllable.items[index].image.url = res.data
         }, 300)
     }
 }

@@ -5,7 +5,7 @@
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
                     <div class="card__imageWrap">
-                        <img class="imageWrap__image" :src="item.img.url" format="webp" loading="lazy" />
+                        <img class="imageWrap__image" :src="item.image.url" format="webp" loading="lazy" />
                     </div>
                     <div v-html="item.title.html" class="card__title"></div>
                     <div v-html="item.desc.html" class="card__desc"></div>
@@ -18,9 +18,9 @@
             </LazyAtomInputCkeditorInline>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
-                    <AtomDesignImg class="card__imageWrap" :modelValue="localValue.controllable.items[index].img"
+                    <AtomDesignImg class="card__imageWrap" :modelValue="localValue.controllable.items[index].image"
                         @update:modelValue="uploadAsset($event, index)">
-                        <img class="imageWrap__image" :src="item.img.url">
+                        <img class="imageWrap__image" :src="item.image.url">
                     </AtomDesignImg>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
                         :toolbar="state.titleToolbar" class="card__title">
@@ -107,7 +107,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p style="text-align:justify;"><span>理想生活探索是透過專業引導，釐清個人內在的「價值觀」，並將內在需求與外在行動對焦，制訂相對應的行動，有意識的創造個人的理想生活。</span></p><p style="text-align:justify;"><span>本服務也有助於個人面對工作選擇或其他生涯抉擇時，下一個真正貼近個人內在需求的決策。</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_1.webp'
                         }
                     },
@@ -118,7 +118,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p style="text-align:justify;"><span>職涯偏好探索，目的是探索合適的工作，需從「價值觀」與「個性」兩個層面做自我分析。</span></p><p style="text-align:justify;"><span>價值觀就是個人的信念、人生意義、道德觀念等組合，對應工作就是企業對文化、理念、願景的實踐；個性則是評估自己在什麼樣的工作環境、工作內容與什麼樣的主管合作，能更勝任愉快。</span></p><p style="text-align:justify;"><span>所以，評估適合的工作發展，兩者缺一不可。</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_2.webp'
                         }
                     },
@@ -129,7 +129,7 @@ watch(() => localValue.value, (newValue) => {
                         desc: {
                             html: '<p style="text-align:justify;"><span>提供履歷與面試輔導的生涯設計師，除了來自不同產業的經驗，同時具備生涯設計的思維；不只從個人角度出發，還能從就業市場的角度，提供更全面的情報，為更好的職涯做準備。</span></p>'
                         },
-                        img: {
+                        image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_3.webp'
                         }
                     }
@@ -151,7 +151,7 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            localValue.value.controllable.items[index].img.url = res.data
+            localValue.value.controllable.items[index].image.url = res.data
         }, 300)
     }
 }

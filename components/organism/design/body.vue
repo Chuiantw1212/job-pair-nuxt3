@@ -22,6 +22,8 @@
             <!-- 投影片式 -->
             <OrganismDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="localValue[index]" :readonly="readonly">
             </OrganismDesignSlide01>
+            <OrganismDesignSlide02 v-if="item.name === 'SLIDE02'" v-model="localValue[index]" :readonly="readonly">
+            </OrganismDesignSlide02>
         </template>
     </div>
 </template>
