@@ -1,8 +1,14 @@
 <template>
-    <div class="slide">
+    <div v-if="localValue.controllable" class="slide">
+        <!-- <h2 >
+
+        </h2> -->
+        <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
+            :toolbar="state.titleToolbar">
+        </LazyAtomInputCkeditorInline>
         <div :id="`slide-${state.id}`" class="glide">
             <div class="glide__track" data-glide-el="track">
-                <ul v-if="localValue.controllable" class="glide__slides">
+                <ul class="glide__slides">
                     <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
                         <div class="slide__content">
                             <template v-if="readonly">
@@ -23,8 +29,9 @@
                             </template>
                             <template v-else>
                                 <div class="content__body">
-                                    <img src="./SLIDE02_BG.webp">
-                                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html"
+                                    <img class="body__image" src="./SLIDE02_BG.svg">
+                                    <LazyAtomInputCkeditorInline class="body__desc"
+                                        v-model="localValue.controllable.items[index].desc.html"
                                         :toolbar="state.titleToolbar">
                                     </LazyAtomInputCkeditorInline>
                                     <!-- <div class="body__left">
@@ -56,12 +63,10 @@ const state = reactive({
     id: null,
     glideInstance: null,
     titleToolbar: [
-        // 'fontSize',
-        // '|',
         'bold',
         'fontColor',
-        '|',
-        'alignment',
+        // '|',
+        // 'alignment',
     ]
 })
 const props = defineProps({
@@ -85,7 +90,7 @@ onMounted(() => {
             const glideInstance = new $Glide.Default(element, {
                 gap: 10,
                 bound: true,
-                perView: 2,
+                perView: 1,
             })
             glideInstance.mount({
                 Controls: $Glide.Controls,
@@ -107,13 +112,16 @@ watch(() => localValue.value, (newValue) => {
         const defaultValue = {
             name: 'SLIDE01',
             controllable: {
+                title: {
+                    html: '<p>公司口碑</p>'
+                },
                 items: [
                     {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            html: '<p><span>如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>',
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
@@ -151,10 +159,32 @@ watch(() => localValue.value, (newValue) => {
 
 </script>
 <style lang="scss" scoped>
+.slide {
+    background-color: white;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+
+    .slide__title {
+        font-size: 20px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        width: fit-content;
+        margin: auto;
+    }
+}
+
+
 .slide__content {
-    background-color: #2aa984;
-    color: white;
-    padding: 50px 100px;
+    background-color: white;
+    border-radius: 20px;
+    border:1px solid rgba(80, 80, 80, 0.1);
+    padding: 30px;
+    overflow: hidden;
+    margin-top: 20px;
 
     .content__hr {
         width: 56px;
@@ -165,10 +195,23 @@ watch(() => localValue.value, (newValue) => {
 
     .content__body {
         display: flex;
-        flex-grow: 1;
-        flex-basis: 0;
-        margin-top: 50px;
+        gap: 30px;
         flex-direction: column;
+
+        .body__image {
+            width: 70px;
+            height: 52px;
+            display: block;
+        }
+
+        .body__desc {
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 2;
+            letter-spacing: normal;
+        }
 
         .body__left {
             width: 50%;
@@ -186,11 +229,11 @@ watch(() => localValue.value, (newValue) => {
 @media screen and (min-width: 992px) {
     .slide__content {
         .content__body {
-            flex-direction: row;
+            // flex-direction: row;
 
-            .body__right {
-                width: 50%;
-            }
+            // .body__right {
+            //     width: 50%;
+            // }
         }
     }
 }
