@@ -195,7 +195,6 @@ async function uploadAsset(image = {}, index = 0) {
 
 
             .card__title {
-                // margin-top: 20px;
                 padding: 20px 0;
             }
 

@@ -83,7 +83,7 @@ async function showSecondConfirm() {
                     if (process.client) {
                         location.reload()
                     }
-                }, 1000)
+                }, 300)
             }
             break;
         }
@@ -99,7 +99,7 @@ async function showSecondConfirm() {
                     if (process.client) {
                         location.reload()
                     }
-                }, 1000)
+                }, 300)
             }
             break;
         }
