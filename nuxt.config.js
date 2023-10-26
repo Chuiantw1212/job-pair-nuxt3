@@ -8,8 +8,6 @@ const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/og
 export default defineNuxtConfig({
     app: {
         head: {
-            // should match runtime vars
-            titleTemplate: '%pageTitle %titleSeparator %siteName',
             meta: [
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
