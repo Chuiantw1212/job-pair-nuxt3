@@ -310,6 +310,10 @@ async function clearErrorMessage() {
     state.errorMessage = ''
 }
 async function cancelEmail() {
+    state.form = {
+        email: '',
+        password: '',
+    }
     state.dialogName = 'default'
 }
 async function signInWithEmail() {
@@ -392,13 +396,13 @@ async function checkEmailRegistered() {
     const { email = '', password = '' } = state.form
     const auth = getAuth()
     const providers = await fetchSignInMethodsForEmail(auth, email)
-    // Get First Federated Provider and show
+    // 已用第三方登入註冊
     const providerId = getFirstFederatedProvider(providers)
     if (providerId) {
         setFederatedDialog(providerId)
         return
     }
-    // Show email login
+    // 非第三方登入註冊
     const emailProviderId = EmailAuthProvider.PROVIDER_ID
     if (providers.includes(emailProviderId)) {
         // 顯示密碼
