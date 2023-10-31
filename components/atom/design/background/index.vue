@@ -1,7 +1,7 @@
 <template>
     <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }"
-        :style="{ 'background-image': `url(${props.modelValue.url})` }" @mouseenter="startEditing()"
-        @mouseleave="completeEditing($event)">
+        :style="{ 'background-image': `url(${props.modelValue.url})`, 'background-size': `${props.modelValue.backgroundSize}` }"
+        @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="img__toolbar" ref="toolbar">
             <button class="toolbar__btn">
                 <img src="./Trash.svg">

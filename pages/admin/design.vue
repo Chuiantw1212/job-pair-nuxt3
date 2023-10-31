@@ -151,7 +151,7 @@ async function publishDesign() {
 </script>
 <style lang="scss" scoped>
 .design {
-    padding-top: 20px;
+    padding: 20px 0px;
 
     * {
         -webkit-user-select: none;

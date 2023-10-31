@@ -116,7 +116,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'
@@ -127,7 +127,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'
@@ -138,7 +138,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'

@@ -59,7 +59,8 @@ watch(() => localValue.value, (newValue) => {
                     html: '<ul><li><span>彈性自由的工作環境</span></li><li><span>優於勞基法的休假制度</span></li><li><span>每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span>三節禮金</span></li></ul>'
                 },
                 img: {
-                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp'
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp',
+                    backgroundSize: 'contain',
                 }
             }
         }
