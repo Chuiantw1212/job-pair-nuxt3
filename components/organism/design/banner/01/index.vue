@@ -60,8 +60,8 @@
     </div>
 </template>
 <script setup>
-const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $sweet } = useNuxtApp()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     bannerToolbar: [

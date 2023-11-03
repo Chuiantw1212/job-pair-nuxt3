@@ -11,7 +11,9 @@
                                 <hr class="content__hr">
                                 <div class="content__body">
                                     <div class="body__first">
-                                        <img src="./sandy.webp">
+                                        <div class="first__mage"
+                                            :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                        </div>
                                         <div v-html="slide.image.html" class="first__name">
                                         </div>
                                         <div v-html="slide.image.html" class="first__subName">
@@ -30,7 +32,13 @@
                                 <hr class="content__hr">
                                 <div class="content__body">
                                     <div class="body__first">
-                                        <img class="firstImage" src="./sandy.webp">
+                                        <!-- <img class="first__mage" src="./sandy.webp"> -->
+                                        <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
+                                            @update:modelValue="uploadAsset($event, index)">
+                                            <div class="first__mage"
+                                                :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                            </div>
+                                        </AtomDesignImg>
                                         <LazyAtomInputCkeditorInline class="first__name"
                                             v-model="localValue.controllable.items[index].name.html"
                                             :toolbar="state.titleToolbar">
@@ -60,7 +68,8 @@
     </div>
 </template>
 <script setup>
-const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
+const { $uuid4, $Glide, $requestSelector, $sweet } = useNuxtApp()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
     id: null,
@@ -175,7 +184,21 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
-
+// methods
+async function uploadAsset(image = {}, index = 0) {
+    image.name = `portrait${index + 1}`
+    const res = await repoOrganizationDesign.putAsset({
+        templateName: 'SLIDE01',
+        asset: image,
+    })
+    if (res.status === 200) {
+        $sweet.loader(true)
+        setTimeout(() => {
+            $sweet.loader(false)
+            localValue.value.controllable.items[index].image.url = res.data
+        }, 300)
+    }
+}
 </script>
 <style lang="scss" scoped>
 .slide__content {
@@ -215,9 +238,12 @@ watch(() => localValue.value, (newValue) => {
             flex-direction: column;
             align-items: center;
 
-            .firstImage {
+            .first__mage {
                 width: 140px;
                 height: 140px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
             }
 
             .first__name {
