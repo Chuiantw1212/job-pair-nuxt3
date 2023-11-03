@@ -6,36 +6,42 @@
                     <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
                         <div class="slide__content">
                             <template v-if="readonly">
-                                <div v-html="slide.title.html" class="ck ck-editor__editable_inline">
+                                <div v-html="slide.title.html">
                                 </div>
                                 <hr class="content__hr">
                                 <div class="content__body">
-                                    <div class="body__left">
-                                        <img src="./default.webp">
-                                        <div v-html="slide.image.html" class="ck ck-editor__editable_inline">
+                                    <div class="body__first">
+                                        <img src="./sandy.webp">
+                                        <div v-html="slide.image.html" class="first__name">
+                                        </div>
+                                        <div v-html="slide.image.html" class="first__subName">
                                         </div>
                                     </div>
-                                    <div class="body__right">
-                                        <div v-html="slide.desc.html" class="ck ck-editor__editable_inline">
+                                    <div class="body__second">
+                                        <div v-html="slide.desc.html">
                                         </div>
                                     </div>
                                 </div>
                             </template>
                             <template v-else>
                                 <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
-                                    :toolbar="state.titleToolbar" class="card__title">
+                                    :toolbar="state.titleToolbar" class="content__title">
                                 </LazyAtomInputCkeditorInline>
                                 <hr class="content__hr">
                                 <div class="content__body">
-                                    <div class="body__left">
-                                        <img src="./default.webp">
-                                        <LazyAtomInputCkeditorInline
-                                            v-model="localValue.controllable.items[index].image.html"
+                                    <div class="body__first">
+                                        <img class="firstImage" src="./sandy.webp">
+                                        <LazyAtomInputCkeditorInline class="first__name"
+                                            v-model="localValue.controllable.items[index].name.html"
+                                            :toolbar="state.titleToolbar">
+                                        </LazyAtomInputCkeditorInline>
+                                        <LazyAtomInputCkeditorInline class="first__subName"
+                                            v-model="localValue.controllable.items[index].subName.html"
                                             :toolbar="state.titleToolbar">
                                         </LazyAtomInputCkeditorInline>
                                     </div>
-                                    <div class="body__right">
-                                        <LazyAtomInputCkeditorInline
+                                    <div class="body__second">
+                                        <LazyAtomInputCkeditorInline class="second__desc"
                                             v-model="localValue.controllable.items[index].desc.html">
                                         </LazyAtomInputCkeditorInline>
                                     </div>
@@ -115,8 +121,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span>Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'
@@ -126,8 +138,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span>Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'
@@ -137,8 +155,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span>Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span style="font-size:24px;">Yen-Lin Chiu</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Founder of Job-Pair</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">除了做團隊介紹，您也可以使用這個模組放入他人的評論與口碑等文字內容，透過第三方來提升您的企業形象。第三方可以是客戶、供應商、員工等人的客觀說明來為您的企業加分。</span></p>'
@@ -157,11 +181,22 @@ watch(() => localValue.value, (newValue) => {
 .slide__content {
     background-color: #2aa984;
     color: white;
-    padding: 50px 100px;
+    padding: 30px 20px;
+
+    .content__title {
+        font-size: 20px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #fff;
+    }
 
     .content__hr {
         width: 56px;
-        margin: auto;
+        margin: 20px auto auto auto;
         border: 2px solid white;
         opacity: 1;
     }
@@ -170,18 +205,56 @@ watch(() => localValue.value, (newValue) => {
         display: flex;
         flex-grow: 1;
         flex-basis: 0;
-        margin-top: 50px;
+        margin-top: 20px;
         flex-direction: column;
 
-        .body__left {
-            width: 50%;
+        .body__first {
+            text-align: center;
+            margin-top: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+
+            .firstImage {
+                width: 140px;
+                height: 140px;
+            }
+
+            .first__name {
+                font-size: 22px;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                color: #fff;
+                margin-top: 20px;
+            }
+
+            .first__subName {
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                color: rgba(255, 255, 255, 0.85);
+                margin-top: 5px;
+            }
         }
 
-        .body__right {
+        .body__second {
             width: 100%;
+            margin-top: 20px;
+
+            .second__desc {
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                color: #fff;
+            }
         }
     }
 }
@@ -191,7 +264,7 @@ watch(() => localValue.value, (newValue) => {
         .content__body {
             flex-direction: row;
 
-            .body__right {
+            .body__second {
                 width: 50%;
             }
         }
