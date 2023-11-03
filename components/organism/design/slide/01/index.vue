@@ -4,57 +4,60 @@
             <div class="glide__track" data-glide-el="track">
                 <ul v-if="localValue.controllable" class="glide__slides">
                     <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
-                        <div class="slide__content">
-                            <template v-if="readonly">
-                                <div v-html="slide.title.html">
-                                </div>
-                                <hr class="content__hr">
-                                <div class="content__body">
-                                    <div class="body__first">
-                                        <div class="first__mage"
-                                            :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
-                                        </div>
-                                        <div v-html="slide.image.html" class="first__name">
-                                        </div>
-                                        <div v-html="slide.image.html" class="first__subName">
-                                        </div>
+                        <div class="slide__contentWrap">
+                            <div class="slide__content">
+                                <template v-if="readonly">
+                                    <div v-html="slide.title.html">
                                     </div>
-                                    <div class="body__second">
-                                        <div v-html="slide.desc.html">
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
-                                    :toolbar="state.titleToolbar" class="content__title">
-                                </LazyAtomInputCkeditorInline>
-                                <hr class="content__hr">
-                                <div class="content__body">
-                                    <div class="body__first">
-                                        <!-- <img class="first__mage" src="./sandy.webp"> -->
-                                        <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
-                                            @update:modelValue="uploadAsset($event, index)">
+                                    <hr class="content__hr">
+                                    <div class="content__body">
+                                        <div class="body__first">
                                             <div class="first__mage"
                                                 :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
                                             </div>
-                                        </AtomDesignImg>
-                                        <LazyAtomInputCkeditorInline class="first__name"
-                                            v-model="localValue.controllable.items[index].name.html"
-                                            :toolbar="state.titleToolbar">
-                                        </LazyAtomInputCkeditorInline>
-                                        <LazyAtomInputCkeditorInline class="first__subName"
-                                            v-model="localValue.controllable.items[index].subName.html"
-                                            :toolbar="state.titleToolbar">
-                                        </LazyAtomInputCkeditorInline>
+                                            <div v-html="slide.image.html" class="nameGroup__name">
+                                            </div>
+                                            <div v-html="slide.image.html" class="nameGroup__subName">
+                                            </div>
+                                        </div>
+                                        <div class="body__second">
+                                            <div v-html="slide.desc.html">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="body__second">
-                                        <LazyAtomInputCkeditorInline class="second__desc"
-                                            v-model="localValue.controllable.items[index].desc.html">
-                                        </LazyAtomInputCkeditorInline>
+                                </template>
+                                <template v-else>
+                                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].title.html"
+                                        :toolbar="state.titleToolbar" class="content__title">
+                                    </LazyAtomInputCkeditorInline>
+                                    <hr class="content__hr">
+                                    <div class="content__body">
+                                        <div class="body__first">
+                                            <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
+                                                @update:modelValue="uploadAsset($event, index)">
+                                                <div class="first__mage"
+                                                    :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                                </div>
+                                            </AtomDesignImg>
+                                            <div class="first__nameGroup">
+                                                <LazyAtomInputCkeditorInline class="nameGroup__name"
+                                                    v-model="localValue.controllable.items[index].name.html"
+                                                    :toolbar="state.titleToolbar">
+                                                </LazyAtomInputCkeditorInline>
+                                                <LazyAtomInputCkeditorInline class="nameGroup__subName"
+                                                    v-model="localValue.controllable.items[index].subName.html"
+                                                    :toolbar="state.titleToolbar">
+                                                </LazyAtomInputCkeditorInline>
+                                            </div>
+                                        </div>
+                                        <div class="body__second">
+                                            <LazyAtomInputCkeditorInline class="second__desc"
+                                                v-model="localValue.controllable.items[index].desc.html">
+                                            </LazyAtomInputCkeditorInline>
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
+                                </template>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -63,6 +66,10 @@
                 <button class="glide__bullet" data-glide-dir="=0"></button>
                 <button class="glide__bullet" data-glide-dir="=1"></button>
                 <button class="glide__bullet" data-glide-dir="=2"></button>
+            </div>
+            <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt</button>
+                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&gt</button>
             </div>
         </div>
     </div>
@@ -246,26 +253,29 @@ async function uploadAsset(image = {}, index = 0) {
                 background-position: center;
             }
 
-            .first__name {
-                font-size: 22px;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: normal;
-                letter-spacing: normal;
-                color: #fff;
-                margin-top: 20px;
+            .first__nameGroup {
+                .nameGroup__name {
+                    font-size: 22px;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    color: #fff;
+                    margin-top: 20px;
+                }
+
+                .nameGroup__subName {
+                    font-size: 16px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    color: rgba(255, 255, 255, 0.85);
+                    margin-top: 5px;
+                }
             }
 
-            .first__subName {
-                font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: normal;
-                letter-spacing: normal;
-                color: rgba(255, 255, 255, 0.85);
-                margin-top: 5px;
-            }
         }
 
         .body__second {
@@ -286,13 +296,62 @@ async function uploadAsset(image = {}, index = 0) {
 }
 
 @media screen and (min-width: 992px) {
+    .slide__contentWrap {
+        padding: 20px;
+        background-color: white;
+    }
+
     .slide__content {
+        padding: 50px 100px;
+        border-radius: 24px;
+
+        .content__title {
+            font-size: 36px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #fff;
+        }
+
         .content__body {
             flex-direction: row;
+
+            .body__first {
+                flex-direction: row;
+                gap: 30px;
+                width: 50%;
+                align-items: center;
+                margin: 0px;
+
+                .first__nameGroup {
+                    .nameGroup__name {
+                        margin: 0;
+                    }
+
+                    .nameGroup__subName {
+                        margin: 0;
+                    }
+                }
+            }
 
             .body__second {
                 width: 50%;
             }
+        }
+    }
+
+    .glide {
+        position: relative;
+
+        .glide__arrows {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            max-width: 330px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     }
 }
