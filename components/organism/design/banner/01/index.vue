@@ -15,7 +15,7 @@
         </template>
         <template v-else-if="localValue.controllable">
             <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.bg"
-                @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')">
+                @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')" @up="emit('up')">
                 <div class="banner__preview">
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
                         class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
@@ -61,7 +61,7 @@
 <script setup>
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $sweet } = useNuxtApp()
-const emit = defineEmits(['update:modelValue', 'remove'])
+const emit = defineEmits(['update:modelValue', 'remove', 'up'])
 const state = reactive({
     bannerToolbar: [
         // 'fontSize',
