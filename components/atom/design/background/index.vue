@@ -16,10 +16,10 @@
             <button class="toolbar__btn">
                 <img src="./size.svg">
             </button>
-            <button class="toolbar__btn" @click="emit('up')">
+            <button class="toolbar__btn" @click="emit('moveUp')">
                 <img src="./arrow-up.svg">
             </button>
-            <button class="toolbar__btn" @click="emit('down')">
+            <button class="toolbar__btn" @click="emit('moveDown')">
                 <img src="./arrow-down.svg">
             </button>
         </div>
@@ -28,7 +28,7 @@
 </template>
 <script setup>
 import { Buffer } from 'buffer/'
-const emit = defineEmits(['update:modelValue', 'remove', 'up', 'down'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     isEditing: false
 })
