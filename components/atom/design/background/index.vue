@@ -3,7 +3,7 @@
         :style="{ 'background-image': `url(${props.modelValue.url})`, 'background-size': `${props.modelValue.backgroundSize}` }"
         @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="img__toolbar" ref="toolbar">
-            <button class="toolbar__btn">
+            <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
             </button>
             <label class="toolbar__btn">
@@ -22,7 +22,7 @@
 </template>
 <script setup>
 import { Buffer } from 'buffer/'
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove'])
 const state = reactive({
     isEditing: false
 })

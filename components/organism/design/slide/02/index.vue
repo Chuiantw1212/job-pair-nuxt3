@@ -96,8 +96,13 @@ onMounted(() => {
                 Controls: $Glide.Controls,
             })
             state.glideInstance = glideInstance
+            window.addEventListener("resize", setGlideConfig)
+            setGlideConfig({ target: window })
         })
     }
+})
+onBeforeUnmount(() => {
+    window.removeEventListener("resize", setGlideConfig)
 })
 const localValue = computed({
     get() {
@@ -156,6 +161,22 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
+// methods
+function setGlideConfig(event) {
+    if (event.target.innerWidth < 992) {
+        state.glideInstance.update({
+            gap: 10,
+            perView: 1,
+            bound: true,
+        })
+    } else {
+        state.glideInstance.update({
+            gap: 10,
+            perView: 2,
+            bound: true,
+        })
+    }
+}
 
 </script>
 <style lang="scss" scoped>
@@ -181,7 +202,7 @@ watch(() => localValue.value, (newValue) => {
 .slide__content {
     background-color: white;
     border-radius: 20px;
-    border:1px solid rgba(80, 80, 80, 0.1);
+    border: 1px solid rgba(80, 80, 80, 0.1);
     padding: 30px;
     overflow: hidden;
     margin-top: 20px;
