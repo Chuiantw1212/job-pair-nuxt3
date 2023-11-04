@@ -209,9 +209,9 @@ async function uploadAsset(image = {}, index = 0) {
 </script>
 <style lang="scss" scoped>
 .slide__content {
-    background-color: #2aa984;
-    color: white;
     padding: 30px 20px;
+    padding-bottom: 60px;
+    background-color: #2aa984;
 
     .content__title {
         font-size: 20px;
