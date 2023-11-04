@@ -1,8 +1,5 @@
 <template>
     <div v-if="localValue.controllable" class="slide">
-        <!-- <h2 >
-
-        </h2> -->
         <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
             :toolbar="state.titleToolbar">
         </LazyAtomInputCkeditorInline>
@@ -66,11 +63,11 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div class="glide__bullets" data-glide-el="controls[nav]">
+            <div class="glide__bullets" data-glide-el="controls[nav]">
                 <button class="glide__bullet" data-glide-dir="=0"></button>
                 <button class="glide__bullet" data-glide-dir="=1"></button>
                 <button class="glide__bullet" data-glide-dir="=2"></button>
-            </div> -->
+            </div>
             <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
                 <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
                 <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
@@ -236,6 +233,7 @@ async function uploadAsset(image = {}, index = 0) {
 .slide {
     background-color: white;
     padding: 30px 20px;
+    padding-bottom: 60px;
     display: flex;
     flex-direction: column;
 
@@ -250,7 +248,6 @@ async function uploadAsset(image = {}, index = 0) {
         margin: auto;
     }
 }
-
 
 .slide__content {
     background-color: white;
@@ -336,9 +333,39 @@ async function uploadAsset(image = {}, index = 0) {
 
 }
 
+.glide__bullets {
+    position: absolute;
+    bottom: -24px;
+    transform: translate(-50%, 50%);
+    gap: 12px;
+
+    .glide__bullet {
+        background-color: #edeaea;
+        border: 2px solid white;
+        box-shadow: none;
+    }
+
+    .glide__bullet--active {
+        background-color: #000000;
+    }
+}
+
+
 .glide__arrows {
     position: absolute;
-    bottom: 0;
+    bottom: -24px;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: 100%;
+    max-width: 400px;
+
+    .glide__arrow {
+        border: none;
+        box-shadow: none;
+        color: #2aa984;
+        font-size: 24px;
+        font-weight: bold;
+    }
 }
 
 :deep(.glide__arrow) {
