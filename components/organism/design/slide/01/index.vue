@@ -68,8 +68,8 @@
                 <button class="glide__bullet" data-glide-dir="=2"></button>
             </div>
             <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt</button>
-                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&gt</button>
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
+                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
             </div>
         </div>
     </div>
@@ -296,9 +296,11 @@ async function uploadAsset(image = {}, index = 0) {
 }
 
 @media screen and (min-width: 992px) {
-    .slide__contentWrap {
-        padding: 20px;
+    .slide {
+        padding: 30px;
+        padding-bottom: 90px;
         background-color: white;
+        position: relative;
     }
 
     .slide__content {
@@ -343,15 +345,41 @@ async function uploadAsset(image = {}, index = 0) {
     }
 
     .glide {
-        position: relative;
+
+        .glide__bullets {
+            position: absolute;
+            bottom: -36px;
+            transform: translate(-50%, 50%);
+            gap: 12px;
+
+            .glide__bullet {
+                background-color: #2aa984;
+                opacity: 0.3;
+                border: 2px solid #2aa984;
+            }
+
+            .glide__bullet--active {
+                background-color: #2aa984;
+                opacity: 1;
+            }
+
+        }
 
         .glide__arrows {
             position: absolute;
-            bottom: 0px;
-            width: 100%;
-            max-width: 330px;
+            bottom: -36px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, 50%);
+            width: 100%;
+            max-width: 400px;
+
+            .glide__arrow {
+                border: none;
+                box-shadow: none;
+                color: #2aa984;
+                font-size: 24px;
+                font-weight: bold;
+            }
         }
     }
 }
