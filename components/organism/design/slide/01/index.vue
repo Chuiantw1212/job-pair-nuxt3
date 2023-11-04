@@ -210,7 +210,7 @@ async function uploadAsset(image = {}, index = 0) {
 <style lang="scss" scoped>
 .slide__content {
     padding: 30px 20px;
-    padding-bottom: 60px;
+    padding-bottom: 55px;
     background-color: #2aa984;
 
     .content__title {

@@ -34,6 +34,24 @@
                                         v-model="localValue.controllable.items[index].desc.html"
                                         :toolbar="state.titleToolbar">
                                     </LazyAtomInputCkeditorInline>
+                                    <div class="body__portrait">
+                                        <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
+                                            @update:modelValue="uploadAsset($event, index)">
+                                            <div class="portrait__image"
+                                                :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                            </div>
+                                        </AtomDesignImg>
+                                        <div class="portrait__nameGroup">
+                                            <LazyAtomInputCkeditorInline class="nameGroup__name"
+                                                v-model="localValue.controllable.items[index].name.html"
+                                                :toolbar="state.titleToolbar">
+                                            </LazyAtomInputCkeditorInline>
+                                            <LazyAtomInputCkeditorInline class="nameGroup__subName"
+                                                v-model="localValue.controllable.items[index].subName.html"
+                                                :toolbar="state.titleToolbar">
+                                            </LazyAtomInputCkeditorInline>
+                                        </div>
+                                    </div>
                                     <!-- <div class="body__left">
                                         <img src="./default.webp">
                                     </div> -->
@@ -129,8 +147,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span style="color:#E5E5E5;">Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span>如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
@@ -140,8 +164,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span style="color:#E5E5E5;">Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
@@ -151,8 +181,14 @@ watch(() => localValue.value, (newValue) => {
                         title: {
                             html: '<p style="text-align:center;"><span>聽聽大家怎麼說</span></p>'
                         },
+                        name: {
+                            html: '<p><span>Yen-Lin Chiu</span></p>'
+                        },
+                        subName: {
+                            html: '<p><span style="color:#E5E5E5;">Founder of Job-Pair</span></p>'
+                        },
                         image: {
-                            html: '<p><span style="font-size:24px;">Mahbubur Rahman</span><br><span style="color:rgba(255,255,255,0.85);font-size:18px;">Owener, Softia, UK</span></p>',
+                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/sandy.webp'
                         },
                         desc: {
                             html: '<p><span style="font-size:18px;">如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓他點點點，點擊也不會展開。如果這個評論很多也只會讓...</span></p>'
@@ -181,12 +217,25 @@ function setGlideConfig(event) {
         })
     }
 }
-
+async function uploadAsset(image = {}, index = 0) {
+    image.name = `portrait${index + 1}`
+    const res = await repoOrganizationDesign.putAsset({
+        templateName: 'SLIDE02',
+        asset: image,
+    })
+    if (res.status === 200) {
+        $sweet.loader(true)
+        setTimeout(() => {
+            $sweet.loader(false)
+            localValue.value.controllable.items[index].image.url = res.data
+        }, 300)
+    }
+}
 </script>
 <style lang="scss" scoped>
 .slide {
     background-color: white;
-    padding: 30px;
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
 
@@ -236,6 +285,41 @@ function setGlideConfig(event) {
             font-style: normal;
             line-height: 2;
             letter-spacing: normal;
+        }
+
+        .body__portrait {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: auto;
+
+            .portrait__nameGroup {
+                .nameGroup__name {
+                    font-size: 18px;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                }
+
+                .nameGroup__subName {
+                    font-size: 14px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                }
+
+            }
+
+            .portrait__image {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+            }
         }
 
         .body__left {
