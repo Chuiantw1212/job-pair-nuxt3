@@ -335,11 +335,23 @@ async function publishDesign() {
             display: flex;
             justify-content: flex-end;
             gap: 30px;
-            padding: 0;
+            padding: 20px 50px;
             border-top: solid 1px #d3d3d3;
             align-items: center;
             background-color: white;
             width: 100vw;
+
+            .footer_btn {
+                padding: 15px 30px;
+                font-size: 20px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: center;
+                color: #fff;
+            }
 
             .footer__desc {
                 font-size: 20px;

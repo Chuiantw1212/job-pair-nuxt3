@@ -1,16 +1,27 @@
 <template>
-    <button :id="id" class="btnDesign" :class="{ 'btnDesign--disabled': disabled, 'btnDesign--editing': state.isEditing }"
+    <div class="btnDesign" @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
+        <div class="btnDesign__toolbar" ref="toolbar">
+            <LazyAtomInputColor v-if="localValue" v-model="localValue.color" class="btnDesign__colorPickr">
+            </LazyAtomInputColor>
+            <button class="toolbar__icon" @click="switchStyle()">
+                <img src="./Frame2.svg">
+            </button>
+            {{ modelValue.outline }}
+        </div>
+        <slot></slot>
+    </div>
+    <!-- <button :id="id" class="btnDesign" :class="{ 'btnDesign--disabled': disabled, 'btnDesign--editing': state.isEditing }"
         :disabled="disabled" ref="simple" @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="btnDesign__toolbar" ref="toolbar">
             <LazyAtomInputColor v-if="localValue" v-model="localValue.color" class="btnDesign__colorPickr">
             </LazyAtomInputColor>
-            <!-- <img src="./Frame.svg"> -->
-            <img src="./Frame2.svg">
+            <button class="toolbar__icon" @click="switchStyle()">
+                <img src="./Frame2.svg">
+            </button>
+            {{ modelValue.outline }}
         </div>
         <slot></slot>
-    </button>
-    <!-- <div> -->
-    <!-- </div> -->
+    </button> -->
 </template>
 <script>
 export default {
@@ -20,7 +31,7 @@ export default {
 <script setup>
 const emit = defineEmits(['update:modelValue'])
 const state = reactive({
-    isEditing: false
+    isEditing: false,
 })
 const props = defineProps({
     modelValue: {
@@ -55,42 +66,40 @@ const localValue = computed({
         emit("update:modelValue", newValue)
     },
 })
-const instance = getCurrentInstance()
-// onMounted(() => {
-//     if (props.color && props.outline) {
-//         instance.refs.simple.classList.add(`btnDesign--outline--${props.color}`)
-//     }
-// })
 function startEditing() {
     state.isEditing = true
 }
 function completeEditing() {
     state.isEditing = false
 }
+function switchStyle() {
+    localValue.outline = !localValue.outline
+    console.log('localValue.outline', localValue.outline);
+}
 </script>
 <style lang="scss" scoped>
 .btnDesign {
-    line-height: 1.3;
-    border-radius: 5px;
-    background-color: #5ea88e;
-    font-size: 18px;
-    padding: 12px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    white-space: nowrap;
-    justify-content: center;
-    display: flex;
-    align-items: center;
+    // line-height: 1.3;
+    // border-radius: 5px;
+    // background-color: #5ea88e;
+    // font-size: 18px;
+    // padding: 12px;
+    // border: none;
+    // color: white;
+    // cursor: pointer;
+    // white-space: nowrap;
+    // justify-content: center;
+    // display: flex;
+    // align-items: center;
     position: relative;
 
-    >* {
-        display: block;
-    }
+    // >* {
+    //     display: block;
+    // }
 
-    &:hover {
-        outline: solid 5px #252f3d;
-    }
+    // &:hover {
+    //     outline: solid 5px #252f3d;
+    // }
 
     .btnDesign__toolbar {
         position: absolute;
@@ -102,12 +111,15 @@ function completeEditing() {
         gap: 10px;
         border-radius: 10px;
         background-color: #252f3d;
+
+        .toolbar__icon {
+            background-color: inherit;
+            border: none;
+        }
     }
 
     .btnDesign__colorPickr {
         background-color: white;
-        // position: absolute;
-        // display: none;
     }
 }
 

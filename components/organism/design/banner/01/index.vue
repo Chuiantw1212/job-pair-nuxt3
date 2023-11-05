@@ -27,7 +27,9 @@
                         @blur="handleBlur('desc')">
                     </LazyAtomInputCkeditorInline>
                     <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
-                        查看所有職缺</AtomDesignBtn>
+                        <!-- 查看所有職缺 -->
+                        <AtomBtnSimple>{{ localValue.controllable.btn.text }}</AtomBtnSimple>
+                    </AtomDesignBtn>
                 </div>
             </AtomDesignBackground>
         </template>
@@ -80,6 +82,8 @@ watch(() => localValue.value, (newValue) => {
                 },
                 btn: {
                     color: '#21cc90',
+                    outline: false,
+                    text: '查看所有職缺',
                 },
                 bg: {
                     url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp'
