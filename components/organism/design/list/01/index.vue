@@ -1,6 +1,6 @@
 <template>
-    <div v-if="localValue.controllable" class="banner2">
-        <template v-if="readonly">
+    <div v-if="localValue.controllable">
+        <div v-if="readonly" class="banner2">
             <div v-html="localValue.controllable.title.html" class="banner__title"></div>
             <div class="banner2__body">
                 <div v-for="(item, index) in localValue.controllable.items" class="body__card" :key="`item${index}`">
@@ -11,8 +11,9 @@
                     <div v-html="item.desc.html" class="card__desc"></div>
                 </div>
             </div>
-        </template>
-        <template v-else>
+        </div>
+        <AtomDesignBackground v-else class="banner2" @remove="emit('remove')" @moveUp="emit('moveUp')"
+            @moveDown="emit('moveDown')">
             <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
                 class="banner__title">
             </LazyAtomInputCkeditorInline>
@@ -30,7 +31,7 @@
                     </LazyAtomInputCkeditorInline>
                 </div>
             </div>
-        </template>
+        </AtomDesignBackground>
     </div>
 </template>
 <script>
@@ -41,7 +42,7 @@ export default {
 <script setup>
 const { $sweet } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
         'bold',
@@ -164,6 +165,7 @@ async function uploadAsset(image = {}, index = 0) {
         width: 100%;
         font-size: 18px;
         padding: 20px 0;
+        width: 100%;
     }
 
     .banner2__body {

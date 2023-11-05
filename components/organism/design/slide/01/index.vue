@@ -82,8 +82,6 @@ const state = reactive({
     id: null,
     glideInstance: null,
     titleToolbar: [
-        // 'fontSize',
-        // '|',
         'bold',
         'fontColor',
         '|',
@@ -222,6 +220,7 @@ async function uploadAsset(image = {}, index = 0) {
         letter-spacing: normal;
         text-align: left;
         color: #fff;
+        width: 100%;
     }
 
     .content__hr {

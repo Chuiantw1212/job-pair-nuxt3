@@ -1,6 +1,6 @@
 <template>
-    <div v-if="localValue.controllable" class="description">
-        <template v-if="readonly">
+    <div v-if="localValue.controllable">
+        <div v-if="readonly" class="description">
             <div class="description__title d-lg-none" v-html="localValue.controllable.title.html">
 
             </div>
@@ -22,33 +22,36 @@
                 <div class="body__title d-none d-lg-block" v-html="localValue.controllable.title.html">
                 </div>
             </div>
-        </template>
+        </div>
         <template v-else>
-            <LazyAtomInputCkeditorInline class="description__title d-lg-none" v-model="localValue.controllable.title.html"
-                :toolbar="state.titleToolbar">
-            </LazyAtomInputCkeditorInline>
-            <AtomDesignImg class="description__imageWrap" :modelValue="localValue.controllable.image"
-                @update:modelValue="uploadAsset($event, index)">
-                <img class="imageWrap__image" :src="localValue.controllable.image.url">
-            </AtomDesignImg>
-            <div class="description__body">
-                <ul class="body__textGroup">
-                    <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`"
-                        class="textGroup__item">
-                        <LazyAtomInputCkeditorInline class="textGroup__title"
-                            v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
-                        </LazyAtomInputCkeditorInline>
-                        <LazyAtomInputCkeditorInline class="textGroup__desc"
-                            v-model="localValue.controllable.items[index].desc.html" :toolbar="state.titleToolbar">
-                        </LazyAtomInputCkeditorInline>
-                    </li>
-                </ul>
-                <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
-                </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline class="body__title d-none d-lg-block"
+            <AtomDesignBackground class="description" @remove="emit('remove')" @moveUp="emit('moveUp')"
+                @moveDown="emit('moveDown')">
+                <LazyAtomInputCkeditorInline class="description__title d-lg-none"
                     v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
-            </div>
+                <AtomDesignImg class="description__imageWrap" :modelValue="localValue.controllable.image"
+                    @update:modelValue="uploadAsset($event, index)">
+                    <img class="imageWrap__image" :src="localValue.controllable.image.url">
+                </AtomDesignImg>
+                <div class="description__body">
+                    <ul class="body__textGroup">
+                        <li v-for="(item, index) in localValue.controllable.items" :key="`item${index}`"
+                            class="textGroup__item">
+                            <LazyAtomInputCkeditorInline class="textGroup__title"
+                                v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
+                            </LazyAtomInputCkeditorInline>
+                            <LazyAtomInputCkeditorInline class="textGroup__desc"
+                                v-model="localValue.controllable.items[index].desc.html" :toolbar="state.titleToolbar">
+                            </LazyAtomInputCkeditorInline>
+                        </li>
+                    </ul>
+                    <LazyAtomInputCkeditorInline class="body__desc" v-model="localValue.controllable.desc.html">
+                    </LazyAtomInputCkeditorInline>
+                    <LazyAtomInputCkeditorInline class="body__title d-none d-lg-block"
+                        v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar">
+                    </LazyAtomInputCkeditorInline>
+                </div>
+            </AtomDesignBackground>
         </template>
     </div>
 </template>
@@ -60,6 +63,8 @@ const state = reactive({
     titleToolbar: [
         'bold',
         'fontColor',
+        '|',
+        'alignment',
     ],
 })
 const props = defineProps({
@@ -157,7 +162,7 @@ async function uploadAsset(image = {}, index = 0) {
 
     .description__title {
         font-size: 18px;
-        width: fit-content;
+        width: 100%;
     }
 
     .description__imageWrap {
@@ -207,13 +212,13 @@ async function uploadAsset(image = {}, index = 0) {
         flex-direction: row;
         justify-content: center;
         gap: 20px;
-        padding: 0 20px;
+        padding: 20px;
 
         .description__imageWrap {
             width: 100%;
             max-width: 445px;
             padding: 0px;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         .description__body {

@@ -1,31 +1,27 @@
 <template>
-    <div class="organizationBg">
+    <div>
         <template v-if="readonly">
 
 
         </template>
         <template v-else-if="localValue.controllable">
-            <div class="organizationBg__imageWrap">
-                <AtomDesignImg :modelValue="localValue.controllable.image" @update:modelValue="uploadAsset($event, index)">
-                    <img class="imageWrap__image" :src="localValue.controllable.image.url">
-                </AtomDesignImg>
-            </div>
-            <div class="organizationBg__body">
-                <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
-                    :toolbar="state.titleToolbar">
-                </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" class="body__desc">
-                </LazyAtomInputCkeditorInline>
-            </div>
+            <AtomDesignBackground v-if="localValue.controllable" class="organizationBg" @remove="emit('remove')"
+                @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
+                <div class="organizationBg__imageWrap">
+                    <AtomDesignImg :modelValue="localValue.controllable.image"
+                        @update:modelValue="uploadAsset($event, index)">
+                        <img class="imageWrap__image" :src="localValue.controllable.image.url">
+                    </AtomDesignImg>
+                </div>
+                <div class="organizationBg__body">
+                    <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
+                        :toolbar="state.titleToolbar">
+                    </LazyAtomInputCkeditorInline>
+                    <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" class="body__desc">
+                    </LazyAtomInputCkeditorInline>
+                </div>
+            </AtomDesignBackground>
         </template>
-        <!-- <template v-if="readonly">
-            <div style="{'max-width:540px'}">
-                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline"></div>
-                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline body__desc"></div>
-            </div>
-        </template> -->
-        <!-- <template v-else> -->
-        <!-- </template> -->
     </div>
 </template>
 <script>
@@ -34,11 +30,13 @@ export default {
 }
 </script>
 <script setup>
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
         'bold',
         'fontColor',
+        '|',
+        'alignment',
     ]
 })
 const props = defineProps({
@@ -109,6 +107,7 @@ watch(() => localValue.value, (newValue) => {
             margin-top: 20px;
             text-align: center;
             width: fit-content;
+            width: 100%;
         }
 
         .body__desc {

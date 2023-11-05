@@ -1,91 +1,90 @@
 <template>
-    <div v-if="localValue.controllable" class="slide">
-        <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
-            :toolbar="state.titleToolbar">
-        </LazyAtomInputCkeditorInline>
-        <div :id="`slide-${state.id}`" class="glide">
-            <div class="glide__track" data-glide-el="track">
-                <ul class="glide__slides">
-                    <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
-                        <div class="slide__content">
-                            <template v-if="readonly">
-                                <div v-html="slide.title.html" class="ck ck-editor__editable_inline">
-                                </div>
-                                <hr class="content__hr">
-                                <div class="content__body">
-                                    <div class="body__left">
-                                        <img src="./default.webp">
-                                        <div v-html="slide.image.html" class="ck ck-editor__editable_inline">
-                                        </div>
+    <AtomDesignBackground v-if="localValue.controllable" @remove="emit('remove')" @moveUp="emit('moveUp')"
+        @moveDown="emit('moveDown')">
+        <div class="slide">
+            <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
+                :toolbar="state.titleToolbar">
+            </LazyAtomInputCkeditorInline>
+            <div :id="`slide-${state.id}`" class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
+                            <div class="slide__content">
+                                <template v-if="readonly">
+                                    <div v-html="slide.title.html" class="ck ck-editor__editable_inline">
                                     </div>
-                                    <div class="body__right">
-                                        <div v-html="slide.desc.html" class="ck ck-editor__editable_inline">
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div class="content__body">
-                                    <img class="body__image" src="./SLIDE02_BG.svg">
-                                    <LazyAtomInputCkeditorInline class="body__desc"
-                                        v-model="localValue.controllable.items[index].desc.html"
-                                        :toolbar="state.titleToolbar">
-                                    </LazyAtomInputCkeditorInline>
-                                    <div class="body__portrait">
-                                        <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
-                                            @update:modelValue="uploadAsset($event, index)">
-                                            <div class="portrait__image"
-                                                :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                    <hr class="content__hr">
+                                    <div class="content__body">
+                                        <div class="body__left">
+                                            <img src="./default.webp">
+                                            <div v-html="slide.image.html" class="ck ck-editor__editable_inline">
                                             </div>
-                                        </AtomDesignImg>
-                                        <div class="portrait__nameGroup">
-                                            <LazyAtomInputCkeditorInline class="nameGroup__name"
-                                                v-model="localValue.controllable.items[index].name.html"
-                                                :toolbar="state.titleToolbar">
-                                            </LazyAtomInputCkeditorInline>
-                                            <LazyAtomInputCkeditorInline class="nameGroup__subName"
-                                                v-model="localValue.controllable.items[index].subName.html"
-                                                :toolbar="state.titleToolbar">
-                                            </LazyAtomInputCkeditorInline>
+                                        </div>
+                                        <div class="body__right">
+                                            <div v-html="slide.desc.html" class="ck ck-editor__editable_inline">
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="body__left">
-                                        <img src="./default.webp">
-                                    </div> -->
-                                    <!-- <div class="body__right">
-                                        <LazyAtomInputCkeditorInline
-                                            v-model="localValue.controllable.items[index].desc.html">
+                                </template>
+                                <template v-else>
+                                    <div class="content__body">
+                                        <img class="body__image" src="./SLIDE02_BG.svg">
+                                        <LazyAtomInputCkeditorInline class="body__desc"
+                                            v-model="localValue.controllable.items[index].desc.html"
+                                            :toolbar="state.titleToolbar">
                                         </LazyAtomInputCkeditorInline>
-                                    </div> -->
-                                </div>
-                            </template>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="glide__bullets" data-glide-el="controls[nav]">
-                <button class="glide__bullet" data-glide-dir="=0"></button>
-                <button class="glide__bullet" data-glide-dir="=1"></button>
-                <button class="glide__bullet" data-glide-dir="=2"></button>
-            </div>
-            <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
-                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
+                                        <div class="body__portrait">
+                                            <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
+                                                @update:modelValue="uploadAsset($event, index)">
+                                                <div class="portrait__image"
+                                                    :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                                </div>
+                                            </AtomDesignImg>
+                                            <div class="portrait__nameGroup">
+                                                <LazyAtomInputCkeditorInline class="nameGroup__name"
+                                                    v-model="localValue.controllable.items[index].name.html"
+                                                    :toolbar="state.nameToolbar">
+                                                </LazyAtomInputCkeditorInline>
+                                                <LazyAtomInputCkeditorInline class="nameGroup__subName"
+                                                    v-model="localValue.controllable.items[index].subName.html"
+                                                    :toolbar="state.nameToolbar">
+                                                </LazyAtomInputCkeditorInline>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    <button class="glide__bullet" data-glide-dir="=0"></button>
+                    <button class="glide__bullet" data-glide-dir="=1"></button>
+                    <button class="glide__bullet" data-glide-dir="=2"></button>
+                </div>
+                <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
+                </div>
             </div>
         </div>
-    </div>
+    </AtomDesignBackground>
 </template>
 <script setup>
 const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     id: null,
     glideInstance: null,
     titleToolbar: [
         'bold',
         'fontColor',
-        // '|',
-        // 'alignment',
+        '|',
+        'alignment',
+    ],
+    nameToolbar: [
+        'bold',
+        'fontColor',
     ]
 })
 const props = defineProps({
@@ -137,7 +136,7 @@ watch(() => localValue.value, (newValue) => {
             name: 'SLIDE01',
             controllable: {
                 title: {
-                    html: '<p>公司口碑</p>'
+                    html: '<p style="text-align:center;">公司口碑</p>'
                 },
                 items: [
                     {
@@ -246,6 +245,7 @@ async function uploadAsset(image = {}, index = 0) {
         letter-spacing: normal;
         width: fit-content;
         margin: auto;
+        width: 100%;
     }
 }
 
@@ -374,12 +374,8 @@ async function uploadAsset(image = {}, index = 0) {
 
 @media screen and (min-width: 992px) {
     .slide__content {
-        .content__body {
-            // flex-direction: row;
-
-            // .body__right {
-            //     width: 50%;
-            // }
+        .slide__title {
+            font-size: 36px;
         }
     }
 }

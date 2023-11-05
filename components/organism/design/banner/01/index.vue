@@ -31,32 +31,6 @@
                 </div>
             </AtomDesignBackground>
         </template>
-        <!-- <div v-if="readonly" class="banner__image"
-            :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
-        </div>
-        <AtomDesignBackground v-else :modelValue="localValue.controllable.bg"></AtomDesignBackground>
-        <div class="banner__preview">
-            <template v-if="readonly">
-                <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline preview__title">
-
-                </div>
-                <div v-html="localValue.controllable.desc.html" class="ck ck-editor__editable_inline preview__desc">
-
-                </div>
-            </template>
-            <template v-else-if="localValue.controllable">
-                <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
-                    class="editorGroup__editor  preview__title" @focus="handleFocus('title')" @click="handleFocus('title')"
-                    @blur="handleBlur('title')">
-                </LazyAtomInputCkeditorInline>
-                <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" :toolbar="state.bannerToolbar"
-                    class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
-                    @blur="handleBlur('desc')">
-                </LazyAtomInputCkeditorInline>
-                <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
-                    查看所有職缺</AtomDesignBtn>
-            </template>
-        </div> -->
     </div>
 </template>
 <script setup>
@@ -65,12 +39,10 @@ const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     bannerToolbar: [
-        // 'fontSize',
-        // '|',
         'bold',
         'fontColor',
-        // '|',
-        // 'alignment',
+        '|',
+        'alignment',
     ],
 })
 const props = defineProps({
@@ -183,6 +155,7 @@ async function uploadAsset(image = {}, index = 0) {
             font-weight: bold;
             font-stretch: normal;
             font-style: normal;
+            width: 100%;
         }
 
         .preview__desc {
@@ -193,6 +166,7 @@ async function uploadAsset(image = {}, index = 0) {
             line-height: normal;
             letter-spacing: normal;
             margin-top: 20px;
+            width: 100%;
         }
     }
 
@@ -235,6 +209,7 @@ async function uploadAsset(image = {}, index = 0) {
                 font-style: normal;
                 line-height: normal;
                 letter-spacing: normal;
+                width: 100%;
             }
 
             .preview__btn {

@@ -1,19 +1,19 @@
 <template>
     <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }"
-        :style="{ 'background-image': `url(${props.modelValue.url})`, 'background-size': `${props.modelValue.backgroundSize}` }"
+        :style="{ 'background-image': `url(${props.modelValue.url || 'inherit'})`, 'background-size': `${props.modelValue.backgroundSize}` }"
         @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="img__toolbar" ref="toolbar">
             <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
             </button>
-            <label class="toolbar__btn">
+            <label v-if="!modelValue" class="toolbar__btn">
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
             </label>
-            <button class="toolbar__btn">
+            <button v-if="!modelValue" class="toolbar__btn">
                 <img src="./Frame.svg">
             </button>
-            <button class="toolbar__btn">
+            <button v-if="!modelValue" class="toolbar__btn">
                 <img src="./size.svg">
             </button>
             <button class="toolbar__btn" @click="emit('moveUp')">

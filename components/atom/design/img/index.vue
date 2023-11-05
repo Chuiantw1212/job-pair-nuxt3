@@ -9,12 +9,6 @@
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
             </label>
-            <!-- <button class="toolbar__btn">
-                <img src="./Frame.svg">
-            </button>
-            <button class="toolbar__btn">
-                <img src="./size.svg">
-            </button> -->
         </div>
         <slot></slot>
     </div>

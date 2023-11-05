@@ -1,14 +1,14 @@
 
 <template>
-    <div v-if="localValue.controllable" class="rowGroup">
+    <div v-if="localValue.controllable" class="list02">
         <template v-if="readonly">
 
         </template>
         <template v-else>
             <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
-                class="rowGroup__title">
+                class="list02__title">
             </LazyAtomInputCkeditorInline>
-            <div v-for="(item, index) in localValue.controllable.items" :key="index" class="rowGroup__item">
+            <div v-for="(item, index) in localValue.controllable.items" :key="index" class="list02__item">
                 <AtomDesignImg class="item__imgWrap" :modelValue="localValue.controllable.items[index].image"
                     @update:modelValue="uploadAsset($event, index)">
                     <img class="imgWrap__img" :src="item.image.url">
@@ -19,12 +19,12 @@
                 </LazyAtomInputCkeditorInline>
             </div>
         </template>
-        <!-- <div class="rowGroup__item">
+        <!-- <div class="list02__item">
             <img class="item__imgWrap" src="./image2.webp">
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[1].html">
             </LazyAtomInputCkeditorInline>
         </div>
-        <div class="rowGroup__item">
+        <div class="list02__item">
             <img class="item__imgWrap" src="./image3.webp">
             <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[2].html">
             </LazyAtomInputCkeditorInline>
@@ -39,6 +39,8 @@ const state = reactive({
     titleToolbar: [
         'bold',
         'fontColor',
+        '|',
+        'alignment',
     ],
 })
 const props = defineProps({
@@ -69,7 +71,7 @@ watch(() => localValue.value, (newValue) => {
             name: 'LIST02',
             controllable: {
                 title: {
-                    html: '<p><span><strong>標題</strong></span></p>'
+                    html: '<p style="text-align:center;"><strong>標題</strong></p>'
                 },
                 items: [
                     {
@@ -129,7 +131,7 @@ async function uploadAsset(image = {}, index = 0) {
 }
 </script>
 <style lang="scss" scoped>
-.rowGroup {
+.list02 {
     padding: 20px;
     display: flex;
     align-items: center;
@@ -137,16 +139,17 @@ async function uploadAsset(image = {}, index = 0) {
     gap: 213px;
     background-color: rgba(42, 169, 132, 0.1);
 
-    .rowGroup__title {
+    .list02__title {
         font-size: 18px;
         font-weight: bold;
         font-stretch: normal;
         font-style: normal;
         line-height: normal;
         letter-spacing: normal;
+        width: 100%;
     }
 
-    .rowGroup__item {
+    .list02__item {
         padding: 30px 20px;
         border-radius: 10px;
         border: solid 1px #a8a8a8;
@@ -169,10 +172,10 @@ async function uploadAsset(image = {}, index = 0) {
 
 
 @media screen and (min-width: 992px) {
-    .rowGroup {
+    .list02 {
         gap: 105px;
 
-        .rowGroup__title {
+        .list02__title {
             font-size: 36px;
             font-weight: 600;
             font-stretch: normal;
@@ -181,7 +184,7 @@ async function uploadAsset(image = {}, index = 0) {
             letter-spacing: normal;
         }
 
-        .rowGroup__item {
+        .list02__item {
             padding: 30px 100px;
 
             .item__imgWrap {

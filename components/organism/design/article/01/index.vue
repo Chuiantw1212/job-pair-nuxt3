@@ -7,7 +7,8 @@
             </div>
         </template>
         <template v-else>
-            <AtomDesignBackground class="columns__body" v-model="localValue.controllable.img">
+            <AtomDesignBackground class="columns__body" v-model="localValue.controllable.img" @remove="emit('remove')"
+                @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
                 <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
                     :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
@@ -18,7 +19,7 @@
     </div>
 </template>
 <script setup>
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
         'bold',
