@@ -18,10 +18,10 @@
             </LazyAtomInputTextarea>
         </template>
         <template #footer>
-            <LazyAtomBtnSimple class="d-md-none">
+            <LazyAtomBtnSimple class="d-lg-none" @click="handleConfirm()">
                 完成發布
             </LazyAtomBtnSimple>
-            <LazyAtomBtnSimple class="d-lg-block" size="lg">
+            <LazyAtomBtnSimple class="d-none d-lg-block" size="lg" @click="handleConfirm()">
                 完成發布
             </LazyAtomBtnSimple>
         </template>
@@ -30,6 +30,7 @@
 <script setup>
 const modal = ref(null)
 const { $uuid4, } = useNuxtApp()
+const emit = defineEmits(['update:modelValue', 'confirm'])
 const repoAuth = useRepoAuth()
 const state = reactive({
     modal: null,
@@ -72,6 +73,10 @@ function showModal() {
     }
     state.renderKey = Math.random()
     modal.value.show()
+}
+function handleConfirm() {
+    modal.value.hide()
+    emit('confirm')
 }
 </script>
 <style lang="scss" scoped>

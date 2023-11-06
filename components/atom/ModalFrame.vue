@@ -37,8 +37,12 @@ onMounted(() => {
 function show() {
     state.modal.show()
 }
+function hide() {
+    state.modal.hide()
+}
 defineExpose({
-    show
+    show,
+    hide
 })
 </script>
 <style lang="scss" scoped>

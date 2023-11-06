@@ -16,11 +16,6 @@
                             <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
-                        <!-- <li data-name="BANNER02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
-                            <img class="item__imaage" src="@/assets/admin/design/Top2.webp" draggable="false">
-                            <div class="item__desc">適合 Banner ，大圖至右，大標、副標和按鈕</div>
-                        </li> -->
                         <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
@@ -62,17 +57,6 @@
                     <img src="@/assets/admin/design/Frame1037.svg">
                 </button>
             </div>
-            <!-- <div class="content__color">
-                <div class="color__titleGroup">
-                    <div class="titleGroup__title">
-                        主色調
-                    </div>
-                    <div class="titleGroup__desc">
-                        可調整按鈕以及大標題顏色
-                    </div>
-                </div>
-                <LazyAtomInputColor v-model="state.organizationDesign.color"></LazyAtomInputColor>
-            </div> -->
         </div>
         <div class="design__body">
             <OrganismDesignBody v-model="state.organizationDesign.templates"></OrganismDesignBody>
@@ -86,8 +70,7 @@
                 需升級後才能發佈唷！
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <LazyOrganismSeoModal></LazyOrganismSeoModal>
-            <!-- <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple> -->
+            <LazyOrganismSeoModal @confirm="publishDesign()"></LazyOrganismSeoModal>
         </div>
     </div>
 </template>
@@ -102,6 +85,10 @@ const state = reactive({
         color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
+    },
+    seo: {
+        seoName: '',
+        seo
     },
     isOpen: false,
 })
@@ -144,10 +131,10 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
-    // $sweet.loader(true)
-    // state.organizationDesign.status = 'active'
-    // await repoOrganizationDesign.putItem(state.organizationDesign)
-    // $sweet.loader(false)
+    $sweet.loader(true)
+    state.organizationDesign.status = 'active'
+    await repoOrganizationDesign.putItem(state.organizationDesign)
+    $sweet.loader(false)
 }
 </script>
 <style lang="scss" scoped>
@@ -187,7 +174,6 @@ async function publishDesign() {
         .panel__content {
             position: fixed;
             left: 0;
-            // top: 61px;
             width: 100%;
             z-index: 1060;
             border-right: solid 1px #d3d3d3;
