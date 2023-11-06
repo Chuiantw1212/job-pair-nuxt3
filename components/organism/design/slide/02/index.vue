@@ -71,7 +71,8 @@
     </AtomDesignBackground>
 </template>
 <script setup>
-const { $uuid4, $Glide, $requestSelector } = useNuxtApp()
+const { $uuid4, $Glide, $requestSelector, $sweet } = useNuxtApp()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     id: null,

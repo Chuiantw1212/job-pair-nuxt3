@@ -86,7 +86,8 @@
                 需升級後才能發佈唷！
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple>
+            <LazyOrganismSeoModal></LazyOrganismSeoModal>
+            <!-- <AtomBtnSimple class="footer_btn" @click="publishDesign()">發布頁面</AtomBtnSimple> -->
         </div>
     </div>
 </template>
@@ -143,10 +144,10 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
-    $sweet.loader(true)
-    state.organizationDesign.status = 'active'
-    await repoOrganizationDesign.putItem(state.organizationDesign)
-    $sweet.loader(false)
+    // $sweet.loader(true)
+    // state.organizationDesign.status = 'active'
+    // await repoOrganizationDesign.putItem(state.organizationDesign)
+    // $sweet.loader(false)
 }
 </script>
 <style lang="scss" scoped>
@@ -297,6 +298,7 @@ async function publishDesign() {
         align-items: center;
         background-color: white;
         width: 100vw;
+        z-index: 1060;
 
         .footer__desc {
             font-size: 14px;
