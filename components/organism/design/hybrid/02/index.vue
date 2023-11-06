@@ -5,8 +5,8 @@
 
         </template>
         <template v-else-if="localValue.controllable">
-            <AtomDesignBackground v-if="localValue.controllable" class="organizationBg" @remove="emit('remove')"
-                @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
+            <AtomDesignBackground class="organizationBg" @remove="emit('remove')" @moveUp="emit('moveUp')"
+                @moveDown="emit('moveDown')">
                 <div class="organizationBg__imageWrap">
                     <AtomDesignImg :modelValue="localValue.controllable.image"
                         @update:modelValue="uploadAsset($event, index)">
@@ -30,6 +30,8 @@ export default {
 }
 </script>
 <script setup>
+const { $sweet } = useNuxtApp()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
@@ -82,6 +84,21 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
+// methods
+async function uploadAsset(image = {}, index = 0) {
+    image.name = `image${index + 1}`
+    const res = await repoOrganizationDesign.putAsset({
+        templateName: 'BANNER01',
+        asset: image,
+    })
+    if (res.status === 200) {
+        $sweet.loader(true)
+        setTimeout(() => {
+            $sweet.loader(false)
+            localValue.value.controllable.image.url = res.data
+        }, 300)
+    }
+}
 </script>
 <style lang="scss" scoped>
 .organizationBg {
@@ -123,7 +140,6 @@ watch(() => localValue.value, (newValue) => {
 
     .organizationBg__imageWrap {
         border-radius: 20px;
-        overflow: hidden;
         width: 100%;
 
         .imageWrap__image {

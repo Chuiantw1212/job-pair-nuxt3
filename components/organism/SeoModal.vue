@@ -4,14 +4,18 @@
     </LazyAtomBtnSimple>
     <AtomModalFrame ref="modal">
         <template #header>
-            設定網址
+            SEO設定
         </template>
         <template #body>
-            <LazyAtomInputText v-model="modelValue.organizationName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）">
+            <LazyAtomInputText v-model="localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）" :types="['english']"
+                :key="state.renderKey">
                 <template #prefix>
                     <div class="input__prefix">jobpair.com/company/</div>
                 </template>
             </LazyAtomInputText>
+            <LazyAtomInputTextarea v-model="localValue.seoDescription" name="搜尋引擎描述" class="mt-2" rows="4"
+                :key="state.renderKey">
+            </LazyAtomInputTextarea>
         </template>
         <template #footer>
             <LazyAtomBtnSimple class="d-md-none">
@@ -22,57 +26,51 @@
             </LazyAtomBtnSimple>
         </template>
     </AtomModalFrame>
-    <!-- <div class="modal fade" :id="`seo-${state.id}`" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">設定網址</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" ref="modalBodyRef">
-                    <LazyAtomInputText v-model="modelValue.organizationName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）"
-                        required>
-                    </LazyAtomInputText>
-                </div>
-                <div class="modal-footer">
-                    <div class="footer__buttonGroup">
-                        <LazyAtomBtnSimple class="footer__button  btnSimple--outline--success">完成發布
-                        </LazyAtomBtnSimple>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </template>
 <script setup>
 const modal = ref(null)
-const { $bootstrap, $uuid4, $optionText, $validate, $sweet, $requestSelector, $emitter } = useNuxtApp()
+const { $uuid4, } = useNuxtApp()
+const repoAuth = useRepoAuth()
 const state = reactive({
-    modal: null
+    modal: null,
+    renderKey: Math.random()
 })
 const props = defineProps({
     modelValue: {
         type: Object,
         default: function () {
             return {
-                organizationName: '',
+                seoName: '',
+                seoDescription: '',
             }
         }
     }
 })
 onMounted(() => {
     state.id = $uuid4()
-    // 編輯用modal
-    // $requestSelector(`#seo-${state.id}`, (editableElement) => {
-    //     state.modal = new window.bootstrap.Modal(editableElement, {
-    //         keyboard: false,
-    //         backdrop: "static",
-    //     })
-    // })
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
+    }
 })
 // methods
+function extractContent(content) {
+    const span = document.createElement('span');
+    span.innerHTML = content;
+    return span.textContent || span.innerText;
+}
 function showModal() {
-    console.log('modal', modal);
+    if (!localValue.value.seoName) {
+        localValue.value.seoName = repoAuth.state.company.id
+    }
+    if (!localValue.value.seoDescription) {
+        localValue.value.seoDescription = extractContent(repoAuth.state.company.description)
+    }
+    state.renderKey = Math.random()
     modal.value.show()
 }
 </script>

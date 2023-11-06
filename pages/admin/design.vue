@@ -168,7 +168,7 @@ async function publishDesign() {
         top: 0;
         left: 0;
         width: 100vw;
-        z-index: 1050;
+        z-index: 1070;
 
         .panel__background {
             background-color: rgba(0, 0, 0, 0.3);

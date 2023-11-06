@@ -132,7 +132,7 @@ function handleValidate() {
     }
     return true
 }
-function validateDefaultRegex() {
+function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
 

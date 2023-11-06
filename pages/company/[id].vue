@@ -173,7 +173,7 @@ useJsonld(() => ({
     '@type': 'Corporation',
     email: company.value.email,
     logo: company.value.logo,
-    description: company.value.description,
+    description: extractContent(company.value.description),
     identifier: company.value.id,
     url: `${runTimeConfig.public.siteUrl}/company/${company.value.id}`,
     address: getLocationText(),
@@ -202,6 +202,11 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function extractContent(content) {
+    const span = document.createElement('span');
+    span.innerHTML = content;
+    return span.textContent || span.innerText;
+}
 function getCompanyBanner() {
     if (state.companyInfo?.banner) {
         return state.companyInfo?.banner
