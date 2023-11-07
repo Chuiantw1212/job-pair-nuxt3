@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="state.companyInfo?.images" class="company__env">
+                <div v-show="state.companyInfo?.images" class="company__env" ref="imageRef">
                     <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                     <div class="glide" :class="`glide${state.id}`">
                         <div class="glide__track" data-glide-el="track">
@@ -108,6 +108,7 @@ const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
 const repoAuth = useRepoAuth()
+const imageRef = ref(null)
 const state = reactive({
     id: null,
     jsonld: null,
@@ -184,14 +185,14 @@ onMounted(async () => {
     state.id = $uuid4()
     const id = route.path.split('/').slice(-1)[0]
     await initializeCompany(id)
-    window.addEventListener("resize", setTimeForGlide)
     jobScroller.state.filter.organizationId = id
+    // window.addEventListener("resize", setTimeForGlide)
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
         state.glideInstance.destroy()
     }
-    window.removeEventListener("resize", setTimeForGlide)
+    // window.removeEventListener("resize", setTimeForGlide)
 })
 watch(() => repoAuth.state.user, (newValue) => {
     jobScroller.initializeSearch()
@@ -219,10 +220,12 @@ function getCompanyBanner() {
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
+    const { designStatus = 'active' } = company
     state.companyInfo = company
     state.renderKey = Math.random()
     const { images = [], } = company
-    if (images && images.length) {
+    if (images && images.length && designStatus !== 'active') {
+        // console.log('designStatus', designStatus);
         state.focusedImageSrc = images[0].url
         initialGlide()
     }

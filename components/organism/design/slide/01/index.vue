@@ -109,8 +109,9 @@ const props = defineProps({
 })
 onMounted(() => {
     state.id = $uuid4()
-    if (process.client) {
+    if (process.client && !state.glideInstance) {
         $requestSelector(`#slide-${state.id}`, (element) => {
+            console.log('executed???');
             const glideInstance = new $Glide.Default(element, {
                 gap: 10,
                 bound: true,
@@ -120,8 +121,13 @@ onMounted(() => {
                 Controls: $Glide.Controls,
             })
             state.glideInstance = glideInstance
+            window.addEventListener("resize", setGlideConfig)
+            setGlideConfig()
         })
     }
+})
+onBeforeUnmount(() => {
+    window.removeEventListener("resize", setGlideConfig)
 })
 const localValue = computed({
     get() {
@@ -196,6 +202,21 @@ watch(() => localValue.value, (newValue) => {
     }
 }, { immediate: true })
 // methods
+function setGlideConfig(event) {
+    if (event.target.innerWidth < 992) {
+        state.glideInstance.update({
+            gap: 10,
+            bound: true,
+            perView: 1,
+        })
+    } else {
+        state.glideInstance.update({
+            gap: 10,
+            bound: true,
+            perView: 1,
+        })
+    }
+}
 async function uploadAsset(image = {}, index = 0) {
     image.name = `portrait${index + 1}`
     const res = await repoOrganizationDesign.putAsset({

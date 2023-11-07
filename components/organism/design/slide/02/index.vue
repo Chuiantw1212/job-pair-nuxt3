@@ -1,74 +1,104 @@
 <template>
-    <AtomDesignBackground v-if="localValue.controllable" @remove="emit('remove')" @moveUp="emit('moveUp')"
-        @moveDown="emit('moveDown')">
-        <div class="slide">
-            <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
-                :toolbar="state.titleToolbar">
-            </LazyAtomInputCkeditorInline>
-            <div :id="`slide-${state.id}`" class="glide">
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
-                            <div class="slide__content">
-                                <template v-if="readonly">
-                                    <div v-html="slide.title.html" class="ck ck-editor__editable_inline">
-                                    </div>
-                                    <hr class="content__hr">
-                                    <div class="content__body">
-                                        <div class="body__left">
-                                            <img src="./default.webp">
-                                            <div v-html="slide.image.html" class="ck ck-editor__editable_inline">
-                                            </div>
-                                        </div>
-                                        <div class="body__right">
-                                            <div v-html="slide.desc.html" class="ck ck-editor__editable_inline">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                <template v-else>
+    <div v-if="localValue.controllable">
+        <template v-if="readonly">
+            <div class="slide">
+                <div class="slide__title" v-html="localValue.controllable.title.html">
+                </div>
+                <div :id="`slide-${state.id}`" class="glide">
+                    <div class="glide__track" data-glide-el="track">
+                        <ul class="glide__slides">
+                            <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
+                                <div class="slide__content">
                                     <div class="content__body">
                                         <img class="body__image" src="./SLIDE02_BG.svg">
-                                        <LazyAtomInputCkeditorInline class="body__desc"
-                                            v-model="localValue.controllable.items[index].desc.html"
-                                            :toolbar="state.titleToolbar">
-                                        </LazyAtomInputCkeditorInline>
+                                        <div class="body__desc" v-html="localValue.controllable.items[index].desc.html">
+                                        </div>
                                         <div class="body__portrait">
-                                            <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
-                                                @update:modelValue="uploadAsset($event, index)">
+                                            <div>
                                                 <div class="portrait__image"
                                                     :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
                                                 </div>
-                                            </AtomDesignImg>
+                                            </div>
                                             <div class="portrait__nameGroup">
-                                                <LazyAtomInputCkeditorInline class="nameGroup__name"
-                                                    v-model="localValue.controllable.items[index].name.html"
-                                                    :toolbar="state.nameToolbar">
-                                                </LazyAtomInputCkeditorInline>
-                                                <LazyAtomInputCkeditorInline class="nameGroup__subName"
-                                                    v-model="localValue.controllable.items[index].subName.html"
-                                                    :toolbar="state.nameToolbar">
-                                                </LazyAtomInputCkeditorInline>
+                                                <div class="nameGroup__name"
+                                                    v-html="localValue.controllable.items[index].name.html">
+                                                </div>
+                                                <div class="nameGroup__subName"
+                                                    v-html="localValue.controllable.items[index].subName.html">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </template>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="glide__bullets" data-glide-el="controls[nav]">
-                    <button class="glide__bullet" data-glide-dir="=0"></button>
-                    <button class="glide__bullet" data-glide-dir="=1"></button>
-                    <button class="glide__bullet" data-glide-dir="=2"></button>
-                </div>
-                <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
-                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
-                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glide__bullets" data-glide-el="controls[nav]">
+                        <button class="glide__bullet" data-glide-dir="=0"></button>
+                        <button class="glide__bullet" data-glide-dir="=1"></button>
+                        <button class="glide__bullet" data-glide-dir="=2"></button>
+                    </div>
+                    <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
+                        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
+                        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </AtomDesignBackground>
+        </template>
+        <template v-else>
+            <AtomDesignBackground @remove="emit('remove')" @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
+                <div class="slide">
+                    <LazyAtomInputCkeditorInline class="slide__title" v-model="localValue.controllable.title.html"
+                        :toolbar="state.titleToolbar">
+                    </LazyAtomInputCkeditorInline>
+                    <div :id="`slide-${state.id}`" class="glide">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <li class="glide__slide" v-for="(slide, index) in localValue.controllable.items">
+                                    <div class="slide__content">
+                                        <div class="content__body">
+                                            <img class="body__image" src="./SLIDE02_BG.svg">
+                                            <LazyAtomInputCkeditorInline class="body__desc"
+                                                v-model="localValue.controllable.items[index].desc.html"
+                                                :toolbar="state.titleToolbar">
+                                            </LazyAtomInputCkeditorInline>
+                                            <div class="body__portrait">
+                                                <AtomDesignImg :modelValue="localValue.controllable.items[index].image"
+                                                    @update:modelValue="uploadAsset($event, index)">
+                                                    <div class="portrait__image"
+                                                        :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                                                    </div>
+                                                </AtomDesignImg>
+                                                <div class="portrait__nameGroup">
+                                                    <LazyAtomInputCkeditorInline class="nameGroup__name"
+                                                        v-model="localValue.controllable.items[index].name.html"
+                                                        :toolbar="state.nameToolbar">
+                                                    </LazyAtomInputCkeditorInline>
+                                                    <LazyAtomInputCkeditorInline class="nameGroup__subName"
+                                                        v-model="localValue.controllable.items[index].subName.html"
+                                                        :toolbar="state.nameToolbar">
+                                                    </LazyAtomInputCkeditorInline>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="glide__bullets" data-glide-el="controls[nav]">
+                            <button class="glide__bullet" data-glide-dir="=0"></button>
+                            <button class="glide__bullet" data-glide-dir="=1"></button>
+                            <button class="glide__bullet" data-glide-dir="=2"></button>
+                        </div>
+                        <div class="glide__arrows d-none d-lg-block" data-glide-el="controls">
+                            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&#8592;</button>
+                            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">&#8594;</button>
+                        </div>
+                    </div>
+                </div>
+            </AtomDesignBackground>
+        </template>
+    </div>
 </template>
 <script setup>
 const { $uuid4, $Glide, $requestSelector, $sweet } = useNuxtApp()
