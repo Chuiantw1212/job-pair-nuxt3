@@ -7,14 +7,13 @@
             SEO設定
         </template>
         <template #body>
-            <LazyAtomInputText v-model="localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）" :types="['english']"
-                :key="state.renderKey">
+            <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）"
+                :types="['english']" required>
                 <template #prefix>
                     <div class="input__prefix">jobpair.com/company/</div>
                 </template>
             </LazyAtomInputText>
-            <LazyAtomInputTextarea v-model="localValue.seoDescription" name="搜尋引擎描述" class="mt-2" rows="4"
-                :key="state.renderKey">
+            <LazyAtomInputTextarea v-model="state.localValue.description" name="搜尋引擎描述" class="mt-2" rows="4" required>
             </LazyAtomInputTextarea>
         </template>
         <template #footer>
@@ -29,12 +28,14 @@
 </template>
 <script setup>
 const modal = ref(null)
-const { $uuid4, } = useNuxtApp()
+const { $uuid4, $validate, } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'confirm'])
-const repoAuth = useRepoAuth()
 const state = reactive({
     modal: null,
-    renderKey: Math.random()
+    localValue: {
+        seoName: '',
+        description: '',
+    },
 })
 const props = defineProps({
     modelValue: {
@@ -42,7 +43,7 @@ const props = defineProps({
         default: function () {
             return {
                 seoName: '',
-                seoDescription: '',
+                description: ''
             }
         }
     }
@@ -50,33 +51,21 @@ const props = defineProps({
 onMounted(() => {
     state.id = $uuid4()
 })
-const localValue = computed({
-    get() {
-        return props.modelValue
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
-    }
-})
+watch(() => props.modelValue, (newValue) => {
+    state.localValue = newValue
+}, { immediate: true })
 // methods
-function extractContent(content) {
-    const span = document.createElement('span');
-    span.innerHTML = content;
-    return span.textContent || span.innerText;
-}
 function showModal() {
-    if (!localValue.value.seoName) {
-        localValue.value.seoName = repoAuth.state.company.id
-    }
-    if (!localValue.value.seoDescription) {
-        localValue.value.seoDescription = extractContent(repoAuth.state.company.description)
-    }
-    state.renderKey = Math.random()
     modal.value.show()
 }
-function handleConfirm() {
+async function handleConfirm() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
     modal.value.hide()
-    emit('confirm')
+    emit('update:modelValue', state.localValue)
+    emit('confirm',)
 }
 </script>
 <style lang="scss" scoped>

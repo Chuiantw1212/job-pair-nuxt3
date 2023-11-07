@@ -70,7 +70,7 @@
                 需升級後才能發佈唷！
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <LazyOrganismSeoModal @confirm="publishDesign()"></LazyOrganismSeoModal>
+            <LazyOrganismSeoModal v-model="state.organization" @confirm="publishDesign()"></LazyOrganismSeoModal>
         </div>
     </div>
 </template>
@@ -86,20 +86,38 @@ const state = reactive({
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
     },
-    seo: {
+    organization: {
         seoName: '',
-        seo
+        description: '',
     },
     isOpen: false,
 })
 watch(() => repoAuth.state.user, async (newValue) => {
-    // 
     if (!newValue) {
         return
     }
     initializeDesign()
 }, { immediate: true })
+watch(() => repoAuth.state.company, async (newValue) => {
+    if (!newValue) {
+        return
+    }
+    setOrganization()
+}, { immediate: true })
 // methods
+function setOrganization() {
+    if (!state.organization.seoName) {
+        state.organization.seoName = repoAuth.state.company.id
+    }
+    if (!state.organization.description) {
+        state.organization.description = extractContent(repoAuth.state.company.description)
+    }
+}
+function extractContent(content) {
+    const span = document.createElement('span');
+    span.innerHTML = content;
+    return span.textContent || span.innerText;
+}
 function slidePanel() {
     state.isOpen = !state.isOpen
 }
@@ -133,7 +151,8 @@ async function saveDraft() {
 async function publishDesign() {
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
-    await repoOrganizationDesign.putItem(state.organizationDesign)
+    const design = Object.assign({}, state.organizationDesign, state.organization)
+    await repoOrganizationDesign.putItem(design)
     $sweet.loader(false)
 }
 </script>
