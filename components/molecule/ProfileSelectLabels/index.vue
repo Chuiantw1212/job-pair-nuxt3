@@ -60,7 +60,7 @@ function removeSelf(index) {
     localValue.value.splice(index, 1)
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .category__labelGroup {
     display: flex;
     flex-wrap: wrap;

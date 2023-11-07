@@ -90,7 +90,7 @@
                     <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
                     </LazyAtomInputMoney>
                 </div>
-                <LazyAtomBtnSimple class="last__reset mt-3" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
+                <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
             </div>
         </LazyMoleculeFilter>
         <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
@@ -225,6 +225,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (!process.client) {
         return
     }
+    console.log('watch jobList');
     if (newValue.length !== oldValue.length) {
         if (newValue.length) {
             jobScroller.observeLastJob('.jobListItem')

@@ -6,10 +6,10 @@
             <span v-if="hint">({{ hint }})</span>
         </div>
         <label class="inputGroup__label">
-            <textarea v-if="disabled" class="label__input label__input--disabled" :disabled="true"
-                :value="_value" :rows="rows" />
-            <textarea v-else class="label__input" v-model="_value" :rows="rows"
-                :placeholder="placeholder" :data-required="required" :data-name="name" :message="message" autocomplete="off"
+            <textarea v-if="disabled" class="label__input label__input--disabled" :disabled="true" :value="localValue"
+                :rows="rows" />
+            <textarea v-else class="label__input" v-model="localValue" :rows="rows" :placeholder="localPlaceholder"
+                :data-required="required" :data-name="name" :message="message" autocomplete="off"
                 @keypress="$emit('keypress', $event)" @blur="$emit('blur', $event)" />
         </label>
     </div>
@@ -63,7 +63,7 @@ export default {
         },
     },
     computed: {
-        _value: {
+        localValue: {
             get() {
                 return this.modelValue
             },
@@ -71,6 +71,15 @@ export default {
                 this.$emit("update:modelValue", newValue)
             },
         },
+        localPlaceholder: {
+            get() {
+                let placeholder = this.placeholder
+                if (!placeholder && this.name) {
+                    placeholder = `請輸入${this.name}`
+                }
+                return placeholder
+            },
+        }
     },
     methods: {
         newData() {
