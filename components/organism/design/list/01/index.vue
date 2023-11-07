@@ -7,8 +7,8 @@
                     <div class="card__imageWrap">
                         <img class="imageWrap__image" :src="item.image.url" format="webp" loading="lazy" />
                     </div>
-                    <div v-html="item.title.html" class="card__title"></div>
-                    <div v-html="item.desc.html" class="card__desc"></div>
+                    <div v-html="localValue.controllable.items[index].title.html" class="card__title"></div>
+                    <div v-html="localValue.controllable.items[index].desc.html" class="card__desc"></div>
                 </div>
             </div>
         </div>

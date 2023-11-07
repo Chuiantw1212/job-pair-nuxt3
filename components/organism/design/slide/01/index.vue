@@ -7,7 +7,7 @@
                         <div class="slide__contentWrap">
                             <div class="slide__content">
                                 <template v-if="readonly">
-                                    <div v-html="slide.title.html">
+                                    <div v-html="localValue.controllable.items[index].title.html" class="content__title">
                                     </div>
                                     <hr class="content__hr">
                                     <div class="content__body">
@@ -15,13 +15,18 @@
                                             <div class="first__mage"
                                                 :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
                                             </div>
-                                            <div v-html="slide.image.html" class="nameGroup__name">
-                                            </div>
-                                            <div v-html="slide.image.html" class="nameGroup__subName">
+                                            <div class="first__nameGroup">
+                                                <div class="nameGroup__name"
+                                                    v-html="localValue.controllable.items[index].name.html">
+                                                </div>
+                                                <div class="nameGroup__subName"
+                                                    v-html="localValue.controllable.items[index].subName.html">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="body__second">
-                                            <div v-html="slide.desc.html">
+                                            <div class="second__desc"
+                                                v-html="localValue.controllable.items[index].desc.html">
                                             </div>
                                         </div>
                                     </div>

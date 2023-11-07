@@ -2,7 +2,17 @@
 <template>
     <div v-if="localValue.controllable" class="list02">
         <template v-if="readonly">
-
+            <div v-html="localValue.controllable.title.html" class="list02__title">
+            </div>
+            <div v-for="(item, index) in localValue.controllable.items" :key="index" class="list02__item">
+                <div class="item__imgWrap">
+                    <img class="imgWrap__img" :src="item.image.url">
+                </div>
+                <div v-html="localValue.controllable.items[index].title.html" class="item__title">
+                </div>
+                <div v-html="localValue.controllable.items[index].desc.html" class="item__desc">
+                </div>
+            </div>
         </template>
         <template v-else>
             <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
