@@ -114,6 +114,7 @@ onMounted(() => {
             const glideInstance = new $Glide.Default(element, {
                 gap: 10,
                 bound: true,
+                perView: 1,
             })
             glideInstance.mount({
                 Controls: $Glide.Controls,
