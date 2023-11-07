@@ -1,8 +1,19 @@
 <template>
     <div>
         <template v-if="readonly">
+            <div class="organizationBg">
+                <div class="organizationBg__imageWrap">
+                    <img class="imageWrap__image" :src="localValue.controllable.image.url">
+                </div>
+                <div class="organizationBg__body">
+                    <div class="body__title" v-html="localValue.controllable.title.html">
 
+                    </div>
+                    <div class="body__desc" v-html="localValue.controllable.desc.html">
 
+                    </div>
+                </div>
+            </div>
         </template>
         <template v-else-if="localValue.controllable">
             <AtomDesignBackground class="organizationBg" @remove="emit('remove')" @moveUp="emit('moveUp')"
