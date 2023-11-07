@@ -36,17 +36,18 @@ export default defineNuxtConfig({
                 // Flatpickr
                 { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css", type: "text/css", media: "screen" },
                 // Bootstrap
-                { href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", rel: "stylesheet", },
+                { rel: "preload", as: "style", onload: "this.onload=null;this.rel='stylesheet'", href: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css", type: "text/css", },
             ],
             script: [
-                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', },
-                { src: 'https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js', integrity: "sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M", crossorigin: "anonymous" },
+                { src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', defer: true },
+                { src: 'https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js', integrity: "sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M", crossorigin: "anonymous", defer: true },
             ]
         },
     },
     css: [
         '@glidejs/glide/dist/css/glide.core.min.css',
         '@glidejs/glide/dist/css/glide.theme.min.css',
+        '@/assets/global.css',
     ],
     runtimeConfig: {
         public: {
@@ -91,6 +92,14 @@ export default defineNuxtConfig({
             gzip: true,
             brotli: true,
         },
+        // https://nitro.unjs.io/deploy/providers/firebase#using-2nd-generation-firebase-functions
+        firebase: {
+            gen: 2,
+            httpsOptions: {
+                region: 'asia-east1',
+            },
+            // ...
+        }
     },
     sitemap: {
         exclude: [

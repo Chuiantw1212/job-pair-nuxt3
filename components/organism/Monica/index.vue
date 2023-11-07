@@ -50,7 +50,7 @@ function routeToProfile() {
     })
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bubble {
     position: fixed;
     bottom: 16px;

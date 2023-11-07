@@ -25,7 +25,7 @@
                         NT.2000 - 1小時
                     </div>
                     <NuxtLink class="footer__link" :to="`/user/consult/appointment/career`">
-                        <LazyAtomBtnSimple class="footer__link__button">
+                        <LazyAtomBtnSimple class="footer__link__button w-100">
                             立即預約
                         </LazyAtomBtnSimple>
                     </NuxtLink>

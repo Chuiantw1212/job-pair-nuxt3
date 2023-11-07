@@ -5,6 +5,7 @@
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
+            <slot name="prefix"></slot>
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
                 :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)"
                 @keyup.enter="emit('keyup.enter', $event)" />
@@ -131,7 +132,7 @@ function handleValidate() {
     }
     return true
 }
-function validateDefaultRegex() {
+function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
 
