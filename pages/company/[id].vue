@@ -202,10 +202,12 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
-function extractContent(content) {
-    const span = document.createElement('span');
-    span.innerHTML = content;
-    return span.textContent || span.innerText;
+function extractContent(content = '') {
+    const target = content.replaceAll("<[^>]*>", "");
+    return target
+    // const span = document.createElement('span');
+    // span.innerHTML = content;
+    // return span.textContent || span.innerText;
 }
 function getCompanyBanner() {
     if (state.companyInfo?.banner) {

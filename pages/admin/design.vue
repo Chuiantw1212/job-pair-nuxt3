@@ -114,9 +114,8 @@ function setOrganization() {
     }
 }
 function extractContent(content) {
-    const span = document.createElement('span');
-    span.innerHTML = content;
-    return span.textContent || span.innerText;
+    const target = content.replaceAll("<[^>]*>", "");
+    return target
 }
 function slidePanel() {
     state.isOpen = !state.isOpen
