@@ -148,6 +148,16 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
+    // const isOccupiued =
+    // const { seoName = '' } = state.organizationDesign
+    // const blackList = ['admin', 'company', 'event', 'job', 'questions', 'user', 'about', 'cvgpt', 'index', 'jobs', 'questions',]
+    // blackList.forEach(keyword => {
+    //     if (seoName.includes(keyword)) {
+    //         $sweet.alert(`請避開系統保留字${keyword}`)
+    //         return
+    //     }
+    // })
+    // const 
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
     state.organizationDesign.organizationId = repoAuth.state.company.id
