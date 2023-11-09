@@ -70,7 +70,7 @@
                 需升級後才能發佈唷！
             </div>
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <LazyOrganismSeoModal v-model="state.organization" @confirm="publishDesign()"></LazyOrganismSeoModal>
+            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()"></LazyOrganismSeoModal>
         </div>
     </div>
 </template>
@@ -85,8 +85,7 @@ const state = reactive({
         color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
-    },
-    organization: {
+        organizationId: '',
         seoName: '',
         description: '',
     },
@@ -106,11 +105,12 @@ watch(() => repoAuth.state.company, async (newValue) => {
 }, { immediate: true })
 // methods
 function setOrganization() {
-    if (!state.organization.seoName) {
-        state.organization.seoName = repoAuth.state.company.id
+    if (!state.organizationDesign.seoName) {
+        state.organizationDesign.id = repoAuth.state.company.id
+        state.organizationDesign.seoName = repoAuth.state.company.id
     }
-    if (!state.organization.description) {
-        state.organization.description = extractContent(repoAuth.state.company.description)
+    if (!state.organizationDesign.description) {
+        state.organizationDesign.description = extractContent(repoAuth.state.company.description)
     }
 }
 function extractContent(content) {
@@ -148,10 +148,20 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
+    // const isOccupiued =
+    // const { seoName = '' } = state.organizationDesign
+    // const blackList = ['admin', 'company', 'event', 'job', 'questions', 'user', 'about', 'cvgpt', 'index', 'jobs', 'questions',]
+    // blackList.forEach(keyword => {
+    //     if (seoName.includes(keyword)) {
+    //         $sweet.alert(`請避開系統保留字${keyword}`)
+    //         return
+    //     }
+    // })
+    // const 
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
-    const design = Object.assign({}, state.organizationDesign, state.organization)
-    await repoOrganizationDesign.putItem(design)
+    state.organizationDesign.organizationId = repoAuth.state.company.id
+    await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }
 </script>
