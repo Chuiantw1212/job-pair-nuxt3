@@ -45,7 +45,7 @@
                                     <li v-if="provider === 'password'" class="firebaseui-list-item"><button
                                             class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
                                             data-provider-id="password" style="background-color:#db4437"
-                                            data-upgraded=",MaterialButton" @click="signInWithEmail()"><span
+                                            data-upgraded=",MaterialButton" @click.prevent="signInWithEmail()"><span
                                                 class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
                                                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/mail.svg"></span><span
                                                 class="firebaseui-idp-text firebaseui-idp-text-long">使用電子郵件登入</span>
@@ -54,7 +54,7 @@
                                     <li v-if="provider === 'google.com'" class="firebaseui-list-item"><button
                                             class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
                                             data-provider-id="google.com" style="background-color:#ffffff"
-                                            data-upgraded=",MaterialButton" @click="signInWithGoogle()"><span
+                                            data-upgraded=",MaterialButton" @click.prevent="signInWithGoogle()"><span
                                                 class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
                                                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
                                                 class="firebaseui-idp-text firebaseui-idp-text-long">使用Google登入</span></button>
@@ -62,7 +62,7 @@
                                     <li v-if="provider === 'facebook.com'" class="firebaseui-list-item"><button
                                             class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
                                             data-provider-id="facebook.com" style="background-color:#3b5998"
-                                            data-upgraded=",MaterialButton" @click="signInWithFacebook()"><span
+                                            data-upgraded=",MaterialButton" @click.prevent="signInWithFacebook()"><span
                                                 class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
                                                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
                                                 class="firebaseui-idp-text firebaseui-idp-text-long">使用
@@ -89,24 +89,26 @@
                                 <div class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputEmail id="loginEmail" v-model="state.form.email" name="電子郵件信箱"
-                                        placeholder="電子郵件信箱" @update:modelValue="clearErrorMessage()" required>
+                                        placeholder="電子郵件信箱" @update:modelValue="clearErrorMessage()" required
+                                        @keypress.enter.prevent="checkEmailRegistered()">
                                     </LazyAtomInputEmail>
                                 </div>
-                                <div v-if="state.isPassLogin"
+                                <div v-show="state.isPassLogin"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputPass v-model="state.form.password" name="密碼" placeholder="密碼"
-                                        @update:modelValue="clearErrorMessage()" required>
+                                        @update:modelValue="clearErrorMessage()" required ref="pass">
                                     </LazyAtomInputPass>
                                     <button class="firebaseui-link firebaseui-tos-link firebase__password"
                                         @click="handleForgotPassword()">忘記密碼
                                     </button>
                                 </div>
-                                <div v-if="state.isPassRegister"
+                                <div v-show="state.isPassRegister"
                                     class="firebaseui-textfield mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded"
                                     data-upgraded=",MaterialTextfield">
                                     <LazyAtomInputPass v-model="state.form.password" name="設定密碼" placeholder="密碼"
-                                        @update:modelValue="clearErrorMessage()" required>
+                                        @update:modelValue="clearErrorMessage()" required
+                                        @keypress.enter.prevent="handlePassNext()">
                                     </LazyAtomInputPass>
                                 </div>
                                 <div class="firebaseui-error-wrapper">
@@ -230,6 +232,14 @@ const props = defineProps({
     }
 })
 // methods
+function handlePassNext() {
+    if (state.isPassLogin) {
+        loginAndRegister()
+    }
+    if (state.isPassRegister) {
+        signupUser()
+    }
+}
 async function handleForgotPassword() {
     try {
         // https://firebase.google.com/docs/auth/web/manage-users#web-modular-api_9
@@ -272,6 +282,7 @@ async function handleFirebaseError(error) {
                 'auth/user-not-found': '找不到與這個電子郵件地址相符的帳戶',
                 'auth/argument-error': '',
                 'auth/popup-closed-by-user': '使用者在完成操作前關閉了彈出視窗',
+                'auth/missing-password': '請輸入密碼',
             }
             state.errorMessage = messageMap[code] || message
         }
@@ -315,6 +326,8 @@ async function cancelEmail() {
         password: '',
     }
     state.dialogName = 'default'
+    state.isPassLogin = false
+    state.isPassRegister = false
 }
 async function signInWithEmail() {
     state.dialogName = 'email'
@@ -388,6 +401,7 @@ async function signupUser() {
         handleFirebaseError(error)
     }
 }
+const currentInstance = getCurrentInstance()
 async function checkEmailRegistered() {
     const validateResult = await $validate()
     if (!validateResult.isValid) {
@@ -411,6 +425,7 @@ async function checkEmailRegistered() {
         // 註冊用戶
         state.isPassRegister = true
     }
+    currentInstance.refs.pass.focus()
 }
 function clearForm() {
     state.form = {
