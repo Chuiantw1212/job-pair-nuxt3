@@ -115,9 +115,9 @@
                     </button>
                 </template>
                 <template v-else>
-                    <!-- <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
+                    <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                         布局設計
-                    </NuxtLink> -->
+                    </NuxtLink>
                     <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
                         檢視公司頁面
                     </NuxtLink>

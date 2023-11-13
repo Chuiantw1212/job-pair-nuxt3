@@ -33,6 +33,9 @@
             <OrganismDesignSlide02 v-if="item.name === 'SLIDE02'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
             </OrganismDesignSlide02>
+            <slot>
+                
+            </slot>
         </template>
     </div>
 </template>

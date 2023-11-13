@@ -59,11 +59,16 @@
             </div>
         </div>
         <div class="design__body">
-            <OrganismDesignBody v-model="state.organizationDesign.templates"></OrganismDesignBody>
             <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
                 @drop="drop($event)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
+            <OrganismDesignBody v-model="state.organizationDesign.templates">
+                <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                    @drop="drop($event)" @dragover="allowDrop($event)">
+                    請拖曳布局至此
+                </div>
+            </OrganismDesignBody>
         </div>
         <div class="design__footer">
             <div class="footer__desc">
@@ -91,10 +96,10 @@ const state = reactive({
     },
     isOpen: false,
 })
+onMounted(() => {
+    initializeDesign()
+})
 watch(() => repoAuth.state.user, async (newValue) => {
-    if (!newValue) {
-        return
-    }
     initializeDesign()
 }, { immediate: true })
 watch(() => repoAuth.state.company, async (newValue) => {
@@ -124,6 +129,10 @@ function setTemplateName(ev) {
     state.draggingTemplate = ev.target.dataset.name
 }
 async function initializeDesign() {
+    const isFectched = state.organizationDesign.templates?.length
+    if (!repoAuth.state.user || isFectched) {
+        return
+    }
     const response = await repoOrganizationDesign.getItem()
     const { data = {} } = response
     const organizationDesign = Object.assign(state.organizationDesign, data)
@@ -287,10 +296,9 @@ async function publishDesign() {
             border: dashed 1px #5ea88e;
             background-color: rgba(94, 168, 142, 0.1);
             max-width: 100%;
-            height: 313px;
-            margin-top: 20px;
+            height: 44px;
+            line-height: 44px;
             font-size: 20px;
-            line-height: 313px;
             text-align: center;
         }
 

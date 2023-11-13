@@ -1,7 +1,7 @@
 
 <template>
-    <div v-if="localValue.controllable" class="list02">
-        <template v-if="readonly">
+    <div v-if="localValue.controllable">
+        <div v-if="readonly" class="list02">
             <div v-html="localValue.controllable.title.html" class="list02__title">
             </div>
             <div v-for="(item, index) in localValue.controllable.items" :key="index" class="list02__item">
@@ -13,8 +13,8 @@
                 <div v-html="localValue.controllable.items[index].desc.html" class="item__desc">
                 </div>
             </div>
-        </template>
-        <template v-else>
+        </div>
+        <AtomDesignBackground v-else class="list02" @remove="emit('remove')" @moveUp="emit('moveUp')">
             <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.titleToolbar"
                 class="list02__title">
             </LazyAtomInputCkeditorInline>
@@ -28,17 +28,7 @@
                 <LazyAtomInputCkeditorInline v-model="localValue.controllable.items[index].desc.html" class="item__desc">
                 </LazyAtomInputCkeditorInline>
             </div>
-        </template>
-        <!-- <div class="list02__item">
-            <img class="item__imgWrap" src="./image2.webp">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[1].html">
-            </LazyAtomInputCkeditorInline>
-        </div>
-        <div class="list02__item">
-            <img class="item__imgWrap" src="./image3.webp">
-            <LazyAtomInputCkeditorInline v-if="localValue.controllable" v-model="localValue.controllable.items[2].html">
-            </LazyAtomInputCkeditorInline>
-        </div> -->
+        </AtomDesignBackground>
     </div>
 </template>
 <script setup>
