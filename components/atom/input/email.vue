@@ -5,7 +5,8 @@
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled, }">
             <input class="label__input" v-model="localValue" :data-required="required" :data-name="name"
-                @blur="checkFormat()" :disabled="disabled" autocomplete="on" />
+                @blur="checkFormat()" :disabled="disabled" autocomplete="on"
+                @keypress.enter.prevent="$emit('keypress.enter')" />
         </label>
         <div class="inputGroup__message">{{ message }}</div>
     </div>
