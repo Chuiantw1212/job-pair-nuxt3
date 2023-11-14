@@ -74,8 +74,8 @@ export default function () {
                 })
             } else {
                 Object.assign(errorConfig, {
-                    title: response.data.error,
-                    text: response.data.message,
+                    title: response.data?.error || 'Unknown Error',
+                    text: response.data?.message || 'Unknown Error',
                 })
             }
             const errorText = {

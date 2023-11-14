@@ -1,8 +1,3 @@
 <template>
-    <div>
-        {{ route.params }}
-    </div>
+    <div>Home for user Test</div>
 </template>
-<script setup>
-const route = useRoute()
-</script>

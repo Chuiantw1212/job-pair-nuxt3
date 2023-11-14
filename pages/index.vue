@@ -95,7 +95,7 @@ onMounted(async () => {
             pageOffset: 0,
         })
         // 合作對象
-        const jobList = response.data.items
+        const jobList = response.data?.items || []
         const logoMap = {}
         jobList.forEach(item => {
             if (item.organizationName !== '工作配股份有限公司' && item.image) {
