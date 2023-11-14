@@ -1,4 +1,30 @@
+<script setup>
+
+// const client = useSupabaseClient()
+// const subdomain = useSubdomain()
+// const profile = useSubdomainProfile()
+
+// // this should fetch user's profiles and settings (if any)
+// useAsyncData("profile", async () => {
+//     const { data, error } = await client
+//         .from("profiles")
+//         .select("*")
+//         .or(`username.eq.${subdomain.value}, subdomain.eq.${subdomain.value}`)
+//         .maybeSingle()
+
+//     profile.value = data
+//     return data
+// })
+</script>
+
 <template>
+    <div>
+        12456789
+        <NuxtPage></NuxtPage>
+    </div>
+</template>
+
+<!-- <template>
     <div>
         {{ state.companyInfo }}
     </div>
@@ -23,4 +49,4 @@ const organizationId = computed(() => {
 })
 const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
 state.companyInfo = company
-</script>
+</script> -->
