@@ -149,7 +149,7 @@ onMounted(() => {
             })
             state.glideInstance = glideInstance
             window.addEventListener("resize", setGlideConfig)
-            setGlideConfig()
+            setGlideConfig({ target: window })
         })
     }
 })

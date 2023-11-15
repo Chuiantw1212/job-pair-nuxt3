@@ -10,7 +10,7 @@
             <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）"
                 :types="['english']" required>
                 <template #prefix>
-                    <div class="input__prefix">jobpair.com/company/</div>
+                    <div class="input__prefix">jobpair.com/o/</div>
                 </template>
             </LazyAtomInputText>
             <LazyAtomInputTextarea v-model="state.localValue.description" name="搜尋引擎描述" class="mt-2" rows="4" required>
@@ -31,7 +31,6 @@ const modal = ref(null)
 const { $uuid4, $validate, } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'confirm'])
 const state = reactive({
-    modal: null,
     localValue: {
         seoName: '',
         description: '',
@@ -51,11 +50,13 @@ const props = defineProps({
 onMounted(() => {
     state.id = $uuid4()
 })
-watch(() => props.modelValue, (newValue) => {
+watch(() => props.modelValue, (newValue = {}) => {
     state.localValue = newValue
 }, { immediate: true })
 // methods
 function showModal() {
+    const description = extractContent(props.modelValue.description)
+    state.localValue.description = description
     modal.value.show()
 }
 async function handleConfirm() {
@@ -66,6 +67,13 @@ async function handleConfirm() {
     modal.value.hide()
     emit('update:modelValue', state.localValue)
     emit('confirm',)
+}
+function extractContent(content = '') {
+    const span = document.createElement('span');
+    span.innerHTML = content;
+    return span.textContent || span.innerText;
+    // const target = content.replaceAll("<[^>]*>", "");
+    // return target
 }
 </script>
 <style lang="scss" scoped>
