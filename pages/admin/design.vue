@@ -176,16 +176,6 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
-    // const isOccupiued =
-    // const { seoName = '' } = state.organizationDesign
-    // const blackList = ['admin', 'company', 'event', 'job', 'questions', 'user', 'about', 'cvgpt', 'index', 'jobs', 'questions',]
-    // blackList.forEach(keyword => {
-    //     if (seoName.includes(keyword)) {
-    //         $sweet.alert(`請避開系統保留字${keyword}`)
-    //         return
-    //     }
-    // })
-    // const 
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
     state.organizationDesign.organizationId = repoAuth.state.company.id
@@ -270,22 +260,20 @@ async function publishDesign() {
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
-                    
+
                     .item__imaage {
                         display: block;
                         max-width: 100%;
                     }
-                    
+
                     .item__desc {
                         margin-top: 10px;
                     }
-                    
-                    
                 }
-                
-                
+
                 .list__item--draggable {
                     cursor: grab;
+
                     &:hover {
                         outline: 2px dashed #d60b00;
                     }
@@ -413,4 +401,5 @@ async function publishDesign() {
             }
         }
     }
-}</style>
+}
+</style>
