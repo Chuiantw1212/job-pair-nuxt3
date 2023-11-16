@@ -11,42 +11,50 @@
                         選擇布局
                     </div>
                     <ul class="blocks__list">
-                        <li data-name="BANNER01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="BANNER01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
-                        <li data-name="HYBRID01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="HYBRID01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
                         </li>
-                        <li data-name="HYBRID02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="HYBRID02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
-                        <li data-name="ARTICLE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="ARTICLE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，大標、內文</div>
                         </li>
-                        <li data-name="LIST01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="LIST01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
                             <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                         </li>
-                        <li data-name="LIST02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="LIST02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
                             <div class="item__desc">條列式</div>
                         </li>
-                        <li data-name="SLIDE01" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="SLIDE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
                             <div class="item__desc">投影片</div>
                         </li>
-                        <li data-name="SLIDE02" class="list__item" draggable="true" @mouseenter="setTemplateName($event)"
+                        <li data-name="SLIDE02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Comment2.webp" draggable="false">
                             <div class="item__desc">投影片</div>
@@ -59,21 +67,29 @@
             </div>
         </div>
         <div class="design__body">
-            <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
-                @drop="drop($event)" @dragover="allowDrop($event)">
+            <div v-if="isDraggable" class="preview__template"
+                :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
+                @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
+            <div v-else class="preview__template">
+                你的模板已達上限，如果需要增加，請升級進階付費方案！
+            </div>
             <OrganismDesignBody v-model="state.organizationDesign.templates">
-                <div class="preview__template" :class="{ 'preview__template--outline': !!state.draggingTemplate }"
-                    @drop="drop($event)" @dragover="allowDrop($event)">
+                <div v-if="isDraggable" class="preview__template"
+                    :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
+                    @dragover="allowDrop($event)">
                     請拖曳布局至此
+                </div>
+                <div v-else class="preview__template">
+                    你的模板已達上限，如果需要增加，請升級進階付費方案！
                 </div>
             </OrganismDesignBody>
         </div>
         <div class="design__footer">
-            <div class="footer__desc">
+            <!-- <div class="footer__desc">
                 需升級後才能發佈唷！
-            </div>
+            </div> -->
             <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
             <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()"></LazyOrganismSeoModal>
         </div>
@@ -108,6 +124,9 @@ watch(() => repoAuth.state.company, async (newValue) => {
     }
     setOrganization()
 }, { immediate: true })
+const isDraggable = computed(() => {
+    return state.organizationDesign.templates?.length < 5
+})
 // methods
 function setOrganization() {
     if (!state.organizationDesign.seoName) {
@@ -251,17 +270,22 @@ async function publishDesign() {
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
-                    cursor: grab;
-
+                    
                     .item__imaage {
                         display: block;
                         max-width: 100%;
                     }
-
+                    
                     .item__desc {
                         margin-top: 10px;
                     }
-
+                    
+                    
+                }
+                
+                
+                .list__item--draggable {
+                    cursor: grab;
                     &:hover {
                         outline: 2px dashed #d60b00;
                     }
@@ -293,7 +317,7 @@ async function publishDesign() {
     .design__body {
 
         .preview__template {
-            border: dashed 1px #5ea88e;
+            border: dashed 2px #5ea88e;
             background-color: rgba(94, 168, 142, 0.1);
             max-width: 100%;
             height: 44px;
@@ -389,5 +413,4 @@ async function publishDesign() {
             }
         }
     }
-}
-</style>
+}</style>
