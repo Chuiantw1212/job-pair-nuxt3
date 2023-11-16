@@ -10,7 +10,13 @@
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
-                    <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
+                    <NuxtLink v-if="state.company?.organizationSeoName" class="basic__body__subHeader"
+                        :to="`/o/${state.company?.organizationSeoName}`">
+                        <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                        </div>
+                        {{ state.job?.organizationName }}
+                    </NuxtLink>
+                    <NuxtLink v-else class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}
