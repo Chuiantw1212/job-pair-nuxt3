@@ -5,12 +5,6 @@
             <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
             </button>
-            <!-- <button  class="toolbar__btn">
-                <img src="./Frame.svg">
-            </button>
-            <button  class="toolbar__btn">
-                <img src="./size.svg">
-            </button> -->
             <button class="toolbar__btn" @click="emit('moveUp')">
                 <img src="./arrow-up.svg">
             </button>

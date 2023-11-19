@@ -1,6 +1,5 @@
 <template>
     <div class="banner" ref="banner">
-
         <template v-if="readonly">
             <div class="banner__image" :style="{
                 'background-image': `url(${localValue.controllable.background.url})`,
@@ -14,6 +13,12 @@
                     <div v-html="localValue.controllable.desc.html" class="preview__desc">
 
                     </div>
+                    <AtomBtnSimpleV2 class="preview__btn" :outline="localValue.controllable.button.outline"
+                        :backgroundColor="localValue.controllable.button.backgroundColor">
+                        {{
+                            localValue.controllable.button.text
+                        }}
+                    </AtomBtnSimpleV2>
                 </div>
             </div>
         </template>
@@ -30,9 +35,14 @@
                         class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
                         @blur="handleBlur('desc')">
                     </LazyAtomInputCkeditorInline>
-                    <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
+                    <AtomDesignBtn v-model="localValue.controllable.button" class="preview__btn">
                         <!-- 查看所有職缺 -->
-                        <AtomBtnSimple>{{ localValue.controllable.btn.text }}</AtomBtnSimple>
+                        <AtomBtnSimpleV2 :outline="localValue.controllable.button.outline"
+                            :backgroundColor="localValue.controllable.button.backgroundColor">
+                            {{
+                                localValue.controllable.button.text
+                            }}
+                        </AtomBtnSimpleV2>
                     </AtomDesignBtn>
                 </div>
             </AtomDesignBackground>
@@ -84,8 +94,9 @@ watch(() => localValue.value, (newValue) => {
                 desc: {
                     html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
                 },
-                btn: {
-                    color: '#21cc90',
+                button: {
+                    color: 'white',
+                    backgroundColor: '#21cc90',
                     outline: false,
                     text: '查看所有職缺',
                 },
@@ -157,7 +168,7 @@ async function uploadAsset(image = {}, index = 0) {
             margin: auto;
             margin-top: 20px;
             width: fit-content;
-            font-size: 14px;
+            // font-size: 14px;
             padding: 10px 20px;
         }
 
