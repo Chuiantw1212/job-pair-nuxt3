@@ -2,7 +2,11 @@
     <div class="banner" ref="banner">
 
         <template v-if="readonly">
-            <div class="banner__image" :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
+            <div class="banner__image" :style="{
+                'background-image': `url(${localValue.controllable.background.url})`,
+                'background-position': localValue.controllable.background.position,
+                'background-size': localValue.controllable.background.size,
+            }">
                 <div class="banner__preview">
                     <div v-html="localValue.controllable.title.html" class="preview__title">
 
@@ -14,7 +18,7 @@
             </div>
         </template>
         <template v-else-if="localValue.controllable">
-            <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.bg"
+            <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.background"
                 @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')" @moveUp="emit('moveUp')"
                 @moveDown="emit('moveDown')">
                 <div class="banner__preview">
@@ -85,8 +89,10 @@ watch(() => localValue.value, (newValue) => {
                     outline: false,
                     text: '查看所有職缺',
                 },
-                bg: {
-                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp'
+                background: {
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp',
+                    size: 'contain',
+                    position: 'center',
                 }
             }
         }
