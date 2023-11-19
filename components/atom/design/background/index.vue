@@ -22,15 +22,15 @@
                 <img src="./arrow-down.svg">
             </button>
             <button class="toolbar__btn" @click="switchPosition()">
-                <img src="./top-left.svg">
-                <img src="./top-center.svg">
-                <img src="./top-right.svg">
-                <img src="./left.svg">
-                <img src="./center.svg">
-                <img src="./right.svg">
-                <img src="./bottom-left.svg">
-                <img src="./bottom-center.svg">
-                <img src="./bottom-right.svg">
+                <img v-show="state.positionIndex === 0" src="./top-left.svg">
+                <img v-show="state.positionIndex === 1" src="./top-center.svg">
+                <img v-show="state.positionIndex === 2" src="./top-right.svg">
+                <img v-show="state.positionIndex === 3" src="./left.svg">
+                <img v-show="state.positionIndex === 4" src="./center.svg">
+                <img v-show="state.positionIndex === 5" src="./right.svg">
+                <img v-show="state.positionIndex === 6" src="./bottom-left.svg">
+                <img v-show="state.positionIndex === 7" src="./bottom-center.svg">
+                <img v-show="state.positionIndex === 8" src="./bottom-right.svg">
             </button>
         </div>
         <slot></slot>
@@ -74,7 +74,7 @@ const localValue = computed({
     }
 })
 watch(() => localValue.value.position, (position) => {
-    state.positionIndex = positions.findIndex(item => item === position)
+    state.positionIndex = state.positions.findIndex(item => item === position)
 }, { immediate: true })
 // methods
 function getStyleObject() {
