@@ -32,6 +32,10 @@
                 <img v-show="state.positionIndex === 7" src="./bottom-center.svg">
                 <img v-show="state.positionIndex === 8" src="./bottom-right.svg">
             </button>
+            <button class="toolbar__btn" @click="switchSize()">
+                <img v-show="localValue.size === 'cover'" src="./cover.svg">
+                <img v-show="localValue.size === 'contain'" src="./contain.svg">
+            </button>
         </div>
         <slot></slot>
     </div>
@@ -43,7 +47,7 @@ const state = reactive({
     isEditing: false,
     isShowPosition: false,
     positionIndex: 4, // center
-    positions: ['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right']
+    positions: ['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right'],
 })
 const props = defineProps({
     modelValue: {
@@ -52,6 +56,7 @@ const props = defineProps({
             return {
                 url: '',
                 position: 'center',
+                size: 'cover',
             }
         }
     },
@@ -79,9 +84,23 @@ watch(() => localValue.value.position, (position) => {
     }
 }, { immediate: true })
 // methods
+function switchSize() {
+    switch (localValue.value.size) {
+        default:
+        case 'contain': {
+            localValue.value.size = 'cover'
+            break
+        }
+
+        case 'cover': {
+            localValue.value.size = 'contain'
+            break
+        }
+    }
+}
 function getStyleObject() {
     const defaultObj = {
-        'background-size': `contain`,
+        'background-size': `cover`,
         'background-position': 'center',
     }
     if (localValue.value.size) {
@@ -96,10 +115,11 @@ function getStyleObject() {
     return defaultObj
 }
 function switchPosition() {
-    let currentValue = localValue.value.position
+    // let currentValue = localValue.value.position
     const { positions = [] } = state
-    const index = positions.findIndex(item => item === currentValue)
-    const nextIndex = (index + 1) % positions.length
+    // const index = positions.findIndex(item => item === currentValue)
+    const nextIndex = (state.positionIndex + 1) % positions.length
+    state.positionIndex = nextIndex
     localValue.value['position'] = positions[nextIndex]
 }
 function startEditing() {

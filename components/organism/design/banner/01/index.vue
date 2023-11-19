@@ -91,7 +91,7 @@ watch(() => localValue.value, (newValue) => {
                 },
                 background: {
                     url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp',
-                    size: 'contain',
+                    size: 'cover',
                     position: 'center',
                 }
             }
