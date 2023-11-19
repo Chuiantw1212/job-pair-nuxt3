@@ -1,6 +1,5 @@
 <template>
-    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }"
-        :style="{ 'background-image': `url(${props.modelValue.url || 'inherit'})`, 'background-size': `${props.modelValue.backgroundSize}` }"
+    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }" :style="styleObject"
         @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
         <div class="img__toolbar" ref="toolbar">
             <button class="toolbar__btn" @click="emit('remove')">
@@ -36,7 +35,9 @@ const props = defineProps({
     modelValue: {
         type: Object,
         default: function () {
-            return {}
+            return {
+                url: '',
+            }
         }
     },
     accept: {
@@ -47,6 +48,16 @@ const props = defineProps({
         type: Number,
         default: 1048576
     },
+})
+// hooks
+const styleObject = computed(() => {
+    const defaultObj = {
+        'background-size': `${props.modelValue.backgroundSize}`
+    }
+    if (props.modelValue.url) {
+        defaultObj['background-image'] = `url(${props.modelValue.url})`
+    }
+    return defaultObj
 })
 // methods
 function startEditing() {

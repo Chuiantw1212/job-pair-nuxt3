@@ -67,24 +67,26 @@
             </div>
         </div>
         <div class="design__body">
-            <div v-if="isDraggable" class="preview__template"
-                :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                @dragover="allowDrop($event)">
+            <OrganismDesignBody v-model="state.organizationDesign.templates">
+                <template #default="defaultProps">
+                    <div v-if="isDraggable" class="preview__template"
+                        :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                        @drop="insertTemplate($event, defaultProps.index)" @dragover="allowDrop($event)">
+                        請拖曳布局至此
+                    </div>
+                    <div v-else class="preview__template">
+                        你的模板已達上限，如果需要增加，請升級進階付費方案！
+                    </div>
+                </template>
+            </OrganismDesignBody>
+            <div v-if="isDraggable" class="preview__template preview__template--initial"
+                :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                @drop="insertTemplate($event, state.organizationDesign.templates.length)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
             <div v-else class="preview__template">
                 你的模板已達上限，如果需要增加，請升級進階付費方案！
             </div>
-            <OrganismDesignBody v-model="state.organizationDesign.templates">
-                <div v-if="isDraggable" class="preview__template"
-                    :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                    @dragover="allowDrop($event)">
-                    請拖曳布局至此
-                </div>
-                <div v-else class="preview__template">
-                    你的模板已達上限，如果需要增加，請升級進階付費方案！
-                </div>
-            </OrganismDesignBody>
         </div>
         <div class="design__footer">
             <!-- <div class="footer__desc">
@@ -161,9 +163,9 @@ async function initializeDesign() {
         await repoOrganizationDesign.postItem(state.organizationDesign)
     }
 }
-function drop(ev) {
+function insertTemplate(ev, index = 0) {
     ev.preventDefault();
-    state.organizationDesign.templates.push({
+    state.organizationDesign.templates.splice(index, 0, {
         name: state.draggingTemplate,
     })
 }
@@ -316,6 +318,11 @@ async function publishDesign() {
 
         .preview__template--outline {
             border-color: #d60b00;
+        }
+
+        .preview__template--initial {
+            height: 313px;
+            line-height: 313px;
         }
     }
 
