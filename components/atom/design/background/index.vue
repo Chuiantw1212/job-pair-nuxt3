@@ -1,18 +1,18 @@
 <template>
-    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }" :style="styleObject"
+    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }" :style="getStyleObject()"
         @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
-        <div class="img__toolbar" ref="toolbar">
+        <div class="img__toolbar">
             <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
             </button>
-            <label v-if="!modelValue" class="toolbar__btn">
+            <label v-if="!localValue" class="toolbar__btn">
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
             </label>
-            <button v-if="!modelValue" class="toolbar__btn">
+            <button v-if="!localValue" class="toolbar__btn">
                 <img src="./Frame.svg">
             </button>
-            <button v-if="!modelValue" class="toolbar__btn">
+            <button v-if="!localValue" class="toolbar__btn">
                 <img src="./size.svg">
             </button>
             <button class="toolbar__btn" @click="emit('moveUp')">
@@ -20,6 +20,17 @@
             </button>
             <button class="toolbar__btn" @click="emit('moveDown')">
                 <img src="./arrow-down.svg">
+            </button>
+            <button class="toolbar__btn" @click="switchPosition()">
+                <img src="./top-left.svg">
+                <img src="./top-center.svg">
+                <img src="./top-right.svg">
+                <img src="./left.svg">
+                <img src="./center.svg">
+                <img src="./right.svg">
+                <img src="./bottom-left.svg">
+                <img src="./bottom-center.svg">
+                <img src="./bottom-right.svg">
             </button>
         </div>
         <slot></slot>
@@ -29,7 +40,10 @@
 import { Buffer } from 'buffer/'
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
-    isEditing: false
+    isEditing: false,
+    isShowPosition: false,
+    positionIndex: 0,
+    positions: ['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right']
 })
 const props = defineProps({
     modelValue: {
@@ -37,6 +51,7 @@ const props = defineProps({
         default: function () {
             return {
                 url: '',
+                position: 'center',
             }
         }
     },
@@ -50,16 +65,41 @@ const props = defineProps({
     },
 })
 // hooks
-const styleObject = computed(() => {
-    const defaultObj = {
-        'background-size': `${props.modelValue.backgroundSize}`
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(newValue) {
+        emit('update:modelValue', newValue)
     }
-    if (props.modelValue.url) {
-        defaultObj['background-image'] = `url(${props.modelValue.url})`
+})
+watch(() => localValue.value.position, (position) => {
+    state.positionIndex = positions.findIndex(item => item === position)
+}, { immediate: true })
+// methods
+function getStyleObject() {
+    const defaultObj = {
+        'background-size': `contain`,
+        'background-position': 'center',
+    }
+    if (localValue.value.size) {
+        defaultObj['background-size'] = localValue.value.size
+    }
+    if (localValue.value.url) {
+        defaultObj['background-image'] = `url(${localValue.value.url})`
+    }
+    if (localValue.value.position) {
+        defaultObj['background-position'] = localValue.value.position
     }
     return defaultObj
-})
-// methods
+}
+function switchPosition() {
+    let currentValue = localValue.value.position
+    const { positions = [] } = state
+    const index = positions.findIndex(item => item === currentValue)
+    const nextIndex = (index + 1) % positions.length
+    localValue.value['position'] = positions[nextIndex]
+}
 function startEditing() {
     state.isEditing = true
 }
@@ -110,22 +150,43 @@ async function handleFiles(event) {
 
     .img__toolbar {
         position: absolute;
-        left: 50%;
         top: 0;
-        transform: translate(-50%, calc(-100%));
+        transform: translate(0%, calc(-100%));
         padding: 10px;
         display: none;
         gap: 10px;
         border-radius: 10px;
         background-color: #252f3d;
+        color: white;
         z-index: 1030;
 
         .toolbar__btn {
             background-color: inherit;
             border: none;
             padding: 0px;
+            left: unset;
             cursor: pointer;
         }
+
+        .toolbar__btnGroup {
+            position: relative;
+
+            .btnGroup__layer {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+    }
+
+    .img__toolbar--left {
+        left: 0;
+    }
+
+    .img__toolbar--right {
+        right: 0;
+
     }
 }
 
