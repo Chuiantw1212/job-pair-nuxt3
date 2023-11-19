@@ -74,13 +74,9 @@ const localValue = computed({
     }
 })
 watch(() => localValue.value.position, (position) => {
-<<<<<<< HEAD
-    state.positionIndex = state.positions.findIndex(item => item === position)
-=======
     if (position) {
         state.positionIndex = state.positions.findIndex(item => item === position)
     }
->>>>>>> 0bcaa5ba2be1519dc111d091275f0d8445cb2c29
 }, { immediate: true })
 // methods
 function getStyleObject() {
