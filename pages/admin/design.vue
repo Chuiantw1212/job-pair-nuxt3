@@ -67,31 +67,33 @@
             </div>
         </div>
         <div class="design__body">
-            <div v-if="isDraggable" class="preview__template"
-                :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                @dragover="allowDrop($event)">
+            <OrganismDesignBody v-model="state.organizationDesign.templates">
+                <template #default="defaultProps">
+                    <div v-if="isDraggable" class="preview__template"
+                        :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                        @drop="insertTemplate($event, defaultProps.index)" @dragover="allowDrop($event)">
+                        請拖曳布局至此
+                    </div>
+                    <div v-else class="preview__template">
+                        你的模板已達上限，如果需要增加，請升級進階付費方案！
+                    </div>
+                </template>
+            </OrganismDesignBody>
+            <div v-if="isDraggable" class="preview__template preview__template--initial"
+                :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                @drop="insertTemplate($event, state.organizationDesign.templates.length)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
             <div v-else class="preview__template">
                 你的模板已達上限，如果需要增加，請升級進階付費方案！
             </div>
-            <OrganismDesignBody v-model="state.organizationDesign.templates">
-                <div v-if="isDraggable" class="preview__template"
-                    :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                    @dragover="allowDrop($event)">
-                    請拖曳布局至此
-                </div>
-                <div v-else class="preview__template">
-                    你的模板已達上限，如果需要增加，請升級進階付費方案！
-                </div>
-            </OrganismDesignBody>
         </div>
         <div class="design__footer">
             <!-- <div class="footer__desc">
                 需升級後才能發佈唷！
             </div> -->
-            <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()"></LazyOrganismSeoModal>
+            <!-- <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple> -->
+            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()">發布</LazyOrganismSeoModal>
         </div>
     </div>
 </template>
@@ -161,9 +163,9 @@ async function initializeDesign() {
         await repoOrganizationDesign.postItem(state.organizationDesign)
     }
 }
-function drop(ev) {
+function insertTemplate(ev, index = 0) {
     ev.preventDefault();
-    state.organizationDesign.templates.push({
+    state.organizationDesign.templates.splice(index, 0, {
         name: state.draggingTemplate,
     })
 }
@@ -176,16 +178,6 @@ async function saveDraft() {
     $sweet.loader(false)
 }
 async function publishDesign() {
-    // const isOccupiued =
-    // const { seoName = '' } = state.organizationDesign
-    // const blackList = ['admin', 'company', 'event', 'job', 'questions', 'user', 'about', 'cvgpt', 'index', 'jobs', 'questions',]
-    // blackList.forEach(keyword => {
-    //     if (seoName.includes(keyword)) {
-    //         $sweet.alert(`請避開系統保留字${keyword}`)
-    //         return
-    //     }
-    // })
-    // const 
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
     state.organizationDesign.organizationId = repoAuth.state.company.id
@@ -270,22 +262,20 @@ async function publishDesign() {
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
-                    
+
                     .item__imaage {
                         display: block;
                         max-width: 100%;
                     }
-                    
+
                     .item__desc {
                         margin-top: 10px;
                     }
-                    
-                    
                 }
-                
-                
+
                 .list__item--draggable {
                     cursor: grab;
+
                     &:hover {
                         outline: 2px dashed #d60b00;
                     }
@@ -328,6 +318,11 @@ async function publishDesign() {
 
         .preview__template--outline {
             border-color: #d60b00;
+        }
+
+        .preview__template--initial {
+            height: 313px;
+            line-height: 313px;
         }
     }
 
@@ -413,4 +408,5 @@ async function publishDesign() {
             }
         }
     }
-}</style>
+}
+</style>

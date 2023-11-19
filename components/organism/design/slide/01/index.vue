@@ -246,6 +246,7 @@ function setGlideConfig(event) {
 }
 async function uploadAsset(image = {}, index = 0) {
     image.name = `portrait${index + 1}`
+    localValue.value.controllable.items[index].image.url = ''
     const res = await repoOrganizationDesign.putAsset({
         templateName: 'SLIDE01',
         asset: image,

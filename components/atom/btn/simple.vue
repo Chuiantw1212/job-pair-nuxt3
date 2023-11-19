@@ -11,6 +11,9 @@ export default {
 }
 </script>
 <script setup>
+/**
+ * Deprecated: 應該封裝完整使用props變更樣式，未來元件若有用到此按鈕應逐步更新為V2版本。
+ */
 const props = defineProps({
     id: {
         type: String
@@ -34,7 +37,9 @@ const props = defineProps({
 })
 const instance = getCurrentInstance()
 onMounted(() => {
-    if (props.color && props.outline) {
+    const availableColors = ['success', 'light', 'danger']
+    const matchTheme = availableColors.includes(props.color)
+    if (matchTheme && props.outline) {
         instance.refs.simple.classList.add(`btnSimple--outline--${props.color}`)
     }
 })

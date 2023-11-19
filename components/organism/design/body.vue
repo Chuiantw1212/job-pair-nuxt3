@@ -1,6 +1,9 @@
 <template>
     <div>
         <template v-for="(item, index) in localValue" :key="index">
+            <slot :index="index">
+
+            </slot>
             <!-- Banner式 -->
             <OrganismDesignBanner01 v-if="item.name === 'BANNER01'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
@@ -33,9 +36,7 @@
             <OrganismDesignSlide02 v-if="item.name === 'SLIDE02'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
             </OrganismDesignSlide02>
-            <slot>
-                
-            </slot>
+
         </template>
     </div>
 </template>

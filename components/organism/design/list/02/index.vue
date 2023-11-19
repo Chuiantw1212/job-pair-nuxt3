@@ -117,6 +117,7 @@ watch(() => localValue.value, (newValue) => {
 // methods
 async function uploadAsset(image = {}, index = 0) {
     image.name = `img${index + 1}`
+    localValue.value.controllable.items[index].image.url = ''
     const res = await repoOrganizationDesign.putAsset({
         templateName: 'LIST02',
         asset: image,
