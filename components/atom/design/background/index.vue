@@ -42,8 +42,8 @@ const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     isEditing: false,
     isShowPosition: false,
-    positionIndex: 0,
-    positions: ['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom-left', 'bottom', 'bottom-right']
+    positionIndex: 4, // center
+    positions: ['top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right']
 })
 const props = defineProps({
     modelValue: {
@@ -74,7 +74,13 @@ const localValue = computed({
     }
 })
 watch(() => localValue.value.position, (position) => {
+<<<<<<< HEAD
     state.positionIndex = state.positions.findIndex(item => item === position)
+=======
+    if (position) {
+        state.positionIndex = state.positions.findIndex(item => item === position)
+    }
+>>>>>>> 0bcaa5ba2be1519dc111d091275f0d8445cb2c29
 }, { immediate: true })
 // methods
 function getStyleObject() {
@@ -151,7 +157,8 @@ async function handleFiles(event) {
     .img__toolbar {
         position: absolute;
         top: 0;
-        transform: translate(0%, calc(-100%));
+        left: 50%;
+        transform: translate(-50%, calc(-100%));
         padding: 10px;
         display: none;
         gap: 10px;
