@@ -5,23 +5,23 @@
             <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
             </button>
-            <label v-if="!localValue" class="toolbar__btn">
-                <img src="./Picture.svg">
-                <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
-            </label>
-            <button v-if="!localValue" class="toolbar__btn">
+            <!-- <button  class="toolbar__btn">
                 <img src="./Frame.svg">
             </button>
-            <button v-if="!localValue" class="toolbar__btn">
+            <button  class="toolbar__btn">
                 <img src="./size.svg">
-            </button>
+            </button> -->
             <button class="toolbar__btn" @click="emit('moveUp')">
                 <img src="./arrow-up.svg">
             </button>
             <button class="toolbar__btn" @click="emit('moveDown')">
                 <img src="./arrow-down.svg">
             </button>
-            <button class="toolbar__btn" @click="switchPosition()">
+            <label v-if="localValue.url" class="toolbar__btn">
+                <img src="./Picture.svg">
+                <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
+            </label>
+            <button v-if="localValue.url" class="toolbar__btn" @click="switchPosition()">
                 <img v-show="state.positionIndex === 0" src="./top-left.svg">
                 <img v-show="state.positionIndex === 1" src="./top-center.svg">
                 <img v-show="state.positionIndex === 2" src="./top-right.svg">
@@ -32,7 +32,7 @@
                 <img v-show="state.positionIndex === 7" src="./bottom-center.svg">
                 <img v-show="state.positionIndex === 8" src="./bottom-right.svg">
             </button>
-            <button class="toolbar__btn" @click="switchSize()">
+            <button v-if="localValue.url" class="toolbar__btn" @click="switchSize()">
                 <img v-show="localValue.size === 'cover'" src="./cover.svg">
                 <img v-show="localValue.size === 'contain'" src="./contain.svg">
             </button>
@@ -54,7 +54,7 @@ const props = defineProps({
         type: Object,
         default: function () {
             return {
-                url: '',
+                url: null, // 初始無值則表示不啟用背景上傳
                 position: 'center',
                 size: 'cover',
             }

@@ -58,7 +58,7 @@
 <script setup>
 const { $sweet } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
         'bold',
@@ -138,9 +138,10 @@ watch(() => localValue.value, (newValue) => {
 }, { immediate: true })
 // methods
 async function uploadAsset(image = {}, index = 0) {
-    image.name = `bg${index + 1}`
+    image.name = `image${index + 1}`
+    localValue.value.controllable.image.url = ''
     const res = await repoOrganizationDesign.putAsset({
-        templateName: 'BANNER01',
+        templateName: 'HYBRID01',
         asset: image,
     })
     if (res.status === 200) {

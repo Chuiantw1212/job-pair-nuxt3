@@ -122,7 +122,8 @@ function handleBlur(type) {
 }
 // methods
 async function uploadAsset(image = {}, index = 0) {
-    image.name = `bg${index + 1}`
+    image.name = `background${index + 1}`
+    localValue.value.controllable.background.url = ''
     const res = await repoOrganizationDesign.putAsset({
         templateName: 'BANNER01',
         asset: image,
@@ -131,7 +132,7 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            localValue.value.controllable.bg.url = res.data
+            localValue.value.controllable.background.url = res.data
         }, 300)
     }
 }
