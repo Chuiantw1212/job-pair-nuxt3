@@ -92,7 +92,7 @@
             <!-- <div class="footer__desc">
                 需升級後才能發佈唷！
             </div> -->
-            <!-- <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple> -->
+            <LazyAtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</LazyAtomBtnSimple>
             <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()">發布</LazyOrganismSeoModal>
         </div>
     </div>
@@ -105,7 +105,7 @@ const device = useDevice()
 const state = reactive({
     draggingTemplate: '',
     organizationDesign: {
-        color: '#21cc90',
+        // color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
         organizationId: '',
@@ -114,31 +114,25 @@ const state = reactive({
     },
     isOpen: false,
 })
-onMounted(() => {
-    initializeDesign()
-})
-watch(() => repoAuth.state.user, async (newValue) => {
-    initializeDesign()
-}, { immediate: true })
+// onMounted(() => {
+//     initializeDesign()
+// })
+// watch(() => repoAuth.state.user, async (newValue) => {
+//     initializeDesign()
+// }, { immediate: true })
 watch(() => repoAuth.state.company, async (newValue) => {
     if (!newValue) {
         return
     }
-    setOrganization()
+    initializeDesign()
 }, { immediate: true })
 const isDraggable = computed(() => {
     return state.organizationDesign.templates?.length < 5
 })
 // methods
-function setOrganization() {
-    if (!state.organizationDesign.seoName) {
-        state.organizationDesign.id = repoAuth.state.company.id
-        state.organizationDesign.seoName = repoAuth.state.company.id
-    }
-    if (!state.organizationDesign.description) {
-        state.organizationDesign.description = extractContent(repoAuth.state.company.description)
-    }
-}
+// function setOrganization() {
+
+// }
 function extractContent(content) {
     const target = content.replaceAll("<[^>]*>", "");
     return target
@@ -154,14 +148,24 @@ async function initializeDesign() {
     if (!repoAuth.state.user || isFectched) {
         return
     }
-    const response = await repoOrganizationDesign.getItem()
+    const response = await repoOrganizationDesign.getDraft({
+        organizationId: repoAuth.state.company.id
+    })
     const { data = {} } = response
     const organizationDesign = Object.assign(state.organizationDesign, data)
     if (organizationDesign.id) {
         state.organizationDesign = organizationDesign
-    } else {
-        await repoOrganizationDesign.postItem(state.organizationDesign)
+        return
     }
+    // Post first draft
+    // state.organizationDesign.organizationId = 
+    if (!state.organizationDesign.seoName) {
+        state.organizationDesign.seoName = repoAuth.state.company.id
+    }
+    if (!state.organizationDesign.description) {
+        state.organizationDesign.description = extractContent(repoAuth.state.company.description)
+    }
+    await repoOrganizationDesign.postItem(state.organizationDesign)
 }
 function insertTemplate(ev, index = 0) {
     ev.preventDefault();
@@ -174,6 +178,8 @@ function allowDrop(ev) {
 }
 async function saveDraft() {
     $sweet.loader(true)
+    state.organizationDesign.status = 'draft'
+    state.organizationDesign.organizationId = repoAuth.state.company.id
     await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }

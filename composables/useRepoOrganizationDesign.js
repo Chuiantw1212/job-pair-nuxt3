@@ -17,10 +17,10 @@ export default defineStore('company', () => {
         })
         return response
     }
-    async function getItem() {
+    async function getDraft({ organizationId }) {
         const response = await jobPairApi.request({
             method: 'get',
-            url: `/organization/design`,
+            url: `/organization/${organizationId}/design/draft`,
         })
         return response
     }
@@ -35,7 +35,7 @@ export default defineStore('company', () => {
     return {
         // state,
         postItem,
-        getItem,
+        getDraft,
         putItem,
         putAsset,
     }
