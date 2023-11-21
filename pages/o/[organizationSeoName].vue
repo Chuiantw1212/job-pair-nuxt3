@@ -33,13 +33,13 @@ const organizationSeoName = computed(() => {
     return route.params.organizationSeoName
 })
 const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${organizationSeoName.value}`, { initialCache: false })
-onMounted(() => {
-    if (!organization.id) {
-        router.push({
-            name: 'jobs'
-        })
-    }
-})
+// onMounted(() => {
+//     if (!organization.id) {
+//         router.push({
+//             name: 'jobs'
+//         })
+//     }
+// })
 watch(() => repoAuth.state.user, () => {
     jobScroller.initializeSearch()
 }, { immediate: true })
