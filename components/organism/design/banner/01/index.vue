@@ -23,6 +23,7 @@
             </div>
         </template>
         <template v-else-if="localValue.controllable">
+            {{ localValue.controllable.background }}
             <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.background"
                 @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')" @moveUp="emit('moveUp')"
                 @moveDown="emit('moveDown')">
@@ -143,6 +144,7 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
+            console.log(res.data);
             localValue.value.controllable.background.url = res.data
         }, 300)
     }

@@ -1,6 +1,6 @@
 <template>
-    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }" :style="getStyleObject()"
-        @mouseenter="startEditing()" @mouseleave="completeEditing($event)">
+    <div class="backgroud" :class="{ 'backgroud--editing': state.isEditing }" :style="styleObj" @mouseenter="startEditing()"
+        @mouseleave="completeEditing($event)">
         <div class="img__toolbar">
             <button class="toolbar__btn" @click="emit('remove')">
                 <img src="./Trash.svg">
@@ -77,22 +77,7 @@ watch(() => localValue.value.position, (position) => {
         state.positionIndex = state.positions.findIndex(item => item === position)
     }
 }, { immediate: true })
-// methods
-function switchSize() {
-    switch (localValue.value.size) {
-        default:
-        case 'contain': {
-            localValue.value.size = 'cover'
-            break
-        }
-
-        case 'cover': {
-            localValue.value.size = 'contain'
-            break
-        }
-    }
-}
-function getStyleObject() {
+const styleObj = computed(() => {
     const defaultObj = {
         'background-size': `cover`,
         'background-position': 'center',
@@ -107,6 +92,21 @@ function getStyleObject() {
         defaultObj['background-position'] = localValue.value.position
     }
     return defaultObj
+})
+// methods
+function switchSize() {
+    switch (localValue.value.size) {
+        default:
+        case 'contain': {
+            localValue.value.size = 'cover'
+            break
+        }
+
+        case 'cover': {
+            localValue.value.size = 'contain'
+            break
+        }
+    }
 }
 function switchPosition() {
     // let currentValue = localValue.value.position
@@ -144,8 +144,10 @@ async function handleFiles(event) {
     })
     const { name, size, type } = file
     const buffer = Buffer.from(arrayBuffer)
+    const url = URL.createObjectURL(file)
+    console.log(url);
     const newFile = {
-        url: URL.createObjectURL(file),
+        url,
         name,
         size,
         buffer,
