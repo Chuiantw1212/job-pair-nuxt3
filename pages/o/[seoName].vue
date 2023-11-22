@@ -1,5 +1,5 @@
 <template>
-    <div class="company" :class="{ container: device.state.isLarge }">
+    <div v-if="state.organization" class="company" :class="{ container: device.state.isLarge }">
         <OrganismDesignBody v-if="state.organization.templates" v-model="state.organization.templates" readonly>
         </OrganismDesignBody>
         <section id="company__jobs" class="company__section mt-3">
@@ -18,22 +18,28 @@
     </div>
 </template>
 <script setup>
-const { $uuid4, $requestSelector, $optionText, $Glide, } = useNuxtApp()
+const { $optionText, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
-const repoCompany = useRepoCompany()
+const router = useRouter()
 const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
 const repoAuth = useRepoAuth()
-const imageRef = ref(null)
 const state = reactive({
     organization: {}
 })
-const organizationSeoName = computed(() => {
-    return route.params.organizationSeoName
+const seoName = computed(() => {
+    return route.params.seoName
 })
-const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${organizationSeoName.value}`, { initialCache: false })
+const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${seoName.value}`, { initialCache: false })
+// onMounted(() => {
+//     if (!organization.id) {
+//         router.push({
+//             name: 'jobs'
+//         })
+//     }
+// })
 watch(() => repoAuth.state.user, () => {
     jobScroller.initializeSearch()
 }, { immediate: true })
@@ -62,11 +68,15 @@ useSeoMeta({
         }
     },
     ogImage: () => {
-        const decodedBannerUri = decodeURIComponent(state.organization.banner)
-        return state.organization.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
+        if (state.organization) {
+            const decodedBannerUri = decodeURIComponent(state.organization.banner)
+            return state.organization.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
+        }
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.siteUrl}/o/${state.organization.id}`
+        if (state.organization) {
+            return `${runTimeConfig.public.siteUrl}/o/${state.organization.id}`
+        }
     }
 })
 useJsonld(() => ({
@@ -80,7 +90,7 @@ useJsonld(() => ({
     url: `${runTimeConfig.public.siteUrl}/o/${organization.id}`,
     address: getLocationText(),
     location: getLocationText(),
-    image: organization.banner,
+    image: organization?.banner,
 }))
 state.organization = organization
 // methods
