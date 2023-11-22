@@ -13,7 +13,8 @@
                     <div v-html="localValue.controllable.desc.html" class="preview__desc">
 
                     </div>
-                    <AtomBtnSimpleV2 class="preview__btn" :outline="localValue.controllable.button.outline"
+                    <AtomBtnSimpleV2 class="preview__btn" @click="emitScrollEvent($event)"
+                        :outline="localValue.controllable.button.outline"
                         :backgroundColor="localValue.controllable.button.backgroundColor">
                         {{
                             localValue.controllable.button.text
@@ -28,12 +29,10 @@
                 @moveDown="emit('moveDown')">
                 <div class="banner__preview">
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
-                        class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
-                        @click="handleFocus('title')" @blur="handleBlur('title')">
+                        class="editorGroup__editor  preview__title">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" :toolbar="state.bannerToolbar"
-                        class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
-                        @blur="handleBlur('desc')">
+                        class="editorGroup__editor preview__desc">
                     </LazyAtomInputCkeditorInline>
                     <AtomDesignBtn v-model="localValue.controllable.button" class="preview__btn">
                         <!-- 查看所有職缺 -->
@@ -50,9 +49,9 @@
     </div>
 </template>
 <script setup>
-const { $sweet } = useNuxtApp()
+const { $sweet, $emitter, } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
-const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown', 'click'])
 const state = reactive({
     bannerToolbar: [
         'bold',
@@ -111,27 +110,10 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
-
-const currentInstance = getCurrentInstance()
 // methods
-function handlePosition(event, type) {
-    const { left = 0, top = 0, offsetWidth, offsetHeight, } = event
-    const area = currentInstance.refs.banner
-    const { clientHeight, clientWidth } = area
-    const boundLeft = Math.min(left, clientWidth - offsetWidth)
-    const boundHeight = Math.min(top, clientHeight - offsetHeight)
-    state.controllable[type].position = {
-        left: boundLeft,
-        top: boundHeight
-    }
+function emitScrollEvent() {
+    $emitter.emit('scrollToJobs')
 }
-function handleFocus(type) {
-    // state.controllable[type].isFocused = true
-}
-function handleBlur(type) {
-    // state.controllable[type].isFocused = false
-}
-// methods
 async function uploadAsset(image = {}, index = 0) {
     image.name = `background${index + 1}`
     const res = await repoOrganizationDesign.putAsset({

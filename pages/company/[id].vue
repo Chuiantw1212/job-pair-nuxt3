@@ -100,7 +100,7 @@
 <script setup>
 import defaultBanner from '~/assets/company/img_banner_default.webp'
 import defaultLogo from '~/assets/company/company.webp'
-const { $uuid4, $requestSelector, $optionText, $Glide, } = useNuxtApp()
+const { $uuid4, $requestSelector, $optionText, $Glide, $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
@@ -186,13 +186,11 @@ onMounted(async () => {
     const id = route.path.split('/').slice(-1)[0]
     await initializeCompany(id)
     jobScroller.state.filter.organizationId = id
-    // window.addEventListener("resize", setTimeForGlide)
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
         state.glideInstance.destroy()
     }
-    // window.removeEventListener("resize", setTimeForGlide)
 })
 watch(() => repoAuth.state.user, (newValue) => {
     jobScroller.initializeSearch()
@@ -206,9 +204,6 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
 function extractContent(content = '') {
     const target = content.replaceAll("<[^>]*>", "");
     return target
-    // const span = document.createElement('span');
-    // span.innerHTML = content;
-    // return span.textContent || span.innerText;
 }
 function getCompanyBanner() {
     if (state.companyInfo?.banner) {
@@ -225,7 +220,6 @@ async function initializeCompany(id) {
     state.renderKey = Math.random()
     const { images = [], } = company
     if (images && images.length && designStatus !== 'active') {
-        // console.log('designStatus', designStatus);
         state.focusedImageSrc = images[0].url
         initialGlide()
     }

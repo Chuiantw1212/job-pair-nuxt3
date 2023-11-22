@@ -114,12 +114,12 @@ const state = reactive({
     },
     isOpen: false,
 })
-// onMounted(() => {
-//     initializeDesign()
-// })
-// watch(() => repoAuth.state.user, async (newValue) => {
-//     initializeDesign()
-// }, { immediate: true })
+onMounted(() => {
+    initializeDesign()
+})
+watch(() => repoAuth.state.user, async (newValue) => {
+    initializeDesign()
+}, { immediate: true })
 watch(() => repoAuth.state.company, async (newValue) => {
     if (!newValue) {
         return
@@ -130,9 +130,6 @@ const isDraggable = computed(() => {
     return state.organizationDesign.templates?.length < 5
 })
 // methods
-// function setOrganization() {
-
-// }
 function extractContent(content) {
     const target = content.replaceAll("<[^>]*>", "");
     return target
