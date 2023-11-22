@@ -29,10 +29,10 @@ const repoAuth = useRepoAuth()
 const state = reactive({
     organization: {}
 })
-const organizationSeoName = computed(() => {
-    return route.params.organizationSeoName
+const seoName = computed(() => {
+    return route.params.seoName
 })
-const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${organizationSeoName.value}`, { initialCache: false })
+const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${seoName.value}`, { initialCache: false })
 // onMounted(() => {
 //     if (!organization.id) {
 //         router.push({

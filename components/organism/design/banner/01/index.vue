@@ -23,7 +23,6 @@
             </div>
         </template>
         <template v-else-if="localValue.controllable">
-            {{ localValue.controllable.background }}
             <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.background"
                 @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')" @moveUp="emit('moveUp')"
                 @moveDown="emit('moveDown')">
@@ -135,7 +134,6 @@ function handleBlur(type) {
 // methods
 async function uploadAsset(image = {}, index = 0) {
     image.name = `background${index + 1}`
-    localValue.value.controllable.background.url = ''
     const res = await repoOrganizationDesign.putAsset({
         templateName: 'BANNER01',
         asset: image,
