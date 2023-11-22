@@ -18,11 +18,10 @@
     </div>
 </template>
 <script setup>
-const { $optionText, } = useNuxtApp()
+const { $optionText, $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const route = useRoute()
-const router = useRouter()
 const repoSelect = useRepoSelect()
 const jobScroller = useJobScroller()
 const repoAuth = useRepoAuth()
@@ -33,13 +32,12 @@ const seoName = computed(() => {
     return route.params.seoName
 })
 const { data: organization } = await useFetch(`${runTimeConfig.public.apiBase}/organization/${seoName.value}`, { initialCache: false })
-// onMounted(() => {
-//     if (!organization.id) {
-//         router.push({
-//             name: 'jobs'
-//         })
-//     }
-// })
+onMounted(() => {
+    $emitter.on('scrollToJobs', scrollToJobs)
+})
+onBeforeMount(() => {
+    $emitter.off('scrollToJobs', scrollToJobs)
+})
 watch(() => repoAuth.state.user, () => {
     jobScroller.initializeSearch()
 }, { immediate: true })
@@ -94,6 +92,12 @@ useJsonld(() => ({
 }))
 state.organization = organization
 // methods
+function scrollToJobs() {
+    const targetDom = document.querySelector('#company__jobs')
+    if (targetDom) {
+        targetDom.scrollIntoView()
+    }
+}
 function extractContent(content = '') {
     const target = content.replaceAll("<[^>]*>", "");
     return target
