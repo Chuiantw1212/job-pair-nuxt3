@@ -145,7 +145,6 @@ async function handleFiles(event) {
     const { name, size, type } = file
     const buffer = Buffer.from(arrayBuffer)
     const url = URL.createObjectURL(file)
-    console.log(url);
     const newFile = {
         url,
         name,
