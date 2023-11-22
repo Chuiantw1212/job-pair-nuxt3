@@ -1,7 +1,7 @@
 {
   "functions": {
     "source": ".output/server",
-    "runtime": "nodejs16"
+    "runtime": "nodejs18"
   },
   "hosting": {
     "site": "job-pair-taiwan-dev",
