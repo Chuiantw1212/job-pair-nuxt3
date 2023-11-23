@@ -5,6 +5,7 @@
                 'background-image': `url(${localValue.controllable.background.url})`,
                 'background-position': localValue.controllable.background.position,
                 'background-size': localValue.controllable.background.size,
+                'background-repeat': 'no-repeat'
             }">
                 <div class="banner__preview">
                     <div v-html="localValue.controllable.title.html" class="preview__title">

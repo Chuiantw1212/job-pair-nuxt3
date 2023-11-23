@@ -98,14 +98,13 @@
     </div>
 </template>
 <script setup>
-const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const device = useDevice()
 const state = reactive({
     draggingTemplate: '',
     organizationDesign: {
-        // color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
         organizationId: '',
@@ -114,16 +113,7 @@ const state = reactive({
     },
     isOpen: false,
 })
-onMounted(() => {
-    initializeDesign()
-})
-watch(() => repoAuth.state.user, async (newValue) => {
-    initializeDesign()
-}, { immediate: true })
 watch(() => repoAuth.state.company, async (newValue) => {
-    if (!newValue) {
-        return
-    }
     initializeDesign()
 }, { immediate: true })
 const isDraggable = computed(() => {
@@ -141,7 +131,7 @@ function setTemplateName(ev) {
     state.draggingTemplate = ev.target.dataset.name
 }
 async function initializeDesign() {
-    const isFectched = state.organizationDesign.templates?.length
+    const isFectched = state.organizationDesign.id
     if (!repoAuth.state.user || isFectched) {
         return
     }
@@ -151,11 +141,12 @@ async function initializeDesign() {
     const { data = {} } = response
     const organizationDesign = Object.assign(state.organizationDesign, data)
     if (organizationDesign.id) {
+        // has existed item
         state.organizationDesign = organizationDesign
         return
     }
     // Post first draft
-    // state.organizationDesign.organizationId = 
+    state.organizationDesign.organizationId = repoAuth.state.company.id
     if (!state.organizationDesign.seoName) {
         state.organizationDesign.seoName = repoAuth.state.company.id
     }
