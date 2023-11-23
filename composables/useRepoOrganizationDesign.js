@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-export default defineStore('repoOrganizationDesign', () => {
+export default defineStore('organizationDesign', () => {
     const jobPairApi = useJobPairApi()
     async function putAsset(data) {
         const response = await jobPairApi.request({
