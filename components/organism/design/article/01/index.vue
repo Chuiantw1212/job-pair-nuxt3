@@ -1,7 +1,12 @@
 <template>
     <div v-if="localValue.controllable" class="columns">
         <template v-if="readonly">
-            <div class="columns__body" :style="{ 'background-image': `url(${localValue.controllable.background.url})` }">
+            <div class="columns__body" :style="{
+                'background-image': `url(${localValue.controllable.background.url})`,
+                'background-position': localValue.controllable.background.position,
+                'background-size': localValue.controllable.background.size,
+                'background-repeat': 'no-repeat'
+            }">
                 <div v-html="localValue.controllable.title.html" class="body__title"></div>
                 <div v-html="localValue.controllable.desc.html" class="body__desc"></div>
             </div>

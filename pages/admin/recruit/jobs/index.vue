@@ -174,7 +174,6 @@ const state = reactive({
     batchOption: ''
 })
 const { $sweet, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -185,12 +184,9 @@ const router = useRouter()
 useHead({
     title: '職缺管理 - 招募中心'
 })
-onMounted(() => {
+watch(() => repoAuth.state.company, (newValue) => {
     initialize()
-})
-watch(() => repoAuth.state.company, () => {
-    initialize()
-})
+}, { immediate: true })
 watch(() => state.searchLike, () => {
     debounce(() => {
         initialize({
@@ -273,9 +269,6 @@ async function initialize(payload = {}) {
         orderBy: 'datePosted',
         searchLike
     })
-    if (!repoCompany?.getCompanyJobs) {
-        return
-    }
     const jobsResponse = await repoCompany.getCompanyJobs(config)
     if (jobsResponse.status !== 200) {
         return
