@@ -81,6 +81,7 @@ const styleObj = computed(() => {
     const defaultObj = {
         'background-size': `cover`,
         'background-position': 'center',
+        'background-repeat': 'no-repeat',
     }
     if (localValue.value.size) {
         defaultObj['background-size'] = localValue.value.size
@@ -109,9 +110,7 @@ function switchSize() {
     }
 }
 function switchPosition() {
-    // let currentValue = localValue.value.position
     const { positions = [] } = state
-    // const index = positions.findIndex(item => item === currentValue)
     const nextIndex = (state.positionIndex + 1) % positions.length
     state.positionIndex = nextIndex
     localValue.value['position'] = positions[nextIndex]
@@ -127,12 +126,13 @@ async function handleFiles(event) {
     const file = files[0]
     if (!file) {
         return
-    }
-    const isOverSize = this.size && file.size >= this.size
-    if (isOverSize) {
-        const sizeKB = Math.floor(this.size / 1024)
-        this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
-        return
+    } else {
+        const isOverSize = this.size && file.size >= this.size
+        if (isOverSize) {
+            const sizeKB = Math.floor(this.size / 1024)
+            this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
+            return
+        }
     }
     const arrayBuffer = await new Promise((resolve, reject) => {
         const reader = new FileReader()

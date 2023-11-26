@@ -5,8 +5,9 @@
             <LazyAtomInputColor v-if="localValue" v-model="localValue.backgroundColor" class="btnDesign__colorPickr">
             </LazyAtomInputColor>
             <button class="toolbar__icon" @click="switchStyle()">
-                <img v-show="localValue.outline" src="./contain.svg">
-                <img v-show="!localValue.outline" src="./cover.svg">
+                顏色反轉
+                <!-- <img v-show="localValue.outline" src="./contain.svg">
+                <img v-show="!localValue.outline" src="./cover.svg"> -->
             </button>
         </div>
         <slot></slot>
@@ -71,6 +72,8 @@ function switchStyle() {
         background-color: #252f3d;
 
         .toolbar__icon {
+            word-break: keep-all;
+            color: white;
             background-color: inherit;
             border: none;
         }

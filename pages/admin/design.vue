@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="design__body">
-            <OrganismDesignBody v-model="state.organizationDesign.templates">
+            <OrganismDesignBody v-model="state.organizationDesign.templates" @click="slidePanel(false)">
                 <template #default="defaultProps">
                     <div v-if="isDraggable" class="preview__template"
                         :class="{ 'preview__template--outline': !!state.draggingTemplate }"
@@ -124,8 +124,12 @@ function extractContent(content) {
     const target = content.replaceAll("<[^>]*>", "");
     return target
 }
-function slidePanel() {
-    state.isOpen = !state.isOpen
+function slidePanel(isOpen) {
+    if ([null, undefined].includes(isOpen)) {
+        state.isOpen = !state.isOpen
+    } else {
+        state.isOpen = isOpen
+    }
 }
 function setTemplateName(ev) {
     state.draggingTemplate = ev.target.dataset.name

@@ -41,7 +41,7 @@
     </div>
 </template>
 <script setup>
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'focus'])
 const props = defineProps({
     modelValue: {
         type: Object,
