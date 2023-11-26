@@ -52,7 +52,7 @@
 <script setup>
 const { $sweet, $emitter, } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
-const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown', 'click'])
+const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     bannerToolbar: [
         'bold',

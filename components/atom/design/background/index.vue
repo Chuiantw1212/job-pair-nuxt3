@@ -81,6 +81,7 @@ const styleObj = computed(() => {
     const defaultObj = {
         'background-size': `cover`,
         'background-position': 'center',
+        'background-repeat': 'no-repeat',
     }
     if (localValue.value.size) {
         defaultObj['background-size'] = localValue.value.size
