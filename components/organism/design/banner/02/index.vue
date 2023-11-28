@@ -1,5 +1,5 @@
 <template>
-    <div class="banner">
+    <div class="banner" @click="emit('click')">
         <div v-if="localValue.controllable" class="banner__body">
             <template v-if="readonly">
                 <div v-html="localValue.controllable.title.html" class="ck ck-editor__editable_inline">
@@ -28,7 +28,7 @@ export default {
 }
 </script>
 <script setup>
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'click'])
 const props = defineProps({
     modelValue: {
         type: Object,

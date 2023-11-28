@@ -1,8 +1,12 @@
 <template>
     <div class="banner" ref="banner">
-
         <template v-if="readonly">
-            <div class="banner__image" :style="{ 'background-image': `url(${localValue.controllable.bg.url})` }">
+            <div class="banner__image" :style="{
+                'background-image': `url(${localValue.controllable.background.url})`,
+                'background-position': localValue.controllable.background.position,
+                'background-size': localValue.controllable.background.size,
+                'background-repeat': 'no-repeat'
+            }">
                 <div class="banner__preview">
                     <div v-html="localValue.controllable.title.html" class="preview__title">
 
@@ -10,25 +14,35 @@
                     <div v-html="localValue.controllable.desc.html" class="preview__desc">
 
                     </div>
+                    <AtomBtnSimpleV2 class="preview__btn" @click="emitScrollEvent($event)"
+                        :outline="localValue.controllable.button.outline"
+                        :backgroundColor="localValue.controllable.button.backgroundColor">
+                        {{
+                            localValue.controllable.button.text
+                        }}
+                    </AtomBtnSimpleV2>
                 </div>
             </div>
         </template>
         <template v-else-if="localValue.controllable">
-            <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.bg"
+            <AtomDesignBackground class="banner__image" :modelValue="localValue.controllable.background"
                 @update:modelValue="uploadAsset($event, index)" @remove="emit('remove')" @moveUp="emit('moveUp')"
                 @moveDown="emit('moveDown')">
                 <div class="banner__preview">
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.title.html" :toolbar="state.bannerToolbar"
-                        class="editorGroup__editor  preview__title" @focus="handleFocus('title')"
-                        @click="handleFocus('title')" @blur="handleBlur('title')">
+                        class="editorGroup__editor  preview__title">
                     </LazyAtomInputCkeditorInline>
                     <LazyAtomInputCkeditorInline v-model="localValue.controllable.desc.html" :toolbar="state.bannerToolbar"
-                        class="editorGroup__editor preview__desc" @focus="handleFocus('desc')" @click="handleFocus('desc')"
-                        @blur="handleBlur('desc')">
+                        class="editorGroup__editor preview__desc">
                     </LazyAtomInputCkeditorInline>
-                    <AtomDesignBtn v-model="localValue.controllable.btn" class="btnSimple--outline--light preview__btn">
+                    <AtomDesignBtn v-model="localValue.controllable.button" class="preview__btn">
                         <!-- 查看所有職缺 -->
-                        <AtomBtnSimple>{{ localValue.controllable.btn.text }}</AtomBtnSimple>
+                        <AtomBtnSimpleV2 :outline="localValue.controllable.button.outline"
+                            :backgroundColor="localValue.controllable.button.backgroundColor">
+                            {{
+                                localValue.controllable.button.text
+                            }}
+                        </AtomBtnSimpleV2>
                     </AtomDesignBtn>
                 </div>
             </AtomDesignBackground>
@@ -36,7 +50,7 @@
     </div>
 </template>
 <script setup>
-const { $sweet } = useNuxtApp()
+const { $sweet, $emitter, } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
@@ -80,13 +94,16 @@ watch(() => localValue.value, (newValue) => {
                 desc: {
                     html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
                 },
-                btn: {
-                    color: '#21cc90',
+                button: {
+                    color: 'white',
+                    backgroundColor: '#21cc90',
                     outline: false,
                     text: '查看所有職缺',
                 },
-                bg: {
-                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp'
+                background: {
+                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp',
+                    size: 'cover',
+                    position: 'center',
                 }
             }
         }
@@ -94,29 +111,12 @@ watch(() => localValue.value, (newValue) => {
         localValue.value = mergedItem
     }
 }, { immediate: true })
-
-const currentInstance = getCurrentInstance()
 // methods
-function handlePosition(event, type) {
-    const { left = 0, top = 0, offsetWidth, offsetHeight, } = event
-    const area = currentInstance.refs.banner
-    const { clientHeight, clientWidth } = area
-    const boundLeft = Math.min(left, clientWidth - offsetWidth)
-    const boundHeight = Math.min(top, clientHeight - offsetHeight)
-    state.controllable[type].position = {
-        left: boundLeft,
-        top: boundHeight
-    }
+function emitScrollEvent() {
+    $emitter.emit('scrollToJobs')
 }
-function handleFocus(type) {
-    // state.controllable[type].isFocused = true
-}
-function handleBlur(type) {
-    // state.controllable[type].isFocused = false
-}
-// methods
 async function uploadAsset(image = {}, index = 0) {
-    image.name = `bg${index + 1}`
+    image.name = `background${index + 1}`
     const res = await repoOrganizationDesign.putAsset({
         templateName: 'BANNER01',
         asset: image,
@@ -125,7 +125,8 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            localValue.value.controllable.bg.url = res.data
+            console.log(res.data);
+            localValue.value.controllable.background.url = res.data
         }, 300)
     }
 }
@@ -150,7 +151,7 @@ async function uploadAsset(image = {}, index = 0) {
             margin: auto;
             margin-top: 20px;
             width: fit-content;
-            font-size: 14px;
+            // font-size: 14px;
             padding: 10px 20px;
         }
 

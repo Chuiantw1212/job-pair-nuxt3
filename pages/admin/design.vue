@@ -67,43 +67,44 @@
             </div>
         </div>
         <div class="design__body">
-            <div v-if="isDraggable" class="preview__template"
-                :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                @dragover="allowDrop($event)">
+            <OrganismDesignBody v-model="state.organizationDesign.templates" @click="slidePanel(false)">
+                <template #default="defaultProps">
+                    <div v-if="isDraggable" class="preview__template"
+                        :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                        @drop="insertTemplate($event, defaultProps.index)" @dragover="allowDrop($event)">
+                        請拖曳布局至此
+                    </div>
+                    <div v-else class="preview__template">
+                        你的模板已達上限，如果需要增加，請升級進階付費方案！
+                    </div>
+                </template>
+            </OrganismDesignBody>
+            <div v-if="isDraggable" class="preview__template preview__template--initial"
+                :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                @drop="insertTemplate($event, state.organizationDesign.templates.length)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
             <div v-else class="preview__template">
                 你的模板已達上限，如果需要增加，請升級進階付費方案！
             </div>
-            <OrganismDesignBody v-model="state.organizationDesign.templates">
-                <div v-if="isDraggable" class="preview__template"
-                    :class="{ 'preview__template--outline': !!state.draggingTemplate }" @drop="drop($event)"
-                    @dragover="allowDrop($event)">
-                    請拖曳布局至此
-                </div>
-                <div v-else class="preview__template">
-                    你的模板已達上限，如果需要增加，請升級進階付費方案！
-                </div>
-            </OrganismDesignBody>
         </div>
         <div class="design__footer">
             <!-- <div class="footer__desc">
                 需升級後才能發佈唷！
             </div> -->
-            <AtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</AtomBtnSimple>
-            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()"></LazyOrganismSeoModal>
+            <LazyAtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</LazyAtomBtnSimple>
+            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()">發布</LazyOrganismSeoModal>
         </div>
     </div>
 </template>
 <script setup>
-const repoOrganizationDesign = useRepoOrganizationDesign()
 const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
+const repoOrganizationDesign = useRepoOrganizationDesign()
 const device = useDevice()
 const state = reactive({
     draggingTemplate: '',
     organizationDesign: {
-        color: '#21cc90',
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
         organizationId: '',
@@ -112,58 +113,55 @@ const state = reactive({
     },
     isOpen: false,
 })
-onMounted(() => {
-    initializeDesign()
-})
-watch(() => repoAuth.state.user, async (newValue) => {
-    initializeDesign()
-}, { immediate: true })
 watch(() => repoAuth.state.company, async (newValue) => {
-    if (!newValue) {
-        return
-    }
-    setOrganization()
+    initializeDesign()
 }, { immediate: true })
 const isDraggable = computed(() => {
     return state.organizationDesign.templates?.length < 5
 })
 // methods
-function setOrganization() {
-    if (!state.organizationDesign.seoName) {
-        state.organizationDesign.id = repoAuth.state.company.id
-        state.organizationDesign.seoName = repoAuth.state.company.id
-    }
-    if (!state.organizationDesign.description) {
-        state.organizationDesign.description = extractContent(repoAuth.state.company.description)
-    }
-}
 function extractContent(content) {
     const target = content.replaceAll("<[^>]*>", "");
     return target
 }
-function slidePanel() {
-    state.isOpen = !state.isOpen
+function slidePanel(isOpen) {
+    if ([null, undefined].includes(isOpen)) {
+        state.isOpen = !state.isOpen
+    } else {
+        state.isOpen = isOpen
+    }
 }
 function setTemplateName(ev) {
     state.draggingTemplate = ev.target.dataset.name
 }
 async function initializeDesign() {
-    const isFectched = state.organizationDesign.templates?.length
+    const isFectched = state.organizationDesign.id
     if (!repoAuth.state.user || isFectched) {
         return
     }
-    const response = await repoOrganizationDesign.getItem()
+    const response = await repoOrganizationDesign.getDraft({
+        organizationId: repoAuth.state.company.id
+    })
     const { data = {} } = response
     const organizationDesign = Object.assign(state.organizationDesign, data)
     if (organizationDesign.id) {
+        // has existed item
         state.organizationDesign = organizationDesign
-    } else {
-        await repoOrganizationDesign.postItem(state.organizationDesign)
+        return
     }
+    // Post first draft
+    state.organizationDesign.organizationId = repoAuth.state.company.id
+    if (!state.organizationDesign.seoName) {
+        state.organizationDesign.seoName = repoAuth.state.company.id
+    }
+    if (!state.organizationDesign.description) {
+        state.organizationDesign.description = extractContent(repoAuth.state.company.description)
+    }
+    await repoOrganizationDesign.postItem(state.organizationDesign)
 }
-function drop(ev) {
+function insertTemplate(ev, index = 0) {
     ev.preventDefault();
-    state.organizationDesign.templates.push({
+    state.organizationDesign.templates.splice(index, 0, {
         name: state.draggingTemplate,
     })
 }
@@ -172,20 +170,12 @@ function allowDrop(ev) {
 }
 async function saveDraft() {
     $sweet.loader(true)
+    state.organizationDesign.status = 'draft'
+    state.organizationDesign.organizationId = repoAuth.state.company.id
     await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
 }
 async function publishDesign() {
-    // const isOccupiued =
-    // const { seoName = '' } = state.organizationDesign
-    // const blackList = ['admin', 'company', 'event', 'job', 'questions', 'user', 'about', 'cvgpt', 'index', 'jobs', 'questions',]
-    // blackList.forEach(keyword => {
-    //     if (seoName.includes(keyword)) {
-    //         $sweet.alert(`請避開系統保留字${keyword}`)
-    //         return
-    //     }
-    // })
-    // const 
     $sweet.loader(true)
     state.organizationDesign.status = 'active'
     state.organizationDesign.organizationId = repoAuth.state.company.id
@@ -270,22 +260,20 @@ async function publishDesign() {
                     font-size: 16px;
                     font-weight: normal;
                     padding: 20px 0px;
-                    
+
                     .item__imaage {
                         display: block;
                         max-width: 100%;
                     }
-                    
+
                     .item__desc {
                         margin-top: 10px;
                     }
-                    
-                    
                 }
-                
-                
+
                 .list__item--draggable {
                     cursor: grab;
+
                     &:hover {
                         outline: 2px dashed #d60b00;
                     }
@@ -328,6 +316,11 @@ async function publishDesign() {
 
         .preview__template--outline {
             border-color: #d60b00;
+        }
+
+        .preview__template--initial {
+            height: 313px;
+            line-height: 313px;
         }
     }
 
@@ -413,4 +406,5 @@ async function publishDesign() {
             }
         }
     }
-}</style>
+}
+</style>

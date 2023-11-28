@@ -1,14 +1,19 @@
 <template>
     <div v-if="localValue.controllable" class="columns">
         <template v-if="readonly">
-            <div class="columns__body" :style="{ 'background-image': `url(${localValue.controllable.img.url})` }">
+            <div class="columns__body" :style="{
+                'background-image': `url(${localValue.controllable.background.url})`,
+                'background-position': localValue.controllable.background.position,
+                'background-size': localValue.controllable.background.size,
+                'background-repeat': 'no-repeat'
+            }">
                 <div v-html="localValue.controllable.title.html" class="body__title"></div>
                 <div v-html="localValue.controllable.desc.html" class="body__desc"></div>
             </div>
         </template>
         <template v-else>
-            <AtomDesignBackground class="columns__body" v-model="localValue.controllable.img" @remove="emit('remove')"
-                @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
+            <AtomDesignBackground class="columns__body" v-model="localValue.controllable.background"
+                @remove="emit('remove')" @moveUp="emit('moveUp')" @moveDown="emit('moveDown')">
                 <LazyAtomInputCkeditorInline class="body__title" v-model="localValue.controllable.title.html"
                     :toolbar="state.titleToolbar">
                 </LazyAtomInputCkeditorInline>
@@ -59,9 +64,9 @@ watch(() => localValue.value, (newValue) => {
                 desc: {
                     html: '<ul><li><span>彈性自由的工作環境</span></li><li><span>優於勞基法的休假制度</span></li><li><span>每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span>三節禮金</span></li></ul>'
                 },
-                img: {
+                background: {
                     url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp',
-                    backgroundSize: 'contain',
+                    size: 'contain',
                 }
             }
         }

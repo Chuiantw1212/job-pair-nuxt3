@@ -10,8 +10,8 @@
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
-                    <NuxtLink v-if="state.company?.organizationSeoName" class="basic__body__subHeader"
-                        :to="`/o/${state.company?.organizationSeoName}`">
+                    <NuxtLink v-if="state.company?.seoName" class="basic__body__subHeader"
+                        :to="`/o/${state.company?.seoName}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}

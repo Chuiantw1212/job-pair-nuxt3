@@ -6,5 +6,6 @@ export default defineNuxtPlugin(nuxtApp => {
         on: emitter.on,
         emit: emitter.emit,
         all: emitter.all,
+        off: emitter.off,
     })
 })

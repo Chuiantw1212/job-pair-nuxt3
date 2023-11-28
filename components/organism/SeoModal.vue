@@ -1,6 +1,6 @@
 <template>
     <LazyAtomBtnSimple class="modal__button" @click="showModal()">
-        儲存
+        <slot></slot>
     </LazyAtomBtnSimple>
     <AtomModalFrame ref="modal">
         <template #header>

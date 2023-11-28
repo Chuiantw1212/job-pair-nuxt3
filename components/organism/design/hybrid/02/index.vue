@@ -98,8 +98,9 @@ watch(() => localValue.value, (newValue) => {
 // methods
 async function uploadAsset(image = {}, index = 0) {
     image.name = `image${index + 1}`
+    localValue.value.controllable.image.url = ''
     const res = await repoOrganizationDesign.putAsset({
-        templateName: 'BANNER01',
+        templateName: 'HYBRID02',
         asset: image,
     })
     if (res.status === 200) {
