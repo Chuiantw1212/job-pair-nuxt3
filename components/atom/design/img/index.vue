@@ -2,9 +2,6 @@
     <div class="imgEditor" :class="{ 'imgEditor--editing': state.isEditing }" @mouseenter="startEditing()"
         @mouseleave="completeEditing($event)">
         <div class="imgEditor__toolbar" ref="toolbar">
-            <!-- <button class="toolbar__btn" @click="setImageEmpty()">
-                <img src="./Trash.svg">
-            </button> -->
             <label class="toolbar__btn">
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
@@ -45,9 +42,6 @@ const localValue = computed({
     }
 })
 // methods
-function setImageEmpty() {
-    localValue.value.url = ''
-}
 function startEditing() {
     state.isEditing = true
 }
