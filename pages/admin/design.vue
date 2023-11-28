@@ -50,13 +50,19 @@
                         <li data-name="SLIDE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
-                            <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
+                            <img class="item__imaage" src="@/assets/admin/design/slide.webp" draggable="false">
                             <div class="item__desc">投影片</div>
                         </li>
                         <li data-name="SLIDE02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.draggingTemplate = ''">
                             <img class="item__imaage" src="@/assets/admin/design/Comment2.webp" draggable="false">
+                            <div class="item__desc">投影片</div>
+                        </li>
+                        <li data-name="SOCIAL01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
+                            :draggable="isDraggable" @mouseenter="setTemplateName($event)"
+                            @mouseleave="state.draggingTemplate = ''">
+                            <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
                             <div class="item__desc">投影片</div>
                         </li>
                     </ul>

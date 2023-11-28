@@ -36,7 +36,10 @@
             <OrganismDesignSlide02 v-if="item.name === 'SLIDE02'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
             </OrganismDesignSlide02>
-
+            <!-- 社群媒體 -->
+            <OrganismDesignSocial01 v-if="item.name === 'SOCIAL01'" v-model="localValue[index]" :readonly="readonly"
+                @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
+            </OrganismDesignSocial01>
         </template>
     </div>
 </template>
