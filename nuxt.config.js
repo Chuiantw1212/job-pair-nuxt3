@@ -6,6 +6,9 @@ const siteUrl = 'https://job-pair.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
+    site: {
+        name: 'Job Pair 人力銀行'
+    },
     app: {
         head: {
             meta: [
@@ -54,7 +57,6 @@ export default defineNuxtConfig({
             VITE_APP_FIREBASE_ENV: 'production',
             apiBase, // deprecated
             siteUrl,
-            siteName: 'Job Pair 人力銀行',
             siteDescription: 'Job Pair 是專業的媒合平台，專注於助您找到與能力、價值觀相符的工作機會，實現長期價值發揮。透過我們高效的適配功能，輕鬆探索理想職位。立即加入 Job Pair，啟動您的職業生涯。',
             language: 'zh-TW', // prefer more explicit language codes like `en-AU` over `en`
             LIFF_ID: '1660783051-vP4Ojz2r',
@@ -65,11 +67,8 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
-        // 還不夠成熟但裝著備而不用的套件
+        '@nuxtseo/module',
         '@nuxt/image',
-    ],
-    extends: [
-        'nuxt-seo-kit'
     ],
     vite: {
         define: {
