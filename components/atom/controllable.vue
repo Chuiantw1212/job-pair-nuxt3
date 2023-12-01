@@ -119,7 +119,6 @@ function getStyle() {
         style.width = `${width}px`
     }
     style.height = `${height}px`
-    console.log(style);
     return style
 }
 const instance = getCurrentInstance()
@@ -152,10 +151,7 @@ function resizeControllable(event) {
     const area = instance.refs.controllable
     // calculate height and width
     const { movementX, movementY, clientX, clientY, offsetY, offsetX } = event
-    console.log(clientY);
-    // console.log('clientX', clientX)
     const { offsetLeft, offsetTop, offsetWidth, offsetHeight, } = area
-    // console.log(offsetLeft, offsetTop, offsetWidth, offsetHeight,);
     switch (state.resizingType) {
         case "s": {
             // const top = offsetTop

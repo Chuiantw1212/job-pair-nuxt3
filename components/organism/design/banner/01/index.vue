@@ -125,7 +125,6 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            console.log(res.data);
             localValue.value.controllable.background.url = res.data
         }, 300)
     }

@@ -131,18 +131,26 @@ export default defineNuxtConfig({
             ])
             const urls = []
             jobIdsResponse.data.forEach((item) => {
-                const datePosted = new Date(item.datePosted)
-                urls.push({
+                const urlItem = {
                     url: `/job/${item.identifier}`,
-                    lastmod: formatter.format(datePosted),
-                })
+                }
+                const { datePosted = '' } = item
+                if (datePosted) {
+                    const dateInstance = new Date(datePosted)
+                    urlItem.lastmod = formatter.format(dateInstance)
+                }
+                urls.push(urlItem)
             })
             companyIdsResponse.data.forEach((item) => {
-                const updatedDate = new Date(item.updatedDate)
-                urls.push({
-                    url: `/company/${item.id}`,
-                    lastmod: formatter.format(updatedDate),
-                })
+                const urlItem = {
+                    url: `/job/${item.identifier}`,
+                }
+                const { updatedDate = '' } = item
+                if (updatedDate) {
+                    const dateInstance = new Date(updatedDate)
+                    urlItem.lastmod = formatter.format(dateInstance)
+                }
+                urls.push(urlItem)
             })
             return urls
         },
