@@ -62,7 +62,8 @@
                     </ul>
                 </div>
                 <button class="content__btn" @click="slidePanel()">
-                    <img src="@/assets/admin/design/Frame1037.svg">
+                    <img class="btn__arrow" :class="{ 'btn__arrow--isOpen': !state.isOpen }"
+                        src="@/assets/admin/design/Frame1036.svg">
                 </button>
             </div>
         </div>
@@ -230,13 +231,25 @@ async function publishDesign() {
             transition: all 0.3s;
 
             .content__btn {
-                background-color: rgba(0, 0, 0, 0);
+                background-color: rgba(0, 0, 0, 0.5);
                 border: none;
+                border-radius: 0px 10px 10px 0px;
                 position: absolute;
                 right: 0;
                 top: 50%;
                 transform: translate(100%, -50%);
                 padding: 0;
+                width: 41px;
+                height: 91px;
+
+                .btn__arrow {
+                    transform: scaleX(1);
+                    transition: all 0.3s;
+                }
+
+                .btn__arrow--isOpen {
+                    transform: scaleX(-1);
+                }
             }
         }
 
