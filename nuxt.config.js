@@ -110,6 +110,11 @@ export default defineNuxtConfig({
         ],
         // provide dynamic URLs to be included
         urls: async () => {
+            const formatter = new Intl.DateTimeFormat('zh', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            })
             const axiosInstance = axios.create({
                 baseURL: apiBase,
                 timeout: 20 * 60 * 1000,
@@ -126,16 +131,17 @@ export default defineNuxtConfig({
             ])
             const urls = []
             jobIdsResponse.data.forEach((item) => {
+                const datePosted = new Date(item.datePosted)
                 urls.push({
                     url: `/job/${item.identifier}`,
-                    lastmod: item.datePosted,
+                    lastmod: formatter.format(datePosted),
                 })
             })
             companyIdsResponse.data.forEach((item) => {
+                const updatedDate = new Date(item.updatedDate)
                 urls.push({
                     url: `/company/${item.id}`,
-                    lastmod: item.updatedDate,
-                    changefreq: 'monthly'
+                    lastmod: formatter.format(updatedDate),
                 })
             })
             return urls

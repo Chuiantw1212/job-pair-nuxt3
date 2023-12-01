@@ -36,6 +36,7 @@
 </template>
 <script setup>
 import { Buffer } from 'buffer/'
+const { $sweet, } = useNuxtApp()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     isEditing: false,
@@ -127,10 +128,10 @@ async function handleFiles(event) {
     if (!file) {
         return
     } else {
-        const isOverSize = this.size && file.size >= this.size
+        const isOverSize = state.size && file.size >= state.size
         if (isOverSize) {
-            const sizeKB = Math.floor(this.size / 1024)
-            this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
+            const sizeKB = Math.floor(state.size / 1024)
+            $sweet.alert(`大小請勿超過${sizeKB}KB`)
             return
         }
     }
