@@ -105,7 +105,7 @@ async function handleFiles(event) {
         gap: 10px;
         border-radius: 10px;
         background-color: #252f3d;
-        z-index: 1050;
+        z-index: 1030;
 
         .toolbar__btn {
             background-color: inherit;
