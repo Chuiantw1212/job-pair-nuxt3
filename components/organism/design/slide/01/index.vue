@@ -138,7 +138,6 @@ onMounted(() => {
     state.id = $uuid4()
     if (process.client && !state.glideInstance) {
         $requestSelector(`#slide-${state.id}`, (element) => {
-            console.log('executed???');
             const glideInstance = new $Glide.Default(element, {
                 gap: 10,
                 bound: true,

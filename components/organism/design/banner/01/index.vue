@@ -14,7 +14,7 @@
                     <div v-html="localValue.controllable.desc.html" class="preview__desc">
 
                     </div>
-                    <AtomBtnSimpleV2 class="preview__btn" @click="emitScrollEvent($event)"
+                    <AtomBtnSimpleV2 v-if="state.jobsLength" class="preview__btn" @click="emitScrollEvent($event)"
                         :outline="localValue.controllable.button.outline"
                         :backgroundColor="localValue.controllable.button.backgroundColor">
                         {{
@@ -60,6 +60,7 @@ const state = reactive({
         '|',
         'alignment',
     ],
+    jobsLength: 0
 })
 const props = defineProps({
     modelValue: {
@@ -74,6 +75,12 @@ const props = defineProps({
         type: Boolean,
         default: false
     }
+})
+onMounted(() => {
+    $emitter.on('setDesignBannerJobs', setDesignBannerJobs)
+})
+onBeforeMount(() => {
+    $emitter.off('setDesignBannerJobs', setDesignBannerJobs)
 })
 const localValue = computed({
     get() {
@@ -112,6 +119,10 @@ watch(() => localValue.value, (newValue) => {
     }
 }, { immediate: true })
 // methods
+function setDesignBannerJobs(jobsLength = 0) {
+    console.log('setDesignBannerJobs', jobsLength);
+    state.jobsLength = jobsLength
+}
 function emitScrollEvent() {
     $emitter.emit('scrollToJobs')
 }
@@ -125,7 +136,6 @@ async function uploadAsset(image = {}, index = 0) {
         $sweet.loader(true)
         setTimeout(() => {
             $sweet.loader(false)
-            console.log(res.data);
             localValue.value.controllable.background.url = res.data
         }, 300)
     }
