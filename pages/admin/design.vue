@@ -13,51 +13,51 @@
                     <ul class="blocks__list">
                         <li data-name="BANNER01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
                         <li data-name="HYBRID01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
                         </li>
                         <li data-name="HYBRID02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
                         <li data-name="ARTICLE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，大標、內文</div>
                         </li>
                         <li data-name="LIST01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
                             <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                         </li>
                         <li data-name="LIST02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
-                            <div class="item__desc">條列式</div>
+                            <div class="item__desc">適合凸顯特色，不論是企業文化、優勢、福利，甚至是產品服務。</div>
                         </li>
                         <li data-name="SLIDE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
-                            <div class="item__desc">投影片</div>
+                            <div class="item__desc">可置入三項內容，一頁一項。可用於團隊介紹、口碑宣傳、客戶回饋等內容。</div>
                         </li>
                         <li data-name="SLIDE02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
-                            @mouseleave="state.draggingTemplate = ''">
+                            @mouseleave="state.isDragging = false">
                             <img class="item__imaage" src="@/assets/admin/design/Comment2.webp" draggable="false">
-                            <div class="item__desc">投影片</div>
+                            <div class="item__desc">可置入三項內容，一頁兩項。可用於團隊介紹、口碑宣傳、客戶回饋等內容。</div>
                         </li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
             <OrganismDesignBody v-model="state.organizationDesign.templates" @click="slidePanel(false)">
                 <template #default="defaultProps">
                     <div v-if="isDraggable" class="preview__template"
-                        :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                        :class="{ 'preview__template--outline': state.isDragging }"
                         @drop="insertTemplate($event, defaultProps.index)" @dragover="allowDrop($event)">
                         請拖曳布局至此
                     </div>
@@ -81,7 +81,7 @@
                 </template>
             </OrganismDesignBody>
             <div v-if="isDraggable" class="preview__template preview__template--initial"
-                :class="{ 'preview__template--outline': !!state.draggingTemplate }"
+                :class="{ 'preview__template--outline': state.isDragging }"
                 @drop="insertTemplate($event, state.organizationDesign.templates.length)" @dragover="allowDrop($event)">
                 請拖曳布局至此
             </div>
@@ -104,7 +104,7 @@ const repoAuth = useRepoAuth()
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const device = useDevice()
 const state = reactive({
-    draggingTemplate: '',
+    lastTemplateName: '',
     organizationDesign: {
         templates: [],
         status: 'draft', // status: ['active', 'draft', 'closed']
@@ -133,7 +133,8 @@ function slidePanel(isOpen) {
     }
 }
 function setTemplateName(ev) {
-    state.draggingTemplate = ev.target.dataset.name
+    state.isDragging = true
+    state.lastTemplateName = ev.target.dataset.name
 }
 async function initializeDesign() {
     const isFectched = state.organizationDesign.id
@@ -163,8 +164,9 @@ async function initializeDesign() {
 function insertTemplate(ev, index = 0) {
     ev.preventDefault();
     state.organizationDesign.templates.splice(index, 0, {
-        name: state.draggingTemplate,
+        name: state.lastTemplateName,
     })
+    state.isDragging = false
 }
 function allowDrop(ev) {
     ev.preventDefault();
