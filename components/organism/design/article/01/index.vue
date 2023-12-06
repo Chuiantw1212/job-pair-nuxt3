@@ -24,6 +24,9 @@
     </div>
 </template>
 <script setup>
+const repoOrganizationDesign = useRepoOrganizationDesign()
+const repoAuth = useRepoAuth()
+const repoSelect = useRepoSelect()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     titleToolbar: [
@@ -54,25 +57,29 @@ const localValue = computed({
     }
 })
 watch(() => localValue.value, (newValue) => {
-    if (!newValue.controllable) {
-        const defaultValue = {
-            name: 'ARTICLE01',
-            controllable: {
-                title: {
-                    html: '<p><span><strong>公司福利</strong></span></p>'
-                },
-                desc: {
-                    html: '<ul><li><span>彈性自由的工作環境</span></li><li><span>優於勞基法的休假制度</span></li><li><span>每月NT1,000學習補貼，鼓勵員工主動學習</span></li><li><span>三節禮金</span></li></ul>'
-                },
-                background: {
-                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp',
-                    size: 'contain',
-                }
+    if (newValue.controllable) {
+        return
+    }
+    const { company = {} } = repoAuth.state
+    const { jobBenefits = '暫不公開' } = company
+    const defaultValue = {
+        name: 'ARTICLE01',
+        controllable: {
+            title: {
+                html: '<p><span><strong>公司福利</strong></span></p>'
+            },
+            desc: {
+                html: jobBenefits
+            },
+            background: {
+                url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Group.webp',
+                size: 'contain',
             }
         }
-        const mergedItem = Object.assign(defaultValue, newValue)
-        localValue.value = mergedItem
     }
+    const mergedItem = Object.assign(defaultValue, newValue)
+    localValue.value = mergedItem
+
 }, { immediate: true })
 </script>
 <style lang="scss" scoped>

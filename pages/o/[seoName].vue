@@ -42,6 +42,7 @@ watch(() => repoAuth.state.user, () => {
     jobScroller.initializeSearch()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
+    $emitter.emit('setDesignBannerJobs', newValue.length)
     if (newValue.length !== oldValue.length) {
         jobScroller.observeLastJob()
     }
