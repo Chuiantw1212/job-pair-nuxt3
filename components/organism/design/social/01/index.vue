@@ -10,16 +10,27 @@
             </LazyAtomInputCkeditorInline>
             <hr class="social__hr">
             <div class="social__body">
-                <div v-for="(item, index) in localValue.controllable.items" class="body__card">
+                <template v-if="localValue.controllable.items.length">
+                    <div v-for="(item, index) in localValue.controllable.items" class="body__card">
+                        <AtomDesignImg @update:modelValue="uploadAsset($event, index)">
+                            <div class="card__image"
+                                :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                            </div>
+                        </AtomDesignImg>
+                        <LazyAtomInputCkeditorInline class="card__desc"
+                            v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
+                        </LazyAtomInputCkeditorInline>
+                    </div>
+                </template>
+                <template v-else>
                     <AtomDesignImg @update:modelValue="uploadAsset($event, index)">
-                        <div class="card__image"
-                            :style="{ 'background-image': `url(${localValue.controllable.items[index].image.url})` }">
+                        <div class="body__card">
+                            <div class="card__image"
+                                :style="{ 'background-image': `url(https://storage.googleapis.com/public.prd.job-pair.com/asset/design/plus.svg)` }">
+                            </div>
                         </div>
                     </AtomDesignImg>
-                    <LazyAtomInputCkeditorInline class="card__desc"
-                        v-model="localValue.controllable.items[index].title.html" :toolbar="state.titleToolbar">
-                    </LazyAtomInputCkeditorInline>
-                </div>
+                </template>
             </div>
         </AtomDesignBackground>
     </div>
@@ -65,38 +76,38 @@ watch(() => localValue.value, (newValue) => {
                     html: '<p style="text-align:center;"><span>與我們聯絡</span></p>'
                 },
                 items: [
-                    {
-                        image: {
-                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/line2.webp',
-                        },
-                        title: {
-                            html: '<p style="text-align:center;">Line</p>'
-                        }
-                    },
-                    {
-                        image: {
-                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/facebook2.webp'
-                        },
-                        title: {
-                            html: '<p style="text-align:center;">Facebook</p>'
-                        }
-                    },
-                    {
-                        image: {
-                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/linkedin2.webp'
-                        },
-                        title: {
-                            html: '<p style="text-align:center;">LinkedIn</p>'
-                        }
-                    },
-                    {
-                        image: {
-                            url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/instagram2.webp'
-                        },
-                        title: {
-                            html: '<p style="text-align:center;">Instagram</p>'
-                        }
-                    }
+                    // {
+                    //     image: {
+                    //         url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/line2.webp',
+                    //     },
+                    //     title: {
+                    //         html: '<p style="text-align:center;">Line</p>'
+                    //     }
+                    // },
+                    // {
+                    //     image: {
+                    //         url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/facebook2.webp'
+                    //     },
+                    //     title: {
+                    //         html: '<p style="text-align:center;">Facebook</p>'
+                    //     }
+                    // },
+                    // {
+                    //     image: {
+                    //         url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/linkedin2.webp'
+                    //     },
+                    //     title: {
+                    //         html: '<p style="text-align:center;">LinkedIn</p>'
+                    //     }
+                    // },
+                    // {
+                    //     image: {
+                    //         url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/instagram2.webp'
+                    //     },
+                    //     title: {
+                    //         html: '<p style="text-align:center;">Instagram</p>'
+                    //     }
+                    // }
                 ]
             }
         }
