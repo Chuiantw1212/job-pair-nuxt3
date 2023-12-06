@@ -149,6 +149,7 @@ async function initializeDesign() {
     if (organizationDesign.id) {
         // has existed item
         state.organizationDesign = organizationDesign
+        setDefaultTemplates()
         return
     }
     // Post first draft
@@ -160,6 +161,23 @@ async function initializeDesign() {
         state.organizationDesign.description = extractContent(repoAuth.state.company.description)
     }
     await repoOrganizationDesign.postItem(state.organizationDesign)
+    setDefaultTemplates()
+}
+function setDefaultTemplates() {
+    if (!state.organizationDesign.templates.length) {
+        const defaultTemplates = [
+            {
+                name: 'BANNER01',
+            },
+            {
+                name: 'HYBRID01',
+            },
+            {
+                name: 'ARTICLE01',
+            },
+        ]
+        state.organizationDesign.templates.push(...defaultTemplates)
+    }
 }
 function insertTemplate(ev, index = 0) {
     ev.preventDefault();

@@ -50,8 +50,10 @@
     </div>
 </template>
 <script setup>
-const { $sweet, $emitter, } = useNuxtApp()
+const { $sweet, $emitter, $filter, } = useNuxtApp()
 const repoOrganizationDesign = useRepoOrganizationDesign()
+const repoAuth = useRepoAuth()
+const repoSelect = useRepoSelect()
 const emit = defineEmits(['update:modelValue', 'remove', 'moveUp', 'moveDown'])
 const state = reactive({
     bannerToolbar: [
@@ -91,32 +93,39 @@ const localValue = computed({
     }
 })
 watch(() => localValue.value, (newValue) => {
-    if (!newValue.controllable) {
-        const defaultValue = {
-            name: 'BANNER01',
-            controllable: {
-                title: {
-                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);"><strong>找工作就像談戀愛</strong></span></p>'
-                },
-                desc: {
-                    html: '<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">快來配對屬於自己的職缺</span></p>'
-                },
-                button: {
-                    color: 'white',
-                    backgroundColor: '#21cc90',
-                    outline: false,
-                    text: '查看所有職缺',
-                },
-                background: {
-                    url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp',
-                    size: 'cover',
-                    position: 'center',
-                }
+    if (newValue.controllable) {
+        return
+    }
+    const { company = {} } = repoAuth.state
+    const { name, addressRegion = '', addressLocality, streetAddress, } = company
+    const text1 = $filter.optionText(addressRegion, repoSelect.state.locationRes.taiwan)
+    const items = repoSelect.state.locationRes[addressRegion]
+    const text2 = $filter.optionText(addressLocality, items)
+    const fullAddress = `${text1}${text2}${streetAddress}`
+    const defaultValue = {
+        name: 'BANNER01',
+        controllable: {
+            title: {
+                html: `<p style="text-align:center;"><span style="color:hsl(0,0%,100%);"><strong>${name}</strong></span></p>`
+            },
+            desc: {
+                html: `<p style="text-align:center;"><span style="color:hsl(0,0%,100%);">${fullAddress}</span></p>`
+            },
+            button: {
+                color: 'white',
+                backgroundColor: '#21cc90',
+                outline: false,
+                text: '查看所有職缺',
+            },
+            background: {
+                url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/Bg.webp',
+                size: 'cover',
+                position: 'center',
             }
         }
-        const mergedItem = Object.assign(defaultValue, newValue)
-        localValue.value = mergedItem
     }
+    const mergedItem = Object.assign(defaultValue, newValue)
+    localValue.value = mergedItem
 }, { immediate: true })
 // methods
 function setDesignBannerJobs(jobsLength = 0) {
