@@ -79,7 +79,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p><span><strong>不花錢買廣告，很難被看見？</strong></span></p>'
                         },
                         desc: {
-                            html: '<p><span style="color:hsl( 0, 0%, 20% );">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司</span></p>'
+                            html: '<p><span style="color:hsl( 0, 0%, 20% );">求職者透過「適配度」排序，快速找到公司職缺。</span></p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_1.webp'
@@ -87,10 +87,10 @@ watch(() => localValue.value, (newValue) => {
                     },
                     {
                         title: {
-                            html: '<p><span><strong>要怎麼提升招聘效能，減少時間成本呢？</strong></span></p>'
+                            html: '<p><span><strong>如何提升招聘效率、降低成本？</strong></span></p>'
                         },
                         desc: {
-                            html: '<p><span style="color:hsl( 0, 0%, 20% );">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</span></p>'
+                            html: '<p><span style="color:hsl( 0, 0%, 20% );">「適配度」排序，直接評估最合適人選，安排面試。</span></p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_2.webp'
@@ -101,7 +101,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p><span><strong>好不容易徵到人，怎麼又離職了？</strong></span></p>'
                         },
                         desc: {
-                            html: '<p><span style="color:hsl( 0, 0%, 20% );">讓用人單位自行決定用人偏好，降低到職後因文化、合作與溝通模式的落差而產生流動率。</span></p>'
+                            html: '<p><span style="color:hsl( 0, 0%, 20% );">用人單位自訂偏好，降低文化差異帶來流動率。</span></p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST02_3.webp'
@@ -157,6 +157,7 @@ async function uploadAsset(image = {}, index = 0) {
         background-color: #fff;
         position: relative;
         width: fit-content;
+        min-width: 680px;
 
         .item__imgWrap {
             position: absolute;
@@ -187,6 +188,7 @@ async function uploadAsset(image = {}, index = 0) {
 
         .list02__item {
             padding: 30px 100px;
+            min-width: 680px;
 
             .item__imgWrap {
                 position: absolute;
