@@ -106,7 +106,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span><strong>解決生活焦慮</strong></span></p>'
                         },
                         desc: {
-                            html: '<p style="text-align:justify;"><span>理想生活探索是透過專業引導，釐清個人內在的「價值觀」，並將內在需求與外在行動對焦，制訂相對應的行動，有意識的創造個人的理想生活。</span></p><p style="text-align:justify;"><span>本服務也有助於個人面對工作選擇或其他生涯抉擇時，下一個真正貼近個人內在需求的決策。</span></p>'
+                            html: '<p>透過專業引導，探索理想生活，澄清「價值觀」，將內在需求與外在行動結合，有意識地創造理想生活。</p><p><br data-cke-filler="true"></p><p>這服務有助於職涯和其他抉擇，使決策更貼近個人真正內在需求。</p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_1.webp'
@@ -117,7 +117,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span><strong>釐清職業方向</strong></span></p>',
                         },
                         desc: {
-                            html: '<p style="text-align:justify;"><span>職涯偏好探索，目的是探索合適的工作，需從「價值觀」與「個性」兩個層面做自我分析。</span></p><p style="text-align:justify;"><span>價值觀就是個人的信念、人生意義、道德觀念等組合，對應工作就是企業對文化、理念、願景的實踐；個性則是評估自己在什麼樣的工作環境、工作內容與什麼樣的主管合作，能更勝任愉快。</span></p><p style="text-align:justify;"><span>所以，評估適合的工作發展，兩者缺一不可。</span></p>'
+                            html: '<p>探索理想職涯需考量「價值觀」和「個性」，前者涉及信念、意義、道德，匹配企業文化；後者評估適合工作環境、內容、主管合作。</p><p><br data-cke-filler="true"></p><p>職涯發展需兼顧兩者，僅考慮其中一項不足以確定最適工作。</p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_2.webp'
@@ -128,7 +128,7 @@ watch(() => localValue.value, (newValue) => {
                             html: '<p style="text-align:center;"><span><strong>履歷與面試輔導</strong></span></p>'
                         },
                         desc: {
-                            html: '<p style="text-align:justify;"><span>提供履歷與面試輔導的生涯設計師，除了來自不同產業的經驗，同時具備生涯設計的思維；不只從個人角度出發，還能從就業市場的角度，提供更全面的情報，為更好的職涯做準備。</span></p>'
+                            html: '<p style="text-align:justify;">生涯設計師提供履歷及面試指導，擁有跨產業經驗和生涯設計眼光。</p><p style="text-align:justify;"><br data-cke-filler="true"></p><p style="text-align:justify;">不僅考量個人，也從就業市場角度提供全面情報，助您更完善職涯規劃。</p>'
                         },
                         image: {
                             url: 'https://storage.googleapis.com/public.prd.job-pair.com/asset/design/LIST01_3.webp'
