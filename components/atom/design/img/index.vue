@@ -2,9 +2,6 @@
     <div class="imgEditor" :class="{ 'imgEditor--editing': state.isEditing }" @mouseenter="startEditing()"
         @mouseleave="completeEditing($event)">
         <div class="imgEditor__toolbar" ref="toolbar">
-            <!-- <button class="toolbar__btn" @click="setImageEmpty()">
-                <img src="./Trash.svg">
-            </button> -->
             <label class="toolbar__btn">
                 <img src="./Picture.svg">
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)">
@@ -45,9 +42,6 @@ const localValue = computed({
     }
 })
 // methods
-function setImageEmpty() {
-    localValue.value.url = ''
-}
 function startEditing() {
     state.isEditing = true
 }
@@ -60,9 +54,9 @@ async function handleFiles(event) {
     if (!file) {
         return
     }
-    const isOverSize = this.size && file.size >= this.size
+    const isOverSize = props.size && file.size >= props.size
     if (isOverSize) {
-        const sizeKB = Math.floor(this.size / 1024)
+        const sizeKB = Math.floor(props.size / 1024)
         this.$sweet.alert(`大小請勿超過${sizeKB}KB`)
         return
     }
