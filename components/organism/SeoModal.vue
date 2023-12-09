@@ -8,7 +8,7 @@
         </template>
         <template #body>
             <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）"
-                :types="['english']" required>
+                :types="['english']" :lowerCase="true" required>
                 <template #prefix>
                     <div class="input__prefix">jobpair.com/o/</div>
                 </template>
@@ -72,8 +72,6 @@ function extractContent(content = '') {
     const span = document.createElement('span');
     span.innerHTML = content;
     return span.textContent || span.innerText;
-    // const target = content.replaceAll("<[^>]*>", "");
-    // return target
 }
 </script>
 <style lang="scss" scoped>
