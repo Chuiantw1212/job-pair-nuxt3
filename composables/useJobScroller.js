@@ -81,13 +81,9 @@ export default function setup(setUpConfig = {}) {
             salaryMax: null,
             organizationId: null,
         }
-        const { user } = repoAuth.state
-        if (user && user.occupationalCategory) {
-            defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
-        }
         return defualtFilter
     }
-    function initializeSearch(config = {}) {
+    function searchJobs(config = {}) {
         state.jobList = []
         state.pagination.pageOffset = 0
         concatJobsFromServer(config)
@@ -249,7 +245,7 @@ export default function setup(setUpConfig = {}) {
     return {
         state,
         observeLastJob,
-        initializeSearch,
+        searchJobs,
         getDefaultFilter,
         resetJobState,
         disconnectObserver
