@@ -1,6 +1,72 @@
 <template>
-    <div class="admin">
-        <div class="admin__bannerGroup">
+    <div class="home">
+        <section class="home__section">
+            <img class="home__banner" alt="banner" src="@/assets/index/image.png">
+            <h1 class="home__title">
+                設計你的理想工作
+                <br>
+                活出精彩人生
+            </h1>
+            <div class="home__desc">
+                多元職涯時代，你擁有多種可能性，不論是正職、兼職或接案，這裡都能滿足所需。現在，只要三分鐘就能設計想要的工作，讓適合的邀約主動上門！
+            </div>
+            <button class="home__btn" @click="routeToQuestions()">開始配對</button>
+        </section>
+        <section class="home__section">
+            <h2 class="home__groupTitle">
+                怎麼讓符合需求的工作主動送上門？
+            </h2>
+            <div class="home__cardGroup">
+                <div class="cardGroup__card cardGroup__card--yellow">
+                    <img class="card__image" alt="img1" src="@/assets/index/icons-02.svg">
+                    <div class="card__title">選擇工作需求</div>
+                    <div class="card__desc">針對企業文化與工作環境，回覆你的需求</div>
+                </div>
+                <div class="cardGroup__card cardGroup__card--green">
+                    <img class="card__image" alt="img2" src="@/assets/index/icons-05.svg">
+                    <div class="card__title">選擇職務種類</div>
+                    <div class="card__desc">不論是正職兼職或接案，都能在此進行媒合</div>
+                </div>
+                <div class="cardGroup__card cardGroup__card--blue">
+                    <img class="card__image" alt="img3" src="@/assets/index/icons-04.svg">
+                    <div class="card__title">快速介紹自己</div>
+                    <div class="card__desc">寫下你的過往經驗，或用AI生成器為你撰寫</div>
+                </div>
+            </div>
+        </section>
+        <section class="home__section home__section--white">
+            <h2 class="home__groupTitle">
+                新時代的求職網
+            </h2>
+            <div class="home__textGroup">
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img4" src="@/assets/index/Frame2500.png">
+                    <div class="card__title">用自己的履歷</div>
+                    <div class="card__desc">打造個人品牌<br>
+                        無需在此曝露履歷，我們會為你配對職缺，有興趣再上傳履歷應徵；因為唯有精準應徵能事半功倍，你可以發揮創意打造個人品牌，讓履歷成為吸引機會的魅力資產。</div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img5" src="@/assets/index/Frame2501.png">
+                    <div class="card__title">保護個資行動</div>
+                    <div class="card__desc">隔絕個資濫用<br>
+                        與其他人力銀行不同，我們確保你履歷中的個資在未主動應徵前絕對安全，無論是正職、兼職還是接案，只有主動投遞時，對方才能看見，給你最大的控制權保護個資。
+                    </div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img6" src="@/assets/index/Frame2502.png">
+                    <div class="card__title">沒有垃圾信件</div>
+                    <div class="card__desc">零垃圾信件<br>
+                        在這裡，你不會被淹沒在無關緊要的郵件中。我們不會向你派送不相關的工作機會或冗長的廣告信件。你將專注於精準的應徵，不再費神篩選出真正的機會。沒有垃圾信件，只有專屬於你的個人化職涯選擇。</div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    <div class="card__title">輕鬆應對求職</div>
+                    <div class="card__desc">工作越換越好<br>
+                        機會就像小偷，來的時候無聲無息，走的時候損失慘重！把握機會，不需時刻緊盯著它，只需專注當下的工作，當好機會上門時，再從容優雅的決定是否應徵。</div>
+                </div>
+            </div>
+        </section>
+        <!-- <div class="admin__bannerGroup">
             <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
             <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
                 loading="lazy" alt="title" />
@@ -21,12 +87,6 @@
                         Job Pair
                     </div>
                 </div>
-                <MoleculeHomeCard title="保護您的聯絡方式、年齡、婚姻狀態等個資"></MoleculeHomeCard>
-                <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
-                <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
-                <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
-                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="有" othersDesc="無">
-                </MoleculeHomeCard>
             </div>
         </div>
         <div class="admin__definition">
@@ -62,12 +122,12 @@
                     <span class="anchor__name">{{ item.organizationName }}</span>
                 </NuxtLink>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
 export default {
-    name: 'admin',
+    name: 'home',
 }
 </script>
 <script setup>
@@ -134,326 +194,155 @@ function routeToQuestions() {
 }
 </script>
 <style lang="scss" scoped>
-.admin {
-    .admin__bannerGroup {
-        background-image: url('@/assets/index/banner@3x.webp');
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        min-height: 100vw;
+.home {
+    text-align: center;
+    background-color: rgba(10, 179, 120, 0.10);
+    padding-top: 20px;
+    // padding: 40px 20px 0px 20px;
 
-        .admin__banner {
-            position: absolute;
-            display: block;
-            width: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .admin__title {
-            width: 280px;
-            position: absolute;
-            top: calc(50% - 16px);
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-        }
-
-        .admin__title--desktop {
-            display: none;
-        }
-
-        .admin__button {
-            position: absolute;
-            top: calc(50% + 72px);
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid #FFFFFF;
-            border-radius: 50px;
-            background-color: rgba(0, 0, 0, 0);
-            color: white;
-            padding: 10px 33px;
-        }
+    .home__banner {
+        // display: block;
+        // margin
+        // margin-top: 40px;
     }
 
-    .admin__cardGroup {
-        padding: 40px 0;
-        background-color: white;
 
-        .cardGroup__header {
-            text-align: center;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 130%;
-            color: #EEB540;
-        }
+    .home__title {
+        color: #0AB378;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 64px;
+        /* 160% */
+        letter-spacing: 2px;
+        margin-top: 25px;
+    }
 
-        .cardGroup__body {
+    .home__desc {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px;
+        /* 166.667% */
+        letter-spacing: 0.9px;
+        margin-top: 25px;
+        text-align: left;
+    }
+
+    .home__btn {
+        border-radius: 40px;
+        background: #0AB378;
+        padding: 20px 30px;
+        color: white;
+        border: none;
+        width: 188px;
+        font-size: 18px;
+        margin-top: 25px;
+        margin-bottom: 40px;
+    }
+
+    .home__groupTitle {
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 44px;
+        /* 122.222% */
+        letter-spacing: 3.6px;
+    }
+
+    .home__cardGroup {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+
+        .cardGroup__card {
+            width: 335px;
+            height: 335px;
+            border-radius: 50%;
+
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            margin-top: 20px;
-            position: inherit;
             align-items: center;
-        }
-    }
-
-    .admin__definition {
-        background-image: url('@/assets/index/bg_home.webp');
-        padding: 80px 30px;
-
-        .definition__title {
-            color: #EEB540;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 158%;
-        }
-
-        .definition__hr {
-            border: 1px solid #FFFFFF;
-            opacity: 1;
-        }
-
-        .definition__desc {
-            font-style: normal;
-            font-weight: 400;
-            font-size: 18px;
-            line-height: 150%;
-            color: #FFFFFF;
-        }
-    }
-
-    .admin__partner {
-        padding: 40px 52px;
-        background-color: white;
-
-        .partner__header {
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 130%;
-            color: #EEB540;
-            text-align: center;
-            margin-bottom: 27px;
-        }
-
-        .partner__bodyGroup {
-            display: flex;
-            flex-direction: column;
-            gap: 34px;
-            justify-content: space-between;
-        }
-
-        .partner__anchor {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 42px;
             justify-content: center;
 
-            .anchor__image {
-                width: 34px;
-                height: 34px;
+            .card__image {}
+
+            .card__title {
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 110%;
+                /* 26.4px */
+                letter-spacing: 1.2px;
+                margin-top: 15px;
             }
 
-            .anchor__name {
+            .card__desc {
+                font-size: 18px;
                 font-style: normal;
                 font-weight: 400;
-                font-size: 16px;
-                line-height: 130%;
-                color: #707070;
-                max-width: 170px;
-                white-space: pre-wrap;
+                line-height: 30px;
+                /* 166.667% */
+                letter-spacing: 0.9px;
+                width: 275px;
+                margin-top: 15px;
             }
+        }
+
+        .cardGroup__card--yellow {
+            background: #FFD600;
+        }
+
+        .cardGroup__card--green {
+            color: white;
+            background: #0AB378;
+        }
+
+        .cardGroup__card--blue {
+            background: #32D7D1;
         }
     }
-}
 
-@media screen and (min-width:992px) {
-    .admin {
+    .home__section {
+        padding: 40px 20px;
+    }
 
-        .admin__bannerGroup {
-            background-image: url('@/assets/index/img1.webp');
-            background-size: contain;
-            min-height: 50vw;
+    .home__section--white {
+        background-color: white;
+    }
 
-            .admin__title {
-                display: none;
-            }
+    .home__textGroup {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
 
-            .admin__title--desktop {
-                display: block;
-                transform: unset;
-                top: 16vw;
-                left: 12vw;
-                width: 44vw;
-            }
-
-            .admin__button {
-                position: absolute;
-                top: 29vw;
-                left: 12vw;
-                transform: unset;
-                border: 1px solid #FFFFFF;
-                border-radius: 50px;
-                background-color: rgba(0, 0, 0, 0);
-                color: white;
-                padding: 10px 33px;
-                width: 224px;
-                height: 70px;
-                font-weight: 900;
+        .textGroup__card {
+            .card__title {
+                color: #0AB378;
                 font-size: 30px;
-                line-height: 130%;
-            }
-        }
-
-        .admin__cardGroup {
-            position: relative;
-            padding: 92px 0px;
-            margin: auto;
-
-            .cardGroup__decoration {
-                position: absolute;
-            }
-
-            .cardGroup__decoration--1 {
-                top: 321px;
-                left: 0;
-            }
-
-            .cardGroup__decoration--2 {
-                bottom: 100px;
-                right: 0;
-            }
-
-            .cardGroup__header {
-                font-size: 50px;
-                font-weight: 900;
-                font-stretch: normal;
                 font-style: normal;
-                line-height: normal;
-                letter-spacing: normal;
-                text-align: center;
-                color: #eeb540;
+                font-weight: 600;
+                line-height: 30px;
+                /* 100% */
+                letter-spacing: 1.5px;
+                margin-top: 25px;
             }
 
-            .cardGroup__body {
-                margin: auto;
-                margin-top: 70px;
-                width: 868px;
-
-                .body__title {
-                    display: flex;
-                    gap: 501px;
-
-                    .title__others {
-                        font-size: 28px;
-                        font-weight: 900;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: normal;
-                        letter-spacing: normal;
-                        text-align: left;
-                        color: #317292;
-                    }
-
-                    .title__jobPair {
-                        font-size: 28px;
-                        font-weight: bold;
-                        font-stretch: normal;
-                        font-style: normal;
-                        line-height: normal;
-                        letter-spacing: normal;
-                        text-align: left;
-                        color: #317292;
-                    }
-                }
-            }
-        }
-
-        .admin__definition {
-            background-image: url('@/assets/index/img2.webp');
-            height: 634px;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-
-            .definition__round {
-                position: absolute;
-                top: 0;
-                right: 10vw;
-            }
-
-            .definition__textGroup {
-                position: absolute;
-                top: 154px;
-                right: calc(10vw + 81px);
-                width: 565px;
-
-                .definition__title {
-                    font-style: normal;
-                    font-weight: 700;
-                    font-size: 36px;
-                    line-height: 158%;
-                }
-
-                .definition__desc {
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 30px;
-                    line-height: 200%;
-                    color: #FFFFFF;
-                }
-            }
-
-        }
-
-        .admin__partner {
-            padding: 60px 307px;
-            background-color: white;
-
-            .partner__header {
+            .card__desc {
+                text-align: left;
+                margin-top: 25px;
+                font-size: 18px;
                 font-style: normal;
-                font-weight: 700;
-                font-size: 50px;
-                line-height: 158%;
-                color: #EEB540;
-            }
-
-            .partner__bodyGroup {
-                display: flex;
-                flex-direction: row;
-                gap: 60px;
-                flex-wrap: wrap;
-                max-width: 1304px;
-                margin: auto;
-            }
-
-            .partner__anchor {
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                gap: 42px;
-                justify-content: center;
-
-                .anchor__image {
-                    width: 54px;
-                    height: 54px;
-                }
-
-                .anchor__name {
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 16px;
-                    line-height: 130%;
-                    color: #707070;
-                    max-width: 170px;
-                    white-space: pre-wrap;
-                }
+                font-weight: 400;
+                line-height: 30px;
+                /* 166.667% */
+                letter-spacing: 0.9px;
             }
         }
+
     }
 }
 </style>
