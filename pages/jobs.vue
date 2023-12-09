@@ -197,7 +197,7 @@ onMounted(() => {
         return
     }
     // 造成第一個query會打兩次
-    jobScroller.initializeSearch({ isCache: false })
+    jobScroller.searchJobs({ isCache: false })
 })
 watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
@@ -209,16 +209,20 @@ watch(() => repoAuth.state.user, (user) => {
         return
     }
     // 附加occupationalCateogry
-    jobScroller.state.filter = jobScroller.getDefaultFilter({ isCache: true })
+    const defualtFilter = jobScroller.getDefaultFilter({ isCache: true })
+    if (user && user.occupationalCategory) {
+        defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
+    }
+    jobScroller.state.filter = defualtFilter
 }, { immediate: true }) // IMPORTANT: 這個immediate必須要設定
 watch(() => jobScroller.state.filter, (newValue) => {
     if (!process.client) {
         return
     }
     if (repoAuth.state.user?.id) {
-        jobScroller.initializeSearch()
+        jobScroller.searchJobs()
     } else {
-        jobScroller.initializeSearch({ isCache: false })
+        jobScroller.searchJobs({ isCache: false })
     }
 }, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
@@ -233,7 +237,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
 }, { immediate: true })
 // methods
 function handleSearch() {
-    jobScroller.initializeSearch()
+    jobScroller.searchJobs()
 }
 function getFilterValues() {
     const values = Object.values(jobScroller.state.filter)
@@ -266,7 +270,7 @@ async function setPageOrderBy(key) {
     } else {
         jobScroller.state.pagination.pageLimit = 5
     }
-    await jobScroller.initializeSearch({
+    await jobScroller.searchJobs({
         immediate: true,
         isLoading: true,
     })

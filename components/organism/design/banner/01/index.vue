@@ -129,7 +129,6 @@ watch(() => localValue.value, (newValue) => {
 }, { immediate: true })
 // methods
 function setDesignBannerJobs(jobsLength = 0) {
-    console.log('setDesignBannerJobs', jobsLength);
     state.jobsLength = jobsLength
 }
 function emitScrollEvent() {

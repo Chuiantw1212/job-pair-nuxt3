@@ -72,6 +72,10 @@ const props = defineProps({
     },
     validate: {
         type: Function,
+    },
+    lowerCase: {
+        type: String,
+        default: false,
     }
 })
 onMounted(() => {
@@ -91,6 +95,9 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
+        if (props.lowerCase) {
+            newValue = String(newValue).toLowerCase()
+        }
         emit("update:modelValue", newValue)
     },
 })
@@ -135,7 +142,6 @@ function handleValidate() {
 function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
-
         regexCode += 1
     }
     if (props.types.includes('english')) {
