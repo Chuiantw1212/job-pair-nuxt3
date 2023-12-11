@@ -96,22 +96,26 @@
                 </div>
             </div>
         </section>
-        <section class="home__section home__section--partner">
-            <h2 class="partner__title">合作伙伴</h2>
-            <div class="partner__bodyGroup">
-                <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index" :href="item?.url?.default"
-                    target="_blank" aria-label="more about this company">
-                    <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
-                </a>
-            </div>
-            <h2 class="partner__title partner__title--mt">合作企業</h2>
-            <div class="partner__bodyGroup">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
-                    :to="`/company/${item.organizationId}`" aria-label="more about this company">
-                    <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
-                        :src="item.image" />
-                </NuxtLink>
-            </div>
+        <section v-if="state.affiliate.length || state.jobProvider.length" class="home__section home__section--partner">
+            <template v-if="state.affiliate.length">
+                <h2 class="partner__title">合作伙伴</h2>
+                <div class="partner__bodyGroup">
+                    <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
+                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                        <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
+                    </a>
+                </div>
+            </template>
+            <template v-if="state.jobProvider.length">
+                <h2 class="partner__title partner__title--mt">合作企業</h2>
+                <div class="partner__bodyGroup">
+                    <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
+                        :to="`/company/${item.organizationId}`" aria-label="more about this company">
+                        <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                            :src="item.image" />
+                    </NuxtLink>
+                </div>
+            </template>
         </section>
         <section class="home__section home__section--footer">
             <img class="footer__image" src="@/assets/index/Frame24731.png" alt="job pair">
