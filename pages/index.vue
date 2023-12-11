@@ -66,6 +66,36 @@
                 </div>
             </div>
         </section>
+        <section class="home__section home__section--green">
+            <h2 class="home__title">Job Pair 團隊理念</h2>
+            <div class="home__desc">
+                找工作不用再大海撈針。
+                只需要三分鐘勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
+            </div>
+            <div class="home__cardGroups">
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 謝謝 Job Pair 幫我找到很讚的工作！ ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">EN</div>
+                        <div class="bottom__title">高級工程師</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 謝謝 Job Pair 幫我找到很讚的工作！ ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">EN</div>
+                        <div class="bottom__title">高級工程師</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 謝謝 Job Pair 幫我找到很讚的工作！ ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">EN</div>
+                        <div class="bottom__title">高級工程師</div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- <div class="admin__bannerGroup">
             <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
             <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
@@ -311,6 +341,67 @@ function routeToQuestions() {
 
     .home__section--white {
         background-color: white;
+    }
+
+    .home__section--green {
+        background: #0AB378;
+
+        .home__title {
+            color: #FFD600;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 36px;
+            /* 100% */
+            letter-spacing: 3.6px;
+        }
+
+        .home__desc {
+            margin-top: 25px;
+            color: white;
+        }
+
+        .home__cardGroups {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            margin-top: 25px;
+
+            .cardGroups__card {
+                padding: 30px;
+                min-width: 335px;
+                height: 254px;
+                border-radius: 16px;
+                background: #FFF;
+                box-shadow: 0px 4px 6px 0px rgba(166, 166, 166, 0.30);
+                text-align: left;
+                position: relative;
+
+                .card__bottom {
+                    position: absolute;
+                    bottom: 30px;
+                    color: #1A1A31;
+
+                    .bottom__name {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 30px;
+                        /* 166.667% */
+                        letter-spacing: 0.9px;
+                    }
+
+                    .bottom__title {
+                        font-size: 13px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 20px;
+                        /* 153.846% */
+                        letter-spacing: 0.65px;
+                    }
+                }
+            }
+        }
     }
 
     .home__textGroup {
