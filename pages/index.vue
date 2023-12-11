@@ -13,7 +13,7 @@
             <button class="home__btn" @click="routeToQuestions()">開始配對</button>
         </section>
         <section class="home__section">
-            <h2 class="home__groupTitle">
+            <h2 class="new__groupTitle">
                 怎麼讓符合需求的工作主動送上門？
             </h2>
             <div class="home__cardGroup">
@@ -34,11 +34,11 @@
                 </div>
             </div>
         </section>
-        <section class="home__section home__section--white">
-            <h2 class="home__groupTitle">
+        <section class="home__section home__section--new">
+            <h2 class="new__groupTitle">
                 新時代的求職網
             </h2>
-            <div class="home__textGroup">
+            <div class="new__textGroup">
                 <div class="textGroup__card">
                     <img class="card__image" alt="img4" src="@/assets/index/Frame2500.png">
                     <div class="card__title">用自己的履歷</div>
@@ -96,6 +96,25 @@
                 </div>
             </div>
         </section>
+        <section class="home__section home__section--partner">
+            <h2 class="partner__title">合作伙伴</h2>
+            <div class="partner__bodyGroup">
+                <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index" :href="item?.url?.default"
+                    target="_blank" aria-label="more about this company">
+                    <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
+                    <span class="anchor__name">{{ item.name }}</span>
+                </a>
+            </div>
+            <h2 class="partner__title">合作企業</h2>
+            <div class="partner__bodyGroup">
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
+                    :to="`/company/${item.organizationId}`" aria-label="more about this company">
+                    <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                        :src="item.image" />
+                    <span class="anchor__name">{{ item.organizationName }}</span>
+                </NuxtLink>
+            </div>
+        </section>
         <!-- <div class="admin__bannerGroup">
             <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
             <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
@@ -144,14 +163,7 @@
                 </div>
             </template>
             <h1 class="partner__header mt-5">與我們合作的企業</h1>
-            <div class="partner__bodyGroup">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
-                    :to="`/company/${item.organizationId}`" aria-label="more about this company">
-                    <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
-                        :src="item.image" />
-                    <span class="anchor__name">{{ item.organizationName }}</span>
-                </NuxtLink>
-            </div>
+
         </div> -->
     </div>
 </template>
@@ -178,7 +190,6 @@ const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/co
 state.affiliate = companyList.value
 onMounted(async () => {
     if (process.client) {
-        // initialGlide()
         const response = await repoJob.getJobByQuery({
             pageOrderBy: "datePosted",
             pageLimit: 15,
@@ -228,13 +239,6 @@ function routeToQuestions() {
     text-align: center;
     background-color: rgba(10, 179, 120, 0.10);
     padding-top: 20px;
-    // padding: 40px 20px 0px 20px;
-
-    .home__banner {
-        // display: block;
-        // margin
-        // margin-top: 40px;
-    }
 
 
     .home__title {
@@ -269,15 +273,6 @@ function routeToQuestions() {
         font-size: 18px;
         margin-top: 25px;
         margin-bottom: 40px;
-    }
-
-    .home__groupTitle {
-        font-size: 36px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 44px;
-        /* 122.222% */
-        letter-spacing: 3.6px;
     }
 
     .home__cardGroup {
@@ -339,8 +334,49 @@ function routeToQuestions() {
         padding: 40px 20px;
     }
 
-    .home__section--white {
+    .home__section--new {
         background-color: white;
+
+        .new__groupTitle {
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 44px;
+            /* 122.222% */
+            letter-spacing: 3.6px;
+        }
+
+        .new__textGroup {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+
+            .textGroup__card {
+                .card__title {
+                    color: #0AB378;
+                    font-size: 30px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 30px;
+                    /* 100% */
+                    letter-spacing: 1.5px;
+                    margin-top: 25px;
+                }
+
+                .card__desc {
+                    text-align: left;
+                    margin-top: 25px;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                }
+            }
+
+        }
     }
 
     .home__section--green {
@@ -404,36 +440,12 @@ function routeToQuestions() {
         }
     }
 
-    .home__textGroup {
-        margin-top: 25px;
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
+    .home__section--partner {
 
-        .textGroup__card {
-            .card__title {
-                color: #0AB378;
-                font-size: 30px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: 30px;
-                /* 100% */
-                letter-spacing: 1.5px;
-                margin-top: 25px;
-            }
-
-            .card__desc {
-                text-align: left;
-                margin-top: 25px;
-                font-size: 18px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 30px;
-                /* 166.667% */
-                letter-spacing: 0.9px;
-            }
+        .partner__title {
+        
         }
-
     }
+
 }
 </style>
