@@ -102,69 +102,20 @@
                 <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index" :href="item?.url?.default"
                     target="_blank" aria-label="more about this company">
                     <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
-                    <span class="anchor__name">{{ item.name }}</span>
                 </a>
             </div>
-            <h2 class="partner__title">合作企業</h2>
+            <h2 class="partner__title partner__title--mt">合作企業</h2>
             <div class="partner__bodyGroup">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
+                <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
                     :to="`/company/${item.organizationId}`" aria-label="more about this company">
                     <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
                         :src="item.image" />
-                    <span class="anchor__name">{{ item.organizationName }}</span>
                 </NuxtLink>
             </div>
         </section>
-        <!-- <div class="admin__bannerGroup">
-            <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
-            <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
-                loading="lazy" alt="title" />
-            <button class="admin__button" @click="routeToQuestions()">開始配對</button>
-        </div>
-        <div class="admin__cardGroup">
-            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="@/assets/index/bg2.webp" alt="decoration" />
-            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="@/assets/index/bg3.webp" alt="decoration" />
-            <div class="cardGroup__body">
-                <div v-if="device.state.isLarge" class="body__title">
-                    <div class="title__others">
-                        一般求職平台
-                    </div>
-                    <div class="title__jobPair">
-                        Job Pair
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="admin__definition">
-            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp"
-                alt="background" preload loading="lazy" />
-            <div class="definition__textGroup">
-                <div class="definition__title">
-                    如何配對適合的工作？
-                </div>
-                <hr class="definition__hr">
-                <div class="definition__desc">
-                    勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
-                </div>
-            </div>
-        </div>
-        <div class="admin__partner">
-            <template v-if="state.affiliate && state.affiliate.length !== 0">
-                <h1 class="partner__header">與我們合作的夥伴</h1>
-                <div class="partner__bodyGroup">
-                    <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
-                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
-                        <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
-                        <span class="anchor__name">{{ item.name }}</span>
-                    </a>
-                </div>
-            </template>
-            <h1 class="partner__header mt-5">與我們合作的企業</h1>
-
-        </div> -->
+        <section class="home__section home__section--footer">
+            <img class="footer__image" src="@/assets/index/Frame24731.png" alt="job pair">
+        </section>
     </div>
 </template>
 <script>
@@ -176,7 +127,6 @@ export default {
 const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
-const device = useDevice()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const state = reactive({
@@ -441,10 +391,43 @@ function routeToQuestions() {
     }
 
     .home__section--partner {
+        padding: 40px 0px;
 
         .partner__title {
-        
+            color: #0AB378;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            /* 0% */
+            letter-spacing: 3.6px;
         }
+
+        .partner__title--mt {
+            margin-top: 40px;
+        }
+
+        .partner__bodyGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            margin-top: 50px;
+
+            .bodyGroup__anchor {
+                .anchor__image {
+                    width: 75px;
+                    height: auto;
+                }
+            }
+        }
+    }
+
+    .home__section--footer {
+        padding: 0px;
+
+        .footer__image {
+            width: 100vw;
+        }
+
     }
 
 }
