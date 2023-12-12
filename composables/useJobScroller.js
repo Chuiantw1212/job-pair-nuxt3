@@ -1,6 +1,7 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
+const { $requestSelectorAll } = useNuxtApp()
 export default function setup(setUpConfig = {}) {
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
     const { $sweet } = useNuxtApp()
@@ -143,15 +144,16 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        nextTick(() => {
-            const elements = document.querySelectorAll(selectorString)
+        console.log('observeLastJob', selectorString);
+        $requestSelectorAll(selectorString, (elements) => {
+            console.log('state.observer', state.observer);
             if (!state.observer) {
                 state.observer = new IntersectionObserver(loadNextFrameJobs, {
-                    rootMargin: "0px",
-                    threshold: 0,
+                    threshold: 1,
                 })
             }
             const target = elements[elements.length - 1]
+            console.log('observe', target);
             if (target) {
                 state.observer.disconnect()
                 state.observer.observe(target)
