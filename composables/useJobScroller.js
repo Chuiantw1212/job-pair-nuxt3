@@ -3,7 +3,7 @@
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup(setUpConfig = {}) {
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
-    const { $sweet } = useNuxtApp()
+    const { $sweet, $requestSelectorAll } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
@@ -143,15 +143,16 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        nextTick(() => {
-            const elements = document.querySelectorAll(selectorString)
+        console.log('observeLastJob', selectorString);
+        $requestSelectorAll(selectorString, (elements) => {
+            console.log('state.observer', state.observer);
             if (!state.observer) {
                 state.observer = new IntersectionObserver(loadNextFrameJobs, {
-                    rootMargin: "0px",
-                    threshold: 0,
+                    threshold: 1,
                 })
             }
             const target = elements[elements.length - 1]
+            console.log('observe', target);
             if (target) {
                 state.observer.disconnect()
                 state.observer.observe(target)

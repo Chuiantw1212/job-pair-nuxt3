@@ -6,7 +6,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "build": "nuxt build",
-    "predeploy": "cd .output/server && rimraf node_modules && npm install &&firebase login:use ian.chu@job-pair.com && gcloud config configurations activate prd && firebase use job-pair-taiwan-prd",
+    "postbuild": "cd .output/server && rimraf node_modules && npm install",
+    "predeploy": "firebase login:use ian.chu@job-pair.com && gcloud config configurations activate prd && firebase use job-pair-taiwan-prd",
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
     "analyze": "npx nuxi analyze"
