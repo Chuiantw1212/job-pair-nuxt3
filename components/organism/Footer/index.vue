@@ -1,13 +1,13 @@
 <template>
     <div class="footer">
-        <img class="footer__logo" src="./Vector.svg">
+        <img class="footer__logo" alt="logo" src="./Vector.svg">
         <div class="footer__rights">
             @ 2023 Job Pair . All rights reserved.
         </div>
         <div class="footer__textGroups">
-            <a class="textGroups__anchor">
-                <img class="anchor__image" src="./link.svg">
-            </a>
+            <!-- <div class="textGroups__anchor">
+                <img class="anchor__image" alt="logo" src="./link.svg">
+            </div> -->
             <a class="textGroups__anchor"
                 href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf">
                 條款
@@ -61,6 +61,19 @@ export default {}
 }
 
 @media screen and (min-width: 991px) {
-    .footer {}
+    .footer {
+        display: flex;
+        align-items: center;
+        padding: 24px 96px;
+
+        .footer__rights {
+            margin: 0;
+            margin-left: 48px;
+        }
+
+        .footer__textGroups {
+            margin-left: auto;
+        }
+    }
 }
 </style>

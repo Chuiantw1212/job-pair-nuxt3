@@ -78,8 +78,8 @@
             </div>
         </section>
         <section class="home__section home__section--jp">
-            <img class="d-none d-lg-block jp_heart" src="@/assets/index/Vector.svg">
-            <img class="d-none d-lg-block jp_logo" src="@/assets/index/jp.svg">
+            <img class="jp_heart" alt="heart" src="@/assets/index/Vector.svg">
+            <img class="jp_logo" alt="logo" src="@/assets/index/jp.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
                 找工作不用再大海撈針。<br>
@@ -274,6 +274,7 @@ function routeToQuestions() {
     }
 
     .home__section--manual {
+
         .manual__title {
             font-size: 36px;
             font-style: normal;
@@ -386,6 +387,21 @@ function routeToQuestions() {
 
     .home__section--jp {
         background: #0AB378;
+
+        .jp_heart {
+            position: absolute;
+            left: 0;
+            top: 50px;
+            display: none;
+        }
+
+        .jp_logo {
+            position: absolute;
+            right: 0;
+            top: 0px;
+            height: 400px;
+            display: none;
+        }
 
         .jp__title {
             color: #FFD600;
@@ -540,6 +556,8 @@ function routeToQuestions() {
         }
 
         .home__section--manual {
+            height: 360px;
+
             .manual__title {
                 font-size: 36px;
                 font-style: normal;
@@ -593,6 +611,7 @@ function routeToQuestions() {
                 font-weight: 600;
                 /* 0% */
                 letter-spacing: 3.6px;
+                margin-top: 80px;
             }
 
             .new__textGroup {
@@ -634,6 +653,7 @@ function routeToQuestions() {
                 position: absolute;
                 left: 0;
                 top: 50px;
+                display: block;
             }
 
             .jp_logo {
@@ -641,6 +661,7 @@ function routeToQuestions() {
                 right: 0;
                 top: 0px;
                 height: 400px;
+                display: block;
             }
 
             .jp__title {
