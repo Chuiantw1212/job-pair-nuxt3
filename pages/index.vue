@@ -62,8 +62,8 @@
                     <img class="card__image" alt="img6" src="@/assets/index/Frame2502.png">
                     <div class="card__group">
                         <h3 class="card__title">沒有垃圾信件</h3>
-                        <div class="card__desc">零垃圾信件<br>
-                            在這裡，你不會被淹沒在無關緊要的郵件中。我們不會向你派送不相關的工作機會或冗長的廣告信件。你將專注於精準的應徵，不再費神篩選出真正的機會。沒有垃圾信件，只有專屬於你的個人化職涯選擇。
+                        <div class="card__desc">減少廣告騷擾<br>
+                            我們不會發送無用的廣告信，讓你遠離職缺廣告的騷擾。配對職缺除了要符合需求，還要讓對你真正有興趣的廠商發送邀請，讓你專注收取對職涯有益的機會邀請。
                         </div>
                     </div>
                 </div>
