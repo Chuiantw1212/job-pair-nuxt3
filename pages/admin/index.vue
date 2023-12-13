@@ -1,103 +1,166 @@
 <template>
-    <div class="companyHome">
-        <div class="container__banner">
-            <img v-if="device.state.isLarge" class="banner__image" src="@/assets/admin/index/img_banner2.webp" alt="banner">
-            <img v-else class="banner__image" src="@/assets/admin/index/img_banner_phone@2x.webp" alt="banner">
-            <button class="companyHome__btn banner__button" @click="openAdminModal()">
-                免費加入
-            </button>
-        </div>
-        <div class="container__section">
-            <h2 class="section__header">大缺工時代，人難找嗎？</h2>
-            <img class="d-none d-lg-block section__decoration section__decoration--1"
-                src="@/assets/admin/index/Maskgroup.webp" alt="decoration" loading="lazy">
-            <img class="d-none d-lg-block section__decoration section__decoration--2"
-                src="@/assets/admin/index/Group459.webp" alt="decoration" loading="lazy">
-            <div class="section__card section__card--left">
-                <img class="section__image section__image--1" src="@/assets/admin/index/img1@2x.webp" alt="issue1"
-                    format="webp" loading="lazy" />
-                <h3 class="card__header">
-                    <span class="header__decoration">
-                        不花錢買廣告
-                    </span>
-                    ，很難被看見？
-                </h3>
-                <div class="card__body">求職者在搜尋職缺時，是透過「適配度」排序，讓適合的人才更快看到你的公司。</div>
-            </div>
-            <div class="section__card section__card--right">
-                <img class="section__image section__image--2" src="@/assets/admin/index/img2.webp" alt="issue2"
-                    format="webp" loading="lazy" />
-                <h3 class="card__header">
-                    要怎麼<span class="header__decoration">提升招聘效能</span>，減少時間成本呢？
-                </h3>
-                <div class="card__body">透過「適配度」排序，不用一下子看上百封履歷，直接從最適合的人選評估安排面試優先順序。</div>
-            </div>
-            <div class="section__card section__card--left">
-                <img class="section__image section__image--3" src="@/assets/admin/index/img3.webp" alt="issue3"
-                    format="webp" loading="lazy" />
-                <h3 class="card__header">
-                    好不容易徵到人，<span class="header__decoration">怎麼又離職了</span>？
-                </h3>
-                <div class="card__body">讓用人單位自行決定用人偏好，降低到職後因文化、合作與溝通模式的落差而產生流動率。</div>
-            </div>
-        </div>
-        <div class="container__section container__section--blue">
-            <h2 class="section__header">用最快、最有效的專業方式找到最精準的人才</h2>
-            <div class="section__body">
-                <div class="section__card mt-4">
-                    <div class="card__headerGroup">
-                        <img class="header__image header__image--1" src="@/assets/admin/index/img4@2x.webp" format="webp"
-                            alt="advantage1" loading="lazy" />
-                        <div class="header__text">提升招聘效能</div>
-                    </div>
-                    <div class="card__body">人們傾向相信自己意願的選擇；透過求職偏好的篩選，所選出的職缺，不是依據公司大小、品牌知名度，而是個人的需求，強化人選投遞的意願。<br><br>
-                        只要在Job Pair上架職缺，所收到的履歷可以透過「適配度」排序，因此人資不用一下子看上百封履歷，還能透過「適配度」來安排面試的優先順序。</div>
+    <div class="home">
+        <section class="home__section home__section--landing">
+            <img class="landing__banner" alt="banner" src="@/assets/admin/index/KV11.png">
+            <div class="landing__textGroup">
+                <h1 class="textGroup__title">
+                    打造企業與人才的
+                    <br>
+                    完美適配
+                </h1>
+                <div class="textGroup__desc">
+                    輕鬆升級僱主品牌，提升企業網路能見度
                 </div>
-                <div class="section__card mt-4">
-                    <div class="card__headerGroup">
-                        <img class="header__image header__image--2" src="@/assets/admin/index/img5@2x.webp" format="webp"
-                            alt="advantage2" loading="lazy" />
-                        <div class="header__text">精準找到合適人選</div>
-                    </div>
-                    <div class="card__body">
-                        每位主管需求與做事方法都不一樣，除了工作職掌，合作與溝通模式也是重點。然求職者為了獲取工作機會，面試時會刻意表現出高度配合，難以判斷到職後能否融入組織。<br><br>
-                        Job Pair讓用人單位自行決定用人偏好，讓符合主管需求的求職者投遞履歷，降低到職後因文化、合作與溝通模式的落差而產生流動率。</div>
+                <button class="textGroup__btn" @click="openAdminModal()">立即開始</button>
+            </div>
+        </section>
+        <!-- <section class="home__section home__section--manual">
+            <h2 class="manual__title">
+                怎麼讓符合需求的工作主動送上門？
+            </h2>
+            <div class="manual__cardGroup">
+                <div class="cardGroup__card cardGroup__card--yellow">
+                    <img class="card__image" alt="img1" src="@/assets/index/icons-02.svg">
+                    <h3 class="card__title">選擇工作需求</h3>
+                    <div class="card__desc">針對企業文化與工作環境，回覆你的需求</div>
                 </div>
-                <div class="section__card mt-4">
-                    <div class="card__headerGroup">
-                        <img class="header__image header__image--3" src="@/assets/admin/index/img6@2x.webp" format="webp"
-                            alt="advantage3" loading="lazy" />
-                        <div class="header__text">節省成本</div>
-                    </div>
-                    <div class="card__body">
-                        根據美國人力資源管理協會的報告指出，一位因不適應公司文化離職的員工，浪費的人事成本可以高達其年薪的50%-60%。<br><br>
-
-                        在Job Pair上架職缺，透過精心設計的用人偏好，讓適合的人加入不只強化企業文化，人資與用人單位更能有效率的招募到人選，進而減少成本、流動率，提升績效與組織凝聚力。
-                    </div>
+                <div class="cardGroup__card cardGroup__card--green">
+                    <img class="card__image" alt="img2" src="@/assets/index/icons-05.svg">
+                    <h3 class="card__title">選擇職務種類</h3>
+                    <div class="card__desc">不論是正職兼職或接案，都能在此進行媒合</div>
+                </div>
+                <div class="cardGroup__card cardGroup__card--blue">
+                    <img class="card__image" alt="img3" src="@/assets/index/icons-04.svg">
+                    <h3 class="card__title">快速介紹自己</h3>
+                    <div class="card__desc">寫下你的過往經驗，或用AI生成器為你撰寫</div>
                 </div>
             </div>
-        </div>
-        <div class="container__section container__section--affiliate">
-            <h2 class="affiliate__header">我們的合作夥伴</h2>
-            <div class="affiliate__body">
-                <a v-for="(item, index) in state.affiliate" class="body__imageWrap" :key="index" :href="item?.url?.default"
-                    target="_blank" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.logo" loading="lazy" />
-                </a>
+        </section> -->
+        <section class="home__section home__section--new">
+            <h2 class="new__title">
+                為什麼 Job Pair 更優秀？
+            </h2>
+            <div class="new__textGroup">
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img4" src="@/assets/admin/index/Frame2500.png">
+                    <div class="card__group">
+                        <h3 class="card__title">媒合型機制</h3>
+                        <div class="card__desc">Job Pair採用「媒合型」的人才配對方式，透過適配度匹配求職者和企業，從源頭上提升媒合的精準度，使得招聘更為有效。</div>
+                    </div>
+                </div>
+                <div class="textGroup__card textGroup__card--reverse">
+                    <img class="card__image" alt="img5" src="@/assets/admin/index/Frame2501.png">
+                    <div class="card__group">
+                        <h3 class="card__title">專注內在需求</h3>
+                        <div class="card__desc">Job Pair注重求職者的內在需求，包括企業文化、工作環境、管理模式等，有助於減少不適應而快速離職的風險，提高到職率。
+                        </div>
+                    </div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img6" src="@/assets/admin/index/Frame2502.png">
+                    <div class="card__group">
+                        <h3 class="card__title">客製化企業頁面</h3>
+                        <div class="card__desc">Job Pair提供客製化企業頁面的服務，使企業能夠在平台上呈現獨特的形象，突顯企業文化，提升品牌吸引力。
+                        </div>
+                    </div>
+                </div>
+                <div class="textGroup__card textGroup__card--reverse">
+                    <img class="card__image" alt="img7" src="@/assets/admin/index/Frame2503.png">
+                    <div class="card__group">
+                        <h3 class="card__title">一鍵帶入功能</h3>
+                        <div class="card__desc">Job Pair的一鍵帶入功能允許企業輕鬆快速地從其他招聘平台導入資訊，降低資料轉移的複雜度，加速上線過程。</div>
+                    </div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img6" src="@/assets/admin/index/Frame2505.png">
+                    <div class="card__group">
+                        <h3 class="card__title">AI智能生成和優化</h3>
+                        <div class="card__desc">Job Pair擁有AI智能生成和AI內容優化功能，能夠快速生成引人注目的招聘內容，並優化現有內容，提高招聘訊息的吸引力。
+                        </div>
+                    </div>
+                </div>
+                <div class="textGroup__card textGroup__card--reverse">
+                    <img class="card__image" alt="img7" src="@/assets/admin/index/Frame2504.png">
+                    <div class="card__group">
+                        <h3 class="card__title">多元招募選項</h3>
+                        <div class="card__desc">Job Pair不僅提供正職兼職招聘，還能配對彈性、短期接案人員，確保企業能夠應對不同時期的人力需求，保持團隊的活力。</div>
+                    </div>
+                </div>
             </div>
-            <h2 class="affiliate__header mt-5">我們的合作對象</h2>
-            <div class="affiliate__body">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="body__imageWrap" :key="index"
-                    :to="`/company/${item.id}`" aria-label="more about this company">
-                    <img class="body__image" alt="logo" :src="item.image" loading="lazy" />
-                </NuxtLink>
+        </section>
+        <section class="home__section home__section--jp">
+            <img class="jp_heart" alt="heart" src="@/assets/admin/index/Vector.svg">
+            <img class="jp_logo" alt="logo" src="@/assets/admin/index/logo.svg">
+            <h2 class="jp__title">Job Pair 團隊理念</h2>
+            <div class="jp__desc">
+                找工作不用再大海撈針。<br>
+                只需要三分鐘勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
             </div>
-        </div>
-        <div class="container__footer">
-            <img class="footer__image d-lg-none" alt="hurry" src="@/assets/admin/index/bg3@2x.webp" loading="lazy">
-            趕快加入 搶人才
-            <button class="companyHome__btn footer__button" @click="openAdminModal()">免費加入</button>
-        </div>
+            <div class="jp__cardGroups">
+                <div class="cardGroups__card">
+                    <div class="card__desc">“ 在Job Pair上架職缺，所收到的履歷可以透過「適配度」排序，因此不用一下子看上百封履歷，還能透過「適配度」來安排面試的優先順序。 ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">Mandy</div>
+                        <div class="bottom__title">HR人力資源主管</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc">“ Job Pair 讓用人單位自行決定用人偏好，讓符合主管需求的求職者投遞履歷，降低到職後因文化、合作與溝通模式的落差而產生流動率。 ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">Sandy</div>
+                        <div class="bottom__title">HR人力資源主管</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 在 Job Pair，透過用人偏好，讓適合的人加入不只強化企業文化，人資與用人單位更能有效率的招募到人選，進而減少成本、流動率，提升績效與組織凝聚力。 ”
+                    </div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">Monica</div>
+                        <div class="bottom__title">人資招募主任</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="home__section home__section--partner">
+            <div v-if="state.affiliate.length" class="partner__part">
+                <h2 class="partner__title">合作伙伴</h2>
+                <div class="partner__bodyGroup">
+                    <!-- <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a> -->
+                    <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
+                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                        <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
+                    </a>
+                </div>
+            </div>
+            <!-- </template> -->
+            <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
+                <h2 class="partner__title partner__title--mt">合作企業</h2>
+                <div class="partner__bodyGroup">
+                    <!-- <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a> -->
+                    <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
+                        :to="`/company/${item.organizationId}`" aria-label="more about this company">
+                        <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                            :src="item.image" />
+                    </NuxtLink>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 <script>
@@ -149,410 +212,576 @@ function openAdminModal() {
 }
 </script>
 <style lang="scss" scoped>
-.companyHome {
-    .companyHome__btn {
-        background-color: #ffd600;
-        border: none;
-        border-radius: 21.5px;
-        font-size: 22px;
-        font-weight: bold;
-        font-stretch: normal;
-        font-style: normal;
-        letter-spacing: normal;
-        color: #332b00;
-        padding: 6px 24px;
-        white-space: nowrap;
-        box-shadow: 0 7px #b29600;
+.home {
+    text-align: center;
+    background-color: rgba(50, 215, 209, 0.10);
+    padding-top: 20px;
+
+
+    .home__section {
+        padding: 40px 20px;
     }
 
-    .container__banner {
-        .banner__image {
-            width: 100vw;
-            height: 130vw;
+    .home__section--landing {
+        .landing__banner {
+            width: 335px;
+            max-width: 743px;
         }
 
-        position: relative;
+        .landing__textGroup {
 
-        .banner__button {
-            position: absolute;
-            left: 50%;
-            bottom: 16vw;
-            transform: translateX(-50%);
-            width: 135px;
+            .textGroup__title {
+                color: #32D7D1;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 64px;
+                /* 160% */
+                letter-spacing: 2px;
+                margin-top: 25px;
+            }
+
+            .textGroup__desc {
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 30px;
+                /* 166.667% */
+                letter-spacing: 0.9px;
+                margin-top: 25px;
+                text-align: center;
+            }
+
+            .textGroup__btn {
+                border-radius: 40px;
+                background: #32D7D1;
+                padding: 20px 30px;
+                color: white;
+                border: none;
+                width: 188px;
+                font-size: 18px;
+                margin-top: 25px;
+                margin-bottom: 40px;
+            }
         }
+
     }
 
+    .home__section--manual {
 
-
-    .container__section {
-        text-align: center;
-        padding: 39px 26px;
-        background-color: #f7f8fc;
-
-        .section__header {
-            font-size: 28px;
-            font-weight: bold;
-            font-stretch: normal;
+        .manual__title {
+            font-size: 36px;
             font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            color: #332b00;
+            font-weight: 600;
+            line-height: 44px;
+            /* 122.222% */
+            letter-spacing: 3.6px;
         }
 
-        .affiliate__header {
-            font-size: 42px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: center;
-            color: #332b00;
-        }
-
-        .affiliate__body {
+        .manual__cardGroup {
+            margin-top: 25px;
             display: flex;
-            justify-content: center;
-            gap: 70px;
-            margin-top: 50px;
-            flex-wrap: wrap;
-            max-width: 66rem;
-            margin: 50px auto auto auto;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
 
-            .body__imageWrap {
-                width: 116px;
-                height: 116px;
+            .cardGroup__card {
+                width: 335px;
+                height: 335px;
                 border-radius: 50%;
-                background-color: white;
-                overflow: hidden;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                .card__image {
+                    width: 445px;
+                }
+
+                .card__title {
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 110%;
+                    /* 26.4px */
+                    letter-spacing: 1.2px;
+                    margin-top: 15px;
+                }
+
+                .card__desc {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                    width: 275px;
+                    margin-top: 15px;
+                }
+            }
+
+            .cardGroup__card--yellow {
+                background: #FFD600;
+            }
+
+            .cardGroup__card--green {
+                color: white;
+                background: #0AB378;
+            }
+
+            .cardGroup__card--blue {
+                background: #32D7D1;
+            }
+        }
+    }
+
+    .home__section--new {
+        background-color: white;
+
+        .new__title {
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 44px;
+            /* 122.222% */
+            letter-spacing: 3.6px;
+        }
+
+        .new__textGroup {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+
+            .textGroup__card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .card__image {
+                    width: 335px;
+                }
+
+                .card__title {
+                    color: #32D7D1;
+                    font-size: 30px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 30px;
+                    /* 100% */
+                    letter-spacing: 1.5px;
+                    margin-top: 25px;
+                }
+
+                .card__desc {
+                    text-align: left;
+                    margin-top: 25px;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                }
+            }
+
+        }
+    }
+
+    .home__section--jp {
+        background: #32D7D1;
+
+        .jp_heart {
+            position: absolute;
+            left: 0;
+            top: 50px;
+            display: none;
+        }
+
+        .jp_logo {
+            position: absolute;
+            right: 0;
+            top: 0px;
+            height: 400px;
+            display: none;
+        }
+
+        .jp__title {
+            color: #FFD600;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 36px;
+            /* 100% */
+            letter-spacing: 3.6px;
+        }
+
+        .jp__desc {
+            margin-top: 25px;
+            color: white;
+            text-align: left;
+        }
+
+        .jp__cardGroups {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            margin-top: 25px;
+
+            .cardGroups__card {
+                padding: 30px;
+                min-width: 335px;
+                height: 254px;
+                border-radius: 16px;
+                background: #FFF;
+                box-shadow: 0px 4px 6px 0px rgba(166, 166, 166, 0.30);
+                text-align: left;
                 position: relative;
 
-                .body__image {
-                    display: block;
-                    margin: auto;
-                    width: 64px;
-                    max-height: 64px;
+                .card__bottom {
                     position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
+                    bottom: 30px;
+                    color: #1A1A31;
+
+                    .bottom__name {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 30px;
+                        /* 166.667% */
+                        letter-spacing: 0.9px;
+                    }
+
+                    .bottom__title {
+                        font-size: 13px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 20px;
+                        /* 153.846% */
+                        letter-spacing: 0.65px;
+                    }
+                }
+            }
+        }
+    }
+
+    .home__section--partner {
+        padding: 40px 0px;
+
+        .partner__part {
+
+            .partner__title {
+                color: #0AB378;
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+            }
+
+            .partner__title--mt {
+                margin-top: 40px;
+            }
+
+            .partner__bodyGroup {
+                display: flex;
+                flex-direction: column;
+                gap: 50px;
+                margin-top: 50px;
+
+                .bodyGroup__anchor {
+
+                    .anchor__image {
+                        width: auto;
+                        height: 70px;
+                    }
+
                 }
             }
         }
 
-        .section__image {
-            left: 50%;
-            transform: translate(-50%, 20px);
-            position: absolute;
-            bottom: 100%;
-        }
-
-        .section__image--1 {
-            width: 195px;
-            height: 225px;
-        }
-
-        .section__image--2 {
-            width: 320px;
-            height: 213px;
-        }
-
-        .section__image--3 {
-            width: 247px;
-            height: 227px;
-        }
-
-        .section__card {
-            border-radius: 10px;
-            border: solid 1px #806b00;
-            background-color: #fff;
-            padding: 30px 20px;
-            text-align: left;
-            position: relative;
-        }
-
-        .section__card--left {
-            margin-top: 250px;
-        }
-
-        .section__card--right {
-            margin-top: 250px;
-        }
-
-        .card__header {
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 1.5;
-            color: #332b00;
-
-            .header__decoration {
-                text-decoration-line: underline;
-                text-decoration-thickness: 8px;
-                text-decoration-color: #ffd600;
-            }
-        }
-
-        .card__body {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: left;
-            color: #707070;
-        }
-
-        .card__headerGroup {
-            font-size: 20px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: center;
-            color: #333;
-
-            .header__text {
-                margin-top: 20px;
-                font-size: 20px;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                color: #333;
-            }
-
-            .header__image--1 {
-                width: 232px;
-                height: 200px;
-            }
-
-            .header__image--2 {
-                width: 232px;
-                height: 200px;
-            }
-
-            .header__image--3 {
-                width: 280px;
-                height: 200px;
-            }
-        }
     }
 
-    .container__section--blue {
-        background-color: #dae7fd;
-    }
-
-    .container__footer {
-        position: fixed;
-        bottom: 0;
-        z-index: 10;
-        width: 100%;
-        background-color: #f7f8fc;
-        height: 60px;
-        font-size: 18px;
-        font-weight: bold;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.5;
-        letter-spacing: normal;
-        color: #332b00;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.1);
+    .home__section--footer {
+        padding: 0px;
 
         .footer__image {
-            width: 70px;
-            height: 51px;
-            position: absolute;
-            bottom: 0;
-            left: 15px;
+            width: 100vw;
         }
 
-        .footer__button {
-            background-color: #ffd600;
-            border: none;
-            border-radius: 21.5px;
-            font-size: 16px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            letter-spacing: normal;
-            color: #332b00;
-            padding: 6px 19px;
-            white-space: nowrap;
-            box-shadow: 0 7px #b29600;
-            position: absolute;
-            right: 15px;
-            top: 11px;
-        }
     }
+
 }
 
-@media screen and (min-width: 992px) {
-    .companyHome {
-        .container__banner {
-            position: relative;
+@media screen and (min-width:992px) {
+    .home {
+        .home__section--landing {
+            display: flex;
+            gap: 100px;
+            justify-content: center;
+            align-items: center;
 
-            .banner__image {
-                width: 100vw;
-                height: 41.1vw;
+            .landing__banner {
+                width: 50vw;
             }
 
-            .banner__button {
-                position: absolute;
-                left: 50%;
-                bottom: 3.5vw;
-                transform: translateX(-50%);
-                width: 239px;
-                height: 60px;
-                border-radius: 100px;
+            .landing__textGroup {
+                text-align: left;
+                max-width: 408px;
+
+                .textGroup__title {
+                    font-size: 48px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 64px;
+                    /* 133.333% */
+                    letter-spacing: 2.4px;
+                }
+
+                .textGroup__desc {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                    margin-top: 14px;
+                }
+
+                .textGroup__btn {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                    padding: 20px 30px;
+                    margin-top: 80px;
+                }
             }
         }
 
-        .container__section {
-            // min-height: 986px;
-            position: relative;
-            padding: 60px 0;
+        .home__section--manual {
+            height: 360px;
 
-            .section__header {
-                font-size: 42px;
-                font-weight: bold;
-                font-stretch: normal;
+            .manual__title {
+                font-size: 36px;
                 font-style: normal;
-                line-height: 1.5;
-                letter-spacing: normal;
-                text-align: center;
-                color: #332b00;
+                font-weight: 600;
+
+                letter-spacing: 3.6px;
             }
 
-
-            .section__card {
-                position: relative;
-                max-width: 1072px;
-                margin: 100px auto auto auto;
-            }
-
-            .section__body {
-                display: flex;
-                gap: 50px;
-                font-size: 20px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.7;
-                letter-spacing: normal;
-                text-align: left;
-                color: #707070;
+            .manual__cardGroup {
+                margin-top: 64px;
+                flex-direction: row;
                 justify-content: center;
 
-                .section__card {
-                    min-height: 630px;
-                    max-width: 362px;
-                    margin: 0;
-                    padding: 40px 30px;
+                .cardGroup__card {
+                    width: 27vw;
+                    height: 27vw;
+                    max-width: 400px;
+                    max-height: 400px;
 
-                    .card__headerGroup {
-                        margin: 20px 0;
+                    .card__image {
+                        width: 130px;
+                    }
+
+                    .card__title {
                         font-size: 24px;
-                        font-weight: bold;
-                        font-stretch: normal;
                         font-style: normal;
-                        line-height: 1.5;
-                        letter-spacing: normal;
-                        color: #333;
+                        font-weight: 600;
+                        line-height: 110%;
+                        /* 26.4px */
+                        letter-spacing: 1.2px;
+                    }
+
+                    .card__desc {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 30px;
+                        /* 166.667% */
+                        letter-spacing: 0.9px;
+                    }
+                }
+            }
+        }
+
+        .home__section--new {
+            // padding: 200px 0px;
+
+            .new__title {
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+                margin-top: 80px;
+            }
+
+            .new__textGroup {
+                margin-top: 46px;
+                gap: 120px;
+
+                .textGroup__card {
+                    display: flex;
+                    gap: 70px;
+                    justify-content: center;
+                    text-align: left;
+                    align-items: center;
+                    flex-direction: row;
+
+                    .card__group {
+                        width: 500px;
+
+                        .card__title {}
+
+                        .card__desc {}
+                    }
+                }
+
+                .textGroup__card--reverse {
+                    flex-direction: row-reverse;
+                }
+            }
+        }
+
+        .home__section--jp {
+            padding: 50px 0px;
+            position: relative;
+            width: 100vw;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .jp_heart {
+                position: absolute;
+                left: 0;
+                top: 50px;
+                display: block;
+            }
+
+            .jp_logo {
+                position: absolute;
+                right: 0;
+                top: 0px;
+                height: 400px;
+                display: block;
+            }
+
+            .jp__title {
+                color: #FFD600;
+                text-align: center;
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+                margin-top: 40px;
+            }
+
+            .jp__desc {
+                position: absolute;
+                top: 150px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 600;
+                /* 181.818% */
+                letter-spacing: 2.2px;
+                line-height: 40px;
+                /* 181.818% */
+                color: white;
+                margin: auto;
+                margin-top: 50px;
+                width: 824px;
+            }
+
+            .jp__cardGroups {
+                margin-top: 95px;
+                display: flex;
+                justify-content: center;
+                position: absolute;
+                bottom: -140px;
+                padding: 0px 24px;
+
+                .cardGroups__card {
+                    max-width: 400px;
+
+                    .card__desc {
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 26px;
+                        /* 162.5% */
+                        letter-spacing: 0.8px;
+                    }
+
+                    .card__bottom {
+                        .bottom__name {
+                            font-size: 18px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 30px;
+                            /* 166.667% */
+                            letter-spacing: 0.9px;
+                        }
+
+                        .bottom__title {
+                            font-size: 13px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 20px;
+                            /* 153.846% */
+                            letter-spacing: 0.65px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .home__section--partner {
+            min-height: 673px;
+            padding-top: 280px;
+
+
+            .partner__part {
+                display: flex;
+                flex-direction: row;
+                gap: 14vw;
+                align-items: center;
+                justify-content: center;
+
+                .partner__title {
+                    font-size: 36px;
+                    font-style: normal;
+                    font-weight: 600;
+                    /* 0% */
+                    letter-spacing: 3.6px;
+                }
+
+                .partner__bodyGroup {
+                    flex-direction: row;
+                    margin: 0px;
+                    gap: 14vw;
+
+                    .bodyGroup__anchor {
+                        .anchor__image {
+                            height: 70px;
+                            width: auto;
+                        }
                     }
                 }
             }
 
-            .section__card--left {
-                padding-left: 250px;
-            }
-
-            .section__card--right {
-                padding-right: 300px;
-            }
-
-            .section__image {
-                position: absolute;
-                bottom: -10px;
-                transform: none;
-                z-index: 1;
-            }
-
-
-
-            .section__image--1 {
-                left: 0;
-            }
-
-            .section__image--2 {
-                right: -10px;
-                left: inherit;
-            }
-
-            .section__image--3 {
-                left: -10px;
-            }
-
-
-            .section__decoration {
-                position: absolute;
-            }
-
-            .section__decoration--1 {
-                left: 0;
-                top: 10px;
-            }
-
-            .section__decoration--2 {
-                right: 0;
-                bottom: 10px;
-            }
-
-        }
-
-        .container__section--blue {
-            background-image: url('@/assets/admin/index/bg1.webp');
-        }
-
-        .container__footer {
-            position: relative;
-            height: 202px;
-            font-size: 38px;
-            font-weight: bold;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1.5;
-            letter-spacing: normal;
-            text-align: center;
-            color: #332b00;
-            background-image: url('@/assets/admin/index/bg2@2x.webp');
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: bottom;
-
-            .footer__button {
-                position: relative;
-                right: unset;
-                top: unset;
-                width: 239px;
-                height: 60px;
-                font-size: 22px;
-                font-weight: bold;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: 1.3;
-                letter-spacing: normal;
-                border-radius: 100px;
-                color: #332b00;
-                margin-left: 40px;
+            .partner__part--mt {
+                margin-top: 125px;
             }
         }
+
     }
+
 }
 </style>
