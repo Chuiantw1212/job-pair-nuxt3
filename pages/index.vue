@@ -232,6 +232,7 @@ function routeToQuestions() {
     .home__section--landing {
         .landing__banner {
             width: 335px;
+            max-width: 743px;
         }
 
         .landing__textGroup {
@@ -359,6 +360,14 @@ function routeToQuestions() {
             gap: 25px;
 
             .textGroup__card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .card__image {
+                    width: 335px;
+                }
+
                 .card__title {
                     color: #0AB378;
                     font-size: 30px;
@@ -514,7 +523,8 @@ function routeToQuestions() {
     .home {
         .home__section--landing {
             display: flex;
-            justify-content: space-around;
+            gap: 100px;
+            justify-content: center;
             align-items: center;
 
             .landing__banner {
@@ -620,10 +630,11 @@ function routeToQuestions() {
 
                 .textGroup__card {
                     display: flex;
-                    gap: 160px;
+                    gap: 70px;
                     justify-content: center;
                     text-align: left;
                     align-items: center;
+                    flex-direction: row;
 
                     .card__group {
                         width: 500px;

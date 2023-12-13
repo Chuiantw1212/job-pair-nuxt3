@@ -1,5 +1,5 @@
 <template>
-    <div class="footer">
+    <div class="footer" :class="{ 'footer--admin': state.isAdmin }">
         <img class="footer__logo" alt="logo" src="./Vector.svg">
         <div class="footer__rights">
             @ 2023 Job Pair . All rights reserved.
@@ -19,8 +19,14 @@
         </div>
     </div>
 </template>
-<script>
-export default {}
+<script setup>
+const route = useRoute()
+const state = reactive({
+    isAdmin: null
+})
+watch(() => route, (newRoute) => {
+    state.isAdmin = newRoute.path.includes('admin')
+}, { immediate: true })
 </script>
 <style lang="scss" scoped>
 .footer {
@@ -58,6 +64,10 @@ export default {}
         }
     }
 
+}
+
+.footer--admin {
+    background: #32D7D1;
 }
 
 @media screen and (min-width: 991px) {
