@@ -86,7 +86,7 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.searchJobs()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -136,10 +136,10 @@ const state = reactive({
     renderKey: Math.random()
 })
 // hooks
-const organizationId = computed(() => {
+const paramdId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${organizationId.value}`, { initialCache: false })
+const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${paramdId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
     title: () => `${state.companyInfo?.name}`,
@@ -183,17 +183,16 @@ useJsonld(() => ({
 }));
 onMounted(async () => {
     state.id = $uuid4()
-    const id = route.path.split('/').slice(-1)[0]
-    await initializeCompany(id)
-    jobScroller.state.filter.organizationId = id
+    await initializeCompany(paramdId.value)
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
         state.glideInstance.destroy()
     }
 })
-watch(() => repoAuth.state.user, (newValue) => {
-    jobScroller.initializeSearch()
+watch(() => repoAuth.state.user, () => {
+    jobScroller.state.filter.organizationId = paramdId.value
+    jobScroller.searchJobs()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     $emitter.emit('setDesignBannerJobs', newValue.length)
@@ -234,10 +233,6 @@ function getCapical(capital) {
     } else {
         return capital
     }
-}
-function setTimeForGlide() {
-    clearTimeout(state.resizeTimer)
-    state.resizeTimer = setTimeout(initialGlide, 200)
 }
 function initialGlide() {
     $requestSelector(".glide", () => {

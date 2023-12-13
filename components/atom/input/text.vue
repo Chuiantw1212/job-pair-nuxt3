@@ -7,8 +7,8 @@
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <slot name="prefix"></slot>
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)"
-                @keyup.enter="emit('keyup.enter', $event)" />
+                :data-valid="isValid" :data-required="required" :data-name="name" autocomplete="off"
+                @blur="handleValidate($event)" @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
@@ -72,6 +72,10 @@ const props = defineProps({
     },
     validate: {
         type: Function,
+    },
+    lowerCase: {
+        type: String,
+        default: false,
     }
 })
 onMounted(() => {
@@ -91,6 +95,9 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
+        if (props.lowerCase) {
+            newValue = String(newValue).toLowerCase()
+        }
         emit("update:modelValue", newValue)
     },
 })
@@ -135,7 +142,6 @@ function handleValidate() {
 function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
-
         regexCode += 1
     }
     if (props.types.includes('english')) {

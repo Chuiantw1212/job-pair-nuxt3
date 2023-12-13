@@ -372,7 +372,7 @@ watch(() => state.job, (newValue) => {
     }
 },)
 watch(() => jobScroller.state.filter, () => {
-    jobScroller.initializeSearch()
+    jobScroller.searchJobs()
 }, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {

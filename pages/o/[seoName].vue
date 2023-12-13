@@ -6,7 +6,7 @@
             <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
                 <div class="card__header">公司職缺</div>
                 <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.initializeSearch()">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.searchJobs()">
                     </LazyAtomInputSearch>
                 </div>
                 <ul class="jobs__list">
@@ -39,7 +39,8 @@ onBeforeMount(() => {
     $emitter.off('scrollToJobs', scrollToJobs)
 })
 watch(() => repoAuth.state.user, () => {
-    jobScroller.initializeSearch()
+    jobScroller.state.filter.organizationSeoName = seoName.value
+    jobScroller.searchJobs()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     $emitter.emit('setDesignBannerJobs', newValue.length)
