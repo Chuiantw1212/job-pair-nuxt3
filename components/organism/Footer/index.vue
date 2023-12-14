@@ -30,7 +30,7 @@ watch(() => route, (newRoute) => {
 </script>
 <style lang="scss" scoped>
 .footer {
-    background: #0AB378;
+    background: #5ea88e;
     text-align: center;
     padding: 10px 0px;
 
