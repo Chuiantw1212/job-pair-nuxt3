@@ -93,10 +93,9 @@
             <img class="jp_logo" alt="logo" src="@/assets/admin/index/logo.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
-                我們的願景是創造一個人人都能在適合的環境中發揮所長的職場。在這個充滿資訊噪音的時代，我們相信，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇，讓更多的企業與職業被看見，除了釋放個人職涯的無限可能，還能助企業長期的發展。
+                Job Pair致力於創造一個讓每個人在適合的環境中發揮所長的職場。 <br>
                 <br>
-                <br>
-                為達到這個目標，我們提供有別以往的廣告招募模式，透過新型態的媒合與AI功能，有效曝光並拉近人與企業的距離，幫助企業輕鬆應對複雜的招聘挑戰。
+                在資訊氾濫的時代，除了熱門職業，還有更多適合個人特質和價值觀的選擇。透過獨特的媒合與AI功能，我們重新定義招聘，精準曝光拉近人才與企業的距離，助企業應對複雜的招聘挑戰。
             </div>
             <div class="jp__cardGroups">
                 <div class="cardGroups__card">
@@ -422,7 +421,7 @@ function openAdminModal() {
         .jp__desc {
             margin-top: 25px;
             color: white;
-            text-align: left;
+            text-align: center;
         }
 
         .jp__cardGroups {
@@ -549,6 +548,7 @@ function openAdminModal() {
                     /* 166.667% */
                     letter-spacing: 0.9px;
                     margin-top: 14px;
+                    text-align: left;
                 }
 
                 .textGroup__btn {
@@ -697,7 +697,7 @@ function openAdminModal() {
                 /* 181.818% */
                 color: white;
                 margin: auto;
-                margin-top: 50px;
+                margin-top: 25px;
                 width: 824px;
             }
 
