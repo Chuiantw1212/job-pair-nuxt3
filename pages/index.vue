@@ -9,9 +9,12 @@
                     活出精彩人生
                 </h1>
                 <div class="textGroup__desc">
-                    多元職涯時代，你擁有多種可能性，不論是正職、兼職或接案，這裡都能滿足所需。現在，只要三分鐘就能設計想要的工作，讓適合的邀約主動上門！
+                    多元職涯時代，你擁有多種可能性，不論是正職、兼職或接案，這裡都能滿足所需。
+                    <br>
+                    <br>
+                    現在，只要三分鐘就能設計適合自己的工作，讓工作主動上門！
                 </div>
-                <button class="textGroup__btn" @click="routeToQuestions()">開始配對</button>
+                <button class="textGroup__btn" @click="routeToQuestions()">立即開始</button>
             </div>
         </section>
         <section class="home__section home__section--manual">
@@ -82,8 +85,10 @@
             <img class="jp_logo" alt="logo" src="@/assets/index/jp.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
-                找工作不用再大海撈針。<br>
-                只需要三分鐘勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
+                我們的願景是創造一個人人都能在適合的環境中發揮所長的職場。在這個充滿資訊噪音的時代，我們相信，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。
+                <br>
+                <br>
+                我們的使命是讓你的職涯充滿無限可能！現在就用三分鐘勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。
             </div>
             <div class="jp__cardGroups">
                 <div class="cardGroups__card">
@@ -655,7 +660,7 @@ function routeToQuestions() {
             padding: 50px 0px;
             position: relative;
             width: 100vw;
-            height: 500px;
+            min-height: 650px;
             display: flex;
             flex-direction: column;
             align-items: center;
