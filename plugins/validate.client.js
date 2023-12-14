@@ -16,7 +16,7 @@ export default defineNuxtPlugin(nuxtApp => {
                 const allRequiredInputs = allFormInputs.filter(item => {
                     return item.dataset.required == 'true'
                 })
-                const nullishValues = ['null', null, 'undefined', undefined, '', false, 'false']
+                const nullishValues = ['null', null, 'undefined', undefined, '']
                 const invalidFields = allRequiredInputs.filter((input) => {
                     const formValue = input.dataset.value || input.value
                     const isEmpty = nullishValues.includes(formValue) || !String(formValue).trim()
