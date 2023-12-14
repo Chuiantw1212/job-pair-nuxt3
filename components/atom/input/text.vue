@@ -7,7 +7,7 @@
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <slot name="prefix"></slot>
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-valid="isValid" :data-required="required" :data-name="name" autocomplete="off"
+                :data-valid="state.isValid" :data-required="required" :data-name="name" autocomplete="off"
                 @blur="handleValidate($event)" @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
@@ -74,7 +74,7 @@ const props = defineProps({
         type: Function,
     },
     lowerCase: {
-        type: String,
+        type: Boolean,
         default: false,
     }
 })
