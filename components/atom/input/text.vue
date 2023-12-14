@@ -158,7 +158,7 @@ function validateDefaultRegex(inputValue) {
     switch (regexCode) {
         case 1: {
             regexMessage = '限輸入中文'
-            regex = /[^\u3400-\uFA29]/
+            regex = /[^\u3400-\uFAD9]/
             break;
         }
         case 2: {
@@ -168,17 +168,17 @@ function validateDefaultRegex(inputValue) {
         }
         case 3: {
             regexMessage = '限輸入中英文'
-            regex = /[^\u3400-\uFA29a-zA-Z]/
+            regex = /[^\u3400-\uFAD9a-zA-Z]/
             break;
         }
         case 4: {
             regexMessage = '限輸入數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 5: {
             regexMessage = '限輸入中數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 6: {
@@ -188,7 +188,7 @@ function validateDefaultRegex(inputValue) {
         }
         case 7: {
             regexMessage = '限輸入中英數字'
-            regex = /[^\u3400-\uFA29a-zA-Z\d]/
+            regex = /[^\u3400-\uFAD9a-zA-Z\d]/
             break;
         }
         default: {
