@@ -549,6 +549,7 @@ function openAdminModal() {
                     /* 166.667% */
                     letter-spacing: 0.9px;
                     margin-top: 14px;
+                    text-align: left;
                 }
 
                 .textGroup__btn {

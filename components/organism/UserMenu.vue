@@ -80,9 +80,7 @@ const isRegistered = computed({
 // methods
 async function logout() {
     repoAuth.userSignout()
-    router.push({
-        name: "index",
-    })
+    // 透過useLogin跳轉到首頁
 }
 function showUserModal() {
     const { user } = repoAuth.state
