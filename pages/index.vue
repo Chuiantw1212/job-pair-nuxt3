@@ -85,10 +85,10 @@
             <img class="jp_logo" alt="logo" src="@/assets/index/jp.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
-                找工作不用再大海撈針。
+                Job Pair致力於創造一個讓每個人在適合環境中發揮所長的職場。
                 <br>
                 <br>
-                只需要三分鐘勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
+                在資訊氾濫的時代，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。讓你的職涯充滿無限可能！三分鐘勾選理想條件，即刻為你配對最適職缺，啟動專屬職場旅程。
             </div>
             <div class="jp__cardGroups">
                 <div class="cardGroups__card">
