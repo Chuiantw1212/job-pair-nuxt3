@@ -1,5 +1,5 @@
 <template>
-    <LazyAtomBtnSimple class="modal__button" @click="showModal()">
+    <LazyAtomBtnSimple class="modal__button" :disabled="disabled" @click="showModal()">
         <slot></slot>
     </LazyAtomBtnSimple>
     <AtomModalFrame ref="modal">
@@ -7,8 +7,8 @@
             SEO設定
         </template>
         <template #body>
-            <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英文）"
-                :types="['english']" :lowerCase="true" required>
+            <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英數字）"
+                :types="['english', 'number']" :lowerCase="true" required>
                 <template #prefix>
                     <div class="input__prefix">jobpair.com/o/</div>
                 </template>
@@ -45,6 +45,10 @@ const props = defineProps({
                 description: ''
             }
         }
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
     }
 })
 onMounted(() => {

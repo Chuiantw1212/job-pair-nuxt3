@@ -19,7 +19,9 @@ export default defineNuxtPlugin(nuxtApp => {
                 const invalidFields = allRequiredInputs.filter((input) => {
                     const formValue = input.dataset.value || input.value
                     const isEmpty = ['null', null, 'undefined', undefined].includes(formValue) || !String(formValue).trim()
+                    // return isEmpty
                     const isInvalid = ['null', null, 'false', false].includes(input.dataset.valid)
+                    // console.log(input.dataset.name, isInvalid);
                     return isEmpty || isInvalid
                 })
                 // 顯示彈跳視窗
@@ -29,7 +31,7 @@ export default defineNuxtPlugin(nuxtApp => {
                         return item.dataset.name
                     })
                     const fieldString = emptyFieldNames.join(', ')
-                    const text = `${fieldString}未填寫`
+                    const text = `"${fieldString}"有誤`
                     const swalConfig = Object.assign({
                         text,
                         confirmButtonText: '確認',
