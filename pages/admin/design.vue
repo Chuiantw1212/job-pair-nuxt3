@@ -94,7 +94,8 @@
                 需升級後才能發佈唷！
             </div> -->
             <LazyAtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</LazyAtomBtnSimple>
-            <LazyOrganismSeoModal v-model="state.organizationDesign" @confirm="publishDesign()">發布</LazyOrganismSeoModal>
+            <LazyOrganismSeoModal v-model="state.organizationDesign" :disabled="!state.organizationDesign.templates.length"
+                @confirm="publishDesign()">發布</LazyOrganismSeoModal>
         </div>
     </div>
 </template>

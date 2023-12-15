@@ -1,5 +1,5 @@
 <template>
-    <LazyAtomBtnSimple class="modal__button" @click="showModal()">
+    <LazyAtomBtnSimple class="modal__button" :disabled="disabled" @click="showModal()">
         <slot></slot>
     </LazyAtomBtnSimple>
     <AtomModalFrame ref="modal">
@@ -45,6 +45,10 @@ const props = defineProps({
                 description: ''
             }
         }
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
     }
 })
 onMounted(() => {
