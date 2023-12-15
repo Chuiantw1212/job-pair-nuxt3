@@ -96,6 +96,13 @@
             <LazyAtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</LazyAtomBtnSimple>
             <LazyOrganismSeoModal v-model="state.organizationDesign" :disabled="!state.organizationDesign.templates.length"
                 @confirm="publishDesign()">發布</LazyOrganismSeoModal>
+            <NuxtLink v-if="state.organizationDesign.seoName" target="_blank" class="footer__link"
+                :to="{ name: 'o-seoName', params: { seoName: state.organizationDesign.seoName } }"
+                :disabled="!state.organizationDesign.templates.length">
+                <LazyAtomBtnSimple class="footer_btn">
+                    檢視頁面
+                </LazyAtomBtnSimple>
+            </NuxtLink>
         </div>
     </div>
 </template>
@@ -104,6 +111,7 @@ const { $sweet, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoOrganizationDesign = useRepoOrganizationDesign()
 const device = useDevice()
+const runTimeConfig = useRuntimeConfig()
 const state = reactive({
     lastTemplateName: '',
     organizationDesign: {
@@ -203,6 +211,7 @@ async function publishDesign() {
     state.organizationDesign.organizationId = repoAuth.state.company.id
     await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
+    // window.open(`${runTimeConfig.public.siteUrl}/o/${state.organizationDesign.seoName}`, "_blank")
 }
 </script>
 <style lang="scss" scoped>
@@ -387,6 +396,10 @@ async function publishDesign() {
         .footer_btn {
             font-size: 14px;
         }
+
+        .footer__link {
+            text-decoration: none;
+        }
     }
 
 }
@@ -426,6 +439,7 @@ async function publishDesign() {
                 letter-spacing: normal;
                 text-align: center;
                 color: #fff;
+                text-decoration: none !important;
             }
 
             .footer__desc {

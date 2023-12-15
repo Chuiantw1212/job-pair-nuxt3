@@ -4,12 +4,15 @@
             <img class="landing__banner" alt="banner" src="@/assets/admin/index/KV11.png">
             <div class="landing__textGroup">
                 <h1 class="textGroup__title">
-                    打造企業與人才的
+                    開創理想團隊
                     <br>
-                    完美適配
+                    引領多樣工作風潮
                 </h1>
                 <div class="textGroup__desc">
-                    輕鬆升級僱主品牌，提升企業網路能見度
+                    在多元職涯時代，擁有不同類型的人才是成功的關鍵，正職、兼職、接案人才應有盡有。
+                    <br>
+                    <br>
+                    只需三分鐘，立即配對適合企業的理想團隊，讓人才源源而來！
                 </div>
                 <button class="textGroup__btn" @click="openAdminModal()">立即開始</button>
             </div>
@@ -250,7 +253,7 @@ function openAdminModal() {
                 /* 166.667% */
                 letter-spacing: 0.9px;
                 margin-top: 25px;
-                text-align: center;
+                text-align: left;
             }
 
             .textGroup__btn {
