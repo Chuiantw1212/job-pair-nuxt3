@@ -31,7 +31,7 @@ export default defineNuxtPlugin(nuxtApp => {
                         return item.dataset.name
                     })
                     const fieldString = emptyFieldNames.join(', ')
-                    const text = `${fieldString}未填寫`
+                    const text = `"${fieldString}"有誤`
                     const swalConfig = Object.assign({
                         text,
                         confirmButtonText: '確認',
