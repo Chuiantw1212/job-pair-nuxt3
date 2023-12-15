@@ -21,7 +21,7 @@
                 </li>
                 <li class="nav-item">
                     <button class="navItem__button" @click="revokeUser()">
-                        註銷
+                        取消
                     </button>
                 </li>
                 <li class="nav-item" @click="handleClick()">
