@@ -19,7 +19,9 @@ export default defineNuxtPlugin(nuxtApp => {
                 const invalidFields = allRequiredInputs.filter((input) => {
                     const formValue = input.dataset.value || input.value
                     const isEmpty = ['null', null, 'undefined', undefined].includes(formValue) || !String(formValue).trim()
+                    // return isEmpty
                     const isInvalid = ['null', null, 'false', false].includes(input.dataset.valid)
+                    // console.log(input.dataset.name, isInvalid);
                     return isEmpty || isInvalid
                 })
                 // 顯示彈跳視窗

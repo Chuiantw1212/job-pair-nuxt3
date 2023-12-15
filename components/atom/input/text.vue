@@ -1,5 +1,5 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`" :key="state.key">
+    <div class="inputGroup" :ref="`inputGroup`" :key="state.key" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
@@ -12,6 +12,9 @@
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
+        <div class="inputGroup__message" v-show="state.message">
+            {{ state.message }}
+        </div>
     </div>
 </template>
 <script >
