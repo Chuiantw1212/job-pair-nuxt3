@@ -48,11 +48,6 @@
             <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
-            <!-- <li class="nav-item">
-                <NuxtLink class="navItem__button" to="/cvgpt">
-                    CVgpt
-                </NuxtLink>
-            </li> -->
         </template>
     </ul>
 </template>
@@ -80,7 +75,9 @@ const isRegistered = computed({
 // methods
 async function logout() {
     repoAuth.userSignout()
-    // 透過useLogin跳轉到首頁
+    router.push({
+        name: 'index',
+    })
 }
 function showUserModal() {
     const { user } = repoAuth.state

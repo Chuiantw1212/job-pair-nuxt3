@@ -69,7 +69,9 @@ function handleClick() {
 }
 async function logout() {
     repoAuth.userSignout()
-    // 透過useLogin跳轉到首頁
+    router.push({
+        name: 'admin',
+    })
 }
 function showModal() {
     $emitter.emit("showSwitchModal")
