@@ -1,3 +1,4 @@
+import { computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
@@ -29,25 +30,8 @@ export default function setup() {
         const auth = getAuth()
         auth.onAuthStateChanged(async (userInfo) => {
             $sweet.loader(false)
-            if (!userInfo) {
-                // 造成登入機制無法連貫
-                if (repoAuth.state.user && repoAuth.state.user.uid) {
-                    // 判斷為從登入變成登出
-                    repoAuth.userSignout()
-                    // 導回個別的首頁
-                    if (route.path.includes('admin')) {
-                        router.push({
-                            name: 'admin',
-                        })
-                    } else {
-                        router.push({
-                            name: 'index',
-                        })
-                    }
-                }
-                return
-            }
-            if (!userInfo.emailVerified) {
+            if (!userInfo || !userInfo.emailVerified) {
+                // 不在這裡定義登出後的路由跳轉避免出錯
                 return
             }
             const { uid, displayName, email, photoURL, phoneNumber } = userInfo
