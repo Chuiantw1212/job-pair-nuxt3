@@ -189,6 +189,7 @@ onBeforeUnmount(() => {
     window.removeEventListener("resize", setTimeForGlide)
 })
 watch(() => repoAuth.state.user, (newValue) => {
+    jobScroller.state.filter.organizationId = organizationId.value
     jobScroller.initializeSearch()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {

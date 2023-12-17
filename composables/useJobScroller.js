@@ -4,7 +4,7 @@ import { reactive, watch, nextTick, } from 'vue'
 const { $requestSelectorAll } = useNuxtApp()
 export default function setup(setUpConfig = {}) {
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
-    const { $sweet } = useNuxtApp()
+    const { $sweet, $requestSelectorAll } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
