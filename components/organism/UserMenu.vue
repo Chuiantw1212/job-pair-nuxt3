@@ -12,11 +12,11 @@
                         會員中心
                     </NuxtLink>
                 </li>
-                <li class="nav-item" @click="emit('collapse')">
+                <!-- <li class="nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/cvgpt">
                         CVgpt
                     </NuxtLink>
-                </li>
+                </li> -->
             </template>
             <template v-else>
                 <li class="nav-item" @click="emit('collapse')">
@@ -48,11 +48,6 @@
             <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
             </li>
-            <li class="nav-item">
-                <NuxtLink class="navItem__button" to="/cvgpt">
-                    CVgpt
-                </NuxtLink>
-            </li>
         </template>
     </ul>
 </template>
@@ -81,7 +76,7 @@ const isRegistered = computed({
 async function logout() {
     repoAuth.userSignout()
     router.push({
-        name: "index",
+        name: 'index',
     })
 }
 function showUserModal() {

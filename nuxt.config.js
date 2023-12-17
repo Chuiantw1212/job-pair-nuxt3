@@ -50,6 +50,7 @@ export default defineNuxtConfig({
     css: [
         '@glidejs/glide/dist/css/glide.core.min.css',
         '@glidejs/glide/dist/css/glide.theme.min.css',
+        '@/assets/global.css',
     ],
     runtimeConfig: {
         public: {
@@ -91,8 +92,10 @@ export default defineNuxtConfig({
         },
         // https://nitro.unjs.io/deploy/providers/firebase#using-2nd-generation-firebase-functions
         firebase: {
+            nodeVersion: "18",
             gen: 2,
             httpsOptions: {
+                // https://firebase.google.com/docs/hosting/functions
                 region: 'asia-east1',
             },
             // ...
@@ -106,6 +109,11 @@ export default defineNuxtConfig({
         ],
         // provide dynamic URLs to be included
         urls: async () => {
+            const formatter = new Intl.DateTimeFormat('zh', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            })
             const axiosInstance = axios.create({
                 baseURL: apiBase,
                 timeout: 20 * 60 * 1000,
@@ -122,17 +130,26 @@ export default defineNuxtConfig({
             ])
             const urls = []
             jobIdsResponse.data.forEach((item) => {
-                urls.push({
+                const urlItem = {
                     url: `/job/${item.identifier}`,
-                    lastmod: item.datePosted,
-                })
+                }
+                const { datePosted = '' } = item
+                if (datePosted) {
+                    const dateInstance = new Date(datePosted)
+                    urlItem.lastmod = formatter.format(dateInstance)
+                }
+                urls.push(urlItem)
             })
             companyIdsResponse.data.forEach((item) => {
-                urls.push({
-                    url: `/company/${item.id}`,
-                    lastmod: item.updatedDate,
-                    changefreq: 'monthly'
-                })
+                const urlItem = {
+                    url: `/job/${item.identifier}`,
+                }
+                const { updatedDate = '' } = item
+                if (updatedDate) {
+                    const dateInstance = new Date(updatedDate)
+                    urlItem.lastmod = formatter.format(dateInstance)
+                }
+                urls.push(urlItem)
             })
             return urls
         },

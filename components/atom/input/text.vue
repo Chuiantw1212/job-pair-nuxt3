@@ -1,16 +1,20 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`" :key="state.key">
+    <div class="inputGroup" :ref="`inputGroup`" :key="state.key" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
+            <slot name="prefix"></slot>
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)"
-                @keyup.enter="emit('keyup.enter', $event)" />
+                :data-valid="state.isValid" :data-required="required" :data-name="name" autocomplete="off"
+                @blur="handleValidate($event)" @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
+        <div class="inputGroup__message" v-show="state.message">
+            {{ state.message }}
+        </div>
     </div>
 </template>
 <script >
@@ -71,6 +75,10 @@ const props = defineProps({
     },
     validate: {
         type: Function,
+    },
+    lowerCase: {
+        type: Boolean,
+        default: false,
     }
 })
 onMounted(() => {
@@ -90,6 +98,9 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
+        if (props.lowerCase) {
+            newValue = String(newValue).toLowerCase()
+        }
         emit("update:modelValue", newValue)
     },
 })
@@ -131,10 +142,9 @@ function handleValidate() {
     }
     return true
 }
-function validateDefaultRegex() {
+function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
-
         regexCode += 1
     }
     if (props.types.includes('english')) {
@@ -151,7 +161,7 @@ function validateDefaultRegex() {
     switch (regexCode) {
         case 1: {
             regexMessage = '限輸入中文'
-            regex = /[^\u3400-\uFA29]/
+            regex = /[^\u3400-\uFAD9]/
             break;
         }
         case 2: {
@@ -161,17 +171,17 @@ function validateDefaultRegex() {
         }
         case 3: {
             regexMessage = '限輸入中英文'
-            regex = /[^\u3400-\uFA29a-zA-Z]/
+            regex = /[^\u3400-\uFAD9a-zA-Z]/
             break;
         }
         case 4: {
             regexMessage = '限輸入數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 5: {
             regexMessage = '限輸入中數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 6: {
@@ -181,7 +191,7 @@ function validateDefaultRegex() {
         }
         case 7: {
             regexMessage = '限輸入中英數字'
-            regex = /[^\u3400-\uFA29a-zA-Z\d]/
+            regex = /[^\u3400-\uFAD9a-zA-Z\d]/
             break;
         }
         default: {

@@ -27,7 +27,7 @@ export default {
 import { markRaw } from 'vue'
 const { $uuid4, $requestSelector } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
-const emit = defineEmits(['update:modelValue', 'blur'])
+const emit = defineEmits(['update:modelValue', 'blur', 'focus'])
 const editorRef = ref(null)
 const state = reactive({
     ckeditorInstance: null,
@@ -42,20 +42,25 @@ const props = defineProps({
         type: Array,
         default: function () {
             return [
-                'heading',
-                '|',
-                'bold',
-                'italic',
-                'link',
-                'bulletedList',
-                'numberedList',
-                '|',
-                // 'imageUpload',
-                'mediaEmbed',
                 'undo',
                 'redo',
                 '|',
-                'removeFormat',
+                'heading',
+                '|',
+                'fontSize',
+                '|',
+                'bold',
+                'italic',
+                'fontColor',
+                '|',
+                'link',
+                // 'imageUpload',
+                'mediaEmbed',
+                '|',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'removeFormat'
             ]
         }
     },
@@ -137,7 +142,7 @@ async function initializeCKEditor() {
         // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
         ui: {
             poweredBy: {
-                position: 'inside',
+                position: 'border',
                 // side: 'left',
                 label: 'Job Pair'
             }
@@ -145,11 +150,11 @@ async function initializeCKEditor() {
     }
     // prd吃到importedEditor, dev吃到ClassicEditor, 
     const { default: importedEditor } = await import(/* @vite-ignore */`${runTimeConfig.public.siteUrl}/ckeditor/bundle.js`)
-    const ClassicEditor = importedEditor || window.ClassicEditor
+    const ClassicEditor = importedEditor?.ClassicEditor || window.CKEDITOR.ClassicEditor
     const element = document.querySelector(`#editor_${state.id}`)
     const editor = await ClassicEditor.create(element, editorConfig)
-    editor.ui.view.editable.element.style.maxHeight = props.style.height
     // Set Height
+    editor.ui.view.editable.element.style.maxHeight = props.style.height
     editor.editing.view.change(writer => {
         for (let attr in props.style) {
             const value = props.style[attr]
@@ -157,15 +162,21 @@ async function initializeCKEditor() {
         }
 
     })
+    // set view events
+    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
+        if (isFocused) {
+            emit('focus', evt)
+        } else {
+            emit('blur', evt)
+        }
+    })
+    // set data
     if (localValue.value) {
         editor.setData(localValue.value)
     }
     if (props.disabled) {
         editor.enableReadOnlyMode(`editor_${state.id}`)
     }
-    editor.editing.view.document.on('change:isFocused', (evt, data, isFocused) => {
-        emit('blur', evt)
-    })
     if (!props.modelValue) {
         localValue.value = '<p></p>'
     }

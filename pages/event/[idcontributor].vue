@@ -148,7 +148,7 @@ async function printPage() {
     window.print()
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .event {
     padding-top: 250px;
     padding-bottom: 80px;

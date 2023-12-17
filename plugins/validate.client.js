@@ -16,19 +16,22 @@ export default defineNuxtPlugin(nuxtApp => {
                 const allRequiredInputs = allFormInputs.filter(item => {
                     return item.dataset.required == 'true'
                 })
-                const nullable = ['null', null, 'undefined', undefined, '', false, 'false']
-                const emptyFields = allRequiredInputs.filter((input, index) => {
+                const invalidFields = allRequiredInputs.filter((input) => {
                     const formValue = input.dataset.value || input.value
-                    return nullable.includes(formValue) || !String(formValue).trim()
+                    const isEmpty = ['null', null, 'undefined', undefined].includes(formValue) || !String(formValue).trim()
+                    // return isEmpty
+                    const isInvalid = ['null', null, 'false', false].includes(input.dataset.valid)
+                    // console.log(input.dataset.name, isInvalid);
+                    return isEmpty || isInvalid
                 })
                 // 顯示彈跳視窗
                 let alertResult = { value: 1 } // 永遠預設為通過
-                if (emptyFields.length && config.icon) {
-                    const emptyFieldNames = emptyFields.map(item => {
+                if (invalidFields.length && config.icon) {
+                    const emptyFieldNames = invalidFields.map(item => {
                         return item.dataset.name
                     })
                     const fieldString = emptyFieldNames.join(', ')
-                    const text = `${fieldString}未填寫`
+                    const text = `"${fieldString}"有誤`
                     const swalConfig = Object.assign({
                         text,
                         confirmButtonText: '確認',
@@ -36,15 +39,15 @@ export default defineNuxtPlugin(nuxtApp => {
                     }, config)
                     alertResult = await Swal.fire(swalConfig)
                     setTimeout(() => {
-                        emptyFields[0].scrollIntoView({ block: "center", });
+                        invalidFields[0].scrollIntoView({ block: "center", });
                     }, 500)
                 }
                 // 回傳驗證結果
-                const numer = allRequiredInputs.length - emptyFields.length
+                const numer = allRequiredInputs.length - invalidFields.length
                 const deno = allRequiredInputs.length
                 const completeness = Math.floor(numer / deno * 100)
                 const result = {
-                    isValid: !emptyFields.length,
+                    isValid: !invalidFields.length,
                     completeness,
                     value: alertResult.value
                 }

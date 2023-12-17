@@ -66,7 +66,7 @@ useSchemaOrg([
 //     }
 // }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .app {
     // https://web.dev/font-display/
     font-display: swap;
@@ -76,7 +76,7 @@ useSchemaOrg([
 }
 
 .main {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh);
 }
 
 body {

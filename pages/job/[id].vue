@@ -10,7 +10,13 @@
                 </div>
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
-                    <NuxtLink class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
+                    <NuxtLink v-if="state.company?.seoName" class="basic__body__subHeader"
+                        :to="`/o/${state.company?.seoName}`">
+                        <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                        </div>
+                        {{ state.job?.organizationName }}
+                    </NuxtLink>
+                    <NuxtLink v-else class="basic__body__subHeader" :to="`/company/${state.company?.id}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}
@@ -98,7 +104,7 @@
                         </span>
                         <span class="item__body">{{ $time(state.job?.datePosted) }}</span>
                     </div>
-                    <div class="features__item">
+                    <div v-if="state.job?.language" class="features__item">
                         <span class="item__header">
                             語言要求
                         </span>
@@ -109,15 +115,16 @@
 }}</span>
                     </div>
                     <div class="mt-3">
-                        <LazyAtomBtnSimple v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                        <LazyAtomBtnSimple class="w-100" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
                             :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                         </LazyAtomBtnSimple>
-                        <LazyAtomBtnSimple v-else-if="checkJobCategory()" :disabled="true">職務類型不符</LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple class="w-100" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
+                        </LazyAtomBtnSimple>
                         <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
                             @applied="state.applyFlow = $event">
                             立即應徵
                         </LazyOrganismJobModal>
-                        <LazyAtomBtnSimple v-else :disabled="true">已應徵</LazyAtomBtnSimple>
+                        <LazyAtomBtnSimple class="w-100" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="d-none d-lg-block jobView__map mt-3" :ref="'map'">
@@ -365,7 +372,7 @@ watch(() => state.job, (newValue) => {
     }
 },)
 watch(() => jobScroller.state.filter, () => {
-    jobScroller.initializeSearch()
+    jobScroller.searchJobs()
 }, { deep: true }) // IMPORTANT: 不可immediate造成cache失效
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     if (newValue.length !== oldValue.length) {
@@ -566,6 +573,7 @@ async function initialize() {
 </script>
 <style lang="scss" scoped>
 .jobView {
+    padding: 0;
     padding-top: calc(46px);
 
     .jobView__tabs {

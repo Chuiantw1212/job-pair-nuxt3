@@ -10,7 +10,15 @@
             <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`">
                 {{ modelValue.name }}
             </NuxtLink>
-            <NuxtLink class="body__company" :to="`/company/${modelValue.organizationId}`">
+            <NuxtLink v-if="modelValue.organizationSeoName" class="body__company"
+                :to="`/o/${modelValue.organizationSeoName}`">
+                <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
+                    onerror="this.style.display = 'none'" alt="logo" />
+                <img v-else class="company__logo d-lg-none" :src="defaultLogo" onerror="this.style.display = 'none'"
+                    alt="logo" />
+                <span class="company__name">{{ modelValue.organizationName }}</span>
+            </NuxtLink>
+            <NuxtLink v-else class="body__company" :to="`/company/${modelValue.organizationId}`">
                 <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
                     onerror="this.style.display = 'none'" alt="logo" />
                 <img v-else class="company__logo d-lg-none" :src="defaultLogo" onerror="this.style.display = 'none'"

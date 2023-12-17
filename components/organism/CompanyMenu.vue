@@ -19,6 +19,11 @@
                         企業註冊
                     </NuxtLink>
                 </li>
+                <li class="nav-item">
+                    <button class="navItem__button" @click="revokeUser()">
+                        取消
+                    </button>
+                </li>
                 <li class="nav-item" @click="handleClick()">
                     <button class="navItem__button" @click="logout()">登出</button>
                 </li>
@@ -35,6 +40,7 @@
 const { $emitter, $sweet } = useNuxtApp()
 const loginComposable = useLogin()
 const repoAuth = useRepoAuth()
+const repoAdmin = useRepoAdmin()
 const router = useRouter()
 onMounted(() => {
     loginComposable.listenToAuthState()
@@ -43,13 +49,28 @@ const isRegistered = computed(() => {
     return !!repoAuth.state.company
 })
 // methods
+async function revokeUser() {
+    const res = await repoAdmin.deleteAdminCompany()
+    if (res.status === 200) {
+        repoAuth.userSignout()
+        router.push({
+            name: 'index',
+        })
+        // 刪除帳號後重新整理避免Firebase資料快取
+        setTimeout(() => {
+            if (process.client) {
+                location.reload()
+            }
+        }, 300)
+    }
+}
 function handleClick() {
     $emitter.emit('collapse')
 }
 async function logout() {
     repoAuth.userSignout()
     router.push({
-        name: "admin",
+        name: 'admin',
     })
 }
 function showModal() {

@@ -23,7 +23,7 @@
     </div>
 </template>
 <script setup>
-const { $emitter, $bootstrap, } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const device = useDevice()
 const state = reactive({
     bsModal: null,
