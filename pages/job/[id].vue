@@ -385,7 +385,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
     if (!user && showRegisterModal) {
         jobScroller.state.isModalShown = true
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
     }
 })
 // methos
@@ -404,7 +404,7 @@ function detectScroll() {
         const { innerHeight, scrollY } = window
         if (innerHeight + scrollY >= offsetHeight && !jobScroller.state.isModalShown) {
             jobScroller.state.isModalShown = true
-            $emitter.emit("showUserModal")
+            $emitter?.emit("showUserModal")
         }
     })()
 }

@@ -151,7 +151,7 @@ function handleApply() {
     if (user && user.id) {
         state.bsModal.show()
     } else {
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
     }
 }
 async function handleSubmit() {
