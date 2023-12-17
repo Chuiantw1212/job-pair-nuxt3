@@ -1,7 +1,6 @@
 
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
-import { reactive, watch, nextTick, } from 'vue'
-const { $requestSelectorAll } = useNuxtApp()
+import { reactive, } from 'vue'
 export default function setup(setUpConfig = {}) {
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
     const { $sweet, $requestSelectorAll } = useNuxtApp()
