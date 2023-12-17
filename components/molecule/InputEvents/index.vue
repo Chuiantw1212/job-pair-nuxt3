@@ -76,7 +76,7 @@ function newWork() {
     })
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .profile__portfolio {
 
     .portfolio__inputGroup {

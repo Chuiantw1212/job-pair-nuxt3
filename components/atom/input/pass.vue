@@ -7,17 +7,13 @@
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <input v-if="!disabled" class="label__input" v-model="localValue" :placeholder="placeholder" type="password"
-                autocomplete="off" />
+                autocomplete="off" @keypress.enter.stop="$emit('keypress.enter')" ref="input" />
             <input v-else :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
     </div>
 </template>
 <script>
-/**
- * The prototype of all the other inputs,
- * read these codes thoroughly makes it easy to read other inputs.
- */
 export default {
     name: 'pass',
     data: function () {
@@ -93,6 +89,14 @@ export default {
             const regex = /[-!$%^&*()_+|~=`{}[\]:";'<>?,./]/
             return regex.test(character)
         },
+        focus() {
+            if (this.disabled) {
+                return
+            }
+            this.$nextTick(() => {
+                this.$refs.input.focus()
+            })
+        }
     },
 }
 </script>

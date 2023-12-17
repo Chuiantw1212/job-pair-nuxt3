@@ -114,7 +114,6 @@ export default {
                 reader.onerror = (error) => reject(error)
             })
             const { name, size, type } = file
-            console.log('type', type)
             const buffer = Buffer.from(arrayBuffer)
             const newFile = {
                 url: URL.createObjectURL(file),

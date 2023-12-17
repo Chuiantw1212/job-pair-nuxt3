@@ -47,12 +47,6 @@ definePageMeta({
         return { name: 'user-profile' }
     },
 })
-watch(() => repoAuth.state.user, () => {
-    const { user } = repoAuth.state
-    if (!user?.id) {
-        $emitter.emit("showUserModal")
-    }
-})
 function checkConsultActive() {
     return route.path.includes('/user/consult')
 }

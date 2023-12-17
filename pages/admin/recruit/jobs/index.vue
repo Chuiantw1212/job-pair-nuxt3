@@ -44,8 +44,7 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <AtomInputSwitch v-model="job.status"
-                                @update:modelValue="checkJobStatus($event, job, index)">
+                            <AtomInputSwitch v-model="job.status" @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
                         </td>
                         <td>
@@ -175,7 +174,6 @@ const state = reactive({
     batchOption: ''
 })
 const { $sweet, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -186,12 +184,9 @@ const router = useRouter()
 useHead({
     title: '職缺管理 - 招募中心'
 })
-onMounted(() => {
+watch(() => repoAuth.state.company, (newValue) => {
     initialize()
-})
-watch(() => repoAuth.state.company, () => {
-    initialize()
-})
+}, { immediate: true })
 watch(() => state.searchLike, () => {
     debounce(() => {
         initialize({

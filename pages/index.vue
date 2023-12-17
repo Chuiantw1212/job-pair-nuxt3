@@ -1,80 +1,171 @@
 <template>
-    <div class="admin">
-        <div class="admin__bannerGroup">
-            <img format="webp" class="admin__title" src="@/assets/index/title@3x.webp" preload loading="lazy" alt="title" />
-            <img format="webp" class="admin__title admin__title--desktop" src="@/assets/index/title_desktop.webp" preload
-                loading="lazy" alt="title" />
-            <button class="admin__button" @click="routeToQuestions()">開始配對</button>
-        </div>
-        <div class="admin__cardGroup">
-            <div class="cardGroup__header">Job Pair 與 一般求職平台比較</div>
-            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--1"
-                src="@/assets/index/bg2.webp" alt="decoration" />
-            <img format="webp" v-if="device.state.isLarge" class="cardGroup__decoration cardGroup__decoration--2"
-                src="@/assets/index/bg3.webp" alt="decoration" />
-            <div class="cardGroup__body">
-                <div v-if="device.state.isLarge" class="body__title">
-                    <div class="title__others">
-                        一般求職平台
-                    </div>
-                    <div class="title__jobPair">
-                        Job Pair
-                    </div>
+    <div class="home">
+        <section class="home__section home__section--landing">
+            <img class="landing__banner" alt="banner" src="@/assets/index/KV1.png">
+            <div class="landing__textGroup">
+                <h1 class="textGroup__title">
+                    設計你的理想工作
+                    <br>
+                    活出精彩人生
+                </h1>
+                <div class="textGroup__desc">
+                    多元職涯時代，你擁有多種可能性，不論是正職、兼職或接案，這裡都能滿足所需。
+                    <br>
+                    <br>
+                    現在，只要三分鐘就能設計適合自己的工作，讓工作主動上門！
                 </div>
-                <MoleculeHomeCard title="保護您的聯絡方式、年齡、婚姻狀態等個資"></MoleculeHomeCard>
-                <MoleculeHomeCard title="提供團隊適配度分數"></MoleculeHomeCard>
-                <MoleculeHomeCard title="需重新建立履歷檔案" jobPairDesc="不需要" othersDesc="需要"></MoleculeHomeCard>
-                <MoleculeHomeCard title="同時比較多個職缺的職務類型、薪資、福利"></MoleculeHomeCard>
-                <MoleculeHomeCard title="精準評估公司文化與主管風格，降低入職後落差感" jobPairDesc="有" othersDesc="無">
-                </MoleculeHomeCard>
+                <button class="textGroup__btn" @click="routeToQuestions()">立即開始</button>
             </div>
-        </div>
-        <div class="admin__definition">
-            <img format="webp" v-if="device.state.isLarge" class="definition__round" src="@/assets/index/round.webp"
-                alt="background" preload loading="lazy" />
-            <div class="definition__textGroup">
-                <div class="definition__title">
-                    如何配對適合的工作？
+        </section>
+        <section class="home__section home__section--manual">
+            <h2 class="manual__title">
+                怎麼讓符合需求的工作主動送上門？
+            </h2>
+            <div class="manual__cardGroup">
+                <div class="cardGroup__card cardGroup__card--yellow">
+                    <img class="card__image" alt="img1" src="@/assets/index/icons-02.svg">
+                    <h3 class="card__title">選擇工作需求</h3>
+                    <div class="card__desc">針對企業文化與工作環境，回覆你的需求</div>
                 </div>
-                <hr class="definition__hr">
-                <div class="definition__desc">
-                    勾選你想要的企業文化、工作環境、組織階段、管理模式、人際風格與工作模式，即刻配對同時訂閱專屬於你的職缺。
+                <div class="cardGroup__card cardGroup__card--green">
+                    <img class="card__image" alt="img2" src="@/assets/index/icons-05.svg">
+                    <h3 class="card__title">選擇職務種類</h3>
+                    <div class="card__desc">不論是正職兼職或接案，都能在此進行媒合</div>
+                </div>
+                <div class="cardGroup__card cardGroup__card--blue">
+                    <img class="card__image" alt="img3" src="@/assets/index/icons-04.svg">
+                    <h3 class="card__title">快速介紹自己</h3>
+                    <div class="card__desc">寫下你的過往經驗，或用AI生成器為你撰寫</div>
                 </div>
             </div>
-        </div>
-        <div class="admin__partner">
-            <template v-if="state.affiliate && state.affiliate.length !== 0">
-                <h1 class="partner__header">與我們合作的夥伴</h1>
+        </section>
+        <section class="home__section home__section--new">
+            <h2 class="new__title">
+                新時代的求職網
+            </h2>
+            <div class="new__textGroup">
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img4" src="@/assets/index/Frame2500.png">
+                    <div class="card__group">
+                        <h3 class="card__title">用自己的履歷</h3>
+                        <div class="card__desc">打造個人品牌<br>
+                            無需在此曝露履歷，我們會為你配對職缺，有興趣再上傳履歷應徵；因為唯有精準應徵能事半功倍，你可以發揮創意打造個人品牌，讓履歷成為吸引機會的魅力資產。</div>
+                    </div>
+                </div>
+                <div class="textGroup__card textGroup__card--reverse">
+                    <img class="card__image" alt="img5" src="@/assets/index/Frame2501.png">
+                    <div class="card__group">
+                        <h3 class="card__title">保護個資行動</h3>
+                        <div class="card__desc">隔絕個資濫用<br>
+                            與其他人力銀行不同，我們確保你履歷中的個資在未主動應徵前絕對安全，無論是正職、兼職還是接案，只有主動投遞時，對方才能看見，給你最大的控制權保護個資。
+                        </div>
+                    </div>
+                </div>
+                <div class="textGroup__card">
+                    <img class="card__image" alt="img6" src="@/assets/index/Frame2502.png">
+                    <div class="card__group">
+                        <h3 class="card__title">沒有垃圾信件</h3>
+                        <div class="card__desc">減少廣告騷擾<br>
+                            我們不會發送無用的廣告信，讓你遠離職缺廣告的騷擾。配對職缺除了要符合需求，還要讓對你真正有興趣的廠商發送邀請，讓你專注收取對職涯有益的機會邀請。
+                        </div>
+                    </div>
+                </div>
+                <div class="textGroup__card textGroup__card--reverse">
+                    <img class="card__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    <div class="card__group">
+                        <h3 class="card__title">輕鬆應對求職</h3>
+                        <div class="card__desc">工作越換越好<br>
+                            機會就像小偷，來的時候無聲無息，走的時候損失慘重！把握機會，不需時刻緊盯著它，只需專注當下的工作，當好機會上門時，再從容優雅的決定是否應徵。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="home__section home__section--jp">
+            <img class="jp_heart" alt="heart" src="@/assets/index/Vector.svg">
+            <img class="jp_logo" alt="logo" src="@/assets/index/jp.svg">
+            <h2 class="jp__title">Job Pair 團隊理念</h2>
+            <div class="jp__desc">
+                Job Pair致力於創造一個讓每個人在適合環境中發揮所長的職場。
+                <br>
+                <br>
+                在資訊氾濫的時代，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。讓你的職涯充滿無限可能！三分鐘勾選理想條件，即刻為你配對最適職缺，啟動專屬職場旅程。
+            </div>
+            <div class="jp__cardGroups">
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 謝謝 Job Pair 幫我找到很讚的工作！ ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">EN</div>
+                        <div class="bottom__title">JS全端工程師</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc">“ 現在的工作氛圍、主管帶人的風格都是我很喜歡的，而且在 Job Pair 找工作時就能相互配對，覺得讚讚 ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">Sandy</div>
+                        <div class="bottom__title">HR人力資源主管</div>
+                    </div>
+                </div>
+                <div class="cardGroups__card">
+                    <div class="card__desc"> “ 可以直接上傳自己的履歷，不用重新再建一次履歷，找工作已經心累了，能直接上傳真的是阿咪陀佛 ”</div>
+                    <div class="card__bottom">
+                        <div class="bottom__name">Penny</div>
+                        <div class="bottom__title">UIUX Designer</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="home__section home__section--partner">
+
+            <div v-if="state.affiliate.length" class="partner__part">
+                <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
-                    <a v-for="(item, index) in state.affiliate" class="partner__anchor" :key="index"
+                    <!-- <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a> -->
+                    <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
                         :href="item?.url?.default" target="_blank" aria-label="more about this company">
                         <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
-                        <span class="anchor__name">{{ item.name }}</span>
                     </a>
                 </div>
-            </template>
-            <h1 class="partner__header mt-5">與我們合作的企業</h1>
-            <div class="partner__bodyGroup">
-                <NuxtLink v-for="(item, index) in state.jobProvider" class="partner__anchor" :key="index"
-                    :to="`/company/${item.organizationId}`" aria-label="more about this company">
-                    <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
-                        :src="item.image" />
-                    <span class="anchor__name">{{ item.organizationName }}</span>
-                </NuxtLink>
             </div>
-        </div>
+            <!-- </template> -->
+            <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
+                <h2 class="partner__title partner__title--mt">合作企業</h2>
+                <div class="partner__bodyGroup">
+                    <!-- <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a>
+                    <a class="bodyGroup__anchor">
+                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    </a> -->
+                    <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
+                        :to="`/company/${item.organizationId}`" aria-label="more about this company">
+                        <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
+                            :src="item.image" />
+                    </NuxtLink>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 <script>
 export default {
-    name: 'admin',
+    name: 'home',
 }
 </script>
 <script setup>
 const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
-const device = useDevice()
 const repoAuth = useRepoAuth()
 const router = useRouter()
 const state = reactive({
@@ -85,10 +176,9 @@ const state = reactive({
     linkToken: null,
 })
 const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
-state.affiliate = companyList.value
+state.affiliate = companyList.value.slice(0, 3)
 onMounted(async () => {
     if (process.client) {
-        // initialGlide()
         const response = await repoJob.getJobByQuery({
             pageOrderBy: "datePosted",
             pageLimit: 15,
@@ -104,7 +194,7 @@ onMounted(async () => {
         })
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
-        state.jobProvider = jobProvider
+        state.jobProvider = jobProvider.slice(0, 3)
     }
 })
 // methods
@@ -134,326 +224,574 @@ function routeToQuestions() {
 }
 </script>
 <style lang="scss" scoped>
-.admin {
-    .admin__bannerGroup {
-        background-image: url('@/assets/index/banner@3x.webp');
-        background-size: cover;
-        background-position: center;
-        position: relative;
-        min-height: 100vw;
+.home {
+    text-align: center;
+    background-color: rgba(10, 179, 120, 0.10);
+    padding-top: 20px;
 
-        .admin__banner {
+
+    .home__section {
+        padding: 40px 20px;
+    }
+
+    .home__section--landing {
+        .landing__banner {
+            width: 335px;
+            max-width: 743px;
+        }
+
+        .landing__textGroup {
+
+            .textGroup__title {
+                color: #0AB378;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 64px;
+                /* 160% */
+                letter-spacing: 2px;
+                margin-top: 25px;
+            }
+
+            .textGroup__desc {
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 30px;
+                /* 166.667% */
+                letter-spacing: 0.9px;
+                margin-top: 25px;
+                text-align: left;
+            }
+
+            .textGroup__btn {
+                border-radius: 40px;
+                background: #0AB378;
+                padding: 20px 30px;
+                color: white;
+                border: none;
+                width: 188px;
+                font-size: 18px;
+                margin-top: 25px;
+                margin-bottom: 40px;
+            }
+        }
+
+    }
+
+    .home__section--manual {
+
+        .manual__title {
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 44px;
+            /* 122.222% */
+            letter-spacing: 3.6px;
+        }
+
+        .manual__cardGroup {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+
+            .cardGroup__card {
+                width: 335px;
+                height: 335px;
+                border-radius: 50%;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                .card__image {}
+
+                .card__title {
+                    font-size: 24px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 110%;
+                    /* 26.4px */
+                    letter-spacing: 1.2px;
+                    margin-top: 15px;
+                }
+
+                .card__desc {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                    width: 275px;
+                    margin-top: 15px;
+                }
+            }
+
+            .cardGroup__card--yellow {
+                background: #FFD600;
+            }
+
+            .cardGroup__card--green {
+                color: white;
+                background: #0AB378;
+            }
+
+            .cardGroup__card--blue {
+                background: #32D7D1;
+            }
+        }
+    }
+
+    .home__section--new {
+        background-color: white;
+
+        .new__title {
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 44px;
+            /* 122.222% */
+            letter-spacing: 3.6px;
+        }
+
+        .new__textGroup {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+
+            .textGroup__card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .card__image {
+                    width: 335px;
+                }
+
+                .card__title {
+                    color: #0AB378;
+                    font-size: 30px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 30px;
+                    /* 100% */
+                    letter-spacing: 1.5px;
+                    margin-top: 25px;
+                }
+
+                .card__desc {
+                    text-align: left;
+                    margin-top: 25px;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                }
+            }
+
+        }
+    }
+
+    .home__section--jp {
+        background: #0AB378;
+
+        .jp_heart {
             position: absolute;
-            display: block;
-            width: 100%;
-            top: 0;
             left: 0;
-        }
-
-        .admin__title {
-            width: 280px;
-            position: absolute;
-            top: calc(50% - 16px);
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-        }
-
-        .admin__title--desktop {
+            top: 50px;
             display: none;
         }
 
-        .admin__button {
+        .jp_logo {
             position: absolute;
-            top: calc(50% + 72px);
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid #FFFFFF;
-            border-radius: 50px;
-            background-color: rgba(0, 0, 0, 0);
+            right: 0;
+            top: 0px;
+            height: 400px;
+            display: none;
+        }
+
+        .jp__title {
+            color: #FFD600;
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 36px;
+            /* 100% */
+            letter-spacing: 3.6px;
+        }
+
+        .jp__desc {
+            margin-top: 25px;
             color: white;
-            padding: 10px 33px;
-        }
-    }
-
-    .admin__cardGroup {
-        padding: 40px 0;
-        background-color: white;
-
-        .cardGroup__header {
             text-align: center;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 130%;
-            color: #EEB540;
         }
 
-        .cardGroup__body {
+        .jp__cardGroups {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 20px;
-            position: inherit;
-            align-items: center;
-        }
-    }
+            overflow-x: auto;
+            gap: 15px;
+            margin-top: 25px;
 
-    .admin__definition {
-        background-image: url('@/assets/index/bg_home.webp');
-        padding: 80px 30px;
+            .cardGroups__card {
+                padding: 30px;
+                min-width: 335px;
+                height: 254px;
+                border-radius: 16px;
+                background: #FFF;
+                box-shadow: 0px 4px 6px 0px rgba(166, 166, 166, 0.30);
+                text-align: left;
+                position: relative;
 
-        .definition__title {
-            color: #EEB540;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 158%;
-        }
+                .card__bottom {
+                    position: absolute;
+                    bottom: 30px;
+                    color: #1A1A31;
 
-        .definition__hr {
-            border: 1px solid #FFFFFF;
-            opacity: 1;
-        }
-
-        .definition__desc {
-            font-style: normal;
-            font-weight: 400;
-            font-size: 18px;
-            line-height: 150%;
-            color: #FFFFFF;
-        }
-    }
-
-    .admin__partner {
-        padding: 40px 52px;
-        background-color: white;
-
-        .partner__header {
-            font-style: normal;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 130%;
-            color: #EEB540;
-            text-align: center;
-            margin-bottom: 27px;
-        }
-
-        .partner__bodyGroup {
-            display: flex;
-            flex-direction: column;
-            gap: 34px;
-            justify-content: space-between;
-        }
-
-        .partner__anchor {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 42px;
-            justify-content: center;
-
-            .anchor__image {
-                width: 34px;
-                height: 34px;
-            }
-
-            .anchor__name {
-                font-style: normal;
-                font-weight: 400;
-                font-size: 16px;
-                line-height: 130%;
-                color: #707070;
-                max-width: 170px;
-                white-space: pre-wrap;
-            }
-        }
-    }
-}
-
-@media screen and (min-width:992px) {
-    .admin {
-
-        .admin__bannerGroup {
-            background-image: url('@/assets/index/img1.webp');
-            background-size: contain;
-            min-height: 50vw;
-
-            .admin__title {
-                display: none;
-            }
-
-            .admin__title--desktop {
-                display: block;
-                transform: unset;
-                top: 16vw;
-                left: 12vw;
-                width: 44vw;
-            }
-
-            .admin__button {
-                position: absolute;
-                top: 29vw;
-                left: 12vw;
-                transform: unset;
-                border: 1px solid #FFFFFF;
-                border-radius: 50px;
-                background-color: rgba(0, 0, 0, 0);
-                color: white;
-                padding: 10px 33px;
-                width: 224px;
-                height: 70px;
-                font-weight: 900;
-                font-size: 30px;
-                line-height: 130%;
-            }
-        }
-
-        .admin__cardGroup {
-            position: relative;
-            padding: 92px 0px;
-            margin: auto;
-
-            .cardGroup__decoration {
-                position: absolute;
-            }
-
-            .cardGroup__decoration--1 {
-                top: 321px;
-                left: 0;
-            }
-
-            .cardGroup__decoration--2 {
-                bottom: 100px;
-                right: 0;
-            }
-
-            .cardGroup__header {
-                font-size: 50px;
-                font-weight: 900;
-                font-stretch: normal;
-                font-style: normal;
-                line-height: normal;
-                letter-spacing: normal;
-                text-align: center;
-                color: #eeb540;
-            }
-
-            .cardGroup__body {
-                margin: auto;
-                margin-top: 70px;
-                width: 868px;
-
-                .body__title {
-                    display: flex;
-                    gap: 501px;
-
-                    .title__others {
-                        font-size: 28px;
-                        font-weight: 900;
-                        font-stretch: normal;
+                    .bottom__name {
+                        font-size: 18px;
                         font-style: normal;
-                        line-height: normal;
-                        letter-spacing: normal;
-                        text-align: left;
-                        color: #317292;
+                        font-weight: 400;
+                        line-height: 30px;
+                        /* 166.667% */
+                        letter-spacing: 0.9px;
                     }
 
-                    .title__jobPair {
-                        font-size: 28px;
-                        font-weight: bold;
-                        font-stretch: normal;
+                    .bottom__title {
+                        font-size: 13px;
                         font-style: normal;
-                        line-height: normal;
-                        letter-spacing: normal;
-                        text-align: left;
-                        color: #317292;
+                        font-weight: 400;
+                        line-height: 20px;
+                        /* 153.846% */
+                        letter-spacing: 0.65px;
                     }
                 }
             }
         }
+    }
 
-        .admin__definition {
-            background-image: url('@/assets/index/img2.webp');
-            height: 634px;
-            position: relative;
-            background-size: cover;
-            background-position: center;
+    .home__section--partner {
+        padding: 40px 0px;
 
-            .definition__round {
-                position: absolute;
-                top: 0;
-                right: 10vw;
-            }
+        .partner__part {
 
-            .definition__textGroup {
-                position: absolute;
-                top: 154px;
-                right: calc(10vw + 81px);
-                width: 565px;
-
-                .definition__title {
-                    font-style: normal;
-                    font-weight: 700;
-                    font-size: 36px;
-                    line-height: 158%;
-                }
-
-                .definition__desc {
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 30px;
-                    line-height: 200%;
-                    color: #FFFFFF;
-                }
-            }
-
-        }
-
-        .admin__partner {
-            padding: 60px 307px;
-            background-color: white;
-
-            .partner__header {
+            .partner__title {
+                color: #0AB378;
+                font-size: 36px;
                 font-style: normal;
-                font-weight: 700;
-                font-size: 50px;
-                line-height: 158%;
-                color: #EEB540;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+            }
+
+            .partner__title--mt {
+                margin-top: 40px;
             }
 
             .partner__bodyGroup {
                 display: flex;
-                flex-direction: row;
-                gap: 60px;
-                flex-wrap: wrap;
-                max-width: 1304px;
-                margin: auto;
-            }
+                flex-direction: column;
+                gap: 50px;
+                margin-top: 50px;
 
-            .partner__anchor {
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                gap: 42px;
-                justify-content: center;
+                .bodyGroup__anchor {
 
-                .anchor__image {
-                    width: 54px;
-                    height: 54px;
-                }
+                    .anchor__image {
+                        width: auto;
+                        height: 70px;
+                    }
 
-                .anchor__name {
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 16px;
-                    line-height: 130%;
-                    color: #707070;
-                    max-width: 170px;
-                    white-space: pre-wrap;
                 }
             }
         }
+
     }
+
+    .home__section--footer {
+        padding: 0px;
+
+        .footer__image {
+            width: 100vw;
+        }
+
+    }
+
+}
+
+@media screen and (min-width:992px) {
+    .home {
+        .home__section--landing {
+            display: flex;
+            gap: 100px;
+            justify-content: center;
+            align-items: center;
+
+            .landing__banner {
+                width: 50vw;
+            }
+
+            .landing__textGroup {
+                text-align: left;
+                max-width: 408px;
+
+                .textGroup__title {
+                    font-size: 48px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 64px;
+                    /* 133.333% */
+                    letter-spacing: 2.4px;
+                }
+
+                .textGroup__desc {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 30px;
+                    /* 166.667% */
+                    letter-spacing: 0.9px;
+                    margin-top: 14px;
+                }
+
+                .textGroup__btn {
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                    padding: 20px 30px;
+                    margin-top: 80px;
+                }
+            }
+        }
+
+        .home__section--manual {
+            height: 360px;
+
+            .manual__title {
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+
+                letter-spacing: 3.6px;
+            }
+
+            .manual__cardGroup {
+                margin-top: 64px;
+                flex-direction: row;
+                justify-content: center;
+
+                .cardGroup__card {
+                    width: 27vw;
+                    height: 27vw;
+                    max-width: 400px;
+                    max-height: 400px;
+
+                    .card__image {
+                        width: 130px;
+                    }
+
+                    .card__title {
+                        font-size: 24px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 110%;
+                        /* 26.4px */
+                        letter-spacing: 1.2px;
+                    }
+
+                    .card__desc {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 30px;
+                        /* 166.667% */
+                        letter-spacing: 0.9px;
+                    }
+                }
+            }
+        }
+
+        .home__section--new {
+            padding: 200px 0px;
+
+            .new__title {
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+                margin-top: 80px;
+            }
+
+            .new__textGroup {
+                margin-top: 46px;
+                gap: 120px;
+
+                .textGroup__card {
+                    display: flex;
+                    gap: 70px;
+                    justify-content: center;
+                    text-align: left;
+                    align-items: center;
+                    flex-direction: row;
+
+                    .card__group {
+                        width: 500px;
+
+                        .card__title {}
+
+                        .card__desc {}
+                    }
+                }
+
+                .textGroup__card--reverse {
+                    flex-direction: row-reverse;
+                }
+            }
+        }
+
+        .home__section--jp {
+            padding: 50px 0px;
+            position: relative;
+            width: 100vw;
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .jp_heart {
+                position: absolute;
+                left: 0;
+                top: 50px;
+                display: block;
+            }
+
+            .jp_logo {
+                position: absolute;
+                right: 0;
+                top: 0px;
+                height: 400px;
+                display: block;
+            }
+
+            .jp__title {
+                color: #FFD600;
+                text-align: center;
+                font-size: 36px;
+                font-style: normal;
+                font-weight: 600;
+                /* 0% */
+                letter-spacing: 3.6px;
+                margin-top: 40px;
+            }
+
+            .jp__desc {
+                position: absolute;
+                top: 150px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 600;
+                /* 181.818% */
+                letter-spacing: 2.2px;
+                line-height: 40px;
+                /* 181.818% */
+                color: white;
+                margin: auto;
+                margin-top: 25px;
+                width: 824px;
+            }
+
+            .jp__cardGroups {
+                margin-top: 95px;
+                display: flex;
+                justify-content: center;
+                position: absolute;
+                bottom: -140px;
+                padding: 0px 24px;
+
+                .cardGroups__card {
+                    max-width: 400px;
+
+                    .card__desc {
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 26px;
+                        /* 162.5% */
+                        letter-spacing: 0.8px;
+                    }
+
+                    .card__bottom {
+                        .bottom__name {
+                            font-size: 18px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 30px;
+                            /* 166.667% */
+                            letter-spacing: 0.9px;
+                        }
+
+                        .bottom__title {
+                            font-size: 13px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 20px;
+                            /* 153.846% */
+                            letter-spacing: 0.65px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .home__section--partner {
+            min-height: 673px;
+            padding-top: 280px;
+
+
+            .partner__part {
+                display: flex;
+                flex-direction: row;
+                gap: 14vw;
+                align-items: center;
+                justify-content: center;
+
+                .partner__title {
+                    font-size: 36px;
+                    font-style: normal;
+                    font-weight: 600;
+                    /* 0% */
+                    letter-spacing: 3.6px;
+                }
+
+                .partner__bodyGroup {
+                    flex-direction: row;
+                    margin: 0px;
+                    gap: 14vw;
+
+                    .bodyGroup__anchor {
+                        .anchor__image {
+                            height: 70px;
+                            width: auto;
+                        }
+                    }
+                }
+            }
+
+            .partner__part--mt {
+                margin-top: 125px;
+            }
+        }
+
+    }
+
 }
 </style>

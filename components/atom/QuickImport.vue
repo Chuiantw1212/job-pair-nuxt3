@@ -33,7 +33,7 @@ function crawlUrlFromPlatform() {
     emit('click', state.crawlerUrl)
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .profile__quick {
     background-color: #fee997;
     padding: 24px 32px;

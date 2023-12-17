@@ -59,7 +59,7 @@ function getAnswers() {
     state.tempUser = user
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .questions {
     position: relative;
     background-color: white;

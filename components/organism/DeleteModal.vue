@@ -83,7 +83,7 @@ async function showSecondConfirm() {
                     if (process.client) {
                         location.reload()
                     }
-                }, 1000)
+                }, 300)
             }
             break;
         }
@@ -99,7 +99,7 @@ async function showSecondConfirm() {
                     if (process.client) {
                         location.reload()
                     }
-                }, 1000)
+                }, 300)
             }
             break;
         }
@@ -109,7 +109,7 @@ async function showSecondConfirm() {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .deleteModal {
     .deleteModal__button {
         background-color: inherit;

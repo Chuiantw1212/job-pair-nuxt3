@@ -72,7 +72,6 @@ function hideModal() {
 }
 function showModal() {
     state.bsModal.show()
-    // this.renderFirebaseUI()
 }
 function showEmployeeModal() {
     state.bsModal.hide()

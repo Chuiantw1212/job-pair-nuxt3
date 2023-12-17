@@ -80,7 +80,7 @@
                         <div class="card__slogan">
                             "我禿了，也變強了"
                         </div>
-                        <b class="person__title">朱奕安 @CTO</b>
+                        <b class="person__title">朱奕安 @JS全端工程師</b>
                         <div class="person__links">
                             <a href="https://www.facebook.com/profile.php?id=100069740545113" target="_blank">
                                 <img class="link__icon" alt="facebook" src="~/assets/about/icon_fb.svg">
@@ -116,7 +116,7 @@ useHead({
     title: '關於我們'
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .about {
     background-color: #edf3f6;
     padding-bottom: 20px;
@@ -157,7 +157,6 @@ useHead({
             font-style: normal;
             line-height: 1.7;
             letter-spacing: normal;
-            // text-align: center;
             color: #333;
         }
 
