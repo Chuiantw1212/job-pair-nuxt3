@@ -128,7 +128,7 @@ export default function setup() {
             })
             repoAuth.setUser(user)
             if (company) {
-                $emitter.emit("setMenuType", 'admin')
+                $emitter?.emit("setMenuType", 'admin')
                 // 有取得公司資料代表已完成註冊人資
                 const organizationId = company.id
                 if (organizationId && repoCompany.getCompanyJobs) {
@@ -218,9 +218,9 @@ export default function setup() {
         hideModals()
     }
     function hideModals() {
-        $emitter.emit("hideSwitchModal")
-        $emitter.emit("hideUserModal")
-        $emitter.emit('hideCompanyModal')
+        $emitter?.emit("hideSwitchModal")
+        $emitter?.emit("hideUserModal")
+        $emitter?.emit('hideCompanyModal')
     }
     function getBasicInfo(type) {
         const user = state.authResult.user

@@ -93,7 +93,7 @@ watch(() => repoAuth.state.user, (newValue, oldValue) => {
     }
     if (process.client && !newValue) {
         requestSelector('#userModal', () => {
-            $emitter.emit("showUserModal")
+            $emitter?.emit("showUserModal")
         })
     }
 }, { immediate: true })
@@ -130,7 +130,7 @@ async function signUp() {
     // 關閉彈窗
     if (response.data) {
         setTimeout(() => {
-            $emitter.emit("hideUserModal")
+            $emitter?.emit("hideUserModal")
         }, 150) // 300ms animation - server response 150ms
     }
     if (typeof response.data === 'string') {
