@@ -246,6 +246,7 @@ function routeToQuestions() {
         .landing__banner {
             width: 335px;
             max-width: 743px;
+            height: auto;
         }
 
         .landing__textGroup {
@@ -315,8 +316,6 @@ function routeToQuestions() {
                 align-items: center;
                 justify-content: center;
 
-                .card__image {}
-
                 .card__title {
                     font-size: 24px;
                     font-style: normal;
@@ -379,6 +378,7 @@ function routeToQuestions() {
 
                 .card__image {
                     width: 335px;
+                    height: auto;
                 }
 
                 .card__title {
@@ -602,6 +602,7 @@ function routeToQuestions() {
 
                     .card__image {
                         width: 130px;
+                        height: auto;
                     }
 
                     .card__title {

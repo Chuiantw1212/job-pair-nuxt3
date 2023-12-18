@@ -239,6 +239,7 @@ function openAdminModal() {
         .landing__banner {
             width: 335px;
             max-width: 743px;
+            height: auto;
         }
 
         .landing__textGroup {
