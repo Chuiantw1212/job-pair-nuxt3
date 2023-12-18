@@ -11,7 +11,7 @@
                 {{ modelValue.name }}
             </NuxtLink>
             <NuxtLink v-if="modelValue.organizationSeoName" class="body__company"
-                :to="`/o/${modelValue.organizationSeoName}`">
+                :to="`/company/${modelValue.organizationSeoName}`">
                 <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
                     onerror="this.style.display = 'none'" alt="logo" />
                 <img v-else class="company__logo d-lg-none" :src="defaultLogo" onerror="this.style.display = 'none'"
