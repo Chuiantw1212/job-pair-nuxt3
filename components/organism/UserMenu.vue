@@ -86,7 +86,7 @@ function showUserModal() {
             name: "jobs",
         })
     } else {
-        $emitter.emit("showSwitchModal")
+        $emitter?.emit("showSwitchModal")
     }
 }
 </script>

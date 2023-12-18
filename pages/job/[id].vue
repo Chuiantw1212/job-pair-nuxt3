@@ -11,7 +11,7 @@
                 <div class="basic__body">
                     <div class="basic__body__header">{{ state.job?.name }}</div>
                     <NuxtLink v-if="state.company?.seoName" class="basic__body__subHeader"
-                        :to="`/o/${state.company?.seoName}`">
+                        :to="`/company/${state.company?.seoName}`">
                         <div class="d-lg-none subHeader__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                         </div>
                         {{ state.job?.organizationName }}
@@ -385,7 +385,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     const showRegisterModal = jobScroller.state.count >= 5 && jobScroller.state.jobList.length > 5 && !jobScroller.state.isModalShown
     if (!user && showRegisterModal) {
         jobScroller.state.isModalShown = true
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
     }
 })
 // methos
@@ -404,7 +404,7 @@ function detectScroll() {
         const { innerHeight, scrollY } = window
         if (innerHeight + scrollY >= offsetHeight && !jobScroller.state.isModalShown) {
             jobScroller.state.isModalShown = true
-            $emitter.emit("showUserModal")
+            $emitter?.emit("showUserModal")
         }
     })()
 }

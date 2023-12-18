@@ -65,7 +65,7 @@ async function revokeUser() {
     }
 }
 function handleClick() {
-    $emitter.emit('collapse')
+    $emitter?.emit('collapse')
 }
 async function logout() {
     repoAuth.userSignout()
@@ -74,7 +74,7 @@ async function logout() {
     })
 }
 function showModal() {
-    $emitter.emit("showSwitchModal")
+    $emitter?.emit("showSwitchModal")
 }
 </script>
 <style lang="scss" scoped>
