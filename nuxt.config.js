@@ -7,10 +7,11 @@ const siteUrl = 'http://localhost:3000'
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
     site: {
-        name: 'Job Pair - 找工作不再迷茫，為你量身打造推薦適合工作'
+        name: 'Job Pair'
     },
     app: {
         head: {
+            // titleTemplate: '%siteName - %pageTitle',
             meta: [
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },

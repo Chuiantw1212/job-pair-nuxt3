@@ -186,16 +186,14 @@ const state = reactive({
 })
 // hooks
 useSeoMeta({
-    title: `Job Pair - 用你的需求找工作，立即探索適合職缺`,
-    ogTitle: `Job Pair - 用你的需求找工作，立即探索適合職缺`,
+    title: `用你的需求找工作，立即探索適合職缺`,
+    ogTitle: `用你的需求找工作，立即探索適合職缺`,
+    titleTemplate: '%siteName - %pageTitle',
     description: '求職找工作可以很簡單！Job Pair媒合型人力銀行，勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。',
     ogDescription: `求職找工作可以很簡單！Job Pair媒合型人力銀行，勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。`,
 })
 definePageMeta({
     keepalive: true
-})
-useHead({
-    title: '職缺探索'
 })
 onMounted(() => {
     if (repoJob.state.cache.isDone) {
