@@ -191,7 +191,7 @@ onBeforeUnmount(() => {
     }
 })
 watch(() => repoAuth.state.user, () => {
-    jobScroller.state.filter.organizationId = company.value.id
+    jobScroller.state.filter.organizationId = company.value.organizationId || company.value.id
     jobScroller.searchJobs()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
