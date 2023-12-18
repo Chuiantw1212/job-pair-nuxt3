@@ -137,7 +137,7 @@ export default defineNuxtConfig({
                 const { datePosted = '' } = item
                 if (datePosted) {
                     const dateInstance = new Date(datePosted)
-                    urlItem.lastmod = formatter.format(dateInstance)
+                    urlItem.lastmod = formatter.format(dateInstance).replaceAll('/', '-')
                 }
                 urls.push(urlItem)
             })
@@ -148,7 +148,7 @@ export default defineNuxtConfig({
                 const { updatedDate = '' } = item
                 if (updatedDate) {
                     const dateInstance = new Date(updatedDate)
-                    urlItem.lastmod = formatter.format(dateInstance)
+                    urlItem.lastmod = formatter.format(dateInstance).replaceAll('/', '-')
                 }
                 urls.push(urlItem)
             })
