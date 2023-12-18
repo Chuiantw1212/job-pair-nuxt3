@@ -211,7 +211,7 @@ function openAdminModal() {
     if (user && user.type === 'admin') {
         router.push('/admin/recruit/jobs')
     } else {
-        $emitter.emit("showCompanyModal")
+        $emitter?.emit("showCompanyModal")
     }
 }
 </script>

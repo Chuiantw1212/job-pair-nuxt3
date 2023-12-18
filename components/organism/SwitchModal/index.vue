@@ -78,14 +78,14 @@ function showEmployeeModal() {
     router.replace({
         name: 'index'
     })
-    $emitter.emit("showUserModal")
+    $emitter?.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
     router.replace({
         name: 'admin'
     })
-    $emitter.emit("showCompanyModal")
+    $emitter?.emit("showCompanyModal")
 }
 </script>
 <style lang="scss" scoped>

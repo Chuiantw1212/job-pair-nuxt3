@@ -10,7 +10,7 @@
             <LazyAtomInputText v-model="state.localValue.seoName" name="你的自訂網址" placeholder="可輸入你的公司名稱（僅限英數字）"
                 :types="['english', 'number']" :lowerCase="true" required>
                 <template #prefix>
-                    <div class="input__prefix">jobpair.com/o/</div>
+                    <div class="input__prefix">jobpair.com/company/</div>
                 </template>
             </LazyAtomInputText>
             <LazyAtomInputTextarea v-model="state.localValue.description" name="搜尋引擎描述" class="mt-2" rows="4" required>

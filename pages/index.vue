@@ -213,7 +213,7 @@ function routeToQuestions() {
             }
             const hasEvent = $emitter.all.has('showUserModal')
             if (hasEvent) {
-                $emitter.emit("showUserModal")
+                $emitter?.emit("showUserModal")
             } else {
                 localCount++
                 window.requestAnimationFrame(step)

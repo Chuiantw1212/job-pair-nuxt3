@@ -97,7 +97,7 @@
             <LazyOrganismSeoModal v-model="state.organizationDesign" :disabled="!state.organizationDesign.templates.length"
                 @confirm="publishDesign()">發布</LazyOrganismSeoModal>
             <NuxtLink v-if="state.organizationDesign.seoName" target="_blank" class="footer__link"
-                :to="{ name: 'o-seoName', params: { seoName: state.organizationDesign.seoName } }"
+                :to="{ name: 'company-id', params: { id: state.organizationDesign.seoName } }"
                 :disabled="!state.organizationDesign.templates.length">
                 <LazyAtomBtnSimple class="footer_btn">
                     檢視頁面
@@ -211,7 +211,6 @@ async function publishDesign() {
     state.organizationDesign.organizationId = repoAuth.state.company.id
     await repoOrganizationDesign.putItem(state.organizationDesign)
     $sweet.loader(false)
-    // window.open(`${runTimeConfig.public.siteUrl}/o/${state.organizationDesign.seoName}`, "_blank")
 }
 </script>
 <style lang="scss" scoped>
