@@ -192,7 +192,7 @@ onBeforeUnmount(() => {
 })
 watch(() => repoAuth.state.user, (newValue) => {
     jobScroller.state.filter.organizationId = paramdId.value
-    jobScroller.initializeSearch()
+    jobScroller.searchJobs()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     $emitter?.emit('setDesignBannerJobs', newValue.length)
