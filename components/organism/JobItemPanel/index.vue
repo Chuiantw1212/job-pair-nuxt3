@@ -116,7 +116,7 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
 
 // methods
 function showLoginModal() {
-    $emitter.emit("showUserModal")
+    $emitter?.emit("showUserModal")
 }
 function checkIsAdmin() {
     // 登入使用者與匿名造訪者都開放點按
@@ -161,7 +161,7 @@ async function handleUnsavedJob() {
 async function handleSaveJob() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
         return
     }
     const response = await repoJobApplication.postJobSaved({

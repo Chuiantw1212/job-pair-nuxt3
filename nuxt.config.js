@@ -7,10 +7,11 @@ const siteUrl = 'https://job-pair-taiwan-dev.web.app'
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
     site: {
-        name: 'Job Pair 人力銀行'
+        name: 'Job Pair'
     },
     app: {
         head: {
+            // titleTemplate: '%siteName - %pageTitle',
             meta: [
                 { "charset": "utf-8" },
                 { "content": "width=device-width, initial-scale=1" },
@@ -59,7 +60,7 @@ export default defineNuxtConfig({
             apiBase, // deprecated
             // SEO
             siteUrl,
-            siteDescription: 'Job Pair 是專業的媒合平台，專注於助您找到與能力、價值觀相符的工作機會，實現長期價值發揮。透過我們高效的適配功能，輕鬆探索理想職位。立即加入 Job Pair，啟動您的職業生涯。',
+            siteDescription: '在這個充滿資訊噪音的時代，求職找工作變得越來越困難。我們相信，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。Job Pair媒合型人力銀行，讓你的職涯充滿無限可能！勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。',
             language: 'zh-TW', // prefer more explicit language codes like `en-AU` over `en`
             LIFF_ID: '1660783051-vP4Ojz2r',
             axiosTimeout: 30000,

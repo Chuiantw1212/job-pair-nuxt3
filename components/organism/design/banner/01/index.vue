@@ -132,7 +132,7 @@ function setDesignBannerJobs(jobsLength = 0) {
     state.jobsLength = jobsLength
 }
 function emitScrollEvent() {
-    $emitter.emit('scrollToJobs')
+    $emitter?.emit('scrollToJobs')
 }
 async function uploadAsset(image = {}, index = 0) {
     image.name = `background${index + 1}`

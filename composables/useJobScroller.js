@@ -139,14 +139,11 @@ export default function setup(setUpConfig = {}) {
         if (!process.client) {
             return
         }
-        console.log('observeLastJob', selectorString);
         $requestSelectorAll(selectorString, (elements) => {
-            console.log('state.observer', state.observer);
             if (!state.observer) {
                 state.observer = new IntersectionObserver(loadNextFrameJobs)
             }
             const target = elements[elements.length - 1]
-            console.log('observe', target);
             if (target) {
                 state.observer.disconnect()
                 state.observer.observe(target)

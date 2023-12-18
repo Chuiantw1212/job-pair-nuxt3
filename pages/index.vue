@@ -177,6 +177,14 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value.slice(0, 3)
+// hooks
+useSeoMeta({
+    title: `找工作不再迷茫，為你量身打造推薦適合工作`,
+    ogTitle: `找工作不再迷茫，為你量身打造推薦適合工作`,
+    titleTemplate: '%siteName - %pageTitle',
+    description: '在這個充滿資訊噪音的時代，求職找工作變得越來越困難。我們相信，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。Job Pair媒合型人力銀行，讓你的職涯充滿無限可能！勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。',
+    ogDescription: `在這個充滿資訊噪音的時代，求職找工作變得越來越困難。我們相信，除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。Job Pair媒合型人力銀行，讓你的職涯充滿無限可能！勾選你理想的企業文化、工作環境、組織階段、管理模式、人際風格和工作模式，即刻為你配對最合適的職缺，開啟專屬於你的職場旅程。`,
+})
 onMounted(async () => {
     if (process.client) {
         const response = await repoJob.getJobByQuery({
@@ -213,7 +221,7 @@ function routeToQuestions() {
             }
             const hasEvent = $emitter.all.has('showUserModal')
             if (hasEvent) {
-                $emitter.emit("showUserModal")
+                $emitter?.emit("showUserModal")
             } else {
                 localCount++
                 window.requestAnimationFrame(step)

@@ -186,6 +186,14 @@ const state = reactive({
 })
 const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
 state.affiliate = companyList.value
+// hooks
+useSeoMeta({
+    title: `讓企業有效被人才看見的人力銀行徵才網`,
+    ogTitle: `讓企業有效被人才看見的人力銀行徵才網`,
+    titleTemplate: '%siteName - %pageTitle',
+    description: '在這個充滿資訊噪音的時代，吸引人才越來越困難。除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。Job Pair媒合型人力銀行，讓企業與職缺有效被看見，釋放人才的無限可能，幫助企業長期的發展。',
+    ogDescription: `在這個充滿資訊噪音的時代，吸引人才越來越困難。除了眾所矚目的熱門職業，還有更多適合個人特質和價值觀的選擇。Job Pair媒合型人力銀行，讓企業與職缺有效被看見，釋放人才的無限可能，幫助企業長期的發展。`,
+})
 onMounted(async () => {
     if (process.client) {
         const response = await repoJob.getJobByQuery({
@@ -206,12 +214,13 @@ onMounted(async () => {
         state.jobProvider = jobProvider
     }
 })
+// methods
 function openAdminModal() {
     const { user } = repoAuth.state
     if (user && user.type === 'admin') {
         router.push('/admin/recruit/jobs')
     } else {
-        $emitter.emit("showCompanyModal")
+        $emitter?.emit("showCompanyModal")
     }
 }
 </script>
