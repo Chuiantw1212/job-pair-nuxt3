@@ -1,28 +1,7 @@
 <template>
     <div class="form">
         <div class="form__body">
-            <template v-for="(item, index) in state.questions">
-                <AtomInputSelect v-if="index < 5" v-model="modelValue.preference[item.key]" class="body__select"
-                    :name="`Q${index + 1}：${item.descUser}`" :items="state.questions[index].items" required
-                    itemText="textUser">
-                </AtomInputSelect>
-                <div v-else class="body__multiselect">
-                    <div>
-                        <span class="text-danger">*</span>Q{{ index + 1 }}：{{ item.descUser }}(多選)
-                    </div>
-                    <div class="multiselect__list">
-                        <label v-for="(subItem, index2) in  item.items" :key="`multiItem${index2}`"
-                            class="inputOptions__multipleSelect">
-                            <img v-show="checkOptionSelected(subItem)" src="~/assets/questions/checkboxSelected.svg">
-                            <input v-show="!checkOptionSelected(subItem)" v-model="modelValue.preference['culture']"
-                                :value="subItem.value" class="multiSelect__checkbox" type="checkbox"
-                                :disabled="checkOptionDisabled(subItem)">
-                            <span class="multipleSelect__description">{{ subItem.textUser }}</span>
-                        </label>
-                        <input v-show="false" :value="checkSomeSelected()" :data-required="true" :data-name="item.descUser">
-                    </div>
-                </div>
-            </template>
+           
         </div>
         <div class="questions__footer">
             <LazyAtomBtnSimple @click="handleClickNext()">下一步
@@ -47,8 +26,11 @@ const props = defineProps({
         type: Object,
         default: function () {
             return {
-                preference: {
-                    culture: []
+                currentIndex: 0,
+                tempUser: {
+                    preference: {
+                        culture: []
+                    },
                 },
             }
         }
@@ -58,28 +40,15 @@ const props = defineProps({
 useHead({
     title: '求職偏好 - 註冊流程'
 })
-onMounted(async () => {
-    let questions = []
-    const { questionsRes = [] } = repoSelect.state
-    if (questionsRes && questionsRes.length) {
-        questions = repoSelect.state.questionsRes
-    } else {
-        $sweet.loader(true)
-        const response = await repoSelect.getQuestions()
-        $sweet.loader(false)
-        questions = response.data
-    }
-    state.questions = questions
-})
 function checkOptionDisabled(item) {
     const isSelected = checkOptionSelected(item)
-    return props.modelValue.preference['culture'].length >= 2 && !isSelected
+    return props.modelValue.tempUser.preference['culture'].length >= 2 && !isSelected
 }
 function checkOptionSelected(item) {
-    return props.modelValue.preference['culture'].includes(item.value)
+    return props.modelValue.tempUser.preference['culture'].includes(item.value)
 }
 function checkSomeSelected() {
-    return props.modelValue.preference['culture'].length >= 1
+    return props.modelValue.tempUser.preference['culture'].length >= 1
 }
 async function handleClickNext() {
     const result = await $validate()

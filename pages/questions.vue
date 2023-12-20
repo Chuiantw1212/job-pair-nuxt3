@@ -2,8 +2,9 @@
     <div class="questions">
         <img class="questions__leftImage" src="~/assets/questions/left.png" />
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
-        <LazyAtomProgress class="questions__progress"></LazyAtomProgress>
-        <router-view v-model="state.tempUser"></router-view>
+        <LazyAtomProgress :items="state.breadcrumbs" class="questions__progress">
+        </LazyAtomProgress>
+        <router-view v-model="state" :questions="state.questions"></router-view>
     </div>
 </template>
 <script>
@@ -16,11 +17,27 @@ const route = useRoute()
 const router = useRouter()
 const repoAuth = useRepoAuth()
 const state = reactive({
+    currentIndex: 0,
     tempUser: {
         preference: {
             culture: []
         },
-    }
+    },
+    breadcrumbs: [
+        {
+            text: '求職偏好',
+            name: 'questions-preference'
+        },
+        {
+            text: '個人資料',
+            name: 'questions-profile'
+        },
+        {
+            text: '註冊結果',
+            name: 'questions-result'
+        }
+    ],
+    questions: [],
 })
 onMounted(async () => {
     const currentRouteName = route.name
