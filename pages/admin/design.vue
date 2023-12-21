@@ -38,13 +38,13 @@
                         <li data-name="LIST01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model1.webp" draggable="false">
+                            <img class="item__imaage" src="@/assets/admin/design/Model7.png" draggable="false">
                             <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                         </li>
                         <li data-name="LIST02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model5.webp" draggable="false">
+                            <img class="item__imaage" src="@/assets/admin/design/Model6.png" draggable="false">
                             <div class="item__desc">適合凸顯特色，不論是企業文化、優勢、福利，甚至是產品服務。</div>
                         </li>
                         <li data-name="SLIDE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
