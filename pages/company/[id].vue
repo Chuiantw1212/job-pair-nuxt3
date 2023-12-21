@@ -204,7 +204,9 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
 })
 // methods
 function scrollToJobs() {
+    console.log('scrollToJobs');
     const element = document.getElementById('company__jobs')
+    console.log('element', element);
     if (element) {
         element.scrollIntoView()
     }
