@@ -115,38 +115,18 @@
             </div>
         </section>
         <section class="home__section home__section--partner">
-
             <div v-if="state.affiliate.length" class="partner__part">
                 <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
-                    <!-- <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a>
-                    <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a>
-                    <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a> -->
                     <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
                         :href="item?.url?.default" target="_blank" aria-label="more about this company">
                         <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
                     </a>
                 </div>
             </div>
-            <!-- </template> -->
             <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
                 <h2 class="partner__title partner__title--mt">合作企業</h2>
                 <div class="partner__bodyGroup">
-                    <!-- <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a>
-                    <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a>
-                    <a class="bodyGroup__anchor">
-                        <img class="anchor__image" alt="img7" src="@/assets/index/Frame2503.png">
-                    </a> -->
                     <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
                         :to="`/company/${item.organizationId}`" aria-label="more about this company">
                         <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
@@ -245,7 +225,7 @@ function routeToQuestions() {
     .home__section--landing {
         .landing__banner {
             width: 335px;
-            max-width: 743px;
+            max-width: calc(100vw - 40px);
             height: auto;
         }
 
@@ -257,9 +237,9 @@ function routeToQuestions() {
                 font-style: normal;
                 font-weight: 600;
                 line-height: 64px;
-                /* 160% */
                 letter-spacing: 2px;
                 margin-top: 25px;
+                min-width: 9em;
             }
 
             .textGroup__desc {
@@ -536,12 +516,13 @@ function routeToQuestions() {
     .home {
         .home__section--landing {
             display: flex;
-            gap: 100px;
+            gap: 4%;
             justify-content: center;
             align-items: center;
 
             .landing__banner {
                 width: 50vw;
+                max-width: 743px;
             }
 
             .landing__textGroup {

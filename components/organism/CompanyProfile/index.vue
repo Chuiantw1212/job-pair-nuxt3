@@ -42,9 +42,9 @@
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
                             required>
-                        </LazyAtomInputText>
+                        </LazyAtomInputMobile>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
