@@ -3,6 +3,7 @@
         <div class="form__hint">
             此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
         </div>
+        {{ modelValue }}
         <LazyAtomProgress :modelValue="questionIndex" :items="state.breadcrumbs" class="form__progress">
         </LazyAtomProgress>
         <template v-if="state.questions.length" class="form__body">
@@ -10,7 +11,8 @@
             <div v-if="questionIndex === 5" class=" body__sub">多選題</div>
             <div class="body__cardGroups">
                 <label v-for="( item, index ) in  state.questions[questionIndex].items " class="cardGroups__card"
-                    :class="{ 'cardGroups__card--active': checkSelected(item) }" :key="index">
+                    :class="{ 'cardGroups__card--active': checkCardStatus(item) === 'active', 'cardGroups__card--disabled': checkCardStatus(item) === 'disabled' }"
+                    :key="index">
                     <div class="card__image">
                         <img v-if="questionIndex === 0 && index === 0" src="@/assets/questions/工作環境1.png">
                         <img v-if="questionIndex === 0 && index === 1" src="@/assets/questions/工作環境2.png">
@@ -38,7 +40,7 @@
                     </div>
                     <template v-if="questionIndex === 5">
                         <input v-show="false" v-model="modelValue.preference[state.questions[questionIndex].key]"
-                            :value="item.value" type="checkbox">
+                            :value="item.value" :disabled="checkCardStatus(item) === 'disabled'" type="checkbox">
                     </template>
                     <template v-else>
                         <input v-show="false" v-model="modelValue.preference[state.questions[questionIndex].key]"
@@ -49,7 +51,7 @@
             </div>
         </template>
         <div v-if="questionIndex === 5" class="form__footer">
-            <LazyAtomBtnSimple class="footer__btn" @click="gotoProfile()">完成
+            <LazyAtomBtnSimple class="footer__btn" :disabled="checkBtnDisabled()" @click="gotoProfile()">完成
             </LazyAtomBtnSimple>
         </div>
     </div>
@@ -113,14 +115,29 @@ onMounted(async () => {
     state.questions = questions
 })
 // methods
-function checkSelected(item) {
+function checkBtnDisabled() {
+    const selectedAnswer = props.modelValue.preference[state.questions[questionIndex.value]?.key]
+    const isMultiSelect = Array.isArray(selectedAnswer)
+    if (isMultiSelect) {
+        return !selectedAnswer.length
+    }
+}
+function checkCardStatus(item) {
     const { value } = item
     const selectedAnswer = props.modelValue.preference[state.questions[questionIndex.value]?.key]
     const isMultiSelect = Array.isArray(selectedAnswer)
     if (isMultiSelect) {
-        return selectedAnswer.includes(value)
+        if (selectedAnswer.includes(value)) {
+            return 'active'
+        }
+        if (selectedAnswer.length >= 2) {
+            return 'disabled'
+        }
     } else {
-        return selectedAnswer === value
+        // is single select 
+        if (selectedAnswer === value) {
+            return 'active'
+        }
     }
 }
 function gotoProfile() {
@@ -129,17 +146,20 @@ function gotoProfile() {
     })
 }
 function gotoNextQuestion() {
-    const currentId = Number(route.params.id)
-    if (currentId >= 6) {
-        return
-    } else {
-        router.push({
-            name: 'questions-id',
-            params: {
-                id: currentId + 1
-            }
-        })
-    }
+    // 等待model值更新
+    nextTick(() => {
+        const currentId = Number(route.params.id)
+        if (currentId >= 6) {
+            return
+        } else {
+            router.push({
+                name: 'questions-id',
+                params: {
+                    id: currentId + 1
+                }
+            })
+        }
+    })
 }
 </script>
 <style lang="scss" scoped>
@@ -225,6 +245,16 @@ function gotoNextQuestion() {
         .cardGroups__card--active {
             background: #42708F;
             color: white;
+        }
+
+        .cardGroups__card--disabled {
+            opacity: 0.7;
+
+            &:hover {
+                background: unset;
+                color: #42708F;
+                cursor: unset;
+            }
         }
     }
 
