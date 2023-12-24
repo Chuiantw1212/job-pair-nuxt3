@@ -26,7 +26,10 @@ onMounted(async () => {
     const currentRouteName = route.name
     if (currentRouteName === 'questions') {
         router.replace({
-            name: 'questions-preference'
+            name: 'questions-id',
+            params: {
+                id: 1
+            }
         })
     }
     if (process.client) {

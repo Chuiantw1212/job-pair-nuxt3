@@ -3,12 +3,11 @@
         <div class="form__hint">
             此量表答案沒有對錯好壞。請依照就職中的一般狀況，點選與你心中就職情況最符合的選項
         </div>
-        {{ modelValue }}
         <LazyAtomProgress :modelValue="questionIndex" :items="state.breadcrumbs" class="form__progress">
         </LazyAtomProgress>
         <template v-if="state.questions.length" class="form__body">
             <h1 class="body__header">{{ state.questions[questionIndex].descUser }}</h1>
-            <div v-if="questionIndex === 5" class=" body__sub">多選題</div>
+            <div v-if="questionIndex === 5" class=" body__sub">多選題(最多兩項)</div>
             <div class="body__cardGroups">
                 <label v-for="( item, index ) in  state.questions[questionIndex].items " class="cardGroups__card"
                     :class="{ 'cardGroups__card--active': checkCardStatus(item) === 'active', 'cardGroups__card--disabled': checkCardStatus(item) === 'disabled' }"
@@ -39,12 +38,12 @@
                         <img v-if="questionIndex === 5 && index === 5" src="@/assets/questions/工作環境3.png">
                     </div>
                     <template v-if="questionIndex === 5">
-                        <input v-show="false" v-model="modelValue.preference[state.questions[questionIndex].key]"
-                            :value="item.value" :disabled="checkCardStatus(item) === 'disabled'" type="checkbox">
+                        <input v-show="false" v-model="state.culture" :value="item.value"
+                            :disabled="checkCardStatus(item) === 'disabled'" type="checkbox">
                     </template>
                     <template v-else>
-                        <input v-show="false" v-model="modelValue.preference[state.questions[questionIndex].key]"
-                            :value="item.value" type="radio" @click="gotoNextQuestion()">
+                        <input v-show="false" v-model="localValue.preference[state.questions[questionIndex].key]"
+                            :value="item.value" type="radio" @click="gotoNextQuestion($event)">
                     </template>
                     <span class="card__text">{{ item.textUser }}</span>
                 </label>
@@ -84,6 +83,7 @@ const state = reactive({
             name: 'questions-id-6'
         },
     ],
+    culture: [],
 })
 // hooks
 const props = defineProps({
@@ -98,6 +98,17 @@ const props = defineProps({
         }
     }
 })
+const localValue = computed({
+    get() {
+        return props.modelValue
+    },
+    set(value) {
+        emit('update:modelValue', value)
+    }
+})
+watch(() => state.culture, (value = []) => {
+    localValue.value.preference.culture = value
+}, { deep: true })
 const questionIndex = computed(() => {
     return route.params.id - 1
 })
@@ -116,7 +127,7 @@ onMounted(async () => {
 })
 // methods
 function checkBtnDisabled() {
-    const selectedAnswer = props.modelValue.preference[state.questions[questionIndex.value]?.key]
+    const selectedAnswer = localValue.value.preference[state.questions[questionIndex.value]?.key]
     const isMultiSelect = Array.isArray(selectedAnswer)
     if (isMultiSelect) {
         return !selectedAnswer.length
@@ -124,7 +135,8 @@ function checkBtnDisabled() {
 }
 function checkCardStatus(item) {
     const { value } = item
-    const selectedAnswer = props.modelValue.preference[state.questions[questionIndex.value]?.key]
+    const questionKey = state.questions[questionIndex.value]?.key
+    const selectedAnswer = localValue.value.preference[questionKey]
     const isMultiSelect = Array.isArray(selectedAnswer)
     if (isMultiSelect) {
         if (selectedAnswer.includes(value)) {
@@ -146,8 +158,7 @@ function gotoProfile() {
     })
 }
 function gotoNextQuestion() {
-    // 等待model值更新
-    nextTick(() => {
+    setTimeout(() => {
         const currentId = Number(route.params.id)
         if (currentId >= 6) {
             return
