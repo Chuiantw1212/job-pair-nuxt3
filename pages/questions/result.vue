@@ -2,7 +2,7 @@
     <div class="questions__result">
         <div class="questions__frame">
             <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
-            <h1 class="frame__title">註冊流程已完成</h1>
+            <h1 class="frame__title">想了解自己的求職方向嗎？</h1>
             <div class="frame__textarea">
                 接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
             </div>
