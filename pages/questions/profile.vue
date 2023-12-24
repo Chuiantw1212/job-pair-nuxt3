@@ -2,6 +2,9 @@
     <div class="profile container">
         <div class="profile__header">最後一個步驟，<br class="d-lg-none">就完成會員註冊囉！</div>
         <div class="profile__body">
+            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="選擇僱傭性質" v-model="modelValue.employmentType"
+                :items="repoSelect.state.selectByQueryRes.employmentType" required class="mt-3">
+            </LazyAtomInputSelect>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="選擇職務類別" class="mt-4"
                 :max="3" required>
                 <template v-slot:header>
