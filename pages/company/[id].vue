@@ -184,11 +184,13 @@ useJsonld(() => ({
 onMounted(async () => {
     state.id = $uuid4()
     await initializeCompany(paramdId.value)
+    $emitter.on('scrollToJobs', scrollToJobs)
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
         state.glideInstance.destroy()
     }
+    $emitter.off('scrollToJobs', scrollToJobs)
 })
 watch(() => repoAuth.state.user, () => {
     jobScroller.state.filter.organizationId = company.value.organizationId || company.value.id
@@ -201,6 +203,12 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function scrollToJobs() {
+    const element = document.getElementById('company__jobs')
+    if (element) {
+        element.scrollIntoView()
+    }
+}
 function extractContent(content = '') {
     const target = content.replaceAll("<[^>]*>", "");
     return target
@@ -260,6 +268,9 @@ function getLocationText() {
 }
 </script>
 <style lang="scss" scoped>
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+    padding: 0;
+}
 .company {
     .company__section {
         scroll-margin-top: 58px;

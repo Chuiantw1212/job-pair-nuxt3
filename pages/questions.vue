@@ -2,8 +2,7 @@
     <div class="questions">
         <img class="questions__leftImage" src="~/assets/questions/left.png" />
         <img class="questions__rightImage" src="~/assets/questions/right.png" />
-        <LazyAtomProgress class="questions__progress"></LazyAtomProgress>
-        <router-view v-model="state.tempUser"></router-view>
+        <router-view v-model="state.tempUser" :questions="state.questions"></router-view>
     </div>
 </template>
 <script>
@@ -20,13 +19,17 @@ const state = reactive({
         preference: {
             culture: []
         },
-    }
+    },
+    questions: [],
 })
 onMounted(async () => {
     const currentRouteName = route.name
     if (currentRouteName === 'questions') {
         router.replace({
-            name: 'questions-preference'
+            name: 'questions-id',
+            params: {
+                id: 1
+            }
         })
     }
     if (process.client) {
@@ -68,11 +71,6 @@ function getAnswers() {
     padding-top: 20px;
     padding-bottom: 50px;
     min-height: 100vh;
-
-    .questions__progress {
-        margin: 0 auto;
-        max-width: 240px;
-    }
 
     .questions__leftImage {
         position: absolute;

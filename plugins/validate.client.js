@@ -32,6 +32,7 @@ export default defineNuxtPlugin(nuxtApp => {
                 // 顯示彈跳視窗
                 let alertResult = { value: 1 } // 永遠預設為通過
                 if (invalidFields.length && config.icon) {
+                    // For each invalid fields emit validation
                     const emptyFieldNames = invalidFields.map(item => {
                         return item.dataset.name
                     })
