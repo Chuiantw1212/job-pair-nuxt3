@@ -26,10 +26,8 @@
                 </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
         </div>
-        <div class="profile__footer">
-            <LazyAtomBtnSimple @click="handleClickNext()">完成註冊
-            </LazyAtomBtnSimple>
-        </div>
+        <LazyAtomBtnSimple class="profile__footer" @click="handleClickNext()">完成
+        </LazyAtomBtnSimple>
     </div>
 </template>
 <script>
@@ -142,9 +140,8 @@ async function handleSubmit() {
     }
 
     .profile__footer {
-        width: 256px;
-        margin: 50px auto auto auto;
-        text-align: center;
+        width: 100%;
+        margin-top: 27px;
     }
 }
 </style>
