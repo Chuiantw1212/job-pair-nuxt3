@@ -17,9 +17,9 @@
                         :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
                     <LazyAtomInputEmail name="Email" v-model="state.profileBasic.email" class="mt-3" disabled>
                     </LazyAtomInputEmail>
-                    <LazyAtomInputText name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機" class="mt-3"
+                    <LazyAtomInputMobile name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機" class="mt-3"
                         required>
-                    </LazyAtomInputText>
+                    </LazyAtomInputMobile>
                 </div>
             </div>
             <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="僱傭性質"
