@@ -5,7 +5,7 @@
         </div>
         <label class="inputGroup__label">
             <input class="label__input" :id="state.uuid" v-model="localValue" :data-required="required" :data-name="name"
-                :data-valid="state.isValid" :placeholder="placeholder" @blur="handleValidate()" type="number" />
+                :data-valid="state.isValid" :placeholder="placeholder" @blur="handleValidate()" type="tel" />
         </label>
         <div class="inputGroup__message">{{ state.message }}</div>
     </div>
@@ -46,6 +46,7 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
+        setErrorMessage()
         emit("update:modelValue", newValue)
     },
 })
