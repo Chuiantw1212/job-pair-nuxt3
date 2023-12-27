@@ -268,6 +268,9 @@ function getLocationText() {
 }
 </script>
 <style lang="scss" scoped>
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+    padding: 0;
+}
 .company {
     .company__section {
         scroll-margin-top: 58px;

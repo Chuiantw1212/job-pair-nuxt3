@@ -214,6 +214,10 @@ async function publishDesign() {
 }
 </script>
 <style lang="scss" scoped>
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+    padding: 0;
+}
+
 .design {
     padding: 20px 0px;
 
