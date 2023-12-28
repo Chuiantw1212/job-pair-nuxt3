@@ -34,7 +34,7 @@
                         <th>預覽</th>
                         <th v-if="state.jobFields.includes('occupationalCategory')">職務類型</th>
                         <th v-if="state.jobFields.includes('responsibilities')">資歷</th>
-                        <th v-if="state.jobFields.includes('employmentType')">雇用性質</th>
+                        <th v-if="state.jobFields.includes('employmentType')">僱傭模式</th>
                         <th v-if="state.jobFields.includes('salaryType')">薪資類型</th>
                         <th v-if="state.jobFields.includes('salaryMin')">經常性起薪</th>
                         <th v-if="state.jobFields.includes('jobLocationType')">遠端工作彈性</th>

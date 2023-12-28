@@ -34,10 +34,10 @@
             <LazyAtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                 :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled" class="mt-4">
             </LazyAtomInputSelect>
-            <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質" required
+            <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="僱傭模式" required
                 :disabled="state.disabled" class="mt-4">
                 <template v-slot:header>
-                    <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="雇用性質"
+                    <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="僱傭模式"
                         :items="repoSelect.state.selectByQueryRes.employmentType">
                     </LazyMoleculeProfileSelectLabels>
                 </template>

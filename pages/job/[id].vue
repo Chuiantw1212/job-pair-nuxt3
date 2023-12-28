@@ -37,7 +37,7 @@
                 <div class="jobView__card jobView__features mt-3">
                     <div class="features__item">
                         <span class="item__header">
-                            工作性質
+                            僱傭模式
                         </span>
                         <span class="item__body">
                             <template v-for="(item, index) in state.job?.employmentType">
