@@ -8,6 +8,9 @@
             <!-- <div class="textGroups__anchor">
                 <img class="anchor__image" alt="logo" src="./link.svg">
             </div> -->
+            <RouterLink class="textGroups__anchor" :to="{ name: 'about' }">
+                關於
+            </RouterLink>
             <a class="textGroups__anchor"
                 href="https://storage.googleapis.com/public.prd.job-pair.com/meta/%E4%BD%BF%E7%94%A8%E8%80%85%E6%A2%9D%E6%AC%BE.pdf">
                 條款
