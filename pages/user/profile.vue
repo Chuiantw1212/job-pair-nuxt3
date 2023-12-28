@@ -22,7 +22,7 @@
                     </LazyAtomInputMobile>
                 </div>
             </div>
-            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="僱傭性質"
+            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="僱傭模式"
                 v-model="state.profileBasic.employmentType" :items="repoSelect.state.selectByQueryRes.employmentType"
                 class="mt-3" required>
             </LazyAtomInputSelect>

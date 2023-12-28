@@ -36,7 +36,7 @@
                 <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
                 </LazyAtomInputSelectLabel>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'雇用性質'">
+                <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'僱傭模式'">
                     <LazyAtomInputCheckMultiple v-if="state.filterOpen.employmentType"
                         v-model="jobScroller.state.filter.employmentType"
                         :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
