@@ -42,8 +42,8 @@
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                            required>
+                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="手機號碼 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
                         </LazyAtomInputMobile>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
@@ -118,7 +118,15 @@
                     <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                         客製公司頁面
                     </NuxtLink>
-                    <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
+                        name: 'company-id',
+                        params: {
+                            id: state.companyInfo.seoName
+                        }
+                    }">
+                        檢視公司頁面
+                    </NuxtLink>
+                    <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
                         檢視公司頁面
                     </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
@@ -432,7 +440,7 @@ async function set104CompanyInfo(response) {
         product,
         // jobBenefits,
         management,
-        phone,
+        // phone,
         // fax,
         // hrName,
         // news,
@@ -490,7 +498,7 @@ async function set104CompanyInfo(response) {
         name: custName,
         capital,
         numberOfEmployees: empNo,
-        telephone: phone,
+        // telephone: phone, // 限制只能用手機
         url: {
             default: custLink,
         },
