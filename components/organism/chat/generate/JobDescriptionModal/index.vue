@@ -211,13 +211,8 @@ function gotoNextItem(selectedItem = '') {
     }
     // set reply
     const relatedItem = state.chatItems[state.chatItemIndex + 1]
-    relatedItem.messages[0] = state.chatReply || selectedItem
-    // const placeholder = state.chatItems[state.chatItemIndex + 2]?.messages[0]
-    // if (placeholder) {
-    //     state.chatReply = placeholder
-    // } else {
-    //     state.chatReply = ''
-    // }
+    relatedItem.messages[0] = selectedItem || state.chatReply
+    state.chatReply = ''
     // show reply
     state.chatItemIndex += 2
     if (state.chatItemIndex >= state.chatItems.length) {

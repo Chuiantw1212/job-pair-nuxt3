@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <LazyAtomQuickImport v-if="state.isNewCompay" @click="crawlCompanyFromPlatform($event)">
+            <LazyAtomQuickImport v-if="true" @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                 <br>
                 範例：www.104.com.tw/companyInfo/*,
@@ -447,20 +447,22 @@ async function set104CompanyInfo(response) {
         addrNoDesc,
         logo,
     } = response
-    // 先找到第一級行政區
+    // 先找到縣市
     const addressRegionText = address.slice(0, 3)
     const upperTaiDivision = addressRegionText.replace('臺', '台')
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
     const addressRegion = targetDivision.value
+    // 再找行政區
     const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
-    const addressLocalityText = address.slice(3, 6)
     const targetDivisionLevel2 = addressLocalityItems.find((item) => {
-        return item.text === addressLocalityText
+        return address.includes(item.text)
     })
-    const addressLocality = targetDivisionLevel2.value
-    // 找到第二級行政區
+    let addressLocality = ''
+    if (targetDivisionLevel2) {
+        addressLocality = targetDivisionLevel2.value
+    }
     const addressDesc = address.replace(addrNoDesc, "")
     // 合併四個欄位
     let description = ""
