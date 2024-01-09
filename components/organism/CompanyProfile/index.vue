@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <LazyAtomQuickImport v-if="true" @click="crawlCompanyFromPlatform($event)">
+            <LazyAtomQuickImport v-if="state.isNewCompay" @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                 <br>
                 範例：www.104.com.tw/companyInfo/*,
