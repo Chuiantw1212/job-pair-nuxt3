@@ -453,15 +453,18 @@ async function set104CompanyInfo(response) {
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
-    const addressRegion = targetDivision.value
-    // 再找行政區
-    const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
-    const targetDivisionLevel2 = addressLocalityItems.find((item) => {
-        return address.includes(item.text)
-    })
+    let addressRegion = ''
     let addressLocality = ''
-    if (targetDivisionLevel2) {
-        addressLocality = targetDivisionLevel2.value
+    if (targetDivision) {
+        addressRegion = targetDivision.value
+        // 再找行政區
+        const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
+        const targetDivisionLevel2 = addressLocalityItems.find((item) => {
+            return address.includes(item.text)
+        })
+        if (targetDivisionLevel2) {
+            addressLocality = targetDivisionLevel2.value
+        }
     }
     const addressDesc = address.replace(addrNoDesc, "")
     // 合併四個欄位
