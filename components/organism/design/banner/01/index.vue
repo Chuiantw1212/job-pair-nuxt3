@@ -149,7 +149,7 @@ async function uploadAsset(image = {}, index = 0) {
     }
 }
 </script>
-<stylte lang="scss" scoped>
+<style lang="scss" scoped>
 .banner {
     position: relative;
 
@@ -241,4 +241,4 @@ async function uploadAsset(image = {}, index = 0) {
         }
     }
 }
-</stylte>
+</style>
