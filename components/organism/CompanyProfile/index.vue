@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <LazyAtomQuickImport v-if="state.isNewCompay" @click="crawlCompanyFromPlatform($event)">
+            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                 <br>
                 範例：www.104.com.tw/companyInfo/*,
@@ -10,7 +10,7 @@
             </LazyAtomQuickImport>
             <div class="profile__body">
                 <div class="body__basicInfo">
-                    <h2 class="basicInfo__header">基本資料</h2>
+                    <h2 class="basicInfo__header">基本資料{{ isDev }}</h2>
                     <div class="basicInfo__desc">
                         以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識
                     </div>
@@ -153,6 +153,7 @@ const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
+const isDev = process.env.NODE_ENV === 'development'
 const state = reactive({
     isNewCompay: false,
     companyInfo: {
