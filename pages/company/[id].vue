@@ -1,6 +1,6 @@
 <template>
     <div class="company" :class="{ container: device.state.isLarge }">
-        <OrganismDesignBody v-if="state.companyInfo.templates" v-model="state.companyInfo.templates" readonly>
+        <OrganismDesignBody v-if="state.companyInfo?.templates" v-model="state.companyInfo.templates" readonly>
 
         </OrganismDesignBody>
         <div v-else class="company__free">
@@ -139,7 +139,7 @@ const state = reactive({
 const paramdId = computed(() => {
     return route.params.id
 })
-const { data: company } = await useFetch(`${runTimeConfig.public.apiBase}/company/${paramdId.value}`, { initialCache: false })
+const { data: company = {} } = await useFetch(`${runTimeConfig.public.apiBase}/company/${paramdId.value}`, { initialCache: false })
 state.companyInfo = company
 useSeoMeta({
     title: () => `${state.companyInfo?.name}`,
@@ -161,38 +161,40 @@ useSeoMeta({
         }
     },
     ogImage: () => {
-        const decodedBannerUri = decodeURIComponent(state.companyInfo.banner)
-        return state.companyInfo.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
+        const decodedBannerUri = decodeURIComponent(state.companyInfo?.banner)
+        return state.companyInfo?.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.siteUrl}/company/${state.companyInfo.id}`
+        return `${runTimeConfig.public.siteUrl}/company/${state.companyInfo?.id}`
     }
 })
 useJsonld(() => ({
     // https://schema.org/Organization
     '@context': 'https://schema.org',
     '@type': 'Corporation',
-    email: company.value.email,
-    logo: company.value.logo,
-    description: extractContent(company.value.description),
-    identifier: company.value.id,
-    url: `${runTimeConfig.public.siteUrl}/company/${company.value.id}`,
+    email: company.value?.email,
+    logo: company.value?.logo,
+    description: extractContent(company.value?.description),
+    identifier: company.value?.id,
+    url: `${runTimeConfig.public.siteUrl}/company/${company.value?.id}`,
     address: getLocationText(),
     location: getLocationText(),
-    image: company.value.banner,
+    image: company.value?.banner,
 }));
 onMounted(async () => {
     state.id = $uuid4()
     await initializeCompany(paramdId.value)
+    $emitter.on('scrollToJobs', scrollToJobs)
 })
 onBeforeUnmount(() => {
     if (state.glideInstance) {
         state.glideInstance.destroy()
     }
+    $emitter.off('scrollToJobs', scrollToJobs)
 })
-watch(() => repoAuth.state.user, (newValue) => {
-    jobScroller.state.filter.organizationId = paramdId.value
-    jobScroller.initializeSearch()
+watch(() => repoAuth.state.user, () => {
+    jobScroller.state.filter.organizationId = company.value.organizationId || company.value.id
+    jobScroller.searchJobs()
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     $emitter?.emit('setDesignBannerJobs', newValue.length)
@@ -201,6 +203,14 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methods
+function scrollToJobs() {
+    console.log('scrollToJobs');
+    const element = document.getElementById('company__jobs')
+    console.log('element', element);
+    if (element) {
+        element.scrollIntoView()
+    }
+}
 function extractContent(content = '') {
     const target = content.replaceAll("<[^>]*>", "");
     return target

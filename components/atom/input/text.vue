@@ -6,9 +6,11 @@
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <slot name="prefix"></slot>
+            <!-- {{ minLength }} -->
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-valid="state.isValid" :data-required="required" :data-name="name" autocomplete="off"
-                @blur="handleValidate($event)" @keyup.enter="emit('keyup.enter', $event)" />
+                :data-valid="state.isValid" :minLength="minLength" :maxLength="maxLength" :data-required="required"
+                :data-name="name" autocomplete="off" @blur="handleValidate($event)"
+                @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
@@ -65,13 +67,13 @@ const props = defineProps({
         type: String,
         default: "",
     },
-    min: {
+    minLength: {
         type: Number,
         default: 0,
     },
-    max: {
+    maxLength: {
         type: Number,
-        default: 0,
+        default: 524288,
     },
     validate: {
         type: Function,
@@ -104,11 +106,6 @@ const localValue = computed({
         emit("update:modelValue", newValue)
     },
 })
-watch(() => localValue.value, () => {
-    if (props.max && localValue.value && localValue.value.length > props.max) {
-        localValue.value = localValue.value.slice(0, props.max)
-    }
-})
 // methods
 function setErrorMessage(message = '') {
     state.message = message
@@ -127,6 +124,9 @@ function handleValidate() {
         if (message) {
             setErrorMessage(message)
         }
+    }
+    if (props.minLength && inputValue.length < props.minLength) {
+        setErrorMessage(`內容未達${props.minLength}碼`)
     }
     // 欄位長度
     if (props.byteSize) {
