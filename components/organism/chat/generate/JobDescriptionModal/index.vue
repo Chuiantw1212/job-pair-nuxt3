@@ -50,8 +50,16 @@
                                 </LazyAtomBtnSimple>
                             </div>
                             <template v-else-if="getMessageUI().type === 'text'">
-                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入">
+                                <LazyAtomInputText v-model="state.chatReply" class="content__input" placeholder="請輸入"
+                                    @keyup.enter="gotoNextItem()">
                                 </LazyAtomInputText>
+                                <button class="content__submit" @click="gotoNextItem()">
+                                    <img src="./Send.webp">
+                                </button>
+                            </template>
+                            <template v-else-if="getMessageUI().type === 'textarea'">
+                                <LazyAtomInputTextarea v-model="state.chatReply" class="content__input" placeholder="請輸入">
+                                </LazyAtomInputTextarea>
                                 <button class="content__submit" @click="gotoNextItem()">
                                     <img src="./Send.webp">
                                 </button>
@@ -105,7 +113,7 @@ const state = reactive({
             role: 'system',
             messages: ['接下來請仔細思考這份工作最主要的工作項目有哪些？(3/6)'],
             responseUI: {
-                type: 'text',
+                type: 'textarea',
                 isRequired: true,
             }
         },
@@ -118,7 +126,7 @@ const state = reactive({
             role: 'system',
             messages: ['除了上述的內容，還有沒有其他次要工作，就是不常遇到但偶而還是需要，通常是支援性質的內容？(4/6)'],
             responseUI: {
-                type: 'text',
+                type: 'textarea',
             }
         },
         {
@@ -130,7 +138,7 @@ const state = reactive({
             role: 'system',
             messages: ['這份工作最主要或短期內要完成的目標是什麼？例如：三個月後專案能順利上線、每個月拜訪幾位客戶、與同事合作維持店舖營運、能獨立運作完成客戶要求...等？(5/6)'],
             responseUI: {
-                type: 'text',
+                type: 'textarea',
             }
         },
         {
