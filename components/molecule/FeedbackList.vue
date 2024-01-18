@@ -140,10 +140,6 @@ function setGlideConfig(event) {
         })
     }
 }
-function getSlicedDesc(desc = "") {
-    const slicedResult = desc.slice(0, props.limit)
-    return `${slicedResult}`
-}
 </script>
 <style lang="scss" scoped>
 .consult__feedback {
