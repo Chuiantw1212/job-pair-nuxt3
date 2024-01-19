@@ -1,20 +1,20 @@
 <template>
     <div class="myHeader">
-        <nav id="myHeader" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="myHeader" class="navbar navbar-expand-lg">
             <div class="container-fluid myHeader__container">
-                <div class="d-flex">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <button class="navbar-brand" @click="routeByMenuType()">
-                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
-                        <template v-if="state.menuType === 'admin'">
-                            企業用戶
-                        </template>
-                    </button>
-                </div>
+                <!-- <div class="d-flex"> -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <button class="navbar-brand" @click="routeByMenuType()">
+                    <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
+                    <template v-if="state.menuType === 'admin'">
+                        企業用戶
+                    </template>
+                </button>
+                <!-- </div> -->
                 <!-- 手機縮圖列表 -->
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="collapseNavbar()">
@@ -136,6 +136,7 @@ function routeByMenuType() {
 <style lang="scss" scoped>
 .myHeader {
     height: 60px;
+
 }
 
 :deep(.navbar) {
@@ -146,9 +147,13 @@ function routeByMenuType() {
     z-index: 1040;
     padding: 7px 20px;
     border-bottom: 1px solid #d3d3d3;
+    background-color: white;
 
     .myHeader__container {
         padding: 0;
+        display: flex;
+        flex-direction: row-reverse;
+
 
         .navbar-brand {
             font-size: 20px;
@@ -183,6 +188,7 @@ function routeByMenuType() {
         .container__icons {
             display: flex;
             gap: 16px;
+            background-color: white;
 
             .icons__Group {
                 .icons__Group__image {
