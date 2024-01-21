@@ -120,7 +120,7 @@ function showUserModal() {
             /* 150% */
 
             &:hover {
-                color: #040807;
+                color: #21cc90;
             }
         }
 

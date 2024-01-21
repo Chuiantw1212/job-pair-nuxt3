@@ -52,7 +52,7 @@
                 </div>
             </div>
         </nav>
-        <div v-if="state.isBackgroundVisible" class="myHeader__background"
+        <div v-if="state.isBackgroundVisible && state.isMobile" class="myHeader__background"
             :class="{ 'myHeader__background--fadeIn': state.isBackgroundFading }" @click="toggleMenu(false)">
         </div>
     </div>
@@ -68,6 +68,7 @@ const state = reactive({
     bsCollapse: null,
     isBackgroundVisible: false,
     isBackgroundFading: false,
+    isMobile: true,
     backgroundTimeout: false,
     menuType: "user",
 })
@@ -84,7 +85,13 @@ onMounted(() => {
         state.bsCollapse = new window.bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
+        // add resize listener
+        window.addEventListener('resize', handleResize)
+        handleResize()
     }
+})
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize)
 })
 watch(() => route.path, (path,) => {
     toggleMenu(false)
@@ -97,8 +104,11 @@ watch(() => route.path, (path,) => {
     }
 }, { immediate: true })
 // methods
+function handleResize() {
+    state.isMobile = window.innerWidth < 992
+}
 function toggleMenu(status) {
-    if (state.backgroundTimeout || !state.bsCollapse) {
+    if (state.backgroundTimeout || !state.bsCollapse || window.innerWidth >= 992) {
         return
     }
     // clear existed timer 
@@ -184,7 +194,8 @@ function routeByMenuType() {
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
-            padding: 28px 20px;
+            height: 75px;
+            padding: 0 20px;
         }
 
 
@@ -196,7 +207,7 @@ function routeByMenuType() {
             display: flex;
             align-items: center;
             padding: 0px;
-            min-height: 26px;
+            // min-height: 26px;
             margin: 0px;
 
             .brand__logo {
@@ -280,15 +291,16 @@ function routeByMenuType() {
 
         .myHeader__container {
             max-width: calc(1320px - 24px);
-            padding: 20px 100px;
+            padding: 0px 100px;
 
             .container__top {
                 width: unset;
                 padding: 0px;
+                height: 72px;
             }
 
             .navbar-brand {
-                min-height: 46px;
+                // min-height: 32px;
                 font-size: 24px;
             }
 
