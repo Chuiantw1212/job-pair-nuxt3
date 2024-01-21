@@ -1,32 +1,31 @@
 <template>
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav ms-auto mb-lg-0">
         <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/jobs">
-                        職缺探索
+                        <img src="./Search.svg" alt="search">
+                        <span>職缺探索</span>
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
-                        會員中心
+                        <img src="./User.svg" alt="user">
+                        <span>會員中心</span>
                     </NuxtLink>
                 </li>
-                <!-- <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/cvgpt">
-                        CVgpt
-                    </NuxtLink>
-                </li> -->
             </template>
             <template v-else>
                 <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button navItem__button--disabled" disabled>
-                        職缺探索
+                        <img src="./Search.svg" alt="search">
+                        <span>職缺探索</span>
                     </button>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button navItem__button--disabled" disabled>
-                        會員中心
+                        <img src="./User.svg" alt="user">
+                        <span>會員中心</span>
                     </button>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
@@ -38,12 +37,19 @@
             <li class="nav-item" @click="emit('collapse')">
                 <NuxtLink class="navItem__button" active-class="navItem__button--active" :to="{
                     name: 'admin'
-                }">企業專區</NuxtLink>
+                }">
+                    <span>
+                        企業專區
+                    </span>
+                </NuxtLink>
             </li>
             <li class="nav-item" @click="emit('collapse')">
                 <NuxtLink class="navItem__button" active-class="navItem__button--active" :to="{
                     name: 'jobs'
-                }">職缺探索</NuxtLink>
+                }">
+                    <img src="./Search.svg" alt="search">
+                    <span>職缺探索</span>
+                </NuxtLink>
             </li>
             <li class="nav-item" @click="emit('collapse')">
                 <button class="navItem__button" type="button" @click.stop="showUserModal()">註冊/登入</button>
@@ -92,31 +98,46 @@ function showUserModal() {
 }
 </script>
 <style lang="scss" scoped>
-.nav-item {
-    font-size: 16px;
+.navbar-nav {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    .navItem__button {
-        color: black;
-        transition: all 0.3s;
+    .nav-item {
+        font-size: 16px;
 
-        &:hover {
+        .navItem__button {
+            display: flex;
+            gap: 10px;
+            color: black;
+            transition: all 0.3s;
+            align-items: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            /* 150% */
+
+            &:hover {
+                color: #040807;
+            }
+        }
+
+        // 重要不可刪除
+        .navItem__button--active {
             color: #21cc90;
         }
-    }
 
-    // 重要不可刪除
-    .navItem__button--active {
-        color: #21cc90;
-    }
-
-    .navItem__button--disabled {
-        background-color: unset;
-        color: #999;
-        font-weight: bold;
-        cursor: unset;
-
-        &:hover {
+        .navItem__button--disabled {
+            background-color: unset;
             color: #999;
+            font-weight: bold;
+            cursor: unset;
+
+            &:hover {
+                color: #999;
+            }
         }
     }
 }

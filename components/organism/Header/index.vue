@@ -2,19 +2,20 @@
     <div class="myHeader">
         <nav id="myHeader" class="navbar navbar-expand-lg">
             <div class="container-fluid myHeader__container">
-                <!-- <div class="d-flex"> -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" @click="toggleMenu()">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <button class="navbar-brand" @click="routeByMenuType()">
-                    <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
-                    <template v-if="state.menuType === 'admin'">
-                        企業用戶
-                    </template>
-                </button>
+                <div class="container__top">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" @click="toggleMenu()">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <button class="navbar-brand" @click="routeByMenuType()">
+                        <img class="brand__logo" src="./Job-Pair-SEO.png" alt="logo">
+                        <template v-if="state.menuType === 'admin'">
+                            企業用戶
+                        </template>
+                    </button>
+                </div>
                 <!-- </div> -->
                 <!-- 手機縮圖列表 -->
-                <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                <!-- <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
                     @click="toggleMenu(false)">
                     <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" aria-label="route to jobs"
                         :to="{ name: 'jobs' }">
@@ -41,8 +42,9 @@
                             </defs>
                         </svg>
                     </NuxtLink>
-                </div>
+                </div> -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <hr class="collapse__hr">
                     <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="toggleMenu(false)">
                     </LazyOrganismUserMenu>
                     <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="toggleMenu(false)">
@@ -153,6 +155,7 @@ function routeByMenuType() {
         z-index: 1030;
         position: fixed;
         transition: all 0.3s;
+
     }
 
     .myHeader__background--fadeIn {
@@ -166,14 +169,23 @@ function routeByMenuType() {
     right: 0;
     left: 0;
     z-index: 1040;
-    padding: 7px 20px;
+    padding: 0px;
+    // padding: 28px 20px;
     border-bottom: 1px solid #d3d3d3;
     background-color: white;
 
     .myHeader__container {
-        padding: 0;
-        display: flex;
-        flex-direction: row-reverse;
+        padding: 0px;
+        // display: flex;
+        // flex-direction: row-reverse;
+
+        .container__top {
+            width: 100%;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            padding: 28px 20px;
+        }
 
 
         .navbar-brand {
@@ -183,12 +195,14 @@ function routeByMenuType() {
             border: none;
             display: flex;
             align-items: center;
-            min-height: 46px;
+            padding: 0px;
+            min-height: 26px;
+            margin: 0px;
 
             .brand__logo {
-                height: 22px;
-                width: 140px;
-                margin-right: 8px;
+                width: 92px;
+                height: 16px;
+                // margin-right: 8px;
             }
         }
 
@@ -201,6 +215,12 @@ function routeByMenuType() {
             .navbar-toggler-icon {
                 width: 26px;
                 height: 26px;
+            }
+        }
+
+        .navbar-collapse {
+            .collapse__hr {
+                margin: 0px;
             }
         }
 
