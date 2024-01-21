@@ -3,9 +3,7 @@
         <nav id="myHeader" class="navbar navbar-expand-lg">
             <div class="container-fluid myHeader__container">
                 <!-- <div class="d-flex"> -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" @click="toggleMenu()">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <button class="navbar-brand" @click="routeByMenuType()">
@@ -17,7 +15,7 @@
                 <!-- </div> -->
                 <!-- 手機縮圖列表 -->
                 <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
-                    @click="collapseNavbar()">
+                    @click="toggleMenu(false)">
                     <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" aria-label="route to jobs"
                         :to="{ name: 'jobs' }">
                         <svg class="icons__Group__image" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -45,13 +43,16 @@
                     </NuxtLink>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()">
+                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="toggleMenu(false)">
                     </LazyOrganismUserMenu>
-                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="toggleMenu(false)">
                     </LazyOrganismCompanyMenu>
                 </div>
             </div>
         </nav>
+        <div v-if="state.isBackgroundVisible" class="myHeader__background"
+            :class="{ 'myHeader__background--fadeIn': state.isBackgroundFading }" @click="toggleMenu(false)">
+        </div>
     </div>
 </template>
 <script>
@@ -63,12 +64,15 @@ export default {
 const repoAuth = useRepoAuth()
 const state = reactive({
     bsCollapse: null,
+    isBackgroundVisible: false,
+    isBackgroundFading: false,
+    backgroundTimeout: false,
     menuType: "user",
 })
 const router = useRouter()
 const route = useRoute()
 const { $emitter, } = useNuxtApp()
-// Lifecycles
+// hooks
 onMounted(() => {
     $emitter.on("setMenuType", (menuType) => {
         state.menuType = menuType
@@ -78,14 +82,10 @@ onMounted(() => {
         state.bsCollapse = new window.bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
-        toggleClickOutside(true)
     }
 })
-onUnmounted(() => {
-    toggleClickOutside(false)
-})
 watch(() => route.path, (path,) => {
-    collapseNavbar()
+    toggleMenu(false)
     const chunks = path.split("/")
     const isCompany = chunks[1] === "admin"
     if (isCompany) {
@@ -95,23 +95,31 @@ watch(() => route.path, (path,) => {
     }
 }, { immediate: true })
 // methods
-function toggleClickOutside(isOn) {
-    if (isOn) {
-        document.addEventListener("click", handleClickoutSide)
+function toggleMenu(status) {
+    if (state.backgroundTimeout || !state.bsCollapse) {
+        return
+    }
+    // clear existed timer 
+    const newValue = status || !state.isBackgroundVisible
+    if (newValue) {
+        state.isBackgroundVisible = newValue
+        state.bsCollapse.show()
+        // start fadeIn animation
+        setTimeout(() => {
+            state.isBackgroundFading = true
+        })
+        // is only for setting the transition timer
+        state.backgroundTimeout = setTimeout(() => {
+            state.backgroundTimeout = null
+        }, 300)
     } else {
-        document.removeEventListener("click", handleClickoutSide)
-    }
-}
-function handleClickoutSide(event) {
-    const clickedTarget = event.target
-    const navigation = document.getElementById("myHeader")
-    if (!navigation.contains(clickedTarget)) {
-        collapseNavbar()
-    }
-}
-function collapseNavbar() {
-    if (state.bsCollapse) {
+        // start fadeOut animation
+        state.isBackgroundFading = false
         state.bsCollapse.hide()
+        state.backgroundTimeout = setTimeout(() => {
+            state.isBackgroundVisible = newValue
+            state.backgroundTimeout = null
+        }, 300)
     }
 }
 function routeByMenuType() {
@@ -132,11 +140,24 @@ function routeByMenuType() {
         })
     }
 }
+
 </script>
 <style lang="scss" scoped>
 .myHeader {
     height: 60px;
 
+    .myHeader__background {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0);
+        z-index: 1030;
+        position: fixed;
+        transition: all 0.3s;
+    }
+
+    .myHeader__background--fadeIn {
+        background: rgba(0, 0, 0, 0.5);
+    }
 }
 
 :deep(.navbar) {

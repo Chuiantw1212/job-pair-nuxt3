@@ -3,9 +3,10 @@
         <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋技能、公司＆職缺">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-            <div>
+            {{ filterOpen.occupationalCategory }}
+            <button @click="filterOpen.occupationalCategory = true">
                 職務類型
-            </div>
+            </button>
             <div v-if="repoSelect.state.locationRes">
                 地點
             </div>
@@ -200,6 +201,12 @@
                 </ul>
             </div>
         </div> -->
+        <LazyMoleculeSlideContainer v-model="filterOpen.occupationalCategory">
+            職務類型
+            <!-- <LazyAtomInputSearch  @search="handleSearch()"
+                placeholder="搜尋技能、公司＆職缺">
+            </LazyAtomInputSearch> -->
+        </LazyMoleculeSlideContainer>
     </div>
 </template>
 <script setup>
@@ -212,17 +219,26 @@ const jobScroller = useJobScroller({
     isCache: true,
     isRecommend: true,
 })
+const filterOpen = reactive({
+    occupationalCategory: false,
+    division: false,
+    responsibilities: false,
+    jobLocationType: false,
+    employmentType: false,
+    industry: false,
+})
+
 const state = reactive({
     isFilterOpen: false,
     searchLike: "",
-    filterOpen: {
-        division: false,
-        occupationalCategory: false,
-        responsibilities: false,
-        jobLocationType: false,
-        employmentType: false,
-        industry: false,
-    },
+    // filterOpen: {
+    //     division: false,
+    //     occupationalCategory: false,
+    //     responsibilities: false,
+    //     jobLocationType: false,
+    //     employmentType: false,
+    //     industry: false,
+    // },
 })
 // hooks
 useSeoMeta({
