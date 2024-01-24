@@ -3,8 +3,7 @@
         <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋技能、公司＆職缺">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-            {{ filterOpen.occupationalCategory }}
-            <button @click="filterOpen.occupationalCategory = true">
+            <button @click="toggleFilter('occupationalCategory')">
                 職務類型
             </button>
             <div v-if="repoSelect.state.locationRes">
@@ -64,7 +63,7 @@
                             v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
                              :flexDirection="'row'">
                         </LazyAtomInputCheckMultiple>
-                    </LazyAtomInputSelectContainer>
+                    </ >
                     <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.addressRegion"
                         :items="repoSelect.state.locationRes.taiwan">
                     </LazyAtomInputSelectLabel>
@@ -201,11 +200,17 @@
                 </ul>
             </div>
         </div> -->
-        <LazyMoleculeSlideContainer v-model="filterOpen.occupationalCategory">
-            職務類型
-            <!-- <LazyAtomInputSearch  @search="handleSearch()"
-                placeholder="搜尋技能、公司＆職缺">
-            </LazyAtomInputSearch> -->
+        <LazyMoleculeSlideContainer v-model="filterOpen.occupationalCategory" class="jobs__containter">
+            <div class="continaer__title">職務類型</div>
+            <!-- <div class="continaer__title">職務類型</div>
+            <div class="continaer__title">職務類型</div>
+            <div class="continaer__title">職務類型</div>
+            <div class="continaer__title">職務類型</div>
+            <div class="continaer__title">職務類型</div> -->
+            <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
+                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
+                :showSelectAll="true">
+            </LazyMoleculeFilterCategory2>
         </LazyMoleculeSlideContainer>
     </div>
 </template>
@@ -220,7 +225,7 @@ const jobScroller = useJobScroller({
     isRecommend: true,
 })
 const filterOpen = reactive({
-    occupationalCategory: false,
+    occupationalCategory: true,
     division: false,
     responsibilities: false,
     jobLocationType: false,
@@ -296,6 +301,9 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 }, { immediate: true })
 // methods
+function toggleFilter(key = '') {
+    filterOpen[key] = !filterOpen[key]
+}
 function handleSearch() {
     jobScroller.searchJobs()
 }
@@ -354,12 +362,17 @@ function resetFilter() {
         grid-template-columns: auto auto;
         gap: 10px;
         margin-top: 20px;
-        // display: flex;
-        // flex-wrap: wrap;
+    }
 
-        // >* {
-        //     width: 49%;
-        // }
+    .jobs__containter {
+        padding: 20px;
+
+        .continaer__title {
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
     }
 }
 </style>
