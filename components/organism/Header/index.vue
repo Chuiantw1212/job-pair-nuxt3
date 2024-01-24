@@ -156,7 +156,7 @@ function routeByMenuType() {
 </script>
 <style lang="scss" scoped>
 .myHeader {
-    height: 60px;
+    height: 76px;
 
     .myHeader__background {
         width: 100vw;

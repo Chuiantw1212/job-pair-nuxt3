@@ -49,6 +49,7 @@ export default {
             width: 14px;
             height: 14px;
             transition: all 0.3s;
+            transform: scaleY(-1);
         }
 
         .accordion__image__right {
@@ -58,7 +59,7 @@ export default {
 
     .accordion__header--isOpened {
         .accordion__image__up {
-            transform: scaleY(-1);
+            transform: scaleY(1);
         }
     }
 
@@ -75,6 +76,4 @@ export default {
         max-height: 1000vh;
     }
 }
-
-@media screen and (min-width: 992px) {}
 </style>

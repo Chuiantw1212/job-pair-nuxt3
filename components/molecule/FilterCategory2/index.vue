@@ -1,26 +1,30 @@
 <template>
     <div class="filterCategory">
         <input v-show="false" :value="localValue.length !== 0" :data-required="required" :data-name="name">
-        <LazyAtomInputSearch2 v-model="state.keyword" class="mt-2" placeholder="搜尋技能、公司＆職缺">
+        <LazyAtomInputSearch2 v-model="state.keyword" class="filterCategory__search" :placeholder="placeholder">
         </LazyAtomInputSearch2>
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :placeholder="$optionText(categoryKey, items)" class="list__subList"
-                        :arrow="isLarge ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
+                        :arrow="isLarge ? 'right' : 'up'" @update:modelValue="handleToggle(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
-                                <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
+                                <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                     @change="setCategory(categoryKey)" />
-                                全選
+                                <img v-if="state.isAllSelected[categoryKey]" src="./checked.svg" alt="selected">
+                                <img v-else src="./frame.svg" alt="unselected">
+                                <div class="inputGroup__name">全選</div>
                             </label>
                         </div>
                         <div class="d-lg-none subList__body">
                             <template v-for="(item, index) in list" :key="index">
                                 <label v-show="checkMatched(item.value)" class="body__item">
-                                    <input v-model="localValue" type="checkbox" :value="item.value"
+                                    <input v-show="false" v-model="localValue" type="checkbox" :value="item.value"
                                         :disabled="checkItemDisabled(item)" />
+                                    <img v-if="localValue.includes(item.value)" src="./checked.svg" alt="selected">
+                                    <img v-else src="./frame.svg" alt="unselected">
                                     <span class="body__item__name">{{ item.text }}</span>
                                 </label>
                             </template>
@@ -33,22 +37,30 @@
                     <div v-show="!state.keyword.trim() && state.openFlagsTop[categoryKey] && showSelectAll"
                         class="subList__header">
                         <label class="subList__inputGroup">
-                            <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
+                            <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                 @change="setCategory(categoryKey)" />
-                            全選
+                            <img v-if="state.isAllSelected[categoryKey]" src="./checked.svg" alt="selected">
+                            <img v-else src="./frame.svg" alt="unselected">
+                            <div class="inputGroup__name">全選</div>
                         </label>
                     </div>
                     <div class="subList__body">
                         <template v-for="(item, index) in list" :key="index">
                             <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
-                                <input v-model="localValue" type="checkbox" :value="item.value"
+                                <input v-show="false" v-model="localValue" type="checkbox" :value="item.value"
                                     :disabled="checkItemDisabled(item)" />
+                                <img v-if="localValue.includes(item.value)" src="./checked.svg" alt="selected">
+                                <img v-else src="./frame.svg" alt="unselected">
                                 <span class="body__item__name">{{ item.text }}</span>
                             </label>
                         </template>
                     </div>
                 </template>
             </div>
+        </div>
+        <div class="filterCategory__footer">
+            <AtomBtnSimpleV2 class="footer__btn" outline>清除條件</AtomBtnSimpleV2>
+            <AtomBtnSimpleV2 class="footer__btn">關閉</AtomBtnSimpleV2>
         </div>
     </div>
 </template>
@@ -84,7 +96,7 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        default: "",
+        default: "搜尋",
     },
     items: {
         type: [Array, Object],
@@ -119,7 +131,7 @@ const props = defineProps({
     middleLayerMap: {
         type: Object,
         default: null
-    }
+    },
 })
 // hooks
 const localValue = computed({
@@ -238,50 +250,25 @@ function setCategory(categoryKey) {
         })
     }
 }
-function closeOtherItems(categoryKey, newFlag) {
-    for (let key in state.openFlagsTop) {
-        state.openFlagsTop[key] = false
-    }
+function handleToggle(categoryKey, newFlag) {
     state.openFlagsTop[categoryKey] = newFlag
 }
 </script>
 <style lang="scss" scoped>
 .filterCategory {
     border-radius: 5px;
-    // overflow-y: auto;
 
-    .filterCategory__header {
-        padding: 10px 15px;
-        border-bottom: 1px solid #d3d3d3;
-
-        .header__inputGroup {
-            line-height: 1.2;
-            padding: 6px 10px;
-            border-radius: 5px;
-            border: solid 1px #d3d3d3;
-            width: 100%;
-
-            .inputGroup__input {
-                border: none;
-                width: 100%;
-
-                &:focus {
-                    outline: none;
-                }
-            }
-        }
+    .filterCategory__search {
+        margin-top: 10px;
     }
 
     .filterCategory__list {
-        // padding: 10px 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-top: 10px;
-    }
-
-    .subList__header {
-        // border-bottom: 1px solid #d3d3d3;
+        height: calc(100vh - 200px - 180px);
+        overflow-y: auto;
     }
 
     .subList__body {
@@ -290,26 +277,33 @@ function closeOtherItems(categoryKey, newFlag) {
         gap: 10px;
 
         .body__item {
-            // margin: 0 20px;
-
-            // &:first-child {}
+            display: flex;
+            gap: 10px;
+            align-items: center;
 
             &:last-child {
                 margin-bottom: 10px;
             }
         }
-
-        .body__item--firstItem {
-            margin-top: 10px;
-        }
-
-        .body__item__name {
-            margin-left: 4px;
-        }
     }
 
     .subList__inputGroup {
         padding: 10px 0px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .filterCategory__footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+
+        .footer__btn {
+            width: 100%;
+            height: 42px;
+        }
     }
 }
 

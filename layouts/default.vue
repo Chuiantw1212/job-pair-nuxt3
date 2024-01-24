@@ -76,7 +76,7 @@ useSchemaOrg([
 }
 
 .main {
-    min-height: calc(100vh);
+    min-height: calc(100vh - 76px - 126px);
 }
 
 body {
