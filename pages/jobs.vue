@@ -201,12 +201,12 @@
             </div>
         </div> -->
         <LazyMoleculeSlideContainer v-model="filterOpen.occupationalCategory" class="jobs__containter">
-            <div class="continaer__title">職務類型</div>
-            <!-- <div class="continaer__title">職務類型</div>
-            <div class="continaer__title">職務類型</div>
-            <div class="continaer__title">職務類型</div>
-            <div class="continaer__title">職務類型</div>
-            <div class="continaer__title">職務類型</div> -->
+            <div class="container__header">
+                <div class="header__title">職務類型</div>
+                <button @click="filterOpen.occupationalCategory = false" class="header__close">
+                    <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
+                </button>
+            </div>
             <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
                 :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
                 :showSelectAll="true">
@@ -225,7 +225,7 @@ const jobScroller = useJobScroller({
     isRecommend: true,
 })
 const filterOpen = reactive({
-    occupationalCategory: true,
+    occupationalCategory: false,
     division: false,
     responsibilities: false,
     jobLocationType: false,
@@ -367,11 +367,26 @@ function resetFilter() {
     .jobs__containter {
         padding: 20px;
 
-        .continaer__title {
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
+        .container__header {
+            display: flex;
+            justify-content: space-between;
+
+            .header__title {
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .header__close {
+                background-color: inherit;
+                border: none;
+
+                .close__image {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
         }
     }
 }

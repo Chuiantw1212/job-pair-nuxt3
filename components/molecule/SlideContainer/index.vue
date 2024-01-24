@@ -75,6 +75,7 @@ function toggleMenu(status) {
         transform: translateY(100%);
         transition: all 0.3s;
         z-index: 1060;
+        padding: 20px;
     }
 
     .slideContainer__main--isOpen {

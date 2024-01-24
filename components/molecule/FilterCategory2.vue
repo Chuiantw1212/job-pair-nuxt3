@@ -254,7 +254,7 @@ function closeOtherItems(categoryKey, newFlag) {
 .filterCategory {
     border-radius: 5px;
     max-height: 600px;
-    overflow-y: auto;
+    // overflow-y: auto;
 
     .filterCategory__header {
         padding: 10px 15px;
@@ -279,10 +279,11 @@ function closeOtherItems(categoryKey, newFlag) {
     }
 
     .filterCategory__list {
-        padding: 10px 20px;
+        // padding: 10px 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;
+        margin-top: 10px;
     }
 
     .subList__header {
