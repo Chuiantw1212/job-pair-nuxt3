@@ -3,11 +3,6 @@
         <input v-show="false" :value="localValue.length !== 0" :data-required="required" :data-name="name">
         <LazyAtomInputSearch2 v-model="state.keyword" class="mt-2" placeholder="搜尋技能、公司＆職缺">
         </LazyAtomInputSearch2>
-        <!-- <div class="filterCategory__header">
-            <label class="header__inputGroup">
-                <input v-model="state.keyword" class="inputGroup__input" placeholder="搜尋" @input="searchOptions()" />
-            </label>
-        </div> -->
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
@@ -253,7 +248,6 @@ function closeOtherItems(categoryKey, newFlag) {
 <style lang="scss" scoped>
 .filterCategory {
     border-radius: 5px;
-    max-height: 600px;
     // overflow-y: auto;
 
     .filterCategory__header {
@@ -287,7 +281,7 @@ function closeOtherItems(categoryKey, newFlag) {
     }
 
     .subList__header {
-        border-bottom: 1px solid #d3d3d3;
+        // border-bottom: 1px solid #d3d3d3;
     }
 
     .subList__body {
@@ -296,7 +290,7 @@ function closeOtherItems(categoryKey, newFlag) {
         gap: 10px;
 
         .body__item {
-            margin: 0 20px;
+            // margin: 0 20px;
 
             // &:first-child {}
 
@@ -315,7 +309,7 @@ function closeOtherItems(categoryKey, newFlag) {
     }
 
     .subList__inputGroup {
-        padding: 10px 20px;
+        padding: 10px 0px;
     }
 }
 

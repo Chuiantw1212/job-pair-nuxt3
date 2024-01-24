@@ -36,20 +36,19 @@ export default {
 <style lang="scss" scoped>
 .accordion {
     .accordion__header {
-        padding: 11px 9.6px 10px 10px;
-        border-radius: 5px;
-        background-color: #eee;
+        padding: 10px 0px;
+        background-color: inherit;
         display: flex;
-        justify-items: center;
         justify-content: space-between;
+        align-items: center;
         cursor: pointer;
+        border-bottom: 1px solid #EDEAEA;
+        line-height: 1;
 
         .accordion__image {
+            width: 14px;
+            height: 14px;
             transition: all 0.3s;
-        }
-
-        .accordion__image__up {
-            // transform: rotate(-90deg);
         }
 
         .accordion__image__right {
@@ -58,8 +57,6 @@ export default {
     }
 
     .accordion__header--isOpened {
-        background-color: #eef6ed;
-
         .accordion__image__up {
             transform: scaleY(-1);
         }
@@ -67,13 +64,14 @@ export default {
 
     .accordion__layer {
         border-radius: 5px;
-        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
         background-color: #fff;
         overflow: hidden;
         max-height: 0;
+        transition: all 0.3s;
     }
 
     .accordion__layer--isOpened {
+        border-bottom: 1px solid #EDEAEA;
         max-height: 1000vh;
     }
 }

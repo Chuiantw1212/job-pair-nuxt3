@@ -76,6 +76,8 @@ function toggleMenu(status) {
         transition: all 0.3s;
         z-index: 1060;
         padding: 20px;
+        // height: 600px;
+        max-height: 100vh;
     }
 
     .slideContainer__main--isOpen {
