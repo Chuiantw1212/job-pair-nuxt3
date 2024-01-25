@@ -125,7 +125,7 @@ async function handleSubmit() {
 .profile {
     margin: auto;
     max-width: 640px;
-    padding: 0 20px;
+    padding: 20px;
 
     .profile__header {
         font-size: 28px;
@@ -136,7 +136,7 @@ async function handleSubmit() {
         letter-spacing: normal;
         text-align: left;
         color: #333;
-        margin-top: 20px;
+        // margin-top: 20px;
     }
 
     .profile__footer {

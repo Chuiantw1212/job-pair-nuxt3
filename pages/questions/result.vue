@@ -14,7 +14,7 @@
         </div>
         <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToConsult()">瞭解求職方向</LazyAtomBtnSimple>
         <div class="result__footer">
-            <button type="button" class="footer__btn" @click="routeToProfile()">其他</button>
+            <button type="button" class="footer__btn" @click="routeToProfile()">略過</button>
         </div>
     </div>
 </template>
@@ -83,10 +83,14 @@ async function routeToJobs() {
 </script>
 <style lang="scss" scoped>
 .questions__result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -25%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 200px 20px 0 20px;
+    // padding: 200px 20px 0 20px;
 
     .questions__leftImage {
         position: absolute;

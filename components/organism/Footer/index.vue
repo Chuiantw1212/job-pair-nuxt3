@@ -73,7 +73,7 @@ watch(() => route, (newRoute) => {
     background: #32D7D1;
 }
 
-@media screen and (min-width: 991px) {
+@media screen and (min-width: 992px) {
     .footer {
         display: flex;
         align-items: center;
