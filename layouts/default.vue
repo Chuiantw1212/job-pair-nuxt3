@@ -76,7 +76,7 @@ useSchemaOrg([
 }
 
 .main {
-    min-height: calc(100vh);
+    min-height: calc(100vh - 60px - 126px);
 }
 
 body {
@@ -89,5 +89,11 @@ body {
 // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
 .ck.ck-balloon-panel.ck-powered-by-balloon {
     --ck-powered-by-border-color: #d3d3d3;
+}
+
+@media screen and (min-width: 992px) {
+    .main {
+        min-height: calc(100vh - 60px - 96px);
+    }
 }
 </style>

@@ -104,7 +104,7 @@
             </div>
         </section>
         <section class="home__section home__section--partner">
-            <div v-if="state.affiliate?.length" class="partner__part">
+            <div v-if="state.affiliate.length" class="partner__part">
                 <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
@@ -113,7 +113,7 @@
                     </a>
                 </div>
             </div>
-            <div v-if="state.affiliate?.length" class="partner__part partner__part--mt">
+            <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
                 <h2 class="partner__title partner__title--mt">合作企業</h2>
                 <div class="partner__bodyGroup">
                     <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"

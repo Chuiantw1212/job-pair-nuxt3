@@ -226,7 +226,7 @@ function routeByMenuType() {
     }
 }
 
-@media screen and (min-width: 991px) {
+@media screen and (min-width: 992px) {
 
 
     #myHeader {
