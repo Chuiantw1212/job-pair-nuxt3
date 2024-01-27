@@ -188,7 +188,10 @@ export default function setup() {
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
                 if (unAnsweredIndex !== -1) {
                     router.push({
-                        name: 'questions-preference'
+                        name: 'questions-id',
+                        params: {
+                            id: unAnsweredIndex + 1
+                        }
                     })
                 }
                 else if (!categorySelected) {
@@ -211,7 +214,10 @@ export default function setup() {
         } else {
             user.type = "employee"
             router.push({
-                name: 'questions-preference'
+                name: 'questions-id',
+                params: {
+                    id: 1
+                }
             })
         }
         repoAuth.setUser(user)

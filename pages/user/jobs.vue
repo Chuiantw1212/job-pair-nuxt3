@@ -164,9 +164,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td v-if="device.state.isLarge" scope="row">工作性質</td>
+                            <td v-if="device.state.isLarge" scope="row">僱傭模式</td>
                             <td class="card__table__cell">
-                                <div class="cell__header d-lg-none">工作性質</div>
+                                <div class="cell__header d-lg-none">僱傭模式</div>
                                 <div class="cell__body mt-2 mt-lg-0">
                                     <div v-for="(item, index) in state.jobCompare.first.employmentType"
                                         :key="`firstEmploymentType${index}`">
@@ -177,7 +177,7 @@
                                 </div>
                             </td>
                             <td v-if="state.jobComparable.length >= 2" class="card__table__cell">
-                                <div class="cell__header d-lg-none">工作性質</div>
+                                <div class="cell__header d-lg-none">僱傭模式</div>
                                 <div class="cell__body mt-2 mt-lg-0">
                                     <div v-for="(item, index) in state.jobCompare.second.employmentType"
                                         :key="`secondEmploymentType${index}`">

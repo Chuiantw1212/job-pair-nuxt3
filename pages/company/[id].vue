@@ -204,9 +204,7 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
 })
 // methods
 function scrollToJobs() {
-    console.log('scrollToJobs');
     const element = document.getElementById('company__jobs')
-    console.log('element', element);
     if (element) {
         element.scrollIntoView()
     }
@@ -270,6 +268,9 @@ function getLocationText() {
 }
 </script>
 <style lang="scss" scoped>
+.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
+    padding: 0;
+}
 .company {
     .company__section {
         scroll-margin-top: 58px;

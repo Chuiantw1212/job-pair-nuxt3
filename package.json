@@ -19,7 +19,7 @@
     "@nuxt/image": "^1.1.0",
     "@nuxtseo/module": "^2.0.0-beta.45",
     "firebase-admin": "^11.11.1",
-    "firebase-functions": "^4.5.0",
+    "firebase-functions": "^4.6.0",
     "firebase-functions-test": "^3.1.0",
     "nuxt": "^3.8.2",
     "nuxt-jsonld": "^2.0.8",
@@ -39,7 +39,7 @@
     "nouislider": "^15.7.1",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
-    "sweetalert2": "^11.10.1",
+    "sweetalert2": "^11.6.13",
     "vue": "^3.2.39",
     "vue-router": "^4.2.5"
   }

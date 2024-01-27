@@ -29,6 +29,9 @@
             <OrganismDesignList02 v-if="item.name === 'LIST02'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
             </OrganismDesignList02>
+            <OrganismDesignList03 v-if="item.name === 'LIST03'" v-model="localValue[index]" :readonly="readonly"
+                @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">
+            </OrganismDesignList03>
             <!-- 投影片式 -->
             <OrganismDesignSlide01 v-if="item.name === 'SLIDE01'" v-model="localValue[index]" :readonly="readonly"
                 @remove="handleRemove(index)" @moveUp="handleUp(index)" @moveDown="handleDown(index)">

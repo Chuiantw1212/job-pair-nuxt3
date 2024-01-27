@@ -36,12 +36,12 @@
         </template>
         <template v-else>
             <li class="nav-item" @click="emit('collapse')">
-                <NuxtLink class="navItem__button" :to="{
+                <NuxtLink class="navItem__button" active-class="navItem__button--active" :to="{
                     name: 'admin'
                 }">企業專區</NuxtLink>
             </li>
             <li class="nav-item" @click="emit('collapse')">
-                <NuxtLink class="navItem__button" :to="{
+                <NuxtLink class="navItem__button" active-class="navItem__button--active" :to="{
                     name: 'jobs'
                 }">職缺探索</NuxtLink>
             </li>
@@ -86,7 +86,8 @@ function showUserModal() {
             name: "jobs",
         })
     } else {
-        $emitter?.emit("showSwitchModal")
+        // $emitter?.emit("showSwitchModal")
+        $emitter?.emit("showUserModal")
     }
 }
 </script>

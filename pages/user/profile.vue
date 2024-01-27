@@ -17,11 +17,15 @@
                         :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
                     <LazyAtomInputEmail name="Email" v-model="state.profileBasic.email" class="mt-3" disabled>
                     </LazyAtomInputEmail>
-                    <LazyAtomInputText name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機" class="mt-3"
+                    <LazyAtomInputMobile name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機" class="mt-3"
                         required>
-                    </LazyAtomInputText>
+                    </LazyAtomInputMobile>
                 </div>
             </div>
+            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="僱傭模式"
+                v-model="state.profileBasic.employmentType" :items="repoSelect.state.selectByQueryRes.employmentType"
+                class="mt-3" required>
+            </LazyAtomInputSelect>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
                 class="mt-3" required>
                 <template v-slot:header>
@@ -171,6 +175,7 @@ function initialize() {
         occupationalCategory = [],
         resumes = [],
         description = '',
+        employmentType,
     } = profile
     const profileBasic = {
         image,
@@ -179,6 +184,7 @@ function initialize() {
         telephone,
         occupationalCategory,
         description,
+        employmentType,
     }
     state.profileBasic = profileBasic
     // profileAdvanced

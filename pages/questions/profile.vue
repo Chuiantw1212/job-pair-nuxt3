@@ -2,6 +2,9 @@
     <div class="profile container">
         <div class="profile__header">最後一個步驟，<br class="d-lg-none">就完成會員註冊囉！</div>
         <div class="profile__body">
+            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="選擇僱傭模式" v-model="modelValue.employmentType"
+                :items="repoSelect.state.selectByQueryRes.employmentType" required class="mt-3">
+            </LazyAtomInputSelect>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="選擇職務類別" class="mt-4"
                 :max="3" required>
                 <template v-slot:header>
@@ -23,10 +26,8 @@
                 </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
         </div>
-        <div class="profile__footer">
-            <LazyAtomBtnSimple @click="handleClickNext()">完成註冊
-            </LazyAtomBtnSimple>
-        </div>
+        <LazyAtomBtnSimple class="profile__footer" @click="handleClickNext()">完成
+        </LazyAtomBtnSimple>
     </div>
 </template>
 <script>
@@ -124,7 +125,7 @@ async function handleSubmit() {
 .profile {
     margin: auto;
     max-width: 640px;
-    padding: 0 20px;
+    padding: 20px;
 
     .profile__header {
         font-size: 28px;
@@ -135,13 +136,12 @@ async function handleSubmit() {
         letter-spacing: normal;
         text-align: left;
         color: #333;
-        margin-top: 20px;
+        // margin-top: 20px;
     }
 
     .profile__footer {
-        width: 256px;
-        margin: 50px auto auto auto;
-        text-align: center;
+        width: 100%;
+        margin-top: 27px;
     }
 }
 </style>

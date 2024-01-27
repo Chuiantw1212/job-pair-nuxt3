@@ -103,6 +103,7 @@ const localValue = computed({
         if (props.lowerCase) {
             newValue = String(newValue).toLowerCase()
         }
+        setErrorMessage()
         emit("update:modelValue", newValue)
     },
 })

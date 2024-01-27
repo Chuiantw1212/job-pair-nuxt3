@@ -74,7 +74,8 @@ async function logout() {
     })
 }
 function showModal() {
-    $emitter?.emit("showSwitchModal")
+    $emitter?.emit("showCompanyModal")
+    // $emitter?.emit("showSwitchModal")
 }
 </script>
 <style lang="scss" scoped>

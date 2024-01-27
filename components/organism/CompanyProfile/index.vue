@@ -2,7 +2,7 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <LazyAtomQuickImport v-if="state.isNewCompay" @click="crawlCompanyFromPlatform($event)">
+            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                 <br>
                 範例：www.104.com.tw/companyInfo/*,
@@ -10,7 +10,7 @@
             </LazyAtomQuickImport>
             <div class="profile__body">
                 <div class="body__basicInfo">
-                    <h2 class="basicInfo__header">基本資料</h2>
+                    <h2 class="basicInfo__header">基本資料{{ isDev }}</h2>
                     <div class="basicInfo__desc">
                         以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識
                     </div>
@@ -42,9 +42,9 @@
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                            required>
-                        </LazyAtomInputText>
+                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="手機號碼 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
+                        </LazyAtomInputMobile>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
@@ -118,7 +118,15 @@
                     <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                         客製公司頁面
                     </NuxtLink>
-                    <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
+                        name: 'company-id',
+                        params: {
+                            id: state.companyInfo.seoName
+                        }
+                    }">
+                        檢視公司頁面
+                    </NuxtLink>
+                    <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
                         檢視公司頁面
                     </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
@@ -145,6 +153,7 @@ const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
+const isDev = process.env.NODE_ENV === 'development'
 const state = reactive({
     isNewCompay: false,
     companyInfo: {
@@ -432,27 +441,32 @@ async function set104CompanyInfo(response) {
         product,
         // jobBenefits,
         management,
-        phone,
+        // phone,
         // fax,
         // hrName,
         // news,
         addrNoDesc,
         logo,
     } = response
-    // 先找到第一級行政區
+    // 先找到縣市
     const addressRegionText = address.slice(0, 3)
     const upperTaiDivision = addressRegionText.replace('臺', '台')
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
-    const addressRegion = targetDivision.value
-    const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
-    const addressLocalityText = address.slice(3, 6)
-    const targetDivisionLevel2 = addressLocalityItems.find((item) => {
-        return item.text === addressLocalityText
-    })
-    const addressLocality = targetDivisionLevel2.value
-    // 找到第二級行政區
+    let addressRegion = ''
+    let addressLocality = ''
+    if (targetDivision) {
+        addressRegion = targetDivision.value
+        // 再找行政區
+        const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
+        const targetDivisionLevel2 = addressLocalityItems.find((item) => {
+            return address.includes(item.text)
+        })
+        if (targetDivisionLevel2) {
+            addressLocality = targetDivisionLevel2.value
+        }
+    }
     const addressDesc = address.replace(addrNoDesc, "")
     // 合併四個欄位
     let description = ""
@@ -490,7 +504,7 @@ async function set104CompanyInfo(response) {
         name: custName,
         capital,
         numberOfEmployees: empNo,
-        telephone: phone,
+        // telephone: phone, // 限制只能用手機
         url: {
             default: custLink,
         },
