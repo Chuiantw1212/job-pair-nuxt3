@@ -176,6 +176,8 @@ function gotoNextQuestion() {
 <style lang="scss" scoped>
 .form {
     text-align: center;
+    padding-top: 95px;
+    padding-bottom: 50px;
 
     .form__hint {
         background: rgba(255, 243, 205, 0.60);
@@ -185,12 +187,15 @@ function gotoNextQuestion() {
         font-style: normal;
         font-weight: 400;
         line-height: 18.2px;
-        /* 130% */
+        z-index: 10;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
     }
 
     .form__progress {
         margin: 0 auto;
-        margin-top: 27px;
         max-width: 244px;
     }
 
@@ -249,7 +254,6 @@ function gotoNextQuestion() {
                 font-style: normal;
                 font-weight: 500;
                 line-height: 26px;
-                /* 162.5% */
             }
         }
 
@@ -284,14 +288,9 @@ function gotoNextQuestion() {
     }
 }
 
-.result__tooltip {
-    width: fit-content;
-    block-size: fit-content;
-}
-
-@media screen and (min-width: 991px) {
+@media screen and (min-width: 992px) {
     .form {
-        padding-top: 40px;
+        position: relative;
     }
 }
 </style>
