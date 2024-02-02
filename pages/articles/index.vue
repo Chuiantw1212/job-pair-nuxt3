@@ -28,37 +28,18 @@
         </div>
         <div class="articles__body">
             <div class="body__title">
-                文章列表（12）
+                文章列表（{{ state.articles.length }}）
             </div>
             <ul class="body__list">
-                <li class="list__item">
+                <li v-for="(item, index) in state.articles" class="list__item">
                     <img class="item__image" src="@/assets/articles/thumbnail.png">
                     <div>
                         <div class="item__title">
-                            #金錢與工作滿意度
+                            {{ formatKeywords(item.keywords) }}
                         </div>
                         <div class="item__desc">
-                            錢能買到幸福嗎？深入思考薪水與人生滿足感的關係
-                        </div>
-                    </div>
-                </li>
-                <li class="list__item"><img class="item__image" src="@/assets/articles/thumbnail.png">
-                    <div>
-                        <div class="item__title">
-                            #金錢與工作滿意度
-                        </div>
-                        <div class="item__desc">
-                            錢能買到幸福嗎？深入思考薪水與人生滿足感的關係
-                        </div>
-                    </div>
-                </li>
-                <li class="list__item"><img class="item__image" src="@/assets/articles/thumbnail.png">
-                    <div>
-                        <div class="item__title">
-                            #金錢與工作滿意度
-                        </div>
-                        <div class="item__desc">
-                            錢能買到幸福嗎？深入思考薪水與人生滿足感的關係
+                            {{ item.name }}
+                            <!-- 錢能買到幸福嗎？深入思考薪水與人生滿足感的關係 -->
                         </div>
                     </div>
                 </li>
@@ -68,12 +49,14 @@
 </template>
 
 <script setup>
-const { $requestSelector, $uuid4, $bootstrap, $Glide } = useNuxtApp()
+const { $requestSelector, $uuid4, $Glide } = useNuxtApp()
+const repoArticle = useRepoArticle()
 const state = reactive({
     id: null,
     feedbackGlideInstance: null,
     bsModal: null,
     modalFeedback: null,
+    articles: [],
 })
 const glideRef = ref(null)
 // hooks
@@ -89,7 +72,15 @@ onMounted(() => {
         })
         mountGlideInstance()  // IMPORTANT
     }
+    getAllArticles()
+
 })
+async function getAllArticles() {
+    const response = await repoArticle.getAllArticles()
+    if (response.status === 200) {
+        state.articles = response.data
+    }
+}
 function mountGlideInstance() {
     if (state.feedbackGlideInstance) {
         state.feedbackGlideInstance.destroy()
@@ -127,6 +118,9 @@ function setGlideConfig(event) {
             bound: true,
         })
     }
+}
+function formatKeywords(list = []) {
+    return list.map(item => `#${item}`).join(' ')
 }
 </script>
 <style lang="scss" scoped>
