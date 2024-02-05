@@ -1,29 +1,24 @@
 <template>
     <div class="articles">
-        <!-- <img src="@/assets/articles/Mask.png"> -->
         <div :id="`glide${state.id}`" class="feedback__list" ref="glideRef">
             <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
-                    <li class="glide__slide" v-for="(number, index) in 3" :key="index" ref="feedbackItem">
+                    <li class="glide__slide" v-for="(item, index) in state.articles" :key="index">
                         <div class="slide__content">
                             <div class="content__imageWrap">
-                                <img class="content__image" src="@/assets/articles/Mask.png">
+                                <img class="imageWrap__image" :src="item.images[0].url">
+                                <div class="imageWrap__cover"></div>
+                                <div class="imageWrap__keywordsWrap">
+                                    <div v-for="(keyword, index) in item.keywords" :key="index"
+                                        class="keywordsWrap__keywords">
+                                        {{ `#${keyword}` }}
+                                    </div>
+                                </div>
+                                <div class="imageWrap__title">{{ item.name }}</div>
                             </div>
                         </div>
-                        <!-- <div class="feedback__content">
-                            <div class="content__name">{{ feedback.name }}</div>
-                            <div class="content__to">諮詢師：{{ feedback.to }}</div>
-                            <div class="content__desc">
-                                <div v-html="feedback.desc"></div>
-                            </div>
-                            <button class="content__openModal" @click="showFeedback(feedback)">詳全文</button>
-                        </div> -->
                     </li>
                 </ul>
-            </div>
-            <div class="glide__arrows" data-glide-el="controls">
-                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">&lt;</button>
-                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
             </div>
         </div>
         <div class="articles__body">
@@ -32,14 +27,16 @@
             </div>
             <ul class="body__list">
                 <li v-for="(item, index) in state.articles" class="list__item">
-                    <img class="item__image" src="@/assets/articles/thumbnail.png">
+                    <img class="item__image" :src="item.images[0].url">
                     <div>
-                        <div class="item__title">
+                        <div class="item__keywords">
                             {{ formatKeywords(item.keywords) }}
                         </div>
-                        <div class="item__desc">
+                        <div class="item__title">
                             {{ item.name }}
-                            <!-- 錢能買到幸福嗎？深入思考薪水與人生滿足感的關係 -->
+                        </div>
+                        <div v-html="item.description" class="item__desc">
+
                         </div>
                     </div>
                 </li>
@@ -53,71 +50,56 @@ const { $requestSelector, $uuid4, $Glide } = useNuxtApp()
 const repoArticle = useRepoArticle()
 const state = reactive({
     id: null,
-    feedbackGlideInstance: null,
+    glideInstance: null,
     bsModal: null,
     modalFeedback: null,
     articles: [],
 })
 const glideRef = ref(null)
 // hooks
-onMounted(() => {
+onMounted(async () => {
     if (process.client) {
+        await getAllArticles()
         state.id = $uuid4()
-        $requestSelector('#feedbackModal', (element) => {
-            if (!state.bsModal) {
-                state.bsModal = new window.bootstrap.Modal(element, {
-                    keyboard: false,
-                })
-            }
-        })
-        mountGlideInstance()  // IMPORTANT
     }
-    getAllArticles()
-
 })
 async function getAllArticles() {
     const response = await repoArticle.getAllArticles()
     if (response.status === 200) {
         state.articles = response.data
+        mountGlideInstance()  // IMPORTANT
     }
 }
 function mountGlideInstance() {
-    if (state.feedbackGlideInstance) {
-        state.feedbackGlideInstance.destroy()
+    if (state.glideInstance) {
+        state.glideInstance.destroy()
     }
     $requestSelector(`#glide${state.id}`, (element) => {
         nextTick(() => {
-            const feedbackGlideInstance = new $Glide.Default(element, {
+            const glideInstance = new $Glide.Default(element, {
                 type: 'carousel',
                 gap: 20,
                 rewind: true,
                 bound: true,
             })
-            feedbackGlideInstance.mount({
-                Controls: $Glide.Controls,
+            glideInstance.mount({
+                Swipe: $Glide.Swipe,
             })
-            state.feedbackGlideInstance = feedbackGlideInstance
+            state.glideInstance = glideInstance
             window.addEventListener("resize", setGlideConfig)
             setGlideConfig({ target: window })
         })
     })
 }
 function setGlideConfig(event) {
-    if (event.target.innerWidth < 992) {
-        state.feedbackGlideInstance.update({
-            gap: 20,
-            perView: 1,
-            rewind: true,
-            bound: true,
-        })
-    } else {
-        state.feedbackGlideInstance.update({
-            gap: 20,
-            perView: 3,
-            rewind: true,
-            bound: true,
-        })
-    }
+    const preview = Math.floor(event.target.innerWidth / 400)
+    $requestSelector()
+    state.glideInstance.update({
+        gap: 20,
+        perView: preview,
+        rewind: true,
+        bound: true,
+    })
 }
 function formatKeywords(list = []) {
     return list.map(item => `#${item}`).join(' ')
@@ -126,6 +108,7 @@ function formatKeywords(list = []) {
 <style lang="scss" scoped>
 .articles {
     padding: 20px;
+    background-color: white;
 
     .slide__content {
         display: flex;
@@ -134,9 +117,53 @@ function formatKeywords(list = []) {
         .content__imageWrap {
             border-radius: 10px;
             overflow: hidden;
+            position: relative;
+            display: flex;
+            z-index: 10;
 
-            .content__image {
-                width: 311px;
+            .imageWrap__keywordsWrap {
+                position: absolute;
+                left: 30px;
+                top: 30px;
+                color: white;
+                display: flex;
+                gap: 4px;
+
+                .imageWrap__keywords {
+                    color: white;
+                    position: absolute;
+                }
+
+            }
+
+            .imageWrap__image {
+                max-width: 360px;
+            }
+
+
+            .imageWrap__cover {
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .imageWrap__title {
+                position: absolute;
+                left: 30px;
+                bottom: 30px;
+                color: white;
+                font-size: 20px;
+                font-weight: 600;
+                max-width: 250px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: justify;
             }
         }
     }
@@ -163,28 +190,135 @@ function formatKeywords(list = []) {
             .list__item {
                 display: flex;
                 gap: 10px;
+                // align-items: center;
 
                 .item__image {
                     width: 100px;
                     height: 100px;
+                    border-radius: 10px;
                 }
 
-                .item__title {
+                .item__keywords {
                     font-size: 12px;
                     font-style: normal;
                     font-weight: 400;
                     line-height: normal;
                 }
 
-                .item__desc {
+                .item__title {
                     font-size: 18px;
                     font-style: normal;
                     font-weight: 600;
                     line-height: 22px;
-                    /* 122.222% */
+                    margin-top: 4px;
+                }
+
+                .item__desc {
+                    display: none;
                 }
             }
         }
     }
+}
+
+@media screen and (min-width:992px) {
+    .articles {
+        .slide__content {
+            display: flex;
+            justify-content: center;
+
+            .content__imageWrap {
+                border-radius: 10px;
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                z-index: 10;
+
+                .imageWrap__keywordsWrap {
+                    position: absolute;
+                    left: 30px;
+                    top: 30px;
+                    color: white;
+                    display: flex;
+                    gap: 4px;
+
+                    .imageWrap__keywords {
+                        color: white;
+                        position: absolute;
+                    }
+
+                }
+
+                .imageWrap__image {
+                    max-width: 400px;
+                }
+            }
+        }
+
+        .articles__body {
+            max-width: 870px;
+            margin: auto;
+
+            .body__title {
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                margin-top: 20px;
+            }
+
+            .body__list {
+                display: flex;
+                flex-direction: column;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                gap: 20px;
+                margin-top: 20px;
+
+                .list__item {
+                    display: flex;
+                    gap: 10px;
+                    // align-items: center;
+                    align-items: center;
+
+                    .item__image {
+                        width: 160px;
+                        height: 160px;
+                        border-radius: 10px;
+                    }
+
+                    .item__keywords {
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                    }
+
+                    .item__title {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 22px;
+                        margin-top: 4px;
+                    }
+
+                    .item__desc {
+                        // display: block;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        margin-top: 8px;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
 }
 </style>
