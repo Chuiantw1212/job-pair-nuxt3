@@ -8,7 +8,15 @@ export default defineStore('article', () => {
         })
         return response
     }
+    async function getArticleById(data) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/article/${data.id}`,
+        })
+        return response.data
+    }
     return {
-        getAllArticles
+        getAllArticles,
+        getArticleById
     }
 })

@@ -27,7 +27,9 @@
             </div>
             <ul class="body__list">
                 <li v-for="(item, index) in state.articles" class="list__item">
-                    <img class="item__image" :src="item.images[0].url">
+                    <NuxtLink class="item__link" :to="{ name: 'article-id', params: { 'id': item.id } }">
+                        <img class="item__image" :src="item.images[0].url">
+                    </NuxtLink>
                     <NuxtLink class="item__link" :to="{ name: 'article-id', params: { 'id': item.id } }">
                         <div class="item__keywords">
                             {{ formatKeywords(item.keywords) }}
@@ -64,6 +66,7 @@ onMounted(async () => {
         state.id = $uuid4()
     }
 })
+// methods
 async function getAllArticles() {
     const response = await repoArticle.getAllArticles()
     if (response.status === 200) {
