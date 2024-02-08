@@ -140,7 +140,7 @@ export default function setup() {
                     company.hasActiveJobs = !!data.length
                 }
                 repoAuth.setCompany(company)
-                const whiteList = ['admin', 'about', 'job', 'company', 'o']
+                const whiteList = ['admin', 'about', 'job', 'company', 'o', 'articles']
                 const isNotPermitted = whiteList.every(word => {
                     return !route.name.includes(word)
                 })

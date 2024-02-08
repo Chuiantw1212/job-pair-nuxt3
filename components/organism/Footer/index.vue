@@ -5,9 +5,9 @@
             @ 2023 Job Pair . All rights reserved.
         </div>
         <div class="footer__textGroups">
-            <!-- <div class="textGroups__anchor">
-                <img class="anchor__image" alt="logo" src="./link.svg">
-            </div> -->
+            <RouterLink class="textGroups__anchor" :to="{ name: 'articles' }">
+                文章
+            </RouterLink>
             <RouterLink class="textGroups__anchor" :to="{ name: 'about' }">
                 關於
             </RouterLink>
