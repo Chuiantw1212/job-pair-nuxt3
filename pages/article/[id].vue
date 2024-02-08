@@ -15,11 +15,12 @@
             <div class="article__links">
                 <span>分享</span>
                 <!-- https://stackoverflow.com/questions/9120539/facebook-share-link-without-javascript -->
-                <a :href="`https://www.facebook.com/sharer/sharer.php?u=${windowLocationHref}`" target="_blank">
-                    <!-- Share -->
+                <a :href="`https://www.facebook.com/sharer/sharer.php?u=${runTimeConfig.public.siteUrl}/article/${article.id}`"
+                    target="_blank">
                     <img src="@/assets/articles/Facebook.svg">
                 </a>
-                <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${windowLocationHref}`" target="_blank">
+                <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${runTimeConfig.public.siteUrl}/article/${article.id}`"
+                    target="_blank">
                     <img src="@/assets/articles/Linkdin.svg">
                 </a>
                 <button v-if="state.navigator?.share" class="links__btn" @click="shareLinkNative()">
@@ -95,10 +96,6 @@ useSeoMeta({
     ogUrl: () => {
         return `${runTimeConfig.public.siteUrl}/article/${article.id}`
     }
-})
-const windowLocationHref = computed(() => {
-    const encoded = encodeURI(`${runTimeConfig.public.siteUrl}/article/${article.id}`)
-    return encoded
 })
 onMounted(async () => {
     if (process.client) {
