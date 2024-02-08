@@ -75,6 +75,27 @@ const articleId = computed(() => {
 })
 const { data: article } = await useFetch(`${runTimeConfig.public.apiBase}/article/${articleId.value}`, { initialCache: false })
 state.article = article
+useSeoMeta({
+    title: () => `${state.article.name} | 文章`,
+    ogTitle: () => `${state.article.name} | 文章`,
+    description: () => {
+        const regex = /(<([^>]+)>)/ig
+        if (state.article.description) {
+            const descriptionContent = state.article.description.replace(regex, "")
+            return descriptionContent
+        }
+    },
+    ogDescription: () => {
+        const regex = /(<([^>]+)>)/ig
+        if (state.article.description) {
+            const descriptionContent = state.article.description.replace(regex, "")
+            return descriptionContent
+        }
+    },
+    ogUrl: () => {
+        return `${runTimeConfig.public.siteUrl}/article/${article.id}`
+    }
+})
 const windowLocationHref = computed(() => {
     const encoded = encodeURI(`${runTimeConfig.public.siteUrl}/article/${article.id}`)
     return encoded
@@ -193,6 +214,7 @@ async function setArticle() {
             letter-spacing: normal;
             text-align: left;
             color: #a6a6a6;
+            gap: 4px;
         }
 
         .article__title {
@@ -312,9 +334,7 @@ async function setArticle() {
 
 @media screen and (min-width: 992px) {
     .article {
-        // display: flex;
-        // flex-direction: column;
-        // justify-content: center;
+        padding-bottom: 70px;
 
         .article__image {
             max-height: 480px;
