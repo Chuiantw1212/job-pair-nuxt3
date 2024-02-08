@@ -1,6 +1,7 @@
 <template>
     <div class="article">
-        <img class="article__image" :src="state.article.images[0]?.url">
+        <div class=article__image :style="{ 'background-image': `url(${state.article.images[0]?.url})` }"></div>
+        <!-- <img class="article__image" :src="state.article.images[0]?.url"> -->
         <div class="article__body">
             <div class="article__keywords">
                 <div v-for="(keyword, index) in state.article.keywords" :key="index">
@@ -33,11 +34,9 @@
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
                         <li class="glide__slide" v-for="(item, index) in state.articles" :key="index">
+                            <!-- <div :style="{ 'background-image': `url(${item.images[0].url})` }"></div> -->
+                            <img class="content__image" :src="item.images[0].url">
                             <NuxtLink class="slide__content" :to="{ name: 'article-id', params: { 'id': item.id } }">
-                                <!-- <div class="content__imageWrap"> -->
-                                <img class="content__image" :src="item.images[0].url">
-                                <!-- <div class="imageWrap__cover"></div> -->
-                                <!-- </div> -->
                                 <div class="content__keywordsWrap">
                                     <div v-for="(keyword, index) in item.keywords" :key="index"
                                         class="keywordsWrap__keywords">
@@ -55,13 +54,14 @@
 </template>
 <script setup>
 const { $requestSelector, $uuid4, $Glide } = useNuxtApp()
+const runTimeConfig = useRuntimeConfig()
 const route = useRoute()
 const repoArticle = useRepoArticle()
 const state = reactive({
-    articles: [],
     article: {
         images: []
     },
+    articles: [],
     glideInstance: null,
     debounceTimer: null,
     navigator: null,
@@ -70,16 +70,20 @@ if (process.client) {
     state.navigator = window.navigator
 }
 // hooks
-const windowLocationHref = computed(() => {
-    const encoded = encodeURI(window?.location?.href)
-    return encoded
-})
 const articleId = computed(() => {
     return route.params.id
 })
+const { data: article } = await useFetch(`${runTimeConfig.public.apiBase}/article/${articleId.value}`, { initialCache: false })
+state.article = article
+const windowLocationHref = computed(() => {
+    const encoded = encodeURI(`${runTimeConfig.public.siteUrl}/article/${article.id}`)
+    return encoded
+})
 onMounted(async () => {
     if (process.client) {
-        setArticle()
+        if (!state.article) {
+            setArticle()
+        }
         await getAllArticles()
         state.id = $uuid4()
         mountGlideInstance()  // IMPORTANT
@@ -126,8 +130,8 @@ function mountGlideInstance() {
                 Swipe: $Glide.Swipe,
             })
             state.glideInstance = glideInstance
-            // window.addEventListener("resize", setGlideConfig)
-            // setGlideConfig({ target: window })
+            window.addEventListener("resize", setGlideConfig)
+            setGlideConfig({ target: window })
         })
     })
 }
@@ -138,24 +142,26 @@ function debounce(func, timeout = 100) {
     }, timeout);
 }
 function setGlideConfig(event) {
-    const preview = Math.floor(event.target.innerWidth / 400)
-    const maxPreview = Math.max(1.2, preview)
     debounce(() => {
-        state.glideInstance.update({
-            gap: 20,
-            perView: maxPreview,
+        const glideConfig = {
+            type: 'carousel',
+            gap: 10,
             rewind: true,
             bound: true,
-        })
+        }
+        if (event.target.innerWidth >= 992) {
+            glideConfig.perView = 3.5
+            state.glideInstance.update(glideConfig)
+        } else {
+            glideConfig.perView = 2.1
+            state.glideInstance.update(glideConfig)
+        }
     })
 }
 async function setArticle() {
     const article = await repoArticle.getArticleById({
         id: articleId.value
     })
-    console.log({
-        article
-    });
     state.article = article
 }
 
@@ -163,9 +169,15 @@ async function setArticle() {
 <style lang="scss" scoped>
 .article {
     background-color: white;
+    text-align: center;
 
     .article__image {
+        height: 100vw;
         width: 100vw;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 0 0 10px 10px;
     }
 
     .article__body {
@@ -252,6 +264,12 @@ async function setArticle() {
             margin-top: 20px;
         }
 
+        .content__image {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+        }
+
         .slide__content {
             display: flex;
             flex-direction: column;
@@ -259,6 +277,7 @@ async function setArticle() {
             width: 150px;
             color: black;
             text-decoration: none;
+            margin: auto;
 
             .content__keywordsWrap {
                 display: flex;
@@ -269,12 +288,6 @@ async function setArticle() {
                 &:hover {
                     text-decoration: underline;
                 }
-            }
-
-            .content__image {
-                width: 150px;
-                height: 150px;
-                border-radius: 10px;
             }
 
             .content__title {
@@ -292,6 +305,91 @@ async function setArticle() {
                 &:hover {
                     text-decoration: underline;
                 }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .article {
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+
+        .article__image {
+            max-height: 480px;
+            margin: auto;
+            max-width: 870px;
+        }
+
+        .article__body {
+            max-width: 870px;
+            margin: auto;
+
+            .article__keywords {
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #a6a6a6;
+            }
+
+            .article__title {
+                font-size: 22px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.27;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
+            }
+
+            .article__date {
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #a6a6a6;
+            }
+
+            .article__text {
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: 1px;
+                text-align: left;
+                color: #222;
+            }
+
+            .article__hr {
+                margin-top: 30px;
+            }
+
+            .article__more {
+                margin-top: 30px;
+                font-size: 20px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
+            }
+
+            .content__image {
+                width: 150px;
+                height: 150px;
+                border-radius: 10px;
             }
         }
     }
