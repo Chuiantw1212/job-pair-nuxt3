@@ -28,7 +28,7 @@
             <ul class="body__list">
                 <li v-for="(item, index) in state.articles" class="list__item">
                     <img class="item__image" :src="item.images[0].url">
-                    <div>
+                    <NuxtLink class="item__link" :to="{ name: 'article-id', params: { 'id': item.id } }">
                         <div class="item__keywords">
                             {{ formatKeywords(item.keywords) }}
                         </div>
@@ -38,7 +38,7 @@
                         <div v-html="item.description" class="item__desc">
 
                         </div>
-                    </div>
+                    </NuxtLink>
                 </li>
             </ul>
         </div>
@@ -54,6 +54,7 @@ const state = reactive({
     bsModal: null,
     modalFeedback: null,
     articles: [],
+    debounceTimer: null,
 })
 const glideRef = ref(null)
 // hooks
@@ -91,14 +92,22 @@ function mountGlideInstance() {
         })
     })
 }
+function debounce(func, timeout = 100) {
+    clearTimeout(state.debounceTimer);
+    state.debounceTimer = setTimeout(() => {
+        func();
+    }, timeout);
+}
 function setGlideConfig(event) {
     const preview = Math.floor(event.target.innerWidth / 400)
-    $requestSelector()
-    state.glideInstance.update({
-        gap: 20,
-        perView: preview,
-        rewind: true,
-        bound: true,
+    const maxPreview = Math.max(1.2, preview)
+    debounce(() => {
+        state.glideInstance.update({
+            gap: 20,
+            perView: maxPreview,
+            rewind: true,
+            bound: true,
+        })
     })
 }
 function formatKeywords(list = []) {
@@ -190,7 +199,7 @@ function formatKeywords(list = []) {
             .list__item {
                 display: flex;
                 gap: 10px;
-                // align-items: center;
+                align-items: center;
 
                 .item__image {
                     width: 100px;
@@ -198,23 +207,36 @@ function formatKeywords(list = []) {
                     border-radius: 10px;
                 }
 
-                .item__keywords {
-                    font-size: 12px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                }
+                .item__link {
+                    color: black;
+                    text-decoration: none;
 
-                .item__title {
-                    font-size: 18px;
-                    font-style: normal;
-                    font-weight: 600;
-                    line-height: 22px;
-                    margin-top: 4px;
-                }
+                    .item__keywords {
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+                    }
 
-                .item__desc {
-                    display: none;
+                    .item__title {
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 22px;
+                        margin-top: 4px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .item__desc {
+                        display: none;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
                 }
             }
         }
@@ -223,6 +245,8 @@ function formatKeywords(list = []) {
 
 @media screen and (min-width:992px) {
     .articles {
+        padding: 70px 20px;
+
         .slide__content {
             display: flex;
             justify-content: center;
@@ -264,7 +288,7 @@ function formatKeywords(list = []) {
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
-                margin-top: 20px;
+                margin-top: 70px;
             }
 
             .body__list {
@@ -274,12 +298,11 @@ function formatKeywords(list = []) {
                 margin: 0;
                 padding: 0;
                 gap: 20px;
-                margin-top: 20px;
+                margin-top: 30px;
 
                 .list__item {
                     display: flex;
                     gap: 10px;
-                    // align-items: center;
                     align-items: center;
 
                     .item__image {
@@ -288,32 +311,33 @@ function formatKeywords(list = []) {
                         border-radius: 10px;
                     }
 
-                    .item__keywords {
-                        font-size: 12px;
-                        font-style: normal;
-                        font-weight: 400;
-                        line-height: normal;
-                    }
+                    .item__link {
+                        .item__keywords {
+                            font-size: 12px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: normal;
+                        }
 
-                    .item__title {
-                        font-size: 18px;
-                        font-style: normal;
-                        font-weight: 600;
-                        line-height: 22px;
-                        margin-top: 4px;
-                    }
+                        .item__title {
+                            font-size: 18px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: 22px;
+                            margin-top: 10px;
+                        }
 
-                    .item__desc {
-                        // display: block;
-                        font-size: 16px;
-                        font-style: normal;
-                        font-weight: 400;
-                        margin-top: 8px;
-                        display: -webkit-box;
-                        -webkit-box-orient: vertical;
-                        -webkit-line-clamp: 2;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
+                        .item__desc {
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 400;
+                            margin-top: 10px;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
                     }
                 }
             }
