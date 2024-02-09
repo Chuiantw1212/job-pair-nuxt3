@@ -3,43 +3,30 @@
         <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-            <button @click="toggleFilter('occupationalCategory')">
+            <button class="list__button" @click="toggleFilter('occupationalCategory')">
                 職務類型
             </button>
-            <button @click="toggleFilter('addressRegion')">
+            <button class="list__button" @click="toggleFilter('addressRegion')">
                 地點
             </button>
-            <div>
+            <button class="list__button" @click="toggleFilter('jobLocationType')">
                 遠端彈性
-            </div>
-            <div>
+            </button>
+            <button class="list__button" @click="toggleFilter('employmentType')">
                 僱傭模式
-            </div>
-            <div>
+            </button>
+            <button class="list__button" @click="toggleFilter('responsibilities')">
                 資歷
-            </div>
-            <div>
+            </button>
+            <button class="list__button" @click="toggleFilter('jobBenefits')">
                 福利制度
-            </div>
-            <div>
+            </button>
+            <button class="list__button" @click="toggleFilter('industry')">
                 產業
-            </div>
-            <div class="section__header">薪資類型</div>
-            <ul class="section__salaryType">
-                <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
-                    <label class="item__inputGroup">
-                        <input type="radio" v-model="jobScroller.state.filter.salaryType" :value="item.value" />
-                        <span class="item__text">{{ item.text }}</span>
-                    </label>
-                </li>
-            </ul>
-            <div class="section__salaryRange">
-                <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
-                </LazyAtomInputMoney>
-                <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
-                </LazyAtomInputMoney>
-            </div>
-            <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
+            </button>
+            <button class="list__button" @click="toggleFilter('salary')">
+                薪資範圍
+            </button>
         </div>
         <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory" class="jobs__containter">
             <template v-slot:header>
@@ -60,9 +47,8 @@
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter">
             <template v-slot:body>
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.addressRegion"
-                    v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
-                    :listStyle="state.listStyle">
+                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.addressRegion"
+                    :items="repoSelect.state.locationRes?.taiwan" :listStyle="state.listStyle">
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
@@ -70,82 +56,58 @@
             </template>
 
         </LazyMoleculeSlideContainer>
-        <!-- <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
-            class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
-            <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :placeholder="'職務類型'"
-                    >
-                    <LazyMoleculeFilterCategory v-if="state.filterOpen.occupationalCategory"
-                        v-model="jobScroller.state.filter.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
-                    </LazyMoleculeFilterCategory>
-                </LazyAtomInputSelectContainer>
-                <div>
-                    <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.occupationalCategory" :items="items">
-                        </LazyAtomInputSelectLabel>
-                    </template>
-                </div>
-                <template v-if="repoSelect.state.locationRes">
-                    <LazyAtomInputSelectContainer v-model="state.filterOpen.addressRegion" :placeholder="'地點'">
-                        <LazyAtomInputCheckMultiple v-if="state.filterOpen.addressRegion"
-                            v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
-                             :flexDirection="'row'">
-                        </LazyAtomInputCheckMultiple>
-                    </ >
-                    <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.addressRegion"
-                        :items="repoSelect.state.locationRes.taiwan">
-                    </LazyAtomInputSelectLabel>
-                </template>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
-                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobLocationType"
-                        v-model="jobScroller.state.filter.jobLocationType"
-                        :items="repoSelect.state.selectByQueryRes.jobLocationType" >
-                    </LazyAtomInputCheckMultiple>
-                </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobLocationType"
-                    :items="repoSelect.state.selectByQueryRes.jobLocationType">
-                </LazyAtomInputSelectLabel>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'僱傭模式'">
-                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.employmentType"
-                        v-model="jobScroller.state.filter.employmentType"
-                        :items="repoSelect.state.selectByQueryRes.employmentType" >
-                    </LazyAtomInputCheckMultiple>
-                </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.employmentType"
-                    :items="repoSelect.state.selectByQueryRes.employmentType">
-                </LazyAtomInputSelectLabel>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
-                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.responsibilities"
-                        v-model="jobScroller.state.filter.responsibilities"
-                        :items="repoSelect.state.selectByQueryRes.responsibilities" >
-                    </LazyAtomInputCheckMultiple>
-                </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.responsibilities"
-                    :items="repoSelect.state.selectByQueryRes.responsibilities">
-                </LazyAtomInputSelectLabel>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.jobBenefits" :placeholder="'福利制度'">
-                    <LazyAtomInputCheckMultiple v-if="state.filterOpen.jobBenefits"
-                        v-model="jobScroller.state.filter.jobBenefits"
-                        :items="repoSelect.state.selectByQueryRes.jobBenefits" >
-                    </LazyAtomInputCheckMultiple>
-                </LazyAtomInputSelectContainer>
-                <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.jobBenefits"
-                    :items="repoSelect.state.selectByQueryRes.jobBenefits">
-                </LazyAtomInputSelectLabel>
-                <LazyAtomInputSelectContainer v-model="state.filterOpen.industry" :placeholder="'產業'" >
-                    <LazyMoleculeFilterCategory v-if="state.filterOpen.industry" v-model="jobScroller.state.filter.industry"
-                        :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
-                        :isLarge="device.state.isLarge" :showSelectAll="true">
-                    </LazyMoleculeFilterCategory>
-                </LazyAtomInputSelectContainer>
-                <div>
-                    <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
-                        <LazyAtomInputSelectLabel v-model="jobScroller.state.filter.industry" :items="items">
-                        </LazyAtomInputSelectLabel>
-                    </template>
-                </div>
-                <div class="section__header">薪資類型</div>
+        <LazyMoleculeSlideContainer name="遠端彈性" v-model="filterOpen.jobLocationType" class="jobs__containter">
+            <template v-slot:body>
+                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobLocationType"
+                    :items="repoSelect.state.selectByQueryRes?.jobLocationType">
+                </LazyAtomInputCheckMultiple2>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="僱傭模式" v-model="filterOpen.employmentType" class="jobs__containter">
+            <template v-slot:body>
+                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.employmentType"
+                    :items="repoSelect.state.selectByQueryRes?.employmentType">
+                </LazyAtomInputCheckMultiple2>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="資歷" v-model="filterOpen.responsibilities" class="jobs__containter">
+            <template v-slot:body>
+                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.responsibilities"
+                    :items="repoSelect.state.selectByQueryRes?.responsibilities">
+                </LazyAtomInputCheckMultiple2>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="福利制度" v-model="filterOpen.jobBenefits" class="jobs__containter">
+            <template v-slot:body>
+                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobBenefits"
+                    :items="repoSelect.state.selectByQueryRes?.jobBenefits">
+                </LazyAtomInputCheckMultiple2>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.industry" class="jobs__containter">
+            <template v-slot:body>
+                <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.industry" :items="repoSelect.industryItems"
+                    :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                </LazyMoleculeFilterCategory>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.salary" class="jobs__containter">
+            <template v-slot:body>
                 <ul class="section__salaryType">
                     <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
                         <label class="item__inputGroup">
@@ -160,75 +122,11 @@
                     <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
                     </LazyAtomInputMoney>
                 </div>
-                <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
-            </div>
-        </LazyMoleculeFilter>
-        <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
-            <div class="jobs__panel">
-                <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="handleSearch()"
-                        placeholder="搜尋技能、公司＆職缺">
-                    </LazyAtomInputSearch>
-                </div>
-            </div>
-            <div class="body__filter">
-                <div class="d-none d-lg-block filter__total">
-                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{
-                        jobScroller.state.count
-                    }}個職缺</template>
-                    <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
-                </div>
-                <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
-                    <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
-                    <span class="filter__desc">篩選
-                        <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
-                    </span>
-                </div>
-                <div class="body__filter__sort">
-                    <button class="sort__button sort__button--date"
-                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'datePosted' }"
-                        @click="setPageOrderBy('datePosted')">
-                        最新
-                    </button>
-                    <button class="sort__button sort__button--salary"
-                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'salaryValue' }"
-                        @click="setPageOrderBy('salaryValue')">
-                        薪資排序
-                    </button>
-                    <button class="sort__button sort__button--similarity"
-                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'similarity' }"
-                        @click="setPageOrderBy('similarity')">
-                        適配度排序
-                    </button>
-                </div>
-            </div>
-            <div class="jobs__main">
-                <ul class="main__list">
-                    <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
-                        <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
-                            v-model="jobScroller.state.jobRecommendList[index]" :key="`recommend${index}`"
-                            class="main__list__item" :recommend="true">
-                        </LazyOrganismJobItem>
-                    </template>
-                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
-                        class="main__list__item jobListItem">
-                    </LazyOrganismJobItem>
-                    <li class="main__list__item">
-                        <div class="item__last">
-                            <div>
-                                Oops！目前還沒有適合您的職缺<br>
-                                放心，若有適合的機會我們將會主動聯繫您
-                                <br>
-                                <br>
-                                另外還有一對一職涯諮詢的服務
-                            </div>
-                            <LazyAtomBtnSimple class="last__reset" @click="gotoConsultRecords()">去看看</LazyAtomBtnSimple>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
+            </template>
+        </LazyMoleculeSlideContainer>
     </div>
 </template>
 <script setup>
@@ -248,6 +146,7 @@ const filterOpen = reactive({
     jobLocationType: false,
     employmentType: false,
     industry: false,
+    salary: false,
 })
 
 const searchKeyword = reactive({
@@ -386,6 +285,14 @@ function resetFilter() {
         grid-template-columns: auto auto;
         gap: 10px;
         margin-top: 20px;
+
+        .list__button {
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #edeaea;
+            border: none;
+        }
     }
 
 

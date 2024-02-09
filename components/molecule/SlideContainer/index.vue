@@ -121,6 +121,7 @@ function toggleMenu(status) {
 
         .continaer__body {
             margin-top: 17px;
+            min-height: 122.5px;
         }
 
         :deep(.container__footer) {
