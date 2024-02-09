@@ -4,7 +4,7 @@
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
-        <div class="inputGroup__labelGroup" :class="{ 'inputGroup__label--disabled': disabled }">
+        <div class="inputGroup__labelGroup" :class="{ 'inputGroup__label--disabled': disabled }" :style="listStyle">
             <label v-for="(item, key) in items" class="labelGroup__label" :key="`item${state.key}`">
                 <div class="label__circle">
                     <div class="circle__ring">
@@ -63,6 +63,12 @@ const props = defineProps({
     required: {
         type: Boolean,
         default: false
+    },
+    listStyle: {
+        type: Object,
+        default: function () {
+            return {}
+        }
     }
 })
 // hooks
@@ -88,15 +94,16 @@ const localValue = computed({
     }
 
     .inputGroup__labelGroup {
-        display: flex;
+        // display: flex;
         gap: 18px;
         min-height: 40px;
-        align-items: center;
-        flex-wrap: wrap;
+        // align-items: center;
+        // flex-wrap: wrap;
 
         .labelGroup__label {
             display: flex;
             align-items: center;
+            gap: 14px;
 
             .label__circle {
                 position: relative;
@@ -127,9 +134,14 @@ const localValue = computed({
             }
 
             .label__text {
-                margin-left: 8px;
-                font-size: 18px;
-                white-space: nowrap;
+                font-size: 14px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.57;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
             }
         }
     }

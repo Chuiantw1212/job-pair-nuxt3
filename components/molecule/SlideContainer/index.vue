@@ -8,9 +8,11 @@
                     <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
                 </button>
             </div>
-            <slot name="header">
+            <div class="container__search">
+                <slot name="header">
 
-            </slot>
+                </slot>
+            </div>
             <div class="continaer__body">
                 <slot name="body">
 
@@ -103,9 +105,13 @@ function toggleMenu(status) {
 
             .header__title {
                 font-size: 20px;
-                font-style: normal;
                 font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
                 line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
             }
 
             .header__close {
@@ -117,6 +123,10 @@ function toggleMenu(status) {
                     height: 16px;
                 }
             }
+        }
+
+        .container__search {
+            margin-top: 10px;
         }
 
         .continaer__body {

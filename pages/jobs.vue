@@ -59,7 +59,7 @@
         <LazyMoleculeSlideContainer name="遠端彈性" v-model="filterOpen.jobLocationType" class="jobs__containter">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobLocationType"
-                    :items="repoSelect.state.selectByQueryRes?.jobLocationType">
+                    :items="repoSelect.state.selectByQueryRes?.jobLocationType" :listStyle="state.listStyle">
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
@@ -69,7 +69,7 @@
         <LazyMoleculeSlideContainer name="僱傭模式" v-model="filterOpen.employmentType" class="jobs__containter">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.employmentType"
-                    :items="repoSelect.state.selectByQueryRes?.employmentType">
+                    :items="repoSelect.state.selectByQueryRes?.employmentType" :listStyle="state.listStyle">
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
@@ -79,7 +79,7 @@
         <LazyMoleculeSlideContainer name="資歷" v-model="filterOpen.responsibilities" class="jobs__containter">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.responsibilities"
-                    :items="repoSelect.state.selectByQueryRes?.responsibilities">
+                    :items="repoSelect.state.selectByQueryRes?.responsibilities" :listStyle="state.listStyle">
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
@@ -89,7 +89,7 @@
         <LazyMoleculeSlideContainer name="福利制度" v-model="filterOpen.jobBenefits" class="jobs__containter">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobBenefits"
-                    :items="repoSelect.state.selectByQueryRes?.jobBenefits">
+                    :items="repoSelect.state.selectByQueryRes?.jobBenefits" :listStyle="state.listStyle">
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
@@ -97,26 +97,33 @@
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.industry" class="jobs__containter">
+            <template v-slot:header>
+                <LazyAtomInputSearch2 v-model="searchKeyword.industry" class="filterCategory__search" :placeholder="'搜尋'">
+                </LazyAtomInputSearch2>
+            </template>
             <template v-slot:body>
-                <LazyMoleculeFilterCategory v-model="jobScroller.state.filter.industry" :items="repoSelect.industryItems"
+                <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.industry" :items="repoSelect.industryItems"
                     :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
-                </LazyMoleculeFilterCategory>
+                </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
                 <AtomBtnSimpleV2 @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.salary" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" class="jobs__containter">
             <template v-slot:body>
-                <ul class="section__salaryType">
+                <LazyAtomInputRadio v-model="jobScroller.state.filter.salaryType"
+                    :items="repoSelect.state.selectByQueryRes.salaryType" :listStyle="state.radioStyle">
+                </LazyAtomInputRadio>
+                <!-- <ul v-if="jobScroller.state.filter" class="section__salaryType">
                     <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
                         <label class="item__inputGroup">
                             <input type="radio" v-model="jobScroller.state.filter.salaryType" :value="item.value" />
                             <span class="item__text">{{ item.text }}</span>
                         </label>
                     </li>
-                </ul>
-                <div class="section__salaryRange">
+                </ul> -->
+                <div class="container__salary">
                     <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
                     </LazyAtomInputMoney>
                     <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMax" name="薪資上限" placeholder="請輸入">
@@ -151,6 +158,7 @@ const filterOpen = reactive({
 
 const searchKeyword = reactive({
     occupationalCategory: null,
+    industry: null,
 })
 const state = reactive({
     isFilterOpen: false,
@@ -158,6 +166,11 @@ const state = reactive({
     listStyle: {
         display: 'grid',
         "grid-template-columns": "auto auto",
+    },
+    radioStyle: {
+        display: 'flex',
+        'flex-direction': 'column',
+
     }
     // filterOpen: {
     //     addressRegion: false,
@@ -245,14 +258,18 @@ function gotoConsultRecords() {
     router.push('/user/consult/records')
 }
 function getSalaryTypeItems() {
-    const items = repoSelect.state.selectByQueryRes.salaryType
-    return [
-        {
-            text: '不限',
-            value: ''
-        },
-        ...items
-    ]
+    const items = repoSelect.state.selectByQueryRes?.salaryType
+    if (items) {
+        return [
+            {
+                text: '不限',
+                value: ''
+            },
+            ...items
+        ]
+    } else {
+        return []
+    }
 }
 async function setPageOrderBy(key) {
     jobScroller.state.pagination.pageOrderBy = key
@@ -292,6 +309,16 @@ function resetFilter() {
             border-radius: 8px;
             background-color: #edeaea;
             border: none;
+        }
+    }
+
+    .container__salary {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+
+        >* {
+            width: 50%;
         }
     }
 
