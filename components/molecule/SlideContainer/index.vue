@@ -2,6 +2,12 @@
     <div class="slideContainer">
         <div class="slideContainer__main"
             :class="{ 'slideContainer__main--isOpen': modelValue, 'slideContainer__main--isClosed': !modelValue }">
+            <div class="container__header">
+                <div class="header__title">{{ name }}</div>
+                <button @click="toggleMenu(false)" class="header__close">
+                    <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
+                </button>
+            </div>
             <slot></slot>
         </div>
         <div v-if="state.isBackgroundVisible && state.isMobile" class="slideContainer__background"
@@ -21,6 +27,10 @@ const props = defineProps({
     modelValue: {
         type: Boolean,
         default: false,
+    },
+    name: {
+        type: String,
+        default: '',
     }
 })
 // hooks
@@ -30,7 +40,6 @@ onMounted(() => {
     handleResize()
 })
 watch(() => props.modelValue, (newValue) => {
-    console.log('newValue', newValue);
     toggleMenu(newValue)
 })
 // methods
@@ -76,9 +85,33 @@ function toggleMenu(status) {
         transition: all 0.3s;
         z-index: 1060;
         padding: 20px;
-        // height: 600px;
         max-height: 100vh;
+
+        .container__header {
+            display: flex;
+            justify-content: space-between;
+
+            .header__title {
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .header__close {
+                background-color: inherit;
+                border: none;
+
+                .close__image {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
     }
+
+
+
 
     .slideContainer__main--isOpen {
         transform: translateY(0%);

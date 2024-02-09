@@ -6,9 +6,9 @@
             <button @click="toggleFilter('occupationalCategory')">
                 職務類型
             </button>
-            <div v-if="repoSelect.state.locationRes">
+            <button @click="toggleFilter('addressRegion')">
                 地點
-            </div>
+            </button>
             <div>
                 遠端彈性
             </div>
@@ -41,6 +41,24 @@
             </div>
             <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
         </div>
+        <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory" class="jobs__containter">
+            <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
+                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
+                :showSelectAll="true">
+            </LazyMoleculeFilterCategory2>
+        </LazyMoleculeSlideContainer>
+        <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter">
+            <LazyMoleculeFilterAddressRegion v-model="jobScroller.state.filter.addressRegion"
+                :items="repoSelect.state.locationRes?.taiwan">
+            </LazyMoleculeFilterAddressRegion>
+            <!-- <LazyAtomInputCheckMultiple2 v-if="filterOpen.addressRegion" v-model="jobScroller.state.filter.addressRegion"
+                :items="repoSelect.state.locationRes.taiwan" :listStyle="state.listStyle">
+            </LazyAtomInputCheckMultiple2> -->
+            <!-- <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
+                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
+                :showSelectAll="true">
+            </LazyMoleculeFilterCategory2> -->
+        </LazyMoleculeSlideContainer>
         <!-- <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
             class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
             <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
@@ -58,8 +76,8 @@
                     </template>
                 </div>
                 <template v-if="repoSelect.state.locationRes">
-                    <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
-                        <LazyAtomInputCheckMultiple v-if="state.filterOpen.division"
+                    <LazyAtomInputSelectContainer v-model="state.filterOpen.addressRegion" :placeholder="'地點'">
+                        <LazyAtomInputCheckMultiple v-if="state.filterOpen.addressRegion"
                             v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
                              :flexDirection="'row'">
                         </LazyAtomInputCheckMultiple>
@@ -200,18 +218,6 @@
                 </ul>
             </div>
         </div> -->
-        <LazyMoleculeSlideContainer v-model="filterOpen.occupationalCategory" class="jobs__containter">
-            <div class="container__header">
-                <div class="header__title">職務類型</div>
-                <button @click="filterOpen.occupationalCategory = false" class="header__close">
-                    <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
-                </button>
-            </div>
-            <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
-                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
-                :showSelectAll="true">
-            </LazyMoleculeFilterCategory2>
-        </LazyMoleculeSlideContainer>
     </div>
 </template>
 <script setup>
@@ -226,7 +232,7 @@ const jobScroller = useJobScroller({
 })
 const filterOpen = reactive({
     occupationalCategory: false,
-    division: false,
+    addressRegion: false,
     responsibilities: false,
     jobLocationType: false,
     employmentType: false,
@@ -236,8 +242,12 @@ const filterOpen = reactive({
 const state = reactive({
     isFilterOpen: false,
     searchLike: "",
+    listStyle: {
+        display: 'grid',
+        "grid-template-columns": "auto auto",
+    }
     // filterOpen: {
-    //     division: false,
+    //     addressRegion: false,
     //     occupationalCategory: false,
     //     responsibilities: false,
     //     jobLocationType: false,
@@ -364,30 +374,6 @@ function resetFilter() {
         margin-top: 20px;
     }
 
-    .jobs__containter {
-        padding: 20px;
 
-        .container__header {
-            display: flex;
-            justify-content: space-between;
-
-            .header__title {
-                font-size: 20px;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
-            }
-
-            .header__close {
-                background-color: inherit;
-                border: none;
-
-                .close__image {
-                    width: 16px;
-                    height: 16px;
-                }
-            }
-        }
-    }
 }
 </style>
