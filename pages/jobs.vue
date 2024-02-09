@@ -42,10 +42,17 @@
             <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
         </div>
         <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory" class="jobs__containter">
+            <LazyAtomInputSearch2 v-model="searchKeyword.occupationalCategory" class="filterCategory__search"
+                :placeholder="'搜尋'">
+            </LazyAtomInputSearch2>
             <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
                 :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
                 :showSelectAll="true">
             </LazyMoleculeFilterCategory2>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 outline @click="searchKeyword.occupationalCategory = null">清除條件</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
+            </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter">
             <LazyMoleculeFilterAddressRegion v-model="jobScroller.state.filter.addressRegion"
@@ -239,6 +246,9 @@ const filterOpen = reactive({
     industry: false,
 })
 
+const searchKeyword = reactive({
+    occupationalCategory: null,
+})
 const state = reactive({
     isFilterOpen: false,
     searchLike: "",

@@ -7,60 +7,50 @@
         </div>
     </label>
 </template>
-<script>
-export default {
-    name: 'search',
-    props: {
-        modelValue: {
-            type: String,
-            default: "",
-            debounceTimer: null
-        },
-        placeholder: {
-            type: String,
-            default: "搜尋",
-        },
+<script setup>
+const emit = defineEmits(['update:modelValue', 'search'])
+const state = reactive({
+    debounceTimer: null
+})
+const props = defineProps({
+    modelValue: {
+        type: String,
+        default: "",
     },
-    computed: {
-        localValue: {
-            get: function () {
-                return this.modelValue
-            },
-            set: function (val) {
-                this.$emit("update:modelValue", val)
-            },
-        }
+    placeholder: {
+        type: String,
+        default: "搜尋",
     },
-    watch: {
-        localValue: {
-            handler: function (newValue = '') {
-                if (!String(newValue).trim()) {
-                    return
-                }
-                this.debounce(() => {
-                    this.$emit("search")
-                })()
-            }
-        }
+})
+const localValue = computed({
+    get() {
+        return props.modelValue
     },
-    methods: {
-        resetSearch() {
-            if (!String(this.localValue).trim()) {
-                this.debounce(() => {
-                    this.$emit("search")
-                })()
-            }
-        },
-        debounce(func, delay = 800) {
-            return (...args) => {
-                clearTimeout(this.debounceTimer)
-                this.debounceTimer = setTimeout(() => {
-                    this.debounceTimer = undefined
-                    func.apply(this, args)
-                }, delay)
-            }
-        },
+    set(val) {
+        emit("update:modelValue", val)
+    },
+})
+watch(() => localValue.value, (newValue = '') => {
+    if (!String(newValue).trim()) {
+        return
     }
+    debounce(() => {
+        emit("search")
+    })
+})
+// methods
+function resetSearch() {
+    if (!String(localValue.value).trim()) {
+        debounce(() => {
+            emit("search")
+        })
+    }
+}
+function debounce(func, timeout = 100) {
+    clearTimeout(state.debounceTimer);
+    state.debounceTimer = setTimeout(() => {
+        func();
+    }, timeout);
 }
 </script>
 <style lang="scss" scoped>

@@ -1,8 +1,6 @@
 <template>
     <div class="filterCategory">
         <input v-show="false" :value="localValue.length !== 0" :data-required="required" :data-name="name">
-        <LazyAtomInputSearch2 v-model="state.keyword" class="filterCategory__search" :placeholder="placeholder">
-        </LazyAtomInputSearch2>
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
@@ -57,10 +55,6 @@
                     </div>
                 </template>
             </div>
-        </div>
-        <div class="filterCategory__footer">
-            <AtomBtnSimpleV2 class="footer__btn" outline>清除條件</AtomBtnSimpleV2>
-            <AtomBtnSimpleV2 class="footer__btn">關閉</AtomBtnSimpleV2>
         </div>
     </div>
 </template>

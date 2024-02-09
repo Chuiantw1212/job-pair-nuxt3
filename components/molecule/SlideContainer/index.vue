@@ -8,7 +8,10 @@
                     <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
                 </button>
             </div>
-            <slot></slot>
+            <slot name="default"></slot>
+            <div class="container__footer">
+                <slot name="footer"></slot>
+            </div>
         </div>
         <div v-if="state.isBackgroundVisible && state.isMobile" class="slideContainer__background"
             :class="{ 'slideContainer__background--fadeIn': state.isBackgroundFading }" @click="toggleMenu(false)">
@@ -106,6 +109,18 @@ function toggleMenu(status) {
                     width: 16px;
                     height: 16px;
                 }
+            }
+        }
+
+        :deep(.container__footer) {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+
+            >* {
+                width: 100%;
+                height: 42px;
             }
         }
     }
