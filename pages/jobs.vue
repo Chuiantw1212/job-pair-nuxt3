@@ -42,29 +42,33 @@
             <LazyAtomBtnSimple class="last__reset mt-3 w-100" @click="resetFilter()">重置所有搜尋條件</LazyAtomBtnSimple>
         </div>
         <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory" class="jobs__containter">
-            <LazyAtomInputSearch2 v-model="searchKeyword.occupationalCategory" class="filterCategory__search"
-                :placeholder="'搜尋'">
-            </LazyAtomInputSearch2>
-            <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
-                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
-                :showSelectAll="true">
-            </LazyMoleculeFilterCategory2>
+            <template v-slot:header>
+                <LazyAtomInputSearch2 v-model="searchKeyword.occupationalCategory" class="filterCategory__search"
+                    :placeholder="'搜尋'">
+                </LazyAtomInputSearch2>
+            </template>
+            <template v-slot:body>
+                <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
+                    :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
+                    :showSelectAll="true">
+                </LazyMoleculeFilterCategory2>
+            </template>
             <template v-slot:footer>
                 <AtomBtnSimpleV2 outline @click="searchKeyword.occupationalCategory = null">清除條件</AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter">
-            <LazyMoleculeFilterAddressRegion v-model="jobScroller.state.filter.addressRegion"
-                :items="repoSelect.state.locationRes?.taiwan">
-            </LazyMoleculeFilterAddressRegion>
-            <!-- <LazyAtomInputCheckMultiple2 v-if="filterOpen.addressRegion" v-model="jobScroller.state.filter.addressRegion"
-                :items="repoSelect.state.locationRes.taiwan" :listStyle="state.listStyle">
-            </LazyAtomInputCheckMultiple2> -->
-            <!-- <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
-                :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
-                :showSelectAll="true">
-            </LazyMoleculeFilterCategory2> -->
+            <template v-slot:body>
+                <LazyAtomInputCheckMultiple2 v-if="filterOpen.addressRegion"
+                    v-model="jobScroller.state.filter.addressRegion" :items="repoSelect.state.locationRes.taiwan"
+                    :listStyle="state.listStyle">
+                </LazyAtomInputCheckMultiple2>
+            </template>
+            <template v-slot:footer>
+                <AtomBtnSimpleV2 @click="filterOpen.addressRegion = false">關閉</AtomBtnSimpleV2>
+            </template>
+
         </LazyMoleculeSlideContainer>
         <!-- <LazyMoleculeFilter v-model="state.isFilterOpen" @update:modelValue="state.isFilterOpen = $event"
             class="jobs__filter" :class="{ 'col col-3': device.state.isLarge }">
