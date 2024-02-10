@@ -129,6 +129,71 @@
                 <AtomBtnSimpleV2 @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
+        <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
+            <!-- <div class="jobs__panel">
+                <div class="panel__searchForm">
+                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="handleSearch()"
+                        placeholder="搜尋技能、公司＆職缺">
+                    </LazyAtomInputSearch>
+                </div>
+            </div> -->
+            <div class="body__filter">
+                <!-- <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
+                    <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
+                    <span class="filter__desc">篩選
+                        <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
+                    </span>
+                </div> -->
+                <div class="body__filter__sort">
+                    <button class="sort__button sort__button--date"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'datePosted' }"
+                        @click="setPageOrderBy('datePosted')">
+                        最新
+                    </button>
+                    <button class="sort__button sort__button--salary"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'salaryValue' }"
+                        @click="setPageOrderBy('salaryValue')">
+                        薪資排序
+                    </button>
+                    <button class="sort__button sort__button--similarity"
+                        :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'similarity' }"
+                        @click="setPageOrderBy('similarity')">
+                        適配度排序
+                    </button>
+                </div>
+                <div class="filter__total">
+                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{
+                        jobScroller.state.count
+                    }}個職缺</template>
+                    <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
+                </div>
+            </div>
+            <ul class="body__list">
+                <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
+                        v-model="jobScroller.state.jobRecommendList[index]" :key="`recommend${index}`"
+                        class="body__list__item" :recommend="true">
+                    </LazyOrganismJobItem>
+                </template>
+                <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                    v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
+                    class="body__list__item jobListItem">
+                </LazyOrganismJobItem>
+                <li class="body__list__item">
+                    <div class="item__notFound">
+                        <div>
+                            Oops！目前還沒有適合您的職缺<br>
+                            放心，若有適合的機會我們將會主動聯繫您
+                            <br>
+                            <br>
+                            另外還有一對一職涯諮詢的服務
+                        </div>
+                        <LazyAtomBtnSimple class="notFound__consult" outline @click="gotoConsultRecords()">去看看
+                        </LazyAtomBtnSimple>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 <script setup>
@@ -282,7 +347,7 @@ function resetFilter() {
 .jobs {
 
     padding: 20px;
-    background: #F9F9F9;
+    background-color: #f9f9f9;
 
     .filter__list {
         display: grid;
@@ -301,6 +366,78 @@ function resetFilter() {
         }
     }
 
+    .jobs__body {
 
+        .body__filter {
+            margin-top: 30px;
+
+            .body__filter__sort {
+                display: flex;
+                gap: 10px;
+
+                .sort__button {
+                    background-color: white;
+                    border: none;
+                    font-size: 12px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #484848;
+                    padding: 10px;
+                }
+
+                .sort__button--active {
+                    color: #5ea88e;
+                }
+            }
+
+            .filter__total {
+                font-size: 10px;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #484848;
+                margin-top: 25px;
+            }
+
+        }
+
+        .body__list {
+            margin-top: 30px;
+            list-style: none;
+            padding: 0px;
+            margin-top: 25px;
+
+            .body__list__item {
+                .item__notFound {
+                    background-color: white;
+                    padding: 80px 30px;
+                    border-radius: 10px;
+                    background-color: #fff;
+                    margin-top: 20px;
+                    text-align: center;
+                    font-size: 16px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.5;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #484848;
+
+                    .notFound__consult {
+                        width: 100%;
+                        margin-top: 30px;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
