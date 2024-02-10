@@ -40,6 +40,7 @@ const props = defineProps({
 })
 const classObject = computed(() => {
     const defaultObj = {
+        'btnSimple--sm': props.size === 'sm',
         'btnSimple--md': props.size === 'md',
         'btnSimple--lg': props.size === 'lg',
         'btnSimple--disabled': props.disabled,
@@ -85,6 +86,11 @@ const styleObject = computed(() => {
         color: var(--color-hover);
         background-color: var(--background-color-hover);
     }
+}
+
+.btnSimple--sm {
+    font-size: 14px;
+    padding: 10px 0px;
 }
 
 .btnSimple--md {

@@ -14,9 +14,11 @@
                 <slot name="header"></slot>
                 <slot name="body"></slot>
                 <slot name="default"></slot>
-                <slot name="footer">
+                <div class="layer__footer">
+                    <slot name="footer">
 
-                </slot>
+                    </slot>
+                </div>
             </div>
         </div>
     </div>
@@ -146,6 +148,16 @@ export default {
 
         .layer__padding {
             padding: 20px;
+
+            :deep(.layer__footer) {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+
+                >* {
+                    width: 100%;
+                }
+            }
         }
     }
 
@@ -168,8 +180,7 @@ export default {
         }
 
         .inputDropdownContainer__layer {
-            // min-width: 100%;
-            width: unset;
+            min-width: 100%;
             margin-top: 5px;
         }
     }

@@ -106,8 +106,14 @@ function debounce(func, timeout = 100) {
 
 @media screen and (min-width: 992px) {
     .inputSearch {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: left;
+        color: #a6a6a6;
     }
 }
 </style>

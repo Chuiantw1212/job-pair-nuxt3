@@ -10,10 +10,12 @@
             <template v-for="(item, key) in items">
                 <label v-if="item[itemText]" class="checkMultiple__label" :style="itemStyle">
                     <div v-if="isItemSelected(item)" class="label__checkbox">
-                        <img class="checkbox__check" src="./checkboxSelected.svg" />
+                        <img class="checkbox__check" src="./checked.svg" />
                     </div>
                     <div v-else class="label__checkbox label__checkbox--unselected"
-                        :class="{ 'label__checkbox--disabled': checkDisabled(item) }"></div>
+                        :class="{ 'label__checkbox--disabled': checkDisabled(item) }">
+                        <!-- <img class="checkbox__check" src="./checked.svg" /> -->
+                    </div>
                     <input v-show="false" v-model="localValue" class="label__input" :value="item[itemValue]" type="checkbox"
                         :disabled="checkDisabled(item)" />
                     {{ item[itemText] }}
@@ -119,10 +121,10 @@ export default {
 
         .label__checkbox {
             margin-right: 10px;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 2px;
-            line-height: 0;
+            line-height: 1;
             border-radius: 2px;
             background-color: white;
 
@@ -145,14 +147,13 @@ export default {
 @media screen and (min-width: 992px) {
     .checkMultiple {
         .checkMultiple__label {
-
             .label__checkbox {
-                width: 20px;
-                height: 20px;
+                width: 16px;
+                height: 16px;
 
                 .checkbox__check {
-                    width: 20px;
-                    height: 20px;
+                    width: 16px;
+                    height: 16px;
                 }
             }
         }

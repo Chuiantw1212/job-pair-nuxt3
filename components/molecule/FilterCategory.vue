@@ -253,7 +253,6 @@ function closeOtherItems(categoryKey, newFlag) {
     border-radius: 5px;
     max-height: 453px;
     overflow-y: auto;
-    // border: solid 1px #d3d3d3;
 
     .filterCategory__header {
         padding: 10px 15px;

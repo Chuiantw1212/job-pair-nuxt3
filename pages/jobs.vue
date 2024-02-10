@@ -15,50 +15,93 @@
                     </LazyMoleculeFilterCategory2>
                 </template>
                 <template v-slot:footer>
-                    <AtomBtnSimpleV2 outline @click="jobScroller.state.filter.occupationalCategory = []">清除條件
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.occupationalCategory = []">清除條件
                     </AtomBtnSimpleV2>
-                    <AtomBtnSimpleV2 @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
                 </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.division" :name="'地點'"
                 :count="jobScroller.state.filter.addressRegion.length">
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.division" v-model="jobScroller.state.filter.addressRegion"
-                    :items="repoSelect.state.locationRes.taiwan" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                <template v-slot:body>
+                    <LazyAtomInputCheckMultiple2 v-if="filterOpen.division" v-model="jobScroller.state.filter.addressRegion"
+                        :items="repoSelect.state.locationRes.taiwan" :listStyle="state.listStyle">
+                    </LazyAtomInputCheckMultiple2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.addressRegion = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.division = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.jobLocationType" :name="'遠端彈性'"
                 :count="jobScroller.state.filter.jobLocationType.length">
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.jobLocationType"
-                    v-model="jobScroller.state.filter.jobLocationType"
-                    :items="repoSelect.state.selectByQueryRes.jobLocationType" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                <template v-slot:body>
+                    <LazyAtomInputCheckMultiple2 v-if="filterOpen.jobLocationType"
+                        v-model="jobScroller.state.filter.jobLocationType"
+                        :items="repoSelect.state.selectByQueryRes.jobLocationType" :listStyle="state.listStyle">
+                    </LazyAtomInputCheckMultiple2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.jobLocationType = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.employmentType" :name="'僱傭模式'"
                 :count="jobScroller.state.filter.employmentType.length">
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.employmentType"
-                    v-model="jobScroller.state.filter.employmentType"
-                    :items="repoSelect.state.selectByQueryRes.employmentType" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                <template v-slot:body>
+                    <LazyAtomInputCheckMultiple2 v-if="filterOpen.employmentType"
+                        v-model="jobScroller.state.filter.employmentType"
+                        :items="repoSelect.state.selectByQueryRes.employmentType" :listStyle="state.listStyle">
+                    </LazyAtomInputCheckMultiple2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.employmentType = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.responsibilities" :name="'資歷'"
                 :count="jobScroller.state.filter.responsibilities.length">
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.responsibilities"
-                    v-model="jobScroller.state.filter.responsibilities"
-                    :items="repoSelect.state.selectByQueryRes.responsibilities" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                <template v-slot:body>
+                    <LazyAtomInputCheckMultiple2 v-if="filterOpen.responsibilities"
+                        v-model="jobScroller.state.filter.responsibilities"
+                        :items="repoSelect.state.selectByQueryRes.responsibilities" :listStyle="state.listStyle">
+                    </LazyAtomInputCheckMultiple2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.responsibilities = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.jobBenefits" :name="'福利制度'"
                 :count="jobScroller.state.filter.jobBenefits.length">
-                <LazyAtomInputCheckMultiple2 v-if="filterOpen.jobBenefits" v-model="jobScroller.state.filter.jobBenefits"
-                    :items="repoSelect.state.selectByQueryRes.jobBenefits" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                <template v-slot:body>
+                    <LazyAtomInputCheckMultiple2 v-if="filterOpen.jobBenefits"
+                        v-model="jobScroller.state.filter.jobBenefits"
+                        :items="repoSelect.state.selectByQueryRes.jobBenefits" :listStyle="state.listStyle">
+                    </LazyAtomInputCheckMultiple2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.jobBenefits = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.industry" :name="'產業'"
                 :count="jobScroller.state.filter.industry.length">
-                <LazyMoleculeFilterCategory2 v-if="filterOpen.industry" v-model="jobScroller.state.filter.industry"
-                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
-                    :isLarge="device.state.isLarge" :showSelectAll="true">
-                </LazyMoleculeFilterCategory2>
+                <template v-slot:body>
+                    <LazyMoleculeFilterCategory2 v-if="filterOpen.industry" v-model="jobScroller.state.filter.industry"
+                        :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                        :isLarge="device.state.isLarge" :showSelectAll="true">
+                    </LazyMoleculeFilterCategory2>
+                </template>
+                <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.industry = []">清除條件
+                    </AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
+                </template>
             </LazyAtomInputSelectContainer>
             <LazyAtomInputSelectContainer v-model="filterOpen.salary" :name="'薪資範圍'">
                 <template v-slot:body>
@@ -73,7 +116,7 @@
                     </div>
                 </template>
                 <template v-slot:footer>
-                    <AtomBtnSimpleV2 @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
+                    <AtomBtnSimpleV2 size="sm" @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
                 </template>
             </LazyAtomInputSelectContainer>
         </div>
@@ -91,8 +134,9 @@
                 </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 outline @click="jobScroller.state.filter.occupationalCategory = []">清除條件</AtomBtnSimpleV2>
-                <AtomBtnSimpleV2 @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.occupationalCategory = []">清除條件
+                </AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter d-lg-none">
@@ -102,7 +146,7 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.addressRegion = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.addressRegion = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="遠端彈性" v-model="filterOpen.jobLocationType" class="jobs__containter d-lg-none">
@@ -112,7 +156,7 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="僱傭模式" v-model="filterOpen.employmentType" class="jobs__containter d-lg-none">
@@ -122,7 +166,7 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="資歷" v-model="filterOpen.responsibilities" class="jobs__containter d-lg-none">
@@ -132,7 +176,7 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="福利制度" v-model="filterOpen.jobBenefits" class="jobs__containter d-lg-none">
@@ -142,7 +186,7 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.industry" class="jobs__containter d-lg-none">
@@ -156,7 +200,7 @@
                 </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" class="jobs__containter d-lg-none">
@@ -172,7 +216,7 @@
                 </div>
             </template>
             <template v-slot:footer>
-                <AtomBtnSimpleV2 @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
+                <AtomBtnSimpleV2 size="sm" @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
         <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
