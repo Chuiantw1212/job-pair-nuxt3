@@ -76,7 +76,7 @@ export default function setup(setUpConfig = {}) {
             employmentType: [],
             jobLocationType: [],
             occupationalCategory: [],
-            salaryType: "",
+            salaryType: [],
             salaryMin: null,
             salaryMax: null,
             organizationId: null,
@@ -215,7 +215,7 @@ export default function setup(setUpConfig = {}) {
         }
         if (salaryType) {
             filteredResult = filteredResult.filter(item => {
-                return item.salaryType === salaryType
+                return salaryType.includes(item.salaryType)
             })
         }
         if (salaryMax) {

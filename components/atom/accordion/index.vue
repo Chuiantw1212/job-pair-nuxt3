@@ -3,7 +3,7 @@
         <div class="accordion__header" :class="{ 'accordion__header--isOpened': modelValue }"
             @click="$emit('update:modelValue', !modelValue)">
             <div class="header__nameGroup">
-                {{ name }}
+                <div class="nameGroup__name">{{ name }}</div>
                 <div v-if="count" class="nameGroup__badge">{{ count }}</div>
             </div>
             <img v-if="arrow === 'up'" alt="up" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
@@ -62,6 +62,11 @@ export default {
             display: flex;
             align-items: center;
             gap: 10px;
+            width: 100%;
+
+            .nameGroup__name {
+                max-width: calc(100% - 30px);
+            }
 
             .nameGroup__badge {
                 border-radius: 100px;

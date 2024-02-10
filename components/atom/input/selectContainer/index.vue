@@ -2,14 +2,22 @@
     <div class="inputDropdownContainer" ref="input">
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
-            <span class="placeholder__text">{{ placeholder }}</span>
+            <div class="trigger__nameGroup">
+                <span class="placeholder__text">{{ name }}</span>
+                <span v-if="count" class="nameGroup__badge">{{ count }}</span>
+            </div>
             <img src="./Up.svg" alt="down" class="inputDropdownContainer__icon">
         </button>
-        <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
-            <div class="layer__header">
+        <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }"
+            :style="{ 'width': width }">
+            <div class="layer__padding">
                 <slot name="header"></slot>
+                <slot name="body"></slot>
+                <slot name="default"></slot>
+                <slot name="footer">
+
+                </slot>
             </div>
-            <slot name="body"></slot>
         </div>
     </div>
 </template>
@@ -21,7 +29,7 @@ export default {
             default: false,
             required: true,
         },
-        placeholder: {
+        name: {
             type: String,
             default: "請選擇",
         },
@@ -29,6 +37,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        width: {
+            type: String,
+            default: 'unset'
+        },
+        count: {
+            type: Number,
+            default: 0
+        }
     },
     mounted() {
         this.toggleClickOutside(true)
@@ -71,18 +87,35 @@ export default {
         align-items: center;
         border: none;
         width: 100%;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #484848;
+        min-height: 40px;
 
+        .trigger__nameGroup {
+            gap: 10px;
+            display: flex;
+            align-items: center;
 
-        .placeholder__text {
-            margin-right: 8px;
-            font-size: 12px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: normal;
-            letter-spacing: normal;
-            text-align: left;
-            color: #484848;
+            .nameGroup__badge {
+                width: 20px;
+                height: 20px;
+                border-radius: 100px;
+                background-color: #f5fffb;
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: center;
+                color: #5ea88e;
+            }
         }
 
         .inputDropdownContainer__icon {
@@ -111,9 +144,8 @@ export default {
         padding: 0px !important; // 不可以有Padding
         width: 100%;
 
-        .layer__header {
+        .layer__padding {
             padding: 20px;
-            padding-bottom: 0px;
         }
     }
 
@@ -125,7 +157,7 @@ export default {
 @media screen and (min-width: 992px) {
     .inputDropdownContainer {
         .inputDropdownContainer__trigger {
-            padding: 13px 20px;
+            padding: 10px;
             border-radius: 5px;
             background-color: #edeaea;
             display: flex;
@@ -136,7 +168,7 @@ export default {
         }
 
         .inputDropdownContainer__layer {
-            min-width: 100%;
+            // min-width: 100%;
             width: unset;
             margin-top: 5px;
         }

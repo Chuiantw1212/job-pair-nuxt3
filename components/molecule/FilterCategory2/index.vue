@@ -242,7 +242,7 @@ function handleToggle(categoryKey, newFlag) {
     }
 
     .filterCategory__list {
-        padding: 20px;
+        // padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;

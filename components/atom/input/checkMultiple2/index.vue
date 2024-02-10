@@ -96,7 +96,7 @@ export default {
             return isDisabled && !isSelected
         },
         isItemSelected(item) {
-            if (!this.modelValue) {
+            if (!this.modelValue?.length) {
                 return false
             }
             const itemValue = item[this.itemValue]
