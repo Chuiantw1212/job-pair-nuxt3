@@ -2,7 +2,37 @@
     <div class="jobs" :class="{ container: device.state.isLarge }">
         <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋">
         </LazyAtomInputSearch2>
-        <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
+        <div v-if="repoSelect.state.selectByQueryRes" class="filter__list d-lg-none">
+            <LazyAtomBtnToggle v-model="filterOpen['occupationalCategory']"
+                :count="jobScroller.state.filter.occupationalCategory.length">
+                職務類型
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['addressRegion']" :count="jobScroller.state.filter.addressRegion.length">
+                地點
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['jobLocationType']"
+                :count="jobScroller.state.filter.jobLocationType.length">
+                遠端彈性
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['employmentType']"
+                :count="jobScroller.state.filter.employmentType.length">
+                僱傭模式
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['responsibilities']"
+                :count="jobScroller.state.filter.responsibilities.length">
+                資歷
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['jobBenefits']" :count="jobScroller.state.filter.jobBenefits.length">
+                福利制度
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['industry']" :count="jobScroller.state.filter.industry.length">
+                產業
+            </LazyAtomBtnToggle>
+            <LazyAtomBtnToggle v-model="filterOpen['salary']">
+                薪資範圍
+            </LazyAtomBtnToggle>
+        </div>
+        <div v-if="repoSelect.state.selectByQueryRes && device.state.isLarge" class="filter__list d-none d-lg-grid">
             <LazyAtomInputSelectContainer v-model="filterOpen.occupationalCategory"
                 :count="jobScroller.state.filter.occupationalCategory.length" :name="'職務類型'">
                 <template v-slot:body>
@@ -120,6 +150,7 @@
                 </template>
             </LazyAtomInputSelectContainer>
         </div>
+        <!-- 手機版本懸浮視窗 -->
         <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory"
             class="jobs__containter d-lg-none">
             <template v-slot:header>
@@ -146,6 +177,8 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.addressRegion = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.addressRegion = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -156,6 +189,8 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.jobLocationType = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -166,6 +201,8 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.employmentType = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -176,6 +213,8 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.responsibilities = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -186,6 +225,8 @@
                 </LazyAtomInputCheckMultiple2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.jobBenefits = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -200,6 +241,8 @@
                 </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.industry = []">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -216,6 +259,8 @@
                 </div>
             </template>
             <template v-slot:footer>
+                <AtomBtnSimpleV2 size="sm" outline @click="clearSalaryFilter()">清除條件
+                </AtomBtnSimpleV2>
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
@@ -374,6 +419,11 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 }, { immediate: true })
 // methods
+function clearSalaryFilter() {
+    jobScroller.state.filter.salaryType = []
+    jobScroller.state.filter.salaryMin = ''
+    jobScroller.state.filter.salaryMax = ''
+}
 function toggleFilter(key = '') {
     filterOpen[key] = !filterOpen[key]
 }
@@ -463,6 +513,7 @@ function resetFilter() {
                 .sort__button {
                     background-color: white;
                     border: none;
+                    border-radius: 8px;
                     font-size: 12px;
                     font-weight: normal;
                     font-stretch: normal;
