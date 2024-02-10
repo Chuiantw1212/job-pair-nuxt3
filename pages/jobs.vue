@@ -172,14 +172,6 @@ const state = reactive({
         'flex-direction': 'column',
 
     }
-    // filterOpen: {
-    //     addressRegion: false,
-    //     occupationalCategory: false,
-    //     responsibilities: false,
-    //     jobLocationType: false,
-    //     employmentType: false,
-    //     industry: false,
-    // },
 })
 // hooks
 useSeoMeta({

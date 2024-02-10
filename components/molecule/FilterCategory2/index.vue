@@ -5,8 +5,9 @@
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
-                        :placeholder="$optionText(categoryKey, items)" class="list__subList"
-                        :arrow="isLarge ? 'right' : 'up'" @update:modelValue="handleToggle(categoryKey, $event)">
+                        :name="$optionText(categoryKey, items)" class="list__subList"
+                        :count="getCheckedItemsCount(categoryKey)" :arrow="isLarge ? 'right' : 'up'"
+                        @update:modelValue="handleToggle(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
                                 <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
@@ -151,6 +152,14 @@ watch(() => localValue.value, () => {
     }
 })
 // methods
+function getCheckedItemsCount(categoryKey) {
+    const items = props.categoryMap[categoryKey]
+    const itemValues = items.map(item => item.value)
+    const included = props.modelValue.filter(selected => {
+        return itemValues.includes(selected)
+    })
+    return included.length
+}
 function checkItemDisabled(item) {
     const isExceedMax = props.max && localValue.value.length >= props.max
     const isNotSelected = !localValue.value.includes(item.value)

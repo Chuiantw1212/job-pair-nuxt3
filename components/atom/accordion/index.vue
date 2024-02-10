@@ -2,7 +2,10 @@
     <div class="accordion">
         <div class="accordion__header" :class="{ 'accordion__header--isOpened': modelValue }"
             @click="$emit('update:modelValue', !modelValue)">
-            <span>{{ placeholder }}</span>
+            <div class="header__nameGroup">
+                <div>{{ name }}</div>
+                <div v-if="count" class="nameGroup__badge">{{ count }}</div>
+            </div>
             <img v-if="arrow === 'up'" alt="up" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
             <img v-if="arrow === 'right'" alt="right" class="accordion__image accordion__image__right"
                 src="./icon_Down.svg" />
@@ -22,7 +25,7 @@ export default {
                 return false
             },
         },
-        placeholder: {
+        name: {
             type: String,
             default: "",
         },
@@ -30,6 +33,10 @@ export default {
             type: String,
             default: "up",
         },
+        count: {
+            type: Number,
+            default: 0
+        }
     },
 }
 </script>
@@ -44,6 +51,36 @@ export default {
         cursor: pointer;
         border-bottom: 1px solid #EDEAEA;
         line-height: 1;
+
+        .header__nameGroup {
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: normal;
+            text-align: left;
+            color: #222;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .nameGroup__badge {
+                border-radius: 100px;
+                background-color: #f5fffb;
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: center;
+                color: #5ea88e;
+                width: 20px;
+                height: 20px;
+                // border: 1px solid red;
+            }
+        }
 
         .accordion__image {
             width: 14px;
