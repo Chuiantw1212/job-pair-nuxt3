@@ -3,7 +3,7 @@
         <div class="accordion__header" :class="{ 'accordion__header--isOpened': modelValue }"
             @click="$emit('update:modelValue', !modelValue)">
             <div class="header__nameGroup">
-                <div>{{ name }}</div>
+                {{ name }}
                 <div v-if="count" class="nameGroup__badge">{{ count }}</div>
             </div>
             <img v-if="arrow === 'up'" alt="up" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
@@ -21,9 +21,7 @@ export default {
     props: {
         modelValue: {
             type: Boolean,
-            default: function () {
-                return false
-            },
+            default: false
         },
         name: {
             type: String,
@@ -78,7 +76,6 @@ export default {
                 color: #5ea88e;
                 width: 20px;
                 height: 20px;
-                // border: 1px solid red;
             }
         }
 
@@ -106,11 +103,30 @@ export default {
         overflow: hidden;
         max-height: 0;
         transition: all 0.3s;
+        padding: 0px !important; // 不可以有padding
     }
 
     .accordion__layer--isOpened {
         border-bottom: 1px solid #EDEAEA;
         max-height: 1000vh;
+    }
+}
+
+@media screen and (min-width:992px) {
+
+    .accordion {
+        .accordion__header {
+            .header__nameGroup {
+                font-size: 16px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1.5;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
+            }
+        }
     }
 }
 </style>

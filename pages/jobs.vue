@@ -3,10 +3,23 @@
         <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-            <LazyAtomBtnToggle v-model="filterOpen['occupationalCategory']"
+            <!-- <LazyAtomBtnToggle v-model="filterOpen['occupationalCategory']"
                 :count="jobScroller.state.filter.occupationalCategory.length">
                 職務類型
-            </LazyAtomBtnToggle>
+            </LazyAtomBtnToggle> -->
+            <LazyAtomInputSelectContainer v-model="filterOpen.occupationalCategory" :placeholder="'職務類型'">
+                <template v-slot:header>
+                    <LazyAtomInputSearch2 v-model="searchKeyword.occupationalCategory" class="filterCategory__search"
+                        :placeholder="'搜尋'">
+                    </LazyAtomInputSearch2>
+                </template>
+                <template v-slot:body>
+                    <LazyMoleculeFilterCategory2 v-if="filterOpen.occupationalCategory"
+                        v-model="jobScroller.state.filter.occupationalCategory" :items="repoSelect.jobCategory"
+                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                    </LazyMoleculeFilterCategory2>
+                </template>
+            </LazyAtomInputSelectContainer>
             <LazyAtomBtnToggle v-model="filterOpen['addressRegion']" :count="jobScroller.state.filter.addressRegion.length">
                 地點
             </LazyAtomBtnToggle>
@@ -32,7 +45,8 @@
                 薪資範圍
             </LazyAtomBtnToggle>
         </div>
-        <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="職務類型" v-model="filterOpen.occupationalCategory"
+            class="jobs__containter d-lg-none">
             <template v-slot:header>
                 <LazyAtomInputSearch2 v-model="searchKeyword.occupationalCategory" class="filterCategory__search"
                     :placeholder="'搜尋'">
@@ -49,7 +63,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="地點" v-model="filterOpen.addressRegion" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.addressRegion"
                     :items="repoSelect.state.locationRes?.taiwan" :listStyle="state.listStyle">
@@ -59,7 +73,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.addressRegion = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="遠端彈性" v-model="filterOpen.jobLocationType" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="遠端彈性" v-model="filterOpen.jobLocationType" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobLocationType"
                     :items="repoSelect.state.selectByQueryRes?.jobLocationType" :listStyle="state.listStyle">
@@ -69,7 +83,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.jobLocationType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="僱傭模式" v-model="filterOpen.employmentType" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="僱傭模式" v-model="filterOpen.employmentType" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.employmentType"
                     :items="repoSelect.state.selectByQueryRes?.employmentType" :listStyle="state.listStyle">
@@ -79,7 +93,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.employmentType = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="資歷" v-model="filterOpen.responsibilities" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="資歷" v-model="filterOpen.responsibilities" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.responsibilities"
                     :items="repoSelect.state.selectByQueryRes?.responsibilities" :listStyle="state.listStyle">
@@ -89,7 +103,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.responsibilities = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="福利制度" v-model="filterOpen.jobBenefits" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="福利制度" v-model="filterOpen.jobBenefits" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.jobBenefits"
                     :items="repoSelect.state.selectByQueryRes?.jobBenefits" :listStyle="state.listStyle">
@@ -99,7 +113,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.jobBenefits = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.industry" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="產業" v-model="filterOpen.industry" class="jobs__containter d-lg-none">
             <template v-slot:header>
                 <LazyAtomInputSearch2 v-model="searchKeyword.industry" class="filterCategory__search" :placeholder="'搜尋'">
                 </LazyAtomInputSearch2>
@@ -113,7 +127,7 @@
                 <AtomBtnSimpleV2 @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" class="jobs__containter">
+        <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" class="jobs__containter d-lg-none">
             <template v-slot:body>
                 <LazyAtomInputRadio v-model="jobScroller.state.filter.salaryType"
                     :items="repoSelect.state.selectByQueryRes?.salaryType" :listStyle="state.radioStyle">
@@ -437,6 +451,14 @@ function resetFilter() {
                     }
                 }
             }
+        }
+    }
+}
+
+@media screen and (min-width:992px) {
+    .jobs {
+        .filter__list {
+            grid-template-columns: auto auto auto auto;
         }
     }
 }

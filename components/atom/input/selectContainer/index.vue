@@ -3,11 +3,13 @@
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
             <span class="placeholder__text">{{ placeholder }}</span>
-            <img src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
-            <!-- <img > -->
+            <img src="./Up.svg" alt="down" class="inputDropdownContainer__icon">
         </button>
         <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
-            <slot></slot>
+            <div class="layer__header">
+                <slot name="header"></slot>
+            </div>
+            <slot name="body"></slot>
         </div>
     </div>
 </template>
@@ -60,9 +62,9 @@ export default {
     position: relative;
 
     .inputDropdownContainer__trigger {
-        padding: 11px 9.6px 10px 10px;
+        padding: 10px;
         border-radius: 5px;
-        background-color: #eee;
+        background-color: #edeaea;
         display: flex;
         justify-items: center;
         justify-content: space-between;
@@ -70,9 +72,22 @@ export default {
         border: none;
         width: 100%;
 
+
         .placeholder__text {
             margin-right: 8px;
-            color: #595959;
+            font-size: 12px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #484848;
+        }
+
+        .inputDropdownContainer__icon {
+            transition: all 0.3s;
+            transform: scaleY(-1);
         }
     }
 
@@ -80,7 +95,7 @@ export default {
         background-color: #eef6ed;
 
         .inputDropdownContainer__icon {
-            transform: scaleY(-1);
+            transform: scaleY(1);
         }
     }
 
@@ -95,6 +110,11 @@ export default {
         z-index: 110;
         padding: 0px !important; // 不可以有Padding
         width: 100%;
+
+        .layer__header {
+            padding: 20px;
+            padding-bottom: 0px;
+        }
     }
 
     .inputDropdownContainer__layer--isOn {
@@ -107,21 +127,18 @@ export default {
         .inputDropdownContainer__trigger {
             padding: 13px 20px;
             border-radius: 5px;
-            background-color: #eee;
+            background-color: #edeaea;
             display: flex;
             justify-items: center;
             justify-content: space-between;
             border: none;
             width: 100%;
-
-            .placeholder__text {
-                font-size: 20px;
-            }
         }
 
         .inputDropdownContainer__layer {
             min-width: 100%;
             width: unset;
+            margin-top: 5px;
         }
     }
 }

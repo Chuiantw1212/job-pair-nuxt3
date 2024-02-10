@@ -6,9 +6,8 @@
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :name="$optionText(categoryKey, items)" class="list__subList"
-                        :count="getCheckedItemsCount(categoryKey)" :arrow="isLarge ? 'right' : 'up'"
-                        @update:modelValue="handleToggle(categoryKey, $event)">
-                        <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
+                        :count="getCheckedItemsCount(categoryKey)" @update:modelValue="handleToggle(categoryKey, $event)">
+                        <div v-show="!state.keyword.trim() && showSelectAll" class="subList__header">
                             <label class="subList__inputGroup">
                                 <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                     @change="setCategory(categoryKey)" />
@@ -17,7 +16,7 @@
                                 <div class="inputGroup__name">全選</div>
                             </label>
                         </div>
-                        <div class="d-lg-none subList__body">
+                        <div class="subList__body">
                             <template v-for="(item, index) in list" :key="index">
                                 <label v-show="checkMatched(item.value)" class="body__item">
                                     <input v-show="false" v-model="localValue" type="checkbox" :value="item.value"
@@ -29,31 +28,6 @@
                             </template>
                         </div>
                     </LazyAtomAccordion>
-                </template>
-            </div>
-            <div class="d-none d-lg-block body__sublist">
-                <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
-                    <div v-show="!state.keyword.trim() && state.openFlagsTop[categoryKey] && showSelectAll"
-                        class="subList__header">
-                        <label class="subList__inputGroup">
-                            <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
-                                @change="setCategory(categoryKey)" />
-                            <img v-if="state.isAllSelected[categoryKey]" src="./checked.svg" alt="selected">
-                            <img v-else src="./frame.svg" alt="unselected">
-                            <div class="inputGroup__name">全選</div>
-                        </label>
-                    </div>
-                    <div class="subList__body">
-                        <template v-for="(item, index) in list" :key="index">
-                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
-                                <input v-show="false" v-model="localValue" type="checkbox" :value="item.value"
-                                    :disabled="checkItemDisabled(item)" />
-                                <img v-if="localValue.includes(item.value)" src="./checked.svg" alt="selected">
-                                <img v-else src="./frame.svg" alt="unselected">
-                                <span class="body__item__name">{{ item.text }}</span>
-                            </label>
-                        </template>
-                    </div>
                 </template>
             </div>
         </div>
@@ -261,17 +235,27 @@ function handleToggle(categoryKey, newFlag) {
 .filterCategory {
     border-radius: 5px;
 
+    .filterCategory__body {}
+
     .filterCategory__search {
         margin-top: 10px;
     }
 
     .filterCategory__list {
+        padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-top: 10px;
         height: calc(100vh - 200px - 180px);
         overflow-y: auto;
+    }
+
+    .subList__inputGroup {
+        padding: 10px 0px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        // margin: 0 20px;
     }
 
     .subList__body {
@@ -283,18 +267,12 @@ function handleToggle(categoryKey, newFlag) {
             display: flex;
             gap: 10px;
             align-items: center;
+            // margin: 0 20px;
 
             &:last-child {
                 margin-bottom: 10px;
             }
         }
-    }
-
-    .subList__inputGroup {
-        padding: 10px 0px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
     }
 
     .filterCategory__footer {
@@ -312,24 +290,24 @@ function handleToggle(categoryKey, newFlag) {
 
 @media screen and (min-width: 992px) {
     .filterCategory {
-        min-width: 836px;
+        min-width: 375px;
 
-        .filterCategory__body {
-            display: flex;
-            height: 330px;
+        // .filterCategory__body {
+        //     display: flex;
+        //     height: 330px;
 
-            .filterCategory__list {
-                overflow-y: auto;
-                width: 50%;
-                padding: 15px;
-            }
+        //     .filterCategory__list {
+        //         overflow-y: auto;
+        //         width: 50%;
+        //         padding: 15px;
+        //     }
 
-            .body__sublist {
-                width: 50%;
-                overflow-y: auto;
-                padding-top: 15px;
-            }
-        }
+        //     .body__sublist {
+        //         width: 50%;
+        //         overflow-y: auto;
+        //         padding-top: 15px;
+        //     }
+        // }
     }
 }
 </style>

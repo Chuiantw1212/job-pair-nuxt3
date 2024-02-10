@@ -296,8 +296,6 @@ function closeOtherItems(categoryKey, newFlag) {
         .body__item {
             margin: 0 20px;
 
-            // &:first-child {}
-
             &:last-child {
                 margin-bottom: 10px;
             }

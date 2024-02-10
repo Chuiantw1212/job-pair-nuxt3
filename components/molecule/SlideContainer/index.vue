@@ -59,7 +59,7 @@ function handleResize() {
     state.isMobile = window.innerWidth < 992
 }
 function toggleMenu(status) {
-    if (state.backgroundTimeout || window.innerWidth >= 992) {
+    if (state.backgroundTimeout) {
         return
     }
     // clear existed timer
