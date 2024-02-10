@@ -3,7 +3,7 @@
         <div class="toggle__badgeGroup">
 
             <slot></slot>
-            <div class="toggle__badge">99</div>
+            <div v-if="count" class="toggle__badge">{{ count }}</div>
         </div>
         <img class="toggle__image" :class="{ 'toggle__image--isOpen': localValue }" src="./Down.svg">
     </button>
@@ -14,6 +14,10 @@ const props = defineProps({
     modelValue: {
         type: Boolean,
         default: false
+    },
+    count: {
+        type: Number,
+        default: 0
     }
 })
 const localValue = computed({
