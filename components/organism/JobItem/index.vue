@@ -77,8 +77,6 @@
                 </span>
             </div>
         </div>
-        <!-- <LazyOrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
-        </LazyOrganismJobItemPanel> -->
     </li>
 </template>
 <script>
