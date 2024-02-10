@@ -1,6 +1,6 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isLarge }">
-        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋">
+        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋技能、公司或職缺">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list d-lg-none">
             <LazyAtomBtnToggle v-model="filterOpen['occupationalCategory']"
@@ -264,21 +264,8 @@
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <div class="jobs__body" :class="{ 'col col-9': device.state.isLarge }">
-            <!-- <div class="jobs__panel">
-                <div class="panel__searchForm">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="handleSearch()"
-                        placeholder="搜尋技能、公司＆職缺">
-                    </LazyAtomInputSearch>
-                </div>
-            </div> -->
+        <div class="jobs__body">
             <div class="body__filter">
-                <!-- <div class="body__filter__dropdown d-lg-none" @click="state.isFilterOpen = true">
-                    <img alt="filter" src="~/assets/jobs/icon_Filter.svg" />
-                    <span class="filter__desc">篩選
-                        <template v-if="getFilterValues()">({{ getFilterValues() }})</template>
-                    </span>
-                </div> -->
                 <div class="body__filter__sort">
                     <button class="sort__button sort__button--date"
                         :class="{ 'sort__button--active': jobScroller.state.pagination.pageOrderBy === 'datePosted' }"
@@ -314,7 +301,7 @@
                     v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
                     class="body__list__item jobListItem">
                 </LazyOrganismJobItem>
-                <li class="body__list__item">
+                <li v-if="!jobScroller.state.jobList.length" class="body__list__item">
                     <div class="item__notFound">
                         <div>
                             Oops！目前還沒有適合您的職缺<br>
@@ -549,6 +536,9 @@ function resetFilter() {
             list-style: none;
             padding: 0px;
             margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
 
             .body__list__item {
                 .item__notFound {
