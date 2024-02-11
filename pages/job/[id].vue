@@ -159,21 +159,7 @@
                 </section>
             </div>
         </div>
-        <section v-if="getAdVisibility()" class="jobView__ad" :key="state.adRenderKey">
-            <div class="ad__card">
-                <NuxtLink class="ad__card__link" to="/user/consult/records">
-                    <div class="card__header">職涯發展從認識自己開始！</div>
-                    <div class="card__subheader">一對一求職諮詢</div>
-                    <div class="card__body">
-                        透過多次的輔導貫徹求職策略，達到最好的求職效率，迅速找到目標工作。<br>
-                        毎一位生涯設計師，將為不同領域、不同生活背景的人們，提供合適的生涯引導與諮詢服務。<br>
-                        讓我們幫您配對適合的生涯設計師，或是觀看生涯設計師，了解不同生涯設計師的資歷。
-                    </div>
-                </NuxtLink>
-                <button class="btn-close card__cancel" @click="hideAd()" aria-label="close ads"></button>
-                <img class="d-none d-lg-block ad__card__image" alt="promotion" src="~/assets/jobs/img_consult.png" />
-            </div>
-        </section>
+        <LazyOrganismAdConsult></LazyOrganismAdConsult>
         <section v-if="jobScroller.state.jobList.length" class="jobView__similarJobs">
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">

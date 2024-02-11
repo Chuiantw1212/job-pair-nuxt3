@@ -7,7 +7,7 @@
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :name="$optionText(categoryKey, items)" class="list__subList"
                         :count="getCheckedItemsCount(categoryKey)" @update:modelValue="handleToggle(categoryKey, $event)">
-                        <div v-show="!state.keyword.trim() && showSelectAll" class="subList__header">
+                        <div v-show="!String(keyword).trim() && showSelectAll" class="subList__header">
                             <label class="subList__inputGroup">
                                 <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
                                     @change="setCategory(categoryKey)" />
@@ -47,7 +47,6 @@ const state = reactive({
     openFlagsTop: {},
     isAllSelected: {},
     fuseInstance: null,
-    keyword: "",
     searchVisible: {},
 })
 const props = defineProps({
@@ -101,6 +100,10 @@ const props = defineProps({
         type: Object,
         default: null
     },
+    keyword: {
+        type: String,
+        default: ""
+    }
 })
 // hooks
 const localValue = computed({
@@ -125,6 +128,9 @@ watch(() => localValue.value, () => {
         state.isAllSelected[key] = isAllSelected
     }
 })
+watch(() => props.keyword, () => {
+    searchOptions()
+})
 // methods
 function getCheckedItemsCount(categoryKey) {
     const items = props.categoryMap[categoryKey]
@@ -140,7 +146,7 @@ function checkItemDisabled(item) {
     return isExceedMax && isNotSelected
 }
 function checkMatched(key) {
-    if (!state.keyword.trim()) {
+    if (!String(props.keyword).trim()) {
         return true
     } else {
         return state.searchVisible[key]
@@ -168,31 +174,21 @@ function initializeData(category) {
         keys: ["text"],
     }
     state.fuseInstance = new $Fuse(fuseItems, options)
-    nextTick(() => {
-        if (device.state.isLarge) {
-            const [first] = Object.keys(props.categoryMap)
-            state.openFlagsTop[first] = true
-        }
-    })
 }
 function searchOptions() {
     for (let key in props.categoryMap) {
         state.openFlagsTop[key] = false
     }
-    if (!state.keyword.trim()) {
+    if (!String(props.keyword).trim()) {
         for (let key in state.openFlagsTop) {
             state.openFlagsTop[key] = false
         }
         for (let key in state.searchVisible) {
             state.searchVisible[key] = false
         }
-        if (device.state.isLarge) {
-            const [first] = Object.keys(props.categoryMap)
-            state.openFlagsTop[first] = true
-        }
         return
     }
-    const searchedResult = state.fuseInstance.search(state.keyword.trim())
+    const searchedResult = state.fuseInstance.search(String(props.keyword).trim())
     searchedResult.forEach((result, index) => {
         const { item } = result
         const { parent, value } = item

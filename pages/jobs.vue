@@ -41,11 +41,12 @@
                     </LazyAtomInputSearch2>
                     <LazyMoleculeFilterCategory2 v-if="filterOpen.occupationalCategory" class="mt-2"
                         v-model="jobScroller.state.filter.occupationalCategory" :items="repoSelect.jobCategory"
-                        :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                        :categoryMap="repoSelect.jobCategoryMap" :keyword="searchKeyword.occupationalCategory"
+                        :showSelectAll="true">
                     </LazyMoleculeFilterCategory2>
                 </template>
                 <template v-slot:footer>
-                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.occupationalCategory = []">清除條件
+                    <AtomBtnSimpleV2 size="sm" outline @click="clearCategory()">清除條件
                     </AtomBtnSimpleV2>
                     <AtomBtnSimpleV2 size="sm" @click="filterOpen.occupationalCategory = false">關閉</AtomBtnSimpleV2>
                 </template>
@@ -122,13 +123,16 @@
             <LazyAtomInputSelectContainer v-model="filterOpen.industry" :name="'產業'"
                 :count="jobScroller.state.filter.industry.length">
                 <template v-slot:body>
+                    <LazyAtomInputSearch2 v-model="searchKeyword.industry" class="filterCategory__search"
+                        :placeholder="'搜尋'">
+                    </LazyAtomInputSearch2>
                     <LazyMoleculeFilterCategory2 v-if="filterOpen.industry" v-model="jobScroller.state.filter.industry"
-                        :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
-                        :isLarge="device.state.isLarge" :showSelectAll="true">
+                        class="mt-2" :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                        :isLarge="device.state.isLarge" :showSelectAll="true" :keyword="searchKeyword.industry">
                     </LazyMoleculeFilterCategory2>
                 </template>
                 <template v-slot:footer>
-                    <AtomBtnSimpleV2 size="sm" outline @click="jobScroller.state.filter.industry = []">清除條件
+                    <AtomBtnSimpleV2 size="sm" outline @click="clearIndustry()">清除條件
                     </AtomBtnSimpleV2>
                     <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
                 </template>
@@ -291,12 +295,12 @@
                 </div>
             </div>
             <ul class="body__list">
-                <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
+                <!-- <template v-if="jobScroller.state.pagination.pageOrderBy !== 'salaryValue'">
                     <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobRecommendList"
                         v-model="jobScroller.state.jobRecommendList[index]" :key="`recommend${index}`"
                         class="body__list__item" :recommend="true">
                     </LazyOrganismJobItem>
-                </template>
+                </template> -->
                 <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
                     v-model="jobScroller.state.jobList[index]" :key="`jobItem${index}`"
                     class="body__list__item jobListItem">
@@ -314,7 +318,6 @@
                         </LazyAtomBtnSimple>
                     </div>
                 </li>
-
                 <LazyOrganismAdConsult></LazyOrganismAdConsult>
             </ul>
         </div>
@@ -341,8 +344,8 @@ const filterOpen = reactive({
 })
 
 const searchKeyword = reactive({
-    occupationalCategory: null,
-    industry: null,
+    occupationalCategory: '',
+    industry: '',
 })
 const state = reactive({
     isFilterOpen: false,
@@ -408,44 +411,24 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 }, { immediate: true })
 // methods
+function clearIndustry() {
+    searchKeyword.industry = ''
+    jobScroller.state.filter.industry = []
+}
+function clearCategory() {
+    searchKeyword.occupationalCategory = ''
+    jobScroller.state.filter.occupationalCategory = []
+}
 function clearSalaryFilter() {
     jobScroller.state.filter.salaryType = []
     jobScroller.state.filter.salaryMin = ''
     jobScroller.state.filter.salaryMax = ''
 }
-function toggleFilter(key = '') {
-    filterOpen[key] = !filterOpen[key]
-}
 function handleSearch() {
     jobScroller.searchJobs()
 }
-function getFilterValues() {
-    const values = Object.values(jobScroller.state.filter)
-    const validValues = values.filter(value => {
-        if (Array.isArray(value)) {
-            return value.length !== 0
-        } else {
-            return !!value
-        }
-    })
-    return validValues.length
-}
 function gotoConsultRecords() {
     router.push('/user/consult/records')
-}
-function getSalaryTypeItems() {
-    const items = repoSelect.state.selectByQueryRes?.salaryType
-    if (items) {
-        return [
-            {
-                text: '不限',
-                value: ''
-            },
-            ...items
-        ]
-    } else {
-        return []
-    }
 }
 async function setPageOrderBy(key) {
     jobScroller.state.pagination.pageOrderBy = key
@@ -457,13 +440,6 @@ async function setPageOrderBy(key) {
     await jobScroller.searchJobs({
         immediate: true,
         isLoading: true,
-    })
-}
-function resetFilter() {
-    jobScroller.resetJobState()
-    window.scroll({
-        top: 0,
-        behavior: 'auto'
     })
 }
 </script>

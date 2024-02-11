@@ -88,9 +88,6 @@ export default {
 import defaultLogo from './company.webp'
 const emit = defineEmits(['update:modelValue'])
 const { $filter, } = useNuxtApp()
-console.log({
-    $filter
-});
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({
