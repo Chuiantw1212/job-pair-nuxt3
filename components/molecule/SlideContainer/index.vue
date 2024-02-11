@@ -5,7 +5,7 @@
             <div class="container__header">
                 <div class="header__title">{{ name }}</div>
                 <button @click="toggleMenu(false)" class="header__close">
-                    <img class="close__image" alt="close" src="@/assets/jobs/Delete.svg">
+                    <img class="close__image" alt="close" src="./Delete.svg">
                 </button>
             </div>
             <div class="container__search">
