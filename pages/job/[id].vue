@@ -25,9 +25,13 @@
                 <h1 class="basic__name">
                     {{ state.job?.name }}
                 </h1>
-                <div class="basic__organizationName">
+                <NuxtLink v-if="state.company?.seoName" class="basic__organizationName"
+                    :to="`/company/${state.company?.seoName}`">
                     {{ state.job?.organizationName }}
-                </div>
+                </NuxtLink>
+                <NuxtLink v-else class="basic__organizationName" :to="`/company/${state.company?.id}`">
+                    {{ state.job?.organizationName }}
+                </NuxtLink>
                 <div class="basic__badgeGroup">
                     <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
                         {{ $filter.optionText(item, repoSelect.industryItems) }}
@@ -121,7 +125,10 @@
                 </div>
                 <div v-if="getJobAddress()" class="features__item">
                     <span class="item__header">
-                        地址 <img class="header__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                        地址
+                        <a :href="getEncodedMapLink()" target="_blank">
+                            <img class="header__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                        </a>
                     </span>
                     <span class="item__body">
                         <a class="item__body__map" :href="getEncodedMapLink()" target="_blank">
@@ -681,6 +688,11 @@ async function initialize() {
             letter-spacing: normal;
             text-align: center;
             color: #222;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .basic__badgeGroup {
