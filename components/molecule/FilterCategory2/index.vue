@@ -4,7 +4,7 @@
         <div class="filterCategory__body">
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
-                    <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
+                    <LazyAtomAccordion2 v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :name="$optionText(categoryKey, items)" class="list__subList"
                         :count="getCheckedItemsCount(categoryKey)" @update:modelValue="handleToggle(categoryKey, $event)">
                         <div v-show="!String(keyword).trim() && showSelectAll" class="subList__header">
@@ -27,7 +27,7 @@
                                 </label>
                             </template>
                         </div>
-                    </LazyAtomAccordion>
+                    </LazyAtomAccordion2>
                 </template>
             </div>
         </div>

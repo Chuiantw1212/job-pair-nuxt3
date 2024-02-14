@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-    name: 'accordion',
+    name: 'accordion2',
     props: {
         modelValue: {
             type: Boolean,
