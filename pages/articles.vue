@@ -5,7 +5,7 @@
                 <ul class="glide__slides">
                     <li class="glide__slide" v-for="(item, index) in state.articles" :key="index">
                         <div class="slide__content">
-                            <div class="content__imageWrap">
+                            <NuxtLink class="content__imageWrap" :to="{ name: 'article-id', params: { 'id': item.id } }">
                                 <img class="imageWrap__image" :src="item.images[0].url">
                                 <div class="imageWrap__cover"></div>
                                 <div class="imageWrap__keywordsWrap">
@@ -15,7 +15,7 @@
                                     </div>
                                 </div>
                                 <div class="imageWrap__title">{{ item.name }}</div>
-                            </div>
+                            </NuxtLink>
                         </div>
                     </li>
                 </ul>
