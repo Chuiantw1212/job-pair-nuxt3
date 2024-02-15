@@ -112,7 +112,7 @@ function toggleMenu(status) {
         return
     }
     // clear existed timer 
-    const newValue = status || !state.isBackgroundVisible
+    const newValue = status ?? !state.isBackgroundVisible
     if (newValue) {
         state.isBackgroundVisible = newValue
         state.bsCollapse.show()
