@@ -2,6 +2,9 @@
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, watch, nextTick, } from 'vue'
 export default function setup(setUpConfig = {}) {
+    /**
+     * ignoreJobs避免職缺自己底下出現跟自己相同的推薦職缺
+     */
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
     const { $sweet, $requestSelectorAll } = useNuxtApp()
     const route = useRoute()
@@ -112,15 +115,9 @@ export default function setup(setUpConfig = {}) {
             })
         }
         if (isRecommend) {
-            // Filter recommended jobs
+            // Set recommended jobs
             const recommendJobs = filterRecommendedJobs()
             state.jobRecommendList = recommendJobs
-            const recommendJobIds = recommendJobs.map(item => item.identifier)
-            if (state.pagination.pageOrderBy !== 'salaryValue') {
-                notDuplicatedJobs = items.filter(item => {
-                    return !recommendJobIds.includes(item.identifier)
-                })
-            }
         }
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList

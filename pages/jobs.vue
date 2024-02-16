@@ -137,11 +137,11 @@
                     <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
                 </template>
             </LazyAtomInputSelectContainer>
-            <LazyAtomInputSelectContainer v-model="filterOpen.salary" :name="'薪資範圍'">
+            <LazyAtomInputSelectContainer v-model="filterOpen.salary" :name="'薪資範圍'" :count="state.salaryFilterCount">
                 <template v-slot:body>
-                    <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.salaryType"
+                    <LazyAtomInputRadio2 v-model="jobScroller.state.filter.salaryType"
                         :items="repoSelect.state.selectByQueryRes?.salaryType" :listStyle="state.listStyle">
-                    </LazyAtomInputCheckMultiple2>
+                    </LazyAtomInputRadio2>
                     <div class="container__salary">
                         <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
                         </LazyAtomInputMoney>
@@ -150,6 +150,8 @@
                     </div>
                 </template>
                 <template v-slot:footer>
+                    <AtomBtnSimpleV2 size="sm" outline @click="clearSalaryFilter()">清除條件
+                    </AtomBtnSimpleV2>
                     <AtomBtnSimpleV2 size="sm" @click="filterOpen.salary = false">關閉</AtomBtnSimpleV2>
                 </template>
             </LazyAtomInputSelectContainer>
@@ -250,11 +252,12 @@
                 <AtomBtnSimpleV2 size="sm" @click="filterOpen.industry = false">關閉</AtomBtnSimpleV2>
             </template>
         </LazyMoleculeSlideContainer>
-        <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" class="jobs__containter d-lg-none">
+        <LazyMoleculeSlideContainer name="薪資範圍" v-model="filterOpen.salary" :count="state.salaryFilterCount"
+            class="jobs__containter d-lg-none">
             <template v-slot:body>
-                <LazyAtomInputCheckMultiple2 v-model="jobScroller.state.filter.salaryType"
+                <LazyAtomInputRadio2 v-model="jobScroller.state.filter.salaryType"
                     :items="repoSelect.state.selectByQueryRes?.salaryType" :listStyle="state.listStyle">
-                </LazyAtomInputCheckMultiple2>
+                </LazyAtomInputRadio2>
                 <div class="container__salary">
                     <LazyAtomInputMoney v-model="jobScroller.state.filter.salaryMin" name="薪資下限" placeholder="請輸入">
                     </LazyAtomInputMoney>
@@ -354,6 +357,7 @@ const state = reactive({
         display: 'grid',
         "grid-template-columns": "1fr 1fr",
     },
+    salaryFilterCount: 0,
 })
 // hooks
 useSeoMeta({
@@ -394,6 +398,18 @@ watch(() => jobScroller.state.filter, (newValue) => {
     if (!process.client) {
         return
     }
+    // set salary count
+    state.salaryFilterCount = 0
+    if (jobScroller.state.filter.salaryType) {
+        state.salaryFilterCount += 1
+    }
+    if (jobScroller.state.filter.salaryMin) {
+        state.salaryFilterCount += 1
+    }
+    if (jobScroller.state.filter.salaryMax) {
+        state.salaryFilterCount += 1
+    }
+    // search jobs
     if (repoAuth.state.user?.id) {
         jobScroller.searchJobs()
     } else {
@@ -420,7 +436,7 @@ function clearCategory() {
     jobScroller.state.filter.occupationalCategory = []
 }
 function clearSalaryFilter() {
-    jobScroller.state.filter.salaryType = []
+    jobScroller.state.filter.salaryType = ''
     jobScroller.state.filter.salaryMin = ''
     jobScroller.state.filter.salaryMax = ''
 }
@@ -459,7 +475,7 @@ async function setPageOrderBy(key) {
     .container__salary {
         display: flex;
         gap: 20px;
-        margin-top: 10px;
+        margin-top: 14px;
 
         >* {
             width: 50%;

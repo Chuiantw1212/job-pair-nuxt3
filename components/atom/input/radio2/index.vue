@@ -94,11 +94,8 @@ const localValue = computed({
     }
 
     .inputGroup__labelGroup {
-        display: flex;
         gap: 18px;
         min-height: 40px;
-        align-items: center;
-        flex-wrap: wrap;
 
         .labelGroup__label {
             display: flex;
@@ -107,16 +104,16 @@ const localValue = computed({
 
             .label__circle {
                 position: relative;
-                width: 24px;
-                height: 24px;
+                width: 16.4px;
+                height: 16.4px;
 
 
                 .circle__ring {
                     position: absolute;
                     top: 0;
                     left: 0;
-                    width: 24px;
-                    height: 24px;
+                    width: 16.4px;
+                    height: 16.4px;
                     border: 1px solid #999999;
                     border-radius: 50%;
                 }
@@ -126,8 +123,8 @@ const localValue = computed({
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 14px;
-                    height: 14px;
+                    width: 8.2px;
+                    height: 8.2px;
                     background-color: #5ea88e;
                     border-radius: 50%;
                 }
