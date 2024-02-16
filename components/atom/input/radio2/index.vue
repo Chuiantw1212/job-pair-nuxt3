@@ -25,7 +25,7 @@
 </template>
 <script>
 export default {
-    name: 'radio',
+    name: 'radio2',
 }
 </script >
 <script setup>

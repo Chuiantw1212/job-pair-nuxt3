@@ -1,15 +1,32 @@
 <template>
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
         <div class="jobItem__header">
-            <div v-if="modelValue.image" class="item__logo" :style="{ 'background-image': `url(${modelValue.image})` }">
-            </div>
-            <div v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
-            </div>
+            <NuxtLink v-if="modelValue.image" class="item__logo" :to="`/job/${modelValue.identifier}`"
+                :style="{ 'background-image': `url(${modelValue.image})` }">
+            </NuxtLink>
+            <NuxtLink v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+            </NuxtLink>
             <div class="header__btnGroup">
-                <button class="btnGroup__btn">
+                <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
                     <img src="./Collect.svg">
                 </button>
-                <button class="btnGroup__btn">
+                <button v-if="state.application.applyFlow === 'saved'" class="btnGroup__btn"
+                    @click.stop="handleUnsavedJob()">
+                    <img src="./Saved.svg">
+                </button>
+                <button v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
+                    class="btnGroup__btn" @click.stop="handleSaveJob()">
+                    <img src="./Collect.svg">
+                </button>
+                <button v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
+                    class="btnGroup__btn" @click.stop="handleUnsavedJob()">
+                    <img src="./Saved.svg">
+                </button>
+                <button class="btnGroup__btn" v-if="state.navigator?.share" @click="shareLinkNative()">
+                    <img src="./Copy.svg">
+                </button>
+                <button class="btnGroup__btn" v-else :id="`tooltip-${state.id}`" data-bs-toggle="tooltip" title="點擊複製連結"
+                    @click="shareLinkBootstrap()">
                     <img src="./Copy.svg">
                 </button>
             </div>
@@ -25,7 +42,6 @@
             <NuxtLink v-else class="body__company" :to="`/company/${modelValue.organizationId}`">
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
-            <!-- <div class="body__main"> -->
             <NuxtLink class="body__labelGroup" :to="`/job/${modelValue.identifier}`">
                 <span v-for="(item, index) in modelValue.employmentType">
                     {{ $filter.optionText(item,
@@ -42,9 +58,6 @@
                         getLocationText()
                     }}
                 </div>
-                <!-- <div>
-                    ·{{ $filter.salary(modelValue) }}
-                </div> -->
                 <div v-if="modelValue.jobLocationType !== 'onSite'">
                     ·<span>{{ $filter.optionText(modelValue.jobLocationType,
                         repoSelect.state.selectByQueryRes?.jobLocationType)
@@ -57,11 +70,6 @@
                     {{ $filter.optionText(item, repoSelect.state.selectByQueryRes.jobCategory) }}
                 </span>
             </NuxtLink>
-            <!-- <div class="main__panel d-lg-none">
-                <div class="panel__vl"></div>
-                <LazyOrganismJobItemPanel v-model="localValue"></LazyOrganismJobItemPanel>
-            </div> -->
-            <!-- </div> -->
         </div>
         <div class="jobItem__footer">
             <div class="footer__similarityGroup">
@@ -69,7 +77,6 @@
                 <div class="similarityGroup__similarity">95</div>
             </div>
             <div class="footer__salaryGroup">
-                <!-- ${{ modelValue.salaryMin }} -->
                 {{ $filter.salaryNumber(modelValue)
                 }}
                 <span class="salaryGroup__salaryType">
@@ -86,13 +93,22 @@ export default {
 </script>
 <script setup>
 import defaultLogo from './company.webp'
+const repoJobApplication = useRepoJobApplication()
 const emit = defineEmits(['update:modelValue'])
-const { $filter, } = useNuxtApp()
+const { $filter, $uuid4 } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({
-    applyFlow: null
+    applyFlow: null,
+    application: {},
+    // share btn
+    navigator: null,
+    shareButtonToolTip: null,
+    id: null,
 })
+if (process.client) {
+    state.navigator = window.navigator
+}
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -106,14 +122,17 @@ const props = defineProps({
     }
 })
 // hooks
-const localValue = computed({
-    get() {
-        return props.modelValue
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
+watch(() => repoJobApplication.state.userJobs, (userJobs) => {
+    const jobKeys = Object.keys(userJobs)
+    if (!jobKeys.length) {
+        return
     }
-})
+    const jobId = props.modelValue.identifier
+    const matchedJob = userJobs[jobId]
+    if (matchedJob) {
+        state.application = matchedJob
+    }
+}, { immediate: true, deep: true })
 watchEffect(() => {
     const { user } = repoAuth.state
     if (!user) {
@@ -126,13 +145,66 @@ watchEffect(() => {
         state.applyFlow = matchedJob.applyFlow
     }
 })
+watch(() => props.modelValue, () => {
+    if (process.client && props.modelValue) {
+        const { origin } = window.location
+        const url = `${origin}/job/${props.modelValue.identifier}`
+        state.copiedTitle = `已複製: ${url}`
+        initialilzeTooltip()
+    }
+}, { immediate: true })
 // methods
-function getCategoryTextGroup() {
-    const { occupationalCategory = [] } = props.modelValue
-    const texts = occupationalCategory.map(item => {
-        return getCategoryText(item)
+function initialilzeTooltip() {
+    if (!state.navigator.share) {
+        state.id = $uuid4()
+        nextTick(() => {
+            const element = document.querySelector(`#tooltip-${state.id}`)
+            if (element) {
+                state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
+            }
+        })
+    }
+}
+async function shareLinkNative() {
+    const { origin } = window.location
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
+    await navigator.share({
+        title: `在Job Pair上應徵${props.modelValue.name}`,
+        text: `在Job Pair上應徵${props.modelValue.name}`,
+        url,
     })
-    return texts.join("·")
+}
+async function shareLinkBootstrap() {
+    // 不支援貼到記憶體裡面
+    const { origin } = window.location
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
+    await navigator.clipboard.writeText(url)
+    state.shareButtonToolTip.hide()
+}
+async function handleSaveJob() {
+    const { user } = repoAuth.state
+    if (!user || !user.id) {
+        $emitter?.emit("showUserModal")
+        return
+    }
+    const response = await repoJobApplication.postJobSaved({
+        userId: user.id,
+        jobId: props.modelValue.identifier,
+    })
+    if (response.status === 200) {
+        const application = response.data
+        state.application = application
+    }
+}
+async function handleUnsavedJob() {
+    const { user } = repoAuth.state
+    const response = await repoJobApplication.deleteJobSaved({
+        userId: user.id,
+        jobId: props.modelValue.identifier,
+    })
+    if (response.status === 200) {
+        state.application = {}
+    }
 }
 function getCategoryText(category = "") {
     if (!category || !repoSelect.state.selectByQueryRes) {

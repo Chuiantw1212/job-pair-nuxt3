@@ -14,14 +14,14 @@
                     <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                     </div>
                 </NuxtLink>
-                <div class="basic__btnGroup">
+                <!-- <div class="basic__btnGroup">
                     <button class="btnGroup__btn">
                         <img src="@/assets/jobs/Collect.svg">
                     </button>
                     <button class="btnGroup__btn">
                         <img src="@/assets/jobs/Copy.svg">
                     </button>
-                </div>
+                </div> -->
                 <h1 class="basic__name">
                     {{ state.job?.name }}
                 </h1>
@@ -50,12 +50,45 @@
                         </span>
                     </div>
                 </div>
-                <!-- <div class="basic__body">
-                    <div class="basic__body__header">{{ state.job?.name }}</div>
-                </div> -->
-                <!-- <LazyOrganismJobItemPanel v-model="state.job" class="basic__footer" :showShareButton="true"
-                    :jobDetailsException="true">
-                </LazyOrganismJobItemPanel> -->
+                <div class="basic__btnGroup">
+                    <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
+                        <img alt="save" src="@/assets/jobs/Collect.svg">
+                        儲存
+                    </button>
+                    <button v-if="state.application.applyFlow === 'saved'" class="btnGroup__btn"
+                        @click.stop="handleUnsavedJob()">
+                        <img alt="saved" src="@/assets/jobs/Saved.svg">
+                        已儲存
+                    </button>
+                    <button v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
+                        class="btnGroup__btn" @click.stop="handleSaveJob()">
+                        <img alt="save" src="@/assets/jobs/Collect.svg">
+                        儲存
+                    </button>
+                    <button v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
+                        class="btnGroup__btn" @click.stop="handleUnsavedJob()">
+                        <img alt="saved" src="@/assets/jobs/Saved.svg">
+                        已儲存
+                    </button>
+                    <button v-if="['applied', 'notified'].includes(state.application.applyFlow)" class="btnGroup__btn"
+                        :disabled="true">
+                        <img alt="applied" src="@/assets/jobs/Collect.svg">
+                        已應徵
+                    </button>
+                    <button v-if="['rejected'].includes(state.application.applyFlow)" class="btnGroup__btn"
+                        :disabled="true">
+                        <img alt="rejected" src="@/assets/jobs/Collect.svg">
+                        已婉拒
+                    </button>
+                    <button v-if="state.navigator?.share" class="btnGroup__btn" @click="shareLinkNative()">
+                        <img alt="share" src="@/assets/jobs/Copy.svg">
+                        複製連結
+                    </button>
+                    <button v-else class="btnGroup__btn" @click="shareLinkBootstrap()">
+                        <img alt="share" src="@/assets/jobs/Copy.svg">
+                        複製連結
+                    </button>
+                </div>
             </div>
         </section>
         <div class="jobView__padding">
@@ -202,7 +235,9 @@ const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobI
 const state = reactive({
     job: null,
     company: null,
-    applyFlow: null,
+    application: {
+        applyFlow: null,
+    },
     tabItems: [
         {
             text: "職缺內容",
@@ -232,8 +267,12 @@ const state = reactive({
     jobList: [],
     observer: null,
     debounceTimer: null,
+    navigator: null,
 })
 state.job = job
+if (process.client) {
+    state.navigator = window.navigator
+}
 const jobScroller = useJobScroller({
     ignoreJobs: [job.value.identifier]
 })
@@ -289,7 +328,10 @@ useSeoMeta({
     },
     ogUrl: () => {
         return `${runTimeConfig.public.siteUrl}/job/${state.job.identifier}`
-    }
+    },
+    // ogImage: () => {
+    //     return job.value.image || 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
+    // }
 })
 useJsonld(() => {
     const { datePosted = new Date().toISOString() } = job.value
@@ -395,6 +437,47 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methos
+async function shareLinkNative() {
+    const { origin } = window.location
+    const url = `${origin}/job/${job.value.identifier}?openExternalBrowser=1`
+    await navigator.share({
+        title: `在Job Pair上應徵${job.value.name}`,
+        text: `在Job Pair上應徵${job.value.name}`,
+        url,
+    })
+}
+async function shareLinkBootstrap() {
+    // 不支援貼到記憶體裡面
+    const { origin } = window.location
+    const url = `${origin}/job/${job.value.identifier}?openExternalBrowser=1`
+    await navigator.clipboard.writeText(url)
+    // state.shareButtonToolTip.hide()
+}
+async function handleSaveJob() {
+    const { user } = repoAuth.state
+    if (!user || !user.id) {
+        $emitter?.emit("showUserModal")
+        return
+    }
+    const response = await repoJobApplication.postJobSaved({
+        userId: user.id,
+        jobId: job.value.identifier,
+    })
+    if (response.status === 200) {
+        const application = response.data
+        state.application = application
+    }
+}
+async function handleUnsavedJob() {
+    const { user } = repoAuth.state
+    const response = await repoJobApplication.deleteJobSaved({
+        userId: user.id,
+        jobId: job.value.identifier,
+    })
+    if (response.status === 200) {
+        state.application = {}
+    }
+}
 function getAdVisibility() {
     if (process.client) {
         return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
@@ -470,11 +553,12 @@ function checkJobCategory() {
 function setApplyFlow() {
     const jobKeys = Object.keys(repoJobApplication.state.userJobs)
     if (!jobKeys.length) {
+        // 沒有任何流程中的職缺
         return
     }
     const matchedJob = repoJobApplication.state.userJobs[jobId.value]
     if (matchedJob) {
-        state.applyFlow = matchedJob.applyFlow
+        state.application = matchedJob
     }
 }
 function hideAd() {
@@ -548,7 +632,7 @@ function getJobAddress() {
     return `${text1}${text2}${text3}`
 }
 function checkVisibility() {
-    return [null, '', 'saved', 'invited'].includes(state.applyFlow)
+    return [null, '', 'saved', 'invited'].includes(state.application.applyFlow)
 }
 async function initialize() {
     if (!jobId.value) {
@@ -657,13 +741,28 @@ async function initialize() {
         }
 
         .basic__btnGroup {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            // max-width: 375px;
+            // margin: auto;
 
             .btnGroup__btn {
-                border: none;
+                width: 100%;
+                gap: 10px;
+                padding: 10px 30px;
+                border-radius: 10px;
+                border: solid 1px #a6a6a6;
                 background-color: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                &:hover {
+                    background-color: #edeaea;
+                }
             }
         }
 
@@ -702,9 +801,8 @@ async function initialize() {
             margin-top: 10px;
 
             .badgeGroup__badge {
-
                 border-radius: 20px;
-                background-color: #f9f9f9;
+                background-color: #edeaea;
                 padding: 5px 20px;
             }
         }
@@ -712,7 +810,11 @@ async function initialize() {
         .basic__numberGroup {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            // margin: auto;
+            margin-top: 30px;
+            // max-width: 375px;
+            gap: 55px;
 
             .numberGroup__similarity {
                 display: flex;
