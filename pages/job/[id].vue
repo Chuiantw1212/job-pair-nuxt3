@@ -1,9 +1,5 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isLarge }">
-        <!-- <LazyAtomTabs class="d-lg-none jobView__tabs" :items="state.tabItems"></LazyAtomTabs> -->
-        <!-- <div class="jobView__fixedPanel">
-
-        </div> -->
         <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__card--basic">
                 <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup" :to="`/company/${state.company?.seoName}`">
@@ -14,14 +10,6 @@
                     <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                     </div>
                 </NuxtLink>
-                <!-- <div class="basic__btnGroup">
-                    <button class="btnGroup__btn">
-                        <img src="@/assets/jobs/Collect.svg">
-                    </button>
-                    <button class="btnGroup__btn">
-                        <img src="@/assets/jobs/Copy.svg">
-                    </button>
-                </div> -->
                 <h1 class="basic__name">
                     {{ state.job?.name }}
                 </h1>
@@ -84,7 +72,8 @@
                         <img alt="share" src="@/assets/jobs/Copy.svg">
                         複製連結
                     </button>
-                    <button v-else class="btnGroup__btn" @click="shareLinkBootstrap()">
+                    <button v-else class="btnGroup__btn" :id="`tooltip-${state.id}`" data-bs-toggle="tooltip" title="點擊複製連結"
+                        @click="shareLinkBootstrap()">
                         <img alt="share" src="@/assets/jobs/Copy.svg">
                         複製連結
                     </button>
@@ -224,7 +213,7 @@
     </div>
 </template>
 <script setup>
-import placeholderImage from '~/assets/company/company.webp'
+const { $emitter, $sweet, $filter, $uuid4 } = useNuxtApp()
 const route = useRoute()
 const jobId = computed(() => {
     const id = route.params.id
@@ -268,6 +257,8 @@ const state = reactive({
     observer: null,
     debounceTimer: null,
     navigator: null,
+    id: null,
+    shareButtonToolTip: null,
 })
 state.job = job
 if (process.client) {
@@ -276,7 +267,6 @@ if (process.client) {
 const jobScroller = useJobScroller({
     ignoreJobs: [job.value.identifier]
 })
-const { $emitter, $sweet, $filter, } = useNuxtApp()
 const router = useRouter()
 const repoJob = useRepoJob()
 const repoJobApplication = useRepoJobApplication()
@@ -398,6 +388,7 @@ onMounted(() => {
     if (process.client) {
         window.addEventListener("resize", setMapHeight)
         window.addEventListener('scroll', detectScroll)
+        initialilzeTooltip()
     }
 })
 onBeforeUnmount(() => {
@@ -437,6 +428,17 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methos
+function initialilzeTooltip() {
+    if (!state.navigator.share) {
+        state.id = $uuid4()
+        nextTick(() => {
+            const element = document.querySelector(`#tooltip-${state.id}`)
+            if (element) {
+                state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
+            }
+        })
+    }
+}
 async function shareLinkNative() {
     const { origin } = window.location
     const url = `${origin}/job/${job.value.identifier}?openExternalBrowser=1`
@@ -451,7 +453,7 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${job.value.identifier}?openExternalBrowser=1`
     await navigator.clipboard.writeText(url)
-    // state.shareButtonToolTip.hide()
+    state.shareButtonToolTip.hide()
 }
 async function handleSaveJob() {
     const { user } = repoAuth.state
@@ -476,11 +478,6 @@ async function handleUnsavedJob() {
     })
     if (response.status === 200) {
         state.application = {}
-    }
-}
-function getAdVisibility() {
-    if (process.client) {
-        return browserConfig.value?.ads?.jobDetails !== false && repoAuth.state.user
     }
 }
 function detectScroll() {
@@ -664,14 +661,6 @@ async function initialize() {
 <style lang="scss" scoped>
 .jobView {
     padding: 0;
-    // padding-top: calc(46px);
-
-    .jobView__tabs {
-        position: fixed;
-        top: 61px;
-        width: 100%;
-        z-index: 1030;
-    }
 
     .jobView__section {
         // scroll-margin-top = header height + ?
@@ -745,8 +734,6 @@ async function initialize() {
             justify-content: center;
             gap: 10px;
             margin-top: 30px;
-            // max-width: 375px;
-            // margin: auto;
 
             .btnGroup__btn {
                 width: 100%;
@@ -811,9 +798,7 @@ async function initialize() {
             display: flex;
             align-items: center;
             justify-content: center;
-            // margin: auto;
             margin-top: 30px;
-            // max-width: 375px;
             gap: 55px;
 
             .numberGroup__similarity {
