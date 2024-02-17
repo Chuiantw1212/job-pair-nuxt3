@@ -59,8 +59,7 @@ export default {
 }
 </script>
 <script setup>
-import { nextTick, } from 'vue'
-const { $uuid4, $emitter, $rank, $requestSelector } = useNuxtApp()
+const { $uuid4, $emitter, $rank, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
@@ -113,7 +112,6 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
         state.application = matchedJob
     }
 }, { immediate: true, deep: true })
-
 // methods
 function showLoginModal() {
     $emitter?.emit("showUserModal")
