@@ -159,16 +159,16 @@
                     </span>
                 </div>
                 <div class="features__panel">
-                    <LazyAtomBtnSimple class="w-100" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                    <LazyAtomBtnSimple class="panel__btn" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
                         :disabled="repoAuth.state.user.type === 'admin'">立即應徵
                     </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="w-100" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
+                    <LazyAtomBtnSimple class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
                     </LazyAtomBtnSimple>
                     <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
                         @applied="state.applyFlow = $event">
                         立即應徵
                     </LazyOrganismJobModal>
-                    <LazyAtomBtnSimple class="w-100" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
+                    <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                 </div>
             </section>
             <section id="jobView__description" class="jobView__section mt-3">
@@ -1000,6 +1000,10 @@ async function initialize() {
                 width: unset;
                 margin-top: 40px;
                 padding: 0px;
+
+                .panel__btn {
+                    width: 100%;
+                }
             }
         }
 

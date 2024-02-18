@@ -1,5 +1,8 @@
 <template>
-    <div class="modal fade" :id="`jobModal${state.id}`" tabindex="-1" a aria-hidden="true">
+    <LazyAtomBtnSimple class="w-100" @click="handleApply()" :disabled="disabled">
+        <slot>立即應徵</slot>
+    </LazyAtomBtnSimple>
+    <div class="modal fade" :id="`jobModal${state.id}`" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -51,9 +54,6 @@
             </div>
         </div>
     </div>
-    <LazyAtomBtnSimple @click="handleApply()" :disabled="disabled">
-        <slot>立即應徵</slot>
-    </LazyAtomBtnSimple>
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
