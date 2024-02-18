@@ -371,29 +371,29 @@ definePageMeta({
     keepalive: true
 })
 onMounted(() => {
-    if (repoJob.state.cache.isDone) {
-        // Do not mess with front end cache
-        return
-    }
-    // 造成第一個query會打兩次
+    // if (repoJob.state.cache.isDone) {
+    //     // Do not mess with front end cache
+    //     return
+    // }
+    // 造成第一個query會打兩次，未註冊瀏覽時必打
     jobScroller.searchJobs({ isCache: false })
 })
 watch(() => repoAuth.state.user, (user) => {
     if (!process.client) {
         return
     }
-    if (repoJob.state.cache.isDone) {
-        jobScroller.state.jobList = repoJob.state.cache.jobList
-        jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
-        return
-    }
+    // if (repoJob.state.cache.isDone) {
+    //     jobScroller.state.jobList = repoJob.state.cache.jobList
+    //     jobScroller.state.jobRecommendList = repoJob.state.cache.jobRecommendList
+    //     return
+    // }
     // 附加occupationalCateogry
     const defualtFilter = jobScroller.getDefaultFilter({ isCache: true })
     if (user && user.occupationalCategory) {
         defualtFilter.occupationalCategory = JSON.parse(JSON.stringify(user.occupationalCategory))
     }
     jobScroller.state.filter = defualtFilter
-}, { immediate: true }) // IMPORTANT: 這個immediate必須要設定
+}, { immediate: true, }) // IMPORTANT: 這個immediate必須要設定
 watch(() => jobScroller.state.filter, (newValue) => {
     if (!process.client) {
         return

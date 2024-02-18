@@ -10,6 +10,7 @@ export default function setup(setUpConfig = {}) {
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
+    const repoJobApplication = useRepoJobApplication()
     const state = reactive({
         routeName: route.name,
         jobList: [],
@@ -114,8 +115,15 @@ export default function setup(setUpConfig = {}) {
                 return !ignoreJobs.includes(item.identifier)
             })
         }
+        const appliedJobs = Object.values(repoJobApplication.state.userJobs).map(item => item.identifier)
+        // Hide applied or rejected jobs
+        if (appliedJobs?.length) {
+            notDuplicatedJobs = notDuplicatedJobs.filter(item => {
+                return !appliedJobs.includes(item.identifier)
+            })
+        }
+        // Set recommended jobs
         if (isRecommend) {
-            // Set recommended jobs
             const recommendJobs = filterRecommendedJobs()
             state.jobRecommendList = recommendJobs
         }
@@ -124,6 +132,7 @@ export default function setup(setUpConfig = {}) {
         state.count = count
         // Cache mechanism
         if (isCache) {
+            repoJob.state.cache.userId = user?.id
             repoJob.state.cache.isDone = isCache
             repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
