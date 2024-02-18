@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 const random = Math.random()
 const axios = require('axios')
-const apiBase = 'http://localhost:8080'
-const siteUrl = 'http://localhost:3000'
+const apiBase = 'https://job-pair-taiwan-dev.de.r.appspot.com'
+const siteUrl = 'https://job-pair-taiwan-dev.web.app'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
