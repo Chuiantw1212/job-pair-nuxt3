@@ -166,8 +166,8 @@
             </template>
             <template v-slot:body>
                 <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.occupationalCategory"
-                    :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge"
-                    :showSelectAll="true">
+                    :items="repoSelect.jobCategory" :keyword="searchKeyword.occupationalCategory"
+                    :categoryMap="repoSelect.jobCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
                 </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
@@ -243,7 +243,8 @@
             </template>
             <template v-slot:body>
                 <LazyMoleculeFilterCategory2 v-model="jobScroller.state.filter.industry" :items="repoSelect.industryItems"
-                    :categoryMap="repoSelect.industryCategoryMap" :isLarge="device.state.isLarge" :showSelectAll="true">
+                    :categoryMap="repoSelect.industryCategoryMap" :keyword="searchKeyword.industry"
+                    :isLarge="device.state.isLarge" :showSelectAll="true">
                 </LazyMoleculeFilterCategory2>
             </template>
             <template v-slot:footer>
