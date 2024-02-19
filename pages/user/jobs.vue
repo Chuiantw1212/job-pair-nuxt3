@@ -436,7 +436,7 @@ async function initialize() {
     jobs.sort((a, b) => {
         return String(b.applyFlowTime).localeCompare(String(a.applyFlowTime))
     })
-    state.jobSaved = jobs.filter((job) => ['saved', 'invited'].includes(job.applyFlow) && job.savedTime)
+    state.jobSaved = jobs.filter((job) => ["saved", "invited"].includes(job.applyFlow) && job.savedTime)
     state.jobApplied = jobs.filter((job) => ["applied", "rejected"].includes(job.applyFlow))
     state.jobNotified = jobs.filter((job) => job.applyFlow === "notified")
     setJobComparable()
