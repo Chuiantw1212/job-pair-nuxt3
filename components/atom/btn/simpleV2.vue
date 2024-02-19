@@ -5,13 +5,10 @@
 </template>
 <script>
 export default {
-    name: 'simple'
+    name: 'simpleV2'
 }
 </script>
 <script setup>
-/**
- * Deprecated: 應該封裝完整使用props變更樣式，未來元件若有用到此按鈕應逐步更新為V2版本。
- */
 const props = defineProps({
     id: {
         type: String
@@ -43,6 +40,7 @@ const props = defineProps({
 })
 const classObject = computed(() => {
     const defaultObj = {
+        'btnSimple--sm': props.size === 'sm',
         'btnSimple--md': props.size === 'md',
         'btnSimple--lg': props.size === 'lg',
         'btnSimple--disabled': props.disabled,
@@ -57,9 +55,10 @@ const styleObject = computed(() => {
         defaultObj['--background-color-hover'] = props.backgroundColor
         defaultObj['--color'] = props.backgroundColor
         defaultObj['--color-hover'] = props.color
+        defaultObj['border'] = `1px solid ${props.backgroundColor}`
     } else {
         defaultObj['--background-color'] = props.backgroundColor
-        defaultObj['--background-color-hover'] =  props.backgroundColor
+        defaultObj['--background-color-hover'] = props.backgroundColor
         defaultObj['--color'] = props.color
         defaultObj['--color-hover'] = props.color
     }
@@ -69,7 +68,7 @@ const styleObject = computed(() => {
 <style lang="scss" scoped>
 .btnSimple {
     line-height: 1.3;
-    border-radius: 5px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     white-space: nowrap;
@@ -87,6 +86,11 @@ const styleObject = computed(() => {
         color: var(--color-hover);
         background-color: var(--background-color-hover);
     }
+}
+
+.btnSimple--sm {
+    font-size: 14px;
+    padding: 10px 0px;
 }
 
 .btnSimple--md {

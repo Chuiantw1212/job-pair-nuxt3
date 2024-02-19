@@ -2,12 +2,24 @@
     <div class="inputDropdownContainer" ref="input">
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
             :class="{ 'inputDropdownContainer__trigger--isOn': modelValue }">
-            <span class="placeholder__text">{{ placeholder }}</span>
-            <img src="./icon_Down.svg" alt="down" class="inputDropdownContainer__icon">
-            <!-- <img > -->
+            <div class="trigger__nameGroup">
+                <span class="placeholder__text">{{ name }}</span>
+                <span v-if="count" class="nameGroup__badge">{{ count }}</span>
+            </div>
+            <img src="./Up.svg" alt="down" class="inputDropdownContainer__icon">
         </button>
-        <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }">
-            <slot></slot>
+        <div class="inputDropdownContainer__layer" :class="{ 'inputDropdownContainer__layer--isOn': modelValue }"
+            :style="{ 'width': width }">
+            <div class="layer__padding">
+                <slot name="header"></slot>
+                <slot name="body"></slot>
+                <slot name="default"></slot>
+                <div class="layer__footer">
+                    <slot name="footer">
+
+                    </slot>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -19,7 +31,7 @@ export default {
             default: false,
             required: true,
         },
-        placeholder: {
+        name: {
             type: String,
             default: "請選擇",
         },
@@ -27,6 +39,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        width: {
+            type: String,
+            default: 'unset'
+        },
+        count: {
+            type: Number,
+            default: 0
+        }
     },
     mounted() {
         this.toggleClickOutside(true)
@@ -60,19 +80,49 @@ export default {
     position: relative;
 
     .inputDropdownContainer__trigger {
-        padding: 11px 9.6px 10px 10px;
+        padding: 10px;
         border-radius: 5px;
-        background-color: #eee;
+        background-color: #edeaea;
         display: flex;
         justify-items: center;
         justify-content: space-between;
         align-items: center;
         border: none;
         width: 100%;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #484848;
+        min-height: 40px;
 
-        .placeholder__text {
-            margin-right: 8px;
-            color: #595959;
+        .trigger__nameGroup {
+            gap: 10px;
+            display: flex;
+            align-items: center;
+
+            .nameGroup__badge {
+                width: 20px;
+                height: 20px;
+                border-radius: 100px;
+                background-color: #f5fffb;
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: center;
+                color: #5ea88e;
+            }
+        }
+
+        .inputDropdownContainer__icon {
+            transition: all 0.3s;
+            transform: scaleY(-1);
         }
     }
 
@@ -80,7 +130,7 @@ export default {
         background-color: #eef6ed;
 
         .inputDropdownContainer__icon {
-            transform: scaleY(-1);
+            transform: scaleY(1);
         }
     }
 
@@ -95,6 +145,20 @@ export default {
         z-index: 110;
         padding: 0px !important; // 不可以有Padding
         width: 100%;
+
+        .layer__padding {
+            padding: 20px;
+
+            :deep(.layer__footer) {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+
+                >* {
+                    width: 100%;
+                }
+            }
+        }
     }
 
     .inputDropdownContainer__layer--isOn {
@@ -105,23 +169,19 @@ export default {
 @media screen and (min-width: 992px) {
     .inputDropdownContainer {
         .inputDropdownContainer__trigger {
-            padding: 13px 20px;
+            padding: 10px;
             border-radius: 5px;
-            background-color: #eee;
+            background-color: #edeaea;
             display: flex;
             justify-items: center;
             justify-content: space-between;
             border: none;
             width: 100%;
-
-            .placeholder__text {
-                font-size: 20px;
-            }
         }
 
         .inputDropdownContainer__layer {
             min-width: 100%;
-            width: unset;
+            margin-top: 5px;
         }
     }
 }

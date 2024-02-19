@@ -1,6 +1,6 @@
 <template>
     <button :id="id" class="btnSimple"
-        :class="{ 'btnSimple--md': size === 'md', 'btnSimple--lg': size === 'lg', 'btnSimple--disabled': disabled, }"
+        :class="{ 'btnSimple--sm': size === 'sm', 'btnSimple--md': size === 'md', 'btnSimple--lg': size === 'lg', 'btnSimple--disabled': disabled, }"
         :disabled="disabled" ref="simple">
         <slot></slot>
     </button>
@@ -64,6 +64,11 @@ onMounted(() => {
     &:hover {
         background-color: #21cc90;
     }
+}
+
+.btnSimple--sm {
+    font-size: 14px;
+    padding: 10px auto;
 }
 
 .btnSimple--md {

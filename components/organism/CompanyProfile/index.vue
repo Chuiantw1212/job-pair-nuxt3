@@ -28,7 +28,7 @@
                         <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
                             placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8" :disabled="true">
                         </LazyAtomInputText>
-                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="3"
                             required class="mb-2">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
@@ -37,7 +37,7 @@
                             </template>
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
-                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
+                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="3"
                                     :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>

@@ -97,7 +97,8 @@
                     :placeholder="'請選擇'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度" class="ms-3"
-                    v-model="state.job.proficiency" :items="repoSelect.state.selectByQueryRes.proficiency">
+                    v-model="state.job.proficiency" :items="repoSelect.state.selectByQueryRes.proficiency"
+                    :listStyle="state.radioStyle">
                 </LazyAtomInputRadio>
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
@@ -185,6 +186,11 @@ const state = reactive({
         employmentType: false,
     },
     bsModal: null,
+    radioStyle: {
+        display: 'flex',
+        'align-items': 'center',
+        'flex-wrap': 'wrap',
+    }
 })
 const props = defineProps({
     modelValue: {

@@ -243,7 +243,7 @@ async function setArticle() {
             font-weight: normal;
             font-stretch: normal;
             font-style: normal;
-            line-height: 1.5;
+            line-height: 1.75;
             letter-spacing: 1px;
             text-align: justify;
             color: #222;
@@ -381,7 +381,7 @@ async function setArticle() {
                 font-weight: normal;
                 font-stretch: normal;
                 font-style: normal;
-                line-height: 1.5;
+                line-height: 1.75;
                 letter-spacing: 1px;
                 text-align: left;
                 color: #222;

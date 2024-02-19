@@ -6,11 +6,22 @@
         display: flex;
         font-weight: bold;
         flex-wrap: nowrap;
+
+        .nameGroup__text {
+            font-size: 14px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.57;
+            letter-spacing: normal;
+            text-align: left;
+            color: #222;
+        }
     }
 
     .inputGroup__label {
-        border: 1px solid #d3d3d3;
-        border-radius: 10px;
+        border-radius: 8px;
+        border: solid 1px #edeaea;
         overflow: hidden;
         width: 100%;
         background-color: white;
@@ -30,7 +41,7 @@
         }
 
         .label__input {
-            padding: 7px 12px;
+            padding: 10px;
             border: none;
             width: 100%;
 

@@ -53,6 +53,47 @@ const rank = function (score) {
     const normalized = Math.floor(ceil * 5)
     return normalized
 }
+const salaryNumber= function(item) {
+    if (!item) {
+        return
+    }
+    const { salaryType = "", salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = item
+    const formattedMax = Math.max(Number(salaryMin), Number(salaryMax))
+    let expression = ""
+    switch (salaryType) {
+        case "monthly": {
+            const lowerBoundInK = Math.floor(salaryMin / 1000)
+            const upperBoundInK = Math.floor(formattedMax / 1000)
+            expression = `${lowerBoundInK}K ~ ${upperBoundInK}K`
+            break
+        }
+        case "hourly":
+        case "daily": {
+            const formatLowerBound = salaryMin.toLocaleString()
+            const formatUpperBound = formattedMax.toLocaleString()
+            expression = `${formatLowerBound} ~ ${formatUpperBound}`
+            break
+        }
+        case 'yearly': {
+            const salaryMinTenThou = Math.ceil(Number(salaryMin / 10000).toPrecision(3))
+            const salaryMaxTenThou = Math.ceil(Number(formattedMax / 10000).toPrecision(3))
+            const formatLowerBound = salaryMinTenThou.toLocaleString()
+            const formatUpperBound = salaryMaxTenThou.toLocaleString()
+            expression = `${formatLowerBound}萬 ~ ${formatUpperBound}萬`
+            break
+        }
+        default: {
+            if (salaryType) {
+                // eslint-disable-next-line
+                alert("salaryType Exception.")
+            }
+        }   
+    }
+    return expression
+}
+/**
+ * Deprecated
+ */
 const salary = function (item) {
     if (!item) {
         return
@@ -105,7 +146,8 @@ export default defineNuxtPlugin(nuxtApp => {
                 date,
                 time,
                 rank,
-                salary
+                salary,
+                salaryNumber
             },
             // deprecated
             optionText,
