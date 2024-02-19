@@ -71,7 +71,8 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
-        '@nuxtjs/seo',
+        '@nuxtseo/module',
+        '@nuxt/image',
     ],
     vite: {
         define: {
