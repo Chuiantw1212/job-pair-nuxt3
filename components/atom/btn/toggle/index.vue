@@ -48,6 +48,14 @@ function toggleButton() {
         display: flex;
         align-items: center;
         gap: 10px;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #484848;
     }
 
     .toggle_button {

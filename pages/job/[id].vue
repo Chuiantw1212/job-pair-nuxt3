@@ -755,7 +755,7 @@ async function initialize() {
 
         .basic__name {
             margin-top: 30px;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 500;
             font-stretch: normal;
             font-style: normal;
@@ -797,7 +797,6 @@ async function initialize() {
         .basic__numberGroup {
             display: flex;
             align-items: center;
-            justify-content: center;
             margin-top: 30px;
             gap: 55px;
 

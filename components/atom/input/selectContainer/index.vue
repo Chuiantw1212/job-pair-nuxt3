@@ -104,6 +104,17 @@ export default {
             display: flex;
             align-items: center;
 
+            .placeholder__text {
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #484848;
+            }
+
             .nameGroup__badge {
                 width: 20px;
                 height: 20px;
