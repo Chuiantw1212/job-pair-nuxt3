@@ -383,7 +383,7 @@ function getLocationText() {
         .footer__similarity {}
 
         .footer__salaryGroup {
-            font-size: 14px;
+            font-size: 24px;
             font-weight: 500;
             font-stretch: normal;
             font-style: normal;

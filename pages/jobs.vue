@@ -292,10 +292,10 @@
                     </button>
                 </div>
                 <div class="filter__total">
-                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前{{
+                    <template v-if="jobScroller.state.pagination.pageOrderBy === 'similarity'">符合您篩選條件的前 {{
                         jobScroller.state.count
-                    }}個職缺</template>
-                    <template v-else>符合您篩選條件的共{{ jobScroller.state.count }}個職缺</template>
+                    }} 個職缺</template>
+                    <template v-else>符合您篩選條件的共 {{ jobScroller.state.count }} 個職缺</template>
                 </div>
             </div>
             <ul class="body__list">
@@ -513,7 +513,7 @@ async function setPageOrderBy(key) {
             }
 
             .filter__total {
-                font-size: 10px;
+                font-size: 12px;
                 font-weight: 500;
                 font-stretch: normal;
                 font-style: normal;
