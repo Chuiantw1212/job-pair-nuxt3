@@ -267,7 +267,7 @@ function getLocationText() {
         margin-top: 10px;
 
         .body__jobName {
-            font-size: 16px;
+            font-size: 24px;
             font-weight: 600;
             font-stretch: normal;
             font-style: normal;
