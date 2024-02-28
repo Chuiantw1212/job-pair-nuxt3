@@ -66,9 +66,14 @@ watch(() => repoAuth.state.company, (company) => {
 }, { immediate: true })
 // methods
 function routeByName(routeName) {
-    router.push({
-        name: routeName
-    })
+    try {
+        router.push({
+            name: routeName
+        })
+    } catch (error) {
+        // TODO: 不明原因錯誤
+        window.location.reload()
+    }
 }
 function checkActiveClass() {
     return route.path.includes('/admin/recruit/applied')
