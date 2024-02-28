@@ -13,15 +13,15 @@
                     </li>
                     <li class="menu__item">
                         <template v-if="checkApplicationEnabled()">
-                            <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
-                                to="/admin/recruit/applied">
+                            <button class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
+                                @click="routeByName('admin-recruit-applied-id')">
                                 <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
                                 <div class="menu__item__text">應徵者
                                     <span class="menu__item__badge">
                                         {{ getUnhandledNumber() }}
                                     </span>
                                 </div>
-                            </NuxtLink>
+                            </button>
                         </template>
                         <template v-else>
                             <div class="menu__item__link menu__item__link--noHover">
@@ -50,6 +50,7 @@ const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
 const repoJobApplication = useRepoJobApplication()
+const router = useRouter()
 const route = useRoute()
 const state = reactive({
     appliedList: [],
@@ -64,6 +65,11 @@ watch(() => repoAuth.state.company, (company) => {
     initialize()
 }, { immediate: true })
 // methods
+function routeByName(routeName) {
+    router.push({
+        name: routeName
+    })
+}
 function checkActiveClass() {
     return route.path.includes('/admin/recruit/applied')
 }
@@ -127,6 +133,7 @@ async function initialize() {
                     border: 3px solid rgba(0, 0, 0, 0);
                     text-align: center;
                     white-space: nowrap;
+                    background-color: inherit;
 
                     &:hover {
                         color: #5ea88e;
