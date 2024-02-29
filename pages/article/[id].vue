@@ -38,13 +38,13 @@
                             <!-- <div :style="{ 'background-image': `url(${item.images[0].url})` }"></div> -->
                             <img class="content__image" :src="item.images[0].url">
                             <NuxtLink class="slide__content" :to="{ name: 'article-id', params: { 'id': item.id } }">
+                                <div class="content__title">{{ item.name }}</div>
                                 <div class="content__keywordsWrap">
                                     <div v-for="(keyword, index) in item.keywords" :key="index"
                                         class="keywordsWrap__keywords">
                                         {{ `#${keyword}` }}
                                     </div>
                                 </div>
-                                <div class="content__title">{{ item.name }}</div>
                             </NuxtLink>
                         </li>
                     </ul>
@@ -306,6 +306,17 @@ async function setArticle() {
 
                 &:hover {
                     text-decoration: underline;
+                }
+
+                .keywordsWrap__keywords {
+                    font-size: 12px;
+                    font-weight: normal;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #a6a6a6;
                 }
             }
 
