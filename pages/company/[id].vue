@@ -165,7 +165,7 @@ useSeoMeta({
         return state.companyInfo?.banner ? decodedBannerUri : `https://storage.googleapis.com/public.prd.job-pair.com/meta/companyBanner.png`
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.siteUrl}/company/${state.companyInfo?.id}`
+        return `${runTimeConfig.public.siteUrl}/company/${state.companyInfo?.organizationId}`
     }
 })
 useJsonld(() => ({
@@ -271,6 +271,7 @@ function getLocationText() {
 .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
     padding: 0;
 }
+
 .company {
     .company__section {
         scroll-margin-top: 58px;
