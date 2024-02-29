@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 export default defineNuxtPlugin(nuxtApp => {
+    const { $emitter } = nuxtApp
     return {
         provide: {
             validate: async (element, config = { title: '錯誤', icon: 'error' }) => {
@@ -16,17 +17,22 @@ export default defineNuxtPlugin(nuxtApp => {
                 const allRequiredInputs = allFormInputs.filter(item => {
                     return item.dataset.required == 'true'
                 })
+                // allRequiredInputs.forEach(input => {
+                //     const inputId = input.dataset.id || input.id
+                //     if (inputId) {
+                //         $emitter.emit(`validate-${inputId}`)
+                //     }
+                // })
                 const invalidFields = allRequiredInputs.filter((input) => {
                     const formValue = input.dataset.value || input.value
                     const isEmpty = ['null', null, 'undefined', undefined].includes(formValue) || !String(formValue).trim()
-                    // return isEmpty
                     const isInvalid = ['null', null, 'false', false].includes(input.dataset.valid)
-                    // console.log(input.dataset.name, isInvalid);
                     return isEmpty || isInvalid
                 })
                 // 顯示彈跳視窗
                 let alertResult = { value: 1 } // 永遠預設為通過
                 if (invalidFields.length && config.icon) {
+                    // For each invalid fields emit validation
                     const emptyFieldNames = invalidFields.map(item => {
                         return item.dataset.name
                     })

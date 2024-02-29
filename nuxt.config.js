@@ -7,7 +7,8 @@ const siteUrl = 'https://job-pair.com'
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
     site: {
-        name: 'Job Pair'
+        name: 'Job Pair',
+        url: siteUrl,
     },
     app: {
         head: {

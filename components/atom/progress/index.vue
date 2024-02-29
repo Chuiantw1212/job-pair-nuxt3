@@ -4,10 +4,9 @@
         <ul class="progress__list">
             <li v-for="(item, index) in items" :key="index" class="progress__item">
                 <div class="progress__item__content">
-                    <div class="item__content__badge" :class="{ 'item__content__badge--active': checkIsActive(index) }">
+                    <div class="item__content__badge" :class="{ 'item__content__badge--active': index <= modelValue }">
                         <img class="badge__icon" src="./icon_Check.svg" />
                     </div>
-                    {{ item.text }}
                 </div>
             </li>
         </ul>
@@ -19,7 +18,6 @@ export default {
 }
 </script>
 <script setup>
-const route = useRoute()
 const props = defineProps({
     items: {
         type: Array,
@@ -39,23 +37,12 @@ const props = defineProps({
                 }
             ]
         }
+    },
+    modelValue: {
+        type: Number,
+        default: 0
     }
 })
-const questionId = computed({
-    get() {
-        return route.params.id || 0
-    }
-})
-// methods
-function checkIsActive(itemIndex) {
-    const currentRouteName = route.name
-    const currentIndex = props.items.findIndex(item => {
-        return item.name === currentRouteName
-    })
-    if (currentIndex !== -1) {
-        return itemIndex <= currentIndex
-    }
-}
 </script>
 <style lang="scss" scoped>
 .custom-progress {
