@@ -264,6 +264,7 @@ async function setArticle() {
             .links__btn {
                 background-color: inherit;
                 border: none;
+                padding: 0px;
             }
         }
 
