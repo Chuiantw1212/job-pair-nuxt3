@@ -129,7 +129,10 @@ export default function setup(setUpConfig = {}) {
         }
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
-        state.count = count
+        // calculate count
+        let visibleCount = count - appliedJobs.length
+        visibleCount = Math.max(visibleCount, newJobList.length)
+        state.count = visibleCount
         // Cache mechanism
         if (isCache) {
             repoJob.state.cache.userId = user?.id

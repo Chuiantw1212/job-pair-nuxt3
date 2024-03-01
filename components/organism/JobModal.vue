@@ -159,9 +159,10 @@ function handleApply() {
 async function handleSubmit() {
     $sweet.loader(true)
     const postResponse = await repoJobApplication.postJobApplication(state.application)
-    if (postResponse.status !== 200) {
-        return
-    }
+    const { user } = repoAuth.state
+    await repoJobApplication.getUserJobs({
+        userId: user.id
+    })
     await $sweet.succeed()
     const { applyFlow } = postResponse.data
     emit("applied", applyFlow)
