@@ -102,59 +102,67 @@ export default defineNuxtConfig({
             // ...
         }
     },
-    // sitemap: {
-    //     exclude: [
-    //         '/questions/**',
-    //         '/admin/**',
-    //         '/user/**'
-    //     ],
-    //     // provide dynamic URLs to be included
-    //     urls: async () => {
-    //         const formatter = new Intl.DateTimeFormat('zh', {
-    //             year: 'numeric',
-    //             month: '2-digit',
-    //             day: '2-digit',
-    //         })
-    //         const axiosInstance = axios.create({
-    //             baseURL: apiBase,
-    //             timeout: 20 * 60 * 1000,
-    //         })
-    //         const [jobIdsResponse, companyIdsResponse] = await Promise.all([
-    //             axiosInstance({
-    //                 method: 'get',
-    //                 url: '/job/sitemap',
-    //             }),
-    //             axiosInstance({
-    //                 method: 'get',
-    //                 url: '/company/sitemap',
-    //             }),
-    //         ])
-    //         const urls = []
-    //         jobIdsResponse.data.forEach((item) => {
-    //             const urlItem = {
-    //                 url: `/job/${item.identifier}`,
-    //             }
-    //             const { datePosted = '' } = item
-    //             if (datePosted) {
-    //                 const dateInstance = new Date(datePosted)
-    //                 urlItem.lastmod = formatter.format(dateInstance)
-    //             }
-    //             urls.push(urlItem)
-    //         })
-    //         companyIdsResponse.data.forEach((item) => {
-    //             const urlItem = {
-    //                 url: `/job/${item.identifier}`,
-    //             }
-    //             const { updatedDate = '' } = item
-    //             if (updatedDate) {
-    //                 const dateInstance = new Date(updatedDate)
-    //                 urlItem.lastmod = formatter.format(dateInstance)
-    //             }
-    //             urls.push(urlItem)
-    //         })
-    //         return urls
-    //     },
-    // },
+    sitemap: {
+        exclude: [
+            '/questions/**',
+            '/admin/**',
+            '/user/**'
+        ],
+        // provide dynamic URLs to be included
+        urls: async () => {
+            const formatter = new Intl.DateTimeFormat('zh', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            })
+            const axiosInstance = axios.create({
+                baseURL: apiBase,
+                timeout: 20 * 60 * 1000,
+            })
+            try {
+                const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+                    axiosInstance({
+                        method: 'get',
+                        url: '/job/sitemap',
+                    }),
+                    axiosInstance({
+                        method: 'get',
+                        url: '/company/sitemap',
+                    }),
+                ])
+                const urls = []
+                if (jobIdsResponse?.data?.length) {
+                    jobIdsResponse.data.forEach((item) => {
+                        const urlItem = {
+                            url: `/job/${item.identifier}`,
+                        }
+                        const { datePosted = '' } = item
+                        if (datePosted) {
+                            const dateInstance = new Date(datePosted)
+                            urlItem.lastmod = formatter.format(dateInstance)
+                        }
+                        urls.push(urlItem)
+                    })
+                }
+                if (companyIdsResponse?.data?.length) {
+                    companyIdsResponse.data.forEach((item) => {
+                        const urlItem = {
+                            url: `/job/${item.identifier}`,
+                        }
+                        const { updatedDate = '' } = item
+                        if (updatedDate) {
+                            const dateInstance = new Date(updatedDate)
+                            urlItem.lastmod = formatter.format(dateInstance)
+                        }
+                        urls.push(urlItem)
+                    })
+                    return urls
+                }
+            } catch (error) {
+                console.log("sitemap無法運行:", error.message || error);
+            }
+        },
+    },
     linkChecker: {
         failOn404: true,
     },
