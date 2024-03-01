@@ -102,59 +102,59 @@ export default defineNuxtConfig({
             // ...
         }
     },
-    sitemap: {
-        exclude: [
-            '/questions/**',
-            '/admin/**',
-            '/user/**'
-        ],
-        // provide dynamic URLs to be included
-        urls: async () => {
-            const formatter = new Intl.DateTimeFormat('zh', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-            })
-            const axiosInstance = axios.create({
-                baseURL: apiBase,
-                timeout: 20 * 60 * 1000,
-            })
-            const [jobIdsResponse, companyIdsResponse] = await Promise.all([
-                axiosInstance({
-                    method: 'get',
-                    url: '/job/sitemap',
-                }),
-                axiosInstance({
-                    method: 'get',
-                    url: '/company/sitemap',
-                }),
-            ])
-            const urls = []
-            jobIdsResponse.data.forEach((item) => {
-                const urlItem = {
-                    url: `/job/${item.identifier}`,
-                }
-                const { datePosted = '' } = item
-                if (datePosted) {
-                    const dateInstance = new Date(datePosted)
-                    urlItem.lastmod = formatter.format(dateInstance)
-                }
-                urls.push(urlItem)
-            })
-            companyIdsResponse.data.forEach((item) => {
-                const urlItem = {
-                    url: `/job/${item.identifier}`,
-                }
-                const { updatedDate = '' } = item
-                if (updatedDate) {
-                    const dateInstance = new Date(updatedDate)
-                    urlItem.lastmod = formatter.format(dateInstance)
-                }
-                urls.push(urlItem)
-            })
-            return urls
-        },
-    },
+    // sitemap: {
+    //     exclude: [
+    //         '/questions/**',
+    //         '/admin/**',
+    //         '/user/**'
+    //     ],
+    //     // provide dynamic URLs to be included
+    //     urls: async () => {
+    //         const formatter = new Intl.DateTimeFormat('zh', {
+    //             year: 'numeric',
+    //             month: '2-digit',
+    //             day: '2-digit',
+    //         })
+    //         const axiosInstance = axios.create({
+    //             baseURL: apiBase,
+    //             timeout: 20 * 60 * 1000,
+    //         })
+    //         const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+    //             axiosInstance({
+    //                 method: 'get',
+    //                 url: '/job/sitemap',
+    //             }),
+    //             axiosInstance({
+    //                 method: 'get',
+    //                 url: '/company/sitemap',
+    //             }),
+    //         ])
+    //         const urls = []
+    //         jobIdsResponse.data.forEach((item) => {
+    //             const urlItem = {
+    //                 url: `/job/${item.identifier}`,
+    //             }
+    //             const { datePosted = '' } = item
+    //             if (datePosted) {
+    //                 const dateInstance = new Date(datePosted)
+    //                 urlItem.lastmod = formatter.format(dateInstance)
+    //             }
+    //             urls.push(urlItem)
+    //         })
+    //         companyIdsResponse.data.forEach((item) => {
+    //             const urlItem = {
+    //                 url: `/job/${item.identifier}`,
+    //             }
+    //             const { updatedDate = '' } = item
+    //             if (updatedDate) {
+    //                 const dateInstance = new Date(updatedDate)
+    //                 urlItem.lastmod = formatter.format(dateInstance)
+    //             }
+    //             urls.push(urlItem)
+    //         })
+    //         return urls
+    //     },
+    // },
     linkChecker: {
         failOn404: true,
     },
