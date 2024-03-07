@@ -74,17 +74,20 @@ export default defineNuxtConfig({
       "process.env.DEBUG": false,
     },
   },
+  sitemap: {
+    exclude: [
+      '/questions/**',
+      '/admin/**',
+      '/user/**'
+    ],
+    // fetch from an unauthenticated endpoint
+    sources: [apiBase],
+  },
   nitro: {
     // https://nuxt.com/docs/api/nuxt-config
     prerender: {
       crawlLinks: true,
       routes: ['sitemap.xml'],
-    },
-    site: {
-      url: siteUrl,
-    },
-    sitemap: {
-      sources: ['/api/sitemap'],
     },
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
@@ -95,7 +98,7 @@ export default defineNuxtConfig({
     },
     // https://nitro.unjs.io/deploy/providers/firebase#using-2nd-generation-firebase-functions
     firebase: {
-      nodeVersion: "18",
+      nodeVersion: "20",
       gen: 2,
       httpsOptions: {
         // https://firebase.google.com/docs/hosting/functions
@@ -104,12 +107,4 @@ export default defineNuxtConfig({
       // ...
     },
   },
-  sitemap: {
-    exclude: [
-      '/questions/**',
-      '/admin/**',
-      '/user/**'
-    ],
-  },
-  devtools: { enabled: true },
 })

@@ -1,25 +1,13 @@
-import axios from 'axios'
 export default defineSitemapEventHandler(async (e) => {
-    const config = useRuntimeConfig()
     const formatter = new Intl.DateTimeFormat('zh', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
     })
-    const axiosInstance = axios.create({
-        baseURL: config.public.apiBase,
-        timeout: 20 * 60 * 1000,
-    })
 
-    const [jobIdsResponse, companyIdsResponse] = await Promise.all([
-        axiosInstance({
-            method: 'get',
-            url: '/job/sitemap',
-        }),
-        axiosInstance({
-            method: 'get',
-            url: '/company/sitemap',
-        }),
+    const [jobIdsResponse, companyIdsResponse]: any[] = await Promise.all([
+        $fetch('https://job-pair-taiwan-dev.de.r.appspot.com/job/sitemap'),
+        $fetch('https://job-pair-taiwan-dev.de.r.appspot.com/company/sitemap'),
     ])
     const urls: { loc: string, lastMod: string, }[] = []
     if (jobIdsResponse?.data?.length) {
