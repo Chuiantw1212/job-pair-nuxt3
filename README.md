@@ -1,27 +1,75 @@
-# Job Pair 開源計畫
-![Job Pair Logo](./assets/ogImageJob.png)
+# Nuxt 3 Minimal Starter
 
-## 在本機開啟的步驟
-1. 切換到development分支
-2. 安裝套件
-```javascript
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+## Setup
+
+Make sure to install the dependencies:
+
+```bash
+# npm
 npm install
-npm run dev
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
 ```
-3. 完成，如有問題請line: chuian1212
 
-## 程式碼規範
-1. Nuxt 資料夾規範 (https://v3.nuxtjs.org/guide/concepts/auto-imports)
-2. Atomic Design (https://bradfrost.com/blog/post/atomic-web-design/)
-3. BEM (變體) (https://getbem.com/)
+## Development Server
 
-## 開發者文件
+Start the development server on `http://localhost:3000`:
 
-### 本機環境設定
-1. 安裝 Firebase CLI (https://firebase.tools/bin/win/instant/latest)
-2. 安裝 firebase-tools (https://www.npmjs.com/package/firebase-tools)
-3. 切換到正確的分支
-4. 避免Windows權限問題 (https://github.com/firebase/firebase-tools/issues/1627)
+```bash
+# npm
+npm run dev
 
-### 發布環境設定
-配置標頭 (https://firebase.google.com/docs/hosting/full-config#headers)
+# pnpm
+pnpm run dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

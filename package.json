@@ -1,5 +1,7 @@
 {
+  "name": "nuxt-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -11,9 +13,6 @@
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
     "analyze": "npx nuxi analyze"
-  },
-  "engines": {
-    "node": ">=18"
   },
   "devDependencies": {
     "@nuxtjs/seo": "^2.0.0-rc.8",

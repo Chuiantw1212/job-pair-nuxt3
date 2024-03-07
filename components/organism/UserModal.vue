@@ -31,8 +31,9 @@ const state = reactive({
     signInOptions: ['password', 'google.com', 'facebook.com']
 })
 onMounted(() => {
-    $emitter.on("showUserModal", showModal)
-    $emitter.on("hideUserModal", hideModal)
+    console.log($emitter);
+    $emitter?.on("showUserModal", showModal)
+    $emitter?.on("hideUserModal", hideModal)
     if (process.client) {
         state.bsModal = new window.bootstrap.Modal(document.getElementById("userModal"), {
             keyboard: false,

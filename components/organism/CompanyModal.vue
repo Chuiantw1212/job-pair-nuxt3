@@ -14,7 +14,8 @@
                                 可能不符合Google安全瀏覽器政策，並造成網站異常，請用原生(預設)瀏覽器開啟此網站<br>
                             </div>
                         </div>
-                        <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions" type="admin">
+                        <MoleculeFirebaseUI v-if="state.isContentVisible" :signInOptions="state.signInOptions"
+                            type="admin">
                         </MoleculeFirebaseUI>
                     </div>
                 </div>
@@ -31,8 +32,8 @@ const state = reactive({
     signInOptions: ['password', 'google.com']
 })
 onMounted(() => {
-    $emitter.on("showCompanyModal", showModal)
-    $emitter.on("hideCompanyModal", hideModal)
+    $emitter?.on("showCompanyModal", showModal)
+    $emitter?.on("hideCompanyModal", hideModal)
     state.bsModal = new window.bootstrap.Modal(document.getElementById("companyModal"), {
         keyboard: false,
         backdrop: "static"
