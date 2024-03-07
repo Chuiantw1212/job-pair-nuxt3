@@ -71,7 +71,7 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
-        '@nuxtseo/module',
+        '@nuxtjs/seo',
     ],
     vite: {
         define: {
@@ -120,40 +120,48 @@ export default defineNuxtConfig({
                 baseURL: apiBase,
                 timeout: 20 * 60 * 1000,
             })
-            const [jobIdsResponse, companyIdsResponse] = await Promise.all([
-                axiosInstance({
-                    method: 'get',
-                    url: '/job/sitemap',
-                }),
-                axiosInstance({
-                    method: 'get',
-                    url: '/company/sitemap',
-                }),
-            ])
-            const urls = []
-            jobIdsResponse.data.forEach((item) => {
-                const urlItem = {
-                    url: `/job/${item.identifier}`,
+            try {
+                const [jobIdsResponse, companyIdsResponse] = await Promise.all([
+                    axiosInstance({
+                        method: 'get',
+                        url: '/job/sitemap',
+                    }),
+                    axiosInstance({
+                        method: 'get',
+                        url: '/company/sitemap',
+                    }),
+                ])
+                const urls = []
+                if (jobIdsResponse?.data?.length) {
+                    jobIdsResponse.data.forEach((item) => {
+                        const urlItem = {
+                            url: `/job/${item.identifier}`,
+                        }
+                        const { datePosted = '' } = item
+                        if (datePosted) {
+                            const dateInstance = new Date(datePosted)
+                            urlItem.lastmod = formatter.format(dateInstance)
+                        }
+                        urls.push(urlItem)
+                    })
                 }
-                const { datePosted = '' } = item
-                if (datePosted) {
-                    const dateInstance = new Date(datePosted)
-                    urlItem.lastmod = formatter.format(dateInstance)
+                if (companyIdsResponse?.data?.length) {
+                    companyIdsResponse.data.forEach((item) => {
+                        const urlItem = {
+                            url: `/job/${item.identifier}`,
+                        }
+                        const { updatedDate = '' } = item
+                        if (updatedDate) {
+                            const dateInstance = new Date(updatedDate)
+                            urlItem.lastmod = formatter.format(dateInstance)
+                        }
+                        urls.push(urlItem)
+                    })
+                    return urls
                 }
-                urls.push(urlItem)
-            })
-            companyIdsResponse.data.forEach((item) => {
-                const urlItem = {
-                    url: `/job/${item.identifier}`,
-                }
-                const { updatedDate = '' } = item
-                if (updatedDate) {
-                    const dateInstance = new Date(updatedDate)
-                    urlItem.lastmod = formatter.format(dateInstance)
-                }
-                urls.push(urlItem)
-            })
-            return urls
+            } catch (error) {
+                console.log("sitemap無法運行:", error.message || error);
+            }
         },
     },
     linkChecker: {
