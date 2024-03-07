@@ -107,4 +107,17 @@ export default defineNuxtConfig({
       // ...
     },
   },
+  sitemap: {
+    exclude: [
+      '/questions/**',
+      '/admin/**',
+      '/user/**'
+    ],
+    sources: [
+      // https://nuxtseo.com/sitemap/guides/dynamic-urls
+      `${apiBase}/job/sitemap`,
+      `${apiBase}/company/sitemap`,
+    ]
+  },
+  devtools: { enabled: true },
 })
