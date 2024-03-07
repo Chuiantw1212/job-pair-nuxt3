@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      // titleTemplate: '%siteName - %pageTitle',
       meta: [
         { "charset": "utf-8" },
         { "content": "width=device-width, initial-scale=1" },
@@ -75,8 +74,18 @@ export default defineNuxtConfig({
       "process.env.DEBUG": false,
     },
   },
-  // https://github.com/nuxt/framework/issues/7197
   nitro: {
+    // https://nuxt.com/docs/api/nuxt-config
+    prerender: {
+      crawlLinks: true,
+      routes: ['sitemap.xml'],
+    },
+    site: {
+      url: siteUrl,
+    },
+    sitemap: {
+      sources: ['/api/sitemap'],
+    },
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
     // https://nitro.unjs.io/config#compresspublicassets
@@ -93,7 +102,7 @@ export default defineNuxtConfig({
         region: 'asia-east1',
       },
       // ...
-    }
+    },
   },
   sitemap: {
     exclude: [
