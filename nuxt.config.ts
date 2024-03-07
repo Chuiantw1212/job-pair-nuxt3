@@ -74,21 +74,7 @@ export default defineNuxtConfig({
       "process.env.DEBUG": false,
     },
   },
-  sitemap: {
-    exclude: [
-      '/questions/**',
-      '/admin/**',
-      '/user/**'
-    ],
-    // fetch from an unauthenticated endpoint
-    sources: [apiBase],
-  },
   nitro: {
-    // https://nuxt.com/docs/api/nuxt-config
-    prerender: {
-      crawlLinks: true,
-      routes: ['sitemap.xml'],
-    },
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
     // https://nitro.unjs.io/config#compresspublicassets
