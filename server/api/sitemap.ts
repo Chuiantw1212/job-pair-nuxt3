@@ -10,8 +10,8 @@ export default defineSitemapEventHandler(async (e) => {
         $fetch('https://job-pair-taiwan-dev.de.r.appspot.com/company/sitemap'),
     ])
     const urls: { loc: string, lastMod: string, }[] = []
-    if (jobIdsResponse?.data?.length) {
-        jobIdsResponse.data.forEach((item: { identifier: string, datePosted: string }) => {
+    if (jobIdsResponse?.length) {
+        jobIdsResponse.forEach((item: { identifier: string, datePosted: string }) => {
             const urlItem: any = {
                 loc: `/job/${item.identifier}`,
                 lastmod: "",
@@ -24,8 +24,8 @@ export default defineSitemapEventHandler(async (e) => {
             urls.push(urlItem)
         })
     }
-    if (companyIdsResponse?.data?.length) {
-        companyIdsResponse.data.forEach((item: { identifier: string, updatedDate: string }) => {
+    if (companyIdsResponse?.length) {
+        companyIdsResponse.forEach((item: { identifier: string, updatedDate: string }) => {
             const urlItem: any = {
                 loc: `/job/${item.identifier}`,
                 lastmod: "",
