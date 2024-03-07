@@ -1,29 +1,17 @@
-import axios from 'axios'
 export default defineSitemapEventHandler(async (e) => {
-    const config = useRuntimeConfig()
     const formatter = new Intl.DateTimeFormat('zh', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
     })
-    const axiosInstance = axios.create({
-        baseURL: config.public.apiBase,
-        timeout: 20 * 60 * 1000,
-    })
-
-    const [jobIdsResponse, companyIdsResponse] = await Promise.all([
-        axiosInstance({
-            method: 'get',
-            url: '/job/sitemap',
-        }),
-        axiosInstance({
-            method: 'get',
-            url: '/company/sitemap',
-        }),
+    
+    const [jobIdsResponse, companyIdsResponse]: any[] = await Promise.all([
+        $fetch('http://localhost:8080/job/sitemap'),
+        $fetch('http://localhost:8080/company/sitemap'),
     ])
     const urls: { loc: string, lastMod: string, }[] = []
-    if (jobIdsResponse?.data?.length) {
-        jobIdsResponse.data.forEach((item: { identifier: string, datePosted: string }) => {
+    if (jobIdsResponse?.length) {
+        jobIdsResponse.forEach((item: { identifier: string, datePosted: string }) => {
             const urlItem: any = {
                 loc: `/job/${item.identifier}`,
                 lastmod: "",
@@ -36,8 +24,8 @@ export default defineSitemapEventHandler(async (e) => {
             urls.push(urlItem)
         })
     }
-    if (companyIdsResponse?.data?.length) {
-        companyIdsResponse.data.forEach((item: { identifier: string, updatedDate: string }) => {
+    if (companyIdsResponse?.length) {
+        companyIdsResponse.forEach((item: { identifier: string, updatedDate: string }) => {
             const urlItem: any = {
                 loc: `/job/${item.identifier}`,
                 lastmod: "",
