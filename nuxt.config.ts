@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const axios = require('axios')
 const apiBase = 'http://localhost:8080'
 const siteUrl = 'http://localhost:3000'
 // SEO

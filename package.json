@@ -1,7 +1,6 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "nuxt dev",
     "generate": "nuxt generate",

@@ -31,7 +31,6 @@ const state = reactive({
     signInOptions: ['password', 'google.com', 'facebook.com']
 })
 onMounted(() => {
-    console.log($emitter);
     $emitter?.on("showUserModal", showModal)
     $emitter?.on("hideUserModal", hideModal)
     if (process.client) {
