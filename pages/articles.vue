@@ -5,8 +5,10 @@
                 <ul class="glide__slides">
                     <li class="glide__slide" v-for="(item, index) in state.articles" :key="index">
                         <div class="slide__content">
-                            <NuxtLink class="content__imageWrap" :to="{ name: 'article-id', params: { 'id': item.id } }">
-                                <img class="imageWrap__image" :src="item.images[0].url">
+                            <NuxtLink class="content__imageWrap"
+                                :to="{ name: 'article-id', params: { 'id': item.id } }">
+                                <div class="imageWrap__image"
+                                    :style="{ 'background-image': `url(${item.images[0].url})` }"></div>
                                 <div class="imageWrap__cover"></div>
                                 <div class="imageWrap__keywordsWrap">
                                     <div v-for="(keyword, index) in item.keywords" :key="index"
@@ -28,7 +30,7 @@
             <ul class="body__list">
                 <li v-for="(item, index) in state.articles" class="list__item">
                     <NuxtLink class="item__link" :to="{ name: 'article-id', params: { 'id': item.id } }">
-                        <img class="item__image" :src="item.images[0].url">
+                        <div class="item__image" :style="{ 'background-image': `url(${item.images[0].url})` }"></div>
                     </NuxtLink>
                     <NuxtLink class="item__link" :to="{ name: 'article-id', params: { 'id': item.id } }">
                         <div class="item__keywords">
@@ -152,7 +154,10 @@ function formatKeywords(list = []) {
             }
 
             .imageWrap__image {
-                max-width: 360px;
+                width: 360px;
+                height: 360px;
+                background-position: center;
+                background-size: cover;
             }
 
 
@@ -211,6 +216,8 @@ function formatKeywords(list = []) {
                     width: 100px;
                     height: 100px;
                     border-radius: 10px;
+                    background-size: cover;
+                    background-position: center;
                 }
 
                 .item__link {
