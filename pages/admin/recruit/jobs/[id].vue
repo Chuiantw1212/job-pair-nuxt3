@@ -1,6 +1,12 @@
 <template>
     <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
+            <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
+                :placeholder="'範例：https://www.104.com.tw/job/*'">
+                在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
+                <br>
+                範例：https://www.104.com.tw/job/*
+            </LazyAtomQuickImport>
             <div class="form__header">
                 職缺狀態
                 <!-- <span class="header__wallet">錢包餘額：0點
@@ -9,21 +15,6 @@
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
-            <!-- <LazyOrganismChatJdModal v-model="state.job" @update:modelValue="setUpdatedJob($event)">
-            </LazyOrganismChatJdModal> -->
-            <!-- <div class="form__quick">
-                <h1 class="quick__header">快速建檔</h1>
-                <div class="quick__desc">
-                    範例：https://www.104.com.tw/job/*
-                </div>
-                <div class="quick__inputGroup">
-                    <label class="inputGroup__label">
-                        <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="https://www.104.com.tw/job/*" />
-                    </label>
-                    <button class="inputGroup__button" @click="crawlFromLink()">一鍵帶入</button>
-                </div>
-            </div> -->
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="職務類型" :max="3"
@@ -43,10 +34,10 @@
             <LazyAtomInputSelect v-model="state.job.responsibilities" name="職務職級" required
                 :items="repoSelect.state.selectByQueryRes.responsibilities" :disabled="state.disabled" class="mt-4">
             </LazyAtomInputSelect>
-            <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="雇用性質" required
+            <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.employmentType" name="僱傭模式" required
                 :disabled="state.disabled" class="mt-4">
                 <template v-slot:header>
-                    <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="雇用性質"
+                    <LazyMoleculeProfileSelectLabels v-model="state.job.employmentType" placeholder="僱傭模式"
                         :items="repoSelect.state.selectByQueryRes.employmentType">
                     </LazyMoleculeProfileSelectLabels>
                 </template>
@@ -102,23 +93,31 @@
             </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
-                    name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled">
+                    name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled"
+                    :placeholder="'請選擇'">
                 </LazyAtomInputSelect>
                 <LazyAtomInputRadio v-if="repoSelect.state?.selectByQueryRes?.proficiency" name="程度" class="ms-3"
-                    v-model="state.job.proficiency" :items="repoSelect.state.selectByQueryRes.proficiency">
+                    v-model="state.job.proficiency" :items="repoSelect.state.selectByQueryRes.proficiency"
+                    :listStyle="state.radioStyle">
                 </LazyAtomInputRadio>
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <!-- <LazyOrganismChatCvModal name="職責簡介" :modelValue="state.job.description"
-                    :chatRequest="handleChatDescription" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal> -->
+                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
+                    :field="'description'" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatOptimizeJobContentModal>
+                <LazyOrganismChatGenerateJobDescriptionModal v-else v-model="state.job"
+                    @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatGenerateJobDescriptionModal>
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor v-model="state.job.skills" name="條件要求" required :disabled="state.disabled"
                 :removePlatformLink="true" ref="skills" class="mt-4">
-                <!-- <LazyOrganismChatCvModal name="條件要求" :modelValue="state.job.skills" :chatRequest="handleChatSkills"
-                    @update:modelValue="setSkills($event)">
-                </LazyOrganismChatCvModal> -->
+                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasSkills()" name="條件要求" :modelValue="state.job"
+                    :field="'skills'" @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatOptimizeJobContentModal>
+                <LazyOrganismChatGenerateJobSkillModal v-else v-model="state.job"
+                    @update:modelValue="setUpdatedJob($event)">
+                </LazyOrganismChatGenerateJobSkillModal>
             </LazyAtomInputCkeditor>
             <div v-if="state.job.preference" class="form__preference mt-4">
                 <div class="preference__header">用人偏好</div>
@@ -156,7 +155,8 @@
         </div>
         <div class="recruitJob__footer">
             <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
-            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline>儲存並預覽職缺</AtomBtnSimple>
+            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">儲存並預覽職缺
+            </AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
         <!-- <LazyOrganismWalletNoBalanceModal ref="noBallanceModal"></LazyOrganismWalletNoBalanceModal> -->
@@ -181,12 +181,16 @@ const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
-    crawlerUrl: 'https://www.104.com.tw/job/7pwjw?jobsource=jolist_d_relevance',
     filterOpen: {
         occupationalCategory: false,
         employmentType: false,
     },
     bsModal: null,
+    radioStyle: {
+        display: 'flex',
+        'align-items': 'center',
+        'flex-wrap': 'wrap',
+    }
 })
 const props = defineProps({
     modelValue: {
@@ -209,8 +213,7 @@ watch(() => repoSelect.jobCategoryMap, () => {
     }
 }, { deep: true })
 // methods
-async function crawlFromLink() {
-    const crawlerUrl = state.crawlerUrl
+async function crawlFromLink(crawlerUrl = '') {
     $sweet.loader(true)
     const jobRes = await repoJob.getJobCrawlResult({
         url: crawlerUrl
@@ -230,20 +233,40 @@ async function crawlFromLink() {
         addressArea, // 縣市
         addressRegion, // 縣市+行政區
         addressDetail,
+        jobType = 1,
+        manageResp = '',
     } = jobDetail
+    // 檢核必要正確性
+    const identifier = state.job?.identifier
+    if (!identifier) {
+        alert('資料已永久毀損')
+        return
+    }
     // convert type
-    const typeMap = {
+    const salaryTypeMap = {
+        60: 'yearly',
         50: 'monthly',
         10: '' // 面議
     }
-    const test = repoSelect.state.selectByQueryRes
-    const newJobSalaryType = typeMap[salaryType] || 'monthly'
+    const newJobSalaryType = salaryTypeMap[salaryType] || 'monthly'
     // compose new job
     const { locationRes = {}, selectByQueryRes = {} } = repoSelect.state
-    const salaryTypeItems = selectByQueryRes.salaryType
+    const { salaryType: salaryTypeItems, } = selectByQueryRes
+    // 職務職級
+    let responsibilitiesValue = ''
+    if (manageResp) {
+        responsibilitiesValue = 'manager'
+    }
+    // 雇用性質
+    const jobTypeMap = {
+        1: 'fullTime',
+        2: 'partTime',
+    }
+    const employmentTypeValue = jobTypeMap[jobType] || 'fullTime'
     const targetSalaryType = salaryTypeItems.find(item => {
         return item.value === newJobSalaryType
     })
+    // 地址
     const formattedAddressRegion = addressArea.replace('臺', '台')
     const level1Items = locationRes.taiwan
     const targetRegion = level1Items.find(item => {
@@ -254,34 +277,56 @@ async function crawlFromLink() {
     const targetLocality = level2Items.find(item => {
         return item.text === formatLocality
     })
+    // 給定新資料預設值
+    const { company = {}, } = repoAuth.state
+    const minSalary = targetSalaryType.min ?? 0
     const newJob = {
+        identifier,
         name: jobName,
         description: jobDescription,
         salaryType: targetSalaryType.value,
-        salaryMin: Math.max(salaryMin, targetSalaryType.min),
-        salaryMax: Math.max(salaryMax, targetSalaryType.min),
+        salaryMin: Math.max(salaryMin, minSalary),
+        salaryMax: Math.max(salaryMax, minSalary),
         addressRegion: targetRegion?.value || null, // 縣市
         addressLocality: targetLocality?.value || null, // 行政區
         streetAddress: addressDetail, // 詳細地址
         skills: other,
+        employmentType: [employmentTypeValue],
+        responsibilities: responsibilitiesValue,
+        jobLocationType: 'onSite',
+        // 保留舊資料的值
+        preference: state.job.preference ?? company.preference,
+        organizationId: state.job?.organizationId ?? company.id,
+        organizationName: state.job?.organizationName ?? company.name,
+        image: state.job?.image ?? company.logo,
+        jobBenefitFlags: state.job?.jobBenefitFlags ?? company.jobBenefitFlags,
+        status: 'draft',
     }
     state.job = newJob
     setDescription(newJob.description)
     setSkills(newJob.skills)
 }
 const instance = getCurrentInstance()
+function checkHasDescription() {
+    const { description = '' } = state.job
+    return description && description !== '<p></p>'
+}
+function checkHasSkills() {
+    const { skills = '' } = state.job
+    return skills && skills !== '<p></p>'
+}
 async function checkWalletBallance(value) {
     if (value !== 'active') {
         return
     }
-    const res = await repoCompany.getCompanyWalletBalance()
-    if (res.status !== 200) {
-        return
-    }
-    const noBallanceModal = instance.refs.noBallanceModal
-    if (!res.data || res.data.balance === 0 && noBallanceModal) {
-        noBallanceModal.openModal()
-    }
+    // const res = await repoCompany.getCompanyWalletBalance()
+    // if (res.status !== 200) {
+    //     return
+    // }
+    // const noBallanceModal = instance.refs.noBallanceModal
+    // if (!res.data || res.data.balance === 0 && noBallanceModal) {
+    //     noBallanceModal.openModal()
+    // }
 }
 function setUpdatedJob(value) {
     const { name = '', description = '', skills = '' } = value
@@ -296,11 +341,13 @@ function setSkills(value) {
     instance.refs.skills.setData(value)
 }
 async function handlePreview() {
-    await saveJob()
-    const job = state.job
-    const { origin } = window.location
-    const url = `${origin}/job/${job.identifier}`
-    window.open(url)
+    const isSuccess = await saveJob()
+    if (isSuccess) {
+        const job = state.job
+        const { origin } = window.location
+        const url = `${origin}/job/${job.identifier}`
+        window.open(url)
+    }
 }
 async function showAlert() {
     const alertResult = await $sweet.warning('一經刪除，無法還原')
@@ -323,8 +370,9 @@ async function setJob() {
     }
     const job = jobResponse.data
     // 給定預設值
+    const { company = {}, preference = {} } = repoAuth.state
     if (!job.preference) {
-        job.preference = {}
+        job.preference = preference
     }
     if (!job.salaryType) {
         job.salaryType = "monthly"
@@ -340,7 +388,6 @@ async function setJob() {
         job.jobLocationType = "onSite"
     }
     if (!job.industry) {
-        const { company } = repoAuth.state
         const { industry = [] } = company
         job.industry = industry
     }
@@ -353,6 +400,9 @@ async function setJob() {
     }
     if (!job.responsibilities) {
         job.responsibilities = ''
+    }
+    if (!job.language) {
+        job.language = ''
     }
     state.job = job
 }
@@ -395,7 +445,7 @@ async function saveJob() {
         const result = await $validate(jobItem)
         job.completeness = result.completeness
         if (!result.isValid) {
-            return
+            return false
         }
     } else {
         const result = await $validate(jobItem, {

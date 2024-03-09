@@ -2,18 +2,19 @@
     <div class="questions__result">
         <div class="questions__frame">
             <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
-            <h1 class="frame__title">註冊流程已完成</h1>
+            <h1 class="frame__title">想了解自己的求職方向嗎？</h1>
             <div class="frame__textarea">
-                接下來開始編輯個人檔案吧！<br>完成個人檔案將大幅提升被企業看到的機會唷
+                經過以上的求職偏好測驗發現好像不太了解自己的求職方向？<br><br>
+                來職涯探索吧！
             </div>
         </div>
         <div v-if="state.isSigned" class="result__final">
             <div class="final__text">
                 已成功報名 {{ $filter.date(state.event.startDate) }} 講座活動 - {{ state.event.name }}</div>
         </div>
-        <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToProfile()">編輯個人檔案</LazyAtomBtnSimple>
+        <LazyAtomBtnSimple class="result__submit mt-4" @click="routeToConsult()">瞭解求職方向</LazyAtomBtnSimple>
         <div class="result__footer">
-            <button type="button" class="btn btn-light" @click="routeToJobs()">查看職缺</button>
+            <button type="button" class="footer__btn" @click="routeToProfile()">略過</button>
         </div>
     </div>
 </template>
@@ -33,7 +34,7 @@ onMounted(() => {
     const eventItemString = sessionStorage.getItem('event')
     if (eventItemString) {
         const eventItem = JSON.parse(eventItemString)
-        repoEvent.state.eventId = eventItem.id
+        repoEvent.state.eventId = eventItem.eventId
         repoEvent.state.contributor = eventItem.contributor
     }
 })
@@ -64,6 +65,11 @@ async function setEventInformation() {
         state.isSigned = true
     }
 }
+async function routeToConsult() {
+    router.push({
+        name: 'user-consult-records'
+    })
+}
 async function routeToProfile() {
     router.push({
         name: 'user-profile'
@@ -75,12 +81,16 @@ async function routeToJobs() {
     })
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .questions__result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -25%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 200px 20px 0 20px;
+    // padding: 200px 20px 0 20px;
 
     .questions__leftImage {
         position: absolute;
@@ -121,7 +131,7 @@ async function routeToJobs() {
             text-align: center;
             color: #332b00;
             border-bottom: 4px solid #ffd600;
-            width: 144px;
+            width: fit-content;
             margin: auto;
             white-space: nowrap;
         }
@@ -205,10 +215,22 @@ async function routeToJobs() {
         margin-top: 16px;
         display: flex;
         gap: 16px;
+
+        .footer__btn {
+            color: #70A68F;
+            text-align: center;
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 130%;
+            background-color: inherit;
+            border: none;
+        }
     }
 
     .result__submit {
-        max-width: 310px;
+        width: 256px;
     }
 
     .result__tooltip {

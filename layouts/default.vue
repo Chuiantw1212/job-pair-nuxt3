@@ -1,6 +1,5 @@
 <template>
     <div id="app" class="app w-100">
-        <SeoKit />
         <!-- <OgImageScreenshot /> -->
         <!-- <OgImageStatic /> -->
         <LazyOrganismHeader />
@@ -12,7 +11,6 @@
         <!-- 如果條件渲染有異步渲染問題 -->
         <OrganismUserModal></OrganismUserModal>
         <OrganismCompanyModal></OrganismCompanyModal>
-        <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>
@@ -67,17 +65,17 @@ useSchemaOrg([
 //     }
 // }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .app {
     // https://web.dev/font-display/
     font-display: swap;
     font-family: 'Noto Sans TC', sans-serif, 'charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif';
-    background-color: #ecf3f6;
+    background-color: #f9f9f9;
     overflow-x: hidden;
 }
 
 .main {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 60px - 126px);
 }
 
 body {
@@ -90,5 +88,11 @@ body {
 // https://ckeditor.com/docs/ckeditor5/latest/support/licensing/managing-ckeditor-logo.html
 .ck.ck-balloon-panel.ck-powered-by-balloon {
     --ck-powered-by-border-color: #d3d3d3;
+}
+
+@media screen and (min-width: 992px) {
+    .main {
+        min-height: calc(100vh - 60px - 96px);
+    }
 }
 </style>

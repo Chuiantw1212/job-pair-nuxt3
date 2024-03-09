@@ -12,7 +12,8 @@
         </div>
         <div class="panel__footer">
             <template v-if="checkPanelDisplay()">
-                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()">
+                <LazyAtomBtnSimple v-if="!state.application.applyFlow" class="panel__store" @click.stop="handleSaveJob()"
+                    :disabled="checkIsAdmin()">
                     <img class="store__icon" src="./heart.svg" alt="save" />儲存
                 </LazyAtomBtnSimple>
                 <LazyAtomBtnSimple v-if="state.application.applyFlow === 'saved'" class="panel__store panel__store--saved"
@@ -43,13 +44,8 @@
                 <img class="share__icon" src="./share.svg" alt="share" />分享
             </LazyAtomBtnSimple>
             <template v-if="showShareButton && !state.navigator.share">
-                <LazyAtomBtnSimple v-show="state.isCopied" :id="`copied${state.id}`" class="panel__share"
-                    data-bs-toggle="tooltip" :title="state.copiedTitle" @mouseout="resetCopiedTooltip()">
-                    <img class="share__icon" src="./share.svg" alt="share" />
-                    分享
-                </LazyAtomBtnSimple>
-                <LazyAtomBtnSimple v-show="!state.isCopied" :id="`tooltip${state.id}`" class="panel__share"
-                    data-bs-toggle="tooltip" :title="state.shareButtonTitle" @click="shareLinkBootstrap()">
+                <LazyAtomBtnSimple :id="`tooltip-${state.id}`" class="panel__share" data-bs-toggle="tooltip"
+                    :title="state.shareButtonTitle" @click="shareLinkBootstrap()">
                     <img class="share__icon" src="./share.svg" alt="share" />
                     分享
                 </LazyAtomBtnSimple>
@@ -63,15 +59,12 @@ export default {
 }
 </script>
 <script setup>
-import { nextTick, } from 'vue'
-const { $uuid4, $bootstrap, $emitter, $rank, $requestSelector } = useNuxtApp()
+const { $uuid4, $emitter, $rank, } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
 const route = useRoute()
 const state = reactive({
     id: null,
-    isCopied: false,
-    copiedTooltip: null,
     application: {},
     navigator: {},
     shareButtonToolTip: null,
@@ -105,12 +98,7 @@ watch(() => props.modelValue, () => {
         const { origin } = window.location
         const url = `${origin}/job/${props.modelValue.identifier}`
         state.copiedTitle = `已複製: ${url}`
-        if (props.showShareButton && !state.navigator.share) {
-            state.id = $uuid4()
-            nextTick(() => {
-                initialilzeTooltip()
-            })
-        }
+        initialilzeTooltip()
     }
 }, { immediate: true })
 watch(() => repoJobApplication.state.userJobs, (userJobs) => {
@@ -126,11 +114,18 @@ watch(() => repoJobApplication.state.userJobs, (userJobs) => {
 }, { immediate: true, deep: true })
 // methods
 function showLoginModal() {
-    $emitter.emit("showUserModal")
+    $emitter?.emit("showUserModal")
+}
+function checkIsAdmin() {
+    // 登入使用者與匿名造訪者都開放點按
+    const { user } = repoAuth.state
+    const isAdmin = user?.id && user?.type === 'admin'
+    return isAdmin
 }
 function getRankedSimilarity() {
     const { user } = repoAuth.state
-    let score = user?.id ? 0 : '？'
+    const isValidUser = user?.id && user?.type === 'employee'
+    let score = isValidUser ? 0 : '？'
     if (props.modelValue?.similarity) {
         score = $rank(props.modelValue.similarity)
     }
@@ -140,16 +135,16 @@ function checkPanelDisplay() {
     const { user } = repoAuth.state
     return user?.id
 }
-function resetCopiedTooltip() {
-    state.isCopied = false
-}
 function initialilzeTooltip() {
-    $requestSelector(`#tooltip${state.id}`, (element) => {
-        state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
-    })
-    $requestSelector(`#copied${state.id}`, (element) => {
-        state.copiedTooltip = new window.bootstrap.Tooltip(element)
-    })
+    if (props.showShareButton && !state.navigator.share) {
+        state.id = $uuid4()
+        nextTick(() => {
+            const element = document.querySelector(`#tooltip-${state.id}`)
+            if (element) {
+                state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
+            }
+        })
+    }
 }
 async function handleUnsavedJob() {
     const { user } = repoAuth.state
@@ -164,7 +159,7 @@ async function handleUnsavedJob() {
 async function handleSaveJob() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
         return
     }
     const response = await repoJobApplication.postJobSaved({
@@ -190,13 +185,7 @@ async function shareLinkBootstrap() {
     const { origin } = window.location
     const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
     await navigator.clipboard.writeText(url)
-    if (state.shareButtonToolTip) {
-        state.shareButtonToolTip.hide()
-    }
-    state.isCopied = true
-    nextTick(() => {
-        state.copiedTooltip.show()
-    })
+    state.shareButtonToolTip.hide()
 }
 </script>
 <style lang="scss" scoped>

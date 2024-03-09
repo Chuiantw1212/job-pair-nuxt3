@@ -1,15 +1,22 @@
 <template>
-    <div class="inputGroup" :ref="`inputGroup`" :key="state.key">
+    <div class="inputGroup" :ref="`inputGroup`" :key="state.key" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
             <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
+            <slot name="prefix"></slot>
+            <!-- {{ minLength }} -->
             <input :id="id" v-if="!disabled" class="label__input" v-model="localValue" :placeholder="localPlaceholder"
-                :data-required="required" :data-name="name" autocomplete="off" @blur="handleValidate($event)" />
+                :data-valid="state.isValid" :minLength="minLength" :maxLength="maxLength" :data-required="required"
+                :data-name="name" autocomplete="off" @blur="handleValidate($event)"
+                @keyup.enter="emit('keyup.enter', $event)" />
             <input v-else :id="id" :disabled="true" class="label__input" :class="{ 'label__input--disabled': disabled }"
                 :value="localValue" :readonly="modelValue" />
         </label>
+        <div class="inputGroup__message" v-show="state.message">
+            {{ state.message }}
+        </div>
     </div>
 </template>
 <script >
@@ -19,7 +26,7 @@ export default {
 </script>
 <script setup>
 const { $uuid4, } = useNuxtApp()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'keyup.enter'])
 const state = reactive({
     key: null,
     message: '',
@@ -60,16 +67,20 @@ const props = defineProps({
         type: String,
         default: "",
     },
-    min: {
+    minLength: {
         type: Number,
         default: 0,
     },
-    max: {
+    maxLength: {
         type: Number,
-        default: 0,
+        default: 524288,
     },
     validate: {
         type: Function,
+    },
+    lowerCase: {
+        type: Boolean,
+        default: false,
     }
 })
 onMounted(() => {
@@ -89,18 +100,17 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
+        if (props.lowerCase) {
+            newValue = String(newValue).toLowerCase()
+        }
+        setErrorMessage()
         emit("update:modelValue", newValue)
     },
-})
-watch(() => localValue.value, () => {
-    if (props.max && localValue.value && localValue.value.length > props.max) {
-        localValue.value = localValue.value.slice(0, props.max)
-    }
 })
 // methods
 function setErrorMessage(message = '') {
     state.message = message
-    this.isValid = !message
+    state.isValid = !message
 }
 function handleValidate() {
     setErrorMessage()
@@ -111,10 +121,13 @@ function handleValidate() {
     }
     // custom validation
     if (props.validate) {
-        const message = this.validate(inputValue)
+        const message = props.validate(inputValue)
         if (message) {
             setErrorMessage(message)
         }
+    }
+    if (props.minLength && inputValue.length < props.minLength) {
+        setErrorMessage(`內容未達${props.minLength}碼`)
     }
     // 欄位長度
     if (props.byteSize) {
@@ -130,10 +143,9 @@ function handleValidate() {
     }
     return true
 }
-function validateDefaultRegex() {
+function validateDefaultRegex(inputValue) {
     let regexCode = 0
     if (props.types.includes('mandarin')) {
-
         regexCode += 1
     }
     if (props.types.includes('english')) {
@@ -150,7 +162,7 @@ function validateDefaultRegex() {
     switch (regexCode) {
         case 1: {
             regexMessage = '限輸入中文'
-            regex = /[^\u3400-\uFA29]/
+            regex = /[^\u3400-\uFAD9]/
             break;
         }
         case 2: {
@@ -160,17 +172,17 @@ function validateDefaultRegex() {
         }
         case 3: {
             regexMessage = '限輸入中英文'
-            regex = /[^\u3400-\uFA29a-zA-Z]/
+            regex = /[^\u3400-\uFAD9a-zA-Z]/
             break;
         }
         case 4: {
             regexMessage = '限輸入數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 5: {
             regexMessage = '限輸入中數字'
-            regex = /[^\u3400-\uFA29\d]/
+            regex = /[^\u3400-\uFAD9\d]/
             break;
         }
         case 6: {
@@ -180,7 +192,7 @@ function validateDefaultRegex() {
         }
         case 7: {
             regexMessage = '限輸入中英數字'
-            regex = /[^\u3400-\uFA29a-zA-Z\d]/
+            regex = /[^\u3400-\uFAD9a-zA-Z\d]/
             break;
         }
         default: {
@@ -188,7 +200,7 @@ function validateDefaultRegex() {
             break;
         }
     }
-    if (regex & regex.test(inputValue)) {
+    if (regex?.test(inputValue)) {
         return regexMessage
     }
 }

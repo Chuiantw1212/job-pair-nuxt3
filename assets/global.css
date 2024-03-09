@@ -1,3 +1,27 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.ck.ck-list__item .ck-button {
+    font-size: 13px !important;
+}
+
+.ck.ck-balloon-panel.ck-balloon-panel_toolbar_west.ck-toolbar-container {
+    z-index: 1050 !important;
+}
+
+.ck.ck-editor__editable_inline>:last-child {
+    margin: 0 !important;
+}
+
+.ck.ck-editor__editable_inline>:first-child {
+    margin: 0 !important;
+}
+
+.ck.ck-button__label {
+    font-size: 13px !important;
+}
+
+/* .ck-editor__editable_inline {
+    padding: 0px !important;
+} */

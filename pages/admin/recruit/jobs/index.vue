@@ -2,24 +2,26 @@
     <div class="container jobManagement">
         <!-- 職缺管理 -->
         <div class="jobManagement__addItem">
-            <LazyAtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</LazyAtomBtnSimple>
+            <AtomBtnSimple class="addItem__button" @click="addJobDraft()">新增職缺</AtomBtnSimple>
             <label class="addItem__searchGroup">
                 <i class="fas fa-search searchGroup__icon"></i>
                 <input v-model="state.searchLike" class="searchGroup__input" placeholder="輸入職缺名稱" />
             </label>
-            <LazyOrganismFilterModal v-model="state.filter" @reset="resetFilter()"></LazyOrganismFilterModal>
+            <OrganismFilterModal v-model="state.filter" @reset="resetFilter()"></OrganismFilterModal>
         </div>
         <div class="jobManagement__fields">
             <span>欄位顯示</span>
-            <LazyAtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
+            <AtomInputCheckMultiple v-model="state.jobFields" :items="state.fieldItems" :flexDirection="'row'"
                 @update:modelValue="saveFieldsPreference()">
-            </LazyAtomInputCheckMultiple>
+            </AtomInputCheckMultiple>
         </div>
         <div class="fixTableHead">
             <table class="table jobManagement__table">
                 <thead class="jobManagement__table__head">
                     <tr>
-                        <th class="jobManagement__table__sticky">職缺狀態</th>
+                        <th class="jobManagement__table__sticky">
+                            職缺狀態
+                        </th>
                         <th class="text-center">
                             <div>
                                 職缺名稱
@@ -32,7 +34,7 @@
                         <th>預覽</th>
                         <th v-if="state.jobFields.includes('occupationalCategory')">職務類型</th>
                         <th v-if="state.jobFields.includes('responsibilities')">資歷</th>
-                        <th v-if="state.jobFields.includes('employmentType')">雇用性質</th>
+                        <th v-if="state.jobFields.includes('employmentType')">僱傭模式</th>
                         <th v-if="state.jobFields.includes('salaryType')">薪資類型</th>
                         <th v-if="state.jobFields.includes('salaryMin')">經常性起薪</th>
                         <th v-if="state.jobFields.includes('jobLocationType')">遠端工作彈性</th>
@@ -42,9 +44,8 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <LazyAtomInputSwitch v-model="job.status"
-                                @update:modelValue="checkJobStatus($event, job, index)">
-                            </LazyAtomInputSwitch>
+                            <AtomInputSwitch v-model="job.status" @update:modelValue="checkJobStatus($event, job, index)">
+                            </AtomInputSwitch>
                         </td>
                         <td>
                             <NuxtLink class="table__jobName" :to="`jobs/${job.identifier}`">
@@ -173,7 +174,6 @@ const state = reactive({
     batchOption: ''
 })
 const { $sweet, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoJob = useRepoJob()
 const repoAdmin = useRepoAdmin()
@@ -184,12 +184,9 @@ const router = useRouter()
 useHead({
     title: '職缺管理 - 招募中心'
 })
-onMounted(() => {
+watch(() => repoAuth.state.company, (newValue) => {
     initialize()
-})
-watch(() => repoAuth.state.company, () => {
-    initialize()
-})
+}, { immediate: true })
 watch(() => state.searchLike, () => {
     debounce(() => {
         initialize({
@@ -314,8 +311,9 @@ async function addJobDraft() {
     // 插入並打開第一個品項
     $sweet.loader(true)
     const res = await repoJob.postJobItem(job)
-    state.jobList.unshift(res.data)
-    const { identifier = '' } = res.data
+    const postedJob = res.data
+    state.jobList.unshift(postedJob)
+    const { identifier = '' } = postedJob
     router.push(`jobs/${identifier}`)
     $sweet.loader(false)
 }
@@ -412,10 +410,11 @@ async function addJobDraft() {
         }
 
         .jobManagement__table__sticky {
-            background-color: white;
+            background-color: mintcream;
             left: 0;
             position: sticky;
             z-index: 100;
+            // border-right: 1px solid #d3d3d3;
         }
 
         .jobManagement__table__sticky--second {
@@ -433,8 +432,8 @@ async function addJobDraft() {
             color: #999;
             position: sticky;
             top: 0;
-            background-color: white;
-            z-index: 10;
+            background-color: ivory;
+            z-index: 110;
         }
 
         .table__row {

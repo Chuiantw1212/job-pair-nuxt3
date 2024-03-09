@@ -1,3 +1,4 @@
+import { computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default function setup() {
@@ -15,6 +16,7 @@ export default function setup() {
     const state = reactive({
         ui: null,
         isSent: false,
+        isReset: false,
         authResult: null,
         countdownInterval: null,
         cdDefault: 120,
@@ -28,25 +30,8 @@ export default function setup() {
         const auth = getAuth()
         auth.onAuthStateChanged(async (userInfo) => {
             $sweet.loader(false)
-            if (!userInfo) {
-                // 造成登入機制無法連貫
-                if (repoAuth.state.user && repoAuth.state.user.uid) {
-                    // 判斷為從登入變成登出
-                    repoAuth.userSignout()
-                    // 導回個別的首頁
-                    if (route.path.includes('admin')) {
-                        router.push({
-                            name: 'admin',
-                        })
-                    } else {
-                        router.push({
-                            name: 'index',
-                        })
-                    }
-                }
-                return
-            }
-            if (!userInfo.emailVerified) {
+            if (!userInfo || !userInfo.emailVerified) {
+                // 不在這裡定義登出後的路由跳轉避免出錯
                 return
             }
             const { uid, displayName, email, photoURL, phoneNumber } = userInfo
@@ -65,9 +50,6 @@ export default function setup() {
     async function handleAuthResult(authResult, type) {
         state.authResult = authResult
         const basicInfo = getBasicInfo(type)
-        console.log({
-            basicInfo
-        });
         if (!basicInfo) {
             await $sweet.alert('查無使用者資料')
             return
@@ -110,6 +92,7 @@ export default function setup() {
             router.replace({
                 name: 'index'
             })
+            repoAuth.state.isSigningInProgress = false
             return
         }
         /**
@@ -145,10 +128,10 @@ export default function setup() {
             })
             repoAuth.setUser(user)
             if (company) {
-                $emitter.emit("setMenuType", 'admin')
+                $emitter?.emit("setMenuType", 'admin')
                 // 有取得公司資料代表已完成註冊人資
                 const organizationId = company.id
-                if (organizationId) {
+                if (organizationId && repoCompany.getCompanyJobs) {
                     const jobsResponse = await repoCompany.getCompanyJobs({
                         organizationId,
                         status: ['active'],
@@ -157,9 +140,9 @@ export default function setup() {
                     company.hasActiveJobs = !!data.length
                 }
                 repoAuth.setCompany(company)
-                const whiteList = ['admin', 'about', 'job', 'company']
+                const whiteList = ['admin', 'about', 'job', 'company', 'o', 'article',]
                 const isNotPermitted = whiteList.every(word => {
-                    return !route.path.includes(word)
+                    return !route.name.includes(word)
                 })
                 if (isNotPermitted) {
                     router.push({
@@ -199,18 +182,21 @@ export default function setup() {
                 }
                 const questionKeys = questionsRes.map(item => item.key)
                 const unAnsweredIndex = questionKeys.findIndex((key) => {
-                    const isAnswered = tempUser.preference.hasOwn(key)
+                    const isAnswered = tempUser.preference.hasOwnProperty(key)
                     return !isAnswered
                 })
                 const categorySelected = user.occupationalCategory && user.occupationalCategory.length
                 if (unAnsweredIndex !== -1) {
                     router.push({
-                        name: 'questions-preference'
+                        name: 'questions-id',
+                        params: {
+                            id: unAnsweredIndex + 1
+                        }
                     })
                 }
                 else if (!categorySelected) {
                     router.push({
-                        name: 'questions-result'
+                        name: 'questions-profile'
                     })
                 }
             }
@@ -228,16 +214,19 @@ export default function setup() {
         } else {
             user.type = "employee"
             router.push({
-                name: 'questions-preference'
+                name: 'questions-id',
+                params: {
+                    id: 1
+                }
             })
         }
         repoAuth.setUser(user)
         hideModals()
     }
     function hideModals() {
-        $emitter.emit("hideSwitchModal")
-        $emitter.emit("hideUserModal")
-        $emitter.emit('hideCompanyModal')
+        $emitter?.emit("hideSwitchModal")
+        $emitter?.emit("hideUserModal")
+        $emitter?.emit('hideCompanyModal')
     }
     function getBasicInfo(type) {
         const user = state.authResult.user
@@ -273,7 +262,6 @@ export default function setup() {
                 state.countdownInterval = null
             }
         }, 1000)
-        console.log('sendEmailLink',);
         state.isSent = true
     }
     return {

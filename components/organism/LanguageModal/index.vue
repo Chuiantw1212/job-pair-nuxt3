@@ -22,9 +22,6 @@
     <a class="modal__link" @click="handleApply()">
         程度說明
     </a>
-    <!-- <LazyAtomBtnSimple @click="handleApply()" :disabled="disabled">
-        <slot>立即應徵</slot>
-    </LazyAtomBtnSimple> -->
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
@@ -99,7 +96,7 @@ function handleApply() {
     if (user && user.id) {
         state.bsModal.show()
     } else {
-        $emitter.emit("showUserModal")
+        $emitter?.emit("showUserModal")
     }
 }
 function closeModal() {

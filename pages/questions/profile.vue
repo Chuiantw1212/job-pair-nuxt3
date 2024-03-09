@@ -2,6 +2,9 @@
     <div class="profile container">
         <div class="profile__header">最後一個步驟，<br class="d-lg-none">就完成會員註冊囉！</div>
         <div class="profile__body">
+            <LazyAtomInputSelect v-if="repoSelect.state.selectByQueryRes" name="選擇僱傭模式" v-model="modelValue.employmentType"
+                :items="repoSelect.state.selectByQueryRes.employmentType" required class="mt-3">
+            </LazyAtomInputSelect>
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="選擇職務類別" class="mt-4"
                 :max="3" required>
                 <template v-slot:header>
@@ -17,17 +20,14 @@
                 </template>
             </LazyMoleculeProfileSelectContainer>
             <LazyAtomInputCkeditor name="個人簡歷" v-model="modelValue.description" class="mt-3" :required="true" :toolbar="[]"
-                placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。或是使用 簡歷產生器 快速生成，之後也可在個人檔案重新編輯唷！" :hasBtn="true"
-                ref="description">
-                <LazyOrganismIntroModal :occupationalCategory="modelValue.occupationalCategory"
+                placeholder="範例：我是 ### ，畢業於 ### ，有 # 年工作經驗。或是使用 簡歷產生器 快速生成，之後也可在個人檔案重新編輯唷！" ref="description">
+                <LazyOrganismChatIntroModal :occupationalCategory="modelValue.occupationalCategory"
                     @update:modelValue="setDescription($event)">
-                </LazyOrganismIntroModal>
+                </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
         </div>
-        <div class="profile__footer">
-            <LazyAtomBtnSimple @click="handleClickNext()">下一步
-            </LazyAtomBtnSimple>
-        </div>
+        <LazyAtomBtnSimple class="profile__footer" @click="handleClickNext()">完成
+        </LazyAtomBtnSimple>
     </div>
 </template>
 <script>
@@ -55,6 +55,9 @@ const state = reactive({
 useHead({
     title: '個人資料 - 註冊流程'
 })
+onMounted(() => {
+    scrollTo(0, 0)
+})
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -74,6 +77,28 @@ async function setDescription(data) {
     if (descriptionRef) {
         descriptionRef.setData(data)
     }
+}
+async function handleClickNext() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    // 註冊新用戶
+    const submitted = await handleSubmit()
+    if (!submitted) {
+        return
+    }
+    // 爬出用戶並更新圖片
+    // 註冊活動事件
+    if (repoEvent.state.contributor && repoEvent.state.eventId) {
+        await repoEvent.postEventRegistration({
+            eventId: repoEvent.state.eventId,
+            contributor: repoEvent.state.contributor
+        })
+    }
+    router.push({
+        name: 'questions-result'
+    })
 }
 async function handleSubmit() {
     const user = Object.assign({}, repoAuth.state.user, props.modelValue)
@@ -95,31 +120,12 @@ async function handleSubmit() {
     localStorage.removeItem("user")
     return userData
 }
-async function handleClickNext() {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    const submitted = await handleSubmit()
-    if (!submitted) {
-        return
-    }
-    if (repoEvent.state.contributor && repoEvent.state.eventId) {
-        await repoEvent.postEventRegistration({
-            eventId: repoEvent.state.eventId,
-            contributor: repoEvent.state.contributor
-        })
-    }
-    router.push({
-        name: 'questions-result'
-    })
-}
 </script>
 <style lang="scss" scoped>
 .profile {
     margin: auto;
     max-width: 640px;
-    padding: 0 20px;
+    padding: 20px;
 
     .profile__header {
         font-size: 28px;
@@ -130,13 +136,12 @@ async function handleClickNext() {
         letter-spacing: normal;
         text-align: left;
         color: #333;
-        margin-top: 20px;
+        // margin-top: 20px;
     }
 
     .profile__footer {
-        width: 256px;
-        margin: 50px auto auto auto;
-        text-align: center;
+        width: 100%;
+        margin-top: 27px;
     }
 }
 </style>

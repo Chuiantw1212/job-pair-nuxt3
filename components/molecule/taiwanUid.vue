@@ -55,7 +55,6 @@ const localValue = computed({
         return props.modelValue
     },
     set(newValue) {
-        const upperCase = String(newValue).toUpperCase()
         emit('update:modelValue', newValue)
     }
 })
@@ -78,11 +77,10 @@ function validateTaiwanUid(inputValue = '') {
         const decimal = uidDecimals[index]
         sum += Math.floor(Number(decimal) * Number(weight))
     })
+    const checkDigit = Number(uidDecimals[uidDecimals.length - 1])
+    sum += checkDigit
+    // 整除為合法Id
     const remains = sum % 10
-    const difference = 10 - remains
-    const checkDigit = Number(inputValue[inputValue.lenght - 1])
-    if (difference !== checkDigit) {
-        return `不存在的身分證字號`
-    }
+    return !remains
 }
 </script>

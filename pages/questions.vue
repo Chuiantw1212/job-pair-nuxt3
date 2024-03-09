@@ -1,9 +1,8 @@
 <template>
     <div class="questions">
-        <img class="questions__leftImage" src="~/assets/questions/left.png" />
-        <img class="questions__rightImage" src="~/assets/questions/right.png" />
-        <LazyAtomProgress class="questions__progress"></LazyAtomProgress>
-        <router-view v-model="state.tempUser"></router-view>
+        <img class="questions__background1 d-none d-lg-block" src="@/assets/questions/Group29.svg" alt="background">
+        <img class="questions__background2 d-none d-lg-block" src="@/assets/questions/Group30.svg" alt="background">
+        <router-view v-model="state.tempUser" :questions="state.questions"></router-view>
     </div>
 </template>
 <script>
@@ -20,13 +19,17 @@ const state = reactive({
         preference: {
             culture: []
         },
-    }
+    },
+    questions: [],
 })
 onMounted(async () => {
     const currentRouteName = route.name
     if (currentRouteName === 'questions') {
         router.replace({
-            name: 'questions-preference'
+            name: 'questions-id',
+            params: {
+                id: 1
+            }
         })
     }
     if (process.client) {
@@ -59,35 +62,30 @@ function getAnswers() {
     state.tempUser = user
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .questions {
     position: relative;
     background-color: white;
-    min-height: calc(100vh - 88px);
+    min-height: 100%;
+    min-height: calc(100vh - 60px - 126px);
     position: relative;
-    padding-top: 20px;
-    padding-bottom: 50px;
-    min-height: 100vh;
 
-    .questions__progress {
-        margin: 0 auto;
-        max-width: 240px;
-    }
-
-    .questions__leftImage {
+    .questions__background1 {
         position: absolute;
-        left: 0;
-        width: 15vw;
         top: 0;
-        z-index: -1;
+        left: 0;
     }
 
-    .questions__rightImage {
+    .questions__background2 {
         position: absolute;
         right: 0;
-        width: 15vw;
         bottom: 0;
-        z-index: -1;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .questions {
+        min-height: calc(100vh - 60px - 96px);
     }
 }
 </style>

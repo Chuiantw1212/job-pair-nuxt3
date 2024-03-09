@@ -4,7 +4,27 @@ export default defineStore('job', () => {
     const jobPairApi = useJobPairApi()
     const state = reactive({
         jobRecommendedRes: null,
+        // 職缺探索Job Caches
+        cache: getDefaultJobCache()
     })
+    function resetCache() {
+        state.cache = getDefaultJobCache()
+    }
+    function getDefaultJobCache() {
+        return {
+            userId: null,
+            isDone: false,
+            jobList: [],
+            jobRecommendList: [],
+            count: 0,
+            filter: {},
+            pagination: {
+                pageOrderBy: "datePosted",
+                pageLimit: 5,
+                pageOffset: 0,
+            }
+        }
+    }
     async function getJobApplicantResume(data) {
         const { jobId, applicantId, fileName } = data
         const response = await jobPairApi.request({
@@ -112,6 +132,7 @@ export default defineStore('job', () => {
         getJobApplicantByQuery,
         getJobProspect,
         getJobProspectProfile,
-        getJobApplicantResume
+        getJobApplicantResume,
+        resetCache
     }
 })

@@ -3,10 +3,11 @@
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
                 <div class="card__headerGroup">
-                    <h4>帳號資訊</h4>
-                    <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
+                    <h1 class="headerGroup__title">帳號資訊</h1>
+                    <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
+                        class="managemement__others"></LazyOrganismDeleteModal>
                 </div>
-                <div class="accountManagement__form">
+                <div class="accountManagement__form mt-3">
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
                     </LazyAtomInputText>
                     <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
@@ -34,7 +35,7 @@
                     <button class="btn btn-danger" @click="logout()">登出</button>
                 </div>
             </div>
-            <div class="accountManagement__card mt-4">
+            <!-- <div class="accountManagement__card mt-4">
                 <h4>錢包餘額</h4>
                 <div class="balance__inputGroup">
                     <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
@@ -119,7 +120,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <!-- <div class="accountManagement__card mt-3">
             <h4>人資聊天室</h4>
             <section class="accountManagement__chat">
@@ -148,17 +149,18 @@ const state = reactive({
     newPassAgain: null,
     chatIcon: null,
     balance: 0,
+    VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV
 })
 // hooks
 useHead({
     title: '帳戶管理 - 招募中心'
 })
 watch(() => repoAuth.state.user, (newValue) => {
-    if (!newValue) {
+    if (!process.client || !newValue) {
         return
     }
     state.tempUser = JSON.parse(JSON.stringify(newValue))
-    if (!state.tempUser.chatName) {
+    if (!state.tempUser?.chatName) {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
     }
@@ -170,7 +172,7 @@ async function logout() {
     let user = null
     try {
         const auth = getAuth()
-        user = auth().currentUser
+        user = auth.currentUser
     } finally {
         if (!user) {
             router.push({
@@ -242,6 +244,12 @@ async function submitProfile() {
         .card__headerGroup {
             display: flex;
             gap: 8px;
+            align-items: center;
+
+            .headerGroup__title {
+                margin: 0;
+                font-size: 22px;
+            }
         }
 
         .card__header {

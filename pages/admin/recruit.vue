@@ -13,15 +13,15 @@
                     </li>
                     <li class="menu__item">
                         <template v-if="checkApplicationEnabled()">
-                            <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
-                                to="/admin/recruit/applied">
+                            <button class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
+                                @click="routeByName('admin-recruit-applied-id')">
                                 <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
                                 <div class="menu__item__text">應徵者
                                     <span class="menu__item__badge">
                                         {{ getUnhandledNumber() }}
                                     </span>
                                 </div>
-                            </NuxtLink>
+                            </button>
                         </template>
                         <template v-else>
                             <div class="menu__item__link menu__item__link--noHover">
@@ -46,20 +46,35 @@
     </div>
 </template>
 <script setup>
-const { $sweet } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
 const repoJobApplication = useRepoJobApplication()
+const router = useRouter()
 const route = useRoute()
 const state = reactive({
     appliedList: [],
 })
 // hooks
+definePageMeta({
+    redirect: () => {
+        return { name: 'admin-recruit-jobs' }
+    },
+})
 watch(() => repoAuth.state.company, (company) => {
     initialize()
 }, { immediate: true })
 // methods
+function routeByName(routeName) {
+    try {
+        router.push({
+            name: routeName
+        })
+    } catch (error) {
+        // TODO: 不明原因錯誤
+        window.location.reload()
+    }
+}
 function checkActiveClass() {
     return route.path.includes('/admin/recruit/applied')
 }
@@ -123,6 +138,7 @@ async function initialize() {
                     border: 3px solid rgba(0, 0, 0, 0);
                     text-align: center;
                     white-space: nowrap;
+                    background-color: inherit;
 
                     &:hover {
                         color: #5ea88e;
@@ -188,10 +204,9 @@ async function initialize() {
                     color: white;
                     border-radius: 50%;
                     display: block;
-                    line-height: 20px;
                     font-size: 16px;
                     margin-left: 8px;
-                    line-height: 1;
+                    line-height: 20px;
                     text-align: center;
                 }
             }

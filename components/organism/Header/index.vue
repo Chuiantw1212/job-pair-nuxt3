@@ -1,11 +1,9 @@
 <template>
     <div class="myHeader">
-        <nav id="myHeader" class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav id="myHeader" class="navbar navbar-expand-lg">
             <div class="container-fluid myHeader__container">
-                <div class="d-flex">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <div class="container__top">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" @click="toggleMenu()">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button class="navbar-brand" @click="routeByMenuType()">
@@ -15,9 +13,10 @@
                         </template>
                     </button>
                 </div>
+                <!-- </div> -->
                 <!-- 手機縮圖列表 -->
-                <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
-                    @click="collapseNavbar()">
+                <!-- <div v-if="repoAuth.state.user && state.menuType === 'user'" class="d-lg-none container__icons"
+                    @click="toggleMenu(false)">
                     <NuxtLink class="icons__Group" :active-class="'icons__Group--active'" aria-label="route to jobs"
                         :to="{ name: 'jobs' }">
                         <svg class="icons__Group__image" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -43,15 +42,19 @@
                             </defs>
                         </svg>
                     </NuxtLink>
-                </div>
+                </div> -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="collapseNavbar()">
+                    <hr class="collapse__hr">
+                    <LazyOrganismUserMenu v-if="state.menuType === 'user'" @collapse="toggleMenu(false)">
                     </LazyOrganismUserMenu>
-                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="collapseNavbar()">
+                    <LazyOrganismCompanyMenu v-if="state.menuType === 'admin'" @collapse="toggleMenu(false)">
                     </LazyOrganismCompanyMenu>
                 </div>
             </div>
         </nav>
+        <div v-if="state.isBackgroundVisible && state.isMobile" class="myHeader__background"
+            :class="{ 'myHeader__background--fadeIn': state.isBackgroundFading }" @click="toggleMenu(false)">
+        </div>
     </div>
 </template>
 <script>
@@ -63,12 +66,16 @@ export default {
 const repoAuth = useRepoAuth()
 const state = reactive({
     bsCollapse: null,
+    isBackgroundVisible: false,
+    isBackgroundFading: false,
+    isMobile: true,
+    backgroundTimeout: false,
     menuType: "user",
 })
 const router = useRouter()
 const route = useRoute()
-const { $emitter, $bootstrap } = useNuxtApp()
-// Lifecycles
+const { $emitter, } = useNuxtApp()
+// hooks
 onMounted(() => {
     $emitter.on("setMenuType", (menuType) => {
         state.menuType = menuType
@@ -78,14 +85,16 @@ onMounted(() => {
         state.bsCollapse = new window.bootstrap.Collapse(menuToggle, {
             toggle: false,
         })
-        toggleClickOutside(true)
+        // add resize listener
+        window.addEventListener('resize', handleResize)
+        handleResize()
     }
 })
-onUnmounted(() => {
-    toggleClickOutside(false)
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize)
 })
 watch(() => route.path, (path,) => {
-    collapseNavbar()
+    toggleMenu(false)
     const chunks = path.split("/")
     const isCompany = chunks[1] === "admin"
     if (isCompany) {
@@ -95,40 +104,73 @@ watch(() => route.path, (path,) => {
     }
 }, { immediate: true })
 // methods
-function toggleClickOutside(isOn) {
-    if (isOn) {
-        document.addEventListener("click", handleClickoutSide)
+function handleResize() {
+    state.isMobile = window.innerWidth < 992
+}
+function toggleMenu(status) {
+    if (state.backgroundTimeout || !state.bsCollapse || window.innerWidth >= 992) {
+        return
+    }
+    // clear existed timer 
+    const newValue = status ?? !state.isBackgroundVisible
+    if (newValue) {
+        state.isBackgroundVisible = newValue
+        state.bsCollapse.show()
+        // start fadeIn animation
+        setTimeout(() => {
+            state.isBackgroundFading = true
+        })
+        // is only for setting the transition timer
+        state.backgroundTimeout = setTimeout(() => {
+            state.backgroundTimeout = null
+        }, 300)
     } else {
-        document.removeEventListener("click", handleClickoutSide)
-    }
-}
-function handleClickoutSide(event) {
-    const clickedTarget = event.target
-    const navigation = document.getElementById("myHeader")
-    if (!navigation.contains(clickedTarget)) {
-        collapseNavbar()
-    }
-}
-function collapseNavbar() {
-    if (state.bsCollapse) {
+        // start fadeOut animation
+        state.isBackgroundFading = false
         state.bsCollapse.hide()
+        state.backgroundTimeout = setTimeout(() => {
+            state.isBackgroundVisible = newValue
+            state.backgroundTimeout = null
+        }, 300)
     }
 }
 function routeByMenuType() {
+    let routeName = null
     if (state.menuType === 'admin') {
-        router.push({
-            name: 'admin'
-        })
+        routeName = 'admin'
     } else {
+        routeName = 'index'
         router.push({
             name: 'index'
         })
     }
+    if (route.name === routeName) {
+        location.reload()
+    } else {
+        router.push({
+            name: routeName
+        })
+    }
 }
+
 </script>
 <style lang="scss" scoped>
 .myHeader {
-    height: 60px;
+    height: 76px;
+
+    .myHeader__background {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0);
+        z-index: 1030;
+        position: fixed;
+        transition: all 0.3s;
+
+    }
+
+    .myHeader__background--fadeIn {
+        background: rgba(0, 0, 0, 0.5);
+    }
 }
 
 :deep(.navbar) {
@@ -137,11 +179,25 @@ function routeByMenuType() {
     right: 0;
     left: 0;
     z-index: 1040;
-    padding: 7px 20px;
+    padding: 0px;
+    // padding: 28px 20px;
     border-bottom: 1px solid #d3d3d3;
+    background-color: white;
 
     .myHeader__container {
-        padding: 0;
+        padding: 0px;
+        // display: flex;
+        // flex-direction: row-reverse;
+
+        .container__top {
+            width: 100%;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            height: 75px;
+            padding: 0 20px;
+        }
+
 
         .navbar-brand {
             font-size: 20px;
@@ -150,12 +206,14 @@ function routeByMenuType() {
             border: none;
             display: flex;
             align-items: center;
-            min-height: 46px;
+            padding: 0px;
+            // min-height: 26px;
+            margin: 0px;
 
             .brand__logo {
-                height: 22px;
-                width: 140px;
-                margin-right: 8px;
+                width: 92px;
+                height: 16px;
+                // margin-right: 8px;
             }
         }
 
@@ -171,11 +229,18 @@ function routeByMenuType() {
             }
         }
 
+        .navbar-collapse {
+            .collapse__hr {
+                margin: 0px;
+            }
+        }
+
 
 
         .container__icons {
             display: flex;
             gap: 16px;
+            background-color: white;
 
             .icons__Group {
                 .icons__Group__image {
@@ -219,16 +284,23 @@ function routeByMenuType() {
     }
 }
 
-@media screen and (min-width: 991px) {
+@media screen and (min-width: 992px) {
 
 
     #myHeader {
 
         .myHeader__container {
             max-width: calc(1320px - 24px);
+            padding: 0px 100px;
+
+            .container__top {
+                width: unset;
+                padding: 0px;
+                height: 72px;
+            }
 
             .navbar-brand {
-                min-height: 46px;
+                // min-height: 32px;
                 font-size: 24px;
             }
 

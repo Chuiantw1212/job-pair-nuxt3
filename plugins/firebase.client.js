@@ -29,7 +29,7 @@ export default defineNuxtPlugin(() => {
     try {
         getAnalytics(app)
     } catch (error) {
-        console.log(error.message);
+        console.log('getAnalytics', error.message);
     }
     return {
         provide: {

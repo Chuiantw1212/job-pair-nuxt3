@@ -2,22 +2,12 @@
     <div>
         <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
         <div class="profile">
-            <div v-if="state.isNewCompay" class="profile__quick">
-                <h1 class="quick__header">快速建檔</h1>
-                <div class="quick__desc">
-                    在此貼上您的企業在104、Yourator、Cakeresume上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
-                    <br>
-                    範例：www.104.com.tw/companyInfo/*,
-                    www.yourator.co/companies/*
-                </div>
-                <div class="quick__inputGroup">
-                    <label class="inputGroup__label">
-                        <input v-model="state.crawlerUrl" class="inputGroup__url"
-                            placeholder="www.104.com.tw/companyInfo/*, www.yourator.co/companies/*" />
-                    </label>
-                    <button class="inputGroup__button" @click="crawlCompanyFromPlatform()">一鍵帶入</button>
-                </div>
-            </div>
+            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
+                在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
+                <br>
+                範例：www.104.com.tw/companyInfo/*,
+                www.yourator.co/companies/*
+            </LazyAtomQuickImport>
             <div class="profile__body">
                 <div class="body__basicInfo">
                     <h2 class="basicInfo__header">基本資料</h2>
@@ -33,12 +23,12 @@
                         </LazyAtomInputText>
                         <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
                             v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                            class="mb-2" :max="8" :min="8">
+                            class="mb-2" :maxLength="8" :minLength="8">
                         </LazyAtomInputText>
                         <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :max="8" :min="8" :disabled="true">
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8" :disabled="true">
                         </LazyAtomInputText>
-                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="5"
+                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="3"
                             required class="mb-2">
                             <template v-slot:header>
                                 <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
@@ -47,14 +37,14 @@
                             </template>
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
-                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="5"
+                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="3"
                                     :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
-                        <LazyAtomInputText v-model="state.companyInfo.telephone" name="電話 (僅供Job Pair團隊聯繫使用)" class="mb-2"
-                            required>
-                        </LazyAtomInputText>
+                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="手機號碼 (僅供Job Pair團隊聯繫使用)"
+                            class="mb-2" required>
+                        </LazyAtomInputMobile>
                         <div class="d-block d-md-flex gap-2">
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
                                 v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
@@ -125,7 +115,18 @@
                     </button>
                 </template>
                 <template v-else>
-                    <NuxtLink class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
+                        客製公司頁面
+                    </NuxtLink>
+                    <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
+                        name: 'company-id',
+                        params: {
+                            id: state.companyInfo.seoName
+                        }
+                    }">
+                        檢視公司頁面
+                    </NuxtLink>
+                    <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
                         檢視公司頁面
                     </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
@@ -144,17 +145,16 @@ export default {
 <script setup>
 import placeholderImage from './company.webp'
 const jobBenefitsConfig = await import('./jobBenefits.json')
-const { $validate, $sweet, $requestSelector, $filter } = useNuxtApp()
+const { $validate, $sweet, } = useNuxtApp()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
-const repoChat = useRepoChat()
 const router = useRouter()
 const currentInstance = getCurrentInstance()
+const isDev = process.env.NODE_ENV === 'development'
 const state = reactive({
-    crawlerUrl: "",
     isNewCompay: false,
     companyInfo: {
         image: null,
@@ -186,19 +186,18 @@ const state = reactive({
 watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
 }, { immediate: true })
+onMounted(async () => {
+    // 防求職者誤入
+    const { user = {} } = repoAuth.state
+    const isEmployee = user && user.type === 'employee'
+    if (isEmployee) {
+        await $sweet.alert('此E-mail已註冊身份為求職者，如要進行企業註冊請使用其他E-mail信箱。')
+        router.push({
+            name: 'index'
+        })
+    }
+})
 // methods
-function setJobBenefits(value) {
-    currentInstance.refs.jobBenefitsRef.setData(value)
-}
-function setDescription(value) {
-    currentInstance.refs.descriptionRef.setData(value)
-}
-async function handleChatRequest(value) {
-    const res = await repoChat.postChatJobDescription({
-        content: value,
-    })
-    return res
-}
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
     return labels.join(" ,")
@@ -249,20 +248,26 @@ async function initializeCompanyInfo() {
     if (!user || !user.id || state.companyInfo.id) {
         return
     }
-    const companyRes = await repoAdmin.getAdminCompany()
-    $sweet.loader(false)
-    if (companyRes.status !== 200) {
-        return
-    }
-    if (companyRes.data === false) {
-        // 尚未註冊導回註冊畫面
-        router.replace(`/admin/register`)
-        state.isNewCompay = true
-    }
+    // Load from store
     let companyInfo = getDefaultCompany()
-    if (companyRes.data) {
-        companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+    if (repoAuth.state.company) {
+        companyInfo = JSON.parse(JSON.stringify(repoAuth.state.company))
+    } else {
+        const companyRes = await repoAdmin.getAdminCompany()
+        // $sweet.loader(false)
+        if (companyRes.status !== 200) {
+            return
+        }
+        if (companyRes.data === false) {
+            // 尚未註冊導回註冊畫面
+            router.replace(`/admin/register`)
+            state.isNewCompay = true
+        }
+        if (companyRes.data) {
+            companyInfo = JSON.parse(JSON.stringify(companyRes.data))
+        }
     }
+    // Set company to local
     state.companyInfo = companyInfo
     state.companyLogo = companyInfo.logo
     state.companyBanner = companyInfo.banner
@@ -278,10 +283,10 @@ async function initializeCompanyInfo() {
     }
     setWelfareFlags()
 }
-async function crawlCompanyFromPlatform() {
+async function crawlCompanyFromPlatform(crawlerUrl = '') {
     const whiteList = ['.104.com.tw/company/', '.yourator.co/companies/', '.cakeresume.com/companies/']
     const targetPlatform = whiteList.find(url => {
-        return state.crawlerUrl.includes(url)
+        return crawlerUrl.includes(url)
     })
     if (!targetPlatform) {
         $sweet.alert('網址有誤')
@@ -291,7 +296,7 @@ async function crawlCompanyFromPlatform() {
     state.companyInfo = getDefaultCompany(state.companyInfo.id)
     $sweet.loader(true)
     const response = await repoCompany.getCompanyByCrawler({
-        url: state.crawlerUrl,
+        url: crawlerUrl,
     })
     if (response.status !== 200) {
         return
@@ -436,27 +441,32 @@ async function set104CompanyInfo(response) {
         product,
         // jobBenefits,
         management,
-        phone,
+        // phone,
         // fax,
         // hrName,
         // news,
         addrNoDesc,
         logo,
     } = response
-    // 先找到第一級行政區
+    // 先找到縣市
     const addressRegionText = address.slice(0, 3)
     const upperTaiDivision = addressRegionText.replace('臺', '台')
     const targetDivision = repoSelect.state.locationRes.taiwan.find((item) => {
         return item.text === upperTaiDivision
     })
-    const addressRegion = targetDivision.value
-    const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
-    const addressLocalityText = address.slice(3, 6)
-    const targetDivisionLevel2 = addressLocalityItems.find((item) => {
-        return item.text === addressLocalityText
-    })
-    const addressLocality = targetDivisionLevel2.value
-    // 找到第二級行政區
+    let addressRegion = ''
+    let addressLocality = ''
+    if (targetDivision) {
+        addressRegion = targetDivision.value
+        // 再找行政區
+        const addressLocalityItems = repoSelect.state.locationRes[addressRegion]
+        const targetDivisionLevel2 = addressLocalityItems.find((item) => {
+            return address.includes(item.text)
+        })
+        if (targetDivisionLevel2) {
+            addressLocality = targetDivisionLevel2.value
+        }
+    }
     const addressDesc = address.replace(addrNoDesc, "")
     // 合併四個欄位
     let description = ""
@@ -494,7 +504,7 @@ async function set104CompanyInfo(response) {
         name: custName,
         capital,
         numberOfEmployees: empNo,
-        telephone: phone,
+        // telephone: phone, // 限制只能用手機
         url: {
             default: custLink,
         },
@@ -591,53 +601,6 @@ async function saveCompanyInfo(config) {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
     border-radius: 10px;
-
-    .profile__quick {
-        background-color: #fee997;
-        padding: 24px 32px;
-        border-radius: 5px;
-        margin-bottom: 45px;
-
-        .quick__header {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .quick__desc {
-            font-size: 12px;
-            margin-bottom: 16px;
-        }
-
-        .quick__inputGroup {
-            display: flex;
-            gap: 8px;
-
-            .inputGroup__label {
-                padding: 12px 16px;
-                width: 100%;
-                background-color: white;
-                border-radius: 10px;
-
-                .inputGroup__url {
-                    width: 100%;
-                    border: none;
-
-                    &:focus {
-                        outline: none;
-                    }
-                }
-            }
-
-            .inputGroup__button {
-                padding: 12px 16px;
-                background-color: #29b0ab;
-                color: white;
-                border-radius: 10px;
-                white-space: nowrap;
-                border: none;
-            }
-        }
-    }
 
     .profile__body {
         display: flex;

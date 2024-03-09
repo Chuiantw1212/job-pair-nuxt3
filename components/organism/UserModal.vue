@@ -23,7 +23,7 @@
     </div>
 </template>
 <script setup>
-const { $emitter, $bootstrap, } = useNuxtApp()
+const { $emitter, } = useNuxtApp()
 const device = useDevice()
 const state = reactive({
     bsModal: null,
@@ -31,8 +31,8 @@ const state = reactive({
     signInOptions: ['password', 'google.com', 'facebook.com']
 })
 onMounted(() => {
-    $emitter.on("showUserModal", showModal)
-    $emitter.on("hideUserModal", hideModal)
+    $emitter?.on("showUserModal", showModal)
+    $emitter?.on("hideUserModal", hideModal)
     if (process.client) {
         state.bsModal = new window.bootstrap.Modal(document.getElementById("userModal"), {
             keyboard: false,

@@ -7,7 +7,7 @@
         </div>
         <label class="inputGroup__label">
             <input v-if="!disabled" v-model="localValue" class="label__input" :type="type" pattern="\d*" inputmode="numeric"
-                autocomplete="off" :step="step" :min="min ? min : undefined" :max="max ? max : undefined"
+                autocomplete="off" :min="min ? min : undefined" :max="max ? max : undefined"
                 @keypress="checkIsNumber($event)" @blur="formatNumber()" />
             <input v-else :disabled="true" :class="{ 'label__input--disabled': disabled }" class="label__input" :type="type"
                 :value="localValue" :readonly="value" />
@@ -18,7 +18,9 @@
 export default {
     name: 'number',
     data: function () {
-        return this.newData()
+        return {
+            message: "",
+        }
     },
     props: {
         name: {
@@ -68,6 +70,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        autocomplete: {
+            type: String,
+            default: 'off'
+        }
     },
     computed: {
         localValue: {
@@ -85,24 +91,19 @@ export default {
                 }
             },
         },
-        step() {
-            const step = Math.pow(0.1, this.precision)
-            return step
-        },
-    },
-    watch: {
-        // eslint-disable-next-line
-        precision(newPrecision) {
-            this.toPrecision(newPrecision)
-        },
     },
     methods: {
-        toPrecision(precision) {
-            const isNullable = !precision && precision !== 0
-            if (!isNullable) {
-                const oldValue = Number(this.localValue)
-                const newValue = oldValue.toFixed(precision)
-                this.localValue = newValue
+        async enableSmsReceive() {
+            try {
+                if ('sms' in navigator) {
+                    const sms = await navigator.sms.receice()
+                    const code = sms.content.match(/^[\s\S]*([0-9]{4})[\s\S]*$/m)[1]
+                    if (code) {
+                        this.localValue = String(code).slice(0, 4)
+                    }
+                }
+            } catch (error) {
+                alert(error.message || error)
             }
         },
         checkIsNumber(event) {
@@ -148,11 +149,6 @@ export default {
         isFloatDynamic(number) {
             const re = /^\d\d*(\.\d*)?$/
             return re.test(String(number))
-        },
-        newData() {
-            return {
-                message: "",
-            }
         },
     },
 }

@@ -41,20 +41,11 @@ const { $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const device = useDevice()
 const route = useRoute()
-const router = useRouter()
 // hooks
-watch(() => route, (newRoute) => {
-    if (newRoute.name === 'user') {
-        router.push({
-            name: 'user-profile'
-        })
-    }
-}, { immediate: true })
-watch(() => repoAuth.state.user, () => {
-    const { user } = repoAuth.state
-    if (!user?.id) {
-        $emitter.emit("showUserModal")
-    }
+definePageMeta({
+    redirect: () => {
+        return { name: 'user-profile' }
+    },
 })
 function checkConsultActive() {
     return route.path.includes('/user/consult')
@@ -133,7 +124,7 @@ function checkConsultActive() {
             min-height: 65px;
 
             .menu__content {
-                top: 61px !important;
+                top: 72px !important;
                 left: 0;
                 bottom: unset;
                 border-top: unset;

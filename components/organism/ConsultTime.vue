@@ -186,7 +186,7 @@ function handleTimeChange(startTimeString) {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .consultTime {
     padding: 20px;
     border-top: 1px solid #d3d3d3;

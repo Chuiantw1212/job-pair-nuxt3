@@ -44,14 +44,11 @@ export default {
 }
 </script>
 <script setup>
-import { reactive, onMounted, onUnmounted, watch, nextTick, computed, ref, watchEffect } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { reactive, onMounted, } from 'vue'
+import { useRouter, } from 'vue-router'
 const device = useDevice()
-// import useUserStore from '@/stores/user'
-const { $emitter, $bootstrap } = useNuxtApp()
-// const userStore = useUserStore()
+const { $emitter, } = useNuxtApp()
 const router = useRouter()
-const route = useRoute()
 const state = reactive({
     bsModal: null,
 })
@@ -72,21 +69,20 @@ function hideModal() {
 }
 function showModal() {
     state.bsModal.show()
-    // this.renderFirebaseUI()
 }
 function showEmployeeModal() {
     state.bsModal.hide()
     router.replace({
         name: 'index'
     })
-    $emitter.emit("showUserModal")
+    $emitter?.emit("showUserModal")
 }
 function showAdminModal() {
     state.bsModal.hide()
     router.replace({
         name: 'admin'
     })
-    $emitter.emit("showCompanyModal")
+    $emitter?.emit("showCompanyModal")
 }
 </script>
 <style lang="scss" scoped>
