@@ -41,8 +41,8 @@
                     <div class="features__item">
                         <span class="item__header">產業類別</span>
                         <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
-                        }}</span>
+        $optionText(value, repoSelect.industryItems)
+    }}</span>
                     </div>
                 </div>
             </section>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="state.companyInfo?.images" class="company__env" ref="imageRef">
+                <div v-if="state.companyInfo?.images.length" class="company__env" ref="imageRef">
                     <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                     <div class="glide" :class="`glide${state.id}`">
                         <div class="glide__track" data-glide-el="track">
@@ -71,8 +71,8 @@
                                         <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                             aria-label="換圖片">
                                             <img class="env__glideImage" :style="{
-                                                'background-image': `url(${image.url})`,
-                                            }" />
+        'background-image': `url(${image.url})`,
+    }" />
                                         </button>
                                     </li>
                                 </template>
