@@ -2,7 +2,7 @@
     <div class="accordion">
         <div class="accordion__header" :class="{ 'accordion__header--isOpened': modelValue }"
             @click="$emit('update:modelValue', !modelValue)">
-            <span>{{ placeholder }}</span>
+            <span>{{ name }}</span>
             <img v-if="arrow === 'up'" alt="up" class="accordion__image accordion__image__up" src="./icon_Down.svg" />
             <img v-if="arrow === 'right'" alt="right" class="accordion__image accordion__image__right"
                 src="./icon_Down.svg" />
@@ -22,7 +22,7 @@ export default {
                 return false
             },
         },
-        placeholder: {
+        name: {
             type: String,
             default: "",
         },

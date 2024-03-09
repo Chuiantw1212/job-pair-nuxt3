@@ -10,8 +10,8 @@
             <div class="filterCategory__list">
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
-                        :placeholder="$optionText(categoryKey, items)" class="list__subList"
-                        :arrow="isLarge ? 'right' : 'up'" @update:modelValue="closeOtherItems(categoryKey, $event)">
+                        :name="$optionText(categoryKey, items)" class="list__subList" :arrow="isLarge ? 'right' : 'up'"
+                        @update:modelValue="closeOtherItems(categoryKey, $event)">
                         <div v-show="!state.keyword.trim() && showSelectAll" class="d-lg-none subList__header">
                             <label class="subList__inputGroup">
                                 <input v-model="state.isAllSelected[categoryKey]" type="checkbox"
@@ -253,7 +253,6 @@ function closeOtherItems(categoryKey, newFlag) {
     border-radius: 5px;
     max-height: 453px;
     overflow-y: auto;
-    // border: solid 1px #d3d3d3;
 
     .filterCategory__header {
         padding: 10px 15px;
@@ -295,8 +294,6 @@ function closeOtherItems(categoryKey, newFlag) {
 
         .body__item {
             margin: 0 20px;
-
-            // &:first-child {}
 
             &:last-child {
                 margin-bottom: 10px;

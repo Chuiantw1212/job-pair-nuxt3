@@ -135,7 +135,6 @@ export default {
 const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
-const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
 const state = reactive({

@@ -12,6 +12,7 @@ export default defineStore('job', () => {
     }
     function getDefaultJobCache() {
         return {
+            userId: null,
             isDone: false,
             jobList: [],
             jobRecommendList: [],

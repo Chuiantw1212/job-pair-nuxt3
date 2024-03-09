@@ -1,5 +1,8 @@
 <template>
-    <div class="modal fade" :id="`jobModal${state.id}`" tabindex="-1" a aria-hidden="true">
+    <LazyAtomBtnSimple class="jobModel__btn" @click="handleApply()" :disabled="disabled">
+        <slot>立即應徵</slot>
+    </LazyAtomBtnSimple>
+    <div class="modal fade jobModel__modal" :id="`jobModal${state.id}`" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,7 +18,8 @@
                     <template v-if="repoAuth.state.user.resumes && repoAuth.state.user.resumes.length === 1">
                         <div class="body__resume">
                             <LazyAtomInputResume v-model="state.application.resume" name="履歷" :sizeLimit="5242880"
-                                :disabled="true" class="resume__input" :getFileBuffer="getFileBuffer"></LazyAtomInputResume>
+                                :disabled="true" class="resume__input" :getFileBuffer="getFileBuffer">
+                            </LazyAtomInputResume>
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
@@ -51,9 +55,6 @@
             </div>
         </div>
     </div>
-    <LazyAtomBtnSimple @click="handleApply()" :disabled="disabled">
-        <slot>立即應徵</slot>
-    </LazyAtomBtnSimple>
 </template>
 <script setup>
 const emit = defineEmits(['applied'])
@@ -93,6 +94,7 @@ onMounted(() => {
         $requestSelector(`#jobModal${state.id}`, (modelElement) => {
             state.bsModal = new window.bootstrap.Modal(modelElement, {
                 keyboard: false,
+                backdrop: "static"
             })
             modelElement.addEventListener("shown.bs.modal", async () => {
                 setApplication()
@@ -101,7 +103,7 @@ onMounted(() => {
     }
 })
 // methods
-const coverLetterRef = ref(null)
+const currentInstance = getCurrentInstance()
 async function getFileBuffer(item = {}) {
     const { name = '' } = item
     $sweet.loader(true)
@@ -134,7 +136,7 @@ function setApplication() {
         jobId
     }
     $requestSelector(`#coverLetter`, () => {
-        coverLetterRef.value.setData(description)
+        currentInstance.refs.coverLetterRef.setData(description)
     })
 }
 function hasSelected(work) {
@@ -157,9 +159,10 @@ function handleApply() {
 async function handleSubmit() {
     $sweet.loader(true)
     const postResponse = await repoJobApplication.postJobApplication(state.application)
-    if (postResponse.status !== 200) {
-        return
-    }
+    const { user } = repoAuth.state
+    await repoJobApplication.getUserJobs({
+        userId: user.id
+    })
     await $sweet.succeed()
     const { applyFlow } = postResponse.data
     emit("applied", applyFlow)
@@ -170,6 +173,14 @@ function closeModal() {
 }
 </script>
 <style lang="scss" scoped>
+.jobModel__btn {
+    width: 100%;
+}
+
+.jobModel__modal {
+    color: black;
+}
+
 .modal-content {
     border-radius: 10px;
     line-height: 1;

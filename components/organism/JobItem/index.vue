@@ -1,77 +1,89 @@
 <template>
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
-        <div>
-            <div v-if="modelValue.image" class="item__logo" :style="{ 'background-image': `url(${modelValue.image})` }">
-            </div>
-            <div v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+        <div class="jobItem__header">
+            <NuxtLink v-if="modelValue.image" class="item__logo" :to="`/job/${modelValue.identifier}`"
+                :style="{ 'background-image': `url(${modelValue.image})` }">
+            </NuxtLink>
+            <NuxtLink v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+            </NuxtLink>
+            <div class="header__btnGroup">
+                <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
+                    <img src="./Collect.svg">
+                </button>
+                <button v-if="state.application.applyFlow === 'saved'" class="btnGroup__btn"
+                    @click.stop="handleUnsavedJob()">
+                    <img src="./Saved.svg">
+                </button>
+                <button v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
+                    class="btnGroup__btn" @click.stop="handleSaveJob()">
+                    <img src="./Collect.svg">
+                </button>
+                <button v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
+                    class="btnGroup__btn" @click.stop="handleUnsavedJob()">
+                    <img src="./Saved.svg">
+                </button>
+                <button class="btnGroup__btn" v-if="state.navigator?.share" @click="shareLinkNative()">
+                    <img src="./Copy.svg">
+                </button>
+                <button class="btnGroup__btn" v-else :id="`tooltip-${state.id}`" data-bs-toggle="tooltip" title="點擊複製連結"
+                    @click="shareLinkBootstrap()">
+                    <img src="./Copy.svg">
+                </button>
             </div>
         </div>
-        <div class="item__body">
+        <div class="jobItem__body">
             <NuxtLink class="body__jobName" :to="`/job/${modelValue.identifier}`">
                 {{ modelValue.name }}
             </NuxtLink>
             <NuxtLink v-if="modelValue.organizationSeoName" class="body__company"
                 :to="`/company/${modelValue.organizationSeoName}`">
-                <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
-                    onerror="this.style.display = 'none'" alt="logo" />
-                <img v-else class="company__logo d-lg-none" :src="defaultLogo" onerror="this.style.display = 'none'"
-                    alt="logo" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
             <NuxtLink v-else class="body__company" :to="`/company/${modelValue.organizationId}`">
-                <img v-if="modelValue.image" class="company__logo d-lg-none" :src="modelValue.image"
-                    onerror="this.style.display = 'none'" alt="logo" />
-                <img v-else class="company__logo d-lg-none" :src="defaultLogo" onerror="this.style.display = 'none'"
-                    alt="logo" />
                 <span class="company__name">{{ modelValue.organizationName }}</span>
             </NuxtLink>
-            <div class="body__main">
-                <NuxtLink class="main__labelGroup" :to="`/job/${modelValue.identifier}`">
-                    <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Aim.svg" alt="employmentType" />
-                        <div class="label__textGroup">
-                            <span v-for="(item, index) in modelValue.employmentType" class="label__text">
-                                {{ $optionText(item,
-                                    repoSelect.state.selectByQueryRes?.employmentType)
-                                }}·
-                            </span>
-                            <span class="label__text">
-                                {{ $optionText(modelValue.responsibilities,
-                                    repoSelect.state.selectByQueryRes?.responsibilities)
-                                }}
-                            </span>
-                        </div>
-                    </div>
-                    <div v-if="getLocationText()" class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="location" />
-                        {{
-                            getLocationText()
-                        }}
-                    </div>
-                    <div class="main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Dollar.svg" alt="salary" />
-                        {{ $filter.salary(modelValue) }}
-                    </div>
-                    <div v-if="modelValue.jobLocationType !== 'onSite'" class="d-none d-lg-flex main__labelGroup__label">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Laptop.svg" alt="remote" />
-                        <span>{{ $optionText(modelValue.jobLocationType,
-                            repoSelect.state.selectByQueryRes?.jobLocationType)
-                        }}</span>
-                    </div>
-                    <div class="d-none d-lg-flex main__labelGroup__label main__labelGroup__label--wrap">
-                        <img class="label__icon" src="~/assets/jobs/details/icon_Tag.svg" alt="category" />
-                        <span class>{{ getCategoryTextGroup() }}</span>
-                    </div>
-
-                </NuxtLink>
-                <div class="main__panel d-lg-none">
-                    <div class="panel__vl"></div>
-                    <LazyOrganismJobItemPanel v-model="localValue"></LazyOrganismJobItemPanel>
+            <NuxtLink class="body__labelGroup" :to="`/job/${modelValue.identifier}`">
+                <span v-for="(item, index) in modelValue.employmentType">
+                    {{ $filter.optionText(item,
+                        repoSelect.state.selectByQueryRes?.employmentType)
+                    }}
+                </span>
+                <span v-if="modelValue.responsibilities">
+                    ·{{ $filter.optionText(modelValue.responsibilities,
+                        repoSelect.state.selectByQueryRes?.responsibilities)
+                    }}
+                </span>
+                <div v-if="getLocationText()">
+                    ·{{
+                        getLocationText()
+                    }}
                 </div>
+                <div v-if="modelValue.jobLocationType !== 'onSite'">
+                    ·<span>{{ $filter.optionText(modelValue.jobLocationType,
+                        repoSelect.state.selectByQueryRes?.jobLocationType)
+                    }}</span>
+                </div>
+
+            </NuxtLink>
+            <NuxtLink class="body__badgeGroup" :to="`/job/${modelValue.identifier}`">
+                <span v-for="(item, index) in modelValue.occupationalCategory" class="badgeGroup__item">
+                    {{ $filter.optionText(item, repoSelect.state.selectByQueryRes.jobCategory) }}
+                </span>
+            </NuxtLink>
+        </div>
+        <div class="jobItem__footer">
+            <div class="footer__similarityGroup">
+                <span>適配度分數</span>
+                <div class="similarityGroup__similarity">95</div>
+            </div>
+            <div class="footer__salaryGroup">
+                {{ $filter.salaryNumber(modelValue)
+                }}
+                <span class="salaryGroup__salaryType">
+                    / {{ $filter.optionText(modelValue.salaryType, repoSelect.state.selectByQueryRes.salaryType) }}
+                </span>
             </div>
         </div>
-        <LazyOrganismJobItemPanel v-model="localValue" class="d-none d-lg-block item__footer" :showShareButton="true">
-        </LazyOrganismJobItemPanel>
     </li>
 </template>
 <script>
@@ -81,13 +93,22 @@ export default {
 </script>
 <script setup>
 import defaultLogo from './company.webp'
+const repoJobApplication = useRepoJobApplication()
 const emit = defineEmits(['update:modelValue'])
-const { $optionText, $filter } = useNuxtApp()
+const { $filter, $uuid4 } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({
-    applyFlow: null
+    applyFlow: null,
+    application: {},
+    // share btn
+    navigator: null,
+    shareButtonToolTip: null,
+    id: null,
 })
+if (process.client) {
+    state.navigator = window.navigator
+}
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -101,14 +122,17 @@ const props = defineProps({
     }
 })
 // hooks
-const localValue = computed({
-    get() {
-        return props.modelValue
-    },
-    set(newValue) {
-        emit('update:modelValue', newValue)
+watch(() => repoJobApplication.state.userJobs, (userJobs) => {
+    const jobKeys = Object.keys(userJobs)
+    if (!jobKeys.length) {
+        return
     }
-})
+    const jobId = props.modelValue.identifier
+    const matchedJob = userJobs[jobId]
+    if (matchedJob) {
+        state.application = matchedJob
+    }
+}, { immediate: true, deep: true })
 watchEffect(() => {
     const { user } = repoAuth.state
     if (!user) {
@@ -121,19 +145,72 @@ watchEffect(() => {
         state.applyFlow = matchedJob.applyFlow
     }
 })
+watch(() => props.modelValue, () => {
+    if (process.client && props.modelValue) {
+        const { origin } = window.location
+        const url = `${origin}/job/${props.modelValue.identifier}`
+        state.copiedTitle = `已複製: ${url}`
+        initialilzeTooltip()
+    }
+}, { immediate: true })
 // methods
-function getCategoryTextGroup() {
-    const { occupationalCategory = [] } = props.modelValue
-    const texts = occupationalCategory.map(item => {
-        return getCategoryText(item)
+function initialilzeTooltip() {
+    if (!state.navigator.share) {
+        state.id = $uuid4()
+        nextTick(() => {
+            const element = document.querySelector(`#tooltip-${state.id}`)
+            if (element) {
+                state.shareButtonToolTip = new window.bootstrap.Tooltip(element)
+            }
+        })
+    }
+}
+async function shareLinkNative() {
+    const { origin } = window.location
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
+    await navigator.share({
+        title: `在Job Pair上應徵${props.modelValue.name}`,
+        text: `在Job Pair上應徵${props.modelValue.name}`,
+        url,
     })
-    return texts.join("、")
+}
+async function shareLinkBootstrap() {
+    // 不支援貼到記憶體裡面
+    const { origin } = window.location
+    const url = `${origin}/job/${props.modelValue.identifier}?openExternalBrowser=1`
+    await navigator.clipboard.writeText(url)
+    state.shareButtonToolTip.hide()
+}
+async function handleSaveJob() {
+    const { user } = repoAuth.state
+    if (!user || !user.id) {
+        $emitter?.emit("showUserModal")
+        return
+    }
+    const response = await repoJobApplication.postJobSaved({
+        userId: user.id,
+        jobId: props.modelValue.identifier,
+    })
+    if (response.status === 200) {
+        const application = response.data
+        state.application = application
+    }
+}
+async function handleUnsavedJob() {
+    const { user } = repoAuth.state
+    const response = await repoJobApplication.deleteJobSaved({
+        userId: user.id,
+        jobId: props.modelValue.identifier,
+    })
+    if (response.status === 200) {
+        state.application = {}
+    }
 }
 function getCategoryText(category = "") {
     if (!category || !repoSelect.state.selectByQueryRes) {
         return
     }
-    const text = $optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
+    const text = $filter.optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
     return text
 }
 function getLocationText() {
@@ -167,25 +244,37 @@ function getLocationText() {
 </script>
 <style lang="scss" scoped>
 .jobItem {
-    display: flex;
+    padding: 20px;
     border-radius: 10px;
-    border: solid 1px #d3d3d3;
     background-color: #fff;
-    padding: 14px 20px;
 
-    .item__logo {
-        display: none;
+    .jobItem__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .header__btnGroup {
+            .btnGroup__btn {
+                border: none;
+                background-color: inherit;
+            }
+        }
     }
 
-    .item__body {
-        width: 100%;
+    .jobItem__body {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
 
         .body__jobName {
-            font-size: 20px;
-            font-weight: bold;
-            line-height: 1;
-            color: #5ea88e;
-            cursor: pointer;
+            font-size: 24px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #222;
             text-decoration: none;
 
             &:hover {
@@ -194,154 +283,136 @@ function getLocationText() {
         }
 
         .body__company {
-            font-size: 15px;
-            font-weight: normal;
-            line-height: 1;
-            color: #333;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
+            font-size: 12px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #222;
+            margin-top: 10px;
             text-decoration: none;
-            cursor: pointer;
 
-            .company__logo {
-                width: 27px;
-                height: fit-content;
-                display: block;
-                margin-right: 4px;
-                max-height: 27px;
+            &:hover {
+                text-decoration: underline;
             }
 
-            .company__name {
-                text-decoration: none;
+            .company__name {}
+        }
 
-                &:hover {
-                    text-decoration: underline;
-                }
+        .body__labelGroup {
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #484848;
+            display: flex;
+            flex-wrap: wrap;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
             }
         }
 
-        .body__main {
-            width: 100%;
+        .body__badgeGroup {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #484848;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            .badgeGroup__item {
+                padding: 5px 20px;
+                border-radius: 10px;
+                background-color: #edeaea;
+            }
+        }
+    }
+
+    .jobItem__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-align: left;
+        color: #484848;
+        padding-top: 30px;
+
+        .footer__similarityGroup {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
+            gap: 10px;
+            // margin-top: 30px;
 
-            .main__panel {
-                width: 100%;
-                max-width: 140px;
-                display: flex;
-
-                .panel__vl {
-                    border-right: 1px solid #d3d3d3;
-                    height: 154px;
-                    margin: 0 auto;
-                    // margin-right: 24px;
-                }
-            }
-
-            .main__labelGroup {
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                text-decoration: none;
-                color: black;
-
-                .main__labelGroup__label {
-                    display: flex;
-                    align-items: center;
-                    white-space: nowrap;
-
-                    .label__textGroup {
-                        display: flex;
-                        flex-wrap: wrap;
-                    }
-
-                    .label__text {
-                        white-space: nowrap;
-                    }
-
-                    .label__icon {
-                        display: block;
-                        margin-right: 8px;
-                        height: 18px;
-                        width: 18px;
-                    }
-                }
-
-                .main__labelGroup__label--wrap {
-                    white-space: pre-wrap;
-                }
-
-                &:hover {
-                    text-decoration: underline;
-                }
+            .similarityGroup__similarity {
+                font-size: 36px;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: 1;
+                height: 36px;
+                letter-spacing: normal;
+                text-align: left;
+                // color: #428f74;
+                transform: translateY(-2px);
             }
         }
-    }
 
-    .item__footer {
-        align-self: center;
-    }
-}
+        .footer__similarity {}
 
-.jobItem--recommended {
-    background-color: #eef6ed;
-}
+        .footer__salaryGroup {
+            font-size: 24px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.57;
+            letter-spacing: normal;
+            text-align: left;
+            color: #222;
+            // display: flex;
+            // align-items: center;
 
-@media screen and (min-width: 992px) {
-    .jobItem {
-        padding: 30px;
-        position: relative;
-        gap: 30px;
-
-        .item__logo {
-            display: block;
-            width: 60px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            height: 60px;
-        }
-
-        .item__body {
-            .body__jobName {
-                font-size: 32px;
-                font-weight: bold;
-            }
-
-            .body__company {
-                font-size: 23px;
+            .salaryGroup__salaryType {
+                font-size: 12px;
                 font-weight: normal;
-
-                .company__name {
-                    margin: 0;
-                }
+                line-height: normal;
+                color: #a6a6a6;
             }
-
-            .body__main {
-                .main__labelGroup {
-                    border-right: none;
-                    font-size: 20px;
-                    font-weight: normal;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-
-                    .main__labelGroup__label {
-
-                        .label__icon {
-                            height: 20px;
-                            width: 20px;
-                        }
-                    }
-                }
-            }
-        }
-
-        .item__footer {
-            min-width: 196px;
         }
     }
+
+    .item__logo {
+        width: 40px;
+        height: 40px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        border: solid 1px #edeaea;
+    }
 }
+
+
+@media screen and (min-width: 992px) {}
 </style>
