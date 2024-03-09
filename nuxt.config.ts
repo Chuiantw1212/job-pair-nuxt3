@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const apiBase = 'https://job-pair-taiwan-dev.de.r.appspot.com'
-const siteUrl = 'https://job-pair-taiwan-dev.web.app'
+const apiBase = 'https://job-pair-taiwan-prd.de.r.appspot.com'
+const siteUrl = 'https://job-pair.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
