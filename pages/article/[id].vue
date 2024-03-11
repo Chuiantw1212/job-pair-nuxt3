@@ -35,8 +35,9 @@
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
                         <li class="glide__slide" v-for="(item, index) in state.articles" :key="index">
-                            <!-- <div :style="{ 'background-image': `url(${item.images[0].url})` }"></div> -->
-                            <img class="content__image" :src="item.images[0].url">
+                            <div class="content__image" :style="{ 'background-image': `url(${item.images[0].url})` }">
+                            </div>
+                            <!-- <img class="content__image" :src="item.images[0].url"> -->
                             <NuxtLink class="slide__content" :to="{ name: 'article-id', params: { 'id': item.id } }">
                                 <div class="content__title">{{ item.name }}</div>
                                 <div class="content__keywordsWrap">
@@ -288,6 +289,9 @@ async function setArticle() {
             width: 150px;
             height: 150px;
             border-radius: 10px;
+            background-position: center;
+            background-size: cover;
+            margin: auto;
         }
 
         .slide__content {
@@ -343,6 +347,7 @@ async function setArticle() {
 
 @media screen and (min-width: 992px) {
     .article {
+        padding-top: 70px;
         padding-bottom: 70px;
 
         .article__image {
