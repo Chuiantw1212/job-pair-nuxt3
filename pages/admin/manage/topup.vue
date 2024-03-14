@@ -7,10 +7,10 @@
         </div>
         <div class="topup__cardGroups">
             <div class="topup__card">
-                <div class="card__title">Free</div>
+                <div class="card__title">{{ subscription[0]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        $0
+                        ${{ subscription[0]?.price }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -29,10 +29,10 @@
                 <LazyAtomBtnSimpleV2 class="card__btn" outline>訂閱</LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
-                <div class="card__title">基礎型</div>
+                <div class="card__title">{{ subscription[1]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        $699
+                        ${{ subscription[1]?.price }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -52,10 +52,10 @@
                 <LazyAtomBtnSimpleV2 class="card__btn" outline>訂閱</LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
-                <div class="card__title">標準型</div>
+                <div class="card__title">{{ subscription[2]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        $1,299
+                        ${{ subscription[2]?.price }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -81,10 +81,10 @@
                 <LazyAtomBtnSimpleV2 class="card__btn" outline>訂閱</LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
-                <div class="card__title">專業型</div>
+                <div class="card__title">{{ subscription[3]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        $2899
+                        ${{ subscription[3]?.price }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -113,6 +113,11 @@
     </div>
 </template>
 <script setup>
+const repoSelect = useRepoSelect()
+const subscription = computed(() => {
+    return repoSelect.state.selectByQueryRes?.subscription || []
+})
+console.log(repoSelect);
 const state = reactive({
     test: ''
 })
