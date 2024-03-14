@@ -45,23 +45,23 @@
             <NuxtLink class="body__labelGroup" :to="`/job/${modelValue.identifier}`">
                 <span v-for="(item, index) in modelValue.employmentType">
                     {{ $filter.optionText(item,
-                        repoSelect.state.selectByQueryRes?.employmentType)
+        repoSelect.state.selectByQueryRes?.employmentType)
                     }}
                 </span>
                 <span v-if="modelValue.responsibilities">
                     ·{{ $filter.optionText(modelValue.responsibilities,
-                        repoSelect.state.selectByQueryRes?.responsibilities)
+        repoSelect.state.selectByQueryRes?.responsibilities)
                     }}
                 </span>
                 <div v-if="getLocationText()">
                     ·{{
-                        getLocationText()
-                    }}
+        getLocationText()
+    }}
                 </div>
                 <div v-if="modelValue.jobLocationType !== 'onSite'">
                     ·<span>{{ $filter.optionText(modelValue.jobLocationType,
-                        repoSelect.state.selectByQueryRes?.jobLocationType)
-                    }}</span>
+        repoSelect.state.selectByQueryRes?.jobLocationType)
+                        }}</span>
                 </div>
 
             </NuxtLink>
@@ -74,7 +74,7 @@
         <div class="jobItem__footer">
             <div class="footer__similarityGroup">
                 <span>適配度分數</span>
-                <div class="similarityGroup__similarity">95</div>
+                <div class="similarityGroup__similarity">{{ $filter.rank(modelValue?.similarity) }}</div>
             </div>
             <div class="footer__salaryGroup">
                 {{ $filter.salaryNumber(modelValue)

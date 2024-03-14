@@ -226,11 +226,10 @@ function getCompanyBanner() {
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
-    const { designStatus = 'active' } = company
     state.companyInfo = company
     state.renderKey = Math.random()
     const { images = [], } = company
-    if (images && images.length && designStatus !== 'active') {
+    if (images && images.length) {
         state.focusedImageSrc = images[0].url
         initialGlide()
     }
