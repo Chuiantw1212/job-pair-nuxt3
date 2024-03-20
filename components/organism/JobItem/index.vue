@@ -95,7 +95,7 @@ export default {
 import defaultLogo from './company.webp'
 const repoJobApplication = useRepoJobApplication()
 const emit = defineEmits(['update:modelValue'])
-const { $filter, $uuid4 } = useNuxtApp()
+const { $filter, $uuid4, $emitter } = useNuxtApp()
 const repoAuth = useRepoAuth()
 const repoSelect = useRepoSelect()
 const state = reactive({
@@ -205,13 +205,6 @@ async function handleUnsavedJob() {
     if (response.status === 200) {
         state.application = {}
     }
-}
-function getCategoryText(category = "") {
-    if (!category || !repoSelect.state.selectByQueryRes) {
-        return
-    }
-    const text = $filter.optionText(category, repoSelect.state.selectByQueryRes.jobCategory)
-    return text
 }
 function getLocationText() {
     const { addressRegion = "", addressLocality, jobLocationType = '' } = props.modelValue
