@@ -94,7 +94,8 @@
                     </div>
                 </div>
                 <div class="cardGroups__card">
-                    <div class="card__desc"> “ 在 Job Pair，透過用人偏好，讓適合的人加入不只強化企業文化，人資與用人單位更能有效率的招募到人選，進而減少成本、流動率，提升績效與組織凝聚力。 ”
+                    <div class="card__desc"> “ 在 Job
+                        Pair，透過用人偏好，讓適合的人加入不只強化企業文化，人資與用人單位更能有效率的招募到人選，進而減少成本、流動率，提升績效與組織凝聚力。 ”
                     </div>
                     <div class="card__bottom">
                         <div class="bottom__name">Monica</div>
@@ -104,7 +105,7 @@
             </div>
         </section>
         <section class="home__section home__section--partner">
-            <div v-if="state.affiliate.length" class="partner__part">
+            <div v-if="state.affiliate?.length" class="partner__part">
                 <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
@@ -113,7 +114,7 @@
                     </a>
                 </div>
             </div>
-            <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
+            <div v-if="state.affiliate?.length" class="partner__part partner__part--mt">
                 <h2 class="partner__title partner__title--mt">合作企業</h2>
                 <div class="partner__bodyGroup">
                     <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
@@ -135,7 +136,6 @@ export default {
 const { $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
-const device = useDevice()
 const router = useRouter()
 const repoAuth = useRepoAuth()
 const state = reactive({

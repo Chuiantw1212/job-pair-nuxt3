@@ -41,8 +41,8 @@
                     <div class="features__item">
                         <span class="item__header">產業類別</span>
                         <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
-                        }}</span>
+        $optionText(value, repoSelect.industryItems)
+    }}</span>
                     </div>
                 </div>
             </section>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-show="state.companyInfo?.images" class="company__env" ref="imageRef">
+                <div v-if="state.companyInfo?.images.length" class="company__env" ref="imageRef">
                     <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                     <div class="glide" :class="`glide${state.id}`">
                         <div class="glide__track" data-glide-el="track">
@@ -71,8 +71,8 @@
                                         <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                             aria-label="換圖片">
                                             <img class="env__glideImage" :style="{
-                                                'background-image': `url(${image.url})`,
-                                            }" />
+        'background-image': `url(${image.url})`,
+    }" />
                                         </button>
                                     </li>
                                 </template>
@@ -193,8 +193,11 @@ onBeforeUnmount(() => {
     $emitter.off('scrollToJobs', scrollToJobs)
 })
 watch(() => repoAuth.state.user, () => {
-    jobScroller.state.filter.organizationId = company.value.organizationId || company.value.id
-    jobScroller.searchJobs()
+    const organizationId = company.value?.organizationId || company.value?.id
+    if (organizationId) {
+        jobScroller.state.filter.organizationId = organizationId
+        jobScroller.searchJobs()
+    }
 }, { immediate: true })
 watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     $emitter?.emit('setDesignBannerJobs', newValue.length)
@@ -223,11 +226,10 @@ function getCompanyBanner() {
 async function initializeCompany(id) {
     const res = await repoCompany.getCompanyById(id)
     const company = res.data
-    const { designStatus = 'active' } = company
     state.companyInfo = company
     state.renderKey = Math.random()
     const { images = [], } = company
-    if (images && images.length && designStatus !== 'active') {
+    if (images && images.length) {
         state.focusedImageSrc = images[0].url
         initialGlide()
     }

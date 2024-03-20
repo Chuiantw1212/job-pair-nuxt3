@@ -11,7 +11,6 @@
         <!-- 如果條件渲染有異步渲染問題 -->
         <OrganismUserModal></OrganismUserModal>
         <OrganismCompanyModal></OrganismCompanyModal>
-        <OrganismSwitchModal></OrganismSwitchModal>
     </div>
 </template>
 <script setup>
@@ -71,7 +70,7 @@ useSchemaOrg([
     // https://web.dev/font-display/
     font-display: swap;
     font-family: 'Noto Sans TC', sans-serif, 'charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif';
-    background-color: #ecf3f6;
+    background-color: #f9f9f9;
     overflow-x: hidden;
 }
 

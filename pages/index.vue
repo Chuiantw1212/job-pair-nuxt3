@@ -115,19 +115,19 @@
             </div>
         </section>
         <section class="home__section home__section--partner">
-            <div v-if="state.affiliate.length" class="partner__part">
+            <div class="partner__part">
                 <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
-                    <a v-for="(item, index) in state.affiliate" class="bodyGroup__anchor" :key="index"
-                        :href="item?.url?.default" target="_blank" aria-label="more about this company">
+                    <a v-for="(item, index) in affiliate" class="bodyGroup__anchor" :key="index" :href="item?.url?.default"
+                        target="_blank" aria-label="more about this company">
                         <img format="webp" class="anchor__image" alt="logo" :src="item.logo" />
                     </a>
                 </div>
             </div>
-            <div v-if="state.affiliate.length" class="partner__part partner__part--mt">
+            <div class="partner__part partner__part--mt">
                 <h2 class="partner__title partner__title--mt">合作企業</h2>
                 <div class="partner__bodyGroup">
-                    <NuxtLink v-for="(item, index) in state.jobProvider" class="bodyGroup__anchor" :key="index"
+                    <NuxtLink v-for="(item, index) in jobProviderList" class="bodyGroup__anchor" :key="index"
                         :to="`/company/${item.organizationId}`" aria-label="more about this company">
                         <img format="webp" onerror="this.style.display='none'" class="anchor__image" alt="logo"
                             :src="item.image" />
@@ -148,15 +148,16 @@ const runTimeConfig = useRuntimeConfig()
 const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const router = useRouter()
+const affiliate = reactive([])
+const jobProviderList = reactive([])
 const state = reactive({
     jobList: [],
-    affiliate: [],
     jobProvider: [],
     profile: null,
     linkToken: null,
 })
-const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
-state.affiliate = companyList.value.slice(0, 3)
+const { data: companyList = [] } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
+affiliate.value = companyList.value?.slice(0, 3)
 // hooks
 useSeoMeta({
     title: `找工作不再迷茫，為你量身打造推薦適合工作`,
@@ -182,7 +183,7 @@ onMounted(async () => {
         })
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
-        state.jobProvider = jobProvider.slice(0, 3)
+        jobProviderList.value = jobProvider.slice(0, 3)
     }
 })
 // methods

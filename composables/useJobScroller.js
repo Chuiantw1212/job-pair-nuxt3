@@ -2,11 +2,15 @@
 // https://vuejs.org/guide/reusability/composables.html#mouse-tracker-example
 import { reactive, } from 'vue'
 export default function setup(setUpConfig = {}) {
+    /**
+     * ignoreJobs避免職缺自己底下出現跟自己相同的推薦職缺
+     */
     const { isCache = false, isRecommend = false, ignoreJobs = [] } = setUpConfig
     const { $sweet, $requestSelectorAll } = useNuxtApp()
     const route = useRoute()
     const repoAuth = useRepoAuth()
     const repoJob = useRepoJob()
+    const repoJobApplication = useRepoJobApplication()
     const state = reactive({
         routeName: route.name,
         jobList: [],
@@ -76,7 +80,7 @@ export default function setup(setUpConfig = {}) {
             employmentType: [],
             jobLocationType: [],
             occupationalCategory: [],
-            salaryType: "",
+            salaryType: [],
             salaryMin: null,
             salaryMax: null,
             organizationId: null,
@@ -111,22 +115,27 @@ export default function setup(setUpConfig = {}) {
                 return !ignoreJobs.includes(item.identifier)
             })
         }
+        const appliedJobs = Object.values(repoJobApplication.state.userJobs).map(item => item.identifier)
+        // Hide applied or rejected jobs
+        if (appliedJobs?.length) {
+            notDuplicatedJobs = notDuplicatedJobs.filter(item => {
+                return !appliedJobs.includes(item.identifier)
+            })
+        }
+        // Set recommended jobs
         if (isRecommend) {
-            // Filter recommended jobs
             const recommendJobs = filterRecommendedJobs()
             state.jobRecommendList = recommendJobs
-            const recommendJobIds = recommendJobs.map(item => item.identifier)
-            if (state.pagination.pageOrderBy !== 'salaryValue') {
-                notDuplicatedJobs = items.filter(item => {
-                    return !recommendJobIds.includes(item.identifier)
-                })
-            }
         }
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
-        state.count = count
+        // calculate count
+        let visibleCount = count - appliedJobs.length
+        visibleCount = Math.max(visibleCount, newJobList.length)
+        state.count = visibleCount
         // Cache mechanism
         if (isCache) {
+            repoJob.state.cache.userId = user?.id
             repoJob.state.cache.isDone = isCache
             repoJob.state.cache.jobList = newJobList
             repoJob.state.cache.jobRecommendList = state.jobRecommendList || []
@@ -215,7 +224,7 @@ export default function setup(setUpConfig = {}) {
         }
         if (salaryType) {
             filteredResult = filteredResult.filter(item => {
-                return item.salaryType === salaryType
+                return salaryType.includes(item.salaryType)
             })
         }
         if (salaryMax) {
