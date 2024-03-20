@@ -936,7 +936,7 @@ async function initialize() {
             letter-spacing: normal;
             text-align: left;
             color: #fff;
-            z-index: 1060;
+            z-index: 1050;
         }
     }
 
