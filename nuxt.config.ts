@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const apiBase = 'http://localhost:8080'
-const siteUrl = 'http://localhost:3000'
+const apiBase = 'https://job-pair-taiwan-prd.de.r.appspot.com'
+const siteUrl = 'https://job-pair.com'
 // SEO
 const imageUrl = 'https://storage.googleapis.com/public.prd.job-pair.com/meta/ogImageJob.png'
 export default defineNuxtConfig({
@@ -75,7 +75,6 @@ export default defineNuxtConfig({
       "process.env.DEBUG": false,
     },
   },
-  // https://github.com/nuxt/framework/issues/7197
   nitro: {
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
