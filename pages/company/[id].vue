@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="state.companyInfo?.images.length" class="company__env" ref="imageRef">
+                <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
                     <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
                     <div class="glide" :class="`glide${state.id}`">
                         <div class="glide__track" data-glide-el="track">
