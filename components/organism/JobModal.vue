@@ -1,7 +1,4 @@
 <template>
-    <LazyAtomBtnSimple class="jobModel__btn" @click="handleApply()" :disabled="disabled">
-        <slot>立即應徵</slot>
-    </LazyAtomBtnSimple>
     <div class="modal fade jobModel__modal" :id="`jobModal${state.id}`" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -23,8 +20,8 @@
                         </div>
                     </template>
                     <LazyAtomInputSelect v-else v-model="state.application.resume.name" name="履歷" itemText="name"
-                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'" :required="true"
-                        ref="resume" class="mt-3 mb-3">
+                        itemValue="name" :items="repoAuth.state.user.resumes" :placeholder="'請選擇本次投遞之履歷'"
+                        :required="true" ref="resume" class="mt-3 mb-3">
                     </LazyAtomInputSelect>
                     <template v-if="repoAuth.state.user.portfolio && repoAuth.state.user.portfolio.length">
                         <div class="content__portfolio__header mt-3">作品集(雲端檔案請開啟瀏覽權限)</div>
@@ -42,7 +39,8 @@
                         </div>
                     </template>
                     <LazyAtomInputCkeditor id="coverLetter" ref="coverLetterRef" v-model="state.application.coverLetter"
-                        class="mt-3" name="自薦信" placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！"></LazyAtomInputCkeditor>
+                        class="mt-3" name="自薦信" placeholder="依照職務的條件要求書寫個人的亮點將會提高被面試的機率喔！" :toolbar="state.toolbar">
+                    </LazyAtomInputCkeditor>
                     <div class="modal__footer mt-3">
                         <LazyAtomBtnSimple @click="closeModal()">
                             取消
@@ -73,6 +71,26 @@ const state = reactive({
         }
     },
     resume: null,
+    toolbar: [
+        'undo',
+        'redo',
+        '|',
+        'heading',
+        '|',
+        'fontSize',
+        '|',
+        'bold',
+        'italic',
+        'fontColor',
+        '|',
+        // 'link',
+        'mediaEmbed',
+        '|',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'removeFormat'
+    ]
 })
 const props = defineProps({
     modelValue: {
@@ -171,6 +189,9 @@ async function handleSubmit() {
 function closeModal() {
     state.bsModal.hide()
 }
+defineExpose({
+    handleApply
+})
 </script>
 <style lang="scss" scoped>
 .jobModel__btn {
