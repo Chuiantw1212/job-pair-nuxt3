@@ -1,11 +1,13 @@
 <template>
     <div :ref="`inputGroup`" class="inputGroup" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
+            <span v-if="required" class="text-danger">*</span>
             {{ name }}
         </div>
         <label class="inputGroup__label">
-            <input class="label__input" :id="state.uuid" v-model="localValue" :data-required="required" :data-name="name"
-                :data-valid="state.isValid" :placeholder="placeholder" @blur="handleValidate()" type="tel" />
+            <input class="label__input" :id="state.uuid" v-model="localValue" :data-required="required"
+                :data-name="name" :data-valid="state.isValid" :placeholder="placeholder" @blur="handleValidate()"
+                type="tel" />
         </label>
         <div class="inputGroup__message">{{ state.message }}</div>
     </div>
