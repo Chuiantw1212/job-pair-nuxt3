@@ -205,6 +205,11 @@ onMounted(async () => {
 })
 // methods
 async function validateTaxId(taxID) {
+    // 已註冊不檢核
+    if (!state.isNewCompay) {
+        return
+    }
+    // 只有註冊時須檢核
     const res = await repoCompany.getCompanyByTaxId(taxID)
     if (res.data) {
         return '公司統編重複'
