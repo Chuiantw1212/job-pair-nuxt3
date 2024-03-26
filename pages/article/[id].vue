@@ -95,7 +95,7 @@ useSeoMeta({
         }
     },
     ogUrl: () => {
-        return `${runTimeConfig.public.siteUrl}/article/${article.id}`
+        return `${runTimeConfig.public.siteUrl}/article/${articleId.value}`
     },
     ogImage: () => {
         return state.article.images[0]?.url
