@@ -19,14 +19,14 @@
         </div>
     </div>
 </template>
-<script >
+<script>
 export default {
     name: 'customText',
 }
 </script>
 <script setup>
 const { $uuid4, } = useNuxtApp()
-const emit = defineEmits(['update:modelValue', 'keyup.enter'])
+const emit = defineEmits(['update:modelValue', 'keyup.enter', 'blur'])
 const state = reactive({
     key: null,
     message: '',
@@ -112,19 +112,12 @@ function setErrorMessage(message = '') {
     state.message = message
     state.isValid = !message
 }
-function handleValidate() {
-    setErrorMessage()
+async function handleValidate() {
     const inputValue = localValue.value
+    setErrorMessage()
     if (props.required && !inputValue.trim()) {
         setErrorMessage('欄位為必填')
         return
-    }
-    // custom validation
-    if (props.validate) {
-        const message = props.validate(inputValue)
-        if (message) {
-            setErrorMessage(message)
-        }
     }
     if (props.minLength && inputValue.length < props.minLength) {
         setErrorMessage(`內容未達${props.minLength}碼`)
@@ -140,6 +133,13 @@ function handleValidate() {
     const regexMessage = validateDefaultRegex(inputValue)
     if (regexMessage) {
         setErrorMessage(regexMessage)
+    }
+    // custom validation
+    if (props.validate) {
+        const message = await props.validate(inputValue)
+        if (message) {
+            setErrorMessage(message)
+        }
     }
     return true
 }
