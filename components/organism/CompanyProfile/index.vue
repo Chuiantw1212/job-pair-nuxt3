@@ -212,7 +212,7 @@ async function validateTaxId(taxID) {
     // 只有註冊時須檢核
     const res = await repoCompany.getCompanyByTaxId(taxID)
     if (res.data) {
-        return '公司統編重複'
+        return '統編已存在'
     }
 }
 function getWelfareString(key) {
@@ -325,9 +325,6 @@ async function crawlCompanyFromPlatform(crawlerUrl = '') {
     }
     if (targetPlatform === '.yourator.co/companies/') {
         await setYouratorCompanyInfo(crawlerCompany)
-    }
-    if (targetPlatform === '.cakeresume.com/companies/') {
-        await setCakeresumeCompanyInfo(crawlerCompany)
     }
     // 拿掉被占用的欄位
     if (state.companyInfo.telephone === '暫不提供') {
