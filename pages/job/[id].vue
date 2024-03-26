@@ -2,7 +2,8 @@
     <div class="jobView" :class="{ container: device.state.isLarge }">
         <section id="jobView__basic" class="jobView__section mt-3">
             <div class="jobView__card jobView__card--basic">
-                <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup" :to="`/company/${state.company?.seoName}`">
+                <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup"
+                    :to="`/company/${state.company?.seoName}`">
                     <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                     </div>
                 </NuxtLink>
@@ -34,7 +35,8 @@
                         {{ $filter.salaryNumber(state.job)
                         }}
                         <span class="salaryGroup__salaryType">
-                            / {{ $filter.optionText(state.job.salaryType, repoSelect.state.selectByQueryRes?.salaryType) }}
+                            / {{ $filter.optionText(state.job.salaryType, repoSelect.state.selectByQueryRes?.salaryType)
+                            }}
                         </span>
                     </div>
                 </div>
@@ -48,12 +50,14 @@
                         <img alt="saved" src="@/assets/jobs/Saved.svg">
                         已儲存
                     </button>
-                    <button v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
+                    <button
+                        v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
                         class="btnGroup__btn" @click.stop="handleSaveJob()">
                         <img alt="save" src="@/assets/jobs/Collect.svg">
                         儲存
                     </button>
-                    <button v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
+                    <button
+                        v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
                         class="btnGroup__btn" @click.stop="handleUnsavedJob()">
                         <img alt="saved" src="@/assets/jobs/Saved.svg">
                         已儲存
@@ -72,8 +76,8 @@
                         <img alt="share" src="@/assets/jobs/Copy.svg">
                         複製連結
                     </button>
-                    <button v-else class="btnGroup__btn" :id="`tooltip-${state.id}`" data-bs-toggle="tooltip" title="點擊複製連結"
-                        @click="shareLinkBootstrap()">
+                    <button v-else class="btnGroup__btn" :id="`tooltip-${state.id}`" data-bs-toggle="tooltip"
+                        title="點擊複製連結" @click="shareLinkBootstrap()">
                         <img alt="share" src="@/assets/jobs/Copy.svg">
                         複製連結
                     </button>
@@ -89,14 +93,14 @@
                     <span class="item__body">
                         <template v-for="(item, index) in state.job?.employmentType">
                             {{
-                                $filter.optionText(item,
-                                    repoSelect.state.selectByQueryRes?.employmentType)
-                            }} ·
+        $filter.optionText(item,
+            repoSelect.state.selectByQueryRes?.employmentType)
+    }} ·
                         </template>
                         {{
-                            $filter.optionText(state.job?.responsibilities,
-                                repoSelect.state.selectByQueryRes?.responsibilities)
-                        }}</span>
+        $filter.optionText(state.job?.responsibilities,
+            repoSelect.state.selectByQueryRes?.responsibilities)
+    }}</span>
                 </div>
                 <div class="features__item">
                     <span class="item__header">
@@ -104,9 +108,9 @@
                     </span>
                     <span class="item__body">
                         {{
-                            $filter.optionText(state.job?.jobLocationType,
-                                repoSelect.state.selectByQueryRes?.jobLocationType)
-                        }}
+            $filter.optionText(state.job?.jobLocationType,
+                repoSelect.state.selectByQueryRes?.jobLocationType)
+        }}
                     </span>
                 </div>
                 <div v-if="state.job?.remark" class="features__item">
@@ -115,8 +119,8 @@
                     </span>
                     <span class="item__body">
                         {{
-                            state.job?.remark
-                        }}
+        state.job?.remark
+    }}
                     </span>
                 </div>
                 <div v-if="state.job?.language" class="features__item">
@@ -124,10 +128,10 @@
                         語言要求
                     </span>
                     <span class="item__body">{{ $optionText(state.job?.language,
-                        repoSelect.state.selectByQueryRes?.language)
-                    }} {{ $optionText(state.job?.proficiency,
-    repoSelect.state.selectByQueryRes?.proficiency)
-}}</span>
+        repoSelect.state.selectByQueryRes?.language)
+                        }} {{ $optionText(state.job?.proficiency,
+        repoSelect.state.selectByQueryRes?.proficiency)
+                        }}</span>
                 </div>
                 <div class="features__item">
                     <span class="item__header">
@@ -142,7 +146,7 @@
                     <div class="item__body item__body--badgeGroup">
                         <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
                             class="body__badge">{{
-                                getCategoryText(category) }}</span>
+        getCategoryText(category) }}</span>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="features__item">
@@ -164,10 +168,9 @@
                     </LazyAtomBtnSimple>
                     <LazyAtomBtnSimple class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
                     </LazyAtomBtnSimple>
-                    <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
-                        @applied="state.applyFlow = $event">
+                    <LazyAtomBtnSimple v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
                         立即應徵
-                    </LazyOrganismJobModal>
+                    </LazyAtomBtnSimple>
                     <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                 </div>
             </section>
@@ -206,10 +209,13 @@
             <h2 class="similarJobs__header">類似職缺</h2>
             <ul class="similarJobs__list">
                 <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList" :key="index"
-                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true" ref="jobItems">
+                    v-model="jobScroller.state.jobList[index]" class="basic__footer" :showShareButton="true"
+                    ref="jobItems">
                 </LazyOrganismJobItem>
             </ul>
         </section>
+        <LazyOrganismJobModal ref="jobModal" v-model="state.job" @applied="state.applyFlow = $event">
+        </LazyOrganismJobModal>
     </div>
 </template>
 <script setup>
@@ -428,6 +434,9 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methos
+function handleApply() {
+    currentInstance.refs.jobModal.handleApply()
+}
 function initialilzeTooltip() {
     if (!state.navigator.share) {
         state.id = $uuid4()
@@ -932,7 +941,6 @@ async function initialize() {
             letter-spacing: normal;
             text-align: left;
             color: #fff;
-            z-index: 1060;
         }
     }
 
@@ -999,6 +1007,7 @@ async function initialize() {
                 width: unset;
                 margin-top: 40px;
                 padding: 0px;
+                // z-index: 1040;
 
                 .panel__btn {
                     width: 100%;
