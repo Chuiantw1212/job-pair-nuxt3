@@ -77,6 +77,7 @@ const articleId = computed(() => {
 })
 const { data: article } = await useFetch(`${runTimeConfig.public.apiBase}/article/${articleId.value}`, { initialCache: false })
 state.article = article
+const articleImageId = article.value.images[0]?.url.split('%2F')[2]
 useSeoMeta({
     title: () => `${state.article.name} | 文章`,
     ogTitle: () => `${state.article.name} | 文章`,
@@ -98,7 +99,7 @@ useSeoMeta({
         return `${runTimeConfig.public.siteUrl}/article/${articleId.value}`
     },
     ogImage: () => {
-        return state.article.images[0]?.url
+        return `${runTimeConfig.public.apiBase}/asset/article/${articleId.value}/image/${articleImageId}`
     },
 })
 onMounted(async () => {
