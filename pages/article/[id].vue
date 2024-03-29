@@ -76,6 +76,7 @@ const articleId = computed(() => {
     return route.params.id
 })
 const { data: article } = await useFetch(`${runTimeConfig.public.apiBase}/article/${articleId.value}`, { initialCache: false })
+// const articleOgImage = await useFetch(`${runTimeConfig.public.apiBase}/asset/article/image/${state.article.images[0]?.url}`, { initialCache: false })
 state.article = article
 useSeoMeta({
     title: () => `${state.article.name} | 文章`,
@@ -98,7 +99,7 @@ useSeoMeta({
         return `${runTimeConfig.public.siteUrl}/article/${articleId.value}`
     },
     ogImage: () => {
-        return state.article.images[0]?.url
+        return 'https://media.taaze.tw/showThumbnail.html?sc=11100157020&height=480&width=310'
     },
 })
 onMounted(async () => {
