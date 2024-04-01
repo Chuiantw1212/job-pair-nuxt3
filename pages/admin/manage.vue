@@ -6,13 +6,15 @@
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             :to="{ name: 'admin-manage-company' }">
-                            <div class="menu__item__text">企業檔案</div>
+                            <img class="item__link__icon" src="@/assets/company/Company.svg">
+                            企業檔案
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             :to="{ name: 'admin-manage-account' }">
-                            <div class="menu__item__text">帳戶管理</div>
+                            <img class="item__link__icon" src="@/assets/company/Resume.svg">
+                            帳戶管理
                         </NuxtLink>
                     </li>
                 </ul>
@@ -64,6 +66,12 @@ definePageMeta({
                     border: 2px solid rgba(0, 0, 0, 0);
                     text-align: center;
 
+                    .item__link__icon {
+                        transition: all 0.3s;
+                        filter: grayscale(1);
+                        margin-right: 4px;
+                    }
+
                     &:hover {
                         color: #5ea88e;
                         border-bottom: 3px solid #5ea88e;
@@ -72,25 +80,22 @@ definePageMeta({
                             filter: grayscale(0);
                         }
                     }
-
-                    .item__link__icon {
-                        transition: all 0.3s;
-                        filter: grayscale(1);
-                    }
                 }
 
                 .menu__item__link--active {
                     color: #5ea88e;
                     border-bottom: 3px solid #5ea88e;
 
+                    // .link__icon {
+                    //     margin-top: 4px;
+                    //     display: flex;
+                    // }
+
                     .item__link__icon {
                         filter: grayscale(0);
                     }
                 }
 
-                .menu__item__text {
-                    margin-top: 4px;
-                }
             }
         }
 
@@ -118,12 +123,13 @@ definePageMeta({
                         display: flex;
                         align-items: center;
                         padding: 18px 0;
+
+                        // .link__icon {
+                        //     margin-top: 0;
+                        //     margin-left: 8px;
+                        // }
                     }
 
-                    .menu__item__text {
-                        margin-top: 0;
-                        margin-left: 8px;
-                    }
                 }
             }
 

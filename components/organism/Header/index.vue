@@ -200,7 +200,7 @@ function routeByMenuType() {
 
 
         .navbar-brand {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             background-color: inherit;
             border: none;
@@ -209,11 +209,12 @@ function routeByMenuType() {
             padding: 0px;
             // min-height: 26px;
             margin: 0px;
+            // margin-left: 8px;
 
             .brand__logo {
                 width: 92px;
                 height: 16px;
-                // margin-right: 8px;
+                margin-right: 8px;
             }
         }
 
@@ -297,11 +298,6 @@ function routeByMenuType() {
                 width: unset;
                 padding: 0px;
                 height: 72px;
-            }
-
-            .navbar-brand {
-                // min-height: 32px;
-                font-size: 24px;
             }
 
             .container__icons {
