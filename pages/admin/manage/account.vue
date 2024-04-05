@@ -42,6 +42,7 @@
                 <h2 class="card__header">帳號</h2>
                 <div class="card__form">
                     <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>重設密碼</LazyAtomBtnSimpleV2>
                         <LazyAtomBtnSimpleV2 class="btnGroup__btn">登出帳號</LazyAtomBtnSimpleV2>
                     </div>
                 </div>
@@ -202,53 +203,20 @@ async function submitProfile() {
         .card__item {
             margin-top: 10px
         }
-
-        // .card__headerGroup {
-        //     display: flex;
-        //     gap: 8px;
-        //     align-items: center;
-
-        //     .headerGroup__title {
-        //         margin: 0;
-        //         font-size: 22px;
-        //     }
-        // }
-
-        // .card__header {
-        //     margin-top: 52px;
-        //     font-weight: bold;
-        // }
     }
 
     .card__form {
-        max-width: 476px;
         margin-top: 30px;
 
         .form__btnGroup {
             display: flex;
             gap: 30px;
+            width: 100%;
 
             .btnGroup__btn {
                 width: 100%;
             }
         }
-
-        // .form__password__inputGroup {
-        //     display: flex;
-        //     align-items: center;
-
-        //     .inputGroup__text {
-        //         margin-right: 24px;
-        //     }
-
-        //     .inputGroup__button {
-        //         color: #29b0ab;
-        //         background-color: rgba(0, 0, 0, 0);
-        //         border: none;
-        //         white-space: nowrap;
-        //     }
-        // }
-
     }
 
     .balance__inputGroup {
