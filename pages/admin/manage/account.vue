@@ -25,7 +25,7 @@
             <div class="accountManagement__card">
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
-                <LazyAtomInputAdmin class="card__list"></LazyAtomInputAdmin>
+                <LazyAtomInputAdmin class="card__list" :modelValue="state.admins"></LazyAtomInputAdmin>
             </div>
             <div class="accountManagement__card">
                 <h2 class="card__header">接收履歷的電子信箱</h2>
@@ -55,6 +55,7 @@ import { getAuth, } from "firebase/auth"
 const { $sweet, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
+const repoCompany = useRepoCompany()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
 const state = reactive({
@@ -71,7 +72,7 @@ const state = reactive({
 useHead({
     title: '帳戶管理 - 招募中心'
 })
-watch(() => repoAuth.state.user, (newValue) => {
+watch(() => repoAuth.state.user, async (newValue) => {
     if (!process.client || !newValue) {
         return
     }
@@ -80,6 +81,8 @@ watch(() => repoAuth.state.user, (newValue) => {
         const uuid = uuid4()
         state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
     }
+    // get company admins
+    state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
 async function saveUserName() {

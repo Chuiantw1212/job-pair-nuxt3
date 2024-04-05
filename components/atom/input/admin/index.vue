@@ -1,19 +1,12 @@
 <template>
     <div class="input__admin">
         <ul class="admin__list">
-            <li class="list__item">
-                <img src="./User.svg">
+            <li v-for="(item, index) in modelValue" class="list__item">
+                <img v-if="item.image" class="item__image" :src="item.image">
+                <img v-else class="item__image" src="./User.svg">
                 <div class="item__body">
-                    <div>design@job-pair.co...</div>
-                    <div>加入日期 2024-03-12</div>
-                </div>
-                <img src="./Trash.svg">
-            </li>
-            <li class="list__item">
-                <img src="./User.svg">
-                <div class="item__body">
-                    <div>design@job-pair.co...</div>
-                    <div>加入日期 2024-03-12</div>
+                    <div>{{ item.email }}</div>
+                    <div v-if="item.dateCreated">加入日期 {{ $filter.date(item.dateCreated) }}</div>
                 </div>
                 <img src="./Trash.svg">
             </li>
@@ -47,6 +40,10 @@ const props = defineProps({
             padding: 10px 20px;
             gap: 20px;
             background: #EDEAEA;
+            .item__image {
+                width: 20px;
+                height: 20px;
+            }
             .item__body {
                 width: 100%;
                 color: #222;

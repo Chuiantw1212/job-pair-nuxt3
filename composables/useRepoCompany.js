@@ -26,6 +26,14 @@ export default defineStore('company', () => {
         })
         return response
     }
+    async function getCompanyAdmins() {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/company/admins`,
+        })
+        console.log(response);
+        return response.data
+    }
     async function getCompanyById(id) {
         const response = await jobPairApi.request({
             method: 'get',
@@ -95,6 +103,7 @@ export default defineStore('company', () => {
         getCompanyNews,
         putCompanyLogoBlob,
         putCompanyBannerBlob,
-        getCompanyWalletBalance
+        getCompanyWalletBalance,
+        getCompanyAdmins
     }
 })
