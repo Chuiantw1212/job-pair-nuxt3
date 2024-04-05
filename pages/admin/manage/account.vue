@@ -1,136 +1,31 @@
 <template>
     <div class="container accountManagement">
+        <h1 class="accountManagement__header">帳戶管理</h1>
+        <hr class="accountManagement__hr" />
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
-                <div class="card__headerGroup">
+                <h2 class="card__header">基本資料</h2>
+                <!-- <div class="card__headerGroup">
                     <h1 class="headerGroup__title">帳號資訊</h1>
                     <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
                         class="managemement__others"></LazyOrganismDeleteModal>
-                </div>
-                <div class="accountManagement__form mt-3">
+                </div> -->
+                <div class="accountManagement__form">
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
                     </LazyAtomInputText>
-                    <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
+                    <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2>
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn">儲存</LazyAtomBtnSimpleV2>
+                    </div>
+                    <!-- <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
-                    <!-- <template v-if="!toggleChangePassword">
-                        <form>
-                            <div class="mb-1">密碼變更</div>
-                            <div class="form__password__inputGroup mb-3">
-                                <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
-                                </InputPass>
-                                <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
-                            </div>
-                        </form>
-                    </template>
-                    <template v-if="toggleChangePassword">
-                        <form>
-                            <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
-                            <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                            </InputPass>
-                            <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                            </InputPass>
-                            <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
-                        </form>
-                    </template> -->
-                    <button class="btn btn-danger" @click="logout()">登出</button>
+                    <button class="btn btn-danger" @click="logout()">登出</button> -->
                 </div>
             </div>
-            <!-- <div class="accountManagement__card mt-4">
-                <h4>錢包餘額</h4>
-                <div class="balance__inputGroup">
-                    <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
-                    <LazyAtomBtnSimple class="inputGroup__btn" type="button">我要儲值</LazyAtomBtnSimple>
-                </div>
-                <div class="card__header">使用紀錄</div>
-                <table class="table  table-striped ballance__table">
-                    <thead>
-                        <tr>
-                            <th scope="col">職缺名稱</th>
-                            <th scope="col">開啟職缺期間</th>
-                            <th scope="col">天數</th>
-                            <th scope="col">點數</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
-            <!-- <div class="accountManagement__card mt-3">
-            <h4>人資聊天室</h4>
-            <section class="accountManagement__chat">
-                <LazyAtomInputText v-model="tempUser.chatName" name="聊天室暱稱" class="mb-3" required></LazyAtomInputText>
-                <div class="chat__image" ref="svgContainer" v-html="chatIcon"></div>
-            </section>
-        </div> -->
-            <!-- <div class="d-flex justify-content-center">
-                <button class="form__confirm" @click.prevent="submitProfile()">儲存</button>
-            </div> -->
+            <div class="accountManagement__card">
+                <h2 class="card__header">管理員</h2>
+                <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
+            </div>
         </template>
     </div>
 </template>
@@ -236,46 +131,95 @@ async function submitProfile() {
 </script>
 <style lang="scss" scoped>
 .accountManagement {
+    background-color: #F9F9F9;
+
+    .accountManagement__header {
+        color: #222;
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
+
+    .accountManagement__hr {
+        margin-top: 30px;
+        border: 1px solid #EDEAEA;
+    }
+
     .accountManagement__card {
-        background-color: #fafafa;
-        padding: 23px 40px;
         border-radius: 10px;
-
-        .card__headerGroup {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-
-            .headerGroup__title {
-                margin: 0;
-                font-size: 22px;
-            }
-        }
+        background: #FFF;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 30px;
 
         .card__header {
-            margin-top: 52px;
-            font-weight: bold;
+            color: #484848;
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
         }
+
+        .card__desc {
+            color: #A6A6A6;
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        // .card__headerGroup {
+        //     display: flex;
+        //     gap: 8px;
+        //     align-items: center;
+
+        //     .headerGroup__title {
+        //         margin: 0;
+        //         font-size: 22px;
+        //     }
+        // }
+
+        // .card__header {
+        //     margin-top: 52px;
+        //     font-weight: bold;
+        // }
     }
 
     .accountManagement__form {
         max-width: 476px;
+        margin-top: 30px;
 
-        .form__password__inputGroup {
+        .form__btnGroup {
             display: flex;
-            align-items: center;
+            gap: 30px;
 
-            .inputGroup__text {
-                margin-right: 24px;
-            }
-
-            .inputGroup__button {
-                color: #29b0ab;
-                background-color: rgba(0, 0, 0, 0);
-                border: none;
-                white-space: nowrap;
+            .btnGroup__btn {
+                width: 100%;
             }
         }
+
+        // .form__password__inputGroup {
+        //     display: flex;
+        //     align-items: center;
+
+        //     .inputGroup__text {
+        //         margin-right: 24px;
+        //     }
+
+        //     .inputGroup__button {
+        //         color: #29b0ab;
+        //         background-color: rgba(0, 0, 0, 0);
+        //         border: none;
+        //         white-space: nowrap;
+        //     }
+        // }
 
     }
 

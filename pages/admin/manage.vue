@@ -96,6 +96,7 @@ definePageMeta({
     .dashboard {
         display: flex;
         gap: 30px;
+        padding: 70px 0;
 
 
         .dashboard__menu {
