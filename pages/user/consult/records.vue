@@ -143,7 +143,8 @@
                                             付款完成
                                         </div>
                                         <div v-if="item.status === 'unpaid'"
-                                            class="row__cell row__cell--last row__cell--unpaid">
+                                            class="row__cell row__cell--last row__cell--unpaid"
+                                            @click="payUnpaidItem(item)">
                                             <template v-if="item.RtnCode">
                                                 付款失敗
                                             </template>
@@ -223,8 +224,9 @@ watch(() => repoAuth.state.user, async (user) => {
     }
 }, { immediate: true })
 // methods
-function setActiveTab(service) {
-    state.activeTab = service.value
+async function payUnpaidItem({ id }) {
+    const result = await repoConsult.patchUnpaidRecord(id)
+    document.write(result)
 }
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {

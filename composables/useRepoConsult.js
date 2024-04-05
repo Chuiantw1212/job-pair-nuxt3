@@ -15,6 +15,13 @@ export default defineStore('consult', () => {
         })
         return response
     }
+    async function patchUnpaidRecord(id) {
+        const response = await jobPairApi.request({
+            method: 'patch',
+            url: `/consult/records/${id}`,
+        })
+        return response.data
+    }
     async function postConsultAppointment(data) {
         const response = await jobPairApi.request({
             method: 'post',
@@ -35,6 +42,7 @@ export default defineStore('consult', () => {
         getConsultants,
         getConsultantById,
         postConsultAppointment,
-        getConsultRecords
+        getConsultRecords,
+        patchUnpaidRecord,
     }
 })
