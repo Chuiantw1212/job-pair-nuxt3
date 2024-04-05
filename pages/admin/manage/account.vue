@@ -14,8 +14,8 @@
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
                     </LazyAtomInputText>
                     <div class="form__btnGroup">
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2>
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn">儲存</LazyAtomBtnSimpleV2>
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName">儲存</LazyAtomBtnSimpleV2>
+                        <!-- <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2> -->
                     </div>
                     <!-- <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
@@ -33,7 +33,7 @@
                 <LazyAtomInputEmail class="card__item"></LazyAtomInputEmail>
                 <div class="card__form">
                     <div class="form__btnGroup">
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2>
+                        <!-- <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2> -->
                         <LazyAtomBtnSimpleV2 class="btnGroup__btn">儲存</LazyAtomBtnSimpleV2>
                     </div>
                 </div>
@@ -82,6 +82,17 @@ watch(() => repoAuth.state.user, (newValue) => {
     }
 }, { immediate: true })
 // methods
+async function saveUserName() {
+    const validateResult = await $validate()
+    if (!validateResult.isValid) {
+        return
+    }
+
+    const result = await repoAdmin.patchAdmin(state.tempUser)
+    if (result.status === 200) {
+        await $sweet.succeed()
+    }
+}
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
