@@ -25,6 +25,7 @@
             <div class="accountManagement__card">
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
+                <LazyAtomInputAdmin class="card__list"></LazyAtomInputAdmin>
             </div>
         </template>
     </div>
@@ -173,6 +174,10 @@ async function submitProfile() {
             font-style: normal;
             font-weight: 400;
             line-height: normal;
+        }
+
+        .card__list {
+            margin-top: 10px
         }
 
         // .card__headerGroup {
