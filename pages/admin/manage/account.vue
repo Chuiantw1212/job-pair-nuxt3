@@ -10,7 +10,7 @@
                     <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
                         class="managemement__others"></LazyOrganismDeleteModal>
                 </div> -->
-                <div class="accountManagement__form">
+                <div class="card__form">
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
                     </LazyAtomInputText>
                     <div class="form__btnGroup">
@@ -26,6 +26,25 @@
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
                 <LazyAtomInputAdmin class="card__list"></LazyAtomInputAdmin>
+            </div>
+            <div class="accountManagement__card">
+                <h2 class="card__header">接收履歷的電子信箱</h2>
+                <div class="card__desc">電子信箱可被修改，可設定一個電子信箱</div>
+                <LazyAtomInputEmail class="card__item"></LazyAtomInputEmail>
+                <div class="card__form">
+                    <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2>
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn">儲存</LazyAtomBtnSimpleV2>
+                    </div>
+                </div>
+            </div>
+            <div class="accountManagement__card">
+                <h2 class="card__header">帳號</h2>
+                <div class="card__form">
+                    <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn">登出帳號</LazyAtomBtnSimpleV2>
+                    </div>
+                </div>
             </div>
         </template>
     </div>
@@ -180,6 +199,10 @@ async function submitProfile() {
             margin-top: 10px
         }
 
+        .card__item {
+            margin-top: 10px
+        }
+
         // .card__headerGroup {
         //     display: flex;
         //     gap: 8px;
@@ -197,7 +220,7 @@ async function submitProfile() {
         // }
     }
 
-    .accountManagement__form {
+    .card__form {
         max-width: 476px;
         margin-top: 30px;
 
