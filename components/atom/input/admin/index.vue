@@ -11,7 +11,7 @@
                 <img src="./Trash.svg">
             </li>
         </ul>
-        <button class="admin__add">新增管理員</button>
+        <!-- <button class="admin__add">新增管理員</button> -->
     </div>
 </template>
 <script setup>
@@ -55,21 +55,5 @@ const props = defineProps({
             }
         }
     }
-
-    .admin__add {
-        border-radius: 10px;
-        border: 1px dashed #A6A6A6;
-        margin-top: 30px;
-        padding: 10px 0px;
-        width: 100%;
-        background-color: white;
-        color: #000;
-        font-family: "PingFang TC";
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 22px;
-    }
-
 }
 </style>

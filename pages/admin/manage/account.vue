@@ -14,7 +14,7 @@
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
                     </LazyAtomInputText>
                     <div class="form__btnGroup">
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName">儲存</LazyAtomBtnSimpleV2>
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName()">儲存</LazyAtomBtnSimpleV2>
                         <!-- <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2> -->
                     </div>
                     <!-- <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
@@ -26,6 +26,7 @@
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
                 <LazyAtomInputAdmin class="card__list" :modelValue="state.admins"></LazyAtomInputAdmin>
+                <button class="card__add" @click="addNewAdmin()">新增管理員</button>
             </div>
             <div class="accountManagement__card">
                 <h2 class="card__header">接收履歷的電子信箱</h2>
@@ -85,6 +86,16 @@ watch(() => repoAuth.state.user, async (newValue) => {
     state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
+async function addNewAdmin() {
+    $sweet.loader(true)
+    const result = await repoAdmin.postAdminInvitation({
+        email: 'chuiantw1212@gmail.com'
+    })
+    $sweet.loader(false)
+    if (result.status === 200) {
+        await $sweet.succeed()
+    }
+}
 async function saveUserName() {
     const validateResult = await $validate()
     if (!validateResult.isValid) {
@@ -212,6 +223,21 @@ async function submitProfile() {
 
         .card__list {
             margin-top: 10px
+        }
+
+        .card__add {
+            border-radius: 10px;
+            border: 1px dashed #A6A6A6;
+            margin-top: 30px;
+            padding: 10px 0px;
+            width: 100%;
+            background-color: white;
+            color: #000;
+            font-family: "PingFang TC";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
         }
 
         .card__item {
