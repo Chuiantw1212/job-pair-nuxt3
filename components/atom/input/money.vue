@@ -2,7 +2,7 @@
     <div class="inputGroup" :ref="`inputGroup`">
         <div class="inputGroup__nameGroup">
             <span class="nameGroup__text">
-                <span v-if="required" class="text-danger">*</span>
+                <span v-if="required" class="nameGroup__required">*</span>
                 {{ name }}
             </span>
         </div>

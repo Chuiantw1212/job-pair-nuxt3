@@ -1,6 +1,6 @@
 <template>
     <div class="inputResumes">
-        <h1 class="resume__header"><span v-if="required" class="text-danger">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
+        <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
         <template v-for="number in Math.ceil(modelValue.length / 3)">
             <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
                 class="resumes__previewGroup">

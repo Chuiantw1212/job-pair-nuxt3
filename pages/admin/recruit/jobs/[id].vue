@@ -125,7 +125,7 @@
                     <template v-for="(questionGroup, key1) in repoSelect.state.questionsRes" :key="key1">
                         <div v-if="questionGroup.key !== 'culture'" class="body__questionGroup">
                             <div class="questionGroup__description">
-                                <span class="text-danger">* </span>{{ questionGroup.descCompany }}
+                                <span class="nameGroup__required">* </span>{{ questionGroup.descCompany }}
                             </div>
                             <input v-show="false" :value="state.job.preference[questionGroup.key]" :data-required="true"
                                 :data-name="questionGroup.descCompany">

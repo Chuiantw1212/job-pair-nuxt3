@@ -1,19 +1,21 @@
 <template>
-    <div>
-        <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
-        <div class="profile">
-            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
+    <div class="profile">
+        <h1 class="profile__header">企業檔案</h1>
+        <div class="profile__desc">
+            以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識。
+        </div>
+        <hr class="profile__line">
+        <!-- <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner> -->
+        <div class="profile__card">
+            <!-- <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
                 <br>
                 範例：www.104.com.tw/companyInfo/*,
                 www.yourator.co/companies/*
-            </LazyAtomQuickImport>
+            </LazyAtomQuickImport> -->
             <div class="profile__body">
                 <div class="body__basicInfo">
                     <h2 class="basicInfo__header">基本資料</h2>
-                    <div class="basicInfo__desc">
-                        以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識
-                    </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
                         <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
@@ -21,7 +23,8 @@
                         </LazyAtomInputPhotoSingle>
                         <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
                             v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                            class="mb-2" :maxLength="8" :minLength="8" :validate="validateTaxId">
+                            class="mb-2" :maxLength="8" :minLength="8" :validate="validateTaxId"
+                            :disabled="!state.isNewCompay">
                         </LazyAtomInputText>
                         <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
                             placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8"
@@ -106,8 +109,9 @@
                             </template>
                         </ul>
                     </div>
+                    <h1 class="card__header">企業風格文化 (最多 2 項)</h1>
                     <LazyAtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
-                        v-model="state.companyInfo.preference.culture" name="企業文化風格" required
+                        v-model="state.companyInfo.preference.culture" required
                         :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
                     </LazyAtomInputCheckMultiple>
                 </div>
@@ -124,11 +128,11 @@
                         客製公司頁面
                     </NuxtLink>
                     <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
-            name: 'company-id',
-            params: {
-                id: state.companyInfo.seoName
-            }
-        }">
+                        name: 'company-id',
+                        params: {
+                            id: state.companyInfo.seoName
+                        }
+                    }">
                         檢視公司頁面
                     </NuxtLink>
                     <NuxtLink v-else class="footerGroup__submit" target="_blank"
@@ -141,6 +145,9 @@
                 </template>
             </div>
         </div>
+        <!-- <div class="profile__card">
+
+        </div> -->
     </div>
 </template>
 <script>
@@ -610,11 +617,52 @@ async function saveCompanyInfo(config) {
 </script>
 <style lang="scss" scoped>
 .profile {
-    background-color: white;
-    padding: 48px 32px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    background-color: #F9F9F9;
+    // padding: 48px 32px;
+    // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
     border-radius: 10px;
+
+    .profile__header {
+        color: #222;
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+    }
+
+    .profile__desc {
+        color: #484848;
+        /* SPAN-14-Regular */
+        font-family: "PingFang TC";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        /* 157.143% */
+        margin-top: 30px;
+    }
+
+    .profile__line {
+        border: 1px solid #EDEAEA;
+        margin: 30px 0px;
+    }
+
+    .profile__card {
+        background-color: white;
+        padding: 20px;
+
+        .card__header {
+            color: #484848;
+            /* H2-20-Regular */
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
 
     .profile__body {
         display: flex;
@@ -626,9 +674,12 @@ async function saveCompanyInfo(config) {
             margin-bottom: 24px;
 
             .basicInfo__header {
+                color: #484848;
+                font-family: "PingFang TC";
                 font-size: 20px;
-                font-weight: bold;
-                margin-bottom: 4px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
             }
 
             .basicInfo__desc {

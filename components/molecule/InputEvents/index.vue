@@ -1,7 +1,7 @@
 <template>
     <div class="profile__portfolio">
         <h1 class="portfolio__header">
-            <span v-if="required" class="text-danger">* </span>
+            <span v-if="required" class="nameGroup__required">* </span>
             {{ name }}(至少提供一個以上，讓安排面試更有效率)
         </h1>
         <div class="portfolio__inputGroup" v-for="(work, index) in localValue" :key="index">

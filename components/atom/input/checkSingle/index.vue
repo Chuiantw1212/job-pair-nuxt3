@@ -1,7 +1,7 @@
 <template>
     <div class="checkSingle d-flex flex-column">
         <div class="checkSingle__nameGroup">
-            <span v-if="required" class="text-danger">*</span>
+            <span v-if="required" class="nameGroup__required">*</span>
             {{ name }}
         </div>
         <label class="checkSingle__label">

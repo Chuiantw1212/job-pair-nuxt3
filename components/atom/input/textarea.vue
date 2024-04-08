@@ -1,7 +1,7 @@
 <template>
     <div class="inputGroup" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
-            <span v-if="required" class="text-danger">* </span>
+            <span v-if="required" class="nameGroup__required">* </span>
             {{ name }}
             <span v-if="hint">({{ hint }})</span>
         </div>

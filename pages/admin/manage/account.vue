@@ -19,7 +19,7 @@
                         <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName()">儲存</LazyAtomBtnSimpleV2>
                         <!-- <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2> -->
                     </div>
-                    <!-- <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
+                    <!-- <div class="mb-1"><span class="nameGroup__required">*</span> 聯絡人電子郵件</div>
                     <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
                     <button class="btn btn-danger" @click="logout()">登出</button> -->
                 </div>
