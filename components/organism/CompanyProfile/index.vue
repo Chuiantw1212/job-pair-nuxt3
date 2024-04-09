@@ -5,149 +5,134 @@
             以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識。
         </div>
         <hr class="profile__line">
-        <!-- <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner> -->
         <div class="profile__card">
-            <!-- <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
-                在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊
-                <br>
-                範例：www.104.com.tw/companyInfo/*,
+            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
+                在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊。<br>
+                範例： <br>
+                www.104.com.tw/companyInfo/*, <br>
                 www.yourator.co/companies/*
-            </LazyAtomQuickImport> -->
-            <div class="profile__body">
-                <div class="body__basicInfo">
-                    <h2 class="basicInfo__header">基本資料</h2>
-                    <div class="row basicInfo__body">
-                        <div>Logo (建議：60px*60px)</div>
-                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
-                            class="mb-2">
-                        </LazyAtomInputPhotoSingle>
-                        <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
-                            v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                            class="mb-2" :maxLength="8" :minLength="8" :validate="validateTaxId"
-                            :disabled="!state.isNewCompay">
-                        </LazyAtomInputText>
-                        <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8"
-                            :disabled="true">
-                        </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
-                            placeholder="請輸入企業法人名稱">
-                        </LazyAtomInputText>
-                        <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="3"
-                            required class="mb-2">
-                            <template v-slot:header>
-                                <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
-                                    :items="repoSelect.industryItems">
-                                </LazyMoleculeProfileSelectLabels>
-                            </template>
-                            <template v-slot:body>
-                                <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
-                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
-                                    :max="3" :isLarge="device.state.isLarge" required name="產業類別">
-                                </LazyMoleculeFilterCategory>
-                            </template>
-                        </LazyMoleculeProfileSelectContainer>
-                        <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="手機號碼 (僅供Job Pair團隊聯繫使用)"
-                            class="mb-2" required>
-                        </LazyAtomInputMobile>
-                        <div class="d-block d-md-flex gap-2">
-                            <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
-                                v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
-                                :items="repoSelect.state.locationRes.taiwan"
-                                @change="state.companyInfo.addressLocality = ''" class="mb-2">
-                            </LazyAtomInputSelect>
-                            <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
-                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2"
-                                placeholder="請選擇鄉鎮市區"
-                                :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
-                            </LazyAtomInputSelect>
-                            <LazyAtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
-                                placeholder="請輸入道路或街名與巷弄號及樓層" class="mb-2 w-100" required>
-                            </LazyAtomInputText>
-                        </div>
-                        <!-- <LazyAtomInputText v-model="state.companyInfo.remark" name="地址備註"
-                            placeholder="例：全員全遠端工作，可自由選擇是否進辦公室" class="mb-2">
-                        </LazyAtomInputText> -->
-                        <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
-                            class="mb-2">
-                        </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
-                            placeholder="請輸入阿拉伯數字" class="mb-2">
-                        </LazyAtomInputText>
-                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
-                            v-model="state.companyInfo.url.default" class="mb-2">
-                        </LazyAtomInputText>
-                        <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
-                            :accept="'image/*'" :max="12">
-                        </LazyAtomInputUploader>
-                    </div>
-                </div>
-                <div class="body__companyInfo">
-                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
-                        required class="mb-2" ref="descriptionRef">
-                        <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
-                            :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                        </LazyOrganismChatCvModal> -->
-                    </LazyAtomInputCkeditor>
-                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
-                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
-                        @update:modelValue="setWelfareFlags()">
-                        <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
-                            :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
-                        </LazyOrganismChatCvModal> -->
-                    </LazyAtomInputCkeditor>
-                    <div v-if="repoSelect.state.selectByQueryRes" class="companyInfo__welfare mb-2">
-                        <div>
-                            ※ 系統自動偵測項目
-                        </div>
-                        <ul>
-                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits"
-                                :key="index">
-                                <li v-if="state.jobBenefits[item.value].length" class="content__item">
-                                    {{ item.text }}：{{ getWelfareString(item.value) }}
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-                    <h1 class="card__header">企業風格文化 (最多 2 項)</h1>
-                    <LazyAtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
-                        v-model="state.companyInfo.preference.culture" required
-                        :items="repoSelect.state.questionsRes[5].items" :max="2" :itemText="'textCompany'">
-                    </LazyAtomInputCheckMultiple>
-                </div>
+            </LazyAtomQuickImport>
+        </div>
+        <div class="profile__card">
+            <h2 class="card__header">基本資料</h2>
+            <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
+                v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2"
+                :maxLength="8" :minLength="8" :validate="validateTaxId" :disabled="!state.isNewCompay">
+            </LazyAtomInputText>
+            <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
+                placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8" :disabled="true">
+            </LazyAtomInputText>
+            <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
+                placeholder="請輸入企業法人名稱">
+            </LazyAtomInputText>
+            <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="3" required
+                class="mb-2">
+                <template v-slot:header>
+                    <LazyMoleculeProfileSelectLabels v-model="state.companyInfo.industry" placeholder="產業類別"
+                        :items="repoSelect.industryItems">
+                    </LazyMoleculeProfileSelectLabels>
+                </template>
+                <template v-slot:body>
+                    <LazyMoleculeFilterCategory v-model="state.companyInfo.industry" :items="repoSelect.industryItems"
+                        :categoryMap="repoSelect.industryCategoryMap" :max="3" :isLarge="device.state.isLarge" required
+                        name="產業類別">
+                    </LazyMoleculeFilterCategory>
+                </template>
+            </LazyMoleculeProfileSelectContainer>
+            <!-- <div class="card__address"> -->
+            <div class="card__addressTop">
+                <LazyAtomInputSelect class="addressTop__item" v-if="repoSelect.state.locationRes"
+                    v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
+                    :items="repoSelect.state.locationRes.taiwan" @change="state.companyInfo.addressLocality = ''">
+                </LazyAtomInputSelect>
+                <LazyAtomInputSelect class="addressTop__item" v-if="repoSelect.state.locationRes"
+                    v-model="state.companyInfo.addressLocality" name="行政區" placeholder="請選擇鄉鎮市區"
+                    :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
+                </LazyAtomInputSelect>
             </div>
-            <div class="profile__footerGroup">
-                <template v-if="state.isNewCompay">
-                    <button class="footerGroup__submit" type="button"
-                        @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
-                        下一步
-                    </button>
-                </template>
-                <template v-else>
-                    <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
-                        客製公司頁面
-                    </NuxtLink>
-                    <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
-                        name: 'company-id',
-                        params: {
-                            id: state.companyInfo.seoName
-                        }
-                    }">
-                        檢視公司頁面
-                    </NuxtLink>
-                    <NuxtLink v-else class="footerGroup__submit" target="_blank"
-                        :to="`/company/${state.companyInfo.id}`">
-                        檢視公司頁面
-                    </NuxtLink>
-                    <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
-                        儲存
-                    </button>
-                </template>
+            <LazyAtomInputText v-model="state.companyInfo.streetAddress" placeholder="請輸入道路或街名與巷弄號及樓層"
+                class="mb-2 w-100" required>
+            </LazyAtomInputText>
+            <!-- </div> -->
+            <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
+                class="mb-2" ref="descriptionRef">
+                <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
+                    :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
+                </LazyOrganismChatCvModal>
+            </LazyAtomInputCkeditor>
+            <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
+                class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
+                <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                    :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
+                </LazyOrganismChatCvModal>
+            </LazyAtomInputCkeditor>
+            <div v-if="repoSelect.state.selectByQueryRes">
+                <div>
+                    ※ 系統自動偵測項目
+                </div>
+                <ul>
+                    <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
+                        <li v-if="state.jobBenefits[item.value].length" class="content__item">
+                            {{ item.text }}：{{ getWelfareString(item.value) }}
+                        </li>
+                    </template>
+                </ul>
             </div>
         </div>
-        <!-- <div class="profile__card">
-
-        </div> -->
+        <div class="profile__card">
+            <h2 class="card__header">企業風格文化 (最多 2 項)</h2>
+            <LazyAtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
+                v-model="state.companyInfo.preference.culture" required :items="repoSelect.state.questionsRes[5].items"
+                :max="2" :itemText="'textCompany'">
+            </LazyAtomInputCheckMultiple>
+        </div>
+        <div class="profile__card">
+            <div>Logo (建議：60px*60px)</div>
+            <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
+            </LazyAtomInputPhotoSingle>
+            <LazyAtomInputBanner v-model="state.companyBanner"></LazyAtomInputBanner>
+            <LazyAtomInputMobile v-model="state.companyInfo.telephone" name="手機號碼 (僅供Job Pair團隊聯繫使用)" class="mb-2"
+                required>
+            </LazyAtomInputMobile>
+            <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字" class="mb-2">
+            </LazyAtomInputText>
+            <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
+                class="mb-2">
+            </LazyAtomInputText>
+            <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
+                class="mb-2">
+            </LazyAtomInputText>
+            <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
+                :max="12">
+            </LazyAtomInputUploader>
+        </div>
+        <div class="profile__footerGroup">
+            <template v-if="state.isNewCompay">
+                <button class="footerGroup__submit" type="button"
+                    @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
+                    下一步
+                </button>
+            </template>
+            <template v-else>
+                <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
+                    客製公司頁面
+                </NuxtLink>
+                <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
+                    name: 'company-id',
+                    params: {
+                        id: state.companyInfo.seoName
+                    }
+                }">
+                    檢視公司頁面
+                </NuxtLink>
+                <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    檢視公司頁面
+                </NuxtLink>
+                <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
+                    儲存
+                </button>
+            </template>
+        </div>
     </div>
 </template>
 <script>
@@ -618,7 +603,7 @@ async function saveCompanyInfo(config) {
 <style lang="scss" scoped>
 .profile {
     background-color: #F9F9F9;
-    // padding: 48px 32px;
+    padding: 20px;
     // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
     border-radius: 10px;
@@ -652,15 +637,32 @@ async function saveCompanyInfo(config) {
     .profile__card {
         background-color: white;
         padding: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 30px;
+
+        >*:not(:first-child) {
+            margin-top: 10px;
+        }
 
         .card__header {
-            color: #484848;
+            color: var(--Grays-Seco, #484848);
             /* H2-20-Regular */
             font-family: "PingFang TC";
             font-size: 20px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
+            margin-bottom: 30px;
+        }
+
+        .card__addressTop {
+            display: flex;
+            gap: 10px;
+
+            .addressTop__item {
+                flex-grow: 1;
+            }
         }
     }
 
