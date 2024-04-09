@@ -28,8 +28,8 @@
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
                 <LazyAtomInputAdmin class="card__list" :modelValue="state.admins"></LazyAtomInputAdmin>
-                <!-- <button class="card__add" @click="addNewAdmin()">新增管理員</button> -->
-                <LazyOrganismNewAdminModal></LazyOrganismNewAdminModal>
+                <button class="card__add" @click="addNewAdmin()">新增管理員</button>
+                <!-- <LazyOrganismNewAdminModal></LazyOrganismNewAdminModal> -->
             </div>
             <!-- <div class="accountManagement__card">
                 <h2 class="card__header">接收履歷的電子信箱</h2>

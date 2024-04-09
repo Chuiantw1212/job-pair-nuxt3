@@ -39,7 +39,6 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <!-- <div class="card__address"> -->
             <div class="card__addressTop">
                 <LazyAtomInputSelect class="addressTop__item" v-if="repoSelect.state.locationRes"
                     v-model="state.companyInfo.addressRegion" name="總公司縣市" required placeholder="請選擇縣市"
@@ -53,7 +52,6 @@
             <LazyAtomInputText v-model="state.companyInfo.streetAddress" placeholder="請輸入道路或街名與巷弄號及樓層"
                 class="mb-2 w-100" required>
             </LazyAtomInputText>
-            <!-- </div> -->
             <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
                 class="mb-2" ref="descriptionRef">
                 <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
@@ -78,6 +76,10 @@
                     </template>
                 </ul>
             </div>
+            <div class="card__footer">
+                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
+                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
+            </div>
         </div>
         <div class="profile__card">
             <h2 class="card__header">企業風格文化 (最多 2 項)</h2>
@@ -85,6 +87,10 @@
                 v-model="state.companyInfo.preference.culture" required :items="repoSelect.state.questionsRes[5].items"
                 :max="2" :itemText="'textCompany'">
             </LazyAtomInputCheckMultiple>
+            <div class="card__footer">
+                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
+                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
+            </div>
         </div>
         <div class="profile__card">
             <div>Logo (建議：60px*60px)</div>
@@ -105,8 +111,12 @@
             <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
                 :max="12">
             </LazyAtomInputUploader>
+            <div class="card__footer">
+                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
+                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
+            </div>
         </div>
-        <div class="profile__footerGroup">
+        <!-- <div class="profile__footerGroup">
             <template v-if="state.isNewCompay">
                 <button class="footerGroup__submit" type="button"
                     @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
@@ -132,7 +142,7 @@
                     儲存
                 </button>
             </template>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -662,6 +672,16 @@ async function saveCompanyInfo(config) {
 
             .addressTop__item {
                 flex-grow: 1;
+            }
+        }
+
+        .card__footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+
+            >* {
+                width: 100%;
             }
         }
     }

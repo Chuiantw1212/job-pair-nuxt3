@@ -1,10 +1,13 @@
 <template>
     <div class="inputResumes">
-        <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}(請上傳{{ accept }}檔)</h1>
+        <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}(請上傳{{
+            acceptText
+            }}檔)</h1>
         <template v-for="number in Math.ceil(modelValue.length / 3)">
             <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
                 class="resumes__previewGroup">
-                <div class="previewGroup__item" v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
+                <div class="previewGroup__item"
+                    v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
                     :key="`row${number}col${index}`">
                     <!-- <div v-if="checkIsImage(item)">
                         <img :src="item.url" class="previewGroup__item__viewer">
@@ -18,7 +21,8 @@
                                 <img class="btn__icon" src="./icon_delete_g.svg" />
                             </button>
                         </div>
-                        <div v-if="item.date" class="previewGroup__item__body__item previewGroup__item__body__item--date">
+                        <div v-if="item.date"
+                            class="previewGroup__item__body__item previewGroup__item__body__item--date">
                             {{ $filter.time(item.date) }}
                             <button class="doc__btn" @click="openFileInTab(item)">
                                 <img class="btn__icon" src="./icon_preview_g.svg" />
@@ -87,6 +91,9 @@ export default {
             set(newValue) {
                 this.$emit('update:modelValue', newValue)
             }
+        },
+        acceptText() {
+            return this.accept.replace('image/*', '圖像')
         }
     },
     methods: {
