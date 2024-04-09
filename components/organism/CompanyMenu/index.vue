@@ -4,11 +4,13 @@
             <template v-if="isRegistered">
                 <li class="nav-item" @click="handleClick()">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit">
+                        <img src="./Report.svg" alt="Report">
                         招募中心
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="handleClick()">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage">
+                        <img src="./Setting.svg" alt="Setting">
                         管理中心
                     </NuxtLink>
                 </li>
