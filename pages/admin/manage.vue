@@ -15,6 +15,12 @@
                             <div class="menu__item__text">帳戶管理</div>
                         </NuxtLink>
                     </li>
+                    <li class="menu__item">
+                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                            :to="`/admin/manage/topup`">
+                            <div class="menu__item__text">加值服務</div>
+                        </NuxtLink>
+                    </li>
                 </ul>
             </div>
         </div>

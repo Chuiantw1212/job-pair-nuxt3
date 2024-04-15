@@ -25,3 +25,11 @@
 /* .ck-editor__editable_inline {
     padding: 0px !important;
 } */
+
+@font-face {
+    font-family: 'GenSenRounded';
+    src: url('/GenSenRounded-B.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
