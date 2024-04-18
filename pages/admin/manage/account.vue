@@ -29,7 +29,16 @@
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
                 <LazyAtomInputAdmin class="card__list" :modelValue="state.admins" @remove="removeAdmin($event)">
                 </LazyAtomInputAdmin>
-                <button class="card__add" @click="addNewAdmin()">新增管理員</button>
+                <h3 class="card__header3">管理員</h3>
+                <div class="card__emailGroup">
+                    <LazyAtomInputEmail class="w-100" v-model="state.newAdminEmail" required>
+                    </LazyAtomInputEmail>
+                    <LazyAtomBtnSimpleV2 class="emailGroup__btn" @click="addNewAdmin()" size="sm"
+                        :disabled="!state.newAdminEmail">
+                        新增管理員
+                    </LazyAtomBtnSimpleV2>
+                    <!-- <button class="card__add" ></button> -->
+                </div>
                 <!-- <LazyOrganismNewAdminModal></LazyOrganismNewAdminModal> -->
             </div>
             <!-- <div class="accountManagement__card">
@@ -69,6 +78,7 @@ const state = reactive({
     newPassAgain: null,
     chatIcon: null,
     balance: 0,
+    newAdminEmail: '',
     VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV
 })
 // hooks
@@ -93,7 +103,7 @@ async function removeAdmin(item) {
 async function addNewAdmin() {
     $sweet.loader(true)
     const admins = await repoAdmin.postAdminInvitation({
-        email: 'chuiantw1212@gmail.com'
+        email: state.email
     })
     await $sweet.succeed()
     state.admins = admins
@@ -211,6 +221,28 @@ async function submitProfile() {
             font-style: normal;
             font-weight: 400;
             line-height: normal;
+        }
+
+        .card__header3 {
+            color: var(--Grays-Seco, #484848);
+            /* P-16-Rugular */
+            font-family: "PingFang TC";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            /* 162.5% */
+            margin-top: 30px;
+        }
+
+        .card__emailGroup {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+
+            .emailGroup__btn {
+                height: 42px;
+            }
         }
 
         .card__desc {
