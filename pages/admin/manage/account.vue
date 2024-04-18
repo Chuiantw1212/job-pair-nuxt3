@@ -85,7 +85,10 @@ watch(() => repoAuth.state.user, async (newValue) => {
 }, { immediate: true })
 // methods
 async function removeAdmin(item) {
-    const result = await repoAdmin.deleteAdmin(item)
+    $sweet.loader(true)
+    const admins = await repoAdmin.deleteAdmin(item)
+    $sweet.loader(false)
+    state.admins = admins
 }
 async function addNewAdmin() {
     $sweet.loader(true)

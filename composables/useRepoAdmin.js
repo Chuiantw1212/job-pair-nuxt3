@@ -45,7 +45,7 @@ export default defineStore('admin', () => {
             url: `/admin`,
             data
         })
-        return response
+        return response.body
     }
     async function postAdminNewCompany(data) {
         const response = await jobPairApi.request({
