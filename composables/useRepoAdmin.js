@@ -37,7 +37,7 @@ export default defineStore('admin', () => {
             url: `/admin/invitation`,
             data
         })
-        return response
+        return response.data
     }
     async function deleteAdmin(data) {
         const response = await jobPairApi.request({
@@ -45,7 +45,7 @@ export default defineStore('admin', () => {
             url: `/admin`,
             data
         })
-        return response.body
+        return response.data
     }
     async function postAdminNewCompany(data) {
         const response = await jobPairApi.request({

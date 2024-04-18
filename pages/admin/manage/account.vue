@@ -92,13 +92,11 @@ async function removeAdmin(item) {
 }
 async function addNewAdmin() {
     $sweet.loader(true)
-    const result = await repoAdmin.postAdminInvitation({
+    const admins = await repoAdmin.postAdminInvitation({
         email: 'chuiantw1212@gmail.com'
     })
-    $sweet.loader(false)
-    if (result.status === 200) {
-        await $sweet.succeed()
-    }
+    await $sweet.succeed()
+    state.admins = admins
 }
 async function saveUserName() {
     const validateResult = await $validate()
