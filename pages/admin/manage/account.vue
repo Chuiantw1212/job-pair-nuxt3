@@ -27,7 +27,8 @@
             <div class="accountManagement__card">
                 <h2 class="card__header">管理員</h2>
                 <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
-                <LazyAtomInputAdmin class="card__list" :modelValue="state.admins"></LazyAtomInputAdmin>
+                <LazyAtomInputAdmin class="card__list" :modelValue="state.admins" @remove="removeAdmin($event)">
+                </LazyAtomInputAdmin>
                 <button class="card__add" @click="addNewAdmin()">新增管理員</button>
                 <!-- <LazyOrganismNewAdminModal></LazyOrganismNewAdminModal> -->
             </div>
@@ -83,6 +84,9 @@ watch(() => repoAuth.state.user, async (newValue) => {
     state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
+async function removeAdmin(item) {
+    const result = await repoAdmin.deleteAdmin(item)
+}
 async function addNewAdmin() {
     $sweet.loader(true)
     const result = await repoAdmin.postAdminInvitation({

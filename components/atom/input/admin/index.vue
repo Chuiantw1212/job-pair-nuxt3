@@ -1,20 +1,23 @@
 <template>
     <div class="input__admin">
         <ul class="admin__list">
-            <li v-for="(item, index) in modelValue" class="list__item">
+            <li v-for="(item, index) in modelValue" class="list__item" :key="index">
                 <img v-if="item.image" class="item__image" :src="item.image">
                 <img v-else class="item__image" src="./User.svg">
                 <div class="item__body">
                     <div>{{ item.email }}</div>
                     <div v-if="item.dateCreated">加入日期 {{ $filter.date(item.dateCreated) }}</div>
                 </div>
-                <img src="./Trash.svg">
+                <button class="item__remove" @click="emit('remove', item)">
+                    <img src="./Trash.svg">
+                </button>
             </li>
         </ul>
         <!-- <button class="admin__add">新增管理員</button> -->
     </div>
 </template>
 <script setup>
+const emit = defineEmits(['remove'])
 const props = defineProps({
     modelValue: {
         type: Array,
@@ -52,6 +55,10 @@ const props = defineProps({
                 font-style: normal;
                 font-weight: 600;
                 line-height: normal;
+            }
+            .item__remove{
+                background-color:inherit;
+                border:none;
             }
         }
     }

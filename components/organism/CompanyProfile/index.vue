@@ -76,7 +76,7 @@
                     </template>
                 </ul>
             </div>
-            <div class="card__footer">
+            <div v-if="!state.isNewCompay" class="card__footer">
                 <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
                 <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
             </div>
@@ -87,7 +87,7 @@
                 v-model="state.companyInfo.preference.culture" required :items="repoSelect.state.questionsRes[5].items"
                 :max="2" :itemText="'textCompany'">
             </LazyAtomInputCheckMultiple>
-            <div class="card__footer">
+            <div v-if="!state.isNewCompay" class="card__footer">
                 <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
                 <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
             </div>
@@ -111,19 +111,19 @@
             <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576" :accept="'image/*'"
                 :max="12">
             </LazyAtomInputUploader>
-            <div class="card__footer">
+            <div v-if="!state.isNewCompay" class="card__footer">
                 <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
                 <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
             </div>
         </div>
-        <!-- <div class="profile__footerGroup">
-            <template v-if="state.isNewCompay">
-                <button class="footerGroup__submit" type="button"
-                    @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
-                    下一步
-                </button>
-            </template>
-            <template v-else>
+        <div v-if="state.isNewCompay" class="profile__footerGroup">
+            <!-- <template v-if="state.isNewCompay"> -->
+            <button class="footerGroup__submit" type="button"
+                @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
+                下一步
+            </button>
+            <!-- </template> -->
+            <!-- <template v-else>
                 <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                     客製公司頁面
                 </NuxtLink>
@@ -141,8 +141,8 @@
                 <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
                     儲存
                 </button>
-            </template>
-        </div> -->
+            </template> -->
+        </div>
     </div>
 </template>
 <script>
