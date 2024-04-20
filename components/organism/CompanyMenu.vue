@@ -83,7 +83,16 @@ function showModal() {
     font-size: 16px;
 
     .navItem__button {
+        display: flex;
+        gap: 10px;
         color: black;
+        transition: all 0.3s;
+        align-items: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        /* 150% */
 
         &:hover {
             color: #21cc90;

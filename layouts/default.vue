@@ -67,9 +67,8 @@ useSchemaOrg([
 </script>
 <style lang="scss" scoped>
 .app {
-    // https://web.dev/font-display/
     font-display: swap;
-    font-family: 'Noto Sans TC', sans-serif, 'charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif';
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, 'Noto Sans TC', sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     background-color: #f9f9f9;
     overflow-x: hidden;
 }

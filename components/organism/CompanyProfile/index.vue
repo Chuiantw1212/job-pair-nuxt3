@@ -16,17 +16,19 @@
                     </div>
                     <div class="row basicInfo__body">
                         <div>Logo (建議：60px*60px)</div>
-                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage" class="mb-2">
+                        <LazyAtomInputPhotoSingle v-model="state.companyLogo" :placeholder="placeholderImage"
+                            class="mb-2">
                         </LazyAtomInputPhotoSingle>
-                        <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
-                            placeholder="請輸入企業法人名稱">
-                        </LazyAtomInputText>
                         <LazyAtomInputText v-if="state.isNewCompay || state.companyInfo.taxID !== '90230587'"
                             v-model="state.companyInfo.taxID" name="統一編號" required placeholder="請輸入企業的統一編號（共8位阿拉伯數字）"
-                            class="mb-2" :maxLength="8" :minLength="8">
+                            class="mb-2" :maxLength="8" :minLength="8" :validate="validateTaxId">
                         </LazyAtomInputText>
                         <LazyAtomInputText v-else :modelValue="'Job Pair 無統編合作夥伴'" name="統一編號" required
-                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8" :disabled="true">
+                            placeholder="請輸入企業的統一編號（共8位阿拉伯數字）" class="mb-2" :maxLength="8" :minLength="8"
+                            :disabled="true">
+                        </LazyAtomInputText>
+                        <LazyAtomInputText v-model="state.companyInfo.name" name="企業名稱" required class="mb-2"
+                            placeholder="請輸入企業法人名稱">
                         </LazyAtomInputText>
                         <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.industry" name="產業類別" :max="3"
                             required class="mb-2">
@@ -37,8 +39,8 @@
                             </template>
                             <template v-slot:body>
                                 <LazyMoleculeFilterCategory v-model="state.companyInfo.industry"
-                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap" :max="3"
-                                    :isLarge="device.state.isLarge" required name="產業類別">
+                                    :items="repoSelect.industryItems" :categoryMap="repoSelect.industryCategoryMap"
+                                    :max="3" :isLarge="device.state.isLarge" required name="產業類別">
                                 </LazyMoleculeFilterCategory>
                             </template>
                         </LazyMoleculeProfileSelectContainer>
@@ -52,7 +54,8 @@
                                 @change="state.companyInfo.addressLocality = ''" class="mb-2">
                             </LazyAtomInputSelect>
                             <LazyAtomInputSelect v-if="repoSelect.state.locationRes"
-                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2" placeholder="請選擇鄉鎮市區"
+                                v-model="state.companyInfo.addressLocality" name="行政區" class="mb-2"
+                                placeholder="請選擇鄉鎮市區"
                                 :items="repoSelect.state.locationRes[state.companyInfo.addressRegion]" required>
                             </LazyAtomInputSelect>
                             <LazyAtomInputText v-model="state.companyInfo.streetAddress" name="詳細地址"
@@ -65,11 +68,11 @@
                         <LazyAtomInputText v-model="state.companyInfo.capital" name="資本額" placeholder="請輸入阿拉伯數字"
                             class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數" placeholder="請輸入阿拉伯數字"
-                            class="mb-2">
+                        <LazyAtomInputText v-model="state.companyInfo.numberOfEmployees" name="員工人數"
+                            placeholder="請輸入阿拉伯數字" class="mb-2">
                         </LazyAtomInputText>
-                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站" v-model="state.companyInfo.url.default"
-                            class="mb-2">
+                        <LazyAtomInputText v-if="state.companyInfo.url" name="官方網站"
+                            v-model="state.companyInfo.url.default" class="mb-2">
                         </LazyAtomInputText>
                         <LazyAtomInputUploader v-model="state.companyImages" name="企業環境照片" :size="1048576"
                             :accept="'image/*'" :max="12">
@@ -77,14 +80,15 @@
                     </div>
                 </div>
                 <div class="body__companyInfo">
-                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
-                        class="mb-2" ref="descriptionRef">
+                    <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹"
+                        required class="mb-2" ref="descriptionRef">
                         <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
                             :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
                         </LazyOrganismChatCvModal> -->
                     </LazyAtomInputCkeditor>
-                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
-                        class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
+                    <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度"
+                        required class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true"
+                        @update:modelValue="setWelfareFlags()">
                         <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
                             :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
                         </LazyOrganismChatCvModal> -->
@@ -94,7 +98,8 @@
                             ※ 系統自動偵測項目
                         </div>
                         <ul>
-                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
+                            <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits"
+                                :key="index">
                                 <li v-if="state.jobBenefits[item.value].length" class="content__item">
                                     {{ item.text }}：{{ getWelfareString(item.value) }}
                                 </li>
@@ -119,14 +124,15 @@
                         客製公司頁面
                     </NuxtLink>
                     <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
-                        name: 'company-id',
-                        params: {
-                            id: state.companyInfo.seoName
-                        }
-                    }">
+            name: 'company-id',
+            params: {
+                id: state.companyInfo.seoName
+            }
+        }">
                         檢視公司頁面
                     </NuxtLink>
-                    <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    <NuxtLink v-else class="footerGroup__submit" target="_blank"
+                        :to="`/company/${state.companyInfo.id}`">
                         檢視公司頁面
                     </NuxtLink>
                     <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
@@ -198,6 +204,17 @@ onMounted(async () => {
     }
 })
 // methods
+async function validateTaxId(taxID) {
+    // 已註冊不檢核
+    if (!state.isNewCompay) {
+        return
+    }
+    // 只有註冊時須檢核
+    const res = await repoCompany.getCompanyByTaxId(taxID)
+    if (res.data) {
+        return '統編已存在'
+    }
+}
 function getWelfareString(key) {
     const labels = state.jobBenefits[key]
     return labels.join(" ,")
@@ -308,9 +325,6 @@ async function crawlCompanyFromPlatform(crawlerUrl = '') {
     }
     if (targetPlatform === '.yourator.co/companies/') {
         await setYouratorCompanyInfo(crawlerCompany)
-    }
-    if (targetPlatform === '.cakeresume.com/companies/') {
-        await setCakeresumeCompanyInfo(crawlerCompany)
     }
     // 拿掉被占用的欄位
     if (state.companyInfo.telephone === '暫不提供') {
