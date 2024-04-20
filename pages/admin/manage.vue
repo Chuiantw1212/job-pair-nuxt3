@@ -11,6 +11,13 @@
                 </li>
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        :to="{ name: 'admin-manage-preference' }">
+                        <img class="item__link__icon" src="@/assets/company/Preference.svg">
+                        企業風格文化
+                    </NuxtLink>
+                </li>
+                <li class="menu__item">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                         :to="{ name: 'admin-manage-account' }">
                         <img class="item__link__icon" src="@/assets/company/Resume.svg">
                         帳戶管理
