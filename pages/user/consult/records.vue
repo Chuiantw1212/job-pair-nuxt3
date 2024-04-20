@@ -142,7 +142,7 @@
                                             class="row__cell row__cell--last row__cell--paid">
                                             付款完成
                                         </div>
-                                        <div v-if="item.status === 'unpaid'"
+                                        <button v-if="item.status === 'unpaid'"
                                             class="row__cell row__cell--last row__cell--unpaid"
                                             @click="payUnpaidItem(item)">
                                             <template v-if="item.RtnCode">
@@ -151,7 +151,7 @@
                                             <template v-else>
                                                 未付款
                                             </template>
-                                        </div>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
