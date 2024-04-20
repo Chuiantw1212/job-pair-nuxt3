@@ -53,7 +53,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      VITE_APP_ECPAY_AMOUNT: 5,
+      VITE_APP_ECPAY_AMOUNT: 2000,
       VITE_APP_FIREBASE_ENV: 'development',
       apiBase, // deprecated
       // SEO
