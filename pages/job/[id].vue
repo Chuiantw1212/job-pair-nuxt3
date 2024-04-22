@@ -29,7 +29,7 @@
                 <div class="basic__numberGroup">
                     <div class="numberGroup__similarity">
                         適配度分數
-                        <span class="similarity__number"> {{ $rank(item.similarity) }}</span>
+                        <span class="similarity__number"> {{ $rank(state.job.similarity) }}</span>
                     </div>
                     <div class="numberGroup__salary">
                         {{ $filter.salaryNumber(state.job)
@@ -146,7 +146,7 @@
                     <div class="item__body item__body--badgeGroup">
                         <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
                             class="body__badge">{{
-                            getCategoryText(category) }}</span>
+                                getCategoryText(category) }}</span>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="features__item">
