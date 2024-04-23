@@ -578,11 +578,12 @@ function setJobComparable() {
     .userStatus {
         .userStatus__card {
             width: 100%;
-            height: 631px;
 
             .card__header {
                 font-size: 22px;
                 font-weight: bold;
+                display: flex;
+                align-items: center;
 
                 .card__header__icon {
                     width: 32px;
