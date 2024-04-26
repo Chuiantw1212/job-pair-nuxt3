@@ -38,5 +38,11 @@
     "mitt": "^3.0.1",
     "nouislider": "^15.7.1",
     "sweetalert2": "^11.6.13"
-  }
+  },
+  "description": "Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
