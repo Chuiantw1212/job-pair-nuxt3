@@ -98,8 +98,14 @@ watch(() => repoAuth.state.user, async (newValue) => {
 async function removeAdmin(item) {
     $sweet.loader(true)
     const admins = await repoAdmin.deleteAdmin(item)
-    $sweet.loader(false)
+    await $sweet.succeed()
     state.admins = admins
+    if (item.email === repoAuth.state.user.email) {
+        repoAuth.userSignout()
+        router.push({
+            name: 'admin',
+        })
+    }
 }
 async function addNewAdmin() {
     $sweet.loader(true)

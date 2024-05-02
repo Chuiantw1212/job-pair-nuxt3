@@ -3,7 +3,7 @@
         <template v-if="repoAuth.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit/jobs">
                         <img src="./Report.svg" alt="Report">
                         招募中心
                     </NuxtLink>
