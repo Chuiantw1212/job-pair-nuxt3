@@ -6,21 +6,64 @@
             <h2 class="card__header">選擇企業領導偏好</h2>
             <div class="card__desc">可選 2 個選項</div>
             <ul class="card__list">
+                <input v-show="false" :value="state.companyInfo.preference.culture.length !== 0" :data-required="true"
+                    :data-name="'企業風格文化'">
                 <li class="list__item" v-for="(item, index) in cultureItems" :key="index">
                     <label class="item__label"
                         :class="{ 'item__label--isSelected': checkIsSelected(item.value), 'item__label--disabled': checkDisabled(item.value) }"
                         :for="item.value">
                         {{ item.textCompany }}
                         <input v-show="false" type="checkbox" :id="item.value" :value="item.value"
-                            v-model="checkedCultures" :disabled="checkDisabled(item.value)">
+                            v-model="state.companyInfo.preference.culture" :disabled="checkDisabled(item.value)">
                     </label>
                 </li>
             </ul>
         </div>
+        <div class="preference__footerGroup">
+            <!-- <template v-if="state.isNewCompay"> -->
+            <button v-if="state.isNewCompay" class="footerGroup__submit" type="button" @click="saveCompanyInfo()">
+                下一步
+            </button>
+            <button v-else class="footerGroup__submit" type="button" @click="saveCompanyInfo()">
+                儲存
+            </button>
+            <!-- <button class="footerGroup__submit" type="button" @click="gotoCulture()">
+                下一步
+            </button> -->
+            <!-- </template> -->
+            <!-- <template v-else>
+                <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
+                    客製公司頁面
+                </NuxtLink>
+                <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
+                    name: 'company-id',
+                    params: {
+                        id: state.companyInfo.seoName
+                    }
+                }">
+                    檢視公司頁面
+                </NuxtLink>
+                <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
+                    檢視公司頁面
+                </NuxtLink>
+            </template> -->
+        </div>
     </div>
 </template>
 <script setup>
+const { $validate, $sweet, } = useNuxtApp()
 const repoSelect = useRepoSelect()
+const repoAdmin = useRepoAdmin()
+const repoAuth = useRepoAuth()
+const repoCompany = useRepoCompany()
+const state = reactive({
+    isNewCompay: false,
+    companyInfo: {
+        preference: {
+            culture: []
+        }
+    },
+})
 const cultureItems = computed(() => {
     if (repoSelect.state.questionsRes?.length) {
         return repoSelect.state.questionsRes[5].items
@@ -28,17 +71,55 @@ const cultureItems = computed(() => {
         return []
     }
 })
-const checkedCultures = ref([])
-const props = defineProps({
-
+watch(() => repoAuth.state.user, () => {
+    initializeCompanyInfo()
 })
+async function initializeCompanyInfo() {
+    const companyRes = await repoAdmin.getAdminCompany()
+    if (companyRes.status !== 200) {
+        return
+    }
+    const companyInfo = companyRes.data
+    const noPreference = companyInfo.preference.culture.length === 0
+    console.log({ noPreference })
+    if (noPreference) {
+        state.isNewCompay = true
+    }
+    if (companyInfo) {
+        state.companyInfo = companyInfo
+    }
+}
 function checkIsSelected(value) {
-    return checkedCultures.value.includes(value)
+    const { culture } = state.companyInfo.preference
+    return culture.includes(value)
 }
 function checkDisabled(value) {
-    const isMax = checkedCultures.value.length === 2
-    const isNotSelected = !checkedCultures.value.includes(value)
+    const { culture } = state.companyInfo.preference
+    const isMax = culture.length === 2
+    const isNotSelected = !culture.includes(value)
     return isMax && isNotSelected
+}
+async function saveCompanyInfo() {
+    const result = await $validate()
+    if (!result.isValid) {
+        return
+    }
+    $sweet.loader(true)
+    const companyRes = await repoCompany.patchCompany(state.companyInfo)
+    const updatedResult = companyRes.data
+    repoAuth.setCompany(updatedResult)
+    if (state.isNewCompay) {
+        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
+            title: '身分驗證',
+            icon: 'info',
+            confirmButtonText: '發佈職缺',
+        })
+        router.push({
+            name: "admin-recruit-jobs"
+        })
+    } else {
+        $sweet.succeed()
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -116,6 +197,22 @@ function checkDisabled(value) {
                     background-color: rgb(239, 239, 239);
                 }
             }
+        }
+    }
+
+    .preference__footerGroup {
+        display: flex;
+        justify-content: flex-end;
+        gap: 24px;
+        margin-top: 40px;
+
+        .footerGroup__submit {
+            border: none;
+            color: white;
+            background-color: #29b0ab;
+            border-radius: 10px;
+            padding: 12px 16px;
+            text-decoration: none;
         }
     }
 }

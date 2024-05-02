@@ -5,8 +5,8 @@
             以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識。
         </div>
         <hr class="profile__line">
-        <div class="profile__card">
-            <LazyAtomQuickImport v-if="state.isNewCompay || isDev" @click="crawlCompanyFromPlatform($event)">
+        <div v-if="state.isNewCompay || isDev" class="profile__card">
+            <LazyAtomQuickImport @click="crawlCompanyFromPlatform($event)">
                 在此貼上您的企業在104、Yourator上「公司介紹頁面」的網站連結，即可快速建立企業基本資訊。<br>
                 範例： <br>
                 www.104.com.tw/companyInfo/*, <br>
@@ -64,32 +64,8 @@
                     :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
                 </LazyOrganismChatCvModal>
             </LazyAtomInputCkeditor>
-            <div v-if="repoSelect.state.selectByQueryRes">
-                <div>
-                    ※ 系統自動偵測項目
-                </div>
-                <ul>
-                    <template v-for="(item, index) in repoSelect.state.selectByQueryRes.jobBenefits" :key="index">
-                        <li v-if="state.jobBenefits[item.value].length" class="content__item">
-                            {{ item.text }}：{{ getWelfareString(item.value) }}
-                        </li>
-                    </template>
-                </ul>
-            </div>
             <div v-if="!state.isNewCompay" class="card__footer">
-                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
-                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
-            </div>
-        </div>
-        <div class="profile__card">
-            <h2 class="card__header">企業風格文化 (最多 2 項)</h2>
-            <LazyAtomInputCheckMultiple v-if="repoSelect.state.questionsRes && state.companyInfo.preference"
-                v-model="state.companyInfo.preference.culture" required :items="repoSelect.state.questionsRes[5].items"
-                :max="2" :itemText="'textCompany'">
-            </LazyAtomInputCheckMultiple>
-            <div v-if="!state.isNewCompay" class="card__footer">
-                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
-                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
+                <LazyAtomBtnSimpleV2 @click="saveCompanyInfo()">儲存</LazyAtomBtnSimpleV2>
             </div>
         </div>
         <div class="profile__card">
@@ -112,18 +88,15 @@
                 :max="12">
             </LazyAtomInputUploader>
             <div v-if="!state.isNewCompay" class="card__footer">
-                <LazyAtomBtnSimpleV2 outline>取消</LazyAtomBtnSimpleV2>
-                <LazyAtomBtnSimpleV2>儲存</LazyAtomBtnSimpleV2>
+                <LazyAtomBtnSimpleV2 @click="saveCompanyInfo()">儲存</LazyAtomBtnSimpleV2>
             </div>
         </div>
-        <div v-if="state.isNewCompay" class="profile__footerGroup">
-            <!-- <template v-if="state.isNewCompay"> -->
-            <button class="footerGroup__submit" type="button"
-                @click="saveCompanyInfo({ validate: true, to: '/admin/recruit/jobs' })">
+        <div class="profile__footerGroup">
+            <button v-if="state.isNewCompay" class="footerGroup__submit" type="button"
+                @click="saveCompanyInfo({ validate: true, to: 'admin-manage-preference' })">
                 下一步
             </button>
-            <!-- </template> -->
-            <!-- <template v-else>
+            <template v-else>
                 <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                     客製公司頁面
                 </NuxtLink>
@@ -141,7 +114,7 @@
                 <button class="footerGroup__submit" type="button" @click="saveCompanyInfo({ validate: true })">
                     儲存
                 </button>
-            </template> -->
+            </template>
         </div>
     </div>
 </template>
@@ -273,7 +246,6 @@ async function initializeCompanyInfo() {
         companyInfo = JSON.parse(JSON.stringify(repoAuth.state.company))
     } else {
         const companyRes = await repoAdmin.getAdminCompany()
-        // $sweet.loader(false)
         if (companyRes.status !== 200) {
             return
         }
@@ -335,62 +307,6 @@ async function crawlCompanyFromPlatform(crawlerUrl = '') {
     // 設定CKEditor文字
     currentInstance.refs.descriptionRef.setData(state.companyInfo.description)
     currentInstance.refs.jobBenefitsRef.setData(state.companyInfo.jobBenefits)
-}
-async function setCakeresumeCompanyInfo(response) {
-    const {
-        name = '',
-        products = '',
-        mission = '',
-        media = '',
-        jobBenefits = '',
-        addressRegion = '',
-        addressLocality = '',
-        numberOfEmployees = 0,
-        streetAddress = '',
-        capital = null,
-        url = {
-            default: '',
-        },
-        profile = '',
-        idea = '',
-        story = '',
-        logo,
-    } = response
-    let description = ""
-    if (description) {
-        description += `公司介紹`
-        description += `${response.description}<br>`
-    }
-    if (products) {
-        description += `產品或服務`
-        description += `${products}<br>`
-    }
-    if (mission) {
-        description += `使命`
-        description += `${mission}<br>`
-    }
-    if (media) {
-        description += `媒體曝光`
-        description += `${media}<br>`
-    }
-    const companyInfo = {
-        name,
-        description,
-        jobBenefits,
-        addressRegion,
-        addressLocality,
-        numberOfEmployees,
-        streetAddress,
-        capital,
-        url,
-        profile,
-        idea,
-        story,
-        logo,
-    }
-    state.companyLogo = JSON.parse(JSON.stringify(companyInfo.logo))
-    delete companyInfo.logo
-    state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
 async function setYouratorCompanyInfo(response) {
     const {
@@ -536,13 +452,11 @@ async function set104CompanyInfo(response) {
     }
     state.companyInfo = Object.assign(state.companyInfo, companyInfo)
 }
-async function saveCompanyInfo(config) {
+async function saveCompanyInfo(config = {}) {
     const { validate = false, to = '' } = config
-    if (validate) {
-        const result = await $validate()
-        if (!result.isValid) {
-            return
-        }
+    const result = await $validate()
+    if (!result.isValid) {
+        return
     }
     state.companyInfo.jobBenefitFlags = {}
     state.benefitFlags.forEach(welfareType => {
@@ -595,16 +509,14 @@ async function saveCompanyInfo(config) {
             console.log(error.message);
         }
     }
-    // set company
+
     const updatedResult = companyRes.data
     repoAuth.setCompany(updatedResult)
     if (to) {
-        await $sweet.info('可以發佈職缺囉！記得至e-mail信箱收身份驗證信。', {
-            title: '身分驗證',
-            icon: 'info',
-            confirmButtonText: '發佈職缺',
+        $sweet.loader(false)
+        router.push({
+            name: to
         })
-        router.push(to)
     } else {
         $sweet.succeed()
     }
@@ -715,6 +627,7 @@ async function saveCompanyInfo(config) {
         display: flex;
         justify-content: flex-end;
         gap: 24px;
+        margin-top: 40px;
 
         .footerGroup__submit {
             border: none;
