@@ -8,7 +8,7 @@
             <ul class="card__list">
                 <input v-show="false" :value="state.companyInfo.preference.culture.length !== 0" :data-required="true"
                     :data-name="'企業風格文化'">
-                <li class="list__item" v-for="(item, index) in cultureItems" :key="index">
+                <li class="list__item" v-for="(item, index) in state.questionItems" :key="index">
                     <label class="item__label"
                         :class="{ 'item__label--isSelected': checkIsSelected(item.value), 'item__label--disabled': checkDisabled(item.value) }"
                         :for="item.value">
@@ -63,25 +63,24 @@ const state = reactive({
             culture: []
         }
     },
+    questionItems: []
 })
-const cultureItems = computed(() => {
-    if (repoSelect.state.questionsRes?.length) {
-        return repoSelect.state.questionsRes[5].items
-    } else {
-        return []
-    }
+onMounted(() => {
+    initializeCompanyInfo()
 })
 watch(() => repoAuth.state.user, () => {
     initializeCompanyInfo()
-})
+}, { deep: true })
 async function initializeCompanyInfo() {
+    if (repoSelect.state.questionsRes) {
+        state.questionItems = repoSelect.state.questionsRes[5].items
+    }
     const companyRes = await repoAdmin.getAdminCompany()
     if (companyRes.status !== 200) {
         return
     }
     const companyInfo = companyRes.data
     const noPreference = companyInfo.preference.culture.length === 0
-    console.log({ noPreference })
     if (noPreference) {
         state.isNewCompay = true
     }

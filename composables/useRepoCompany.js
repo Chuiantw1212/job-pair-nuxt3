@@ -31,7 +31,6 @@ export default defineStore('company', () => {
             method: 'get',
             url: `/company/admins`,
         })
-        console.log(response);
         return response.data
     }
     async function getCompanyById(id) {

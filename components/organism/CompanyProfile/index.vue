@@ -54,15 +54,15 @@
             </LazyAtomInputText>
             <LazyAtomInputCkeditor id="descriptionRef" v-model="state.companyInfo.description" name="企業介紹" required
                 class="mb-2" ref="descriptionRef">
-                <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
-                    :chatRequest="handleChatRequest" @update:modelValue="setDescription($event)">
-                </LazyOrganismChatCvModal>
+                <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.description" name="企業介紹"
+                    @update:modelValue="setDescription($event)">
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <LazyAtomInputCkeditor id="jobBenefitsRef" v-model="state.companyInfo.jobBenefits" name="福利制度" required
                 class="mb-1" ref="jobBenefitsRef" :removePlatformLink="true" @update:modelValue="setWelfareFlags()">
-                <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
-                    :chatRequest="handleChatRequest" @update:modelValue="setJobBenefits($event)">
-                </LazyOrganismChatCvModal>
+                <!-- <LazyOrganismChatCvModal v-model="state.companyInfo.jobBenefits" name="福利制度"
+                    @update:modelValue="setJobBenefits($event)">
+                </LazyOrganismChatCvModal> -->
             </LazyAtomInputCkeditor>
             <div v-if="!state.isNewCompay" class="card__footer">
                 <LazyAtomBtnSimpleV2 @click="saveCompanyInfo()">儲存</LazyAtomBtnSimpleV2>

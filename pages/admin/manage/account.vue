@@ -64,6 +64,7 @@
     </div>
 </template>
 <script setup>
+import { getAuth, } from "firebase/auth"
 const { $sweet, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()

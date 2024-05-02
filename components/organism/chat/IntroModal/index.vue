@@ -62,12 +62,6 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    chatRequest: {
-        type: Function,
-        default: function () {
-            return false
-        }
-    },
     occupationalCategory: {
         type: Array,
         default: function () {
