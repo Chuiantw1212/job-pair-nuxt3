@@ -18,7 +18,7 @@
                 </li>
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                        :to="{ name: 'admin-manage-account' }">
+                        :to="{ name: 'admin-manage-account' }" @click="forceRouteTo('admin-manage-account')">
                         <img class="item__link__icon" src="@/assets/company/Resume.svg">
                         帳戶管理
                     </NuxtLink>
@@ -32,11 +32,17 @@
 </template>
 <script setup>
 const device = useDevice()
-definePageMeta({
-    redirect: () => {
-        return { name: 'admin-manage-company' }
-    },
-})
+const router = useRouter()
+// definePageMeta({
+//     redirect: () => {
+//         return { name: 'admin-manage-company' }
+//     },
+// })
+function forceRouteTo() {
+    router.push({
+        name: 'admin-manage-account'
+    })
+}
 </script>
 <style lang="scss" scoped>
 .dashboard {

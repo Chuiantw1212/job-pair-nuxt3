@@ -42,11 +42,11 @@ const repoAuth = useRepoAuth()
 const device = useDevice()
 const route = useRoute()
 // hooks
-definePageMeta({
-    redirect: () => {
-        return { name: 'user-profile' }
-    },
-})
+// definePageMeta({
+//     redirect: () => {
+//         return { name: 'user-profile' }
+//     },
+// })
 function checkConsultActive() {
     return route.path.includes('/user/consult')
 }

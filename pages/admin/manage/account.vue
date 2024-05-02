@@ -80,7 +80,7 @@ const state = reactive({
     chatIcon: null,
     balance: 0,
     newAdminEmail: '',
-    VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV
+    VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV,
 })
 // hooks
 useHead({
@@ -103,11 +103,17 @@ async function removeAdmin(item) {
 }
 async function addNewAdmin() {
     $sweet.loader(true)
-    const admins = await repoAdmin.postAdminInvitation({
-        email: state.email
+    if (!String(state.newAdminEmail).trim()) {
+        return
+    }
+    const res = await repoAdmin.postAdminInvitation({
+        email: state.newAdminEmail
     })
-    await $sweet.succeed()
-    state.admins = admins
+    if (res.status === 200) {
+        await $sweet.succeed()
+        state.admins = res
+    }
+    state.newAdminEmail = ''
 }
 async function saveUserName() {
     const validateResult = await $validate()

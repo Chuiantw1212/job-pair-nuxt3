@@ -56,6 +56,7 @@ const repoSelect = useRepoSelect()
 const repoAdmin = useRepoAdmin()
 const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
+const router = useRouter()
 const state = reactive({
     isNewCompay: false,
     companyInfo: {
