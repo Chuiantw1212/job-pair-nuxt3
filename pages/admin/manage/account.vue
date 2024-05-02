@@ -111,7 +111,7 @@ async function addNewAdmin() {
     })
     if (res.status === 200) {
         await $sweet.succeed()
-        state.admins = res
+        state.admins = res.data
     }
     state.newAdminEmail = ''
 }

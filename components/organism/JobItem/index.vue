@@ -61,7 +61,7 @@
                 <div v-if="modelValue.jobLocationType !== 'onSite'">
                     ·<span>{{ $filter.optionText(modelValue.jobLocationType,
                         repoSelect.state.selectByQueryRes?.jobLocationType)
-                    }}</span>
+                        }}</span>
                 </div>
 
             </NuxtLink>

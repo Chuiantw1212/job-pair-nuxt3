@@ -9,7 +9,7 @@
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage/company">
                         <img src="./Setting.svg" alt="Setting">
                         管理中心
                     </NuxtLink>

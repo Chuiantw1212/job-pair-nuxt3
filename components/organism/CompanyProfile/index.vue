@@ -190,10 +190,6 @@ async function validateTaxId(taxID) {
         return '統編已存在'
     }
 }
-function getWelfareString(key) {
-    const labels = state.jobBenefits[key]
-    return labels.join(" ,")
-}
 function setWelfareFlags() {
     if (!state.companyInfo) {
         return
@@ -482,6 +478,7 @@ async function saveCompanyInfo(config = {}) {
         const { user } = repoAuth.state
         state.companyInfo.email = user.email
         state.companyInfo.admins = [user.id]
+        state.companyInfo.adminUids = [user.uid]
         companyRes = await repoAdmin.postAdminNewCompany(state.companyInfo)
     }
     if (companyRes.status !== 200) {
