@@ -44,7 +44,8 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <AtomInputSwitch v-model="job.status" @update:modelValue="checkJobStatus($event, job, index)">
+                            <AtomInputSwitch v-model="job.status"
+                                @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
                         </td>
                         <td>
@@ -218,6 +219,11 @@ function getJobPreviewHref(job) {
     }
 }
 async function checkJobStatus(newStatus, job, index) {
+    console.log({
+        newStatus,
+        job: job.completeness,
+        index
+    })
     if (newStatus === 'active') {
         if (job.completeness !== 100) {
             state.jobList[index].status = 'closed'
