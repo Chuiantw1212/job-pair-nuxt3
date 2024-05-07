@@ -92,14 +92,14 @@
                     <span class="item__body">
                         <template v-for="(item, index) in state.job?.employmentType">
                             {{
-        $filter.optionText(item,
-            repoSelect.state.selectByQueryRes?.employmentType)
-    }} ·
+                                $filter.optionText(item,
+                                    repoSelect.state.selectByQueryRes?.employmentType)
+                            }} ·
                         </template>
                         {{
-        $filter.optionText(state.job?.responsibilities,
-            repoSelect.state.selectByQueryRes?.responsibilities)
-    }}</span>
+                            $filter.optionText(state.job?.responsibilities,
+                                repoSelect.state.selectByQueryRes?.responsibilities)
+                        }}</span>
                 </div>
                 <div class="features__item">
                     <span class="item__header">
@@ -107,9 +107,9 @@
                     </span>
                     <span class="item__body">
                         {{
-            $filter.optionText(state.job?.jobLocationType,
-                repoSelect.state.selectByQueryRes?.jobLocationType)
-        }}
+                            $filter.optionText(state.job?.jobLocationType,
+                                repoSelect.state.selectByQueryRes?.jobLocationType)
+                        }}
                     </span>
                 </div>
                 <div v-if="state.job?.remark" class="features__item">
@@ -118,8 +118,8 @@
                     </span>
                     <span class="item__body">
                         {{
-        state.job?.remark
-    }}
+                            state.job?.remark
+                        }}
                     </span>
                 </div>
                 <div v-if="state.job?.language" class="features__item">
@@ -127,9 +127,9 @@
                         語言要求
                     </span>
                     <span class="item__body">{{ $optionText(state.job?.language,
-        repoSelect.state.selectByQueryRes?.language)
+                        repoSelect.state.selectByQueryRes?.language)
                         }} {{ $optionText(state.job?.proficiency,
-        repoSelect.state.selectByQueryRes?.proficiency)
+                            repoSelect.state.selectByQueryRes?.proficiency)
                         }}</span>
                 </div>
                 <div class="features__item">
@@ -145,7 +145,7 @@
                     <div class="item__body item__body--badgeGroup">
                         <span v-for="(category, index ) in state.job?.occupationalCategory" :key="index"
                             class="body__badge">{{
-        getCategoryText(category) }}</span>
+                                getCategoryText(category) }}</span>
                     </div>
                 </div>
                 <div v-if="getJobAddress()" class="features__item">
