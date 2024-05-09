@@ -1,132 +1,151 @@
 <template>
     <div class="dashboard" :class="{ container: device.state.isLarge }">
-        <div :class="{ row: device.state.isLarge }">
-            <div class="dashboard__menu">
-                <ul class="menu__content">
-                    <li class="menu__item">
-                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                            :to="{ name: 'admin-manage-company' }">
-                            <div class="menu__item__text">企業檔案</div>
-                        </NuxtLink>
-                    </li>
-                    <li class="menu__item">
-                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                            :to="{ name: 'admin-manage-account' }">
-                            <div class="menu__item__text">帳戶管理</div>
-                        </NuxtLink>
-                    </li>
-                </ul>
-            </div>
+        <div :class="{ 'col-2': device.state.isLarge }">
+            <ul class="dashboard__menu">
+                <li class="menu__item">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        :to="{ name: 'admin-manage-company' }">
+                        <img class="item__link__icon" src="@/assets/company/Company.svg">
+                        企業檔案
+                    </NuxtLink>
+                </li>
+                <li class="menu__item">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        :to="{ name: 'admin-manage-preference' }">
+                        <img class="item__link__icon" src="@/assets/company/Preference.svg">
+                        企業風格文化
+                    </NuxtLink>
+                </li>
+                <li class="menu__item">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        :to="{ name: 'admin-manage-account' }" @click="forceRouteTo('admin-manage-account')">
+                        <img class="item__link__icon" src="@/assets/company/Resume.svg">
+                        帳戶管理
+                    </NuxtLink>
+                </li>
+            </ul>
         </div>
-        <div class="dashboard__view" :class="{ col: device.state.isLarge }">
+        <div class="dashboard__view" :class="{ 'col-10': device.state.isLarge }">
             <NuxtPage />
         </div>
     </div>
 </template>
 <script setup>
 const device = useDevice()
-definePageMeta({
-    redirect: () => {
-        return { name: 'admin-manage-company' }
-    },
-})
+const router = useRouter()
+// definePageMeta({
+//     redirect: () => {
+//         return { name: 'admin-manage-company' }
+//     },
+// })
+function forceRouteTo() {
+    router.push({
+        name: 'admin-manage-account'
+    })
+}
 </script>
 <style lang="scss" scoped>
 .dashboard {
-    .dashboard__view {
-        padding: 20px 0;
-    }
+    padding: 20px 0;
+    // .dashboard__view {
+    // }
 
     .dashboard__menu {
+        background-color: #FFF;
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        justify-content: space-around;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        z-index: 1040;
+        margin-bottom: 0;
+        border-top: 1px solid #EDEAEA;
+        // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+        height: 57px;
 
-
-        .menu__content {
-            background-color: #f8f9fa;
-            display: flex;
-            list-style-type: none;
-            padding: 0;
-            justify-content: space-around;
-            position: fixed;
+        .menu__item {
+            height: 100%;
             width: 100%;
-            bottom: 0;
-            z-index: 1040;
-            margin-bottom: 0;
-            border-top: 1px solid #c4c4c4;
-            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
 
-            .menu__item {
-                .menu__item__link {
-                    display: block;
-                    padding: 6px 12px;
-                    text-decoration: none;
-                    color: #6c6c6c;
+            .menu__item__link {
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                height: 100%;
+                text-decoration: none;
+                color: #6c6c6c;
+                transition: all 0.3s;
+                text-align: center;
+
+                .item__link__icon {
                     transition: all 0.3s;
-                    border: 2px solid rgba(0, 0, 0, 0);
-                    text-align: center;
-
-                    &:hover {
-                        color: #5ea88e;
-                        border-bottom: 3px solid #5ea88e;
-
-                        .item__link__icon {
-                            filter: grayscale(0);
-                        }
-                    }
-
-                    .item__link__icon {
-                        transition: all 0.3s;
-                        filter: grayscale(1);
-                    }
+                    filter: grayscale(1);
+                    margin-right: 4px;
                 }
 
-                .menu__item__link--active {
+                &:hover {
                     color: #5ea88e;
-                    border-bottom: 3px solid #5ea88e;
 
                     .item__link__icon {
                         filter: grayscale(0);
                     }
                 }
+            }
 
-                .menu__item__text {
-                    margin-top: 4px;
+            .menu__item__link--active {
+                color: #5ea88e;
+
+                .item__link__icon {
+                    filter: grayscale(0);
                 }
             }
         }
-
-
     }
 }
 
 @media screen and (min-width: 992px) {
     .dashboard {
+        display: flex;
+        gap: 30px;
+        padding: 70px 0;
 
 
         .dashboard__menu {
-            min-height: 64px;
+            bottom: unset;
+            max-width: 160px;
+            flex-direction: column;
+            gap: 10px;
+            padding: 30px;
+            height: unset;
+            position: relative;
+            z-index: 1;
+            border-radius: 6px;
+            border: 1px solid #EDEAEA;
 
-            .menu__content {
-                top: 61px !important;
-                left: 0;
-                bottom: unset;
-                border-top: unset;
-                justify-content: center;
-                gap: 60px;
-
-                .menu__item {
-                    .menu__item__link {
-                        display: flex;
-                        align-items: center;
-                        padding: 18px 0;
-                    }
-
-                    .menu__item__text {
-                        margin-top: 0;
-                        margin-left: 8px;
-                    }
+            .menu__item {
+                .menu__item__link {
+                    justify-content: flex-start;
+                    gap: 10px;
                 }
             }
+        }
+    }
+}
 
+@media screen and (min-width: 1200px) {
+    .dashboard {
+        .dashboard__menu {
+            max-width: 190px;
+        }
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .dashboard {
+        .dashboard__menu {
+            max-width: 220px;
         }
     }
 }

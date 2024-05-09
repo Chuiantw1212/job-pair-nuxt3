@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="name" class="inputGroup__nameGroup">
-            <span v-if="required" class="text-danger">*</span>
+            <span v-if="required" class="nameGroup__required">*</span>
             {{ name }}
             <span v-if="hint">({{ hint }})</span>
             <span>

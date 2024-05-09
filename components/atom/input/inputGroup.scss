@@ -4,8 +4,21 @@
         color: #1f1f1f;
         margin-bottom: 4px;
         display: flex;
-        font-weight: bold;
+        // font-weight: bold;
         flex-wrap: nowrap;
+
+        .nameGroup__required {
+            color: #FF3B30;
+
+            /* P-16-Rugular */
+            font-family: "PingFang TC";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            /* 162.5% */
+            margin-right: 4px;
+        }
 
         .nameGroup__text {
             font-size: 14px;
@@ -41,7 +54,7 @@
         }
 
         .label__input {
-            padding: 10px;
+            padding: 15px 20px;
             border: none;
             width: 100%;
 

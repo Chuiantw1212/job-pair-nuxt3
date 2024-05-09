@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="name" class="inputGroup__nameGroup mb-2">
-            <span v-if="required" class="text-danger">*</span>
+            <span v-if="required" class="nameGroup__required">*</span>
             {{ name }}
             <span v-if="max !== 0">(最多{{ max }}項)</span>
         </div>

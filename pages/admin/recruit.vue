@@ -56,11 +56,11 @@ const state = reactive({
     appliedList: [],
 })
 // hooks
-definePageMeta({
-    redirect: () => {
-        return { name: 'admin-recruit-jobs' }
-    },
-})
+// definePageMeta({
+//     redirect: () => {
+//         return { name: 'admin-recruit-jobs' }
+//     },
+// })
 watch(() => repoAuth.state.company, (company) => {
     initialize()
 }, { immediate: true })
