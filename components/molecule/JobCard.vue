@@ -51,7 +51,7 @@ export default {
         .statusCard__body {
             overflow-y: auto;
             border-radius: 0px 0px 10px 10px;
-            height: calc(100% - 70px);
+            height: calc(100% - 64px);
         }
     }
 }

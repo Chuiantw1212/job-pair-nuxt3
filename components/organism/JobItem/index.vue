@@ -74,7 +74,7 @@
         <div class="jobItem__footer">
             <div class="footer__similarityGroup">
                 <span>適配度分數</span>
-                <div class="similarityGroup__similarity">95</div>
+                <div class="similarityGroup__similarity">{{ $rank(modelValue.similarity) }}</div>
             </div>
             <div class="footer__salaryGroup">
                 {{ $filter.salaryNumber(modelValue)
