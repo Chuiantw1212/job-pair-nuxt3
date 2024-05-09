@@ -24,16 +24,16 @@ const props = defineProps({
     }
 })
 </script>
-<style lang="scss " scoped>
+<style lang="scss" scoped>
 .input__admin {
-    
     .admin__list {
         margin: 0;
         padding: 0;
         display: flex;
         list-style: none;
         flex-direction: column;
-        gap:10px;
+        gap: 10px;
+
         .list__item {
             border-radius: 10px;
             overflow: hidden;
@@ -42,10 +42,12 @@ const props = defineProps({
             padding: 10px 20px;
             gap: 20px;
             background: #EDEAEA;
+
             .item__image {
                 width: 20px;
                 height: 20px;
             }
+
             .item__body {
                 width: 100%;
                 color: #222;
@@ -55,9 +57,10 @@ const props = defineProps({
                 font-weight: 600;
                 line-height: normal;
             }
-            .item__remove{
-                background-color:inherit;
-                border:none;
+
+            .item__remove {
+                background-color: inherit;
+                border: none;
             }
         }
     }
