@@ -219,11 +219,6 @@ function getJobPreviewHref(job) {
     }
 }
 async function checkJobStatus(newStatus, job, index) {
-    console.log({
-        newStatus,
-        job: job.completeness,
-        index
-    })
     if (newStatus === 'active') {
         if (job.completeness !== 100) {
             state.jobList[index].status = 'closed'
@@ -305,6 +300,7 @@ async function addJobDraft() {
     const { company } = repoAuth.state
     const { id, addressRegion, addressLocality, streetAddress, remark = '' } = company
     const job = {
+        name: '職缺草稿',
         status: "closed",
         organizationId: id,
         // 預設為公司的上班地點
