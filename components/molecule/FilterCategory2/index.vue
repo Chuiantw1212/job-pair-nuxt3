@@ -6,7 +6,8 @@
                 <template v-for="(list, categoryKey) in categoryMap" :key="categoryKey">
                     <LazyAtomAccordion2 v-show="checkMatched(categoryKey)" v-model="state.openFlagsTop[categoryKey]"
                         :name="$optionText(categoryKey, items)" class="list__subList"
-                        :count="getCheckedItemsCount(categoryKey)" @update:modelValue="handleToggle(categoryKey, $event)">
+                        :count="getCheckedItemsCount(categoryKey)"
+                        @update:modelValue="handleToggle(categoryKey, $event)">
                         <div v-show="!String(keyword).trim() && showSelectAll" class="subList__header">
                             <label class="subList__inputGroup">
                                 <input v-show="false" v-model="state.isAllSelected[categoryKey]" type="checkbox"
@@ -231,14 +232,11 @@ function handleToggle(categoryKey, newFlag) {
 .filterCategory {
     border-radius: 5px;
 
-    .filterCategory__body {}
-
     .filterCategory__search {
         margin-top: 10px;
     }
 
     .filterCategory__list {
-        // padding: 20px;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -251,7 +249,6 @@ function handleToggle(categoryKey, newFlag) {
         display: flex;
         align-items: center;
         gap: 10px;
-        // margin: 0 20px;
     }
 
     .subList__body {
@@ -287,23 +284,6 @@ function handleToggle(categoryKey, newFlag) {
 @media screen and (min-width: 992px) {
     .filterCategory {
         min-width: 375px;
-
-        // .filterCategory__body {
-        //     display: flex;
-        //     height: 330px;
-
-        //     .filterCategory__list {
-        //         overflow-y: auto;
-        //         width: 50%;
-        //         padding: 15px;
-        //     }
-
-        //     .body__sublist {
-        //         width: 50%;
-        //         overflow-y: auto;
-        //         padding-top: 15px;
-        //     }
-        // }
     }
 }
 </style>
