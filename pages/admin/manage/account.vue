@@ -5,23 +5,12 @@
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
                 <h2 class="card__header">基本資料</h2>
-                <!-- <div class="card__headerGroup">
-                    <h1 class="headerGroup__title">帳號資訊</h1>
-                    <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
-                        class="managemement__others"></LazyOrganismDeleteModal>
-                </div> -->
-                <div class="card__form">
+                <div class="card__form" ref="nameRef">
                     <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required>
                     </LazyAtomInputText>
-                    <!-- <LazyAtomInputEmail v-model="state.tempUser.email" name="接收履歷的電子信箱" class="card__item">
-                    </LazyAtomInputEmail> -->
                     <div class="form__btnGroup">
                         <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName()">儲存</LazyAtomBtnSimpleV2>
-                        <!-- <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2> -->
                     </div>
-                    <!-- <div class="mb-1"><span class="nameGroup__required">*</span> 聯絡人電子郵件</div>
-                    <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
-                    <button class="btn btn-danger" @click="logout()">登出</button> -->
                 </div>
             </div>
             <div class="accountManagement__card">
@@ -37,20 +26,8 @@
                         :disabled="!state.newAdminEmail">
                         新增管理員
                     </LazyAtomBtnSimpleV2>
-                    <!-- <button class="card__add" ></button> -->
                 </div>
-                <!-- <LazyOrganismNewAdminModal></LazyOrganismNewAdminModal> -->
             </div>
-            <!-- <div class="accountManagement__card">
-                <h2 class="card__header">接收履歷的電子信箱</h2>
-                <div class="card__desc">電子信箱可被修改，可設定一個電子信箱</div>
-                <div class="card__form">
-                    <div class="form__btnGroup">
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>取消</LazyAtomBtnSimpleV2>
-                        <LazyAtomBtnSimpleV2 class="btnGroup__btn">儲存</LazyAtomBtnSimpleV2>
-                    </div>
-                </div>
-            </div> -->
             <div class="accountManagement__card">
                 <h2 class="card__header">帳號</h2>
                 <div class="card__form">
@@ -65,12 +42,13 @@
 </template>
 <script setup>
 import { getAuth, } from "firebase/auth"
-const { $sweet, } = useNuxtApp()
+const { $sweet, $validate, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
 const repoCompany = useRepoCompany()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
+const nameRef = ref()
 const state = reactive({
     tempUser: null,
     pass: null,
@@ -91,7 +69,6 @@ watch(() => repoAuth.state.user, async (newValue) => {
         return
     }
     state.tempUser = JSON.parse(JSON.stringify(newValue))
-    // get company admins
     state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
@@ -122,11 +99,10 @@ async function addNewAdmin() {
     state.newAdminEmail = ''
 }
 async function saveUserName() {
-    const validateResult = await $validate()
+    const validateResult = await $validate(nameRef.value)
     if (!validateResult.isValid) {
         return
     }
-
     const result = await repoAdmin.patchAdmin(state.tempUser)
     if (result.status === 200) {
         await $sweet.succeed()
