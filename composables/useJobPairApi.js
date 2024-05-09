@@ -53,11 +53,7 @@ export default function () {
         }
         let axiosResponse = null
         try {
-            // eslint-disable-next-line
-            // console.time(`${url}請求`)
             axiosResponse = await state.axiosInstance(axiosConfig)
-            // eslint-disable-next-line
-            // console.timeEnd(`${url}請求`)
         } catch (error) {
             const { config = { data: {} }, request, response = {}, isAxiosError, toJSON, message = '' } = error
             axiosResponse = response

@@ -1,14 +1,16 @@
 <template>
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav ms-auto mb-lg-0">
         <template v-if="repoAuth.state.user">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/recruit/jobs">
+                        <img src="./Report.svg" alt="Report">
                         招募中心
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="handleClick()">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/manage/company">
+                        <img src="./Setting.svg" alt="Setting">
                         管理中心
                     </NuxtLink>
                 </li>
@@ -75,44 +77,57 @@ async function logout() {
 }
 function showModal() {
     $emitter?.emit("showCompanyModal")
-    // $emitter?.emit("showSwitchModal")
 }
 </script>
 <style lang="scss" scoped>
-.nav-item {
-    font-size: 16px;
+.navbar-nav {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    .navItem__button {
-        display: flex;
-        gap: 10px;
-        color: black;
-        transition: all 0.3s;
-        align-items: center;
+    .nav-item {
         font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px;
-        /* 150% */
 
-        &:hover {
+        .navItem__button {
+            display: flex;
+            gap: 10px;
+            color: black;
+            transition: all 0.3s;
+            align-items: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            /* 150% */
+
+            &:hover {
+                color: #21cc90;
+            }
+        }
+
+        // 重要不可刪除
+        .navItem__button--active {
             color: #21cc90;
         }
-    }
 
-    // 重要不可刪除
-    .navItem__button--active {
-        color: #21cc90;
-    }
-
-    .navItem__button--disabled {
-        background-color: unset;
-        color: #999;
-        font-weight: bold;
-        cursor: unset;
-
-        &:hover {
+        .navItem__button--disabled {
+            background-color: unset;
             color: #999;
+            font-weight: bold;
+            cursor: unset;
+
+            &:hover {
+                color: #999;
+            }
         }
+    }
+}
+
+@media screen and (min-width:992px) {
+    .navbar-nav {
+        flex-direction: row;
+        padding: 0px;
     }
 }
 </style>

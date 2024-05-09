@@ -5,7 +5,7 @@
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled, }">
             <input class="label__input" v-model="localValue" :data-required="required" :data-name="name"
-                @blur="checkFormat()" :disabled="disabled" autocomplete="on"
+                @blur="checkFormat()" :disabled="disabled" autocomplete="on" :placeholder="localPlaceholder"
                 @keypress.enter.prevent="$emit('keypress.enter')" />
         </label>
         <div class="inputGroup__message">{{ message }}</div>
@@ -50,6 +50,15 @@ export default {
                 this.$emit("update:modelValue", newValue)
             },
         },
+        localPlaceholder: {
+            get() {
+                if (this.name) {
+                    return `請輸入${this.name}`
+                } else {
+                    return '請輸入電子信箱'
+                }
+            }
+        }
     },
     watch: {
         disabled() {

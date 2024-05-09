@@ -100,8 +100,9 @@
                 需升級後才能發佈唷！
             </div> -->
             <LazyAtomBtnSimple class="footer_btn" @click="saveDraft()">存為草稿</LazyAtomBtnSimple>
-            <LazyOrganismSeoModal v-model="state.organizationDesign" :disabled="!state.organizationDesign.templates.length"
-                @confirm="publishDesign()">發布</LazyOrganismSeoModal>
+            <LazyOrganismSeoModal v-model="state.organizationDesign"
+                :disabled="!state.organizationDesign.templates.length" @confirm="publishDesign()">發布
+            </LazyOrganismSeoModal>
             <NuxtLink v-if="state.organizationDesign.seoName" target="_blank" class="footer__link"
                 :to="{ name: 'company-id', params: { id: state.organizationDesign.seoName } }"
                 :disabled="!state.organizationDesign.templates.length">

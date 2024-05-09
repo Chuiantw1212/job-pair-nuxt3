@@ -67,7 +67,7 @@ const styleObject = computed(() => {
 </script>
 <style lang="scss" scoped>
 .btnSimple {
-    line-height: 1.3;
+    line-height: 1;
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -90,7 +90,7 @@ const styleObject = computed(() => {
 
 .btnSimple--sm {
     font-size: 14px;
-    padding: 10px 0px;
+    padding: 10px 30px;
 }
 
 .btnSimple--md {

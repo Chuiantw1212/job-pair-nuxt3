@@ -115,7 +115,7 @@
             </div>
         </section>
         <section class="home__section home__section--partner">
-            <div class="partner__part">
+            <div v-if="state.affiliate?.length" class="partner__part">
                 <h2 class="partner__title">合作伙伴</h2>
                 <div class="partner__bodyGroup">
                     <a v-for="(item, index) in affiliate" class="bodyGroup__anchor" :key="index" :href="item?.url?.default"
@@ -124,7 +124,7 @@
                     </a>
                 </div>
             </div>
-            <div class="partner__part partner__part--mt">
+            <div v-if="state.affiliate?.length" class="partner__part partner__part--mt">
                 <h2 class="partner__title partner__title--mt">合作企業</h2>
                 <div class="partner__bodyGroup">
                     <NuxtLink v-for="(item, index) in jobProviderList" class="bodyGroup__anchor" :key="index"
@@ -156,8 +156,8 @@ const state = reactive({
     profile: null,
     linkToken: null,
 })
-const { data: companyList = [] } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
-affiliate.value = companyList.value?.slice(0, 3)
+const { data: companyList } = await useFetch(`${runTimeConfig.public.apiBase}/company/affiliate`, { initialCache: false })
+state.affiliate = companyList.value?.slice(0, 3)
 // hooks
 useSeoMeta({
     title: `找工作不再迷茫，為你量身打造推薦適合工作`,
@@ -183,7 +183,7 @@ onMounted(async () => {
         })
         const jobProvider = Object.values(logoMap)
         jobProvider.sort(() => .5 - Math.random());
-        jobProviderList.value = jobProvider.slice(0, 3)
+        state.jobProvider = jobProvider?.slice(0, 3)
     }
 })
 // methods
