@@ -115,11 +115,13 @@ export default function setup(setUpConfig = {}) {
                 return !ignoreJobs.includes(item.identifier)
             })
         }
-        const appliedJobs = Object.values(repoJobApplication.state.userJobs).map(item => item.identifier)
+        const appliedJobIds = Object.values(repoJobApplication.state.userJobs).filter(item => {
+            return ['applied', 'notified', 'rejected'].includes(item.status)
+        }).map(item => item.identifier)
         // Hide applied or rejected jobs
-        if (appliedJobs?.length) {
+        if (appliedJobIds?.length) {
             notDuplicatedJobs = notDuplicatedJobs.filter(item => {
-                return !appliedJobs.includes(item.identifier)
+                return !appliedJobIds.includes(item.identifier)
             })
         }
         // Set recommended jobs
@@ -130,7 +132,7 @@ export default function setup(setUpConfig = {}) {
         const newJobList = [...state.jobList, ...notDuplicatedJobs]
         state.jobList = newJobList
         // calculate count
-        let visibleCount = count - appliedJobs.length
+        let visibleCount = count - appliedJobIds.length
         visibleCount = Math.max(visibleCount, newJobList.length)
         state.count = visibleCount
         // Cache mechanism

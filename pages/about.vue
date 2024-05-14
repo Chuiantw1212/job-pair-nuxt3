@@ -88,6 +88,15 @@
                             <a href="https://www.instagram.com/econ.sense/" target="_blank">
                                 <img class="link__icon" alt="instagram" src="~/assets/about/icon_ig.svg">
                             </a>
+                            <a href="https://econ-sense.com/" target="_blank">
+                                <img class="link__icon" alt="vue" src="~/assets/about/vue.png">
+                            </a>
+                            <a href="https://github.com/" target="_blank">
+                                <img class="link__icon" alt="vue" src="~/assets/about/github.svg">
+                            </a>
+                            <a href="https://www.linkedin.com/" target="_blank">
+                                <img class="link__icon" alt="vue" src="~/assets/about/LinkedIn.png">
+                            </a>
                         </div>
                     </div>
                     <div class="card__person">
