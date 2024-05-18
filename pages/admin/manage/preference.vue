@@ -20,33 +20,12 @@
             </ul>
         </div>
         <div class="preference__footerGroup">
-            <!-- <template v-if="state.isNewCompay"> -->
             <button v-if="state.isNewCompay" class="footerGroup__submit" type="button" @click="saveCompanyInfo()">
                 下一步
             </button>
             <button v-else class="footerGroup__submit" type="button" @click="saveCompanyInfo()">
                 儲存
             </button>
-            <!-- <button class="footerGroup__submit" type="button" @click="gotoCulture()">
-                下一步
-            </button> -->
-            <!-- </template> -->
-            <!-- <template v-else>
-                <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
-                    客製公司頁面
-                </NuxtLink>
-                <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
-                    name: 'company-id',
-                    params: {
-                        id: state.companyInfo.seoName
-                    }
-                }">
-                    檢視公司頁面
-                </NuxtLink>
-                <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
-                    檢視公司頁面
-                </NuxtLink>
-            </template> -->
         </div>
     </div>
 </template>

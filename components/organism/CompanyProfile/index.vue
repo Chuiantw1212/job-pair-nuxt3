@@ -1,6 +1,23 @@
 <template>
     <div class="profile">
-        <h1 class="profile__header">企業檔案</h1>
+        <div class="profile__headerGroup">
+            <h1 class="profile__header">企業檔案</h1>
+            <template v-if="!state.isNewCompay">
+                <NuxtLink v-if="state.companyInfo.seoName" class="headerGroup__preview" target="_blank" :to="{
+                    name: 'company-id',
+                    params: {
+                        id: state.companyInfo.seoName
+                    }
+                }">
+                    <img src="./Eye.svg">
+                    檢視公司頁面
+                </NuxtLink>
+                <NuxtLink v-else target="_blank" class="headerGroup__preview" :to="`/company/${state.companyInfo.id}`">
+                    <img src="./Eye.svg">
+                    檢視公司頁面
+                </NuxtLink>
+            </template>
+        </div>
         <div class="profile__desc">
             以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識。
         </div>
@@ -96,22 +113,11 @@
                 @click="saveCompanyInfo({ validate: true, to: 'admin-manage-preference' })">
                 下一步
             </button>
-            <template v-else>
+            <!-- <template v-else>
                 <NuxtLink class="footerGroup__submit" :to="{ 'name': 'admin-design' }">
                     客製公司頁面
                 </NuxtLink>
-                <NuxtLink v-if="state.companyInfo.seoName" class="footerGroup__submit" target="_blank" :to="{
-                    name: 'company-id',
-                    params: {
-                        id: state.companyInfo.seoName
-                    }
-                }">
-                    檢視公司頁面
-                </NuxtLink>
-                <NuxtLink v-else class="footerGroup__submit" target="_blank" :to="`/company/${state.companyInfo.id}`">
-                    檢視公司頁面
-                </NuxtLink>
-            </template>
+            </template> -->
         </div>
     </div>
 </template>
@@ -158,7 +164,7 @@ const state = reactive({
         subsidy: [],
         facility: [],
     },
-    benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility']
+    benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility'],
 })
 // hooks
 watch(() => repoAuth.state.user, () => {
@@ -523,6 +529,25 @@ async function saveCompanyInfo(config = {}) {
     // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     margin-top: 20px;
     border-radius: 10px;
+
+    .profile__headerGroup {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+
+        .headerGroup__preview {
+            color: var(--JP-Prim, #5EA88E);
+
+            /* SPAN-14-Regular */
+            font-family: "PingFang TC";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 157.143% */
+            text-decoration: none;
+        }
+    }
 
     .profile__header {
         color: #222;

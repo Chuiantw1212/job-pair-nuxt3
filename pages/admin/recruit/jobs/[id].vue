@@ -1,12 +1,12 @@
 <template>
     <div class="recruitJob">
         <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form" ref="jobItemRef">
-            <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
+            <!-- <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
                 :placeholder="'範例：https://www.104.com.tw/job/*'">
                 在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
                 <br>
                 範例：https://www.104.com.tw/job/*
-            </LazyAtomQuickImport>
+            </LazyAtomQuickImport> -->
             <div class="form__header">
                 職缺狀態
                 <!-- <span class="header__wallet">錢包餘額：0點
@@ -371,7 +371,7 @@ async function setJob() {
     if (!jobResponse.status === 200) {
         return
     }
-    const job = jobResponse.data
+    const job = jobResponse.data || {}
     // 給定預設值
     const { company = {}, preference = {} } = repoAuth.state
     if (!job.preference) {

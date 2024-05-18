@@ -24,6 +24,18 @@
                     </NuxtLink>
                 </li>
             </ul>
+            <NuxtLink v-if="!state.isNewCompay" class="dashboard__preview" :to="{ 'name': 'admin-design' }">
+                <div class="preview__title">
+                    <img src="@/assets/company/Verified.svg">
+                    客製公司頁面
+                </div>
+                <div class="preview__desc">
+                    體驗客製化頁面，製作獨一無二的公司頁面！
+                </div>
+                <AtomBtnSimpleV2 class="preview__btn" outline>
+                    立即開始
+                </AtomBtnSimpleV2>
+            </NuxtLink>
         </div>
         <div class="dashboard__view" :class="{ 'col-10': device.state.isLarge }">
             <NuxtPage />
@@ -33,11 +45,34 @@
 <script setup>
 const device = useDevice()
 const router = useRouter()
-// definePageMeta({
-//     redirect: () => {
-//         return { name: 'admin-manage-company' }
-//     },
-// })
+const repoAuth = useRepoAuth()
+const repoAdmin = useRepoAdmin()
+const state = reactive({
+    isNewCompay: false,
+})
+watch(() => repoAuth.state.user, () => {
+    initializeCompanyInfo()
+}, { immediate: true })
+// methods
+async function initializeCompanyInfo() {
+    // 生成本地端company資料
+    const { user } = repoAuth.state
+    if (!user || !user.id || state.companyInfo.id) {
+        return
+    }
+    // Load from store
+    if (!repoAuth.state.company) {
+        const companyRes = await repoAdmin.getAdminCompany()
+        if (companyRes.status !== 200) {
+            return
+        }
+        if (companyRes.data === false) {
+            // 尚未註冊導回註冊畫面
+            router.replace(`/admin/register`)
+            state.isNewCompay = true
+        }
+    }
+}
 function forceRouteTo() {
     router.push({
         name: 'admin-manage-account'
@@ -47,8 +82,6 @@ function forceRouteTo() {
 <style lang="scss" scoped>
 .dashboard {
     padding: 20px 0;
-    // .dashboard__view {
-    // }
 
     .dashboard__menu {
         background-color: #FFF;
@@ -62,8 +95,8 @@ function forceRouteTo() {
         z-index: 1040;
         margin-bottom: 0;
         border-top: 1px solid #EDEAEA;
-        // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
         height: 57px;
+        width: 100%;
 
         .menu__item {
             height: 100%;
@@ -103,6 +136,50 @@ function forceRouteTo() {
             }
         }
     }
+
+    .dashboard__preview {
+        border-radius: 10px;
+        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        background: var(--Grays-Quin, #FFF);
+        padding: 20px;
+        margin-top: 10px;
+        display: block;
+        text-decoration: none;
+
+        &:hover {
+            border: 1px solid var(--JP-Prim, #5EA88E);
+        }
+
+        .preview__title {
+            color: var(--Grays-Prim, #222);
+
+            /* H3-20-Medium */
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            display: flex;
+            gap: 5px;
+        }
+
+        .preview__desc {
+            color: var(--Grays-Prim, #222);
+
+            /* SPAN-14-Regular */
+            font-family: "PingFang TC";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 157.143% */
+        }
+
+        .preview__btn {
+            margin-top: 20px;
+            width: 100%;
+        }
+    }
 }
 
 @media screen and (min-width: 992px) {
@@ -114,7 +191,6 @@ function forceRouteTo() {
 
         .dashboard__menu {
             bottom: unset;
-            max-width: 160px;
             flex-direction: column;
             gap: 10px;
             padding: 30px;
@@ -123,6 +199,7 @@ function forceRouteTo() {
             z-index: 1;
             border-radius: 6px;
             border: 1px solid #EDEAEA;
+            width: 100%;
 
             .menu__item {
                 .menu__item__link {
@@ -130,22 +207,6 @@ function forceRouteTo() {
                     gap: 10px;
                 }
             }
-        }
-    }
-}
-
-@media screen and (min-width: 1200px) {
-    .dashboard {
-        .dashboard__menu {
-            max-width: 190px;
-        }
-    }
-}
-
-@media screen and (min-width: 1400px) {
-    .dashboard {
-        .dashboard__menu {
-            max-width: 220px;
         }
     }
 }

@@ -29,7 +29,11 @@
                 </div>
             </div>
             <div class="accountManagement__card">
-                <h2 class="card__header">帳號</h2>
+                <div class="card__headerGroup">
+                    <h2 class="card__header">帳號</h2>
+                    <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
+                        class="managemement__others"></LazyOrganismDeleteModal>
+                </div>
                 <div class="card__form">
                     <div class="form__btnGroup">
                         <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>重設密碼</LazyAtomBtnSimpleV2>
@@ -210,6 +214,11 @@ async function submitProfile() {
             font-style: normal;
             font-weight: 400;
             line-height: normal;
+        }
+
+        .card__headerGroup {
+            display: flex;
+            justify-content: space-between;
         }
 
         .card__header3 {
