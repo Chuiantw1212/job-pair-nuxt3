@@ -13,8 +13,9 @@
                         <div class="body__content">
                             <div class="content__header">如何刪除帳號</div>
                             <div class="content__body">
-                                如果想刪除帳號，請點選「<button class="body__badge" @click="showSecondConfirm()">永久刪除帳號</button>」即可。{{
-                                    info }}
+                                如果想刪除帳號，請點選「<button class="body__badge"
+                                    @click="showSecondConfirm()">永久刪除帳號</button>」即可。{{
+                                        info }}
                             </div>
                         </div>
                     </div>

@@ -2,19 +2,21 @@
     <div class="profile">
         <div class="profile__headerGroup">
             <h1 class="profile__header">企業檔案</h1>
-            <NuxtLink v-if="state.companyInfo.seoName" class="headerGroup__preview" target="_blank" :to="{
-                name: 'company-id',
-                params: {
-                    id: state.companyInfo.seoName
-                }
-            }">
-                <img src="./Eye.svg">
-                檢視公司頁面
-            </NuxtLink>
-            <NuxtLink v-else target="_blank" class="headerGroup__preview" :to="`/company/${state.companyInfo.id}`">
-                <img src="./Eye.svg">
-                檢視公司頁面
-            </NuxtLink>
+            <template v-if="!state.isNewCompay">
+                <NuxtLink v-if="state.companyInfo.seoName" class="headerGroup__preview" target="_blank" :to="{
+                    name: 'company-id',
+                    params: {
+                        id: state.companyInfo.seoName
+                    }
+                }">
+                    <img src="./Eye.svg">
+                    檢視公司頁面
+                </NuxtLink>
+                <NuxtLink v-else target="_blank" class="headerGroup__preview" :to="`/company/${state.companyInfo.id}`">
+                    <img src="./Eye.svg">
+                    檢視公司頁面
+                </NuxtLink>
+            </template>
         </div>
         <div class="profile__desc">
             以下資訊將會顯示給求職者查看，完整填答將有助於求職者對您的企業獲得更深入的認識。
@@ -162,7 +164,7 @@ const state = reactive({
         subsidy: [],
         facility: [],
     },
-    benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility']
+    benefitFlags: ['learning', 'bonus', 'time', 'activity', 'subsidy', 'facility'],
 })
 // hooks
 watch(() => repoAuth.state.user, () => {
