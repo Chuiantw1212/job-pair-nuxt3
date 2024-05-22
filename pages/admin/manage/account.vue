@@ -41,6 +41,14 @@
                     </div>
                 </div>
             </div>
+            <!-- <div class="accountManagement__card mt-4">
+                <h4>錢包餘額</h4>
+                <div class="balance__inputGroup">
+                    <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled>
+                    </LazyAtomInputNumber>
+                    <LazyAtomBtnSimple class="inputGroup__btn" type="button">我要儲值</LazyAtomBtnSimple>
+                </div>
+            </div> -->
         </template>
     </div>
 </template>
