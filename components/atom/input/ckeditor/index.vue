@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="inputGroup">
         <div v-if="name" class="inputGroup__nameGroup">
-            <span v-if="required" class="text-danger">*</span>
+            <span v-if="required" class="nameGroup__required">*</span>
             {{ name }}
             <span v-if="hint">({{ hint }})</span>
             <span>
@@ -200,14 +200,7 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
-.inputGroup__nameGroup {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1f1f1f;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-}
+@import '../inputGroup.scss';
 
 .ckeditor--edit {
     border: 1px solid #d3d3d3;

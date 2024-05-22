@@ -1,146 +1,58 @@
 <template>
     <div class="container accountManagement">
+        <h1 class="accountManagement__header">帳戶管理</h1>
+        <hr class="accountManagement__hr" />
         <template v-if="state.tempUser">
             <div class="accountManagement__card">
+                <h2 class="card__header">基本資料</h2>
+                <div class="card__form" ref="nameRef">
+                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required>
+                    </LazyAtomInputText>
+                    <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="saveUserName()">儲存</LazyAtomBtnSimpleV2>
+                    </div>
+                </div>
+            </div>
+            <div class="accountManagement__card">
+                <h2 class="card__header">管理員</h2>
+                <div class="card__desc">電子信箱不可以被修改，可設定多個電子信箱</div>
+                <LazyAtomInputAdmin class="card__list" :modelValue="state.admins" @remove="removeAdmin($event)">
+                </LazyAtomInputAdmin>
+                <h3 class="card__header3">管理員</h3>
+                <div class="card__emailGroup">
+                    <LazyAtomInputEmail class="w-100" v-model="state.newAdminEmail" required>
+                    </LazyAtomInputEmail>
+                    <LazyAtomBtnSimpleV2 class="emailGroup__btn" @click="addNewAdmin()" size="sm"
+                        :disabled="!state.newAdminEmail">
+                        新增管理員
+                    </LazyAtomBtnSimpleV2>
+                </div>
+            </div>
+            <div class="accountManagement__card">
                 <div class="card__headerGroup">
-                    <h1 class="headerGroup__title">帳號資訊</h1>
+                    <h2 class="card__header">帳號</h2>
                     <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
                         class="managemement__others"></LazyOrganismDeleteModal>
                 </div>
-                <div class="accountManagement__form mt-3">
-                    <LazyAtomInputText v-model="state.tempUser.name" name="聯絡人姓名" required class="mb-3">
-                    </LazyAtomInputText>
-                    <div class="mb-1"><span class="text-danger">*</span> 聯絡人電子郵件</div>
-                    <LazyAtomInputText v-model="state.tempUser.email" :disabled="true" class="mb-3"></LazyAtomInputText>
-                    <!-- <template v-if="!toggleChangePassword">
-                        <form>
-                            <div class="mb-1">密碼變更</div>
-                            <div class="form__password__inputGroup mb-3">
-                                <InputPass v-model="pass" placeholder="若要變更密碼，請先輸入原有密碼" class="inputGroup__text">
-                                </InputPass>
-                                <button class="inputGroup__button" @click.prevent="handleCredential()">修改密碼</button>
-                            </div>
-                        </form>
-                    </template>
-                    <template v-if="toggleChangePassword">
-                        <form>
-                            <div class="mb-1"><span class="text-danger">*</span> 新密碼</div>
-                            <InputPass v-model="newPass" placeholder="請輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                            </InputPass>
-                            <InputPass v-model="newPassAgain" placeholder="請重新輸入新密碼(至少含一個英文字母與數字)" class="inputGroup__text">
-                            </InputPass>
-                            <button class="form__confirm" @click.prevent="submitNewPass()">更新密碼</button>
-                        </form>
-                    </template> -->
-                    <button class="btn btn-danger" @click="logout()">登出</button>
+                <div class="card__form">
+                    <div class="form__btnGroup">
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" outline>重設密碼</LazyAtomBtnSimpleV2>
+                        <LazyAtomBtnSimpleV2 class="btnGroup__btn" @click="logout()">登出帳號</LazyAtomBtnSimpleV2>
+                    </div>
                 </div>
             </div>
-            <!-- <div class="accountManagement__card mt-4">
-                <h4>錢包餘額</h4>
-                <div class="balance__inputGroup">
-                    <LazyAtomInputNumber class="inputGroup__input" v-model="state.balance" disabled></LazyAtomInputNumber>
-                    <LazyAtomBtnSimple class="inputGroup__btn" type="button">我要儲值</LazyAtomBtnSimple>
-                </div>
-                <div class="card__header">使用紀錄</div>
-                <table class="table  table-striped ballance__table">
-                    <thead>
-                        <tr>
-                            <th scope="col">職缺名稱</th>
-                            <th scope="col">開啟職缺期間</th>
-                            <th scope="col">天數</th>
-                            <th scope="col">點數</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="table__cell">
-                                    Java工程師
-                                </div>
-                            </th>
-                            <td>
-                                <div class="table__cell">
-                                    2023/01/04 ~ 2023/02/10
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    2 週 3 日，共 17 天
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table__cell">
-                                    17 點
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div> -->
-            <!-- <div class="accountManagement__card mt-3">
-            <h4>人資聊天室</h4>
-            <section class="accountManagement__chat">
-                <LazyAtomInputText v-model="tempUser.chatName" name="聊天室暱稱" class="mb-3" required></LazyAtomInputText>
-                <div class="chat__image" ref="svgContainer" v-html="chatIcon"></div>
-            </section>
-        </div> -->
-            <!-- <div class="d-flex justify-content-center">
-                <button class="form__confirm" @click.prevent="submitProfile()">儲存</button>
-            </div> -->
         </template>
     </div>
 </template>
 <script setup>
 import { getAuth, } from "firebase/auth"
-const { $sweet, } = useNuxtApp()
+const { $sweet, $validate, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const repoAuth = useRepoAuth()
+const repoCompany = useRepoCompany()
 const router = useRouter()
 const repoAdmin = useRepoAdmin()
+const nameRef = ref()
 const state = reactive({
     tempUser: null,
     pass: null,
@@ -149,23 +61,57 @@ const state = reactive({
     newPassAgain: null,
     chatIcon: null,
     balance: 0,
-    VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV
+    newAdminEmail: '',
+    VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV,
 })
 // hooks
 useHead({
     title: '帳戶管理 - 招募中心'
 })
-watch(() => repoAuth.state.user, (newValue) => {
+watch(() => repoAuth.state.user, async (newValue) => {
     if (!process.client || !newValue) {
         return
     }
     state.tempUser = JSON.parse(JSON.stringify(newValue))
-    if (!state.tempUser?.chatName) {
-        const uuid = uuid4()
-        state.tempUser.chatName = `匿名${uuid.slice(0, 4)}`
-    }
+    state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
+async function removeAdmin(item) {
+    $sweet.loader(true)
+    const admins = await repoAdmin.deleteAdmin(item)
+    await $sweet.succeed()
+    state.admins = admins
+    if (item.email === repoAuth.state.user.email) {
+        repoAuth.userSignout()
+        router.push({
+            name: 'admin',
+        })
+    }
+}
+async function addNewAdmin() {
+    $sweet.loader(true)
+    if (!String(state.newAdminEmail).trim()) {
+        return
+    }
+    const res = await repoAdmin.postAdminInvitation({
+        email: state.newAdminEmail
+    })
+    if (res.status === 200) {
+        await $sweet.succeed()
+        state.admins = res.data
+    }
+    state.newAdminEmail = ''
+}
+async function saveUserName() {
+    const validateResult = await $validate(nameRef.value)
+    if (!validateResult.isValid) {
+        return
+    }
+    const result = await repoAdmin.patchAdmin(state.tempUser)
+    if (result.status === 200) {
+        await $sweet.succeed()
+    }
+}
 async function logout() {
     localStorage.removeItem("user")
     await repoAuth.userSignout()
@@ -236,47 +182,99 @@ async function submitProfile() {
 </script>
 <style lang="scss" scoped>
 .accountManagement {
+    background-color: #F9F9F9;
+
+    .accountManagement__header {
+        color: #222;
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
+
+    .accountManagement__hr {
+        margin-top: 30px;
+        border: 1px solid #EDEAEA;
+    }
+
     .accountManagement__card {
-        background-color: #fafafa;
-        padding: 23px 40px;
         border-radius: 10px;
+        background: #FFF;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 30px;
+
+        .card__header {
+            color: #484848;
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
 
         .card__headerGroup {
             display: flex;
-            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .card__header3 {
+            color: var(--Grays-Seco, #484848);
+            /* P-16-Rugular */
+            font-family: "PingFang TC";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            /* 162.5% */
+            margin-top: 30px;
+        }
+
+        .card__emailGroup {
+            display: flex;
+            gap: 10px;
             align-items: center;
 
-            .headerGroup__title {
-                margin: 0;
-                font-size: 22px;
+            .emailGroup__btn {
+                height: 42px;
             }
         }
 
-        .card__header {
-            margin-top: 52px;
-            font-weight: bold;
+        .card__desc {
+            color: #A6A6A6;
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .card__list {
+            margin-top: 10px
+        }
+
+        .card__item {
+            margin-top: 10px
         }
     }
 
-    .accountManagement__form {
-        max-width: 476px;
+    .card__form {
+        margin-top: 30px;
 
-        .form__password__inputGroup {
+        .form__btnGroup {
             display: flex;
-            align-items: center;
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
 
-            .inputGroup__text {
-                margin-right: 24px;
-            }
-
-            .inputGroup__button {
-                color: #29b0ab;
-                background-color: rgba(0, 0, 0, 0);
-                border: none;
-                white-space: nowrap;
+            .btnGroup__btn {
+                width: 100%;
             }
         }
-
     }
 
     .balance__inputGroup {

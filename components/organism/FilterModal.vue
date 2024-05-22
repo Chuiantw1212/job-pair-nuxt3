@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-body">
                         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list">
-                            <LazyAtomInputSelectContainer v-model="state.filterOpen.status" :placeholder="'職缺狀態'">
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.status" :name="'職缺狀態'">
                                 <LazyAtomInputCheckMultiple v-model="localValue.status"
                                     :items="repoSelect.state.selectByQueryRes.jobStatus" class="m-3">
                                 </LazyAtomInputCheckMultiple>
@@ -27,12 +27,12 @@
                             <LazyAtomInputSelectLabel v-model="localValue.status"
                                 :items="repoSelect.state.selectByQueryRes.jobStatus" class="mt-2">
                             </LazyAtomInputSelectLabel>
-                            <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory"
-                                :placeholder="'職務類型'" class="mb-2">
-                                <LazyMoleculeFilterCategory v-model="localValue.occupationalCategory"
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.occupationalCategory" :name="'職務類型'"
+                                class="mb-2">
+                                <LazyMoleculeFilterCategory2 v-model="localValue.occupationalCategory"
                                     :items="repoSelect.jobCategory" :categoryMap="repoSelect.jobCategoryMap"
                                     :isLarge="device.state.isLarge" :showSelectAll="true">
-                                </LazyMoleculeFilterCategory>
+                                </LazyMoleculeFilterCategory2>
                             </LazyAtomInputSelectContainer>
                             <div>
                                 <template v-for="(items, categoryKey) in repoSelect.jobCategoryMap" :key="categoryKey">
@@ -41,7 +41,7 @@
                                 </template>
                             </div>
                             <template v-if="repoSelect.state.locationRes" class="filter__list__item">
-                                <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :placeholder="'地點'">
+                                <LazyAtomInputSelectContainer v-model="state.filterOpen.division" :name="'地點'">
                                     <LazyAtomInputCheckMultiple v-model="localValue.addressRegion"
                                         :items="repoSelect.state.locationRes.taiwan" class="m-3" :flexDirection="'row'">
                                     </LazyAtomInputCheckMultiple>
@@ -50,7 +50,7 @@
                                     :items="repoSelect.state.locationRes.taiwan" class="mt-2">
                                 </LazyAtomInputSelectLabel>
                             </template>
-                            <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :placeholder="'遠端彈性'">
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.jobLocationType" :name="'遠端彈性'">
                                 <LazyAtomInputCheckMultiple v-model="localValue.jobLocationType"
                                     :items="repoSelect.state.selectByQueryRes.jobLocationType" class="m-3">
                                 </LazyAtomInputCheckMultiple>
@@ -58,7 +58,7 @@
                             <LazyAtomInputSelectLabel v-model="localValue.jobLocationType"
                                 :items="repoSelect.state.selectByQueryRes.jobLocationType" class="mt-2">
                             </LazyAtomInputSelectLabel>
-                            <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :placeholder="'僱傭模式'">
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.employmentType" :name="'僱傭模式'">
                                 <LazyAtomInputCheckMultiple v-model="localValue.employmentType"
                                     :items="repoSelect.state.selectByQueryRes.employmentType" class="m-3">
                                 </LazyAtomInputCheckMultiple>
@@ -66,7 +66,7 @@
                             <LazyAtomInputSelectLabel v-model="localValue.employmentType"
                                 :items="repoSelect.state.selectByQueryRes.employmentType" class="mt-2">
                             </LazyAtomInputSelectLabel>
-                            <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :placeholder="'資歷'">
+                            <LazyAtomInputSelectContainer v-model="state.filterOpen.responsibilities" :name="'資歷'">
                                 <LazyAtomInputCheckMultiple v-model="localValue.responsibilities"
                                     :items="repoSelect.state.selectByQueryRes.responsibilities" class="m-3">
                                 </LazyAtomInputCheckMultiple>
@@ -75,14 +75,16 @@
                                 :items="repoSelect.state.selectByQueryRes.responsibilities" class="mt-2">
                             </LazyAtomInputSelectLabel>
                             <div>
-                                <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap" :key="categoryKey">
+                                <template v-for="(items, categoryKey) in repoSelect.industryCategoryMap"
+                                    :key="categoryKey">
                                     <LazyAtomInputSelectLabel v-model="localValue.industry" :items="items">
                                     </LazyAtomInputSelectLabel>
                                 </template>
                             </div>
                             <div class="section__header">薪資類型</div>
                             <ul class="section__salaryType">
-                                <li v-for="(item, index) in getSalaryTypeItems()" :key="index" class="filterSalary__item">
+                                <li v-for="(item, index) in getSalaryTypeItems()" :key="index"
+                                    class="filterSalary__item">
                                     <label class="item__inputGroup">
                                         <input type="radio" v-model="localValue.salaryType" :value="item.value" />
                                         <span class="item__text">{{ item.text }}</span>

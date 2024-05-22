@@ -17,8 +17,8 @@
                         :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
                     <LazyAtomInputEmail name="Email" v-model="state.profileBasic.email" class="mt-3" disabled>
                     </LazyAtomInputEmail>
-                    <LazyAtomInputMobile name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機" class="mt-3"
-                        required>
+                    <LazyAtomInputMobile name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機"
+                        class="mt-3" required>
                     </LazyAtomInputMobile>
                 </div>
             </div>
@@ -29,8 +29,8 @@
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.occupationalCategory" name="欲申請職務類別" :max="3"
                 class="mt-3" required>
                 <template v-slot:header>
-                    <LazyMoleculeProfileSelectLabels v-model="state.profileBasic.occupationalCategory" placeholder="欲申請職務類別"
-                        :items="repoSelect.jobCategory">
+                    <LazyMoleculeProfileSelectLabels v-model="state.profileBasic.occupationalCategory"
+                        placeholder="欲申請職務類別" :items="repoSelect.jobCategory">
                     </LazyMoleculeProfileSelectLabels>
                 </template>
                 <template v-slot:body>
@@ -40,11 +40,11 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考" class="mt-3"
-                :required="state.profileBroadcast.isActive" placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。"
-                ref="description">
-                <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()" v-model="state.profileBasic.description"
-                    name="個人簡歷" @update:modelValue="setDescription($event)">
+            <LazyAtomInputCkeditor name="個人簡歷" v-model="state.profileBasic.description" hint="此區塊將會揭露給企業端參考"
+                class="mt-3" :required="state.profileBroadcast.isActive"
+                placeholder="請概述您過往的學經歷，凸顯個人優勢與專業領域，讓企業主對您留下深刻的第一印象。" ref="description">
+                <LazyOrganismChatOptimizeIntroModal v-if="checkHasDescription()"
+                    v-model="state.profileBasic.description" name="個人簡歷" @update:modelValue="setDescription($event)">
                 </LazyOrganismChatOptimizeIntroModal>
                 <LazyOrganismChatIntroModal v-else :occupationalCategory="state.profileBasic.occupationalCategory"
                     @update:modelValue="setDescription($event)">
@@ -84,11 +84,12 @@
         <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
             class="profile__broadcast mt-3">
             <div class="broadcast__subGroup">
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive" name="訂閱適合工作">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
+                    name="訂閱適合工作">
                     <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
                 </LazyAtomInputCheckSingle>
-                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0" v-model="state.profileBroadcast.isSubscribed"
-                    name="EDM訂閱">
+                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0"
+                    v-model="state.profileBroadcast.isSubscribed" name="EDM訂閱">
                     <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
                 </LazyAtomInputCheckSingle>
             </div>
@@ -105,14 +106,15 @@
             <LazyMoleculeProfileSelectContainer v-model="state.filterOpen.educationCategory"
                 :items="state.profileBroadcast.educationCategory" name="學科分類" :max="1" class="mt-3">
                 <template v-slot:header>
-                    <LazyMoleculeProfileSelectLabels v-model="state.profileBroadcast.educationCategory" placeholder="學科分類"
-                        :items="repoSelect.state.selectByQueryRes.educationCategory">
+                    <LazyMoleculeProfileSelectLabels v-model="state.profileBroadcast.educationCategory"
+                        placeholder="學科分類" :items="repoSelect.state.selectByQueryRes.educationCategory">
                     </LazyMoleculeProfileSelectLabels>
                 </template>
                 <template v-slot:body>
                     <LazyMoleculeFilterCategory v-model="state.profileBroadcast.educationCategory"
                         :items="repoSelect.state.selectByQueryRes.educationCategory"
-                        :categoryMap="repoSelect.educationCategoryMap" :max="1" :isLarge="device.state.isLarge" name="學科分類">
+                        :categoryMap="repoSelect.educationCategoryMap" :max="1" :isLarge="device.state.isLarge"
+                        name="學科分類">
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
@@ -132,12 +134,10 @@
 </template>
 <script setup>
 const { $validate, $sweet, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const device = useDevice()
 const repoAuth = useRepoAuth()
 const repoUser = useRepoUser()
 const repoSelect = useRepoSelect()
-const repoChat = useRepoChat()
 const router = useRouter()
 const state = reactive({
     profileBasic: null,

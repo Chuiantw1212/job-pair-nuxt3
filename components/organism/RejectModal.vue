@@ -14,8 +14,8 @@
                         <LazyAtomInputText v-model="state.form.subject" name="信件主旨"
                             :placeholder="'例如：XX公司面試邀約__王大雄__資深前端工程師'" required>
                         </LazyAtomInputText>
-                        <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" :toolbar="[]" :ref="'templateRef'"
-                            class="mt-3" required>
+                        <LazyAtomInputCkeditor v-model="state.form.template" name="信件內容" :toolbar="[]"
+                            :ref="'templateRef'" class="mt-3" required>
                         </LazyAtomInputCkeditor>
                     </div>
                     <div class="modal-footer">

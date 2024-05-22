@@ -167,10 +167,9 @@
                     </LazyAtomBtnSimple>
                     <LazyAtomBtnSimple class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
                     </LazyAtomBtnSimple>
-                    <LazyOrganismJobModal v-else-if="checkVisibility()" v-model="state.job"
-                        @applied="state.applyFlow = $event">
+                    <LazyAtomBtnSimple v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
                         立即應徵
-                    </LazyOrganismJobModal>
+                    </LazyAtomBtnSimple>
                     <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                 </div>
             </section>
@@ -214,6 +213,8 @@
                 </LazyOrganismJobItem>
             </ul>
         </section>
+        <LazyOrganismJobModal ref="jobModal" v-model="state.job" @applied="state.applyFlow = $event">
+        </LazyOrganismJobModal>
     </div>
 </template>
 <script setup>
@@ -432,6 +433,9 @@ watch(() => jobScroller.state.jobList, (newValue = [], oldValue = []) => {
     }
 })
 // methos
+function handleApply() {
+    currentInstance.refs.jobModal.handleApply()
+}
 function initialilzeTooltip() {
     if (!state.navigator.share) {
         state.id = $uuid4()
@@ -936,7 +940,6 @@ async function initialize() {
             letter-spacing: normal;
             text-align: left;
             color: #fff;
-            z-index: 1060;
         }
     }
 
@@ -1003,6 +1006,7 @@ async function initialize() {
                 width: unset;
                 margin-top: 40px;
                 padding: 0px;
+                // z-index: 1040;
 
                 .panel__btn {
                     width: 100%;

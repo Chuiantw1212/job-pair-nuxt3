@@ -19,6 +19,20 @@ export default defineStore('company', () => {
         })
         return response
     }
+    async function getCompanyByTaxId(id) {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/company/tax/${id}`,
+        })
+        return response
+    }
+    async function getCompanyAdmins() {
+        const response = await jobPairApi.request({
+            method: 'get',
+            url: `/company/admins`,
+        })
+        return response.data
+    }
     async function getCompanyById(id) {
         const response = await jobPairApi.request({
             method: 'get',
@@ -81,12 +95,14 @@ export default defineStore('company', () => {
         state,
         patchCompany,
         getCompanyById,
+        getCompanyByTaxId,
         getCompanyByCrawler,
         getCompanyJobs,
         putCompanyPhotos,
         getCompanyNews,
         putCompanyLogoBlob,
         putCompanyBannerBlob,
-        getCompanyWalletBalance
+        getCompanyWalletBalance,
+        getCompanyAdmins
     }
 })

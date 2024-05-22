@@ -1,7 +1,7 @@
 <template>
     <div class="inputGroup" :ref="`inputGroup`">
         <div class="inputGroup__nameGroup">
-            <span v-if="required" class="text-danger">*</span>
+            <span v-if="required" class="nameGroup__required">*</span>
             {{ name }}
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
