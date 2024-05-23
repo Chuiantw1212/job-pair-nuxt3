@@ -19,7 +19,7 @@ export default {
         },
         placeholder: {
             type: String,
-            default: "搜尋技能、公司＆職缺",
+            default: "搜尋公司＆職缺",
         },
     },
     computed: {
