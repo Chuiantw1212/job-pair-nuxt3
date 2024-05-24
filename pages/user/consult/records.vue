@@ -106,7 +106,7 @@ function getConsultantName(id) {
 </script>
 <style lang="scss" scoped>
 .consult {
-    background: var(--BG-Prim, #F9F9F9);
+    background: white;
 
     .consult__headerGroup {
         text-align: center;
