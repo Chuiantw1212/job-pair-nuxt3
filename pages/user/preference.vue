@@ -9,8 +9,8 @@
                 <div class="body__item__desc">{{ questionGroup.descUser }}...</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkSelectedRadio(questionGroup, item) }">
-                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio" :type="'radio'"
-                        :value="item.value" :disabled="state.isLocked" />
+                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
+                        :type="'radio'" :value="item.value" :disabled="state.isLocked" />
                     <span class="body__item__label__desc">{{ item.textUser }}</span>
                 </label>
             </div>
@@ -18,8 +18,8 @@
                 <div class="body__item__desc">{{ questionGroup.descUser }}</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkCultureSelected(questionGroup, item) }">
-                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio" :type="'checkbox'"
-                        :value="item.value" :disabled="checkCultureDisabled(item)" />
+                    <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
+                        :type="'checkbox'" :value="item.value" :disabled="checkCultureDisabled(item)" />
                     <span class="body__item__label__desc">{{ item.textUser }}</span>
                 </label>
             </div>
@@ -124,6 +124,7 @@ function setPreferenceInfo() {
 </script>
 <style lang="scss" scoped>
 .preference {
+    padding: 20px 0;
 
     .preference__headerGroup {
         background-color: #d8e4eb;

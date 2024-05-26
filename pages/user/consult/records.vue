@@ -1,19 +1,36 @@
 <template>
     <div class="consult">
-        <div class="consult__headerGroup">
-            <img class="consult__header" src="@/assets/consult/header.png"></img>
-            <button class="consult__btn">了解更多</button>
+        <div class="d-md-none">
+            <div class="consult__headerGroup">
+                <img class="consult__header" src="@/assets/consult/header.png"></img>
+                <button class="consult__btn">了解更多</button>
+            </div>
+            <img class="consult__image" src="@/assets/consult/image1.png"></img>
+            <img class="consult__image" src="@/assets/consult/image2.png"></img>
+            <div class="consult__card">
+                <img class="consult__image" src="@/assets/consult/image3.png"></img>
+                <button class="consult__btn consult__btn--outline">了解更多</button>
+            </div>
+            <div class="consult__card">
+                <img class="consult__image" src="@/assets/consult/image4.png"></img>
+                <button class="consult__btn consult__btn--outline">了解更多</button>
+            </div>
         </div>
-        <img class="consult__image1" src="@/assets/consult/image1.png"></img>
-        <img class="consult__image2" src="@/assets/consult/image2.png"></img>
-
-        <div class="conault__card">
-            <img class="consult__image3" src="@/assets/consult/image3.png"></img>
-            <button class="consult__btn consult__btn--outline">了解更多</button>
-        </div>
-        <div class="conault__card">
-            <img class="consult__image3" src="@/assets/consult/image4.png"></img>
-            <button class="consult__btn consult__btn--outline">了解更多</button>
+        <div class="d-none d-md-block w-100">
+            <div class="consult__background">
+                <div class="consult__imageGroup consult__imageGroup--absolute">
+                    <img class="consult__image" src="@/assets/consult/desktop1.png">
+                    </img>
+                    <button class="background__btn">了解更多</button>
+                </div>
+            </div>
+            <img class="consult__image consult__image--mt" src="@/assets/consult/desktop2.png"></img>
+            <div class="consult__card">
+                <img class="consult__image" src="@/assets/consult/desktop3.png"></img>
+            </div>
+            <div class="consult__card">
+                <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
+            </div>
         </div>
     </div>
 </template>
@@ -145,26 +162,67 @@ function getConsultantName(id) {
         color: white;
     }
 
-    .consult__image1 {
+    .consult__image {
         width: 100%;
         margin-top: 40px;
     }
 
-    .consult__image2 {
-        width: 100%;
-        margin-top: 40px;
-    }
-
-    .conault__card {
+    .consult__card {
         border-radius: 30px;
         background: #DCF2F2;
         padding: 30px;
         margin-top: 40px;
     }
+}
 
-    .consult__image3 {
-        width: 100%;
-        margin-top: 40px;
+@media screen and (min-width: 992px) {
+    .consult {
+        padding-bottom: 75px;
+
+        .consult__background {
+            background: #DCF2F2;
+            width: 100%;
+            min-height: 377px;
+            position: absolute;
+            left: 0px;
+            z-index: 10;
+        }
+
+
+        .consult__imageGroup--absolute {
+            width: 100%;
+            position: absolute;
+            left: 50%;
+            top: 0px;
+            transform: translate(-50%, 0);
+            max-width: 1296px;
+
+            .background__btn {
+                border-radius: 100px;
+                border: 2px solid #50BDBC;
+                display: block;
+                padding: 10px 30px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                align-self: stretch;
+                background: inherit;
+                color: #50BDBC;
+                font-family: "PingFang TC";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                max-width: 275px;
+                top: 410px;
+                left: 320px;
+                position: absolute;
+            }
+        }
+
+        .consult__image--mt {
+            margin-top: 600px;
+        }
     }
 }
 </style>

@@ -330,6 +330,8 @@ async function handleSubmitBroadcast() {
 </script>
 <style lang="scss" scoped>
 .profile {
+    padding: 20px 0;
+
     .profile__basic {
         .basic__image {
             display: flex;

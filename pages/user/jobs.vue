@@ -470,6 +470,8 @@ function setJobComparable() {
 </script>
 <style lang="scss" scoped>
 .userStatus {
+    padding: 20px 0;
+
     .userStatus__card {
         width: 100%;
         height: 100%;
