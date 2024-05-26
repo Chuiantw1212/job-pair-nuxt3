@@ -14,8 +14,8 @@
                 <button class="consult__btn consult__btn--outline">諮詢師列表</button>
             </div>
             <div class="consult__card">
-                <img class="consult__image" src="@/assets/consult/image4.png"></img>
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
+                    <img class="consult__image" src="@/assets/consult/image4.png"></img>
                     <button class="consult__btn consult__btn--outline">了解更多</button>
                 </a>
             </div>
@@ -23,9 +23,10 @@
         <div class="d-none d-md-block w-100">
             <div class="consult__background">
                 <div class="consult__imageGroup consult__imageGroup--absolute">
-                    <img class="consult__image" src="@/assets/consult/desktop1.png">
-                    </img>
-                    <button class="background__btn">了解更多</button>
+                    <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
+                        <img class="consult__image" src="@/assets/consult/desktop1.png">
+                        </img>
+                    </a>
                 </div>
             </div>
             <img class="consult__image consult__image--mt" src="@/assets/consult/desktop2.png"></img>
@@ -34,8 +35,10 @@
                 <button class="card__btn">諮詢師列表</button>
             </div>
             <div class="consult__card">
-                <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
-                <button class="card__btn">了解更多</button>
+                <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
+                    <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
+                    <button class="card__btn">了解更多</button>
+                </a>
             </div>
         </div>
     </div>
@@ -229,7 +232,7 @@ function getConsultantName(id) {
         }
 
         .consult__image--mt {
-            margin-top: 600px;
+            margin-top: 45vw;
         }
 
         .consult__card {
@@ -255,6 +258,14 @@ function getConsultantName(id) {
                 margin-left: 200px;
                 margin-top: 20px;
             }
+        }
+    }
+}
+
+@media screen and (min-width: 1140px) {
+    .consult {
+        .consult__image--mt {
+            margin-top: 600px;
         }
     }
 }
