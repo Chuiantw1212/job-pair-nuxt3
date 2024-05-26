@@ -3,17 +3,21 @@
         <div class="d-md-none">
             <div class="consult__headerGroup">
                 <img class="consult__header" src="@/assets/consult/header.png"></img>
-                <button class="consult__btn">了解更多</button>
+                <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
+                    <button class="consult__btn">了解更多</button>
+                </a>
             </div>
             <img class="consult__image" src="@/assets/consult/image1.png"></img>
             <img class="consult__image" src="@/assets/consult/image2.png"></img>
             <div class="consult__card">
                 <img class="consult__image" src="@/assets/consult/image3.png"></img>
-                <button class="consult__btn consult__btn--outline">了解更多</button>
+                <button class="consult__btn consult__btn--outline">諮詢師列表</button>
             </div>
             <div class="consult__card">
                 <img class="consult__image" src="@/assets/consult/image4.png"></img>
-                <button class="consult__btn consult__btn--outline">了解更多</button>
+                <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
+                    <button class="consult__btn consult__btn--outline">了解更多</button>
+                </a>
             </div>
         </div>
         <div class="d-none d-md-block w-100">
@@ -27,9 +31,11 @@
             <img class="consult__image consult__image--mt" src="@/assets/consult/desktop2.png"></img>
             <div class="consult__card">
                 <img class="consult__image" src="@/assets/consult/desktop3.png"></img>
+                <button class="card__btn">諮詢師列表</button>
             </div>
             <div class="consult__card">
                 <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
+                <button class="card__btn">了解更多</button>
             </div>
         </div>
     </div>
@@ -131,7 +137,10 @@ function getConsultantName(id) {
         .consult__header {
             width: 100%;
         }
+    }
 
+    .consult__anchor {
+        text-decoration: none;
     }
 
     .consult__btn {
@@ -164,7 +173,6 @@ function getConsultantName(id) {
 
     .consult__image {
         width: 100%;
-        margin-top: 40px;
     }
 
     .consult__card {
@@ -222,6 +230,31 @@ function getConsultantName(id) {
 
         .consult__image--mt {
             margin-top: 600px;
+        }
+
+        .consult__card {
+            padding: 40px;
+            margin-top: 70px;
+
+            .card__btn {
+                display: flex;
+                width: fit-content;
+                padding: 10px 30px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border-radius: 100px;
+                border: 2px solid #50BDBC;
+                background: #50BDBC;
+                color: #FFF;
+                font-family: "PingFang TC";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                margin-left: 200px;
+                margin-top: 20px;
+            }
         }
     }
 }
