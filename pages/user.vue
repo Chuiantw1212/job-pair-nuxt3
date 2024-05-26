@@ -109,6 +109,7 @@ function checkConsultActive() {
 @media screen and (min-width: 992px) {
     .dashboard {
         .dashboard__menu {
+            display: none;
             min-height: 65px;
 
             .menu__content {

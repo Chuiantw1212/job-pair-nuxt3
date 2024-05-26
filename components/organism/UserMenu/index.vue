@@ -4,27 +4,26 @@
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/jobs">
-                        <img src="./Search.svg" alt="search">
                         <span>職缺探索</span>
                     </NuxtLink>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
-                        <img src="./User.svg" alt="user">
+                    <LazyAtomUser>
+                        
+                    </LazyAtomUser>
+                    <!-- <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
                         <span>會員中心</span>
-                    </NuxtLink>
+                    </NuxtLink> -->
                 </li>
             </template>
             <template v-else>
                 <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button navItem__button--disabled" disabled>
-                        <img src="./Search.svg" alt="search">
                         <span>職缺探索</span>
                     </button>
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
                     <button class="navItem__button navItem__button--disabled" disabled>
-                        <img src="./User.svg" alt="user">
                         <span>會員中心</span>
                     </button>
                 </li>
