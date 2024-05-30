@@ -1,7 +1,8 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
-        <button class="userDropdown__btn" @click="isOpen = !isOpen">
-            <img class="btn__icon" alt="avatar" :src="userImage">
+        <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
+            <img class="btn__avatar" alt="avatar" :src="userImage">
+            <img class="btn__arrow" src="./Down.svg">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
             <ul class="userDropdown__list">
@@ -67,12 +68,25 @@ async function logout() {
     .userDropdown__btn {
         background: inherit;
         border: none;
+        display: flex;
+        gap: 5px;
+        align-items: center;
 
-        .btn__icon {
+        .btn__avatar {
             width: 42px;
             height: 42px;
             border-radius: 50%;
             overflow: hidden;
+        }
+
+        .btn__arrow {
+            transition: all 0.3s;
+        }
+    }
+
+    .userDropdown__btn--isOpen {
+        .btn__arrow {
+            transform: translateY(-1);
         }
     }
 
