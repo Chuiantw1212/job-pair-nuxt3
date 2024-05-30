@@ -59,7 +59,7 @@
                             </button>
                         </td>
                         <td>
-                            <a :href="getJobPreviewHref(job)" target="_blank">
+                            <a v-if="['active'].includes(job.status)" :href="getJobPreviewHref(job)" target="_blank">
                                 <img src="~/assets/admin/icon_preview_g.svg">
                             </a>
                         </td>
