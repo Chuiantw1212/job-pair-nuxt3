@@ -8,7 +8,7 @@
     "postinstall": "nuxt prepare",
     "build": "nuxt build",
     "postbuild": "cd .output/server && rimraf node_modules && npm install -f",
-    "predeploy": "gcloud config configurations activate dev && firebase use job-pair-taiwan-dev",
+    "predeploy": "npm install firebase-functions@latest --save-dev && gcloud config configurations activate dev && firebase use job-pair-taiwan-dev",
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
     "analyze": "npx nuxi analyze"
