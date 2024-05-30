@@ -1,22 +1,24 @@
 <template>
-    <div class="userDropdown">
+    <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" @click="isOpen = !isOpen">
             <img class="btn__icon" alt="avatar" :src="userImage">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
             <ul class="userDropdown__list">
                 <li class="list__item">
-                    <NuxtLink class="item__link" :to="{ 'name': 'user-profile' }">
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-profile' }" @click="isOpen = false">
                         個人檔案
                     </NuxtLink>
                 </li>
                 <li class="list__item">
-                    <NuxtLink class="item__link" :to="{ 'name': 'user-consult-records' }">
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-consult-records' }" @click="isOpen = false">
                         生涯設計
                     </NuxtLink>
                 </li>
                 <li class="list__item">
-                    登出
+                    <button class="item__link" @click="logout()">
+                        登出
+                    </button>
                 </li>
             </ul>
         </div>
@@ -24,8 +26,39 @@
 </template>
 <script setup>
 const isOpen = ref(false)
+const router = useRouter()
 const repoAuth = useRepoAuth()
 const userImage = repoAuth.state.user.image
+onMounted(() => {
+    toggleClickOutside(true)
+})
+onBeforeUnmount(() => {
+    toggleClickOutside(false)
+})
+const menuDiv = ref(null)
+// methods
+function toggleClickOutside() {
+    if (!process.client) {
+        return
+    }
+    if (menuDiv) {
+        document.addEventListener("click", handleClickoutSide)
+    } else {
+        document.removeEventListener("click", handleClickoutSide)
+    }
+}
+function handleClickoutSide(event) {
+    const area = menuDiv.value
+    if (!area.contains(event.target)) {
+        isOpen.value = false
+    }
+}
+async function logout() {
+    repoAuth.userSignout()
+    router.push({
+        name: 'index',
+    })
+}
 </script>
 <style lang="scss" scoped>
 .userDropdown {
@@ -59,22 +92,29 @@ const userImage = repoAuth.state.user.image
     .userDropdown__list {
         list-style: none;
         border-radius: 10px;
+        overflow: hidden;
         border: 1px solid var(--Grays-Quat, #EDEAEA);
         background: var(--Grays-Quin, #FFF);
         padding: 0px;
         margin-top: 8px;
 
         .list__item {
-            padding: 7px 14px;
             cursor: pointer;
+            display: block;
 
             &:hover {
                 background: var(--JP-Soft, #F5FFFB);
             }
 
             .item__link {
+                display: block;
+                padding: 7px 14px;
                 text-decoration: none;
                 color: black;
+                background: inherit;
+                border: none;
+                width: 100%;
+                text-align: left;
             }
         }
     }

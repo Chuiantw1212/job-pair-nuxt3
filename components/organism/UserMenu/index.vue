@@ -3,17 +3,30 @@
         <template v-if="repoAuth.state.user && repoAuth.state.user.type === 'employee'">
             <template v-if="isRegistered">
                 <li class="nav-item" @click="emit('collapse')">
-                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/jobs">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" :to="{ 'name': 'jobs' }">
                         <span>職缺探索</span>
                     </NuxtLink>
                 </li>
-                <li class="nav-item" @click="emit('collapse')">
+                <li class="d-none d-lg-block nav-item" @click="emit('collapse')">
                     <LazyAtomUser>
-
                     </LazyAtomUser>
-                    <!-- <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
-                        <span>會員中心</span>
-                    </NuxtLink> -->
+                </li>
+                <li class="d-lg-none nav-item" @click="emit('collapse')">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active"
+                        :to="{ 'name': 'user-profile' }">
+                        <span>個人檔案</span>
+                    </NuxtLink>
+                </li>
+                <li class="d-lg-none nav-item" @click="emit('collapse')">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active"
+                        :to="{ 'name': 'user-consult-records' }">
+                        <span>生涯設計</span>
+                    </NuxtLink>
+                </li>
+                <li class="d-lg-none nav-item" @click="emit('collapse')">
+                    <button class="navItem__button" @click="logout()">
+                        <span>登出</span>
+                    </button>
                 </li>
             </template>
             <template v-else>
@@ -101,7 +114,6 @@ function showUserModal() {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 20px;
 
     .nav-item {
@@ -146,6 +158,7 @@ function showUserModal() {
     .navbar-nav {
         flex-direction: row;
         padding: 0px;
+        align-items: center;
     }
 }
 </style>
