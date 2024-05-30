@@ -23,20 +23,23 @@
         <div class="d-none d-md-block w-100">
             <div class="consult__background">
                 <div class="consult__imageGroup consult__imageGroup--absolute">
+                    <img class="consult__image" src="@/assets/consult/desktop1.png">
+                    </img>
                     <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
-                        <img class="consult__image" src="@/assets/consult/desktop1.png">
-                        </img>
+                        <button class="imageGroup__btn">了解更多</button>
                     </a>
                 </div>
             </div>
             <img class="consult__image consult__image--mt" src="@/assets/consult/desktop2.png"></img>
             <div class="consult__card">
                 <img class="consult__image" src="@/assets/consult/desktop3.png"></img>
-                <button class="card__btn">諮詢師列表</button>
+                <a class="consult__anchor" href="https://lifecareerdesigner.com/about/#member" target="_blank">
+                    <button class="card__btn">諮詢師列表</button>
+                </a>
             </div>
             <div class="consult__card">
+                <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
-                    <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
                     <button class="card__btn">了解更多</button>
                 </a>
             </div>
@@ -174,6 +177,25 @@ function getConsultantName(id) {
         color: white;
     }
 
+    .consult__imageGroup {
+        .imageGroup__btn {
+            position: absolute;
+            z-index: 10;
+            bottom: 20%;
+            left: 20%;
+            border-radius: 100px;
+            border: 2px solid #50BDBC;
+            color: #50BDBC;
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            padding: 10px 30px;
+            background: inherit;
+        }
+    }
+
     .consult__image {
         width: 100%;
     }
@@ -186,7 +208,7 @@ function getConsultantName(id) {
     }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 768px) {
     .consult {
         padding-bottom: 75px;
 

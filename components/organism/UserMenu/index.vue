@@ -9,7 +9,7 @@
                 </li>
                 <li class="nav-item" @click="emit('collapse')">
                     <LazyAtomUser>
-                        
+
                     </LazyAtomUser>
                     <!-- <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/user/profile">
                         <span>會員中心</span>
@@ -101,6 +101,7 @@ function showUserModal() {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
 
     .nav-item {

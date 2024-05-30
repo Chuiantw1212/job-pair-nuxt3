@@ -1,7 +1,7 @@
 <template>
     <div class="userDropdown">
         <button class="userDropdown__btn" @click="isOpen = !isOpen">
-            <img alt="avatar" src="./Ellipse.png">
+            <img class="btn__icon" alt="avatar" :src="userImage">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
             <ul class="userDropdown__list">
@@ -24,6 +24,8 @@
 </template>
 <script setup>
 const isOpen = ref(false)
+const repoAuth = useRepoAuth()
+const userImage = repoAuth.state.user.image
 </script>
 <style lang="scss" scoped>
 .userDropdown {
@@ -32,6 +34,13 @@ const isOpen = ref(false)
     .userDropdown__btn {
         background: inherit;
         border: none;
+
+        .btn__icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
     }
 
     .userDropdown__layer {
