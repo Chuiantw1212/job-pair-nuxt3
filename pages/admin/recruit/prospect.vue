@@ -83,7 +83,6 @@
 </template>
 <script setup>
 const { $filter, } = useNuxtApp()
-const runTimeConfig = useRuntimeConfig()
 const repoCompany = useRepoCompany()
 const repoSelect = useRepoSelect()
 const repoAuth = useRepoAuth()

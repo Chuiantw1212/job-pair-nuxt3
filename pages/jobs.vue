@@ -1,6 +1,6 @@
 <template>
     <div class="jobs" :class="{ container: device.state.isLarge }">
-        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋技能、公司或職缺">
+        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" @search="handleSearch()" placeholder="搜尋公司或職缺">
         </LazyAtomInputSearch2>
         <div v-if="repoSelect.state.selectByQueryRes" class="filter__list d-lg-none">
             <LazyAtomBtnToggle v-model="filterOpen['occupationalCategory']"

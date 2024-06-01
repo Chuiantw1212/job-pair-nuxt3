@@ -18,14 +18,16 @@ export default defineNuxtPlugin(nuxtApp => {
                     return item.dataset.required == 'true'
                 })
                 // allRequiredInputs.forEach(input => {
-                //     const inputId = input.dataset.id || input.id
-                //     if (inputId) {
-                //         $emitter.emit(`validate-${inputId}`)
-                //     }
+                //     console.log(input.dataset.name,)
+                //     // const inputId = input.dataset.id || input.id
+                //     // if (inputId) {
+                //     //     $emitter.emit(`validate-${inputId}`)
+                //     // }
                 // })
                 const invalidFields = allRequiredInputs.filter((input) => {
+                    // 從dataset來的資料會有false
                     const formValue = input.dataset.value || input.value
-                    const isEmpty = ['null', null, 'undefined', undefined, 'false',].includes(formValue) || !String(formValue).trim()
+                    const isEmpty = ['null', null, 'undefined', undefined, 'false'].includes(formValue) || !String(formValue).trim()
                     const isInvalid = ['null', null, 'false', false].includes(input.dataset.valid)
                     return isEmpty || isInvalid
                 })

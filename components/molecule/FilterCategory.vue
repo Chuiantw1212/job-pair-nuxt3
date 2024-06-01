@@ -43,7 +43,8 @@
                     </div>
                     <div class="subList__body">
                         <template v-for="(item, index) in list" :key="index">
-                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)" class="body__item">
+                            <label v-show="state.openFlagsTop[categoryKey] && checkMatched(item.value)"
+                                class="body__item">
                                 <input v-model="localValue" type="checkbox" :value="item.value"
                                     :disabled="checkItemDisabled(item)" />
                                 <span class="body__item__name">{{ item.text }}</span>

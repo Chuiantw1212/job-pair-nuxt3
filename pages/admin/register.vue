@@ -4,8 +4,6 @@
     </div>
 </template>
 <script setup>
-const { $validate, $sweet, } = useNuxtApp()
-const router = useRouter()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 watch(() => repoAuth.state.user, async (newValue) => {

@@ -1,19 +1,20 @@
 <template>
     <div class="recruitJob">
-        <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form">
-            <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
+        <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form" ref="jobItemRef">
+            <!-- <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
                 :placeholder="'範例：https://www.104.com.tw/job/*'">
                 在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
                 <br>
                 範例：https://www.104.com.tw/job/*
-            </LazyAtomQuickImport>
+            </LazyAtomQuickImport> -->
             <div class="form__header">
                 職缺狀態
                 <!-- <span class="header__wallet">錢包餘額：0點
                     <img class="wallet__balance" src="@/assets/admin/Frame.png" alt="account balance">
                 </span> -->
             </div>
-            <LazyAtomInputSwitch class="mt-1" v-model="state.job.status" @update:modelValue="checkWalletBallance($event)">
+            <LazyAtomInputSwitch class="mt-1" v-model="state.job.status"
+                @update:modelValue="checkWalletBallance($event)">
             </LazyAtomInputSwitch>
             <LazyAtomInputText v-model="state.job.name" name="職缺名稱" required :disabled="state.disabled" class="mt-4">
             </LazyAtomInputText>
@@ -60,7 +61,8 @@
                     </LazyAtomInputMoney>
                     <LazyAtomInputMoney v-model="state.job.salaryMax" :name="'經常性頂薪'"
                         :placeholder="`請輸入最高${$optionText(state.job.salaryType, repoSelect.state.selectByQueryRes.salaryType)}`"
-                        :disabled="state.disabled" :min="getMinSalary(state.job.salaryMin)" class="inputGroup__upperBound">
+                        :disabled="state.disabled" :min="getMinSalary(state.job.salaryMin)"
+                        class="inputGroup__upperBound">
                     </LazyAtomInputMoney>
                     <template v-if="state.job.salaryType === 'monthly'">
                         <LazyAtomInputMoney v-model="state.job.incentiveCompensation" :name="'全年非經常性薪資'"
@@ -103,8 +105,8 @@
             </div>
             <LazyAtomInputCkeditor v-model="state.job.description" name="職責簡介" :disabled="state.disabled" required
                 ref="description" class="mt-4">
-                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasDescription()" name="職責簡介" :modelValue="state.job"
-                    :field="'description'" @update:modelValue="setUpdatedJob($event)">
+                <LazyOrganismChatOptimizeJobContentModal v-if="checkHasDescription()" name="職責簡介"
+                    :modelValue="state.job" :field="'description'" @update:modelValue="setUpdatedJob($event)">
                 </LazyOrganismChatOptimizeJobContentModal>
                 <LazyOrganismChatGenerateJobDescriptionModal v-else v-model="state.job"
                     @update:modelValue="setUpdatedJob($event)">
@@ -125,7 +127,7 @@
                     <template v-for="(questionGroup, key1) in repoSelect.state.questionsRes" :key="key1">
                         <div v-if="questionGroup.key !== 'culture'" class="body__questionGroup">
                             <div class="questionGroup__description">
-                                <span class="text-danger">* </span>{{ questionGroup.descCompany }}
+                                <span class="nameGroup__required">* </span>{{ questionGroup.descCompany }}
                             </div>
                             <input v-show="false" :value="state.job.preference[questionGroup.key]" :data-required="true"
                                 :data-name="questionGroup.descCompany">
@@ -155,7 +157,8 @@
         </div>
         <div class="recruitJob__footer">
             <AtomBtnSimple class="footer__btn" @click="handleSave()">儲存</AtomBtnSimple>
-            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">儲存並預覽職缺
+            <AtomBtnSimple class="footer__btn" @click="handlePreview()" outline :disabled="!state.job?.identifier">
+                儲存並預覽職缺
             </AtomBtnSimple>
             <AtomBtnSimple class="footer__btn" @click="showAlert()" outline color="danger">刪除職缺</AtomBtnSimple>
         </div>
@@ -368,7 +371,7 @@ async function setJob() {
     if (!jobResponse.status === 200) {
         return
     }
-    const job = jobResponse.data
+    const job = jobResponse.data || {}
     // 給定預設值
     const { company = {}, preference = {} } = repoAuth.state
     if (!job.preference) {
@@ -439,16 +442,15 @@ async function goback() {
     })
 }
 async function saveJob() {
-    const jobItem = jobItemRef.value
     const job = state.job
     if (job.status === 'active') {
-        const result = await $validate(jobItem)
+        const result = await $validate()
         job.completeness = result.completeness
         if (!result.isValid) {
             return false
         }
     } else {
-        const result = await $validate(jobItem, {
+        const result = await $validate(undefined, {
             title: '請再次確認',
             icon: 'warning',
             showCancelButton: true,

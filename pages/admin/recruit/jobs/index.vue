@@ -44,7 +44,8 @@
                 <tbody class="table__body" :key="state.renderKey">
                     <tr v-for="(job, index) in state.jobList" :key="index" class="table__row">
                         <td class="jobManagement__table__sticky">
-                            <AtomInputSwitch v-model="job.status" @update:modelValue="checkJobStatus($event, job, index)">
+                            <AtomInputSwitch v-model="job.status"
+                                @update:modelValue="checkJobStatus($event, job, index)">
                             </AtomInputSwitch>
                         </td>
                         <td>
@@ -58,7 +59,7 @@
                             </button>
                         </td>
                         <td>
-                            <a :href="getJobPreviewHref(job)" target="_blank">
+                            <a v-if="['active'].includes(job.status)" :href="getJobPreviewHref(job)" target="_blank">
                                 <img src="~/assets/admin/icon_preview_g.svg">
                             </a>
                         </td>
@@ -299,6 +300,7 @@ async function addJobDraft() {
     const { company } = repoAuth.state
     const { id, addressRegion, addressLocality, streetAddress, remark = '' } = company
     const job = {
+        name: '職缺草稿',
         status: "closed",
         organizationId: id,
         // 預設為公司的上班地點

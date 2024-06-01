@@ -1,6 +1,6 @@
 <template>
     <div class="inputDropdownContainer" ref="input">
-        <div class="container__nameGroup"><span v-if="required" class="text-danger">* </span>{{ name }}
+        <div class="container__nameGroup"><span v-if="required" class="nameGroup__required">* </span>{{ name }}
             <span v-if="max">(最多{{ max }}項)</span>
         </div>
         <button class="inputDropdownContainer__trigger" @click="toggleDropdown()" :disabled="disabled"
@@ -101,8 +101,20 @@ export default {
     .container__nameGroup {
         margin-bottom: 8px;
         font-size: 18px;
-        font-weight: bold;
         color: black;
+
+        .nameGroup__required {
+            color: #FF3B30;
+
+            /* P-16-Rugular */
+            font-family: "PingFang TC";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            /* 162.5% */
+            margin-right: 4px;
+        }
     }
 
     .inputDropdownContainer__trigger {
