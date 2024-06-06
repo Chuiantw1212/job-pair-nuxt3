@@ -7,7 +7,7 @@
         </div>
         <div class="quick__inputGroup">
             <div class="inputGroup__nameGroup">
-                網站連結
+                {{ name }}
             </div>
             <label class="inputGroup__label">
                 <input v-model="state.crawlerUrl" class="label__input" :placeholder="props.placeholder" />
@@ -24,6 +24,10 @@ const state = reactive({
     crawlerUrl: ''
 })
 const props = defineProps({
+    name: {
+        type: String,
+        default: '網站連結'
+    },
     placeholder: {
         type: String,
         default: 'www.104.com.tw/companyInfo/*, www.yourator.co/companies/*'
