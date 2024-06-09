@@ -1,17 +1,14 @@
 <template>
-    <div class="recruitJob">
-        <div v-if="repoSelect.state.selectByQueryRes && state.job" class="dropLayer__form" ref="jobItemRef">
-            <!-- <LazyAtomQuickImport v-if="state.job.completeness !== 100" @click="crawlFromLink($event)"
-                :placeholder="'範例：https://www.104.com.tw/job/*'">
-                在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
-                <br>
-                範例：https://www.104.com.tw/job/*
-            </LazyAtomQuickImport> -->
+    <div v-if="repoSelect.state.selectByQueryRes && state.job" class="form">
+        <LazyAtomQuickImport class="form__quick" name="職缺連結" @click="crawlFromLink($event)"
+            :placeholder="'範例：https://www.104.com.tw/job/*'">
+            在此貼上您的企業在104上「職缺瀏覽頁面」的網站連結，即可快速建立職缺基本資訊
+            <br>
+            範例：https://www.104.com.tw/job/*
+        </LazyAtomQuickImport>
+        <div class="job__card">
             <div class="form__header">
                 職缺狀態
-                <!-- <span class="header__wallet">錢包餘額：0點
-                    <img class="wallet__balance" src="@/assets/admin/Frame.png" alt="account balance">
-                </span> -->
             </div>
             <LazyAtomInputSwitch class="mt-1" v-model="state.job.status"
                 @update:modelValue="checkWalletBallance($event)">
@@ -435,7 +432,6 @@ function checkAddressRequired() {
     const { jobLocationType = '' } = state.job
     return jobLocationType !== 'fullyRemote'
 }
-const jobItemRef = ref(null)
 async function goback() {
     router.push({
         name: 'admin-recruit-jobs'
@@ -489,11 +485,12 @@ async function handleSave() {
     flex-direction: column;
 }
 
-.dropLayer__form {
-    padding: 20px 40px;
-    background-color: white;
-    border-radius: 10px;
-
+.form {
+    .job__card {
+        border-radius: 10px;
+        border: 1px solid #EDEAEA;
+        padding: 24px 32px;
+    }
 
     .form__header {
         font-size: 18px;
@@ -524,9 +521,10 @@ async function handleSave() {
     }
 
     .form__quick {
-        background-color: #fee997;
+        // background-color: #fee997;
+        border-radius: 10px;
+        border: 1px solid #EDEAEA;
         padding: 24px 32px;
-        border-radius: 5px;
         margin-bottom: 45px;
 
         .quick__header {

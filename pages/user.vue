@@ -23,39 +23,27 @@
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
-                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/preference">
+                        <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                            to="/user/preference">
                             <img class="item__link__icon" src="~/assets/user/icon_job.svg" />
                             <div class="menu__item__text">求職偏好</div>
                         </NuxtLink>
                     </li>
                 </ul>
             </div>
-            <div class="dashboard__view" :class="{ col: device.state.isLarge }">
-                <NuxtPage />
-            </div>
+            <NuxtPage />
         </div>
     </div>
 </template>
 <script setup>
-const { $emitter } = useNuxtApp()
-const repoAuth = useRepoAuth()
 const device = useDevice()
 const route = useRoute()
-// hooks
-// definePageMeta({
-//     redirect: () => {
-//         return { name: 'user-profile' }
-//     },
-// })
 function checkConsultActive() {
     return route.path.includes('/user/consult')
 }
 </script>
 <style lang="scss" scoped>
 .dashboard {
-    .dashboard__view {
-        padding: 20px 0;
-    }
 
     .dashboard__menu {
         .menu__content {
@@ -121,6 +109,7 @@ function checkConsultActive() {
 @media screen and (min-width: 992px) {
     .dashboard {
         .dashboard__menu {
+            display: none;
             min-height: 65px;
 
             .menu__content {
