@@ -19,7 +19,7 @@
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkConsultActive() }"
                             to="/user/consult/records">
                             <img class="item__link__icon" src="~/assets/user/icon_consult.svg" />
-                            <div class="menu__item__text">職涯諮詢</div>
+                            <div class="menu__item__text">生涯設計</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">

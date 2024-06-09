@@ -82,7 +82,7 @@
                         請拖曳布局至此
                     </div>
                     <div v-else class="preview__template">
-                        你的模板已達上限，如果需要增加，請升級進階付費方案！
+                        模板已達上限
                     </div>
                 </template>
             </OrganismDesignBody>
@@ -92,7 +92,7 @@
                 請拖曳布局至此
             </div>
             <div v-else class="preview__template">
-                你的模板已達上限，如果需要增加，請升級進階付費方案！
+                模板已達上限
             </div>
         </div>
         <div class="design__footer">

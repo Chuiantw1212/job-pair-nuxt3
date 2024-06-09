@@ -17,6 +17,11 @@
                     </NuxtLink>
                 </li>
                 <li class="list__item">
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-preference' }" @click="isOpen = false">
+                        求職偏好
+                    </NuxtLink>
+                </li>
+                <li class="list__item">
                     <button class="item__link" @click="logout()">
                         登出
                     </button>
