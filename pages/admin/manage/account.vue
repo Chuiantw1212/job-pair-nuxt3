@@ -29,6 +29,12 @@
                 </div>
             </div>
             <div class="accountManagement__card">
+                <h2 class="card__header">接收履歷的電子信箱</h2>
+                <div class="card__desc">電子信箱可被修改，可設定一個電子信箱</div>
+                <LazyAtomInputSelect class="mt-1" v-model="state.admin" :items="adminItems">
+                </LazyAtomInputSelect>
+            </div>
+            <div class="accountManagement__card">
                 <div class="card__headerGroup">
                     <h2 class="card__header">帳號</h2>
                     <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
@@ -67,6 +73,17 @@ const state = reactive({
 // hooks
 useHead({
     title: '帳戶管理 - 招募中心'
+})
+const adminItems = computed({
+    get() {
+        const adminItems = state.admins.map(item => {
+            return {
+                text: item.email,
+                value: item.email
+            }
+        })
+        return adminItems
+    }
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (!process.client || !newValue) {
