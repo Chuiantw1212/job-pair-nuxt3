@@ -12,6 +12,11 @@
                     </NuxtLink>
                 </li>
                 <li class="list__item">
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-jobs' }" @click="isOpen = false">
+                        求職狀態
+                    </NuxtLink>
+                </li>
+                <li class="list__item">
                     <NuxtLink class="item__link" :to="{ 'name': 'user-consult-records' }" @click="isOpen = false">
                         生涯設計
                     </NuxtLink>
