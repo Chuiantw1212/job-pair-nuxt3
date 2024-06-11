@@ -31,7 +31,8 @@
             <div class="accountManagement__card">
                 <h2 class="card__header">接收履歷的電子信箱</h2>
                 <div class="card__desc">電子信箱可被修改，可設定一個電子信箱</div>
-                <LazyAtomInputSelect class="mt-1" v-model="state.admin" :items="adminItems">
+                <LazyAtomInputSelect class="mt-1" v-model="state.admin" :items="adminItems"
+                    @update:modelValue="setMainAdmin($event)">
                 </LazyAtomInputSelect>
             </div>
             <div class="accountManagement__card">
@@ -69,6 +70,7 @@ const state = reactive({
     balance: 0,
     newAdminEmail: '',
     VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV,
+    admins: [],
 })
 // hooks
 useHead({
@@ -76,13 +78,13 @@ useHead({
 })
 const adminItems = computed({
     get() {
-        const adminItems = state.admins.map(item => {
+        const adminItemsCopy = state.admins.map(item => {
             return {
                 text: item.email,
                 value: item.email
             }
         })
-        return adminItems
+        return adminItemsCopy
     }
 })
 watch(() => repoAuth.state.user, async (newValue) => {
@@ -93,6 +95,15 @@ watch(() => repoAuth.state.user, async (newValue) => {
     state.admins = await repoCompany.getCompanyAdmins()
 }, { immediate: true })
 // methods
+function setMainAdmin(mainEmail) {
+    const adminIndex = state.admins.find(item => {
+        return item.email === mainEmail
+    })
+    const adminsCopy = JSON.parse(JSON.stringify(state.admins))
+    const selectedAdmin = adminsCopy.splice(adminIndex, 1)[0]
+    adminsCopy.unshift(selectedAdmin)
+    state.admins = adminsCopy
+}
 async function removeAdmin(item) {
     $sweet.loader(true)
     const admins = await repoAdmin.deleteAdmin(item)
