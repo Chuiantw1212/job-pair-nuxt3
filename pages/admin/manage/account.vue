@@ -29,6 +29,13 @@
                 </div>
             </div>
             <div class="accountManagement__card">
+                <h2 class="card__header">接收履歷的電子信箱</h2>
+                <div class="card__desc">電子信箱可被修改，可設定一個電子信箱</div>
+                <LazyAtomInputSelect class="mt-1" v-model="state.mainAdmin" :items="adminItems"
+                    @update:modelValue="setMainAdmin($event)">
+                </LazyAtomInputSelect>
+            </div>
+            <div class="accountManagement__card">
                 <div class="card__headerGroup">
                     <h2 class="card__header">帳號</h2>
                     <LazyOrganismDeleteModal v-if="state.VITE_APP_FIREBASE_ENV !== 'production'"
@@ -63,10 +70,23 @@ const state = reactive({
     balance: 0,
     newAdminEmail: '',
     VITE_APP_FIREBASE_ENV: runTimeConfig?.public?.VITE_APP_FIREBASE_ENV,
+    mainAdmin: '',
+    admins: [],
 })
 // hooks
 useHead({
     title: '帳戶管理 - 招募中心'
+})
+const adminItems = computed({
+    get() {
+        const adminItemsCopy = state.admins.map(item => {
+            return {
+                text: item.email,
+                value: item.email
+            }
+        })
+        return adminItemsCopy
+    }
 })
 watch(() => repoAuth.state.user, async (newValue) => {
     if (!process.client || !newValue) {
@@ -74,8 +94,19 @@ watch(() => repoAuth.state.user, async (newValue) => {
     }
     state.tempUser = JSON.parse(JSON.stringify(newValue))
     state.admins = await repoCompany.getCompanyAdmins()
+    state.mainAdmin = state.admins[0].email
 }, { immediate: true })
 // methods
+function setMainAdmin(mainEmail) {
+    const adminIndex = state.admins.find(item => {
+        return item.email === mainEmail
+    })
+    const adminsCopy = JSON.parse(JSON.stringify(state.admins))
+    const selectedAdmin = adminsCopy.splice(adminIndex, 1)[0]
+    adminsCopy.unshift(selectedAdmin)
+    const adminUids = adminsCopy.map(item => item.uid)
+    repoCompany.patchCompanyAdmins(adminUids)
+}
 async function removeAdmin(item) {
     $sweet.loader(true)
     const admins = await repoAdmin.deleteAdmin(item)
@@ -127,62 +158,11 @@ async function logout() {
         }
     }
 }
-async function handleCredential() {
-    const auth = getAuth()
-    const user = auth().currentUser
-    const credential = auth.EmailAuthProvider.credential(user.email, state.pass)
-    try {
-        const authResult = await user.reauthenticateWithCredential(credential)
-        if (authResult.user.refreshToken) {
-            // 驗證成功，允許變更密碼
-            state.pass = null
-            state.toggleChangePassword = true
-        }
-    } catch (error) {
-        // 驗證失敗
-        $sweet.alert(error.message)
-    }
-}
-async function submitNewPass() {
-    if (state.newPass !== state.newPassAgain) {
-        $sweet.alert("密碼不一致")
-        return
-    }
-    const user = firebase.auth().currentUser
-    try {
-        const res = await user.updatePassword(state.newPass)
-        state.newPass = null
-        state.newPassAgain = null
-        state.toggleChangePassword = false
-        $sweet.succeed({
-            text: '修改密碼完成',
-        })
-    } catch (error) {
-        // 更新失敗
-        $sweet.alert(error.message)
-    }
-}
-async function submitProfile() {
-    const auth = getAuth()
-    const user = auth().currentUser
-    try {
-        await user.updateProfile({
-            name: state.tempUser.name,
-        })
-        const response = await repoAdmin.patchAdmin(state.tempUser)
-        if (response.status === 200) {
-            repoAuth.setUser(state.tempUser)
-            $sweet.succeed()
-        }
-    } catch (error) {
-        // 更新失敗
-        $sweet.alert(error.message)
-    }
-}
 </script>
 <style lang="scss" scoped>
 .accountManagement {
     background-color: #F9F9F9;
+    padding-top: 20px;
 
     .accountManagement__header {
         color: #222;
