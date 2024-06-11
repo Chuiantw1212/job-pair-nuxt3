@@ -13,6 +13,12 @@
                 </li>
                 <li class="d-lg-none nav-item" @click="emit('collapse')">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active"
+                        :to="{ 'name': 'user-jobs' }">
+                        <span>求職狀態</span>
+                    </NuxtLink>
+                </li>
+                <li class="d-lg-none nav-item" @click="emit('collapse')">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active"
                         :to="{ 'name': 'user-profile' }">
                         <span>個人檔案</span>
                     </NuxtLink>
