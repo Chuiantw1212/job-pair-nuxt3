@@ -24,9 +24,8 @@ const props = defineProps({
     }
 })
 </script>
-<style lang="scss " scoped>
+<style lang="scss" scoped>
 .input__admin {
-    
     .admin__list {
         margin: 0;
         padding: 0;
