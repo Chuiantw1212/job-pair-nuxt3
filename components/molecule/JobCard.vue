@@ -23,7 +23,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .statusCard {
-    height: 100%;
 
     .statusCard__header {
         background-color: #4bc49a;
@@ -51,7 +50,6 @@ export default {
         .statusCard__body {
             overflow-y: auto;
             border-radius: 0px 0px 10px 10px;
-            height: calc(100% - 64px);
         }
     }
 }

@@ -1,7 +1,9 @@
 <template>
     <div v-if="repoSelect.state.selectByQueryRes" class="userStatus">
         <div class="userStatus__kanban">
-            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{
+                height: 'calc(100% - 64px)', padding: '20px'
+            }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Heart.svg" />
@@ -17,7 +19,7 @@
                     </LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
-            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ height: 'calc(100% - 64px)', padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Rocket.svg" />
@@ -31,7 +33,7 @@
                     <LazyOrganismUserJobList v-model="state.jobApplied" type="applied"></LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
-            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ padding: '20px' }">
+            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ height: 'calc(100% - 64px)', padding: '20px' }">
                 <template v-slot:header>
                     <div class="card__header">
                         <img class="card__header__icon" src="~/assets/user/job/icon_Comment.svg" />
@@ -474,7 +476,6 @@ function setJobComparable() {
 
     .userStatus__card {
         width: 100%;
-        height: 100%;
 
         .card__header {
             font-size: 22px;
@@ -519,7 +520,6 @@ function setJobComparable() {
                 }
 
                 .cell__body {
-                    // margin-top: 8px;
                     font-size: 18px;
                     font-weight: normal;
                     color: #333;
