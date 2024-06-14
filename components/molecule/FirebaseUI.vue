@@ -59,14 +59,6 @@
                                                     src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"></span><span
                                                 class="firebaseui-idp-text firebaseui-idp-text-long">使用Google登入</span></button>
                                     </li>
-                                    <li v-if="provider === 'facebook.com'" class="firebaseui-list-item"><button
-                                            class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-facebook firebaseui-id-idp-button"
-                                            data-provider-id="facebook.com" style="background-color:#3b5998"
-                                            data-upgraded=",MaterialButton" @click.prevent="signInWithFacebook()"><span
-                                                class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon" alt=""
-                                                    src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg"></span><span
-                                                class="firebaseui-idp-text firebaseui-idp-text-long">使用
-                                                Facebook登入</span></button></li>
                                 </template>
                             </ul>
                         </form>
