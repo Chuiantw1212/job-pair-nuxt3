@@ -387,7 +387,7 @@ async function setJob() {
     if (!job.jobLocationType) {
         job.jobLocationType = "onSite"
     }
-    if (!job.industry) {
+    if (!job.industry && company) {
         const { industry = [] } = company
         job.industry = industry
     }
