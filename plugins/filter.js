@@ -1,4 +1,4 @@
-const money = function (value) {
+const money = function (value = '') {
     return Number(value).toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,

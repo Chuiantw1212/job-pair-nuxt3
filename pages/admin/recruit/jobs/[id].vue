@@ -87,9 +87,6 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
-            <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
-                :disabled="state.job.jobLocationType === 'fullyRemote'">
-            </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
                     name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled"
@@ -177,7 +174,6 @@ const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const device = useDevice()
-const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
