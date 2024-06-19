@@ -106,6 +106,7 @@ export default defineNuxtConfig({
       // https://nuxtseo.com/sitemap/guides/dynamic-urls
       `${apiBase}/job/sitemap`,
       `${apiBase}/company/sitemap`,
+      `${apiBase}/article/sitemap`,
     ]
   },
   devtools: { enabled: true },
