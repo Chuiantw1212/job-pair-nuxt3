@@ -70,11 +70,7 @@ export default defineNuxtConfig({
     'nuxt-jsonld',
     '@nuxtjs/seo',
   ],
-  vite: {
-    define: {
-      "process.env.DEBUG": false,
-    },
-  },
+  // https://github.com/nuxt/framework/issues/7197
   nitro: {
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
@@ -100,12 +96,12 @@ export default defineNuxtConfig({
       '/admin/**',
       '/user/**'
     ],
+    // https://nuxtseo.com/sitemap/guides/dynamic-urls#_1-using-sources-config
     sources: [
-      // https://nuxtseo.com/sitemap/guides/dynamic-urls
       `${apiBase}/job/sitemap`,
       `${apiBase}/company/sitemap`,
       `${apiBase}/article/sitemap`,
-    ]
+    ],
   },
   devtools: { enabled: true },
 })
