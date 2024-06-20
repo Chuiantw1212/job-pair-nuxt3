@@ -71,17 +71,8 @@ export default defineNuxtConfig({
     'nuxt-jsonld',
     '@nuxtjs/seo',
   ],
-  vite: {
-    define: {
-      "process.env.DEBUG": false,
-    },
-  },
   // https://github.com/nuxt/framework/issues/7197
   nitro: {
-    // https://nuxtseo.com/sitemap/guides/prerendering#prerendering-the-sitemap-on-build
-    prerender: {
-      routes: ['/sitemap.xml']
-    },
     // https://github.com/nuxt/framework/issues/8301
     preset: 'firebase',
     // https://nitro.unjs.io/config#compresspublicassets
@@ -106,8 +97,12 @@ export default defineNuxtConfig({
       '/admin/**',
       '/user/**'
     ],
-    // https://nuxtseo.com/sitemap/guides/dynamic-urls
-    sources: ['/api/sitemap'],
+    // https://nuxtseo.com/sitemap/guides/dynamic-urls#_1-using-sources-config
+    sources: [
+      `${apiBase}/job/sitemap`,
+      `${apiBase}/company/sitemap`,
+      `${apiBase}/article/sitemap`,
+    ],
   },
   devtools: { enabled: true },
 })
