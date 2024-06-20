@@ -98,7 +98,7 @@ watch(() => repoAuth.state.user, async (newValue) => {
 }, { immediate: true })
 // methods
 function setMainAdmin(mainEmail) {
-    const adminIndex = state.admins.find(item => {
+    const adminIndex = state.admins.findIndex(item => {
         return item.email === mainEmail
     })
     const adminsCopy = JSON.parse(JSON.stringify(state.admins))
