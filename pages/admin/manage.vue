@@ -57,7 +57,7 @@ watch(() => repoAuth.state.user, () => {
 async function initializeCompanyInfo() {
     // 生成本地端company資料
     const { user } = repoAuth.state
-    if (!user || !user.id || state.companyInfo.id) {
+    if (!user || !user.id || state.companyInfo?.id) {
         return
     }
     // Load from store
