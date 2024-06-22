@@ -8,7 +8,7 @@
                     <div>{{ item.email }}</div>
                     <div v-if="item.dateCreated">加入日期 {{ $filter.date(item.dateCreated) }}</div>
                 </div>
-                <button v-if="modelValue.length > 1" class="item__remove" @click="emit('remove', item)">
+                <button v-if="modelValue.length > 1 && index !== 0" class="item__remove" @click="emit('remove', item)">
                     <img src="./Trash.svg">
                 </button>
             </li>
@@ -32,7 +32,8 @@ const props = defineProps({
         display: flex;
         list-style: none;
         flex-direction: column;
-        gap:10px;
+        gap: 10px;
+
         .list__item {
             border-radius: 10px;
             overflow: hidden;
@@ -41,10 +42,12 @@ const props = defineProps({
             padding: 10px 20px;
             gap: 20px;
             background: #EDEAEA;
+
             .item__image {
                 width: 20px;
                 height: 20px;
             }
+
             .item__body {
                 width: 100%;
                 color: #222;
@@ -54,9 +57,10 @@ const props = defineProps({
                 font-weight: 600;
                 line-height: normal;
             }
-            .item__remove{
-                background-color:inherit;
-                border:none;
+
+            .item__remove {
+                background-color: inherit;
+                border: none;
             }
         }
     }
