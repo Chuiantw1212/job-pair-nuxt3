@@ -104,7 +104,10 @@
                     </button>
                 </div> -->
         </section>
-        <div class="jobView__padding">
+        <section class="jobView__card  jobView__card--intro">
+            <h2>公司介紹</h2>
+        </section>
+        <div class=" jobView__padding">
             <section class="jobView__card jobView__card--features mt-3">
                 <div class="features__item">
                     <span class="item__header">
@@ -682,12 +685,15 @@ function getLocationText() {
     .jobView__banner {
         width: 100%;
     }
+
+    .jobView__card {
+        border-radius: 20px;
+        background: var(--Grays-Quin, #FFF);
+        padding: 30px;
+    }
 }
 
 .jobView__card--basic {
-    border-radius: 20px;
-    background: var(--Grays-Quin, #FFF);
-    padding: 30px;
     margin-top: 20px;
 
     .basic__logoGroup {
