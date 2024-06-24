@@ -1,6 +1,7 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isLarge }">
-        <img :src="job.image">
+        <img v-if="state.company?.banner" class="jobView__banner" :src="state.company.banner">
+        <img v-else class="jobView__banner" src="@/assets/jobs/JobCard.png">
         <section id="jobView__basic" class="jobView__card  jobView__card--basic mt-3">
             <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup" :to="`/company/${state.company?.seoName}`">
                 <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
@@ -10,9 +11,9 @@
                 <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
                 </div>
             </NuxtLink>
-            <h1 class="basic__name">
+            <!-- <h1 class="basic__name">
                 {{ state.job?.name }}
-            </h1>
+            </h1> -->
             <NuxtLink v-if="state.company?.seoName" class="basic__organizationName"
                 :to="`/company/${state.company?.seoName}`">
                 {{ state.job?.organizationName }}
@@ -20,7 +21,28 @@
             <NuxtLink v-else class="basic__organizationName" :to="`/company/${state.company?.id}`">
                 {{ state.job?.organizationName }}
             </NuxtLink>
-            <div class="basic__badgeGroup">
+            <ul class="basic__list">
+                <li class="list__item">
+                    <span class="item__head">
+                        員工人數
+                    </span>
+                    {{ state.company?.numberOfEmployees }}
+                </li>
+                <li class="list__item">
+                    <span class="item__head">
+                        地點
+                        <a :href="getEncodedMapLink()" target="_blank">
+                            <img class="head__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                        </a>
+                    </span> {{ getJobAddress() }}
+                </li>
+                <li class="list__item">
+                    <span class="item__head">
+                        資本額
+                    </span> {{ state.company?.capital }}
+                </li>
+            </ul>
+            <!-- <div class="basic__badgeGroup">
                 <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
                     {{ $filter.optionText(item, repoSelect.industryItems) }}
                 </div>
@@ -38,7 +60,7 @@
                         }}
                     </span>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="basic__btnGroup">
                     <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
                         <img alt="save" src="@/assets/jobs/Collect.svg">
@@ -224,10 +246,9 @@ const jobId = computed(() => {
     return id
 })
 const runTimeConfig = useRuntimeConfig()
-const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 const state = reactive({
     job: null,
-    company: null,
+    companyInfo: null,
     application: {
         applyFlow: null,
     },
@@ -264,7 +285,10 @@ const state = reactive({
     id: null,
     shareButtonToolTip: null,
 })
+const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
+const { data: company = {} } = await useFetch(`${runTimeConfig.public.apiBase}/company/${job.organizationId}`, { initialCache: false })
 state.job = job
+state.companyInfo = company
 if (process.client) {
     state.navigator = window.navigator
 }
@@ -595,30 +619,6 @@ function setMapHeight() {
     const { width = 0 } = DomRect
     state.mapHeight = `${width}px`
 }
-function getGoogleMapSrc() {
-    if (!state.job || !state.company) {
-        return
-    }
-    const streetAddress = state.job.streetAddress ?? state.company.streetAddress
-    if (!streetAddress) {
-        return
-    }
-    const baseUrl = "https://www.google.com/maps/embed/v1/place"
-    const key = `?key=AIzaSyC8nz4h8U9CHPBCtmgZAzGRj3sFS_E8VOY`
-    const addressMap = {
-        ' Sec.': 'Section',
-    }
-    let correctedAddress = streetAddress
-    for (let key in addressMap) {
-        const corrected = addressMap[key]
-        correctedAddress = correctedAddress.replaceAll(key, corrected)
-    }
-    const region = `&region=TW`
-    const language = `&language=en`
-    const query = `&q=${correctedAddress}`
-    const srcString = `${baseUrl}${key}${region}${language}${query}`
-    return srcString
-}
 function getJobAddress() {
     const { locationRes } = repoSelect.state
     if (!state.job || !state.company || !locationRes) {
@@ -664,9 +664,31 @@ async function initialize() {
     state.job = job
     state.company = company
 }
+function getLocationText() {
+    if (!state.companyInfo || !repoSelect.state.locationRes) {
+        return
+    }
+    const { addressRegion, addressLocality, streetAddress } = state.companyInfo
+    const text1 = $optionText(addressRegion, repoSelect.state.locationRes.taiwan)
+    const items = repoSelect.state.locationRes[addressRegion]
+    const text2 = $optionText(addressLocality, items)
+    return `${text1}${text2}${streetAddress}`
+}
 </script>
 <style lang="scss" scoped>
+.jobView {
+    padding: 20px;
+
+    .jobView__banner {
+        width: 100%;
+    }
+}
+
 .jobView__card--basic {
+    border-radius: 20px;
+    background: var(--Grays-Quin, #FFF);
+    padding: 30px;
+    margin-top: 20px;
 
     .basic__logoGroup {
         display: block;
@@ -682,6 +704,55 @@ async function initialize() {
             height: 100%;
 
         }
+    }
+
+    .basic__organizationName {
+        margin-top: 34px;
+        color: var(--Grays-Prim, #222);
+        /* H2-20-Medium */
+        font-family: "PingFang TC";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-decoration: none;
+        display: block;
+    }
+
+    .basic__list {
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .list__item {
+            display: flex;
+
+            .item__head {
+                color: var(--Grays-Prim, #222);
+                /* P-16-Medium */
+                font-family: "PingFang TC";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 26px;
+                width: 100px;
+                display: block;
+
+                /* 162.5% */
+                .head__icon {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+
+    .basic__name {
+        margin-top: 34px;
     }
 }
 </style>
