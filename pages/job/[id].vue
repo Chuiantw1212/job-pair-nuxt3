@@ -1,67 +1,46 @@
 <template>
     <div class="jobView" :class="{ container: device.state.isLarge }">
-        <img v-if="state.company?.banner" class="jobView__banner" :src="state.company.banner">
-        <img v-else class="jobView__banner" src="@/assets/jobs/JobCard.png">
-        <section id="jobView__basic" class="jobView__card  jobView__card--basic mt-3">
-            <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup" :to="`/company/${state.company?.seoName}`">
-                <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+        <section id="jobView__basic" class="jobView__section mt-3">
+            <div class="jobView__card jobView__card--basic">
+                <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup"
+                    :to="`/company/${state.company?.seoName}`">
+                    <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    </div>
+                </NuxtLink>
+                <NuxtLink v-else class="basic__logoGroup" :to="`/company/${state.company?.id}`">
+                    <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    </div>
+                </NuxtLink>
+                <h1 class="basic__name">
+                    {{ state.job?.name }}
+                </h1>
+                <NuxtLink v-if="state.company?.seoName" class="basic__organizationName"
+                    :to="`/company/${state.company?.seoName}`">
+                    {{ state.job?.organizationName }}
+                </NuxtLink>
+                <NuxtLink v-else class="basic__organizationName" :to="`/company/${state.company?.id}`">
+                    {{ state.job?.organizationName }}
+                </NuxtLink>
+                <div class="basic__badgeGroup">
+                    <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
+                        {{ $filter.optionText(item, repoSelect.industryItems) }}
+                    </div>
                 </div>
-            </NuxtLink>
-            <NuxtLink v-else class="basic__logoGroup" :to="`/company/${state.company?.id}`">
-                <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
-                </div>
-            </NuxtLink>
-            <!-- <h1 class="basic__name">
-                {{ state.job?.name }}
-            </h1> -->
-            <NuxtLink v-if="state.company?.seoName" class="basic__organizationName"
-                :to="`/company/${state.company?.seoName}`">
-                {{ state.job?.organizationName }}
-            </NuxtLink>
-            <NuxtLink v-else class="basic__organizationName" :to="`/company/${state.company?.id}`">
-                {{ state.job?.organizationName }}
-            </NuxtLink>
-            <ul class="basic__list">
-                <li class="list__item">
-                    <span class="item__head">
-                        員工人數
-                    </span>
-                    {{ state.company?.numberOfEmployees }}
-                </li>
-                <li class="list__item">
-                    <span class="item__head">
-                        地點
-                        <a :href="getEncodedMapLink()" target="_blank">
-                            <img class="head__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
-                        </a>
-                    </span> {{ getJobAddress() }}
-                </li>
-                <li class="list__item">
-                    <span class="item__head">
-                        資本額
-                    </span> {{ state.company?.capital }}
-                </li>
-            </ul>
-            <!-- <div class="basic__badgeGroup">
-                <div v-for="(item, index) in state.company?.industry" :key="index" class="badgeGroup__badge">
-                    {{ $filter.optionText(item, repoSelect.industryItems) }}
-                </div>
-            </div>
-            <div class="basic__numberGroup">
-                <div class="numberGroup__similarity">
-                    適配度分數
-                    <span class="similarity__number"> {{ $rank(state.job.similarity) }}</span>
-                </div>
-                <div class="numberGroup__salary">
-                    {{ $filter.salaryNumber(state.job)
-                    }}
-                    <span class="salaryGroup__salaryType">
-                        / {{ $filter.optionText(state.job.salaryType, repoSelect.state.selectByQueryRes?.salaryType)
+                <div class="basic__numberGroup">
+                    <div class="numberGroup__similarity">
+                        適配度分數
+                        <span class="similarity__number"> {{ $rank(state.job.similarity) }}</span>
+                    </div>
+                    <div class="numberGroup__salary">
+                        {{ $filter.salaryNumber(state.job)
                         }}
-                    </span>
+                        <span class="salaryGroup__salaryType">
+                            / {{ $filter.optionText(state.job.salaryType, repoSelect.state.selectByQueryRes?.salaryType)
+                            }}
+                        </span>
+                    </div>
                 </div>
-            </div> -->
-            <!-- <div class="basic__btnGroup">
+                <div class="basic__btnGroup">
                     <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
                         <img alt="save" src="@/assets/jobs/Collect.svg">
                         儲存
@@ -102,12 +81,10 @@
                         <img alt="share" src="@/assets/jobs/Copy.svg">
                         複製連結
                     </button>
-                </div> -->
+                </div>
+            </div>
         </section>
-        <section class="jobView__card  jobView__card--intro">
-            <h2>公司介紹</h2>
-        </section>
-        <div class=" jobView__padding">
+        <div class="jobView__padding">
             <section class="jobView__card jobView__card--features mt-3">
                 <div class="features__item">
                     <span class="item__header">
@@ -197,7 +174,7 @@
                     <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
                 </div>
             </section>
-            <section id="jobView__description" class="jobView__card mt-3">
+            <section id="jobView__description" class="jobView__section mt-3">
                 <div class="jobView__card">
                     <div class="card__header">職責介紹</div>
                     <div class="card__body">
@@ -208,7 +185,7 @@
                     </div>
                 </div>
             </section>
-            <section id="jobView__requirement" class="jobView__card mt-3">
+            <section id="jobView__requirement" class="jobView__section mt-3">
                 <div class="jobView__card">
                     <div class="card__header">條件要求</div>
                     <div class="card__body">
@@ -249,9 +226,10 @@ const jobId = computed(() => {
     return id
 })
 const runTimeConfig = useRuntimeConfig()
+const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
 const state = reactive({
     job: null,
-    companyInfo: null,
+    company: null,
     application: {
         applyFlow: null,
     },
@@ -288,10 +266,7 @@ const state = reactive({
     id: null,
     shareButtonToolTip: null,
 })
-const { data: job } = await useFetch(`${runTimeConfig.public.apiBase}/job/${jobId.value}`, { initialCache: false })
-const { data: company = {} } = await useFetch(`${runTimeConfig.public.apiBase}/company/${job.organizationId}`, { initialCache: false })
 state.job = job
-state.companyInfo = company
 if (process.client) {
     state.navigator = window.navigator
 }
@@ -622,6 +597,30 @@ function setMapHeight() {
     const { width = 0 } = DomRect
     state.mapHeight = `${width}px`
 }
+function getGoogleMapSrc() {
+    if (!state.job || !state.company) {
+        return
+    }
+    const streetAddress = state.job.streetAddress ?? state.company.streetAddress
+    if (!streetAddress) {
+        return
+    }
+    const baseUrl = "https://www.google.com/maps/embed/v1/place"
+    const key = `?key=AIzaSyC8nz4h8U9CHPBCtmgZAzGRj3sFS_E8VOY`
+    const addressMap = {
+        ' Sec.': 'Section',
+    }
+    let correctedAddress = streetAddress
+    for (let key in addressMap) {
+        const corrected = addressMap[key]
+        correctedAddress = correctedAddress.replaceAll(key, corrected)
+    }
+    const region = `&region=TW`
+    const language = `&language=en`
+    const query = `&q=${correctedAddress}`
+    const srcString = `${baseUrl}${key}${region}${language}${query}`
+    return srcString
+}
 function getJobAddress() {
     const { locationRes } = repoSelect.state
     if (!state.job || !state.company || !locationRes) {
@@ -667,98 +666,358 @@ async function initialize() {
     state.job = job
     state.company = company
 }
-function getLocationText() {
-    if (!state.companyInfo || !repoSelect.state.locationRes) {
-        return
-    }
-    const { addressRegion, addressLocality, streetAddress } = state.companyInfo
-    const text1 = $optionText(addressRegion, repoSelect.state.locationRes.taiwan)
-    const items = repoSelect.state.locationRes[addressRegion]
-    const text2 = $optionText(addressLocality, items)
-    return `${text1}${text2}${streetAddress}`
-}
 </script>
 <style lang="scss" scoped>
 .jobView {
-    padding: 20px;
+    padding: 0;
 
-    .jobView__banner {
-        width: 100%;
+    .jobView__section {
+        // scroll-margin-top = header height + ?
+        scroll-margin-top: calc(75px);
     }
 
     .jobView__card {
-        border-radius: 20px;
-        background: var(--Grays-Quin, #FFF);
-        padding: 30px;
-    }
-}
-
-.jobView__card--basic {
-    margin-top: 20px;
-
-    .basic__logoGroup {
-        display: block;
+        padding: 20px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         border-radius: 10px;
-        border: 1px solid var(--Grays-Quat, #EDEAEA);
-        padding: 7px;
-        width: 60px;
-        height: 60px;
 
-        .logoGroup__logo {
-            background-size: contain;
-            width: 100%;
-            height: 100%;
+        .card__header {
+            font-size: 16px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #484848;
+        }
 
+
+        :deep(.card__body) {
+            margin-top: 30px;
+
+            .ck-editor__editable_inline {
+                padding: 0px !important;
+            }
         }
     }
 
-    .basic__organizationName {
-        margin-top: 34px;
-        color: var(--Grays-Prim, #222);
-        /* H2-20-Medium */
-        font-family: "PingFang TC";
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        text-decoration: none;
-        display: block;
-    }
+    .jobView__card--basic {
+        border-radius: 0 0 20px 20px;
+        position: relative;
 
-    .basic__list {
-        list-style: none;
-        padding: 0px;
-        margin: 0px;
-        margin-top: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        .basic__logoGroup {
+            font-size: 16px;
+            line-height: 1.5;
+            align-items: center;
+            margin-top: 10px;
+            color: #5ea88e;
+            min-height: 40px;
+            display: block;
+            margin: auto;
+            width: 60px;
+            height: 60px;
+            padding: 7px;
+            border-radius: 10px;
+            border: solid 1px #edeaea;
 
-        .list__item {
+            &:hover {
+                text-decoration: underline;
+            }
+
+            .logoGroup__logo {
+                width: 100%;
+                height: 100%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                border-radius: 100px;
+            }
+        }
+
+        .basic__btnGroup {
             display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
 
-            .item__head {
-                color: var(--Grays-Prim, #222);
-                /* P-16-Medium */
-                font-family: "PingFang TC";
-                font-size: 16px;
+            .btnGroup__btn {
+                width: 100%;
+                gap: 10px;
+                padding: 10px 30px;
+                border-radius: 10px;
+                border: solid 1px #a6a6a6;
+                background-color: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                &:hover {
+                    background-color: #edeaea;
+                }
+            }
+        }
+
+        .basic__name {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #222;
+        }
+
+        .basic__organizationName {
+            font-size: 16px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #222;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .basic__badgeGroup {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+
+            .badgeGroup__badge {
+                border-radius: 20px;
+                background-color: #edeaea;
+                padding: 5px 20px;
+            }
+        }
+
+        .basic__numberGroup {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            gap: 55px;
+
+            .numberGroup__similarity {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 12px;
+                font-weight: normal;
+                font-stretch: normal;
                 font-style: normal;
-                font-weight: 500;
-                line-height: 26px;
-                width: 100px;
-                display: block;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #484848;
 
-                /* 162.5% */
-                .head__icon {
-                    width: 20px;
-                    height: 20px;
+                .similarity__number {
+                    font-size: 36px;
+                    font-weight: 600;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #428f74;
+                    transform: translateY(-2px);
+                }
+            }
+
+            .numberGroup__salary {
+                font-size: 20px;
+                font-weight: 500;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: left;
+                color: #222;
+
+                .salaryGroup__salaryType {
+                    font-size: 12px;
+                    font-weight: normal;
+                    color: #a6a6a6;
                 }
             }
         }
     }
 
-    .basic__name {
-        margin-top: 34px;
+
+
+    .jobView__padding {
+        padding: 0 20px;
+    }
+
+    .jobView__card--features {
+        padding: 20px;
+
+        .features__item {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            .item__header {
+                font-size: 16px;
+                font-weight: bold;
+                min-width: 4em;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+
+                .header__icon {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            .item__body {
+                font-size: 16px;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .body__badge {
+                    padding: 5px 20px;
+                    border-radius: 10px;
+                    background-color: #edeaea;
+                    font-size: 10px;
+                    font-weight: 500;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #484848;
+                }
+
+                .item__body__map {
+                    cursor: pointer;
+                    display: block;
+                    color: black;
+                    text-decoration: underline;
+                }
+            }
+
+
+            .item__body--badgeGroup {
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            &:not(:first-child) {
+                margin-top: 15px;
+            }
+        }
+
+        .features__panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            padding: 20px;
+            border: solid 1px #edeaea;
+            background-color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #fff;
+        }
+    }
+
+    .jobView__similarJobs {
+        margin-top: 10px;
+        padding: 20px;
+        background-color: white;
+
+        .similarJobs__header {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.5;
+            text-align: left;
+            color: #333;
+        }
+
+        .similarJobs__list {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            list-style: none;
+        }
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .jobView {
+        padding-top: 0px;
+        padding-bottom: 20px;
+
+        .jobView__card {
+            justify-content: flex-start;
+
+            .card__header {}
+        }
+
+        .jobView__card--basic {
+            .basic__logoGroup {
+                margin: unset;
+            }
+
+            .basic__name {
+                text-align: left;
+            }
+
+            .basic__organizationName {
+                text-align: left;
+            }
+
+            .basic__badgeGroup {
+                justify-content: flex-start;
+            }
+
+            .basic__numberGroup {
+                margin-top: 30px;
+            }
+        }
+
+        .jobView__card--features {
+            .features__panel {
+                position: initial;
+                border: 0px;
+                width: unset;
+                margin-top: 40px;
+                padding: 0px;
+                // z-index: 1040;
+
+                .panel__btn {
+                    width: 100%;
+                }
+            }
+        }
+
+        .jobView__padding {
+            padding: 0px;
+        }
     }
 }
 </style>

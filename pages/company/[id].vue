@@ -7,7 +7,8 @@
             <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
             <section id="company__info" class="company__section mt-3">
                 <div :key="state.renderKey" class="company__bannerGroup">
-                    <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
+                    <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
+                    <img v-else class="bannerGroup__banner" src="@/assets/jobs/JobCard.png">
                 </div>
                 <div class="company__card company__basic">
                     <div class="basic__basicGroup1">
@@ -301,14 +302,15 @@ function getLocationText() {
         display: flex;
         justify-content: center;
         border-radius: 10px 10px 0px 0px;
+
+        .bannerGroup__banner {
+            padding: 20px;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
     }
 
-    .company__banner {
-        width: fit-content;
-        max-width: 100%;
-        display: block;
-        min-height: 96px;
-    }
 
     .company__basic {
         .basic__basicGroup1 {
