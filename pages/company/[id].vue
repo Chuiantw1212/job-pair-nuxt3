@@ -4,7 +4,6 @@
 
         </OrganismDesignBody>
         <div v-else class="company__free">
-            <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
             <section id="company__info" class="company__section mt-3">
                 <div :key="state.renderKey" class="company__bannerGroup">
                     <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
@@ -17,7 +16,7 @@
                         </div>
                         <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
                         </div>
-                        <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                        <!-- <div class="basic__header">{{ state.companyInfo?.name }}</div> -->
                     </div>
                     <div class="d-none d-lg-flex basic__basicGroup2">
                         <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
@@ -42,8 +41,8 @@
                     <div class="features__item">
                         <span class="item__header">產業類別</span>
                         <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
-                            }}</span>
+        $optionText(value, repoSelect.industryItems)
+    }}</span>
                     </div>
                 </div>
             </section>
@@ -72,8 +71,8 @@
                                         <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                             aria-label="換圖片">
                                             <img class="env__glideImage" :style="{
-                                                'background-image': `url(${image.url})`,
-                                            }" />
+        'background-image': `url(${image.url})`,
+    }" />
                                         </button>
                                     </li>
                                 </template>
@@ -282,8 +281,14 @@ function getLocationText() {
     }
 
     .company__card {
-        padding: 17px 15px 20px 20px;
-        background-color: #fff;
+        display: flex;
+        padding: 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        align-self: stretch;
+        border-radius: 20px;
+        background: var(--Grays-Quin, #FFF);
 
         .card__header {
             font-size: 18px;
@@ -316,10 +321,15 @@ function getLocationText() {
         .basic__basicGroup1 {
             display: flex;
             align-items: center;
+            width: 60px;
+            height: 60px;
+            padding: 7px;
+            border-radius: 10px;
+            border: 1px solid var(--Grays-Quat, #EDEAEA);
 
             .basic__logo {
-                width: 40px;
-                height: 40px;
+                width: 100%;
+                height: 100%;
                 background-repeat: no-repeat;
                 background-size: contain;
                 background-position: center;
