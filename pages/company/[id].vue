@@ -39,30 +39,6 @@
                             {{ getCapical(state.companyInfo?.capital) }}
                         </li>
                     </ul>
-                    <!-- <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                        員工人數
-                        {{ state.companyInfo?.numberOfEmployees }}
-                    </div>
-                    <div class="basicGroup__item">
-                        地點
-                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
-                        {{ getLocationText() }}
-                    </div>
-                    <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                        資本額 {{ getCapical(state.companyInfo?.capital) }}
-                    </div> -->
-                </div>
-                <div class="d-lg-none company__card company__features">
-                    <div class="features__item">
-                        <span class="item__header">地點</span>
-                        <span class="item__body">{{ getLocationText() }}</span>
-                    </div>
-                    <div class="features__item">
-                        <span class="item__header">產業類別</span>
-                        <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-        $optionText(value, repoSelect.industryItems)
-    }}</span>
-                    </div>
                 </div>
             </section>
             <div class="company__body">
@@ -102,17 +78,16 @@
             </div>
         </div>
         <section id="company__jobs" class="company__section mt-3">
-            <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
-                <div class="card__header">公司職缺</div>
-                <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.searchJobs()">
-                    </LazyAtomInputSearch>
-                </div>
-                <ul class="jobs__list">
-                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
-                </ul>
+            <div class="section__header">公司職缺</div>
+            <div class="jobs__searchWrapper">
+                <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" placeholder="搜尋公司或職缺"
+                    @search="jobScroller.searchJobs()">
+                </LazyAtomInputSearch2>
             </div>
+            <ul class="jobs__list">
+                <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                    v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
+            </ul>
         </section>
     </div>
 </template>
@@ -414,56 +389,30 @@ function getLocationText() {
         margin-top: 10px;
     }
 
-    .company__env {
-        .env__photo {
-            width: 100%;
-            display: block;
-            min-height: 466px;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            cursor: pointer;
-            background-color: white;
-            border-radius: 10px;
-            border: solid 1px #d3d3d3;
-        }
+    .section__header {
+        color: var(--Grays-Prim, #222);
 
-        .glide {
-            margin-top: 20px;
-
-            .slider__arrow--prev {
-                left: 1.5rem;
-            }
-
-            .slider__arrow--next {
-                right: 1.5rem;
-            }
-
-            .env__glideButton {
-                width: 100%;
-                background-color: inherit;
-                border: none;
-            }
-
-            .env__glideImage {
-                width: 100%;
-                height: 115px;
-                background-size: contain;
-                background-position: center;
-                background-repeat: no-repeat;
-            }
-        }
+        /* H2-20-Medium */
+        font-family: "PingFang TC";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
     }
 
-    .company__jobs {
-        .jobs__list {
-            list-style: none;
-            padding: 0;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .jobs__searchWrapper {
+        margin-top: 20px;
+    }
+
+    .jobs__list {
+        margin-top: 20px;
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
