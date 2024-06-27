@@ -74,18 +74,16 @@
                     </div>
                 </section>
                 <div class="company__body">
-                    <div class="body__textGroup">
-                        <div class="company__card company__intro">
-                            <div class="card__header">公司介紹</div>
-                            <div class="card__body">
-                                <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
-                            </div>
+                    <div class="company__card company__intro">
+                        <div class="card__header">公司介紹</div>
+                        <div class="card__body">
+                            <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
                         </div>
-                        <div class="company__card company__welfare">
-                            <div class="card__header">公司福利</div>
-                            <div class="card__body">
-                                <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
-                            </div>
+                    </div>
+                    <div class="company__card company__welfare">
+                        <div class="card__header">公司福利</div>
+                        <div class="card__body">
+                            <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
                         </div>
                     </div>
                     <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
@@ -107,6 +105,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- {{ state.companyInfo?.images }} -->
                 </div>
                 <section id="company__jobs" class="company__section mt-3">
                     <div class="section__header">公司職缺</div>
@@ -258,7 +257,7 @@ async function initializeCompany(id) {
     state.companyInfo = company
     state.renderKey = Math.random()
     const { images = [], } = company
-    if (images && images.length && designStatus !== 'active') {
+    if (images && images.length) {
         state.focusedImageSrc = images[0].url
         initialGlide()
     }
@@ -422,6 +421,8 @@ function getLocationText() {
 
     .company__body {
         margin-top: 10px;
+        display: flex;
+        flex-direction: column;
     }
 
     .section__header {
@@ -433,6 +434,47 @@ function getLocationText() {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
+    }
+
+    .company__env {
+        .env__photo {
+            width: 100%;
+            display: block;
+            height: 314px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            background-color: white;
+            border-radius: 10px;
+            // border: solid 1px #d3d3d3;
+        }
+
+        .glide {
+            margin-top: 20px;
+
+            .slider__arrow--prev {
+                left: 1.5rem;
+            }
+
+            .slider__arrow--next {
+                right: 1.5rem;
+            }
+
+            .env__glideButton {
+                width: 100%;
+                background-color: inherit;
+                border: none;
+            }
+
+            .env__glideImage {
+                width: 100%;
+                height: 115px;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        }
     }
 
     .jobs__searchWrapper {
@@ -455,9 +497,10 @@ function getLocationText() {
     .company {
         .company__card {
             padding: 17px 15px 20px 20px;
-            background-color: #fff;
-            border-radius: 10px;
+            border-radius: 20px;
+            background: var(--Grays-Quin, #FFF);
             height: fit-content;
+            overflow: hidden;
 
             .card__header {
                 font-size: 20px;
@@ -488,7 +531,6 @@ function getLocationText() {
         .company__basic {
             display: flex;
             padding: 40px 30px;
-            border-radius: 0px 0px 10px 10px;
 
             .basic__header {
                 color: var(--Grays-Prim, #222);
@@ -511,10 +553,6 @@ function getLocationText() {
             display: flex;
             gap: 20px;
             margin-top: 20px;
-
-            .body__textGroup {
-                width: 100%;
-            }
 
             .company__intro {
                 width: 100%;
