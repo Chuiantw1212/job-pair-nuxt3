@@ -7,7 +7,7 @@
             <section id="company__info" class="company__section">
                 <div :key="state.renderKey" class="company__bannerGroup">
                     <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
-                    <img v-else class="bannerGroup__banner" src="@/assets/jobs/JobCard.png">
+                    <img v-else class="bannerGroup__banner" src="@/assets/company/img_banner_default.webp">
                 </div>
                 <div class="company__card company__basic">
                     <div class="basic__basicGroup1">
@@ -306,10 +306,10 @@ function getLocationText() {
         border-radius: 10px 10px 0px 0px;
 
         .bannerGroup__banner {
-            // padding: 20px;
             width: 100%;
             max-width: 100%;
             display: block;
+            border-radius: 10px;
         }
     }
 
