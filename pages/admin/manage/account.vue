@@ -97,7 +97,7 @@ watch(() => repoAuth.state.user, async (newValue) => {
     state.mainAdmin = state.admins[0].email
 }, { immediate: true })
 // methods
-function setMainAdmin(mainEmail) {
+async function setMainAdmin(mainEmail) {
     const adminIndex = state.admins.findIndex(item => {
         return item.email === mainEmail
     })
@@ -105,7 +105,8 @@ function setMainAdmin(mainEmail) {
     const selectedAdmin = adminsCopy.splice(adminIndex, 1)[0]
     adminsCopy.unshift(selectedAdmin)
     const adminUids = adminsCopy.map(item => item.uid)
-    repoCompany.patchCompanyAdmins(adminUids)
+    await repoCompany.patchCompanyAdmins(adminUids)
+    state.admins = await repoCompany.getCompanyAdmins()
 }
 async function removeAdmin(item) {
     $sweet.loader(true)
