@@ -3,92 +3,126 @@
         <OrganismDesignBody v-if="state.companyInfo?.templates" v-model="state.companyInfo.templates" readonly>
 
         </OrganismDesignBody>
-        <div v-else class="company__free">
-            <section id="company__info" class="company__section">
-                <div :key="state.renderKey" class="company__bannerGroup">
-                    <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
-                    <img v-else class="bannerGroup__banner" src="@/assets/company/img_banner_default.webp">
+        <div v-else class="row">
+            <div class="company__card company__basic col-3 d-none d-lg-block">
+                <div class="basic__basicGroup1">
+                    <div v-if="state.companyInfo?.logo" class="basic__logo"
+                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                    </div>
+                    <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                    </div>
                 </div>
-                <div class="company__card company__basic">
-                    <div class="basic__basicGroup1">
-                        <div v-if="state.companyInfo?.logo" class="basic__logo"
-                            :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                <ul class="basicGroup__list">
+                    <li class="list__item">
+                        <span class="list__header">
+                            員工人數
+                        </span>
+                        {{ state.companyInfo?.numberOfEmployees }}
+                    </li>
+                    <li class="list__item">
+                        <span class="list__header">
+                            地點
+                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                        </span>
+                        {{ getLocationText() }}
+                    </li>
+                    <li class="list__item">
+                        <span class="list__header">
+                            資本額
+                        </span>
+                        {{ getCapical(state.companyInfo?.capital) }}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <section id="company__info" class="company__section">
+                    <div :key="state.renderKey" class="company__bannerGroup">
+                        <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
+                        <img v-else class="bannerGroup__banner" src="@/assets/company/img_banner_default.webp">
+                    </div>
+                    <div class="company__card company__basic d-lg-none">
+                        <div class="basic__basicGroup1">
+                            <div v-if="state.companyInfo?.logo" class="basic__logo"
+                                :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                            </div>
+                            <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                            </div>
                         </div>
-                        <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                        <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                        <ul class="basicGroup__list">
+                            <li class="list__item">
+                                <span class="list__header">
+                                    員工人數
+                                </span>
+                                {{ state.companyInfo?.numberOfEmployees }}
+                            </li>
+                            <li class="list__item">
+                                <span class="list__header">
+                                    地點
+                                    <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                                </span>
+                                {{ getLocationText() }}
+                            </li>
+                            <li class="list__item">
+                                <span class="list__header">
+                                    資本額
+                                </span>
+                                {{ getCapical(state.companyInfo?.capital) }}
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <div class="company__body">
+                    <div class="body__textGroup">
+                        <div class="company__card company__intro">
+                            <div class="card__header">公司介紹</div>
+                            <div class="card__body">
+                                <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
+                            </div>
+                        </div>
+                        <div class="company__card company__welfare">
+                            <div class="card__header">公司福利</div>
+                            <div class="card__body">
+                                <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
-                    <ul class="basicGroup__list">
-                        <li class="list__item">
-                            <span class="list__header">
-                                員工人數
-                            </span>
-                            {{ state.companyInfo?.numberOfEmployees }}
-                        </li>
-                        <li class="list__item">
-                            <span class="list__header">
-                                地點
-                                <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
-                            </span>
-                            {{ getLocationText() }}
-                        </li>
-                        <li class="list__item">
-                            <span class="list__header">
-                                資本額
-                            </span>
-                            {{ getCapical(state.companyInfo?.capital) }}
-                        </li>
+                    <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
+                        <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
+                        <div class="glide" :class="`glide${state.id}`">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    <template v-for="(image, index) in state.companyInfo?.images" :key="index">
+                                        <li class="glide__slide">
+                                            <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
+                                                aria-label="換圖片">
+                                                <img class="env__glideImage" :style="{
+                                                    'background-image': `url(${image.url})`,
+                                                }" />
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section id="company__jobs" class="company__section mt-3">
+                    <div class="section__header">公司職缺</div>
+                    <div class="jobs__searchWrapper">
+                        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" placeholder="搜尋公司或職缺"
+                            @search="jobScroller.searchJobs()">
+                        </LazyAtomInputSearch2>
+                    </div>
+                    <ul class="jobs__list">
+                        <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                            v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems">
+                        </LazyOrganismJobItem>
                     </ul>
-                </div>
-            </section>
-            <div class="company__body">
-                <div class="body__textGroup">
-                    <div class="company__card company__intro">
-                        <div class="card__header">公司介紹</div>
-                        <div class="card__body">
-                            <div v-if="state.companyInfo" v-html="state.companyInfo?.description"></div>
-                        </div>
-                    </div>
-                    <div class="company__card company__welfare">
-                        <div class="card__header">公司福利</div>
-                        <div class="card__body">
-                            <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
-                    <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
-                    <div class="glide" :class="`glide${state.id}`">
-                        <div class="glide__track" data-glide-el="track">
-                            <ul class="glide__slides">
-                                <template v-for="(image, index) in state.companyInfo?.images" :key="index">
-                                    <li class="glide__slide">
-                                        <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
-                                            aria-label="換圖片">
-                                            <img class="env__glideImage" :style="{
-                                                'background-image': `url(${image.url})`,
-                                            }" />
-                                        </button>
-                                    </li>
-                                </template>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
-        <section id="company__jobs" class="company__section mt-3">
-            <div class="section__header">公司職缺</div>
-            <div class="jobs__searchWrapper">
-                <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" placeholder="搜尋公司或職缺"
-                    @search="jobScroller.searchJobs()">
-                </LazyAtomInputSearch2>
-            </div>
-            <ul class="jobs__list">
-                <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                    v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
-            </ul>
-        </section>
     </div>
 </template>
 <script setup>
@@ -285,7 +319,6 @@ function getLocationText() {
         align-self: stretch;
         border-radius: 20px;
         background: var(--Grays-Quin, #FFF);
-        margin-top: 20px;
 
         .card__header {
             font-size: 18px;
@@ -310,11 +343,13 @@ function getLocationText() {
             max-width: 100%;
             display: block;
             border-radius: 10px;
+            overflow: hidden;
         }
     }
 
 
     .company__basic {
+
         .basic__basicGroup1 {
             display: flex;
             align-items: center;
@@ -422,7 +457,7 @@ function getLocationText() {
             padding: 17px 15px 20px 20px;
             background-color: #fff;
             border-radius: 10px;
-            border: solid 1px #d3d3d3;
+            height: fit-content;
 
             .card__header {
                 font-size: 20px;
@@ -438,11 +473,11 @@ function getLocationText() {
                 max-height: 400px;
                 overflow-y: auto;
                 margin-top: 20px;
+                width: 100%;
             }
         }
 
         .company__bannerGroup {
-            border: solid 1px #d3d3d3;
             border-bottom: unset;
         }
 
@@ -455,45 +490,20 @@ function getLocationText() {
             padding: 40px 30px;
             border-radius: 0px 0px 10px 10px;
 
-            .basic__basicGroup1 {
-                border-right: 1px solid #d3d3d3;
-                width: 50%;
+            .basic__header {
+                color: var(--Grays-Prim, #222);
 
-                .basic__logo {
-                    width: 128px;
-                    height: 128px;
-                }
-
-                .basic__header {
-                    font-size: 33px;
-                    font-weight: bold;
-                    color: #333;
-                    margin-left: 30px;
-                }
+                /* H2-20-Medium */
+                font-family: "PingFang TC";
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                margin-top: 30px;
             }
 
-            .basic__basicGroup2 {
-                padding: 0 30px;
-                flex-direction: column;
-                gap: 8px;
-                font-size: 22px;
-                font-weight: normal;
-                width: 50%;
-
-                .basicGroup__item {
-                    display: flex;
-                    justify-items: center;
-                    gap: 8px;
-
-                    &:not(:first-child) {
-                        margin-top: 8px;
-                    }
-
-                    .item__icon {
-                        width: 20px;
-                        height: 33px;
-                    }
-                }
+            .basicGroup__list {
+                margin-top: 30px;
             }
         }
 
