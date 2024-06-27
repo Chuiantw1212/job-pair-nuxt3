@@ -66,8 +66,8 @@
                                         <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
                                             aria-label="換圖片">
                                             <img class="env__glideImage" :style="{
-        'background-image': `url(${image.url})`,
-    }" />
+                                                'background-image': `url(${image.url})`,
+                                            }" />
                                         </button>
                                     </li>
                                 </template>
@@ -508,11 +508,29 @@ function getLocationText() {
 
             .company__intro {
                 width: 100%;
+                color: var(--Grays-Prim, #222);
+
+                /* P-16-Rugular */
+                font-family: "PingFang TC";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+                /* 162.5% */
             }
 
             .company__welfare {
                 width: 100%;
                 margin-top: 20px;
+                color: var(--Grays-Prim, #222);
+
+                /* P-16-Rugular */
+                font-family: "PingFang TC";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+                /* 162.5% */
             }
 
             .company__env {
