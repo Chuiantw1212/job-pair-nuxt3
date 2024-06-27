@@ -18,20 +18,39 @@
                         </div>
                     </div>
                     <div class="basic__header">{{ state.companyInfo?.name }}</div>
-                    <div class="d-none d-lg-flex basic__basicGroup2">
-                        <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
+                    <ul class="basicGroup__list">
+                        <li class="list__item">
+                            <span class="list__header">
+                                員工人數
+                            </span>
                             {{ state.companyInfo?.numberOfEmployees }}
-                        </div>
-                        <div class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                        </li>
+                        <li class="list__item">
+                            <span class="list__header">
+                                地點
+                                <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                            </span>
                             {{ getLocationText() }}
-                        </div>
-                        <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
-                            資本額 {{ getCapical(state.companyInfo?.capital) }}
-                        </div>
+                        </li>
+                        <li class="list__item">
+                            <span class="list__header">
+                                資本額
+                            </span>
+                            {{ getCapical(state.companyInfo?.capital) }}
+                        </li>
+                    </ul>
+                    <!-- <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
+                        員工人數
+                        {{ state.companyInfo?.numberOfEmployees }}
                     </div>
+                    <div class="basicGroup__item">
+                        地點
+                        <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                        {{ getLocationText() }}
+                    </div>
+                    <div v-if="state.companyInfo?.capital" class="basicGroup__item">
+                        資本額 {{ getCapical(state.companyInfo?.capital) }}
+                    </div> -->
                 </div>
                 <div class="d-lg-none company__card company__features">
                     <div class="features__item">
@@ -350,6 +369,22 @@ function getLocationText() {
             font-style: normal;
             font-weight: 500;
             line-height: normal;
+        }
+
+        .basicGroup__list {
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .list__item {
+                .list__header {
+                    width: 100px;
+                    display: inline-block;
+                }
+            }
         }
     }
 
