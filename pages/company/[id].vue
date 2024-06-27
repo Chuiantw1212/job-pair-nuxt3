@@ -4,7 +4,7 @@
 
         </OrganismDesignBody>
         <div v-else class="company__free">
-            <section id="company__info" class="company__section mt-3">
+            <section id="company__info" class="company__section">
                 <div :key="state.renderKey" class="company__bannerGroup">
                     <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
                     <img v-else class="bannerGroup__banner" src="@/assets/jobs/JobCard.png">
@@ -16,8 +16,8 @@
                         </div>
                         <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
                         </div>
-                        <!-- <div class="basic__header">{{ state.companyInfo?.name }}</div> -->
                     </div>
+                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
                     <div class="d-none d-lg-flex basic__basicGroup2">
                         <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
                             <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
@@ -276,6 +276,8 @@ function getLocationText() {
 }
 
 .company {
+    padding: 20px;
+
     .company__section {
         scroll-margin-top: 58px;
     }
@@ -289,6 +291,7 @@ function getLocationText() {
         align-self: stretch;
         border-radius: 20px;
         background: var(--Grays-Quin, #FFF);
+        margin-top: 20px;
 
         .card__header {
             font-size: 18px;
@@ -309,7 +312,7 @@ function getLocationText() {
         border-radius: 10px 10px 0px 0px;
 
         .bannerGroup__banner {
-            padding: 20px;
+            // padding: 20px;
             width: 100%;
             max-width: 100%;
             display: block;
@@ -336,13 +339,17 @@ function getLocationText() {
                 display: block;
             }
 
-            .basic__header {
-                font-size: 19px;
-                font-weight: bold;
-                line-height: 1.3;
-                color: #5ea88e;
-                margin-left: 8px;
-            }
+        }
+
+        .basic__header {
+            color: var(--Grays-Prim, #222);
+
+            /* H2-20-Medium */
+            font-family: "PingFang TC";
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
         }
     }
 
