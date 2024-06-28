@@ -442,15 +442,15 @@ async function saveJob() {
             return false
         }
     } else {
-        const result = await $validate(undefined, {
+        const alertResult = await $validate(undefined, {
             title: '請再次確認',
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: '取消',
         })
-        job.completeness = result.completeness
-        if (!result.value) {
-            return
+        job.completeness = alertResult.completeness
+        if (!alertResult.value) {
+            return false
         }
     }
     // 依據id判斷是否為新增
@@ -486,6 +486,7 @@ async function handleSave() {
         border-radius: 10px;
         border: 1px solid #EDEAEA;
         padding: 24px 32px;
+        background: white;
     }
 
     .form__header {
@@ -517,7 +518,7 @@ async function handleSave() {
     }
 
     .form__quick {
-        // background-color: #fee997;
+        background-color: white;
         border-radius: 10px;
         border: 1px solid #EDEAEA;
         padding: 24px 32px;

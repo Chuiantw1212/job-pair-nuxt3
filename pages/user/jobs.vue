@@ -382,7 +382,7 @@ function getSalaryText(item) {
     return salaryText
 }
 function getIrregular(item) {
-    const { salaryMin = 0, salaryType = "", salaryMax = 0, incentiveCompensation } = item
+    const { incentiveCompensation = 0 } = item
     if (incentiveCompensation) {
         const text = Number(incentiveCompensation).toLocaleString()
         return `非經常性薪資${text}`
