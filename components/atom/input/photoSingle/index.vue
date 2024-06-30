@@ -1,8 +1,10 @@
 <template>
     <div class="inputGroup">
         <div class="inputGroup__nameGroup">
-            <span v-if="required" class="nameGroup__required">*</span>
-            {{ name }}
+            <div>
+                <span v-if="required" class="nameGroup__required">*</span>
+                {{ name }}
+            </div>
         </div>
         <label class="inputGroup__label">
             <div v-if="localValue" class="label__image"

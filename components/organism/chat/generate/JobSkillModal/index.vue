@@ -1,7 +1,6 @@
 <template>
     <div class="chatGptModal">
         <button class="chatGptModal__btn" @click="openModal()">
-            <img src="./Frame.svg">
             AI 智能生成
         </button>
         <div class="modal fade" :id="`chatModal${state.id}`" tabindex="-1" a aria-hidden="true">
