@@ -7,14 +7,8 @@
             Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
         </div>
         <hr class="profile__hr">
-        <!-- <div class="profile__hint">
-            <h1 class="hint__heaer">個人檔案</h1>
-            <div class="hint__desc">
-                Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，
-                僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
-            </div>
-        </div> -->
         <div v-if="state.profileBasic" id="profileBasic" class="profile__card">
+            <h2 class="card__header">基本資料</h2>
             <div class="profile__basic">
                 <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'120px'"
                     @update:modelValue="uploadImage($event)">
@@ -62,8 +56,8 @@
                 </LazyAtomBtnSimple>
             </div>
         </div>
-        <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
-            class="profile__information profile__doc mt-3">
+        <div v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料" class="profile__card profile__card--mt">
+            <h2 class="card__header">專業背景</h2>
             <LazyAtomInputUploader v-model="state.profileAdvanced.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
                 :max="3" :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
@@ -87,7 +81,7 @@
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
                 </LazyAtomBtnSimple>
             </div>
-        </LazyMoleculeProfileCard>
+        </div>
         <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
             class="profile__broadcast mt-3">
             <div class="broadcast__subGroup">
@@ -129,7 +123,6 @@
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimple>
             </div>
-
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
             <div class="profile__management">
@@ -364,6 +357,23 @@ async function handleSubmitBroadcast() {
         border-radius: 10px;
         background: var(--Grays-Quin, #FFF);
         padding: 20px;
+        // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+
+        .card__header {
+            color: var(--Grays-Seco, #484848);
+
+            /* H2-20-Regular */
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-bottom: 30px;
+        }
+    }
+
+    .profile__card--mt {
+        margin-top: 30px;
     }
 
     .profile__basic {
