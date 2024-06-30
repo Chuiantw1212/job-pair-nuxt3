@@ -1,13 +1,20 @@
 <template>
     <div class="profile">
-        <div class="profile__hint">
+        <div class="profile_header">
+            我的履歷
+        </div>
+        <div class="profile__desc">
+            Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
+        </div>
+        <hr class="profile__hr">
+        <!-- <div class="profile__hint">
             <h1 class="hint__heaer">個人檔案</h1>
             <div class="hint__desc">
                 Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，
                 僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
             </div>
-        </div>
-        <LazyMoleculeProfileCard v-if="state.profileBasic" id="profileBasic" name="基本求職資料" class="mt-3">
+        </div> -->
+        <div v-if="state.profileBasic" id="profileBasic" class="profile__card">
             <div class="profile__basic">
                 <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'240px'"
                     @update:modelValue="uploadImage($event)">
@@ -54,7 +61,7 @@
                 <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
                 </LazyAtomBtnSimple>
             </div>
-        </LazyMoleculeProfileCard>
+        </div>
         <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
             class="profile__information profile__doc mt-3">
             <LazyAtomInputUploader v-model="state.profileAdvanced.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
@@ -330,7 +337,34 @@ async function handleSubmitBroadcast() {
 </script>
 <style lang="scss" scoped>
 .profile {
-    padding: 20px 0;
+    padding: 20px;
+
+    .profile_header {
+        color: var(--Grays-Prim, #222);
+
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
+
+    .profile__desc {
+        margin-top: 30px;
+    }
+
+    .profile__hr {
+        margin: 30px 0px;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
+    }
+
+    .profile__card {
+        border-radius: 10px;
+        background: var(--Grays-Quin, #FFF);
+        padding: 20px;
+    }
 
     .profile__basic {
         .basic__image {

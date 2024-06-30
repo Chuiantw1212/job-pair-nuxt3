@@ -8,7 +8,6 @@
             <div v-if="localValue" class="label__image"
                 :style="{ width: size, height: size, 'background-image': getImageSrc() }"></div>
             <img v-else class="label__image" :style="{ width: size, height: size, }" :src="placeholder">
-            <img class="label__icon" src="./icon_upload_circle.svg" />
             <input v-show="false" class="body__input" autocomplete="off" type="file" accept="image/*"
                 :data-required="required" :data-name="name" @change="handleFiles($event)" />
         </label>
