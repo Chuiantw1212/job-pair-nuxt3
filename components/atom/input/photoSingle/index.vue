@@ -8,6 +8,7 @@
             <div v-if="localValue" class="label__image"
                 :style="{ width: size, height: size, 'background-image': getImageSrc() }"></div>
             <img v-else class="label__image" :style="{ width: size, height: size, }" :src="placeholder">
+            <img class="label__placeholder" :style="{ width: size, height: size, }" src="./Rectangle1348.png">
             <input v-show="false" class="body__input" autocomplete="off" type="file" accept="image/*"
                 :data-required="required" :data-name="name" @change="handleFiles($event)" />
         </label>
@@ -118,6 +119,20 @@ export default {
         position: relative;
         cursor: pointer;
 
+        &:hover {
+            .label__placeholder {
+                visibility: visible;
+            }
+        }
+
+        .label__placeholder {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            top: 0px;
+            visibility: hidden;
+        }
+
         .label__icon {
             position: absolute;
             bottom: 0;
@@ -132,8 +147,6 @@ export default {
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
             border: 1px solid rgb(239, 239, 239);
         }
     }

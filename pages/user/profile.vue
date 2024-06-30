@@ -16,7 +16,7 @@
         </div> -->
         <div v-if="state.profileBasic" id="profileBasic" class="profile__card">
             <div class="profile__basic">
-                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'240px'"
+                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'120px'"
                     @update:modelValue="uploadImage($event)">
                 </LazyAtomInputPhotoSingle>
                 <div class="basic__contact">
