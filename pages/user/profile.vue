@@ -85,19 +85,8 @@
                 </LazyAtomBtnSimpleV2>
             </div>
         </div>
-        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
-            class="profile__broadcast mt-3">
-            <div class="broadcast__subGroup">
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
-                    name="訂閱適合工作">
-                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
-                </LazyAtomInputCheckSingle>
-                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0"
-                    v-model="state.profileBroadcast.isSubscribed" name="EDM訂閱">
-                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
-                </LazyAtomInputCheckSingle>
-            </div>
-            <hr />
+        <div v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送" class="profile__card profile__card--mt">
+            <h2 class="card__header">其他資訊</h2>
             <LazyAtomInputCalendar name="生日" v-model="state.profileBroadcast.birthDate" class="mt-3"
                 :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate">
             </LazyAtomInputCalendar>
@@ -122,17 +111,27 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
+            <div class="broadcast__subGroup">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
+                    name="訂閱適合工作">
+                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
+                </LazyAtomInputCheckSingle>
+                <LazyAtomInputCheckSingle class="subGroup__item"
+                    v-model="state.profileBroadcast.isSubscribed" name="EDM訂閱">
+                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
+                </LazyAtomInputCheckSingle>
+            </div>
             <div class="card__footer">
-                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimpleV2>
             </div>
-        </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
+        </div>
+        <!-- <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
             <div class="profile__management">
                 <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
             </div>
             <LazyAtomBtnSimpleV2 class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimpleV2>
-        </LazyMoleculeProfileCard>
+        </LazyMoleculeProfileCard> -->
     </div>
 </template>
 <script setup>
@@ -386,18 +385,18 @@ async function handleSubmitBroadcast() {
         }
     }
 
-    .profile__broadcast {
-        .broadcast__subGroup {
-            display: flex;
-            flex-direction: column;
+    .broadcast__subGroup {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        gap: 30px;
 
-            .subGroup__item {
-                flex-grow: 0.5;
+        .subGroup__item {
+            flex-grow: 0.5;
 
-                .isActive__desc {
-                    line-height: 1;
-                    white-space: pre-wrap;
-                }
+            .isActive__desc {
+                line-height: 1;
+                white-space: pre-wrap;
             }
         }
     }
@@ -451,6 +450,7 @@ async function handleSubmitBroadcast() {
     .card__footer {
         display: flex;
         justify-content: center;
+        margin-top: 40px;
     }
 }
 

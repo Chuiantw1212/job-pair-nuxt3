@@ -124,6 +124,7 @@ export default {
         &:hover {
             .label__placeholder {
                 visibility: visible;
+                background-size: contain;
             }
         }
 
@@ -145,7 +146,7 @@ export default {
 
         .label__image {
             display: block;
-            background-size: contain;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 50%;
