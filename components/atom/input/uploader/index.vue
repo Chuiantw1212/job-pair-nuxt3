@@ -1,9 +1,9 @@
 <template>
     <div class="inputResumes">
         <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}</h1>
-        <div class="resume__hint">(請上傳{{
+        <div class="resume__hint">請上傳{{
             acceptText
-            }}檔)</div>
+            }}檔</div>
         <template v-for="number in Math.ceil(modelValue.length / 3)">
             <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
                 class="resumes__previewGroup">
@@ -159,9 +159,16 @@ export default {
 <style lang="scss" scoped>
 .inputResumes {
     .resume__header {
-        font-size: 18px;
-        margin-bottom: 4px;
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
         font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
+        margin-bottom: 4px;
     }
 
     .resume__hint {

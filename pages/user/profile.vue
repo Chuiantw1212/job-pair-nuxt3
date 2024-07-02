@@ -52,8 +52,8 @@
                 </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
         </div>
         <div v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料" class="profile__card profile__card--mt">
@@ -61,6 +61,7 @@
             <LazyAtomInputUploader v-model="state.profileAdvanced.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
                 :max="3" :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
+            <hr class="card__hr">
             <div class="profile__languageGroup  mt-3">
                 <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                     v-model="state.profileAdvanced.language" name="語言能力" placeholder="選擇語言"
@@ -73,13 +74,15 @@
                     :items="repoSelect.state.selectByQueryRes.proficiency">
                 </LazyAtomInputRadio>
             </div>
+            <hr class="card__hr">
             <LazyAtomInputUploader class="mt-3" v-model="state.profileAdvanced.certificates"
                 :getFileBuffer="getUserCertificate" name="專業證照與能力證明">
             </LazyAtomInputUploader>
+            <hr class="card__hr">
             <LazyMoleculePortfolio v-model="state.profileAdvanced.portfolio" class="mt-3"></LazyMoleculePortfolio>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
         </div>
         <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
@@ -120,15 +123,15 @@
                 </template>
             </LazyMoleculeProfileSelectContainer>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
         </LazyMoleculeProfileCard>
         <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
             <div class="profile__management">
                 <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
             </div>
-            <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
+            <LazyAtomBtnSimpleV2 class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimpleV2>
         </LazyMoleculeProfileCard>
     </div>
 </template>
@@ -437,6 +440,12 @@ async function handleSubmitBroadcast() {
     .profile__footer {
         display: flex;
         justify-content: center;
+    }
+
+    .card__hr {
+        border-top: 0px;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
+        margin: 30px 0px;
     }
 
     .card__footer {
