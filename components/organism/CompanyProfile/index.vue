@@ -568,6 +568,7 @@ async function saveCompanyInfo(config = {}) {
         line-height: 22px;
         /* 157.143% */
         margin-top: 30px;
+        text-align: justify;
     }
 
     .profile__line {
