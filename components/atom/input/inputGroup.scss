@@ -1,11 +1,18 @@
 .inputGroup {
     .inputGroup__nameGroup {
-        font-size: 18px;
-        color: #1f1f1f;
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
         margin-bottom: 4px;
         display: flex;
-        // font-weight: bold;
         flex-wrap: nowrap;
+        justify-content: space-between;
 
         .nameGroup__required {
             color: #FF3B30;
@@ -30,6 +37,18 @@
             text-align: left;
             color: #222;
         }
+    }
+
+    .inputGroup__hint {
+        color: var(--Grays-Tert, #A6A6A6);
+
+        /* H4-12-Regular */
+        font-family: "PingFang TC";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 6px;
     }
 
     .inputGroup__label {

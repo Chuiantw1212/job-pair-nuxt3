@@ -1,7 +1,6 @@
 <template>
     <div class="chatGptModal">
         <button class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
-            <img src="./Frame.svg">
             AI內容優化
         </button>
         <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">

@@ -1,8 +1,10 @@
 <template>
     <div :ref="`inputGroup`" class="inputGroup" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
-            <span v-if="required" class="nameGroup__required">*</span>
-            {{ name }}
+            <div>
+                <span v-if="required" class="nameGroup__required">*</span>
+                {{ name }}
+            </div>
         </div>
         <label class="inputGroup__label">
             <input class="label__input" :id="state.uuid" v-model="localValue" :data-required="required"

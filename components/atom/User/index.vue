@@ -7,6 +7,7 @@
             <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
 
             </div>
+            <img class="btn__arrow" src="./Down.svg">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
             <ul class="userDropdown__list">
