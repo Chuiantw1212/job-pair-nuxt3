@@ -1,8 +1,12 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
-            <img class="btn__avatar" alt="avatar" :src="userImage">
-            <img class="btn__arrow" src="./Down.svg">
+            <div v-if="userImage" class="btn__avatar" :style="{ 'background-image': `url(${userImage})` }">
+
+            </div>
+            <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
+
+            </div>
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
             <ul class="userDropdown__list">
@@ -36,6 +40,7 @@
     </div>
 </template>
 <script setup>
+import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
@@ -85,6 +90,9 @@ async function logout() {
         .btn__avatar {
             width: 42px;
             height: 42px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-radius: 50%;
             overflow: hidden;
         }
