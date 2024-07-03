@@ -1,11 +1,10 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
-            <!-- <img v-if="userImage" class="btn__avatar" alt="avatar" :src="userImage"> -->
             <div v-if="userImage" class="btn__avatar" :style="{ 'background-image': `url(${userImage})` }">
 
             </div>
-            <div v-else class="btn__avatar" :style="{ 'background-image': `url(${userImage})` }">
+            <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
 
             </div>
             <img class="btn__arrow" src="./Down.svg">
@@ -42,6 +41,7 @@
     </div>
 </template>
 <script setup>
+import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
