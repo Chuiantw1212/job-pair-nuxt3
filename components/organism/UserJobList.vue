@@ -3,13 +3,13 @@
         <li v-for="(item, index) in modelValue" class="card__list__item" :key="index">
             <div v-if="item.status === 'active'" class="list__item__job">
                 <div class="job__header">
-                    <div class="header__logoGroup">
+                    <NuxtLink class="header__logoGroup" :to="`/job/${item.identifier}`">
                         <div v-if="item.image" class="logoGroup__logo"
                             :style="{ 'background-image': `url(${item.image})` }">
                         </div>
                         <div v-else class="logoGroup__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
                         </div>
-                    </div>
+                    </NuxtLink>
                     <button v-if="type === 'saved'" class="btn-close header__save" @click.prevent="unsafeJob(index)">
                     </button>
                 </div>
@@ -177,6 +177,7 @@ function getSavedTime(item) {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             margin-top: 10px;
+            width: fit-content;
 
             &:hover {
                 text-decoration: underline;
@@ -232,6 +233,7 @@ function getSavedTime(item) {
             text-decoration: none;
 
             margin-top: 10px;
+            width: fit-content;
 
             &:hover {
                 text-decoration: underline;
@@ -247,6 +249,7 @@ function getSavedTime(item) {
             font-weight: 400;
             line-height: normal;
             margin-top: 10px;
+            width: fit-content;
         }
     }
 }
