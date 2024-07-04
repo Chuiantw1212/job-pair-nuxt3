@@ -182,6 +182,8 @@ function initialize() {
 
 @media screen and (min-width: 992px) {
     .dashboard {
+        padding-top: 70px;
+
         .dashboard__menuMobile {
             display: none;
             min-height: 65px;

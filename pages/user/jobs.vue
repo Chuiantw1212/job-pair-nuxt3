@@ -1,6 +1,7 @@
 <template>
     <div v-if="repoSelect.state.selectByQueryRes" class="userStatus">
-        <div class="userStatus__kanban">
+        <h1 class="userStatus__header">職缺比較</h1>
+        <!-- <div class="userStatus__kanban">
             <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{
                 height: 'calc(100% - 64px)', padding: '20px'
             }">
@@ -47,8 +48,8 @@
                     <LazyOrganismUserJobList v-model="state.jobNotified" type="notified"></LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
-        </div>
-        <LazyMoleculeJobCard v-if="state.jobComparable.length" class="userStatus__card mt-3">
+        </div> -->
+        <LazyMoleculeJobCard class="userStatus__card mt-3">
             <template v-slot:header>
                 <div class="card__header">
                     <img class="card__header__icon" src="~/assets/user/job/icon_Compare.svg" />
@@ -472,7 +473,19 @@ function setJobComparable() {
 </script>
 <style lang="scss" scoped>
 .userStatus {
-    padding: 20px 0;
+
+    // padding: 20px 0;
+    .userStatus__header {
+        color: var(--Grays-Prim, #222);
+
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
 
     .userStatus__card {
         width: 100%;
