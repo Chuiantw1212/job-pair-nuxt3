@@ -14,12 +14,12 @@
                     </button>
                 </div>
                 <NuxtLink class="job__name" :to="`/job/${item.identifier}`">{{ item.name }}</NuxtLink>
-                <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
-                <div v-else class="job__badge job__badge--active">招聘中</div>
                 <NuxtLink class="job__organizationName" :to="`/company/${item.organizationId}`">
                     {{ item.organizationName }}
                 </NuxtLink>
                 <div class="job__time">{{ getSavedTime(item) }}</div>
+                <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
+                <div v-else class="job__badge job__badge--active">招聘中</div>
             </div>
             <div v-if="item.status === 'closed'" class="list__item__job">
                 <div class="job__header">
@@ -163,7 +163,7 @@ function getSavedTime(item) {
         }
 
         .job__name {
-            display: block;
+            display: -webkit-box;
             color: var(--Grays-Prim, #222);
 
             /* H3-16-Medium */
@@ -184,17 +184,23 @@ function getSavedTime(item) {
         }
 
         .job__badge {
-            font-size: 11px;
-            font-weight: bold;
-            padding: 3px 6px;
-            margin-top: 8px;
-            border-radius: 2px;
+            color: var(--JP-Soft, #F5FFFB);
+            /* Tag-10-Medium */
+            font-family: "PingFang TC";
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
             white-space: nowrap;
             width: fit-content;
+            padding: 5px 20px;
+            border-radius: 10px;
+            background: var(--JP-Prim, #5EA88E);
+            margin-top: 10px;
         }
 
         .job__badge--active {
-            background-color: #0ab378;
+            background-color: #5EA88E;
             color: white;
         }
 
@@ -208,9 +214,15 @@ function getSavedTime(item) {
         }
 
         .job__organizationName {
-            font-size: 16px;
-            margin-top: 8px;
-            line-height: 1.3;
+            color: var(--Grays-Prim, #222);
+
+            /* H4-12-Medium */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
@@ -218,7 +230,8 @@ function getSavedTime(item) {
             text-overflow: ellipsis;
             transition: all 0.3s;
             text-decoration: none;
-            color: black;
+
+            margin-top: 10px;
 
             &:hover {
                 text-decoration: underline;
@@ -226,10 +239,14 @@ function getSavedTime(item) {
         }
 
         .job__time {
-            margin-top: 8px;
-            font-size: 14px;
-            font-weight: normal;
-            color: #7f7f7f;
+            color: var(--Grays-Seco, #484848);
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: 10px;
         }
     }
 }
