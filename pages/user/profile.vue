@@ -476,7 +476,8 @@ async function handleSubmitBroadcast() {
 
 @media screen and (min-width: 992px) {
     .profile {
-
+        padding: 0px;
+        padding-left: 30px;
 
         .profile__basic {
             display: flex;
