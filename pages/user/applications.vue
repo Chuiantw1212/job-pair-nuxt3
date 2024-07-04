@@ -1,7 +1,23 @@
 <template>
     <div v-if="repoSelect.state.selectByQueryRes" class="userStatus">
-        <h1 class="userStatus__header">職缺比較</h1>
-        <div class="userStatus__kanban">
+        <h1 class="userStatus__header">求職狀態</h1>
+        <hr class="userStatus__hr">
+        <ul class="userStatus__list">
+            <li class="list__item">
+                <button class="item__btn">儲存的職缺</button>
+            </li>
+            <li class="list__item">
+                <button class="item__btn">應徵紀錄</button>
+            </li>
+            <li class="list__item">
+                <button class="item__btn">面試紀錄</button>
+            </li>
+        </ul>
+        <!-- <div>共 ${}</div> -->
+        <LazyOrganismUserJobList v-model="state.jobSaved" type="saved"
+            @update:modelValue="setJobComparable()">
+        </LazyOrganismUserJobList>
+        <!-- <div class="userStatus__kanban">
             <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{
                 height: 'calc(100% - 64px)', padding: '20px'
             }">
@@ -15,9 +31,6 @@
                     </div>
                 </template>
                 <template v-slot:body>
-                    <LazyOrganismUserJobList v-model="state.jobSaved" type="saved"
-                        @update:modelValue="setJobComparable()">
-                    </LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
             <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ height: 'calc(100% - 64px)', padding: '20px' }">
@@ -48,7 +61,7 @@
                     <LazyOrganismUserJobList v-model="state.jobNotified" type="notified"></LazyOrganismUserJobList>
                 </template>
             </LazyMoleculeJobCard>
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup>
@@ -83,69 +96,6 @@ watch(() => repoAuth.state.user, () => {
     initialize()
 })
 //methds
-function getSalaryText(item) {
-    const { salaryMin = 0, salaryType = "", salaryMax = 0 } = item
-    const type = $filter.optionText(salaryType, repoSelect.state.selectByQueryRes.salaryType)
-    const lowString = Number(salaryMin).toLocaleString()
-    let salaryText = `${type}${lowString}`
-    if (salaryMax) {
-        const highString = Number(salaryMax).toLocaleString()
-        salaryText += `~${highString}`
-    }
-    return salaryText
-}
-function getIrregular(item) {
-    const { incentiveCompensation = 0 } = item
-    if (incentiveCompensation) {
-        const text = Number(incentiveCompensation).toLocaleString()
-        return `非經常性薪資${text}`
-    }
-}
-function getJobCategoryTexts(category = []) {
-    const categoryDesc = []
-    category.forEach((item) => {
-        const targetSubItem = repoSelect.state.selectByQueryRes.jobCategory.find((subItem) => {
-            return subItem.value === item
-        })
-        if (targetSubItem) {
-            categoryDesc.push(targetSubItem.text)
-        }
-    })
-    return categoryDesc
-}
-function getJobLocation(job) {
-    const { addressRegion = "", addressLocality = "", jobLocationType = '' } = job
-    if (jobLocationType === 'fullyRemote') {
-        return '完全遠端'
-    }
-    if (!addressRegion) {
-        return
-    }
-    let location = ""
-    const targetLv1 = repoSelect.state.locationRes.taiwan.find((item) => {
-        return item.value === addressRegion
-    })
-    if (targetLv1) {
-        location += targetLv1.text
-    }
-    const targetLv2 = repoSelect.state.locationRes[addressRegion].find((item) => {
-        return item.value === addressLocality
-    })
-    if (targetLv2) {
-        location += targetLv2.text
-    }
-    return location
-}
-function setJobDetails(jobId, key) {
-    if (!jobId) {
-        state.jobCompare[key] = {}
-        return
-    }
-    const job = state.jobComparable.find((job) => {
-        return job.identifier === jobId
-    })
-    state.jobCompare[key] = job
-}
 async function initialize() {
     const { user } = repoAuth.state
     if (!user || !user.id) {
@@ -185,8 +135,8 @@ function setJobComparable() {
 </script>
 <style lang="scss" scoped>
 .userStatus {
+    padding: 20px;
 
-    // padding: 20px 0;
     .userStatus__header {
         color: var(--Grays-Prim, #222);
 
@@ -197,6 +147,40 @@ function setJobComparable() {
         font-weight: 600;
         line-height: 36px;
         /* 100% */
+    }
+
+    .userStatus__hr {
+        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        margin: 30px 0px;
+    }
+
+    .userStatus__list {
+        list-style: none;
+        padding: 0px;
+        margin-top: 0px;
+        display: flex;
+        gap: 10px;
+
+        .list__item {
+            .item__btn {
+                border-radius: 8px;
+                background: #FFF;
+                padding: 10px;
+                border: none;
+
+                /* H4-12-Regular */
+                font-family: "PingFang TC";
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: var(--JP-Prim, #5EA88E);
+                }
+            }
+        }
     }
 
     .userStatus__card {
