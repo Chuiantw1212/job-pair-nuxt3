@@ -22,44 +22,75 @@
                     <li class="card__item">
                         <h2 class="card__header">適配度</h2>
                         <hr class="card__hr">
-                        <div class="card__value card__value--bold">15</div>
+                        <div class="card__value card__value--bold"> {{ $rank(state.jobCompare.first.similarity) }}</div>
                     </li>
                     <li class="card__item">
                         <div>職務類型</div>
                         <hr class="card__hr">
-                        <div class="card__value">麵包</div>
+                        <div class="card__value">
+                            <div v-for="(text, index) in getJobCategoryTexts(state.jobCompare.first.occupationalCategory)"
+                                :key="`first${index}`">
+                                {{ text }}
+                            </div>
+                        </div>
                     </li>
                     <li class="card__item">
                         <div class="card__header">工作待遇</div>
                         <hr class="card__hr">
-                        <div class="card__value">時薪</div>
+                        <div class="card__value">
+                            <div>
+                                {{ getSalaryText(state.jobCompare.first) }}
+                            </div>
+                            <div v-if="state.jobCompare.first.salaryType === 'monthly'">
+                                {{ getIrregular(state.jobCompare.first) }}
+                            </div>
+                        </div>
                     </li>
                     <li class="card__item">
-
                         <div class="card__header">雇傭模式</div>
                         <hr class="card__hr">
+                        <div class="card__value">
+                            <div v-for="(item, index) in state.jobCompare.first.employmentType"
+                                :key="`firstEmploymentType${index}`">
+                                {{ $filter.optionText(item,
+                                    repoSelect.state.selectByQueryRes.employmentType)
+                                }}
+                            </div>
+                        </div>
                     </li>
-                    <div class="card__value">正職/全職</div>
                     <li class="card__item">
                         <div class="card__header">遠端型態</div>
                         <hr class="card__hr">
-                        <div class="card__value">非遠端</div>
+                        <div class="card__value">
+                            {{ $filter.optionText(state.jobCompare.first.jobLocationType,
+                                repoSelect.state.selectByQueryRes.jobLocationType)
+                            }}
+                        </div>
                     </li>
                     <li class="card__item">
                         <div class="card__header">上班地點</div>
                         <hr class="card__hr">
-                        <div class="card__value">縣市行政區</div>
+                        <div class="card__value">
+                            {{ getJobLocation(state.jobCompare.first) }}
+                        </div>
                     </li>
                     <li class="card__item">
                         <div class="card__header">員工人數</div>
                         <hr class="card__hr">
-                        <div class="card__value">23</div>
+                        <div class="card__value">{{ state.jobCompare.first.numberOfEmployees }}</div>
                     </li>
                     <li class="card__item">
-
                         <div class="card__header">公司福利</div>
                         <hr class="card__hr">
-                        <div class="card__value">獎金型</div>
+                        <div class="card__value">
+                            <template v-for="(value, key) in state.jobCompare.first.jobBenefitFlags" class="mt-1"
+                                :key="key">
+                                <div v-if="value">
+                                    <!-- <img src="~/assets/user/job/icon_check_g.svg" /> -->
+                                    {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
+                                </div>
+                            </template>
+                        </div>
                     </li>
                 </ul>
             </div>
