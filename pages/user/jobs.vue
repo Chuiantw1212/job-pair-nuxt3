@@ -18,17 +18,17 @@
                 </LazyAtomInputSelect>
             </div>
             <div class="userStatus__card">
-                <ul class="card__list">
+                <ul v-for="(job, index) in state.jobCompare" :key="index" class="card__list">
                     <li class="card__item">
                         <h2 class="card__header">適配度</h2>
                         <hr class="card__hr">
-                        <div class="card__value card__value--bold"> {{ $rank(state.jobCompare.first.similarity) }}</div>
+                        <div class="card__value card__value--bold"> {{ $rank(job.similarity) }}</div>
                     </li>
                     <li class="card__item">
                         <div>職務類型</div>
                         <hr class="card__hr">
                         <div class="card__value">
-                            <div v-for="(text, index) in getJobCategoryTexts(state.jobCompare.first.occupationalCategory)"
+                            <div v-for="(text, index) in getJobCategoryTexts(job.occupationalCategory)"
                                 :key="`first${index}`">
                                 {{ text }}
                             </div>
@@ -39,10 +39,10 @@
                         <hr class="card__hr">
                         <div class="card__value">
                             <div>
-                                {{ getSalaryText(state.jobCompare.first) }}
+                                {{ getSalaryText(job) }}
                             </div>
-                            <div v-if="state.jobCompare.first.salaryType === 'monthly'">
-                                {{ getIrregular(state.jobCompare.first) }}
+                            <div v-if="job.salaryType === 'monthly'">
+                                {{ getIrregular(job) }}
                             </div>
                         </div>
                     </li>
@@ -50,8 +50,7 @@
                         <div class="card__header">雇傭模式</div>
                         <hr class="card__hr">
                         <div class="card__value">
-                            <div v-for="(item, index) in state.jobCompare.first.employmentType"
-                                :key="`firstEmploymentType${index}`">
+                            <div v-for="(item, index) in job.employmentType" :key="`firstEmploymentType${index}`">
                                 {{ $filter.optionText(item,
                                     repoSelect.state.selectByQueryRes.employmentType)
                                 }}
@@ -62,7 +61,7 @@
                         <div class="card__header">遠端型態</div>
                         <hr class="card__hr">
                         <div class="card__value">
-                            {{ $filter.optionText(state.jobCompare.first.jobLocationType,
+                            {{ $filter.optionText(job.jobLocationType,
                                 repoSelect.state.selectByQueryRes.jobLocationType)
                             }}
                         </div>
@@ -71,20 +70,19 @@
                         <div class="card__header">上班地點</div>
                         <hr class="card__hr">
                         <div class="card__value">
-                            {{ getJobLocation(state.jobCompare.first) }}
+                            {{ getJobLocation(job) }}
                         </div>
                     </li>
                     <li class="card__item">
                         <div class="card__header">員工人數</div>
                         <hr class="card__hr">
-                        <div class="card__value">{{ state.jobCompare.first.numberOfEmployees }}</div>
+                        <div class="card__value">{{ job.numberOfEmployees }}</div>
                     </li>
                     <li class="card__item">
                         <div class="card__header">公司福利</div>
                         <hr class="card__hr">
                         <div class="card__value">
-                            <template v-for="(value, key) in state.jobCompare.first.jobBenefitFlags" class="mt-1"
-                                :key="key">
+                            <template v-for="(value, key) in job.jobBenefitFlags" class="mt-1" :key="key">
                                 <div v-if="value">
                                     <!-- <img src="~/assets/user/job/icon_check_g.svg" /> -->
                                     {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
@@ -218,6 +216,7 @@ async function initialize() {
     setJobComparable()
 }
 function setJobComparable() {
+    state.jobCompare = {}
     state.jobComparable = [...state.jobSaved, ...state.jobApplied, ...state.jobNotified,]
     // 設定三個預設比較
     const firstSavedJob = state.jobComparable[0]
@@ -297,6 +296,7 @@ function setJobComparable() {
         background: var(--Grays-Quin, #FFF);
         margin-top: 30px;
         padding: 20px;
+        display: flex;
 
         .card__header {
             color: var(--Grays-Prim, #222);
