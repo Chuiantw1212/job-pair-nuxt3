@@ -349,4 +349,12 @@ function setJobComparable() {
         }
     }
 }
+
+@media screen and (min-width:996px) {
+    .userStatus {
+        padding: 0px;
+        padding-left: 30px;
+        padding-bottom: 70px;
+    }
+}
 </style>
