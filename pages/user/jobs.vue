@@ -4,17 +4,18 @@
         <hr class="userStatus__hr">
         <div v-if="state.jobComparable.length">
             <div class="userStatus__selectGroup">
-                <LazyAtomInputSelect class="selectGroup__select" v-model="state.jobCompareId1"
-                    :items="state.jobComparable" itemText="name" itemValue="identifier"
+                <LazyAtomInputSelect v-model="state.jobCompareId1" class="selectGroup__select"
+                    :style="{ 'width': getWidth() }" :items="state.jobComparable" itemText="name" itemValue="identifier"
                     @update:modelValue="setJobDetails($event, 'first')">
                 </LazyAtomInputSelect>
-                <LazyAtomInputSelect v-if="state.jobComparable.length >= 2" class="selectGroup__select"
-                    v-model="state.jobCompareId2" :items="state.jobComparable" itemText="name" itemValue="identifier"
-                    @update:modelValue="setJobDetails($event, 'second')">
+                <LazyAtomInputSelect v-if="state.jobComparable.length >= 2" v-model="state.jobCompareId2"
+                    class="selectGroup__select" :style="{ 'width': getWidth() }" :items="state.jobComparable"
+                    itemText="name" itemValue="identifier" @update:modelValue="setJobDetails($event, 'second')">
                 </LazyAtomInputSelect>
                 <LazyAtomInputSelect v-if="device.state.isLarge && state.jobComparable.length >= 3"
-                    class="selectGroup__select" v-model="state.jobCompareId3" :items="state.jobComparable"
-                    itemText="name" itemValue="identifier" @update:modelValue="setJobDetails($event, 'third')">
+                    v-model="state.jobCompareId3" class="selectGroup__select" :style="{ 'width': getWidth() }"
+                    :items="state.jobComparable" itemText="name" itemValue="identifier"
+                    @update:modelValue="setJobDetails($event, 'third')">
                 </LazyAtomInputSelect>
             </div>
             <div class="userStatus__card">
@@ -84,11 +85,13 @@
                         <div class="card__value">
                             <template v-for="(value, key) in job.jobBenefitFlags" class="mt-1" :key="key">
                                 <div v-if="value">
-                                    <!-- <img src="~/assets/user/job/icon_check_g.svg" /> -->
                                     {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
                                 </div>
                             </template>
                         </div>
+                    </li>
+                    <li>
+                        <a class="card__link" :href="`/job/${job.identifier}`" target="_blank">前往該職缺</a>
                     </li>
                 </ul>
             </div>
@@ -135,6 +138,12 @@ watch(() => repoAuth.state.user, () => {
     initialize()
 })
 //methds
+function getWidth() {
+    const keys = Object.keys(state.jobCompare)
+    const count = Math.min(keys.length, 3)
+    const width = 100 / count
+    return `${width}%`
+}
 function getSalaryText(item) {
     const { salaryMin = 0, salaryType = "", salaryMax = 0 } = item
     const type = $filter.optionText(salaryType, repoSelect.state.selectByQueryRes.salaryType)
@@ -276,18 +285,8 @@ function setJobComparable() {
 
     .userStatus__selectGroup {
         display: flex;
-        // gap: 10px;
+        gap: 5px;
         max-width: 100%;
-        flex-wrap: wrap;
-        justify-content: space-between;
-
-        .selectGroup__select {
-            width: calc(33% - 5px);
-            // flex-basis: 0.3;
-            // flex-grow: 0.3;
-            // width: 33%;
-            // display: block;
-        }
     }
 
     .userStatus__card {
@@ -297,6 +296,7 @@ function setJobComparable() {
         margin-top: 30px;
         padding: 20px;
         display: flex;
+        gap: 10px;
 
         .card__header {
             color: var(--Grays-Prim, #222);
@@ -347,6 +347,26 @@ function setJobComparable() {
             flex-direction: column;
             gap: 30px;
             width: 100%;
+
+            .card__item {
+                min-height: 5rem;
+            }
+        }
+
+        .card__link {
+            display: flex;
+            height: 42px;
+            padding: 10px 30px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex: 1 0 0;
+            border-radius: 10px;
+            border: 1px solid var(--JP-Prim, #5EA88E);
+            padding: 10px auto;
+            width: 100%;
+            color: var(--JP-Prim, #5EA88E);
+            text-decoration: none;
         }
     }
 }
