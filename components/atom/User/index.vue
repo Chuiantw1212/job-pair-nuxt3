@@ -1,7 +1,12 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
-            <img class="btn__avatar" alt="avatar" :src="userImage">
+            <div v-if="userImage" class="btn__avatar" :style="{ 'background-image': `url(${userImage})` }">
+
+            </div>
+            <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
+
+            </div>
             <img class="btn__arrow" src="./Down.svg">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
@@ -12,18 +17,13 @@
                     </NuxtLink>
                 </li>
                 <li class="list__item">
-                    <NuxtLink class="item__link" :to="{ 'name': 'user-jobs' }" @click="isOpen = false">
-                        求職狀態
-                    </NuxtLink>
-                </li>
-                <li class="list__item">
                     <NuxtLink class="item__link" :to="{ 'name': 'user-consult-records' }" @click="isOpen = false">
                         生涯設計
                     </NuxtLink>
                 </li>
                 <li class="list__item">
-                    <NuxtLink class="item__link" :to="{ 'name': 'user-preference' }" @click="isOpen = false">
-                        求職偏好
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-setting' }" @click="isOpen = false">
+                        設定
                     </NuxtLink>
                 </li>
                 <li class="list__item">
@@ -36,6 +36,7 @@
     </div>
 </template>
 <script setup>
+import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
@@ -85,6 +86,9 @@ async function logout() {
         .btn__avatar {
             width: 42px;
             height: 42px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-radius: 50%;
             overflow: hidden;
         }

@@ -1,15 +1,16 @@
 <template>
     <div class="profile">
-        <div class="profile__hint">
-            <h1 class="hint__heaer">個人檔案</h1>
-            <div class="hint__desc">
-                Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，
-                僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
-            </div>
+        <div class="profile_header">
+            我的履歷
         </div>
-        <LazyMoleculeProfileCard v-if="state.profileBasic" id="profileBasic" name="基本求職資料" class="mt-3">
+        <div class="profile__desc">
+            Job Pair 為「將求職者隱私放在第一位」的求職平台，注重求職者隱私，在您沒有主動應徵前企業『不會看到您的私人資訊』，僅能看到您的『姓名、職務類別、個人簡歷』，防止您的重要資訊外洩。
+        </div>
+        <hr class="profile__hr">
+        <div v-if="state.profileBasic" id="profileBasic" class="profile__card">
+            <h2 class="card__header">基本資料</h2>
             <div class="profile__basic">
-                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'240px'"
+                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'120px'"
                     @update:modelValue="uploadImage($event)">
                 </LazyAtomInputPhotoSingle>
                 <div class="basic__contact">
@@ -51,15 +52,16 @@
                 </LazyOrganismChatIntroModal>
             </LazyAtomInputCkeditor>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBasic()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
-        </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料"
-            class="profile__information profile__doc mt-3">
+        </div>
+        <div v-if="state.profileAdvanced" id="profileAdvanced" name="進階求職資料" class="profile__card profile__card--mt">
+            <h2 class="card__header">專業背景</h2>
             <LazyAtomInputUploader v-model="state.profileAdvanced.resumes" name="履歷" :size="5242880" :accept="'.pdf'"
                 :max="3" :getFileBuffer="getUserResume">
             </LazyAtomInputUploader>
+            <hr class="card__hr">
             <div class="profile__languageGroup  mt-3">
                 <LazyAtomInputSelect class="profile__language" v-if="repoSelect.state?.selectByQueryRes?.language"
                     v-model="state.profileAdvanced.language" name="語言能力" placeholder="選擇語言"
@@ -72,28 +74,19 @@
                     :items="repoSelect.state.selectByQueryRes.proficiency">
                 </LazyAtomInputRadio>
             </div>
+            <hr class="card__hr">
             <LazyAtomInputUploader class="mt-3" v-model="state.profileAdvanced.certificates"
                 :getFileBuffer="getUserCertificate" name="專業證照與能力證明">
             </LazyAtomInputUploader>
+            <hr class="card__hr">
             <LazyMoleculePortfolio v-model="state.profileAdvanced.portfolio" class="mt-3"></LazyMoleculePortfolio>
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" class="mt-3" @click="handleSubmitAdvanced()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
-        </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送"
-            class="profile__broadcast mt-3">
-            <div class="broadcast__subGroup">
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
-                    name="訂閱適合工作">
-                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
-                </LazyAtomInputCheckSingle>
-                <LazyAtomInputCheckSingle class="subGroup__item mt-3 mt-lg-0"
-                    v-model="state.profileBroadcast.isSubscribed" name="EDM訂閱">
-                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
-                </LazyAtomInputCheckSingle>
-            </div>
-            <hr />
+        </div>
+        <div v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送" class="profile__card profile__card--mt">
+            <h2 class="card__header">其他資訊</h2>
             <LazyAtomInputCalendar name="生日" v-model="state.profileBroadcast.birthDate" class="mt-3"
                 :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate">
             </LazyAtomInputCalendar>
@@ -118,18 +111,21 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
+            <!-- <div class="broadcast__subGroup">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
+                    name="訂閱適合工作">
+                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
+                </LazyAtomInputCheckSingle>
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isSubscribed"
+                    name="EDM訂閱">
+                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
+                </LazyAtomInputCheckSingle>
+            </div> -->
             <div class="card__footer">
-                <LazyAtomBtnSimple :style="{ width: '205px' }" class="mt-3" @click="handleSubmitBroadcast()">儲存
-                </LazyAtomBtnSimple>
+                <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" @click="handleSubmitBroadcast()">儲存
+                </LazyAtomBtnSimpleV2>
             </div>
-
-        </LazyMoleculeProfileCard>
-        <LazyMoleculeProfileCard name="帳號管理" class="mt-3">
-            <div class="profile__management">
-                <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal>
-            </div>
-            <LazyAtomBtnSimple class="mt-3" :style="{ width: '145px' }" @click="logout()">登出</LazyAtomBtnSimple>
-        </LazyMoleculeProfileCard>
+        </div>
     </div>
 </template>
 <script setup>
@@ -330,7 +326,52 @@ async function handleSubmitBroadcast() {
 </script>
 <style lang="scss" scoped>
 .profile {
-    padding: 20px 0;
+    padding: 20px;
+
+    .profile_header {
+        color: var(--Grays-Prim, #222);
+
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
+
+    .profile__desc {
+        margin-top: 30px;
+        text-align: justify;
+    }
+
+    .profile__hr {
+        margin: 30px 0px;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
+    }
+
+    .profile__card {
+        border-radius: 10px;
+        background: var(--Grays-Quin, #FFF);
+        padding: 20px;
+        // box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+
+        .card__header {
+            color: var(--Grays-Seco, #484848);
+
+            /* H2-20-Regular */
+            font-family: "PingFang TC";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-bottom: 30px;
+        }
+    }
+
+    .profile__card--mt {
+        margin-top: 30px;
+    }
 
     .profile__basic {
         .basic__image {
@@ -339,18 +380,18 @@ async function handleSubmitBroadcast() {
         }
     }
 
-    .profile__broadcast {
-        .broadcast__subGroup {
-            display: flex;
-            flex-direction: column;
+    .broadcast__subGroup {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        gap: 30px;
 
-            .subGroup__item {
-                flex-grow: 0.5;
+        .subGroup__item {
+            flex-grow: 0.5;
 
-                .isActive__desc {
-                    line-height: 1;
-                    white-space: pre-wrap;
-                }
+            .isActive__desc {
+                line-height: 1;
+                white-space: pre-wrap;
             }
         }
     }
@@ -395,14 +436,24 @@ async function handleSubmitBroadcast() {
         justify-content: center;
     }
 
+    .card__hr {
+        border-top: 0px;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
+        margin: 30px 0px;
+    }
+
     .card__footer {
         display: flex;
         justify-content: center;
+        margin-top: 40px;
     }
 }
 
 @media screen and (min-width: 992px) {
     .profile {
+        padding: 0px;
+        padding-bottom: 70px;
+        padding-left: 30px;
 
         .profile__basic {
             display: flex;
@@ -418,10 +469,8 @@ async function handleSubmitBroadcast() {
             }
         }
 
-        .profile__broadcast {
-            .broadcast__subGroup {
-                flex-direction: row;
-            }
+        .broadcast__subGroup {
+            flex-direction: row;
         }
 
         .profile__language {
