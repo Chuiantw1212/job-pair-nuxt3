@@ -23,51 +23,6 @@
         <LazyOrganismUserJobList v-if="state.jobType === 'notified'" v-model="state.jobNotified" type="notified"
             @update:modelValue="setJobComparable()">
         </LazyOrganismUserJobList>
-        <!-- <div class="userStatus__kanban">
-            <LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{
-                height: 'calc(100% - 64px)', padding: '20px'
-            }">
-                <template v-slot:header>
-                    <div class="card__header">
-                        <img class="card__header__icon" src="~/assets/user/job/icon_Heart.svg" />
-                        <span class="card__header__desc">
-                            儲存的職缺 <template v-if="state.jobSaved.length"> (共 {{ state.jobSaved.length }} 筆)
-                            </template>
-</span>
-</div>
-</template>
-<template v-slot:body>
-                </template>
-</LazyMoleculeJobCard>
-<LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ height: 'calc(100% - 64px)', padding: '20px' }">
-    <template v-slot:header>
-                    <div class="card__header">
-                        <img class="card__header__icon" src="~/assets/user/job/icon_Rocket.svg" />
-                        <span class="card__header__desc">
-                            應徵紀錄 <template v-if="state.jobApplied.length"> (共 {{ state.jobApplied.length }} 筆)
-                            </template>
-    </span>
-    </div>
-    </template>
-    <template v-slot:body>
-                    <LazyOrganismUserJobList v-model="state.jobApplied" type="applied"></LazyOrganismUserJobList>
-                </template>
-</LazyMoleculeJobCard>
-<LazyMoleculeJobCard class="userStatus__card" :bodyStyle="{ height: 'calc(100% - 64px)', padding: '20px' }">
-    <template v-slot:header>
-                    <div class="card__header">
-                        <img class="card__header__icon" src="~/assets/user/job/icon_Comment.svg" />
-                        <span class="card__header__desc">
-                            面試紀錄 <template v-if="state.jobNotified.length"> (共 {{ state.jobNotified.length }} 筆)
-                            </template>
-    </span>
-    </div>
-    </template>
-    <template v-slot:body>
-                    <LazyOrganismUserJobList v-model="state.jobNotified" type="notified"></LazyOrganismUserJobList>
-                </template>
-</LazyMoleculeJobCard>
-</div> -->
     </div>
 </template>
 <script setup>

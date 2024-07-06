@@ -111,7 +111,7 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <div class="broadcast__subGroup">
+            <!-- <div class="broadcast__subGroup">
                 <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
                     name="訂閱適合工作">
                     <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
@@ -120,7 +120,7 @@
                     name="EDM訂閱">
                     <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
                 </LazyAtomInputCheckSingle>
-            </div>
+            </div> -->
             <div class="card__footer">
                 <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimpleV2>
@@ -452,6 +452,7 @@ async function handleSubmitBroadcast() {
 @media screen and (min-width: 992px) {
     .profile {
         padding: 0px;
+        padding-bottom: 70px;
         padding-left: 30px;
 
         .profile__basic {
