@@ -291,6 +291,9 @@ function setJobComparable() {
 
 @media screen and (min-width:992px) {
     .userStatus {
+        padding: 0px;
+        padding-left: 30px;
+
         .userStatus__card {
             width: 100%;
 
