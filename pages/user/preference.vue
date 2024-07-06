@@ -1,12 +1,11 @@
 <template>
     <div class="preference">
-        <div class="preference__headerGroup">
-            <h3 class="headerGroup__header">求職偏好</h3>
-            <div class="preference__desc">此選填內容只有您可以看到，請安心填答</div>
-        </div>
+        <h1 class="preference__header">求職偏好</h1>
+        <div class="preference__desc">此選填內容只有您可以看到，請安心填答。每次修改求職偏好答案後，需等待 14 天後才能再次修改。</div>
+        <hr class="preference__hr">
         <div class="preference__body">
             <div class="body__item" v-for="(questionGroup, key) in state.questionsForTeam" :key="key">
-                <div class="body__item__desc">{{ questionGroup.descUser }}...</div>
+                <div class="body__item__header">{{ questionGroup.descUser }}...</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkSelectedRadio(questionGroup, item) }">
                     <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
@@ -15,7 +14,8 @@
                 </label>
             </div>
             <div class="body__item" v-for="(questionGroup, key) in state.questionsForCompany" :key="key">
-                <div class="body__item__desc">{{ questionGroup.descUser }}</div>
+                <div class="body__item__header">{{ questionGroup.descUser }}</div>
+                <div class="body__item__desc">可選 2 個選項</div>
                 <label v-for="(item, index) in questionGroup.items" :key="index" class="body__item__label"
                     :class="{ 'body__item__label--selected': checkCultureSelected(questionGroup, item) }">
                     <input v-model="state.preference[questionGroup.key]" class="body__item__label__radio"
@@ -23,6 +23,8 @@
                     <span class="body__item__label__desc">{{ item.textUser }}</span>
                 </label>
             </div>
+        </div>
+        <div class="preference__footer">
             <div class="body__hint">
                 <span v-if="state.isLocked">
                     {{ $date(state.lockEndDate) }} 後才能再次修改。
@@ -33,9 +35,9 @@
                     14天 後才能再次修改。
                 </span>
             </div>
-            <LazyAtomBtnSimple @click="handleConfirm()" :disabled="state.isLocked">
-                儲存
-            </LazyAtomBtnSimple>
+            <LazyAtomBtnSimpleV2 class="w-100" @click="handleConfirm()" :disabled="state.isLocked">
+                儲存更新
+            </LazyAtomBtnSimpleV2>
         </div>
     </div>
 </template>
@@ -124,39 +126,65 @@ function setPreferenceInfo() {
 </script>
 <style lang="scss" scoped>
 .preference {
-    padding: 20px 0;
+    padding: 20px;
 
-    .preference__headerGroup {
-        background-color: #d8e4eb;
-        text-align: center;
-        padding: 20px 0;
+    .preference__header {
+        color: var(--Grays-Prim, #222);
 
-        .headerGroup__header {
-            font-size: 18px;
-            font-weight: bold;
-            line-height: 1.5;
-            text-align: center;
-            color: #333;
-        }
+        /* Title/H1-36-Semibold */
+        font-family: "PingFang TC";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 36px;
+        /* 100% */
+    }
 
-        .preference__desc {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-        }
+    .preference__desc {
+        color: var(--Grays-Seco, #484848);
+
+        /* SPAN-14-Regular */
+        font-family: "PingFang TC";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        /* 157.143% */
+        margin-top: 30px;
+    }
+
+    .preference__hr {
+        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        margin: 30px 0px;
     }
 
     .preference__body {
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        // padding: 20px;
         gap: 20px;
 
+        .body__item__header {
+            color: var(--Grays-Prim, #222);
+
+            /* H2-24-Medium */
+            font-family: "PingFang TC";
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
         .body__item__desc {
-            font-size: 20px;
-            font-weight: bold;
-            line-height: 1.5;
-            color: #333;
+            color: var(--Grays-Tert, #A6A6A6);
+
+            /* H5-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin: 10px 0px;
         }
 
         .body__item {
@@ -191,28 +219,41 @@ function setPreferenceInfo() {
             }
         }
 
-        .body__hint {
-            font-size: 15px;
-            font-weight: bold;
-            line-height: 1.5;
-            text-align: center;
-            color: #ff5858;
-        }
     }
 
-    .preference__submit {
-        width: 105px;
-        height: 48px;
-        background: #29b0ab;
-        border: none;
-        color: white;
+    .preference__footer {
+        display: flex;
+        width: 100%;
+        padding: 20px;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
         border-radius: 10px;
-        margin-top: 32px;
+        background: var(--Grays-Quin, #FFF);
+        margin-top: 30px;
+    }
+
+    .body__hint {
+        color: var(--Grays-Seco, #484848);
+        text-align: center;
+
+        /* SPAN-14-Regular */
+        font-family: "PingFang TC";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        /* 157.143% */
     }
 }
 
 @media screen and (min-width: 992px) {
+
     .preference {
+        padding: 0px;
+        padding-bottom: 70px;
+        padding-left: 30px;
+
         .preference__headerGroup {
             border-radius: 10px;
         }
@@ -220,10 +261,6 @@ function setPreferenceInfo() {
         .preference__body {
             padding: 0;
             margin-top: 20px;
-
-            .body__item {
-                border: solid 1px #d3d3d3;
-            }
         }
     }
 }

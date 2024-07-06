@@ -1,30 +1,5 @@
 <template>
     <div class="profile">
-        <!-- <div class="profile__menu d-none d-lg-block col-2">
-            <div class="menu__avatar" :style="{ 'background-image': `url(${state.profileBasic?.image})` }"></div>
-            <div class="menu__name">
-                {{ repoAuth.state.user?.name }}
-            </div>
-            <hr class="menu__hr">
-            <ul class="menu__list">
-                <li class="list__item">
-                    <img class="item__image" src="@/assets/user/profile/Resume.svg">
-                    <NuxtLink class="item__link" :to="{ name: 'user-profile' }">我的履歷</NuxtLink>
-                </li>
-                <li class="list__item">
-                    <img class="item__image" src="@/assets/user/profile/Company.svg">
-                    <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">求職狀態</NuxtLink>
-                </li>
-                <li class="list__item">
-                    <img class="item__image" src="@/assets/user/profile/Compare.svg">
-                    <NuxtLink class="item__link">職缺比較</NuxtLink>
-                </li>
-                <li class="list__item">
-                    <img class="item__image" src="@/assets/user/profile/Preference.svg">
-                    <NuxtLink class="item__link" :to="{ name: 'user-preference' }">求職偏好</NuxtLink>
-                </li>
-            </ul>
-        </div> -->
         <div class="profile_header">
             我的履歷
         </div>
@@ -136,7 +111,7 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <div class="broadcast__subGroup">
+            <!-- <div class="broadcast__subGroup">
                 <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
                     name="訂閱適合工作">
                     <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
@@ -145,7 +120,7 @@
                     name="EDM訂閱">
                     <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
                 </LazyAtomInputCheckSingle>
-            </div>
+            </div> -->
             <div class="card__footer">
                 <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimpleV2>
@@ -476,7 +451,9 @@ async function handleSubmitBroadcast() {
 
 @media screen and (min-width: 992px) {
     .profile {
-
+        padding: 0px;
+        padding-bottom: 70px;
+        padding-left: 30px;
 
         .profile__basic {
             display: flex;

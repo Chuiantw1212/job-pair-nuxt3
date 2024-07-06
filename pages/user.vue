@@ -11,14 +11,14 @@
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
-                            to="/user/applications">
+                            :to="{ 'name': 'user-applications' }">
                             <img class="item__link__icon" src="~/assets/user/Company.svg" />
                             <div class="menu__item__text">求職狀態</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkConsultActive() }"
-                            to="/user/jobs">
+                            :to="{ 'name': 'user-jobs' }">
                             <img class="item__link__icon" src="~/assets/user/Compare.svg" />
                             <div class="menu__item__text">職缺比較</div>
                         </NuxtLink>
@@ -45,11 +45,11 @@
                     </li>
                     <li class="list__item">
                         <img class="item__image" src="@/assets/user/profile/Company.svg">
-                        <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">求職狀態</NuxtLink>
+                        <NuxtLink class="item__link" :to="{ name: 'user-applications' }">求職狀態</NuxtLink>
                     </li>
                     <li class="list__item">
                         <img class="item__image" src="@/assets/user/profile/Compare.svg">
-                        <NuxtLink class="item__link">職缺比較</NuxtLink>
+                        <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">職缺比較</NuxtLink>
                     </li>
                     <li class="list__item">
                         <img class="item__image" src="@/assets/user/profile/Preference.svg">
@@ -182,6 +182,8 @@ function initialize() {
 
 @media screen and (min-width: 992px) {
     .dashboard {
+        padding-top: 70px;
+
         .dashboard__menuMobile {
             display: none;
             min-height: 65px;
