@@ -10,8 +10,7 @@
         <div v-if="state.profileBasic" id="profileBasic" class="profile__card">
             <h2 class="card__header">基本資料</h2>
             <div class="profile__basic">
-                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'120px'"
-                    @update:modelValue="uploadImage($event)">
+                <LazyAtomInputPhotoSingle v-model="state.profileBasic.image" class="basic__image" :size="'120px'">
                 </LazyAtomInputPhotoSingle>
                 <div class="basic__contact">
                     <LazyAtomInputText name="姓名" v-model="state.profileBasic.name"
@@ -111,16 +110,6 @@
                     </LazyMoleculeFilterCategory>
                 </template>
             </LazyMoleculeProfileSelectContainer>
-            <!-- <div class="broadcast__subGroup">
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isActive"
-                    name="訂閱適合工作">
-                    <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
-                </LazyAtomInputCheckSingle>
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="state.profileBroadcast.isSubscribed"
-                    name="EDM訂閱">
-                    <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
-                </LazyAtomInputCheckSingle>
-            </div> -->
             <div class="card__footer">
                 <LazyAtomBtnSimpleV2 :style="{ width: '205px' }" @click="handleSubmitBroadcast()">儲存
                 </LazyAtomBtnSimpleV2>
@@ -250,24 +239,15 @@ async function getUserResume(item = {}) {
 function setDescription(value) {
     instance.refs.description.setData(value)
 }
-async function logout() {
-    repoAuth.userSignout()
-    router.push({
-        name: "index",
-    })
-}
-async function uploadImage(photo) {
-    const response = await repoUser.putUserPhoto(photo)
-    if (response.status === 200) {
-        const image = response.data
+async function handleSubmitBasic() {
+    if (state.profileBasic?.image?.buffer) {
+        const image = await repoUser.putUserPhoto(state.profileBasic?.image)
         state.profileBasic.image = image
         const patchedUser = Object.assign({}, repoAuth.state.user, {
             image,
         })
         repoAuth.setUser(patchedUser)
     }
-}
-async function handleSubmitBasic() {
     // 檢核表單
     if (state.profileBasic.description === '<p></p>') {
         state.profileBasic.description = ''

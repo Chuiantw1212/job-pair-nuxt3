@@ -68,10 +68,8 @@ const repoAuth = useRepoAuth()
 const state = reactive({
     profileBasic: null,
 })
-watch(() => repoAuth.state.user, (newValue, oldValue) => {
-    if (newValue && !oldValue) {
-        initialize()
-    }
+watch(() => repoAuth.state.user, () => {
+    initialize()
 }, { immediate: true })
 // methods
 function checkConsultActive() {
@@ -90,7 +88,6 @@ function initialize() {
         email = '',
         telephone = '',
         occupationalCategory = [],
-        resumes = [],
         description = '',
         employmentType,
     } = profile

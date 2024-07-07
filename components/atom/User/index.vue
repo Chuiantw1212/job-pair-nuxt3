@@ -40,13 +40,17 @@ import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
-const userImage = repoAuth.state.user.image
+const userImage = ref()
+// hooks
 onMounted(() => {
     toggleClickOutside(true)
 })
 onBeforeUnmount(() => {
     toggleClickOutside(false)
 })
+watch(() => repoAuth.state.user, (newValue = {}) => {
+    userImage.value = newValue.image
+}, { deep: true, immediate: true })
 const menuDiv = ref(null)
 // methods
 function toggleClickOutside() {

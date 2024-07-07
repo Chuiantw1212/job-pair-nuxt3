@@ -67,7 +67,7 @@ export default defineStore('user', () => {
             url: `/user/photo`,
             data,
         })
-        return response
+        return response.data
     }
     async function patchUserPreference(data) {
         const response = await jobPairApi.request({
