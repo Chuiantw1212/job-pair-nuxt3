@@ -29,6 +29,10 @@ const props = defineProps({
         type: String,
         default: 'white',
     },
+    colorHover: {
+        type: String,
+        default: '#428F74'
+    },
     outline: {
         type: Boolean,
         default: false
