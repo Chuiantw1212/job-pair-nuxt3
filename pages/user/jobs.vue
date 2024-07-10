@@ -310,9 +310,10 @@ function setJobComparable() {
         }
 
         .card__hr {
+            border-top: 0px;
+            border-bottom: 1px solid #e4e4e4;
+            opacity: 1;
             margin: 10px 0px;
-            // border-top: 0px;
-            border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
         }
 
         .card__value {
