@@ -143,7 +143,9 @@ async function showSecondConfirm() {
     }
 
     .setting__hr {
-        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        border-top: 0px;
+        opacity: 1;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
         margin: 30px 0px;
     }
 
