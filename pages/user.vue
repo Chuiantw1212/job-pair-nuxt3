@@ -241,6 +241,7 @@ function initialize() {
             .menu__hr {
                 border-top: 0px;
                 border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
+                opacity: 1;
                 margin: 30px 0px;
             }
 
@@ -250,7 +251,7 @@ function initialize() {
                 list-style: none;
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 30px;
 
                 .list__item {
                     display: flex;
@@ -283,6 +284,7 @@ function initialize() {
                         line-height: normal;
                         text-decoration: none;
                         cursor: pointer;
+                        word-break: keep-all;
                     }
                 }
             }

@@ -163,15 +163,15 @@
                     </span>
                 </div>
                 <div class="features__panel">
-                    <LazyAtomBtnSimple class="panel__btn" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
                         :disabled="repoAuth.state.user.type === 'admin'">立即應徵
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
                         立即應徵
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimpleV2>
                 </div>
             </section>
             <section id="jobView__description" class="jobView__section mt-3">

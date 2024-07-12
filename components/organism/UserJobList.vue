@@ -33,7 +33,7 @@
     </ul>
     <div v-else class="kanban__card__noItem">
         <div class="noItem__imageGroup">
-            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame.svg" />
+            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame48095775.png" />
             <div class="noItem__imageGroup__desc">目前還沒有紀錄</div>
         </div>
     </div>
@@ -259,8 +259,6 @@ function getSavedTime(item) {
     justify-content: center;
 
     .noItem__imageGroup {
-        // margin-top: 207px;
-        margin-top: 20px;
         font-size: 20px;
         display: flex;
         flex-direction: column;
@@ -292,7 +290,7 @@ function getSavedTime(item) {
             display: block;
             padding: 20px;
             background-color: #ffffff;
-            border: solid 1px #d3d3d3;
+            // border: solid 1px #d3d3d3;
             border-radius: 10px;
             color: black;
             text-decoration: none;
@@ -328,7 +326,6 @@ function getSavedTime(item) {
 
             .job__organizationName {
                 font-size: 20px;
-                // margin-top: 20px;
             }
 
             .job__time {
@@ -345,7 +342,6 @@ function getSavedTime(item) {
         justify-content: center;
 
         .noItem__imageGroup {
-            margin-top: 292px;
             font-size: 20px;
             display: flex;
             align-items: center;

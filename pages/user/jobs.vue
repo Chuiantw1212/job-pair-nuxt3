@@ -262,7 +262,9 @@ function setJobComparable() {
     }
 
     .userStatus__hr {
-        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        border-top: 0px;
+        opacity: 1;
+        border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
         margin: 30px 0px;
     }
 
@@ -291,7 +293,7 @@ function setJobComparable() {
 
     .userStatus__card {
         border-radius: 10px;
-        border: 1px solid var(--Grays-Quat, #EDEAEA);
+        // border: 1px solid var(--Grays-Quat, #EDEAEA);
         background: var(--Grays-Quin, #FFF);
         margin-top: 30px;
         padding: 20px;
@@ -310,9 +312,10 @@ function setJobComparable() {
         }
 
         .card__hr {
+            border-top: 0px;
+            border-bottom: 1px solid #e4e4e4;
+            opacity: 1;
             margin: 10px 0px;
-            // border-top: 0px;
-            border-bottom: 1px solid var(--Grays-Quat, #EDEAEA);
         }
 
         .card__value {
@@ -367,6 +370,11 @@ function setJobComparable() {
             width: 100%;
             color: var(--JP-Prim, #5EA88E);
             text-decoration: none;
+
+            &:hover {
+                background-color: #5EA88E;
+                color: white;
+            }
         }
     }
 }
