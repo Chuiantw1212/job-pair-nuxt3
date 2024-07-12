@@ -256,7 +256,7 @@ function initialize() {
                 .list__item {
                     display: flex;
                     align-items: center;
-                    // justify-content: center;
+                    justify-content: center;
                     gap: 10px;
 
                     &:hover {
@@ -284,6 +284,7 @@ function initialize() {
                         line-height: normal;
                         text-decoration: none;
                         cursor: pointer;
+                        word-break: keep-all;
                     }
                 }
             }

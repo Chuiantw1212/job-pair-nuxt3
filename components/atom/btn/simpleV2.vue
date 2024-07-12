@@ -62,7 +62,7 @@ const styleObject = computed(() => {
         defaultObj['border'] = `1px solid ${props.backgroundColor}`
     } else {
         defaultObj['--background-color'] = props.backgroundColor
-        defaultObj['--background-color-hover'] = props.backgroundColor
+        defaultObj['--background-color-hover'] = props.colorHover
         defaultObj['--color'] = props.color
         defaultObj['--color-hover'] = props.color
     }

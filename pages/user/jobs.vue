@@ -370,6 +370,11 @@ function setJobComparable() {
             width: 100%;
             color: var(--JP-Prim, #5EA88E);
             text-decoration: none;
+
+            &:hover {
+                background-color: #5EA88E;
+                color: white;
+            }
         }
     }
 }

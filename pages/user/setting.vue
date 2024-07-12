@@ -5,14 +5,15 @@
         <div class="setting__card">
             <h2 class="card__header">通知</h2>
             <div class="card__subGroup">
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="profileBroadcast.isActive" name="訂閱適合工作">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="profileBroadcast.isActive" name="訂閱適合工作"
+                    @update:modelValue="handleSubmitBroadcast()">
                     <span class="isActive__desc">若有適合的職缺，請讓企業主發職缺邀請給我參考</span>
                 </LazyAtomInputCheckSingle>
-                <LazyAtomInputCheckSingle class="subGroup__item" v-model="profileBroadcast.isSubscribed" name="EDM訂閱">
+                <LazyAtomInputCheckSingle class="subGroup__item" v-model="profileBroadcast.isSubscribed" name="EDM訂閱"
+                    @update:modelValue="handleSubmitBroadcast()">
                     <span class="isActive__desc">職涯講座活動與功能更新資訊（每週不超過一封）</span>
                 </LazyAtomInputCheckSingle>
             </div>
-            <LazyAtomBtnSimpleV2 @click="handleSubmitBroadcast()">儲存</LazyAtomBtnSimpleV2>
         </div>
         <div class="setting__card setting__card--mt">
             <h2 class="card__header">帳號</h2>
@@ -58,7 +59,6 @@ async function handleSubmitBroadcast() {
     await repoUser.patchUserProfile(profileBroadcast)
     const patchedUser = Object.assign({}, repoAuth.state.user, profileBroadcast)
     repoAuth.setUser(patchedUser)
-    $sweet.succeed()
 }
 async function logout() {
     repoAuth.userSignout()

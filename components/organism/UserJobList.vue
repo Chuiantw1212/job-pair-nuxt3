@@ -290,7 +290,7 @@ function getSavedTime(item) {
             display: block;
             padding: 20px;
             background-color: #ffffff;
-            border: solid 1px #d3d3d3;
+            // border: solid 1px #d3d3d3;
             border-radius: 10px;
             color: black;
             text-decoration: none;
