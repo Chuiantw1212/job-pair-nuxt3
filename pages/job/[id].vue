@@ -662,6 +662,12 @@ async function initialize() {
     const job = jobResponse.data
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
+    if (companyResponse.status === 500) {
+        router.push({
+            name: 'jobs'
+        })
+        return
+    }
     const company = companyResponse.data
     state.job = job
     state.company = company
