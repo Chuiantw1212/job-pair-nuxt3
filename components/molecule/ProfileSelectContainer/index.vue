@@ -129,7 +129,7 @@ export default {
         display: flex;
         justify-items: center;
         align-items: center;
-        border: solid 1px #d3d3d3;
+        border: solid 1px #edeaea;
         width: 100%;
         padding: 8px;
         border-radius: 10px;

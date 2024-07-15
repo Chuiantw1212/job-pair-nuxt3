@@ -205,7 +205,7 @@ defineExpose({
 @import '../inputGroup.scss';
 
 .ckeditor--edit {
-    border: 1px solid #d3d3d3;
+    border: 1px solid #edeaea;
     border-radius: 10px;
     overflow: hidden;
 }

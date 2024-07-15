@@ -99,7 +99,7 @@ const styleObject = computed(() => {
 
 .btnSimple--md {
     font-size: 18px;
-    padding: 12px;
+    padding: 10px 0px;
 }
 
 .btnSimple--lg {

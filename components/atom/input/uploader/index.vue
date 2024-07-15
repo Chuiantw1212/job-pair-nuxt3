@@ -191,7 +191,7 @@ export default {
 
         .previewGroup__item {
             border-radius: 10px;
-            border: solid 1px #d3d3d3;
+            border: solid 1px #EDEAEA;
             overflow: hidden;
             width: 100%;
 
