@@ -872,8 +872,8 @@ async function initialize() {
         .features__item {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            // flex-wrap: wrap;
+            gap: 30px;
 
             .item__header {
                 font-size: 16px;
