@@ -761,10 +761,6 @@ async function initialize() {
                 align-items: center;
                 justify-content: center;
                 gap: 10px;
-
-                &:hover {
-                    background-color: #edeaea;
-                }
             }
         }
 
@@ -947,6 +943,7 @@ async function initialize() {
             letter-spacing: normal;
             text-align: left;
             color: #fff;
+            z-index: 10;
         }
     }
 
