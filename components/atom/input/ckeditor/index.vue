@@ -1,15 +1,17 @@
 <template>
     <div class="inputGroup">
         <div v-if="name" class="inputGroup__nameGroup">
-            <span v-if="required" class="nameGroup__required">*</span>
-            {{ name }}
-            <span v-if="hint">({{ hint }})</span>
+            <div>
+                <span v-if="required" class="nameGroup__required">*</span>
+                {{ name }}
+            </div>
             <span>
                 <slot>
 
                 </slot>
             </span>
         </div>
+        <div v-if="hint" class="inputGroup__hint">({{ hint }})</div>
         <input v-show="false" :value="checkValue()" :data-required="required" :data-name="name">
         <div class="ckeditor" :class="{ 'ckeditor--edit': !disabled || preview }">
             <div :id="`editor_${state.id}`" ref="editorRef">
@@ -203,7 +205,7 @@ defineExpose({
 @import '../inputGroup.scss';
 
 .ckeditor--edit {
-    border: 1px solid #d3d3d3;
+    border: 1px solid #edeaea;
     border-radius: 10px;
     overflow: hidden;
 }

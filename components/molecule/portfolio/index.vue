@@ -1,6 +1,9 @@
 <template>
     <div class="profile__portfolio">
-        <h1 class="portfolio__header">作品集</h1>
+        <h3 class="portfolio__header">作品集</h3>
+        <div class="portfolio__hint">
+            請上傳 PDF / JPG / PNG 檔
+        </div>
         <div class="portfolio__inputGroup" v-for="(work, index) in localValue" :key="index">
             <LazyAtomInputText placeholder="專案名稱" v-model="localValue[index].name" class="portfolio__work"
                 :disabled="disabled">
@@ -19,9 +22,7 @@
         </div>
         <label v-if="!disabled" class="resume__footer" :class="{ 'resume__footer--disabled': localValue.length >= 3 }">
             <button class="footer__btn" @click="newWork()" :disabled="disabled || localValue.length >= 3">
-                <img v-if="localValue.length >= 3" class="btn__icon" src="./addDisabled.svg" />
-                <img v-else class="btn__icon" src="./Add.svg" />
-                <span>新增項目</span>
+                <span>新增檔案</span>
                 <input v-show="false" :value="localValue.length" :data-required="required">
             </button>
         </label>
@@ -93,9 +94,28 @@ export default {
     }
 
     .portfolio__header {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
+        margin-bottom: 5px;
+    }
+
+    .portfolio__hint {
+        color: var(--Grays-Tert, #A6A6A6);
+
+        /* H4-12-Regular */
+        font-family: "PingFang TC";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 5px;
     }
 
     .portfolio__work {
@@ -104,7 +124,7 @@ export default {
 
     .resume__footer {
         border-radius: 10px;
-        border: dashed 1px #5ea88e;
+        border: 1px dashed var(--Grays-Tert, #A6A6A6);
         width: 100%;
         padding: 8px 0;
         margin-top: 10px;
@@ -117,9 +137,15 @@ export default {
             border: none;
             padding: 0;
             justify-content: center;
-            color: #5ea88e;
-            align-items: center;
-            font-size: 18px;
+            color: var(--color-System-Black100, #000);
+
+            /* SPAN-14-Regular */
+            font-family: "PingFang TC";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 157.143% */
             cursor: pointer;
 
             .btn__icon {

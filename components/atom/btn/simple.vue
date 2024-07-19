@@ -68,7 +68,7 @@ onMounted(() => {
 
 .btnSimple--sm {
     font-size: 14px;
-    padding: 10px auto;
+    padding: 10px 0px;
 }
 
 .btnSimple--md {

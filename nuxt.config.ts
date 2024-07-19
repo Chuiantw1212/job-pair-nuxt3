@@ -100,11 +100,12 @@ export default defineNuxtConfig({
       '/admin/**',
       '/user/**'
     ],
+    // https://nuxtseo.com/sitemap/guides/dynamic-urls#_1-using-sources-config
     sources: [
-      // https://nuxtseo.com/sitemap/guides/dynamic-urls
       `${apiBase}/job/sitemap`,
       `${apiBase}/company/sitemap`,
-    ]
+      `${apiBase}/article/sitemap`,
+    ],
   },
   devtools: { enabled: true },
 })

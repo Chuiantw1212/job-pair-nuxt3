@@ -8,7 +8,7 @@
                     <div>{{ item.email }}</div>
                     <div v-if="item.dateCreated">加入日期 {{ $filter.date(item.dateCreated) }}</div>
                 </div>
-                <button v-if="modelValue.length > 1" class="item__remove" @click="emit('remove', item)">
+                <button v-if="modelValue.length > 1 && index !== 0" class="item__remove" @click="emit('remove', item)">
                     <img src="./Trash.svg">
                 </button>
             </li>

@@ -261,8 +261,8 @@ function routeByMenuType() {
     #myHeader {
 
         .myHeader__container {
-            max-width: calc(1320px - 24px);
-            padding: 0px 100px;
+            max-width: calc(1320px);
+            // padding: 0px 100px;
 
             .container__top {
                 width: unset;

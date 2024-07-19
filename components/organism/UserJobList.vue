@@ -3,19 +3,27 @@
         <li v-for="(item, index) in modelValue" class="card__list__item" :key="index">
             <div v-if="item.status === 'active'" class="list__item__job">
                 <div class="job__header">
-                    <NuxtLink class="header__name" :to="`/job/${item.identifier}`">{{ item.name }}</NuxtLink>
+                    <NuxtLink class="header__logoGroup" :to="`/job/${item.identifier}`">
+                        <div v-if="item.image" class="logoGroup__logo"
+                            :style="{ 'background-image': `url(${item.image})` }">
+                        </div>
+                        <div v-else class="logoGroup__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                        </div>
+                    </NuxtLink>
                     <button v-if="type === 'saved'" class="btn-close header__save" @click.prevent="unsafeJob(index)">
                     </button>
                 </div>
+                <NuxtLink class="job__name" :to="`/job/${item.identifier}`">{{ item.name }}</NuxtLink>
+                <NuxtLink class="job__organizationName" :to="`/company/${item.organizationId}`">
+                    {{ item.organizationName }}
+                </NuxtLink>
+                <div class="job__time">{{ getSavedTime(item) }}</div>
                 <div v-if="item.applyFlow === 'rejected'" class="job__badge job__badge--rejected">已婉拒</div>
                 <div v-else class="job__badge job__badge--active">招聘中</div>
-                <NuxtLink class="job__organizationName" :to="`/company/${item.organizationId}`">{{ item.organizationName
-                }}</NuxtLink>
-                <div class="job__time">{{ getSavedTime(item) }}</div>
             </div>
             <div v-if="item.status === 'closed'" class="list__item__job">
                 <div class="job__header">
-                    <div class="header__name">{{ item.name }} </div>
+                    <div class="job__name">{{ item.name }} </div>
                 </div>
                 <div class="job__badge job__badge--closed">已結束</div>
                 <div class="job__organizationName">{{ item.organizationName }}</div>
@@ -25,12 +33,14 @@
     </ul>
     <div v-else class="kanban__card__noItem">
         <div class="noItem__imageGroup">
-            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame.svg" />
+            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame48095775.png" />
             <div class="noItem__imageGroup__desc">目前還沒有紀錄</div>
         </div>
     </div>
 </template>
 <script setup>
+// import defaultLogo from '~/assets/user/logo.png'
+import defaultLogo from '~/assets/company/company.webp'
 const emit = defineEmits(['update:modelValue'])
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()
@@ -102,8 +112,11 @@ function getSavedTime(item) {
     list-style: none;
     width: 100%;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 20px;
     margin: 0;
+    padding: 0;
+
 
     .card__list__item {
         min-width: 320px;
@@ -114,7 +127,6 @@ function getSavedTime(item) {
         display: block;
         padding: 16px;
         background-color: #ffffff;
-        border: solid 1px #d3d3d3;
         border-radius: 10px;
         color: black;
         text-decoration: none;
@@ -123,22 +135,20 @@ function getSavedTime(item) {
         .job__header {
             position: relative;
             display: flex;
+            justify-content: space-between;
 
-            .header__name {
-                font-size: 18px;
-                font-weight: bold;
-                white-space: normal;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                min-height: 48px;
-                color: black;
-                text-decoration: none;
+            .header__logoGroup {
+                width: 40px;
+                height: 40px;
+                padding: 6px;
+                border-radius: 10px;
+                border: 1px solid var(--Grays-Quat, #EDEAEA);
 
-                &:hover {
-                    text-decoration: underline;
+                .logoGroup__logo {
+                    width: 100%;
+                    height: 100%;
+                    background-position: center;
+                    background-size: cover;
                 }
             }
 
@@ -152,18 +162,46 @@ function getSavedTime(item) {
             }
         }
 
+        .job__name {
+            display: -webkit-box;
+            color: var(--Grays-Prim, #222);
+
+            /* H3-16-Medium */
+            font-family: "PingFang TC";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+
+            text-decoration: none;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-top: 10px;
+            width: fit-content;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
         .job__badge {
-            font-size: 11px;
-            font-weight: bold;
-            padding: 3px 6px;
-            margin-top: 8px;
-            border-radius: 2px;
+            color: var(--JP-Soft, #F5FFFB);
+            /* Tag-10-Medium */
+            font-family: "PingFang TC";
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
             white-space: nowrap;
             width: fit-content;
+            padding: 5px 20px;
+            border-radius: 10px;
+            background: var(--JP-Prim, #5EA88E);
+            margin-top: 10px;
         }
 
         .job__badge--active {
-            background-color: #0ab378;
+            background-color: #5EA88E;
             color: white;
         }
 
@@ -177,9 +215,15 @@ function getSavedTime(item) {
         }
 
         .job__organizationName {
-            font-size: 16px;
-            margin-top: 8px;
-            line-height: 1.3;
+            color: var(--Grays-Prim, #222);
+
+            /* H4-12-Medium */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
@@ -187,7 +231,9 @@ function getSavedTime(item) {
             text-overflow: ellipsis;
             transition: all 0.3s;
             text-decoration: none;
-            color: black;
+
+            margin-top: 10px;
+            width: fit-content;
 
             &:hover {
                 text-decoration: underline;
@@ -195,10 +241,15 @@ function getSavedTime(item) {
         }
 
         .job__time {
-            margin-top: 8px;
-            font-size: 14px;
-            font-weight: normal;
-            color: #7f7f7f;
+            color: var(--Grays-Seco, #484848);
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: 10px;
+            width: fit-content;
         }
     }
 }
@@ -208,8 +259,6 @@ function getSavedTime(item) {
     justify-content: center;
 
     .noItem__imageGroup {
-        // margin-top: 207px;
-        margin-top: 20px;
         font-size: 20px;
         display: flex;
         flex-direction: column;
@@ -231,6 +280,7 @@ function getSavedTime(item) {
 
         .card__list__item {
             min-width: unset;
+
             &:not(:first-child) {
                 margin-top: 10px;
             }
@@ -240,7 +290,7 @@ function getSavedTime(item) {
             display: block;
             padding: 20px;
             background-color: #ffffff;
-            border: solid 1px #d3d3d3;
+            // border: solid 1px #d3d3d3;
             border-radius: 10px;
             color: black;
             text-decoration: none;
@@ -252,7 +302,7 @@ function getSavedTime(item) {
                 align-items: center;
                 white-space: nowrap;
 
-                .header__name {
+                .job__name {
                     font-size: 22px;
                     font-weight: bold;
                 }
@@ -276,7 +326,6 @@ function getSavedTime(item) {
 
             .job__organizationName {
                 font-size: 20px;
-                // margin-top: 20px;
             }
 
             .job__time {
@@ -293,7 +342,6 @@ function getSavedTime(item) {
         justify-content: center;
 
         .noItem__imageGroup {
-            margin-top: 292px;
             font-size: 20px;
             display: flex;
             align-items: center;

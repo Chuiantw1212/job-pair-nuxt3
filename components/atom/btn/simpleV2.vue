@@ -29,6 +29,10 @@ const props = defineProps({
         type: String,
         default: 'white',
     },
+    colorHover: {
+        type: String,
+        default: '#428F74'
+    },
     outline: {
         type: Boolean,
         default: false
@@ -58,7 +62,7 @@ const styleObject = computed(() => {
         defaultObj['border'] = `1px solid ${props.backgroundColor}`
     } else {
         defaultObj['--background-color'] = props.backgroundColor
-        defaultObj['--background-color-hover'] = props.backgroundColor
+        defaultObj['--background-color-hover'] = props.colorHover
         defaultObj['--color'] = props.color
         defaultObj['--color-hover'] = props.color
     }
@@ -95,7 +99,7 @@ const styleObject = computed(() => {
 
 .btnSimple--md {
     font-size: 18px;
-    padding: 12px;
+    padding: 10px;
 }
 
 .btnSimple--lg {

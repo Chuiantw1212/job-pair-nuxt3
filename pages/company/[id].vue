@@ -3,51 +3,79 @@
         <OrganismDesignBody v-if="state.companyInfo?.templates" v-model="state.companyInfo.templates" readonly>
 
         </OrganismDesignBody>
-        <div v-else class="company__free">
-            <LazyAtomTabs class="d-lg-none" :items="state.tabItems"></LazyAtomTabs>
-            <section id="company__info" class="company__section mt-3">
-                <div :key="state.renderKey" class="company__bannerGroup">
-                    <img alt="banner" class="company__banner" :src="getCompanyBanner()" />
+        <div v-else class="row">
+            <div class="company__card company__basic col-3 d-none d-lg-block">
+                <div class="basic__basicGroup1">
+                    <div v-if="state.companyInfo?.logo" class="basic__logo"
+                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                    </div>
+                    <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                    </div>
                 </div>
-                <div class="company__card company__basic">
-                    <div class="basic__basicGroup1">
-                        <div v-if="state.companyInfo?.logo" class="basic__logo"
-                            :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
-                        </div>
-                        <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                <ul class="basicGroup__list">
+                    <li class="list__item">
+                        <span class="list__header">
+                            員工人數
+                        </span>
+                        {{ state.companyInfo?.numberOfEmployees }}
+                    </li>
+                    <li class="list__item">
+                        <span class="list__header">
+                            地點
+                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                        </span>
+                        <span class="item__location">
+                            {{ getLocationText() }}
+                        </span>
+                    </li>
+                    <li class="list__item">
+                        <span class="list__header">
+                            資本額
+                        </span>
+                        {{ getCapical(state.companyInfo?.capital) }}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <section id="company__info" class="company__section">
+                    <div :key="state.renderKey" class="company__bannerGroup">
+                        <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
+                        <img v-else class="bannerGroup__banner" src="@/assets/company/img_banner_default.webp">
+                    </div>
+                    <div class="company__card company__basic d-lg-none">
+                        <div class="basic__basicGroup1">
+                            <div v-if="state.companyInfo?.logo" class="basic__logo"
+                                :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                            </div>
+                            <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                            </div>
                         </div>
                         <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                        <ul class="basicGroup__list">
+                            <li class="list__item">
+                                <span class="list__header">
+                                    員工人數
+                                </span>
+                                {{ state.companyInfo?.numberOfEmployees }}
+                            </li>
+                            <li class="list__item">
+                                <span class="list__header">
+                                    地點
+                                    <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                                </span>
+                                {{ getLocationText() }}
+                            </li>
+                            <li class="list__item">
+                                <span class="list__header">
+                                    資本額
+                                </span>
+                                {{ getCapical(state.companyInfo?.capital) }}
+                            </li>
+                        </ul>
                     </div>
-                    <div class="d-none d-lg-flex basic__basicGroup2">
-                        <div v-if="state.companyInfo?.numberOfEmployees" class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_User.svg" alt="numberOfEmployees" />
-                            {{ state.companyInfo?.numberOfEmployees }}
-                        </div>
-                        <div class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
-                            {{ getLocationText() }}
-                        </div>
-                        <div v-if="state.companyInfo?.capital" class="basicGroup__item">
-                            <img class="item__icon" src="~/assets/company/icon_Wallet.svg" alt="capital" />
-                            資本額 {{ getCapical(state.companyInfo?.capital) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="d-lg-none company__card company__features">
-                    <div class="features__item">
-                        <span class="item__header">地點</span>
-                        <span class="item__body">{{ getLocationText() }}</span>
-                    </div>
-                    <div class="features__item">
-                        <span class="item__header">產業類別</span>
-                        <span v-for="(value, index) in state.companyInfo?.industry" :key="index" class="item__body">{{
-                            $optionText(value, repoSelect.industryItems)
-                            }}</span>
-                    </div>
-                </div>
-            </section>
-            <div class="company__body">
-                <div class="body__textGroup">
+                </section>
+                <div class="company__body">
                     <div class="company__card company__intro">
                         <div class="card__header">公司介紹</div>
                         <div class="card__body">
@@ -60,41 +88,42 @@
                             <div v-if="state.companyInfo" v-html="state.companyInfo?.jobBenefits"></div>
                         </div>
                     </div>
-                </div>
-                <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
-                    <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
-                    <div class="glide" :class="`glide${state.id}`">
-                        <div class="glide__track" data-glide-el="track">
-                            <ul class="glide__slides">
-                                <template v-for="(image, index) in state.companyInfo?.images" :key="index">
-                                    <li class="glide__slide">
-                                        <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
-                                            aria-label="換圖片">
-                                            <img class="env__glideImage" :style="{
-                                                'background-image': `url(${image.url})`,
-                                            }" />
-                                        </button>
-                                    </li>
-                                </template>
-                            </ul>
+                    <div v-if="state.companyInfo?.images?.length" class="company__env" ref="imageRef">
+                        <div class="env__photo" :style="{ backgroundImage: `url(${state.focusedImageSrc})` }"></div>
+                        <div class="glide" :class="`glide${state.id}`">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    <template v-for="(image, index) in state.companyInfo?.images" :key="index">
+                                        <li class="glide__slide">
+                                            <button class="env__glideButton" @click="state.focusedImageSrc = image.url"
+                                                aria-label="換圖片">
+                                                <img class="env__glideImage" :style="{
+                                                    'background-image': `url(${image.url})`,
+                                                }" />
+                                            </button>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <!-- {{ state.companyInfo?.images }} -->
                 </div>
+                <section id="company__jobs" class="company__section mt-3">
+                    <div class="section__header">公司職缺</div>
+                    <div class="jobs__searchWrapper">
+                        <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" placeholder="搜尋公司或職缺"
+                            @search="jobScroller.searchJobs()">
+                        </LazyAtomInputSearch2>
+                    </div>
+                    <ul class="jobs__list">
+                        <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                            v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems">
+                        </LazyOrganismJobItem>
+                    </ul>
+                </section>
             </div>
         </div>
-        <section id="company__jobs" class="company__section mt-3">
-            <div class="company__jobs" :class="{ company__card: !device.state.isLarge }">
-                <div class="card__header">公司職缺</div>
-                <div class="jobs__searchWrapper mt-4">
-                    <LazyAtomInputSearch v-model="jobScroller.state.searchLike" @search="jobScroller.searchJobs()">
-                    </LazyAtomInputSearch>
-                </div>
-                <ul class="jobs__list">
-                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
-                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems"></LazyOrganismJobItem>
-                </ul>
-            </div>
-        </section>
     </div>
 </template>
 <script setup>
@@ -275,13 +304,21 @@ function getLocationText() {
 }
 
 .company {
+    padding: 20px;
+
     .company__section {
         scroll-margin-top: 58px;
     }
 
     .company__card {
-        padding: 17px 15px 20px 20px;
-        background-color: #fff;
+        display: flex;
+        padding: 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        align-self: stretch;
+        border-radius: 20px;
+        background: var(--Grays-Quin, #FFF);
 
         .card__header {
             font-size: 18px;
@@ -300,35 +337,72 @@ function getLocationText() {
         display: flex;
         justify-content: center;
         border-radius: 10px 10px 0px 0px;
+
+        .bannerGroup__banner {
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+        }
     }
 
-    .company__banner {
-        width: fit-content;
-        max-width: 100%;
-        display: block;
-        min-height: 96px;
-    }
 
     .company__basic {
+
         .basic__basicGroup1 {
             display: flex;
             align-items: center;
+            width: 60px;
+            height: 60px;
+            padding: 7px;
+            border-radius: 10px;
+            border: 1px solid var(--Grays-Quat, #EDEAEA);
 
             .basic__logo {
-                width: 40px;
-                height: 40px;
+                width: 100%;
+                height: 100%;
                 background-repeat: no-repeat;
                 background-size: contain;
                 background-position: center;
                 display: block;
             }
 
-            .basic__header {
-                font-size: 19px;
-                font-weight: bold;
-                line-height: 1.3;
-                color: #5ea88e;
-                margin-left: 8px;
+        }
+
+        .basic__header {
+            color: var(--Grays-Prim, #222);
+
+            /* H2-20-Medium */
+            font-family: "PingFang TC";
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        .basicGroup__list {
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .list__item {
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .list__header {
+                    min-width: 4em;
+                    display: inline-block;
+                }
+
+                .item__location {
+                    white-space: pre-wrap;
+                }
             }
         }
     }
@@ -357,20 +431,33 @@ function getLocationText() {
 
     .company__body {
         margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .section__header {
+        color: var(--Grays-Prim, #222);
+
+        /* H2-20-Medium */
+        font-family: "PingFang TC";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
     }
 
     .company__env {
         .env__photo {
             width: 100%;
             display: block;
-            min-height: 466px;
+            height: 314px;
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             cursor: pointer;
             background-color: white;
             border-radius: 10px;
-            border: solid 1px #d3d3d3;
+            // border: solid 1px #d3d3d3;
         }
 
         .glide {
@@ -400,15 +487,19 @@ function getLocationText() {
         }
     }
 
-    .company__jobs {
-        .jobs__list {
-            list-style: none;
-            padding: 0;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .jobs__searchWrapper {
+        margin-top: 20px;
+    }
+
+    .jobs__list {
+        margin-top: 20px;
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
@@ -416,9 +507,10 @@ function getLocationText() {
     .company {
         .company__card {
             padding: 17px 15px 20px 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            border: solid 1px #d3d3d3;
+            border-radius: 20px;
+            background: var(--Grays-Quin, #FFF);
+            height: fit-content;
+            overflow: hidden;
 
             .card__header {
                 font-size: 20px;
@@ -434,11 +526,11 @@ function getLocationText() {
                 max-height: 400px;
                 overflow-y: auto;
                 margin-top: 20px;
+                width: 100%;
             }
         }
 
         .company__bannerGroup {
-            border: solid 1px #d3d3d3;
             border-bottom: unset;
         }
 
@@ -449,47 +541,21 @@ function getLocationText() {
         .company__basic {
             display: flex;
             padding: 40px 30px;
-            border-radius: 0px 0px 10px 10px;
 
-            .basic__basicGroup1 {
-                border-right: 1px solid #d3d3d3;
-                width: 50%;
+            .basic__header {
+                color: var(--Grays-Prim, #222);
 
-                .basic__logo {
-                    width: 128px;
-                    height: 128px;
-                }
-
-                .basic__header {
-                    font-size: 33px;
-                    font-weight: bold;
-                    color: #333;
-                    margin-left: 30px;
-                }
+                /* H2-20-Medium */
+                font-family: "PingFang TC";
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                margin-top: 30px;
             }
 
-            .basic__basicGroup2 {
-                padding: 0 30px;
-                flex-direction: column;
-                gap: 8px;
-                font-size: 22px;
-                font-weight: normal;
-                width: 50%;
-
-                .basicGroup__item {
-                    display: flex;
-                    justify-items: center;
-                    gap: 8px;
-
-                    &:not(:first-child) {
-                        margin-top: 8px;
-                    }
-
-                    .item__icon {
-                        width: 20px;
-                        height: 33px;
-                    }
-                }
+            .basicGroup__list {
+                margin-top: 30px;
             }
         }
 
@@ -498,17 +564,31 @@ function getLocationText() {
             gap: 20px;
             margin-top: 20px;
 
-            .body__textGroup {
-                width: 100%;
-            }
-
             .company__intro {
                 width: 100%;
+                color: var(--Grays-Prim, #222);
+
+                /* P-16-Rugular */
+                font-family: "PingFang TC";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+                /* 162.5% */
             }
 
             .company__welfare {
                 width: 100%;
                 margin-top: 20px;
+                color: var(--Grays-Prim, #222);
+
+                /* P-16-Rugular */
+                font-family: "PingFang TC";
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+                /* 162.5% */
             }
 
             .company__env {
