@@ -25,7 +25,9 @@
                             地點
                             <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                         </span>
-                        {{ getLocationText() }}
+                        <span class="item__location">
+                            {{ getLocationText() }}
+                        </span>
                     </li>
                     <li class="list__item">
                         <span class="list__header">
@@ -389,9 +391,18 @@ function getLocationText() {
             gap: 10px;
 
             .list__item {
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
                 .list__header {
-                    width: 100px;
+                    min-width: 4em;
                     display: inline-block;
+                }
+
+                .item__location {
+                    white-space: pre-wrap;
                 }
             }
         }
