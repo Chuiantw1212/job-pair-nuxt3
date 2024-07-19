@@ -1,8 +1,8 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
-            <div v-if="userImage" class="btn__avatar" :style="{ 'background-image': `url(${userImage})` }">
-
+            <div v-if="repoAuth.state.user?.image" class="btn__avatar"
+                :style="{ 'background-image': `url(${repoAuth.state.user?.image})` }">
             </div>
             <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
 
@@ -40,7 +40,6 @@ import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
-const userImage = ref()
 // hooks
 onMounted(() => {
     toggleClickOutside(true)
@@ -48,9 +47,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     toggleClickOutside(false)
 })
-watch(() => repoAuth.state.user, (newValue = {}) => {
-    userImage.value = newValue.image
-}, { deep: true, immediate: true })
 const menuDiv = ref(null)
 // methods
 function toggleClickOutside() {
