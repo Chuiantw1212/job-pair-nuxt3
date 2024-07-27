@@ -60,18 +60,6 @@ async function handleSubmitBroadcast() {
     const patchedUser = Object.assign({}, repoAuth.state.user, profileBroadcast)
     repoAuth.setUser(patchedUser)
 }
-async function logout() {
-    repoAuth.userSignout()
-    router.push({
-        name: "index",
-    })
-}
-function openModal() {
-    state.bsModal.show()
-}
-function hideModal() {
-    state.bsModal.hide()
-}
 async function showSecondConfirm() {
     const isConfirmed = await $sweet.alert('此動作無法復原。您確定要這麼做嗎？', {
         title: '確定要刪除嗎',
@@ -84,7 +72,6 @@ async function showSecondConfirm() {
     if (!isConfirmed.value) {
         return
     }
-    hideModal()
     // 執行刪除流程
     $sweet.loader(true)
     switch (repoAuth.state.user.type) {
