@@ -320,6 +320,7 @@ function getLocationText() {
         align-self: stretch;
         border-radius: 20px;
         background: var(--Grays-Quin, #FFF);
+        transition: all 0.3s;
 
         .card__header {
             font-size: 18px;
@@ -513,6 +514,8 @@ function getLocationText() {
             height: fit-content;
             overflow: hidden;
 
+            // position: fixed;
+
             .card__header {
                 font-size: 20px;
                 font-weight: bold;
@@ -529,6 +532,10 @@ function getLocationText() {
                 margin-top: 20px;
                 width: 100%;
             }
+        }
+
+        .company__card--hide {
+            opacity: 0;
         }
 
         .company__bannerGroup {
