@@ -35,9 +35,9 @@
             <div class="dashboard__menuDesktop d-none d-lg-block col-2">
                 <div v-if="state.profileBasic?.image" class="menu__avatar"
                     :style="{ 'background-image': `url(${state.profileBasic?.image})` }"></div>
-                <div v-else class="menu__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
+                <img v-else class="menu__avatar" src="~/assets/user/avatarImage.png">
 
-                </div>
+                </img>
                 <div class="menu__name">
                     {{ repoAuth.state.user?.name }}
                 </div>
@@ -66,7 +66,6 @@
     </div>
 </template>
 <script setup>
-import avatarImage from '~/assets/user/avatarImage.png'
 const device = useDevice()
 const route = useRoute()
 const repoAuth = useRepoAuth()
