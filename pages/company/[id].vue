@@ -4,7 +4,7 @@
 
         </OrganismDesignBody>
         <div v-else class="row">
-            <div class="col-3 d-none d-lg-block">
+            <div class="col-4 col-xl-3 d-none d-lg-block">
                 <div class="company__card company__basic">
                     <div class="basic__basicGroup1">
                         <div v-if="state.companyInfo?.logo" class="basic__logo"
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-8 col-xl-9">
                 <section id="company__info" class="company__section">
                     <div :key="state.renderKey" class="company__bannerGroup">
                         <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
@@ -353,6 +353,7 @@ function getLocationText() {
 
     .company__basic {
         position: fixed;
+        max-width: 300px;
 
         .basic__basicGroup1 {
             display: flex;
