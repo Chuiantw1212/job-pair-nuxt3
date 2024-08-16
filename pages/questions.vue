@@ -1,7 +1,7 @@
 <template>
     <div class="questions">
-        <img class="questions__background1 d-none d-lg-block" src="@/assets/questions/Group29.svg" alt="background">
-        <img class="questions__background2 d-none d-lg-block" src="@/assets/questions/Group30.svg" alt="background">
+        <img class="questions__background1 d-none d-lg-block" src="~/assets/questions/Group29.svg" alt="background">
+        <img class="questions__background2 d-none d-lg-block" src="~/assets/questions/Group30.svg" alt="background">
         <router-view v-model="state.tempUser" :questions="state.questions"></router-view>
     </div>
 </template>

@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="header__info__itemGroups">
                                         <div class="header__info__item">
-                                            <img class="info__item__icon" src="@/assets/admin/icon_category.svg">
+                                            <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
                                             <div class="info__item__badgeGroups">
                                                 <span v-for="(item, index) in item.occupationalCategory" :key="index"
                                                     class="header__info__item__badge">
@@ -76,7 +76,7 @@
             </li>
         </ul>
         <div v-else class="appliedList__notFound">
-            <img src="@/assets/admin/img_empty.svg">
+            <img src="~/assets/admin/img_empty.svg">
             <p class="notFound__desc">-目前尚無資料-</p>
         </div>
     </div>

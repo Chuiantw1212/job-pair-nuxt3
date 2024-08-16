@@ -5,28 +5,28 @@
                 <ul class="menu__content">
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/profile">
-                            <img class="item__link__icon" src="@/assets/user/Resume.svg" />
+                            <img class="item__link__icon" src="~/assets/user/Resume.svg" />
                             <div class="menu__item__text">個人檔案</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             :to="{ 'name': 'user-applications' }">
-                            <img class="item__link__icon" src="@/assets/user/Company.svg" />
+                            <img class="item__link__icon" src="~/assets/user/Company.svg" />
                             <div class="menu__item__text">求職狀態</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkConsultActive() }"
                             :to="{ 'name': 'user-jobs' }">
-                            <img class="item__link__icon" src="@/assets/user/Compare.svg" />
+                            <img class="item__link__icon" src="~/assets/user/Compare.svg" />
                             <div class="menu__item__text">職缺比較</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             to="/user/preference">
-                            <img class="item__link__icon" src="@/assets/user/Preference.svg" />
+                            <img class="item__link__icon" src="~/assets/user/Preference.svg" />
                             <div class="menu__item__text">求職偏好</div>
                         </NuxtLink>
                     </li>
@@ -44,19 +44,19 @@
                 <hr class="menu__hr">
                 <ul class="menu__list">
                     <li class="list__item">
-                        <img class="item__image" src="@/assets/user/profile/Resume.svg">
+                        <img class="item__image" src="~/assets/user/profile/Resume.svg">
                         <NuxtLink class="item__link" :to="{ name: 'user-profile' }">我的履歷</NuxtLink>
                     </li>
                     <li class="list__item">
-                        <img class="item__image" src="@/assets/user/profile/Company.svg">
+                        <img class="item__image" src="~/assets/user/profile/Company.svg">
                         <NuxtLink class="item__link" :to="{ name: 'user-applications' }">求職狀態</NuxtLink>
                     </li>
                     <li class="list__item">
-                        <img class="item__image" src="@/assets/user/profile/Compare.svg">
+                        <img class="item__image" src="~/assets/user/profile/Compare.svg">
                         <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">職缺比較</NuxtLink>
                     </li>
                     <li class="list__item">
-                        <img class="item__image" src="@/assets/user/profile/Preference.svg">
+                        <img class="item__image" src="~/assets/user/profile/Preference.svg">
                         <NuxtLink class="item__link" :to="{ name: 'user-preference' }">求職偏好</NuxtLink>
                     </li>
                 </ul>
@@ -66,7 +66,7 @@
     </div>
 </template>
 <script setup>
-import avatarImage from '@/assets/user/avatarImage.svg'
+import avatarImage from '~/assets/user/avatarImage.svg'
 const device = useDevice()
 const route = useRoute()
 const repoAuth = useRepoAuth()

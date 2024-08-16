@@ -13,29 +13,29 @@
                     :class="{ 'cardGroups__card--active': checkCardStatus(item) === 'active', 'cardGroups__card--disabled': checkCardStatus(item) === 'disabled' }"
                     :key="index">
                     <div class="card__image">
-                        <img v-if="questionIndex === 0 && index === 0" src="@/assets/questions/工作環境1.png">
-                        <img v-if="questionIndex === 0 && index === 1" src="@/assets/questions/工作環境2.png">
-                        <img v-if="questionIndex === 0 && index === 2" src="@/assets/questions/工作環境3.png">
-                        <img v-if="questionIndex === 1 && index === 0" src="@/assets/questions/工作模式1.png">
-                        <img v-if="questionIndex === 1 && index === 1" src="@/assets/questions/工作模式2.png">
-                        <img v-if="questionIndex === 1 && index === 2" src="@/assets/questions/工作環境3.png">
-                        <img v-if="questionIndex === 2 && index === 0" src="@/assets/questions/人際風格1.png">
-                        <img v-if="questionIndex === 2 && index === 1" src="@/assets/questions/人際風格2.png">
-                        <img v-if="questionIndex === 2 && index === 2" src="@/assets/questions/工作環境3.png">
-                        <img v-if="questionIndex === 3 && index === 0" src="@/assets/questions/組織階段1.png">
-                        <img v-if="questionIndex === 3 && index === 1" src="@/assets/questions/組織階段2.png">
-                        <img v-if="questionIndex === 3 && index === 2" src="@/assets/questions/組織階段3.png">
-                        <img v-if="questionIndex === 3 && index === 3" src="@/assets/questions/工作環境3.png">
-                        <img v-if="questionIndex === 4 && index === 0" src="@/assets/questions/管理模式1.png">
-                        <img v-if="questionIndex === 4 && index === 1" src="@/assets/questions/管理模式2.png">
-                        <img v-if="questionIndex === 4 && index === 2" src="@/assets/questions/管理模式3.png">
-                        <img v-if="questionIndex === 4 && index === 3" src="@/assets/questions/工作環境3.png">
-                        <img v-if="questionIndex === 5 && index === 0" src="@/assets/questions/企業文化.png">
-                        <img v-if="questionIndex === 5 && index === 1" src="@/assets/questions/企業文化2.png">
-                        <img v-if="questionIndex === 5 && index === 2" src="@/assets/questions/企業文化3.png">
-                        <img v-if="questionIndex === 5 && index === 3" src="@/assets/questions/企業文化4.png">
-                        <img v-if="questionIndex === 5 && index === 4" src="@/assets/questions/企業文化5.png">
-                        <img v-if="questionIndex === 5 && index === 5" src="@/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 0 && index === 0" src="~/assets/questions/工作環境1.png">
+                        <img v-if="questionIndex === 0 && index === 1" src="~/assets/questions/工作環境2.png">
+                        <img v-if="questionIndex === 0 && index === 2" src="~/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 1 && index === 0" src="~/assets/questions/工作模式1.png">
+                        <img v-if="questionIndex === 1 && index === 1" src="~/assets/questions/工作模式2.png">
+                        <img v-if="questionIndex === 1 && index === 2" src="~/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 2 && index === 0" src="~/assets/questions/人際風格1.png">
+                        <img v-if="questionIndex === 2 && index === 1" src="~/assets/questions/人際風格2.png">
+                        <img v-if="questionIndex === 2 && index === 2" src="~/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 3 && index === 0" src="~/assets/questions/組織階段1.png">
+                        <img v-if="questionIndex === 3 && index === 1" src="~/assets/questions/組織階段2.png">
+                        <img v-if="questionIndex === 3 && index === 2" src="~/assets/questions/組織階段3.png">
+                        <img v-if="questionIndex === 3 && index === 3" src="~/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 4 && index === 0" src="~/assets/questions/管理模式1.png">
+                        <img v-if="questionIndex === 4 && index === 1" src="~/assets/questions/管理模式2.png">
+                        <img v-if="questionIndex === 4 && index === 2" src="~/assets/questions/管理模式3.png">
+                        <img v-if="questionIndex === 4 && index === 3" src="~/assets/questions/工作環境3.png">
+                        <img v-if="questionIndex === 5 && index === 0" src="~/assets/questions/企業文化.png">
+                        <img v-if="questionIndex === 5 && index === 1" src="~/assets/questions/企業文化2.png">
+                        <img v-if="questionIndex === 5 && index === 2" src="~/assets/questions/企業文化3.png">
+                        <img v-if="questionIndex === 5 && index === 3" src="~/assets/questions/企業文化4.png">
+                        <img v-if="questionIndex === 5 && index === 4" src="~/assets/questions/企業文化5.png">
+                        <img v-if="questionIndex === 5 && index === 5" src="~/assets/questions/工作環境3.png">
                     </div>
                     <template v-if="questionIndex === 5">
                         <input v-show="false" v-model="state.culture" :value="item.value"

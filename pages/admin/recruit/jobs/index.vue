@@ -55,12 +55,12 @@
                         </td>
                         <td>
                             <button class="table__btn" @click="copyJob(job)">
-                                <img src="@/assets/admin/icon_copy.svg">
+                                <img src="~/assets/admin/icon_copy.svg">
                             </button>
                         </td>
                         <td>
                             <a v-if="['active'].includes(job.status)" :href="getJobPreviewHref(job)" target="_blank">
-                                <img src="@/assets/admin/icon_preview_g.svg">
+                                <img src="~/assets/admin/icon_preview_g.svg">
                             </a>
                         </td>
                         <td v-if="state.jobFields.includes('occupationalCategory')">
