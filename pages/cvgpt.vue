@@ -10,7 +10,7 @@
             <ul class="instruction__list">
                 <li class="list__item">
                     <div class="item__badge">
-                        <img class="badge__icon" src="@/assets/user/chatgpt/Frame.svg">
+                        <img class="badge__icon" src="~/assets/user/chatgpt/Frame.svg">
                     </div>
                     <div class="item__text">
                         1. 複製
@@ -19,7 +19,7 @@
                 <li class="list__item">
                     <a class="item__link" href="https://chat.openai.com/" target="_blank">
                         <div class="item__badge">
-                            <img class="badge__icon" src="@/assets/user/chatgpt/Frame1.svg">
+                            <img class="badge__icon" src="~/assets/user/chatgpt/Frame1.svg">
                         </div>
                         <div class="item__text">
                             2. 開啟ChatGPT
@@ -28,7 +28,7 @@
                 </li>
                 <li class="list__item">
                     <div class="item__badge">
-                        <img class="badge__icon" src="@/assets/user/chatgpt/Frame2.svg">
+                        <img class="badge__icon" src="~/assets/user/chatgpt/Frame2.svg">
                     </div>
                     <div class="item__text">
                         3. 貼上
@@ -37,7 +37,7 @@
                 <li class="list__item">
                     <NuxtLink class="item__link" :to="{ name: 'user-profile' }">
                         <div class="item__badge">
-                            <img class="badge__icon" src="@/assets/user/chatgpt/Frame3.svg">
+                            <img class="badge__icon" src="~/assets/user/chatgpt/Frame3.svg">
                         </div>
                         <div class="item__text">
                             4. 快速更新簡歷

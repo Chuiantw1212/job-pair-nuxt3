@@ -23,7 +23,7 @@
                     <li class="list__item">
                         <span class="list__header">
                             地點
-                            <img class="item__icon" src="@/assets/company/icon_Environment.svg" alt="address" />
+                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                         </span>
                         <span class="item__location">
                             {{ getLocationText() }}
@@ -41,7 +41,7 @@
                 <section id="company__info" class="company__section">
                     <div :key="state.renderKey" class="company__bannerGroup">
                         <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
-                        <img v-else class="bannerGroup__banner" src="@/assets/company/img_banner_default.webp">
+                        <img v-else class="bannerGroup__banner" src="~/assets/company/img_banner_default.webp">
                     </div>
                     <div class="company__card company__basic d-lg-none">
                         <div class="basic__basicGroup1">
@@ -62,7 +62,7 @@
                             <li class="list__item">
                                 <span class="list__header">
                                     地點
-                                    <img class="item__icon" src="@/assets/company/icon_Environment.svg" alt="address" />
+                                    <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
                                 </span>
                                 {{ getLocationText() }}
                             </li>
@@ -127,8 +127,8 @@
     </div>
 </template>
 <script setup>
-import defaultBanner from '@/assets/company/img_banner_default.webp'
-import defaultLogo from '@/assets/company/company.webp'
+import defaultBanner from '~/assets/company/img_banner_default.webp'
+import defaultLogo from '~/assets/company/company.webp'
 const { $uuid4, $requestSelector, $optionText, $Glide, $emitter, } = useNuxtApp()
 const runTimeConfig = useRuntimeConfig()
 const device = useDevice()

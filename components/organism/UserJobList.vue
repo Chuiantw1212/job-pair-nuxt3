@@ -33,14 +33,14 @@
     </ul>
     <div v-else class="kanban__card__noItem">
         <div class="noItem__imageGroup">
-            <img class="noItem__imageGroup__image" src="@/assets/user/job/Frame48095775.png" />
+            <img class="noItem__imageGroup__image" src="~/assets/user/job/Frame48095775.png" />
             <div class="noItem__imageGroup__desc">目前還沒有紀錄</div>
         </div>
     </div>
 </template>
 <script setup>
-// import defaultLogo from '@/assets/user/logo.png'
-import defaultLogo from '@/assets/company/company.webp'
+// import defaultLogo from '~/assets/user/logo.png'
+import defaultLogo from '~/assets/company/company.webp'
 const emit = defineEmits(['update:modelValue'])
 const repoAuth = useRepoAuth()
 const repoJobApplication = useRepoJobApplication()

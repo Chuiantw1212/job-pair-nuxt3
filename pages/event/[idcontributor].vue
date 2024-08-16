@@ -2,7 +2,7 @@
     <div class="event">
         <template v-if="!state.isFailed">
             <div class="event__frame">
-                <img class="frame__image" alt="成功" src="@/assets/event/img_報名成功.svg">
+                <img class="frame__image" alt="成功" src="~/assets/event/img_報名成功.svg">
                 <h1 class="frame__title">活動報名完成</h1>
                 <div class="frame__textarea">
                     <div>
@@ -28,7 +28,7 @@
         </template>
         <template v-else>
             <div class="event__frame">
-                <img class="frame__image" alt="失敗" src="@/assets/event/img_報名失敗.svg">
+                <img class="frame__image" alt="失敗" src="~/assets/event/img_報名失敗.svg">
                 <h1 class="frame__title">活動報名失敗</h1>
                 <div class="frame__textarea">
                     {{ state.statusText }}

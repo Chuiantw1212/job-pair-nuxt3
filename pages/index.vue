@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <section class="home__section home__section--landing">
-            <img class="landing__banner" alt="banner" src="@/assets/index/KV1.png">
+            <img class="landing__banner" alt="banner" src="~/assets/index/KV1.png">
             <div class="landing__textGroup">
                 <h1 class="textGroup__title">
                     設計你的理想工作
@@ -23,17 +23,17 @@
             </h2>
             <div class="manual__cardGroup">
                 <div class="cardGroup__card cardGroup__card--yellow">
-                    <img class="card__image" alt="img1" src="@/assets/index/icons-02.svg">
+                    <img class="card__image" alt="img1" src="~/assets/index/icons-02.svg">
                     <h3 class="card__title">選擇工作需求</h3>
                     <div class="card__desc">針對企業文化與工作環境，回覆你的需求</div>
                 </div>
                 <div class="cardGroup__card cardGroup__card--green">
-                    <img class="card__image" alt="img2" src="@/assets/index/icons-05.svg">
+                    <img class="card__image" alt="img2" src="~/assets/index/icons-05.svg">
                     <h3 class="card__title">選擇職務種類</h3>
                     <div class="card__desc">不論是正職兼職或接案，都能在此進行媒合</div>
                 </div>
                 <div class="cardGroup__card cardGroup__card--blue">
-                    <img class="card__image" alt="img3" src="@/assets/index/icons-04.svg">
+                    <img class="card__image" alt="img3" src="~/assets/index/icons-04.svg">
                     <h3 class="card__title">快速介紹自己</h3>
                     <div class="card__desc">寫下你的過往經驗，或用AI生成器為你撰寫</div>
                 </div>
@@ -45,7 +45,7 @@
             </h2>
             <div class="new__textGroup">
                 <div class="textGroup__card">
-                    <img class="card__image" alt="img4" src="@/assets/index/Frame2500.png">
+                    <img class="card__image" alt="img4" src="~/assets/index/Frame2500.png">
                     <div class="card__group">
                         <h3 class="card__title">用自己的履歷</h3>
                         <div class="card__desc">打造個人品牌<br>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="textGroup__card textGroup__card--reverse">
-                    <img class="card__image" alt="img5" src="@/assets/index/Frame2501.png">
+                    <img class="card__image" alt="img5" src="~/assets/index/Frame2501.png">
                     <div class="card__group">
                         <h3 class="card__title">保護個資行動</h3>
                         <div class="card__desc">隔絕個資濫用<br>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="textGroup__card">
-                    <img class="card__image" alt="img6" src="@/assets/index/Frame2502.png">
+                    <img class="card__image" alt="img6" src="~/assets/index/Frame2502.png">
                     <div class="card__group">
                         <h3 class="card__title">沒有垃圾信件</h3>
                         <div class="card__desc">減少廣告騷擾<br>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="textGroup__card textGroup__card--reverse">
-                    <img class="card__image" alt="img7" src="@/assets/index/Frame2503.png">
+                    <img class="card__image" alt="img7" src="~/assets/index/Frame2503.png">
                     <div class="card__group">
                         <h3 class="card__title">輕鬆應對求職</h3>
                         <div class="card__desc">工作越換越好<br>
@@ -81,8 +81,8 @@
             </div>
         </section>
         <section class="home__section home__section--jp">
-            <img class="jp_heart" alt="heart" src="@/assets/index/Vector.svg">
-            <img class="jp_logo" alt="logo" src="@/assets/index/jp.svg">
+            <img class="jp_heart" alt="heart" src="~/assets/index/Vector.svg">
+            <img class="jp_logo" alt="logo" src="~/assets/index/jp.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
                 Job Pair致力於創造一個讓每個人在適合環境中發揮所長的職場。
