@@ -18,18 +18,14 @@
         <div class="setting__card setting__card--mt">
             <h2 class="card__header">帳號</h2>
             <div class="card__desc">刪除帳號</div>
-            <!-- <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal> -->
             <LazyAtomBtnSimpleV2 :style="{ 'width': '140px' }" @click="showSecondConfirm()" outline>永久刪除帳號
             </LazyAtomBtnSimpleV2>
         </div>
     </div>
 </template>
 <script setup>
-const { $bootstrap, $sweet, $requestSelector, $validate, } = useNuxtApp()
+const { $sweet, $validate, } = useNuxtApp()
 const profileBroadcast = reactive({})
-const state = reactive({
-    bsModal: null,
-})
 const router = useRouter()
 const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
