@@ -35,7 +35,7 @@
     </div>
 </template>
 <script setup>
-import avatarImage from '~/assets/user/avatarImage.svg'
+import avatarImage from '~/assets/user/avatarImage.png'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
