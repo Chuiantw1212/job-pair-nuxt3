@@ -66,7 +66,7 @@
     </div>
 </template>
 <script setup>
-import avatarImage from '@/assets/user/Avatar.svg'
+import avatarImage from '@/assets/user/avatarImage.svg'
 const device = useDevice()
 const route = useRoute()
 const repoAuth = useRepoAuth()
