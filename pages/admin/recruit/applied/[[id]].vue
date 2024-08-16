@@ -92,15 +92,15 @@
                                     </div>
                                     <div class="header__info__itemGroups">
                                         <div class="header__info__item">
-                                            <img class="info__item__icon" src="~/assets/admin/icon_email.svg">
+                                            <img class="info__item__icon" src="@/assets/admin/icon_email.svg">
                                             {{ item.email }}
                                         </div>
                                         <div class="header__info__item">
-                                            <img class="info__item__icon" src="~/assets/admin/icon_phone.svg">
+                                            <img class="info__item__icon" src="@/assets/admin/icon_phone.svg">
                                             {{ item.telephone }}
                                         </div>
                                         <div class="header__info__item">
-                                            <img class="info__item__icon" src="~/assets/admin/icon_category.svg">
+                                            <img class="info__item__icon" src="@/assets/admin/icon_category.svg">
                                             <div class="info__item__badgeGroup">
                                                 <span v-for="(item, index) in item.occupationalCategory" :key="index"
                                                     class="header__info__item__badge">
@@ -139,12 +139,12 @@
                                 </div>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
                                     @click="downloadResume(item)">
-                                    <img class="preview__icon" src="~/assets/admin/download.svg" alt="download" />
+                                    <img class="preview__icon" src="@/assets/admin/download.svg" alt="download" />
                                     下載履歷
                                 </AtomBtnSimple>
                                 <AtomBtnSimple v-if="item.resume && item.resume.url" class="footer__preview"
                                     @click="previewResume(item)">
-                                    <img class="preview__icon" src="~/assets/admin/icon_link.svg" alt="preview" />
+                                    <img class="preview__icon" src="@/assets/admin/icon_link.svg" alt="preview" />
                                     預覽履歷
                                 </AtomBtnSimple>
                             </div>
@@ -168,7 +168,7 @@
             </li>
         </ul>
         <div v-else class="appliedList__notFound">
-            <img src="~/assets/admin/img_empty.svg">
+            <img src="@/assets/admin/img_empty.svg">
             <p class="notFound__desc">-目前尚無資料-</p>
         </div>
     </div>
