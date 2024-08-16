@@ -1,7 +1,7 @@
 <template>
     <LazyMoleculeConsultCard class="consult__feedback">
         <template v-slot:header>
-            <img src="~/assets/consult/icon_Comment.svg">
+            <img src="@/assets/consult/icon_Comment.svg">
             <span class="ms-2">諮詢者回饋</span>
         </template>
         <template v-slot:body>

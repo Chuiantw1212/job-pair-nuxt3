@@ -5,7 +5,7 @@
                 <ul class="menu__content">
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/admin/recruit/jobs">
-                            <img class="item__link__icon" src="~/assets/admin/icon_nav_profile.svg">
+                            <img class="item__link__icon" src="@/assets/admin/icon_nav_profile.svg">
                             <div class="menu__item__text">
                                 職缺管理
                             </div>
@@ -15,7 +15,7 @@
                         <template v-if="checkApplicationEnabled()">
                             <button class="menu__item__link" :class="{ 'menu__item__link--active': checkActiveClass() }"
                                 @click="routeByName('admin-recruit-applied-id')">
-                                <img class="item__link__icon" src="~/assets/admin/icon_job.svg">
+                                <img class="item__link__icon" src="@/assets/admin/icon_job.svg">
                                 <div class="menu__item__text">應徵者
                                     <span class="menu__item__badge">
                                         {{ getUnhandledNumber() }}
@@ -25,7 +25,7 @@
                         </template>
                         <template v-else>
                             <div class="menu__item__link menu__item__link--noHover">
-                                <img class="item__link__icon" src="~/assets/admin/icon_job_disabled.svg">
+                                <img class="item__link__icon" src="@/assets/admin/icon_job_disabled.svg">
                                 <div class="menu__item__text">應徵者</div>
                             </div>
                         </template>
@@ -33,7 +33,7 @@
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             to="/admin/recruit/prospect">
-                            <img class="item__link__icon" src="~/assets/admin/icon_consult.svg">
+                            <img class="item__link__icon" src="@/assets/admin/icon_consult.svg">
                             <div class="menu__item__text">潛在合適人選</div>
                         </NuxtLink>
                     </li>

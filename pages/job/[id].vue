@@ -153,7 +153,7 @@
                     <span class="item__header">
                         地址
                         <a :href="getEncodedMapLink()" target="_blank">
-                            <img class="header__icon" src="~/assets/jobs/details/icon_Environment.svg" alt="map">
+                            <img class="header__icon" src="@/assets/jobs/details/icon_Environment.svg" alt="map">
                         </a>
                     </span>
                     <span class="item__body">

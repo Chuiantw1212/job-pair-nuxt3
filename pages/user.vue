@@ -5,28 +5,28 @@
                 <ul class="menu__content">
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active" to="/user/profile">
-                            <img class="item__link__icon" src="~/assets/user/Resume.svg" />
+                            <img class="item__link__icon" src="@/assets/user/Resume.svg" />
                             <div class="menu__item__text">個人檔案</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             :to="{ 'name': 'user-applications' }">
-                            <img class="item__link__icon" src="~/assets/user/Company.svg" />
+                            <img class="item__link__icon" src="@/assets/user/Company.svg" />
                             <div class="menu__item__text">求職狀態</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" :class="{ 'menu__item__link--active': checkConsultActive() }"
                             :to="{ 'name': 'user-jobs' }">
-                            <img class="item__link__icon" src="~/assets/user/Compare.svg" />
+                            <img class="item__link__icon" src="@/assets/user/Compare.svg" />
                             <div class="menu__item__text">職缺比較</div>
                         </NuxtLink>
                     </li>
                     <li class="menu__item">
                         <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                             to="/user/preference">
-                            <img class="item__link__icon" src="~/assets/user/Preference.svg" />
+                            <img class="item__link__icon" src="@/assets/user/Preference.svg" />
                             <div class="menu__item__text">求職偏好</div>
                         </NuxtLink>
                     </li>
