@@ -32,34 +32,36 @@
                     </li>
                 </ul>
             </div>
-            <div class="dashboard__menuDesktop d-none d-lg-block col-2">
-                <div v-if="state.profileBasic?.image" class="menu__avatar"
-                    :style="{ 'background-image': `url(${state.profileBasic?.image})` }"></div>
-                <img v-else class="menu__avatar" src="~/assets/user/avatarImage.png">
+            <div class="d-none d-lg-block col-2">
+                <div class="dashboard__menuDesktop">
+                    <div v-if="state.profileBasic?.image" class="menu__avatar"
+                        :style="{ 'background-image': `url(${state.profileBasic?.image})` }"></div>
+                    <img v-else class="menu__avatar" src="~/assets/user/avatarImage.png">
 
-                </img>
-                <div class="menu__name">
-                    {{ repoAuth.state.user?.name }}
+                    </img>
+                    <div class="menu__name">
+                        {{ repoAuth.state.user?.name }}
+                    </div>
+                    <hr class="menu__hr">
+                    <ul class="menu__list">
+                        <li class="list__item">
+                            <img class="item__image" src="~/assets/user/profile/Resume.svg">
+                            <NuxtLink class="item__link" :to="{ name: 'user-profile' }">我的履歷</NuxtLink>
+                        </li>
+                        <li class="list__item">
+                            <img class="item__image" src="~/assets/user/profile/Company.svg">
+                            <NuxtLink class="item__link" :to="{ name: 'user-applications' }">求職狀態</NuxtLink>
+                        </li>
+                        <li class="list__item">
+                            <img class="item__image" src="~/assets/user/profile/Compare.svg">
+                            <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">職缺比較</NuxtLink>
+                        </li>
+                        <li class="list__item">
+                            <img class="item__image" src="~/assets/user/profile/Preference.svg">
+                            <NuxtLink class="item__link" :to="{ name: 'user-preference' }">求職偏好</NuxtLink>
+                        </li>
+                    </ul>
                 </div>
-                <hr class="menu__hr">
-                <ul class="menu__list">
-                    <li class="list__item">
-                        <img class="item__image" src="~/assets/user/profile/Resume.svg">
-                        <NuxtLink class="item__link" :to="{ name: 'user-profile' }">我的履歷</NuxtLink>
-                    </li>
-                    <li class="list__item">
-                        <img class="item__image" src="~/assets/user/profile/Company.svg">
-                        <NuxtLink class="item__link" :to="{ name: 'user-applications' }">求職狀態</NuxtLink>
-                    </li>
-                    <li class="list__item">
-                        <img class="item__image" src="~/assets/user/profile/Compare.svg">
-                        <NuxtLink class="item__link" :to="{ name: 'user-jobs' }">職缺比較</NuxtLink>
-                    </li>
-                    <li class="list__item">
-                        <img class="item__image" src="~/assets/user/profile/Preference.svg">
-                        <NuxtLink class="item__link" :to="{ name: 'user-preference' }">求職偏好</NuxtLink>
-                    </li>
-                </ul>
             </div>
             <NuxtPage class="col-lg-10" />
         </div>
@@ -213,6 +215,7 @@ function initialize() {
         }
 
         .dashboard__menuDesktop {
+            position: fixed;
             border-radius: 6px;
             border: 1px solid var(--Grays-Quat, #EDEAEA);
             background: var(--Grays-Quin, #FFF);

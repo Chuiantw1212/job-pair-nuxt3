@@ -4,40 +4,42 @@
 
         </OrganismDesignBody>
         <div v-else class="row">
-            <div class="company__card company__basic col-3 d-none d-lg-block">
-                <div class="basic__basicGroup1">
-                    <div v-if="state.companyInfo?.logo" class="basic__logo"
-                        :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+            <div class="col-4 col-xl-3 d-none d-lg-block">
+                <div class="company__card company__basic">
+                    <div class="basic__basicGroup1">
+                        <div v-if="state.companyInfo?.logo" class="basic__logo"
+                            :style="{ 'background-image': `url(${state.companyInfo?.logo})` }">
+                        </div>
+                        <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+                        </div>
                     </div>
-                    <div v-else class="basic__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
-                    </div>
+                    <div class="basic__header">{{ state.companyInfo?.name }}</div>
+                    <ul class="basicGroup__list">
+                        <li class="list__item">
+                            <span class="list__header">
+                                員工人數
+                            </span>
+                            {{ state.companyInfo?.numberOfEmployees }}
+                        </li>
+                        <li class="list__item">
+                            <span class="list__header">
+                                地點
+                                <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
+                            </span>
+                            <span class="item__location">
+                                {{ getLocationText() }}
+                            </span>
+                        </li>
+                        <li class="list__item">
+                            <span class="list__header">
+                                資本額
+                            </span>
+                            {{ getCapical(state.companyInfo?.capital) }}
+                        </li>
+                    </ul>
                 </div>
-                <div class="basic__header">{{ state.companyInfo?.name }}</div>
-                <ul class="basicGroup__list">
-                    <li class="list__item">
-                        <span class="list__header">
-                            員工人數
-                        </span>
-                        {{ state.companyInfo?.numberOfEmployees }}
-                    </li>
-                    <li class="list__item">
-                        <span class="list__header">
-                            地點
-                            <img class="item__icon" src="~/assets/company/icon_Environment.svg" alt="address" />
-                        </span>
-                        <span class="item__location">
-                            {{ getLocationText() }}
-                        </span>
-                    </li>
-                    <li class="list__item">
-                        <span class="list__header">
-                            資本額
-                        </span>
-                        {{ getCapical(state.companyInfo?.capital) }}
-                    </li>
-                </ul>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-8 col-xl-9">
                 <section id="company__info" class="company__section">
                     <div :key="state.renderKey" class="company__bannerGroup">
                         <img v-if="state.company?.banner" class="bannerGroup__banner" :src="getCompanyBanner()">
@@ -351,6 +353,8 @@ function getLocationText() {
 
 
     .company__basic {
+        position: fixed;
+        max-width: 300px;
 
         .basic__basicGroup1 {
             display: flex;
