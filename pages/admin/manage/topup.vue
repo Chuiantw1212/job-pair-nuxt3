@@ -10,7 +10,7 @@
                 <div class="card__title">{{ subscription[0]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        ${{ subscription[0]?.price }}
+                        ${{ Number(subscription[0]?.price).toLocaleString() }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="card__title">{{ subscription[1]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        ${{ subscription[1]?.price }}
+                        ${{ Number(subscription[1]?.price).toLocaleString() }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="card__title">{{ subscription[2]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        ${{ subscription[2]?.price }}
+                        ${{ Number(subscription[2]?.price).toLocaleString() }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="card__title">{{ subscription[3]?.text }}</div>
                 <div class="card__plan">
                     <span class="plan__number">
-                        ${{ subscription[3]?.price }}
+                        ${{ Number(subscription[3]?.price).toLocaleString() }}
                     </span>
                     <span class="plan__type">/ month</span>
                 </div>
@@ -188,8 +188,11 @@ async function submitAppointment(subscription) {
             overflow: hidden;
             background-color: white;
             padding: 30px;
+            padding-bottom: 80px;
             margin-top: 20px;
             text-align: left;
+            position: relative;
+            width: 100%;
 
             .card__title {
                 font-size: 24px;
@@ -225,6 +228,8 @@ async function submitAppointment(subscription) {
             .card__ul {
                 list-style: none;
                 padding: 0px;
+                margin: 0px;
+                margin-bottom: 30px;
 
                 .card__item {
                     text-align: left;
@@ -240,11 +245,10 @@ async function submitAppointment(subscription) {
             }
 
             .card__btn {
-                width: 100%;
-                margin-top: auto;
-                margin-top: 30px;
-                // position: absolute;
-                // bottom: 30px;
+                width: calc(100% - 30px);
+                left: 15px;
+                position: absolute;
+                bottom: 30px;
             }
         }
     }

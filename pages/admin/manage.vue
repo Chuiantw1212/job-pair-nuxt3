@@ -23,6 +23,13 @@
                         帳戶管理
                     </NuxtLink>
                 </li>
+                <li class="menu__item">
+                    <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
+                        :to="{ name: 'admin-manage-topup' }">
+                        <img class="item__link__icon" src="~/assets/company/Resume.svg">
+                        儲值管理
+                    </NuxtLink>
+                </li>
             </ul>
             <NuxtLink v-if="!state.isNewCompay" class="dashboard__preview" :to="{ 'name': 'admin-design' }">
                 <div class="preview__title">
