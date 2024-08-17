@@ -1,4 +1,4 @@
-const money = function (value) {
+const money = function (value = '') {
     return Number(value).toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
@@ -57,24 +57,24 @@ const salaryNumber = function (item) {
     if (!item) {
         return
     }
-    const { salaryType = "", salaryMin = 0, salaryMax = 0, incentiveCompensation = 0 } = item
+    const { salaryType = "", salaryMin = 0, salaryMax = 0, } = item
     const formattedMax = Math.max(Number(salaryMin), Number(salaryMax))
     let expression = ""
     switch (salaryType) {
         case "monthly": {
-            expression = `${salaryMin.toLocaleString()} ~ ${formattedMax.toLocaleString()}`
+            expression = `${Number(salaryMin).toLocaleString()} ~ ${Number(formattedMax).toLocaleString()}`
             break
         }
         case "hourly":
         case "daily": {
-            const formatLowerBound = salaryMin.toLocaleString()
-            const formatUpperBound = formattedMax.toLocaleString()
+            const formatLowerBound = Number(salaryMin).toLocaleString()
+            const formatUpperBound = Number(formattedMax).toLocaleString()
             expression = `${formatLowerBound} ~ ${formatUpperBound}`
             break
         }
         case 'yearly': {
             const salaryMinTenThou = Math.ceil(Number(salaryMin / 10000).toPrecision(3))
-            const salaryMaxTenThou = Math.ceil(Number(formattedMax / 10000).toPrecision(3))
+            const salaryMaxTenThou = Math.ceil(Number(Number(formattedMax) / 10000).toPrecision(3))
             const formatLowerBound = salaryMinTenThou.toLocaleString()
             const formatUpperBound = salaryMaxTenThou.toLocaleString()
             expression = `${formatLowerBound}萬 ~ ${formatUpperBound}萬`

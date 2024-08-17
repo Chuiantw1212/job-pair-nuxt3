@@ -1,31 +1,29 @@
 <template>
     <div class="inputResumes">
-        <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}(請上傳{{
+        <h1 class="resume__header"><span v-if="required" class="nameGroup__required">* </span>{{ name }}</h1>
+        <div class="resume__hint">請上傳{{
             acceptText
-            }}檔)</h1>
+            }}檔</div>
         <template v-for="number in Math.ceil(modelValue.length / 3)">
             <div v-if="modelValue.slice((number - 1) * 3, (number) * 3).length" :key="`row${number}`"
                 class="resumes__previewGroup">
                 <div class="previewGroup__item"
                     v-for="(item, index) in modelValue.slice((number - 1) * 3, (number) * 3)"
                     :key="`row${number}col${index}`">
-                    <!-- <div v-if="checkIsImage(item)">
-                        <img :src="item.url" class="previewGroup__item__viewer">
-                    </div> -->
                     <div class="previewGroup__item__body">
                         <div v-if="item.name" class="previewGroup__item__body__item">
                             <div class="item__name">
                                 {{ item.name }}
                             </div>
-                            <button class="doc__btn" @click="deleteResume(number, index)">
-                                <img class="btn__icon" src="./icon_delete_g.svg" />
+                            <button class="doc__btn" @click="openFileInTab(item)">
+                                <img class="btn__icon" src="./icon_preview_g.svg" />
                             </button>
                         </div>
                         <div v-if="item.date"
                             class="previewGroup__item__body__item previewGroup__item__body__item--date">
-                            {{ $filter.time(item.date) }}
-                            <button class="doc__btn" @click="openFileInTab(item)">
-                                <img class="btn__icon" src="./icon_preview_g.svg" />
+                            上傳於 {{ $filter.time(item.date) }}
+                            <button class="doc__btn" @click="deleteResume(number, index)">
+                                <img class="btn__icon" src="./icon_delete_g.svg" />
                             </button>
                         </div>
                     </div>
@@ -34,8 +32,8 @@
         </template>
         <label class="resume__footer" :class="{ 'resume__footer--disabled': isMaxLimit }">
             <div class="footer__btn">
-                <img v-if="isMaxLimit" class="btn__icon" src="./addDisabled.svg" />
-                <img v-else class="btn__icon" src="./Add.svg" />
+                <!-- <img v-if="isMaxLimit" class="btn__icon" src="./addDisabled.svg" />
+                <img v-else class="btn__icon" src="./Add.svg" /> -->
                 <span>新增檔案</span>
                 <input v-show="false" autocomplete="off" type="file" :accept="accept" @change="handleFiles($event)"
                     :disabled="isMaxLimit" :data-required="required" :data-name="name"
@@ -161,9 +159,28 @@ export default {
 <style lang="scss" scoped>
 .inputResumes {
     .resume__header {
-        font-size: 18px;
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
         margin-bottom: 4px;
-        font-weight: bold;
+    }
+
+    .resume__hint {
+        color: var(--Grays-Tert, #A6A6A6);
+
+        /* H4-12-Regular */
+        font-family: "PingFang TC";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 5px 0px;
     }
 
     .resumes__previewGroup {
@@ -174,7 +191,7 @@ export default {
 
         .previewGroup__item {
             border-radius: 10px;
-            border: solid 1px #d3d3d3;
+            border: solid 1px #EDEAEA;
             overflow: hidden;
             width: 100%;
 
@@ -186,7 +203,7 @@ export default {
             }
 
             .previewGroup__item__body {
-                padding: 20px;
+                padding: 10px 20px;
                 font-size: 18px;
 
                 .previewGroup__item__body__item {
@@ -197,6 +214,14 @@ export default {
                         width: calc(100% - 26px);
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        color: var(--Grays-Prim, #222);
+
+                        /* H3-16-Medium */
+                        font-family: "PingFang TC";
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: normal;
                     }
 
 
@@ -215,7 +240,16 @@ export default {
                 }
 
                 .previewGroup__item__body__item--date {
-                    color: #999;
+                    color: var(--Grays-Seco, #484848);
+
+                    /* SPAN-14-Regular */
+                    font-family: "PingFang TC";
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 22px;
+                    /* 157.143% */
+                    margin-top: 10px;
                 }
             }
         }
@@ -223,7 +257,7 @@ export default {
 
     .resume__footer {
         border-radius: 10px;
-        border: dashed 1px #5ea88e;
+        border: 1px dashed var(--Grays-Tert, #A6A6A6);
         width: 100%;
         padding: 8px 0;
         display: block;
@@ -236,9 +270,16 @@ export default {
             border: none;
             padding: 0;
             justify-content: center;
-            color: #5ea88e;
+            color: var(--color-System-Black100, #000);
+
+            /* SPAN-14-Regular */
+            font-family: "PingFang TC";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 157.143% */
             align-items: center;
-            font-size: 18px;
             cursor: pointer;
 
             .btn__icon {

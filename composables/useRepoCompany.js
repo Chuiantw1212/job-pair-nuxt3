@@ -19,6 +19,14 @@ export default defineStore('company', () => {
         })
         return response
     }
+    async function patchCompanyAdmins(data) {
+        const response = await jobPairApi.request({
+            method: 'patch',
+            url: `/company/admins`,
+            data
+        })
+        return response
+    }
     async function getCompanyByTaxId(id) {
         const response = await jobPairApi.request({
             method: 'get',
@@ -103,6 +111,7 @@ export default defineStore('company', () => {
         putCompanyLogoBlob,
         putCompanyBannerBlob,
         getCompanyWalletBalance,
-        getCompanyAdmins
+        getCompanyAdmins,
+        patchCompanyAdmins,
     }
 })

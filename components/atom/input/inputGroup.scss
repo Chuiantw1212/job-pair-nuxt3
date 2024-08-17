@@ -1,11 +1,18 @@
 .inputGroup {
     .inputGroup__nameGroup {
-        font-size: 18px;
-        color: #1f1f1f;
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
         margin-bottom: 4px;
         display: flex;
-        // font-weight: bold;
         flex-wrap: nowrap;
+        justify-content: space-between;
 
         .nameGroup__required {
             color: #FF3B30;
@@ -32,6 +39,18 @@
         }
     }
 
+    .inputGroup__hint {
+        color: var(--Grays-Tert, #A6A6A6);
+
+        /* H4-12-Regular */
+        font-family: "PingFang TC";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 6px;
+    }
+
     .inputGroup__label {
         border-radius: 8px;
         border: solid 1px #edeaea;
@@ -54,7 +73,7 @@
         }
 
         .label__input {
-            padding: 15px 20px;
+            padding: 6px 12px;
             border: none;
             width: 100%;
 
@@ -104,7 +123,7 @@
         display: flex;
         flex-direction: column;
         padding: 6px 12px;
-        border: 1px solid #d3d3d3;
+        border: 1px solid #edeaea;
         border-radius: 10px;
         background-color: white;
         font-size: 18px;

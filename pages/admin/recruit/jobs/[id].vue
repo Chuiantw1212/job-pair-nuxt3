@@ -87,9 +87,6 @@
                     :disabled="state.job.jobLocationType === 'fullyRemote'" :required="checkAddressRequired()">
                 </LazyAtomInputText>
             </div>
-            <!-- <LazyAtomInputText v-model="state.job.remark" class="w-100 mt-4" name="地址備註" placeholder="例：全員全遠端工作，可自由選擇是否進辦公室"
-                :disabled="state.job.jobLocationType === 'fullyRemote'">
-            </LazyAtomInputText> -->
             <div class="d-flex mt-4">
                 <LazyAtomInputSelect v-if="repoSelect.state?.selectByQueryRes?.language" v-model="state.job.language"
                     name="外文" :items="repoSelect.state.selectByQueryRes.language" :disabled="state.disabled"
@@ -177,7 +174,6 @@ const repoJob = useRepoJob()
 const repoAuth = useRepoAuth()
 const repoAdmin = useRepoAdmin()
 const device = useDevice()
-const repoCompany = useRepoCompany()
 const state = reactive({
     job: null,
     jobCategoryLevel2Dropdown: {},
@@ -387,7 +383,7 @@ async function setJob() {
     if (!job.jobLocationType) {
         job.jobLocationType = "onSite"
     }
-    if (!job.industry) {
+    if (!job.industry && company) {
         const { industry = [] } = company
         job.industry = industry
     }
@@ -446,15 +442,15 @@ async function saveJob() {
             return false
         }
     } else {
-        const result = await $validate(undefined, {
+        const alertResult = await $validate(undefined, {
             title: '請再次確認',
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: '取消',
         })
-        job.completeness = result.completeness
-        if (!result.value) {
-            return
+        job.completeness = alertResult.completeness
+        if (!alertResult.value) {
+            return false
         }
     }
     // 依據id判斷是否為新增
@@ -490,6 +486,7 @@ async function handleSave() {
         border-radius: 10px;
         border: 1px solid #EDEAEA;
         padding: 24px 32px;
+        background: white;
     }
 
     .form__header {
@@ -521,7 +518,7 @@ async function handleSave() {
     }
 
     .form__quick {
-        // background-color: #fee997;
+        background-color: white;
         border-radius: 10px;
         border: 1px solid #EDEAEA;
         padding: 24px 32px;

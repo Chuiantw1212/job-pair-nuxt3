@@ -1,10 +1,15 @@
 <template>
     <li class="jobItem" :class="{ 'jobItem--recommended': recommend }">
         <div class="jobItem__header">
-            <NuxtLink v-if="modelValue.image" class="item__logo" :to="`/job/${modelValue.identifier}`"
-                :style="{ 'background-image': `url(${modelValue.image})` }">
+            <NuxtLink v-if="modelValue.image" class="item__logo" :to="`/job/${modelValue.identifier}`">
+                <div class="logo__image" :style="{ 'background-image': `url(${modelValue.image})` }">
+
+                </div>
             </NuxtLink>
-            <NuxtLink v-else class="item__logo" :style="{ 'background-image': `url(${defaultLogo})` }">
+            <NuxtLink v-else class="item__logo">
+                <div class="logo__image" :style="{ 'background-image': `url(${defaultLogo})` }">
+
+                </div>
             </NuxtLink>
             <div class="header__btnGroup">
                 <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
@@ -254,7 +259,12 @@ function getLocationText() {
         align-items: center;
 
         .header__btnGroup {
+            display: flex;
+            gap: 10px;
+            margin: 0px;
+
             .btnGroup__btn {
+                padding: 0px;
                 border: none;
                 background-color: inherit;
             }
@@ -267,14 +277,14 @@ function getLocationText() {
         margin-top: 10px;
 
         .body__jobName {
-            font-size: 24px;
-            font-weight: 600;
-            font-stretch: normal;
+            color: var(--Grays-Prim, #222);
+
+            /* H3-16-Medium */
+            font-family: "PingFang TC";
+            font-size: 16px;
             font-style: normal;
+            font-weight: 600;
             line-height: normal;
-            letter-spacing: normal;
-            text-align: left;
-            color: #222;
             text-decoration: none;
 
             &:hover {
@@ -298,19 +308,29 @@ function getLocationText() {
                 text-decoration: underline;
             }
 
-            .company__name {}
+            .company__name {
+                color: var(--Grays-Prim, #222);
+
+                /* H4-12-Medium */
+                font-family: "PingFang TC";
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
         }
 
         .body__labelGroup {
             margin-top: 10px;
+            color: var(--Grays-Seco, #484848);
+
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
             font-size: 12px;
-            font-weight: normal;
-            font-stretch: normal;
             font-style: normal;
+            font-weight: 400;
             line-height: normal;
-            letter-spacing: normal;
-            text-align: left;
-            color: #484848;
+
             display: flex;
             flex-wrap: wrap;
             text-decoration: none;
@@ -324,14 +344,13 @@ function getLocationText() {
             margin-top: 10px;
             display: flex;
             gap: 5px;
+            color: var(--Grays-Seco, #484848);
+            /* Tag-10-Medium */
+            font-family: "PingFang TC";
             font-size: 10px;
-            font-weight: 500;
-            font-stretch: normal;
             font-style: normal;
+            font-weight: 500;
             line-height: normal;
-            letter-spacing: normal;
-            text-align: left;
-            color: #484848;
             text-decoration: none;
 
             &:hover {
@@ -364,41 +383,48 @@ function getLocationText() {
             display: flex;
             align-items: center;
             gap: 10px;
-            // margin-top: 30px;
+            color: var(--Grays-Seco, #484848);
+
+            /* H4-12-Regular */
+            font-family: "PingFang TC";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
 
             .similarityGroup__similarity {
+                color: var(--JP-Seco, #428F74);
+
+                /* H1-36-Semibold */
+                font-family: "PingFang TC";
                 font-size: 36px;
-                font-weight: 600;
-                font-stretch: normal;
                 font-style: normal;
-                line-height: 1;
-                height: 36px;
-                letter-spacing: normal;
-                text-align: left;
-                // color: #428f74;
-                transform: translateY(-2px);
+                font-weight: 600;
+                line-height: 36px;
+                /* 100% */
             }
         }
 
-        .footer__similarity {}
-
         .footer__salaryGroup {
-            font-size: 24px;
-            font-weight: 500;
-            font-stretch: normal;
+            color: var(--Grays-Prim, #222);
+
+            /* SPAN-14-Medium */
+            font-family: "PingFang TC";
+            font-size: 14px;
             font-style: normal;
-            line-height: 1.57;
-            letter-spacing: normal;
-            text-align: left;
-            color: #222;
-            // display: flex;
-            // align-items: center;
+            font-weight: 500;
+            line-height: 22px;
+            /* 157.143% */
 
             .salaryGroup__salaryType {
+                color: var(--Grays-Tert, #A6A6A6);
+
+                /* H4-12-Regular */
+                font-family: "PingFang TC";
                 font-size: 12px;
-                font-weight: normal;
+                font-style: normal;
+                font-weight: 400;
                 line-height: normal;
-                color: #a6a6a6;
             }
         }
     }
@@ -406,10 +432,16 @@ function getLocationText() {
     .item__logo {
         width: 40px;
         height: 40px;
-        background-size: cover;
-        background-position: center;
+        padding: 6px;
         border-radius: 10px;
         border: solid 1px #edeaea;
+
+        .logo__image {
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+        }
     }
 }
 

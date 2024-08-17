@@ -1,8 +1,10 @@
 <template>
     <div class="inputGroup" :ref="`inputGroup`" :key="state.key" :class="{ 'inputGroup--error': state.message }">
         <div class="inputGroup__nameGroup">
-            <span v-if="required && name" class="nameGroup__required">*</span>
-            {{ name }}
+            <div>
+                <span v-if="required && name" class="nameGroup__required">*</span>
+                {{ name }}
+            </div>
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <slot name="prefix"></slot>

@@ -1,7 +1,11 @@
 <template>
     <div class="userDropdown" ref="menuDiv">
         <button class="userDropdown__btn" :class="{ 'userDropdown__btn--isOpen': isOpen }" @click="isOpen = !isOpen">
-            <img class="btn__avatar" alt="avatar" :src="userImage">
+            <div v-if="repoAuth.state.user?.image" class="btn__avatar"
+                :style="{ 'background-image': `url(${repoAuth.state.user?.image})` }">
+            </div>
+            <img v-else class="btn__avatar" src="/assets/user/avatarImage.png">
+            </img>
             <img class="btn__arrow" src="./Down.svg">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
@@ -17,6 +21,11 @@
                     </NuxtLink>
                 </li>
                 <li class="list__item">
+                    <NuxtLink class="item__link" :to="{ 'name': 'user-setting' }" @click="isOpen = false">
+                        設定
+                    </NuxtLink>
+                </li>
+                <li class="list__item">
                     <button class="item__link" @click="logout()">
                         登出
                     </button>
@@ -29,7 +38,7 @@
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()
-const userImage = repoAuth.state.user.image
+// hooks
 onMounted(() => {
     toggleClickOutside(true)
 })
@@ -75,6 +84,9 @@ async function logout() {
         .btn__avatar {
             width: 42px;
             height: 42px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-radius: 50%;
             overflow: hidden;
         }

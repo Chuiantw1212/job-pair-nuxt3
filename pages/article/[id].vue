@@ -17,17 +17,17 @@
                 <!-- https://stackoverflow.com/questions/9120539/facebook-share-link-without-javascript -->
                 <a :href="`https://www.facebook.com/sharer/sharer.php?u=${runTimeConfig.public.siteUrl}/article/${article.id}`"
                     target="_blank">
-                    <img src="@/assets/articles/Facebook.svg">
+                    <img src="~/assets/articles/Facebook.svg">
                 </a>
                 <a :href="`https://www.linkedin.com/shareArticle?mini=true&url=${runTimeConfig.public.siteUrl}/article/${article.id}`"
                     target="_blank">
-                    <img src="@/assets/articles/Linkdin.svg">
+                    <img src="~/assets/articles/Linkdin.svg">
                 </a>
                 <button v-if="state.navigator?.share" class="links__btn" @click="shareLinkNative()">
-                    <img src="@/assets/articles/Share.svg">
+                    <img src="~/assets/articles/Share.svg">
                 </button>
                 <button v-else class="links__btn" @click="shareLinkBootstrap()">
-                    <img src="@/assets/articles/Share.svg">
+                    <img src="~/assets/articles/Share.svg">
                 </button>
             </div>
             <div class="article__more">更多文章</div>

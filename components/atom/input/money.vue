@@ -7,8 +7,8 @@
             </span>
         </div>
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
-            <input v-model="shownValue" class="label__input" :type="type" autocomplete="off" @focus="handleFocus($event)"
-                @blur="handleBlur($event)" :placeholder="placeholder" />
+            <input v-model="shownValue" class="label__input" :type="type" autocomplete="off"
+                @focus="handleFocus($event)" @blur="handleBlur($event)" :placeholder="placeholder" />
             <input v-show="false" v-model="localValue" :data-required="required" :data-name="name" :type="type"
                 autocomplete="off" />
         </label>
@@ -94,7 +94,7 @@ export default {
             },
         },
         localValue: {
-            handler: function (newValue) {
+            handler: function (newValue = '') {
                 if (!this.isFocused && newValue) {
                     const replaceDot = String(newValue).replace(new RegExp(",", "g"), "")
                     newValue = Number(replaceDot).toLocaleString(undefined, {

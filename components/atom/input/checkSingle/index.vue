@@ -6,10 +6,10 @@
         </div>
         <label class="checkSingle__label">
             <div class="label__checkbox">
-                <img v-show="modelValue === true" class="checkbox__check" src="@/assets/checkboxSelected.svg" />
+                <img v-show="modelValue === true" class="checkbox__check" src="~/assets/checkboxSelected.svg" />
             </div>
-            <input v-show="false" v-model="localValue" class="label__input" :value="modelValue" :data-required="required"
-                :data-name="name" type="checkbox" />
+            <input v-show="false" v-model="localValue" class="label__input" :value="modelValue"
+                :data-required="required" :data-name="name" type="checkbox" />
             <div class="label__desc">
                 <slot></slot>
             </div>
@@ -58,9 +58,16 @@ export default {
 <style lang="scss" scoped>
 .checkSingle {
     .checkSingle__nameGroup {
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        /* 162.5% */
         margin-bottom: 10px;
-        font-size: 18px;
-        font-weight: bold;
     }
 
     .checkSingle__label {

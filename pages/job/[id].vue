@@ -41,43 +41,43 @@
                 </div>
                 <div class="basic__btnGroup">
                     <button v-if="!state.application.applyFlow" class="btnGroup__btn" @click.stop="handleSaveJob()">
-                        <img alt="save" src="@/assets/jobs/Collect.svg">
+                        <img alt="save" src="~/assets/jobs/Collect.svg">
                         儲存
                     </button>
                     <button v-if="state.application.applyFlow === 'saved'" class="btnGroup__btn"
                         @click.stop="handleUnsavedJob()">
-                        <img alt="saved" src="@/assets/jobs/Saved.svg">
+                        <img alt="saved" src="~/assets/jobs/Saved.svg">
                         已儲存
                     </button>
                     <button
                         v-if="state.application.applyFlow === 'invited' && state.application.visibility !== 'visible'"
                         class="btnGroup__btn" @click.stop="handleSaveJob()">
-                        <img alt="save" src="@/assets/jobs/Collect.svg">
+                        <img alt="save" src="~/assets/jobs/Collect.svg">
                         儲存
                     </button>
                     <button
                         v-if="state.application.applyFlow === 'invited' && state.application.visibility === 'visible'"
                         class="btnGroup__btn" @click.stop="handleUnsavedJob()">
-                        <img alt="saved" src="@/assets/jobs/Saved.svg">
+                        <img alt="saved" src="~/assets/jobs/Saved.svg">
                         已儲存
                     </button>
                     <button v-if="['applied', 'notified'].includes(state.application.applyFlow)" class="btnGroup__btn"
                         :disabled="true">
-                        <img alt="applied" src="@/assets/jobs/Collect.svg">
+                        <img alt="applied" src="~/assets/jobs/Collect.svg">
                         已應徵
                     </button>
                     <button v-if="['rejected'].includes(state.application.applyFlow)" class="btnGroup__btn"
                         :disabled="true">
-                        <img alt="rejected" src="@/assets/jobs/Collect.svg">
+                        <img alt="rejected" src="~/assets/jobs/Collect.svg">
                         已婉拒
                     </button>
                     <button v-if="state.navigator?.share" class="btnGroup__btn" @click="shareLinkNative()">
-                        <img alt="share" src="@/assets/jobs/Copy.svg">
+                        <img alt="share" src="~/assets/jobs/Copy.svg">
                         複製連結
                     </button>
                     <button v-else class="btnGroup__btn" :id="`tooltip-${state.id}`" data-bs-toggle="tooltip"
                         title="點擊複製連結" @click="shareLinkBootstrap()">
-                        <img alt="share" src="@/assets/jobs/Copy.svg">
+                        <img alt="share" src="~/assets/jobs/Copy.svg">
                         複製連結
                     </button>
                 </div>
@@ -162,15 +162,15 @@
                     </span>
                 </div>
                 <div class="features__panel">
-                    <LazyAtomBtnSimple class="panel__btn" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-if="checkInfoIncomplete()" @click="showIncompleteAlert()"
                         :disabled="repoAuth.state.user.type === 'admin'">立即應徵
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-else-if="checkJobCategory()" :disabled="true">職務類型不符
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 v-else-if="checkVisibility()" class="w-100" @click="handleApply()">
                         立即應徵
-                    </LazyAtomBtnSimple>
-                    <LazyAtomBtnSimple class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimple>
+                    </LazyAtomBtnSimpleV2>
+                    <LazyAtomBtnSimpleV2 class="panel__btn" v-else :disabled="true">已應徵</LazyAtomBtnSimpleV2>
                 </div>
             </section>
             <section id="jobView__description" class="jobView__section mt-3">
@@ -661,6 +661,12 @@ async function initialize() {
     const job = jobResponse.data
     // 再取得公司資料
     const companyResponse = await repoCompany.getCompanyById(job.organizationId)
+    if (companyResponse.status === 500) {
+        router.push({
+            name: 'jobs'
+        })
+        return
+    }
     const company = companyResponse.data
     state.job = job
     state.company = company
@@ -754,10 +760,6 @@ async function initialize() {
                 align-items: center;
                 justify-content: center;
                 gap: 10px;
-
-                &:hover {
-                    background-color: #edeaea;
-                }
             }
         }
 
@@ -865,8 +867,8 @@ async function initialize() {
         .features__item {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            // flex-wrap: wrap;
+            gap: 30px;
 
             .item__header {
                 font-size: 16px;
@@ -940,6 +942,7 @@ async function initialize() {
             letter-spacing: normal;
             text-align: left;
             color: #fff;
+            z-index: 10;
         }
     }
 

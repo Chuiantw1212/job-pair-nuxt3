@@ -1,17 +1,21 @@
 <template>
     <div class="inputGroup" :ref="`inputGroup`">
         <div class="inputGroup__nameGroup">
-            <span v-if="required" class="nameGroup__required">*</span>
-            {{ name }}
+            <div>
+                <span v-if="required" class="nameGroup__required">*</span>
+                {{ name }}
+            </div>
             <div class="ms-1">
                 <slot></slot>
             </div>
         </div>
         <label class="inputGroup__inputdropdown" :class="{ 'inputGroup__inputdropdown--disabled': disabled }">
             <select v-model="localValue" class="inputdropdown__select" :data-required="required" :data-name="name"
-                :class="{ 'inputdropdown__select--placeholder': [undefined].includes(localValue) }" :disabled="disabled">
+                :class="{ 'inputdropdown__select--placeholder': [undefined].includes(localValue) }"
+                :disabled="disabled">
                 <!-- 配合DB不用null為初始值 -->
-                <option v-if="placeholder" :value="''" :disabled="placeholderDisabled" selected class="select__placeholder">
+                <option v-if="placeholder" :value="''" :disabled="placeholderDisabled" selected
+                    class="select__placeholder">
                     {{
                         placeholder
                     }}</option>

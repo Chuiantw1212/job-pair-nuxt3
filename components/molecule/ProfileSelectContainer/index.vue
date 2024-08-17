@@ -99,9 +99,16 @@ export default {
     position: relative;
 
     .container__nameGroup {
+        color: var(--Grays-Seco, #484848);
+
+        /* P-16-Rugular */
+        font-family: "PingFang TC";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+
         margin-bottom: 8px;
-        font-size: 18px;
-        color: black;
 
         .nameGroup__required {
             color: #FF3B30;
@@ -122,7 +129,7 @@ export default {
         display: flex;
         justify-items: center;
         align-items: center;
-        border: solid 1px #d3d3d3;
+        border: solid 1px #edeaea;
         width: 100%;
         padding: 8px;
         border-radius: 10px;

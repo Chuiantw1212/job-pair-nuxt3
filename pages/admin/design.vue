@@ -14,62 +14,62 @@
                         <li data-name="BANNER01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Top1.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Top1.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
                         <li data-name="HYBRID01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model4.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Model4.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，圖片至左，加上大標、內文和更多資訊</div>
                         </li>
                         <li data-name="HYBRID02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model3.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Model3.webp" draggable="false">
                             <div class="item__desc">適合 Banner ，大圖襯底，大標、副標和按鈕</div>
                         </li>
                         <li data-name="ARTICLE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Frame967.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Frame967.webp" draggable="false">
                             <div class="item__desc">適合公司介紹，大標、內文</div>
                         </li>
                         <li data-name="LIST01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model7.png" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Model7.png" draggable="false">
                             <div class="item__desc">適合公司服務介紹，三個區塊，Icon、標題、內文</div>
                         </li>
                         <li data-name="LIST02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model6.png" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Model6.png" draggable="false">
                             <div class="item__desc">適合凸顯特色，不論是企業文化、優勢、福利，甚至是產品服務。</div>
                         </li>
                         <li data-name="LIST03" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Model_env.png" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Model_env.png" draggable="false">
                             <div class="item__desc">公司環境照片</div>
                         </li>
                         <li data-name="SLIDE01" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Comment3.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Comment3.webp" draggable="false">
                             <div class="item__desc">可置入三項內容，一頁一項。可用於團隊介紹、口碑宣傳、客戶回饋等內容。</div>
                         </li>
                         <li data-name="SLIDE02" class="list__item" :class="{ 'list__item--draggable': isDraggable }"
                             :draggable="isDraggable" @mouseenter="setTemplateName($event)"
                             @mouseleave="state.isDragging = false">
-                            <img class="item__imaage" src="@/assets/admin/design/Comment2.webp" draggable="false">
+                            <img class="item__imaage" src="~/assets/admin/design/Comment2.webp" draggable="false">
                             <div class="item__desc">可置入三項內容，一頁兩項。可用於團隊介紹、口碑宣傳、客戶回饋等內容。</div>
                         </li>
                     </ul>
                 </div>
                 <button class="content__btn" @click="slidePanel()">
                     <img class="btn__arrow" :class="{ 'btn__arrow--isOpen': !state.isOpen }"
-                        src="@/assets/admin/design/Frame1036.svg">
+                        src="~/assets/admin/design/Frame1036.svg">
                 </button>
             </div>
         </div>
