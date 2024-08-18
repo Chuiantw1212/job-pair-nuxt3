@@ -14,6 +14,12 @@
                         管理中心
                     </NuxtLink>
                 </li>
+                <li class="nav-item" @click="handleClick()">
+                    <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/topup">
+                        <img src="./Setting.svg" alt="Setting">
+                        儲值管理
+                    </NuxtLink>
+                </li>
             </template>
             <template v-else>
                 <li class="nav-item">

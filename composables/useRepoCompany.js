@@ -19,6 +19,14 @@ export default defineStore('company', () => {
         })
         return response
     }
+    async function postCompanySubscription(data) {
+        const response = await jobPairApi.request({
+            method: 'post',
+            url: `/company/subscription`,
+            data
+        })
+        return response
+    }
     async function patchCompanyAdmins(data) {
         const response = await jobPairApi.request({
             method: 'patch',
@@ -113,5 +121,6 @@ export default defineStore('company', () => {
         getCompanyWalletBalance,
         getCompanyAdmins,
         patchCompanyAdmins,
+        postCompanySubscription,
     }
 })

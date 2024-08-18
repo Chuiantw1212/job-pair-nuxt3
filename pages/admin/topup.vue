@@ -1,5 +1,5 @@
 <template>
-    <div class="topup">
+    <div class="container topup">
         <h1 class="topup__title">選擇訂閱方案</h1>
         <div class="topup__desc">可隨時升級或取消</div>
         <div class="topup__toggleWrap">
@@ -26,7 +26,7 @@
                         <img class="item__img" src="@/assets/admin/topup/Check.svg">應徵人選適配度
                     </li>
                 </ul>
-                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="submitAppointment(subscription[0])">訂閱
+                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="subscribeSerice(subscription[0])">訂閱
                 </LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
@@ -50,7 +50,7 @@
                         微型企業，渴望打造具有獨特風格的企業形象頁面，以吸引客戶和潛在人才。
                     </li>
                 </ul>
-                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="submitAppointment(subscription[1])">訂閱
+                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="subscribeSerice(subscription[1])">訂閱
                 </LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
@@ -80,7 +80,7 @@
                         一般企業，建立具有專業企業文化風格的形象頁面，加強僱主品牌，並主動聯繫潛在合適人選，擴大企業影響力。
                     </li>
                 </ul>
-                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="submitAppointment(subscription[2])">訂閱
+                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="subscribeSerice(subscription[2])">訂閱
                 </LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
@@ -110,7 +110,7 @@
                         中大型企業，希望透過客製化頁面和廣泛的潛在人選邀請，更有效地推廣企業形象和吸引人才。
                     </li>
                 </ul>
-                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="submitAppointment(subscription[3])">訂閱
+                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="subscribeSerice(subscription[3])">訂閱
                 </LazyAtomBtnSimpleV2>
             </div>
         </div>
@@ -118,25 +118,26 @@
 </template>
 <script setup>
 const repoSelect = useRepoSelect()
+const repoCompany = useRepoCompany()
 const subscription = computed(() => {
     return repoSelect.state.selectByQueryRes?.subscription || []
 })
-console.log(repoSelect);
 const state = reactive({
     test: ''
 })
 // methods
-async function submitAppointment(subscription) {
-    const result = await $validate()
-    if (!result.isValid) {
-        return
-    }
-    state.appointmentForm.userId = repoAuth.state.user.id
-    state.appointmentForm.amount = subscription.price
-    if (repoAuth.state?.user?.email === 'ian.chu@job-pair.com') {
-        state.appointmentForm.amount = 5
-    }
-    // const response = await repoConsult.postConsultAppointment(state.appointmentForm)
+async function subscribeSerice(subscription) {
+    // const result = await $validate()
+    // if (!result.isValid) {
+    //     return
+    // }
+    // state.appointmentForm.userId = repoAuth.state.user.id
+    // state.appointmentForm.amount = subscription.price
+    // if (repoAuth.state?.user?.email === 'ian.chu@job-pair.com') {
+    //     state.appointmentForm.amount = 5
+    // }
+    const response = await repoCompany.postCompanySubscription()
+    document.write(response)
     // if (response.status !== 200) {
     //     state.consultants.forEach(item => {
     //         item.key = Math.random()
@@ -155,6 +156,7 @@ async function submitAppointment(subscription) {
 <style lang=scss scoped>
 .topup {
     padding-top: 20px;
+    padding-bottom: 20px;
     text-align: center;
     background-color: #F9F9F9;
 
