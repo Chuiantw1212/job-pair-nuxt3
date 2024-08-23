@@ -5,28 +5,28 @@
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                         :to="{ name: 'admin-manage-company' }">
-                        <img class="item__link__icon" src="@/assets/company/Company.svg">
+                        <img class="item__link__icon" src="~/assets/company/Company.svg">
                         企業檔案
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                         :to="{ name: 'admin-manage-preference' }">
-                        <img class="item__link__icon" src="@/assets/company/Preference.svg">
+                        <img class="item__link__icon" src="~/assets/company/Preference.svg">
                         企業風格文化
                     </NuxtLink>
                 </li>
                 <li class="menu__item">
                     <NuxtLink class="menu__item__link" active-class="menu__item__link--active"
                         :to="{ name: 'admin-manage-account' }" @click="forceRouteTo('admin-manage-account')">
-                        <img class="item__link__icon" src="@/assets/company/Resume.svg">
+                        <img class="item__link__icon" src="~/assets/company/Resume.svg">
                         帳戶管理
                     </NuxtLink>
                 </li>
             </ul>
             <NuxtLink v-if="!state.isNewCompay" class="dashboard__preview" :to="{ 'name': 'admin-design' }">
                 <div class="preview__title">
-                    <img src="@/assets/company/Verified.svg">
+                    <img src="~/assets/company/Verified.svg">
                     客製公司頁面
                 </div>
                 <div class="preview__desc">

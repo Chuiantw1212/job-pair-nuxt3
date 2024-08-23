@@ -101,7 +101,7 @@
                 <div>
                     -目前尚無資料-
                 </div>
-                <img class="empty__image" src="@/assets/user/img_empty.png">
+                <img class="empty__image" src="~/assets/user/img_empty.png">
             </div>
         </div>
     </div>

@@ -29,7 +29,7 @@
                             <label v-for="(work, key) in repoAuth.state.user.portfolio" class="checkMultiple__label"
                                 :key="key">
                                 <div v-if="hasSelected(work)" class="label__checkbox">
-                                    <img class="checkbox__check" src="@/assets/checkboxSelected.svg" />
+                                    <img class="checkbox__check" src="~/assets/checkboxSelected.svg" />
                                 </div>
                                 <div v-else class="label__checkbox label__checkbox--unselected"></div>
                                 <input v-show="false" v-model="state.application.portfolio" class="label__input"

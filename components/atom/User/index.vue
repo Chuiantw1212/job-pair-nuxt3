@@ -4,9 +4,8 @@
             <div v-if="repoAuth.state.user?.image" class="btn__avatar"
                 :style="{ 'background-image': `url(${repoAuth.state.user?.image})` }">
             </div>
-            <div v-else class="btn__avatar" :style="{ 'background-image': `url(${avatarImage})` }">
-
-            </div>
+            <img v-else class="btn__avatar" src="/assets/user/avatarImage.png">
+            </img>
             <img class="btn__arrow" src="./Down.svg">
         </button>
         <div class="userDropdown__layer" :class="{ 'userDropdown__layer--isOpen': isOpen }">
@@ -36,7 +35,6 @@
     </div>
 </template>
 <script setup>
-import avatarImage from '@/assets/user/Avatar.svg'
 const isOpen = ref(false)
 const router = useRouter()
 const repoAuth = useRepoAuth()

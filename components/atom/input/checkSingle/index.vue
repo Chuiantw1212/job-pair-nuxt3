@@ -6,7 +6,7 @@
         </div>
         <label class="checkSingle__label">
             <div class="label__checkbox">
-                <img v-show="modelValue === true" class="checkbox__check" src="@/assets/checkboxSelected.svg" />
+                <img v-show="modelValue === true" class="checkbox__check" src="~/assets/checkboxSelected.svg" />
             </div>
             <input v-show="false" v-model="localValue" class="label__input" :value="modelValue"
                 :data-required="required" :data-name="name" type="checkbox" />

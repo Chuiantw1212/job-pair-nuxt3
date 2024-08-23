@@ -10,7 +10,7 @@
             <template v-for="(item, key) in items">
                 <label v-if="item[itemText]" class="checkMultiple__label" :style="itemStyle">
                     <div v-if="isItemSelected(item)" class="label__checkbox">
-                        <img class="checkbox__check" src="@/assets/checkboxSelected.svg" />
+                        <img class="checkbox__check" src="~/assets/checkboxSelected.svg" />
                     </div>
                     <div v-else class="label__checkbox label__checkbox--unselected"
                         :class="{ 'label__checkbox--disabled': checkDisabled(item) }"></div>

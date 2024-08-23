@@ -2,20 +2,20 @@
     <div class="consult">
         <div class="d-md-none">
             <div class="consult__headerGroup">
-                <img class="consult__header" src="@/assets/consult/header.png"></img>
+                <img class="consult__header" src="~/assets/consult/header.png"></img>
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
                     <button class="consult__btn">了解更多</button>
                 </a>
             </div>
-            <img class="consult__image" src="@/assets/consult/image1.png"></img>
-            <img class="consult__image" src="@/assets/consult/image2.png"></img>
+            <img class="consult__image" src="~/assets/consult/image1.png"></img>
+            <img class="consult__image" src="~/assets/consult/image2.png"></img>
             <div class="consult__card">
-                <img class="consult__image" src="@/assets/consult/image3.png"></img>
+                <img class="consult__image" src="~/assets/consult/image3.png"></img>
                 <button class="consult__btn consult__btn--outline">諮詢師列表</button>
             </div>
             <div class="consult__card">
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
-                    <img class="consult__image" src="@/assets/consult/image4.png"></img>
+                    <img class="consult__image" src="~/assets/consult/image4.png"></img>
                     <button class="consult__btn consult__btn--outline">了解更多</button>
                 </a>
             </div>
@@ -23,22 +23,22 @@
         <div class="d-none d-md-block w-100">
             <div class="consult__background">
                 <div class="consult__imageGroup consult__imageGroup--absolute">
-                    <img class="consult__image" src="@/assets/consult/desktop1.png">
+                    <img class="consult__image" src="~/assets/consult/desktop1.png">
                     </img>
                     <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
                         <button class="imageGroup__btn">了解更多</button>
                     </a>
                 </div>
             </div>
-            <img class="consult__image consult__image--mt" src="@/assets/consult/desktop2.png"></img>
+            <img class="consult__image consult__image--mt" src="~/assets/consult/desktop2.png"></img>
             <div class="consult__card">
-                <img class="consult__image" src="@/assets/consult/desktop3.png"></img>
+                <img class="consult__image" src="~/assets/consult/desktop3.png"></img>
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/about/#member" target="_blank">
                     <button class="card__btn">諮詢師列表</button>
                 </a>
             </div>
             <div class="consult__card">
-                <img class="consult__image" src="@/assets/consult/desktop4.png"></img>
+                <img class="consult__image" src="~/assets/consult/desktop4.png"></img>
                 <a class="consult__anchor" href="https://lifecareerdesigner.com/" target="_blank">
                     <button class="card__btn">了解更多</button>
                 </a>

@@ -18,18 +18,14 @@
         <div class="setting__card setting__card--mt">
             <h2 class="card__header">帳號</h2>
             <div class="card__desc">刪除帳號</div>
-            <!-- <LazyOrganismDeleteModal class="managemement__others"></LazyOrganismDeleteModal> -->
             <LazyAtomBtnSimpleV2 :style="{ 'width': '140px' }" @click="showSecondConfirm()" outline>永久刪除帳號
             </LazyAtomBtnSimpleV2>
         </div>
     </div>
 </template>
 <script setup>
-const { $bootstrap, $sweet, $requestSelector, $validate, } = useNuxtApp()
+const { $sweet, $validate, } = useNuxtApp()
 const profileBroadcast = reactive({})
-const state = reactive({
-    bsModal: null,
-})
 const router = useRouter()
 const repoUser = useRepoUser()
 const repoAuth = useRepoAuth()
@@ -60,18 +56,6 @@ async function handleSubmitBroadcast() {
     const patchedUser = Object.assign({}, repoAuth.state.user, profileBroadcast)
     repoAuth.setUser(patchedUser)
 }
-async function logout() {
-    repoAuth.userSignout()
-    router.push({
-        name: "index",
-    })
-}
-function openModal() {
-    state.bsModal.show()
-}
-function hideModal() {
-    state.bsModal.hide()
-}
 async function showSecondConfirm() {
     const isConfirmed = await $sweet.alert('此動作無法復原。您確定要這麼做嗎？', {
         title: '確定要刪除嗎',
@@ -84,7 +68,6 @@ async function showSecondConfirm() {
     if (!isConfirmed.value) {
         return
     }
-    hideModal()
     // 執行刪除流程
     $sweet.loader(true)
     switch (repoAuth.state.user.type) {

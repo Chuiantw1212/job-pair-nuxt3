@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <section class="home__section home__section--landing">
-            <img class="landing__banner" alt="banner" src="@/assets/admin/index/KV11.png">
+            <img class="landing__banner" alt="banner" src="~/assets/admin/index/KV11.png">
             <div class="landing__textGroup">
                 <h1 class="textGroup__title">
                     開創理想團隊
@@ -23,14 +23,14 @@
             </h2>
             <div class="new__textGroup">
                 <div class="textGroup__card">
-                    <img class="card__image" alt="img4" src="@/assets/admin/index/Frame2500.png">
+                    <img class="card__image" alt="img4" src="~/assets/admin/index/Frame2500.png">
                     <div class="card__group">
                         <h3 class="card__title">媒合型機制</h3>
                         <div class="card__desc">Job Pair採用「媒合型」的人才配對方式，透過適配度匹配求職者和企業，從源頭上提升媒合的精準度，使得招聘更為有效。</div>
                     </div>
                 </div>
                 <div class="textGroup__card textGroup__card--reverse">
-                    <img class="card__image" alt="img5" src="@/assets/admin/index/Frame2501.png">
+                    <img class="card__image" alt="img5" src="~/assets/admin/index/Frame2501.png">
                     <div class="card__group">
                         <h3 class="card__title">專注內在需求</h3>
                         <div class="card__desc">Job Pair注重求職者的內在需求，包括企業文化、工作環境、管理模式等，有助於減少不適應而快速離職的風險，提高到職率。
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="textGroup__card">
-                    <img class="card__image" alt="img6" src="@/assets/admin/index/Frame2502.png">
+                    <img class="card__image" alt="img6" src="~/assets/admin/index/Frame2502.png">
                     <div class="card__group">
                         <h3 class="card__title">客製化企業頁面</h3>
                         <div class="card__desc">Job Pair提供客製化企業頁面的服務，使企業能夠在平台上呈現獨特的形象，突顯企業文化，提升品牌吸引力。
@@ -46,14 +46,14 @@
                     </div>
                 </div>
                 <div class="textGroup__card textGroup__card--reverse">
-                    <img class="card__image" alt="img7" src="@/assets/admin/index/Frame2503.png">
+                    <img class="card__image" alt="img7" src="~/assets/admin/index/Frame2503.png">
                     <div class="card__group">
                         <h3 class="card__title">一鍵帶入功能</h3>
                         <div class="card__desc">Job Pair的一鍵帶入功能允許企業輕鬆快速地從其他招聘平台導入資訊，降低資料轉移的複雜度，加速上線過程。</div>
                     </div>
                 </div>
                 <div class="textGroup__card">
-                    <img class="card__image" alt="img6" src="@/assets/admin/index/Frame2505.png">
+                    <img class="card__image" alt="img6" src="~/assets/admin/index/Frame2505.png">
                     <div class="card__group">
                         <h3 class="card__title">AI智能生成和優化</h3>
                         <div class="card__desc">Job Pair擁有AI智能生成和AI內容優化功能，能夠快速生成引人注目的招聘內容，並優化現有內容，提高招聘訊息的吸引力。
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="textGroup__card textGroup__card--reverse">
-                    <img class="card__image" alt="img7" src="@/assets/admin/index/Frame2504.png">
+                    <img class="card__image" alt="img7" src="~/assets/admin/index/Frame2504.png">
                     <div class="card__group">
                         <h3 class="card__title">多元招募選項</h3>
                         <div class="card__desc">Job Pair不僅提供正職兼職招聘，還能配對彈性、短期接案人員，確保企業能夠應對不同時期的人力需求，保持團隊的活力。</div>
@@ -70,8 +70,8 @@
             </div>
         </section>
         <section class="home__section home__section--jp">
-            <img class="jp_heart" alt="heart" src="@/assets/admin/index/Vector.svg">
-            <img class="jp_logo" alt="logo" src="@/assets/admin/index/logo.svg">
+            <img class="jp_heart" alt="heart" src="~/assets/admin/index/Vector.svg">
+            <img class="jp_logo" alt="logo" src="~/assets/admin/index/logo.svg">
             <h2 class="jp__title">Job Pair 團隊理念</h2>
             <div class="jp__desc">
                 Job Pair致力於創造一個讓每個人在適合的環境中發揮所長的職場。 <br>
