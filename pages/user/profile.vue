@@ -302,7 +302,7 @@ async function handleSubmitAdvanced() {
     const incompleteFields = requiredFieds.filter(field => {
         return !user[field] || !String(user[field]).trim()
     })
-    if (state.profileAdvanced.resumes.length && incompleteFields) {
+    if (state.profileAdvanced.resumes.length && incompleteFields.length) {
         await $sweet.info('填寫基本資料後即可應徵工作', {
             title: '基本資料未完成',
         })
