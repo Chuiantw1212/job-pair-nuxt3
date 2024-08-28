@@ -512,8 +512,8 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $sweet.info('前往完成個人檔案', {
-        title: '未上傳履歷',
+    const res = await $sweet.info('前往填寫基本資料及上傳履歷', {
+        title: '我的履歷未完成',
     })
     if (res.value) {
         router.push({

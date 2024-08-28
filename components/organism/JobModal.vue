@@ -83,7 +83,7 @@ const state = reactive({
         'italic',
         'fontColor',
         '|',
-        // 'link',
+        'link',
         'mediaEmbed',
         '|',
         'bulletedList',
