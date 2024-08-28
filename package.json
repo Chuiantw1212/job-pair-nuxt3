@@ -17,7 +17,7 @@
     "@nuxtjs/seo": "^2.0.0-rc.12",
     "@pinia/nuxt": "^0.5.1",
     "firebase-admin": "^12.1.0",
-    "firebase-functions": "^5.0.1",
+    "firebase-functions": "^5.1.0",
     "firebase-functions-test": "^3.1.0",
     "nuxt": "^3.10.3",
     "nuxt-jsonld": "^2.0.8",
