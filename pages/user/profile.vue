@@ -14,7 +14,7 @@
                 </LazyAtomInputPhotoSingle>
                 <div class="basic__contact">
                     <LazyAtomInputText name="姓名" v-model="state.profileBasic.name"
-                        :disabled="repoAuth.state.user && !!repoAuth.state.user.name"></LazyAtomInputText>
+                        :disabled="repoAuth.state.user && !!repoAuth.state.user.name" required></LazyAtomInputText>
                     <LazyAtomInputEmail name="Email" v-model="state.profileBasic.email" class="mt-3" disabled>
                     </LazyAtomInputEmail>
                     <LazyAtomInputMobile name="手機號碼" v-model="state.profileBasic.telephone" placeholder="請輸入手機"
@@ -261,7 +261,13 @@ async function handleSubmitBasic() {
     await repoUser.patchUserProfile(state.profileBasic)
     const patchedUser = Object.assign({}, repoAuth.state.user, state.profileBasic)
     repoAuth.setUser(patchedUser)
-    $sweet.succeed()
+    await $sweet.succeed()
+    // 判斷履歷數量
+    if (!state.profileAdvanced.resumes.length) {
+        await $sweet.info('上傳履歷後即可應徵工作', {
+            title: '履歷未上傳',
+        })
+    }
 }
 async function handleSubmitAdvanced() {
     const dom = document.querySelector(`#profileAdvanced`)
@@ -290,11 +296,22 @@ async function handleSubmitAdvanced() {
     const patchedUser = Object.assign({}, repoAuth.state.user, state.profileAdvanced)
     repoAuth.setUser(patchedUser)
     $sweet.succeed()
+    // 判斷基本資料
+    const { user } = repoAuth.state
+    const requiredFieds = ['name', 'email']
+    const incompleteFields = requiredFieds.filter(field => {
+        return !user[field] || !String(user[field]).trim()
+    })
+    if (state.profileAdvanced.resumes.length && incompleteFields.length) {
+        await $sweet.info('填寫基本資料後即可應徵工作', {
+            title: '基本資料未完成',
+        })
+    }
 }
 async function handleSubmitBroadcast() {
-    const dom = document.querySelector(`#profileBroadcast`)
-    const result = await $validate(dom)
-    if (!result.isValid) {
+    const domAdvanced = document.querySelector(`#profileBroadcast`)
+    const resultAdvanced = await $validate(domAdvanced)
+    if (!resultAdvanced.isValid) {
         return
     }
     // 再更新個人資料
