@@ -187,6 +187,10 @@ async function initializeCKEditor() {
         localValue.value = newValue
     })
     state.ckeditorInstance = markRaw(editor)
+
+    const ckWrapper = document.querySelector('.ck-body-wrapper')
+    ckWrapper.style.zIndex = "1100"
+    ckWrapper.style.position = "sticky"
 }
 // public method do not delete
 async function setData(newValue) {
