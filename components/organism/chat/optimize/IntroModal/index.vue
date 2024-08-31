@@ -4,7 +4,7 @@
             一鍵優化
         </button>
         <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" aria-hidden="true"
-            　data-bs-focus="false">
+            data-bs-focus="false">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="modal fade" :id="`afterChatModal${state.id}`" tabindex="-1" aria-hidden="true"
-            　data-bs-focus="false">
+            data-bs-focus="false">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
