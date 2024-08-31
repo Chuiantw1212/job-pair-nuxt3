@@ -3,7 +3,8 @@
         <button class="chatGptModal__btn" @click="openBeforeModal({ isReset: true })">
             AI內容優化
         </button>
-        <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
+        <div class="modal fade" :id="`beforeChatModal${state.id}`" tabindex="-1" aria-hidden="true"
+            　data-bs-focus="false">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -12,8 +13,8 @@
                             @click="hideBeforeModal()"></button>
                     </div>
                     <div class="modal-body" ref="modalBodyRef">
-                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" class="mt-3" :toolbar="[]" ref="beforeChatGpt"
-                            :style="{ 'height': '324px' }">
+                        <LazyAtomInputCkeditor v-model="state.beforeChatGpt" class="mt-3" :toolbar="[]"
+                            ref="beforeChatGpt" :style="{ 'height': '324px' }">
                         </LazyAtomInputCkeditor>
                         <div class="text-center my-1">優美的文字值得等待，優化時間需幾分鐘</div>
                     </div>
@@ -25,7 +26,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" :id="`afterChatModal${state.id}`" tabindex="-1" a aria-hidden="true">
+        <div class="modal fade" :id="`afterChatModal${state.id}`" tabindex="-1" aria-hidden="true"
+            　data-bs-focus="false">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
