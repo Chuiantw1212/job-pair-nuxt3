@@ -19,81 +19,83 @@
                 </LazyAtomInputSelect>
             </div>
             <div class="userStatus__card">
-                <ul v-for="(job, index) in state.jobCompare" :key="index" class="card__list">
-                    <li class="card__item">
-                        <h2 class="card__header">適配度</h2>
-                        <hr class="card__hr">
-                        <div class="card__value card__value--bold"> {{ $rank(job.similarity) }}</div>
-                    </li>
-                    <li class="card__item">
-                        <div>職務類型</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            <div v-for="(text, index) in getJobCategoryTexts(job.occupationalCategory)"
-                                :key="`first${index}`">
-                                {{ text }}
+                <template v-for="(job, key) in state.jobCompare" :key="key">
+                    <ul v-if="key !== 'third' || device.state.isLarge" class="card__list">
+                        <li class="card__item">
+                            <h2 class="card__header">適配度</h2>
+                            <hr class="card__hr">
+                            <div class="card__value card__value--bold"> {{ $rank(job.similarity) }}</div>
+                        </li>
+                        <li class="card__item">
+                            <div>職務類型</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                <div v-for="(text, index) in getJobCategoryTexts(job.occupationalCategory)"
+                                    :key="`first${index}`">
+                                    {{ text }}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">工作待遇</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            <div>
-                                {{ getSalaryText(job) }}
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">工作待遇</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                <div>
+                                    {{ getSalaryText(job) }}
+                                </div>
+                                <div v-if="job.salaryType === 'monthly'">
+                                    {{ getIrregular(job) }}
+                                </div>
                             </div>
-                            <div v-if="job.salaryType === 'monthly'">
-                                {{ getIrregular(job) }}
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">雇傭模式</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                <div v-for="(item, index) in job.employmentType" :key="`firstEmploymentType${index}`">
+                                    {{ $filter.optionText(item,
+                                        repoSelect.state.selectByQueryRes.employmentType)
+                                    }}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">雇傭模式</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            <div v-for="(item, index) in job.employmentType" :key="`firstEmploymentType${index}`">
-                                {{ $filter.optionText(item,
-                                    repoSelect.state.selectByQueryRes.employmentType)
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">遠端型態</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                {{ $filter.optionText(job.jobLocationType,
+                                    repoSelect.state.selectByQueryRes.jobLocationType)
                                 }}
                             </div>
-                        </div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">遠端型態</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            {{ $filter.optionText(job.jobLocationType,
-                                repoSelect.state.selectByQueryRes.jobLocationType)
-                            }}
-                        </div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">上班地點</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            {{ getJobLocation(job) }}
-                        </div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">員工人數</div>
-                        <hr class="card__hr">
-                        <div class="card__value">{{ job.numberOfEmployees }}</div>
-                    </li>
-                    <li class="card__item">
-                        <div class="card__header">公司福利</div>
-                        <hr class="card__hr">
-                        <div class="card__value">
-                            <template v-for="(value, key) in job.jobBenefitFlags" class="mt-1" :key="key">
-                                <div v-if="value">
-                                    {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
-                                </div>
-                            </template>
-                        </div>
-                    </li>
-                    <li>
-                        <a class="card__link" :href="`/job/${job.identifier}`" target="_blank">前往該職缺</a>
-                    </li>
-                </ul>
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">上班地點</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                {{ getJobLocation(job) }}
+                            </div>
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">員工人數</div>
+                            <hr class="card__hr">
+                            <div class="card__value">{{ job.numberOfEmployees }}</div>
+                        </li>
+                        <li class="card__item">
+                            <div class="card__header">公司福利</div>
+                            <hr class="card__hr">
+                            <div class="card__value">
+                                <template v-for="(value, key) in job.jobBenefitFlags" class="mt-1" :key="key">
+                                    <div v-if="value">
+                                        {{ $filter.optionText(key, repoSelect.state.selectByQueryRes.jobBenefits) }}
+                                    </div>
+                                </template>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="card__link" :href="`/job/${job.identifier}`" target="_blank">前往該職缺</a>
+                        </li>
+                    </ul>
+                </template>
             </div>
         </div>
         <div v-else class="userStatus__empty">
@@ -140,7 +142,11 @@ watch(() => repoAuth.state.user, () => {
 //methds
 function getWidth() {
     const keys = Object.keys(state.jobCompare)
-    const count = Math.min(keys.length, 3)
+    let deno = 2
+    if (device.state.isLarge) {
+        deno = 3
+    }
+    const count = Math.min(keys.length, deno)
     const width = 100 / count
     return `${width}%`
 }
