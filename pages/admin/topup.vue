@@ -118,7 +118,7 @@
 </template>
 <script setup>
 const repoSelect = useRepoSelect()
-const repoCompany = useRepoCompany()
+const repoOrganization = useRepoOrganization()
 const subscription = computed(() => {
     return repoSelect.state.selectByQueryRes?.subscription || []
 })
@@ -136,7 +136,10 @@ async function subscribeSerice(subscription) {
     // if (repoAuth.state?.user?.email === 'ian.chu@job-pair.com') {
     //     state.appointmentForm.amount = 5
     // }
-    const response = await repoCompany.postCompanySubscription()
+    const response = await repoOrganization.postSubscription({
+        amount: subscription.price,
+        service: subscription.text,
+    })
     document.write(response)
     // if (response.status !== 200) {
     //     state.consultants.forEach(item => {
