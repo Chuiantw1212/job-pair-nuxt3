@@ -3,7 +3,7 @@
         <LazyAtomBtnSimple @click="openModal()">
             應徵邀約
         </LazyAtomBtnSimple>
-        <div class="modal fade" :id="`invitation${state.id}`" tabindex="-1" a aria-hidden="true">
+        <div class="modal fade" :id="`invitation${state.id}`" tabindex="-1" aria-hidden="true" data-bs-focus="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

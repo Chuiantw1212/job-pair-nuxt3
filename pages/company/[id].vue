@@ -1,8 +1,24 @@
 <template>
     <div class="company" :class="{ container: device.state.isLarge }">
-        <OrganismDesignBody v-if="state.companyInfo?.templates" v-model="state.companyInfo.templates" readonly>
+        <template v-if="state.companyInfo?.templates">
+            <OrganismDesignBody v-model="state.companyInfo.templates" readonly>
 
-        </OrganismDesignBody>
+            </OrganismDesignBody>
+            <!-- 注意設計前後版本，在職缺呈現的不同 -->
+            <section id="company__jobs" class="company__section mt-3">
+                <div class="section__header">公司職缺</div>
+                <div class="jobs__searchWrapper">
+                    <LazyAtomInputSearch2 v-model="jobScroller.state.searchLike" placeholder="搜尋公司或職缺"
+                        @search="jobScroller.searchJobs()">
+                    </LazyAtomInputSearch2>
+                </div>
+                <ul class="jobs__list">
+                    <LazyOrganismJobItem v-for="(job, index) in jobScroller.state.jobList"
+                        v-model="jobScroller.state.jobList[index]" :key="index" ref="jobItems">
+                    </LazyOrganismJobItem>
+                </ul>
+            </section>
+        </template>
         <div v-else class="row">
             <div class="col-4 col-xl-3 d-none d-lg-block">
                 <div class="company__card company__basic">
@@ -109,7 +125,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- {{ state.companyInfo?.images }} -->
                 </div>
                 <section id="company__jobs" class="company__section mt-3">
                     <div class="section__header">公司職缺</div>
@@ -351,7 +366,6 @@ function getLocationText() {
 
 
     .company__basic {
-        position: fixed;
         max-width: 300px;
 
         .basic__basicGroup1 {
@@ -543,6 +557,7 @@ function getLocationText() {
         }
 
         .company__basic {
+            position: fixed;
             display: flex;
             padding: 40px 30px;
 

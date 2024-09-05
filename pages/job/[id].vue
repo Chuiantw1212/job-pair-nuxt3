@@ -4,11 +4,17 @@
             <div class="jobView__card jobView__card--basic">
                 <NuxtLink v-if="state.company?.seoName" class="basic__logoGroup"
                     :to="`/company/${state.company?.seoName}`">
-                    <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    <div v-if="state.company?.logo" class="logoGroup__logo"
+                        :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    </div>
+                    <div v-else class="logoGroup__logo" :style="{ backgroundImage: `url(${defaultLogo})` }">
                     </div>
                 </NuxtLink>
                 <NuxtLink v-else class="basic__logoGroup" :to="`/company/${state.company?.id}`">
-                    <div class="logoGroup__logo" :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    <div v-if="state.company?.logo" class="logoGroup__logo"
+                        :style="{ backgroundImage: `url(${state.company?.logo})` }">
+                    </div>
+                    <div v-else class="logoGroup__logo" :style="{ backgroundImage: `url(${defaultLogo})` }">
                     </div>
                 </NuxtLink>
                 <h1 class="basic__name">
@@ -218,6 +224,7 @@
     </div>
 </template>
 <script setup>
+import defaultLogo from '@/assets/company/company.webp'
 const { $emitter, $sweet, $filter, $uuid4 } = useNuxtApp()
 const route = useRoute()
 const jobId = computed(() => {
@@ -512,8 +519,8 @@ function debounce(func, delay = 800) {
     }
 }
 async function showIncompleteAlert() {
-    const res = await $sweet.info('前往完成個人檔案', {
-        title: '未上傳履歷',
+    const res = await $sweet.info('前往填寫基本資料及上傳履歷', {
+        title: '我的履歷未完成',
     })
     if (res.value) {
         router.push({
