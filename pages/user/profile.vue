@@ -87,7 +87,8 @@
         <div v-if="state.profileBroadcast" id="profileBroadcast" name="精準推送" class="profile__card profile__card--mt">
             <h2 class="card__header">其他資訊</h2>
             <LazyAtomInputCalendar name="生日" v-model="state.profileBroadcast.birthDate" class="mt-3"
-                :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate">
+                :disabled="repoAuth.state.user && !!repoAuth.state.user.birthDate"
+                :flatpickrConfig="{ maxDate: new Date() }">
             </LazyAtomInputCalendar>
             <LazyAtomInputSelect name="性別" v-model="state.profileBroadcast.gender"
                 :items="repoSelect.state.selectByQueryRes.gender" class="mt-3">
