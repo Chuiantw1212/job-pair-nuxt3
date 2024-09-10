@@ -7,8 +7,8 @@
         <label class="inputGroup__label" :class="{ 'inputGroup__label--disabled': disabled }">
             <input v-if="disabled" v-model="localValue" class="label__input" ref="input" :disabled="true"
                 :placeholder="placeholder" />
-            <input v-else v-model="localValue" class="label__input" ref="input" :data-required="required" :data-name="name"
-                :placeholder="placeholder" />
+            <input v-else v-model="localValue" class="label__input" ref="input" :data-required="required"
+                :data-name="name" :placeholder="placeholder" />
         </label>
     </div>
 </template>
@@ -52,6 +52,9 @@ export default {
             default: function () {
                 return {}
             }
+        },
+        maxDate: {
+            type: Date,
         }
     },
     mounted() {
@@ -60,7 +63,7 @@ export default {
             const config = Object.assign({}, this.flatpickrConfig, {
                 "plugins": [new confirmDatePlugin({
                     confirmIcon: '',
-                    confirmText: '確認'
+                    confirmText: '確認',
                 })]
             })
             flatpickr(element, config)
