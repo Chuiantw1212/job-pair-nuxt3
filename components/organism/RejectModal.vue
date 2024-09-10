@@ -3,7 +3,7 @@
         <LazyAtomBtnSimple class="modal__button" @click="handleReject()" :disabled="getBtnDisabled()">
             婉拒
         </LazyAtomBtnSimple>
-        <div class="modal fade" :id="`reject${state.id}`" tabindex="-1" aria-hidden="true" 　data-bs-focus="false">
+        <div class="modal fade" :id="`reject${state.id}`" tabindex="-1" aria-hidden="true" data-bs-focus="false">
             <div class="modal-dialog modal-lg modal-dialog-centered ">
                 <div class="modal-content">
                     <div class="modal-header">
