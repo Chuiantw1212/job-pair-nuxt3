@@ -7,7 +7,7 @@ export default defineStore('organizationSubscription', () => {
             url: `/organization/subscription`,
             data
         })
-        return response
+        return response.data
     }
     return {
         postSubscription,

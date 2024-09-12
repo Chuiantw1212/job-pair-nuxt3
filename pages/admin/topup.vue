@@ -125,33 +125,11 @@ const state = reactive({
 })
 // methods
 async function subscribeSerice(subscription) {
-    // const result = await $validate()
-    // if (!result.isValid) {
-    //     return
-    // }
-    // state.appointmentForm.userId = repoAuth.state.user.id
-    // state.appointmentForm.amount = subscription.price
-    // if (repoAuth.state?.user?.email === 'ian.chu@job-pair.com') {
-    //     state.appointmentForm.amount = 5
-    // }
     const response = await repoOrganization.postSubscription({
         amount: subscription.price,
         service: subscription.text,
     })
     document.write(response)
-    // if (response.status !== 200) {
-    //     state.consultants.forEach(item => {
-    //         item.key = Math.random()
-    //     })
-    //     state.appointmentForm = {
-    //         consultantId,
-    //         service: service,
-    //         question,
-    //         time: {}, // 重新設定時段就好
-    //     }
-    //     return
-    // }
-    // document.write(response.data)
 }
 </script>
 <style lang=scss scoped>
