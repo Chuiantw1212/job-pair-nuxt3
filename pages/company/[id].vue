@@ -366,7 +366,6 @@ function getLocationText() {
 
 
     .company__basic {
-        max-width: 300px;
 
         .basic__basicGroup1 {
             display: flex;
@@ -560,6 +559,7 @@ function getLocationText() {
             position: fixed;
             display: flex;
             padding: 40px 30px;
+            max-width: 300px;
 
             .basic__header {
                 color: var(--Grays-Prim, #222);
