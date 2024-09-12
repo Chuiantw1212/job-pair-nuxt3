@@ -26,8 +26,6 @@
                         <img class="item__img" src="@/assets/admin/topup/Check.svg">應徵人選適配度
                     </li>
                 </ul>
-                <LazyAtomBtnSimpleV2 class="card__btn" outline @click="subscribeSerice(subscription[0])">訂閱
-                </LazyAtomBtnSimpleV2>
             </div>
             <div class="topup__card">
                 <div class="card__title">{{ subscription[1]?.text }}</div>
