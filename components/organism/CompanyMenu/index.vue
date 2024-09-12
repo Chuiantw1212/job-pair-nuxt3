@@ -16,7 +16,7 @@
                 </li>
                 <li class="nav-item" @click="handleClick()">
                     <NuxtLink class="navItem__button" active-class="navItem__button--active" to="/admin/topup">
-                        <img src="./Setting.svg" alt="Setting">
+                        <img src="./Wallet.svg" alt="Setting">
                         儲值管理
                     </NuxtLink>
                 </li>
