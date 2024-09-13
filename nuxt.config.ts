@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     name: 'Job Pair',
     url: siteUrl,
   },
+
   app: {
     head: {
       meta: [
@@ -46,11 +47,13 @@ export default defineNuxtConfig({
       ]
     },
   },
+
   css: [
     '@glidejs/glide/dist/css/glide.core.min.css',
     '@glidejs/glide/dist/css/glide.theme.min.css',
     '@/assets/global.css',
   ],
+
   runtimeConfig: {
     public: {
       VITE_APP_ECPAY_AMOUNT: 2000,
@@ -63,6 +66,7 @@ export default defineNuxtConfig({
       axiosTimeout: 30000,
     }
   },
+
   // ... other options
   modules: [
     '@pinia/nuxt',
@@ -94,6 +98,7 @@ export default defineNuxtConfig({
       // ...
     },
   },
+
   sitemap: {
     exclude: [
       '/questions/**',
@@ -107,5 +112,7 @@ export default defineNuxtConfig({
       `${apiBase}/article/sitemap`,
     ],
   },
+
   devtools: { enabled: true },
+  compatibilityDate: '2024-08-31',
 })

@@ -12,38 +12,33 @@
     "predeploy": "npm install firebase-functions@latest --save-dev && gcloud config configurations activate prd && firebase use job-pair-taiwan-prd",
     "deploy": "npx firebase deploy",
     "scan": "npx unlighthouse --site localhost:3000",
-    "analyze": "npx nuxi analyze"
+    "analyze": "npx nuxi analyze",
+    "update": "npx npm-check-updates -u"
   },
   "devDependencies": {
-    "@nuxtjs/seo": "^2.0.0-rc.12",
-    "@pinia/nuxt": "^0.5.1",
-    "firebase-admin": "^12.1.0",
-    "firebase-functions": "^5.1.0",
-    "firebase-functions-test": "^3.1.0",
-    "nuxt": "^3.10.3",
+    "@nuxtjs/seo": "^2.0.0-rc.19",
+    "@pinia/nuxt": "^0.5.4",
+    "firebase-admin": "^12.4.0",
+    "firebase-functions": "^5.1.1",
+    "firebase-functions-test": "^3.3.0",
+    "nuxt": "^3.13.0",
     "nuxt-jsonld": "^2.0.8",
-    "pinia": "^2.1.7",
-    "sass": "^1.70.0",
-    "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "pinia": "^2.2.2",
+    "sass": "^1.77.8",
+    "vue": "^3.4.38",
+    "vue-router": "^4.4.3"
   },
   "dependencies": {
-    "@glidejs/glide": "^3.6.0",
+    "@glidejs/glide": "^3.6.2",
     "@popperjs/core": "^2.11.8",
-    "@simonwep/pickr": "^1.9.0",
-    "axios": "^1.6.2",
+    "@simonwep/pickr": "^1.9.1",
+    "axios": "^1.7.6",
     "buffer": "^6.0.3",
-    "firebase": "^9.23.0",
+    "firebase": "^10.13.1",
     "flatpickr": "^4.6.13",
-    "fuse.js": "^6.6.2",
+    "fuse.js": "^7.0.0",
     "mitt": "^3.0.1",
-    "nouislider": "^15.7.1",
-    "sweetalert2": "^11.6.13"
-  },
-  "description": "Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.",
-  "version": "1.0.0",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "nouislider": "^15.8.1",
+    "sweetalert2": "^11.12.4"
+  }
 }
